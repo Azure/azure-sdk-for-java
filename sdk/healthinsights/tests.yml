@@ -19,3 +19,4 @@ extends:
         groupId: com.azure
         safeName: azurehealthinsightsradiologyinsights
     Location: '${{ parameters.Location }}'
+    UseFederatedAuth: true
