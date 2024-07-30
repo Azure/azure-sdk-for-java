@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.LiveMetricsSpanProcessor;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulse;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.logs.ConfigurableLogRecordExporterProvider;
@@ -15,6 +16,7 @@ import io.opentelemetry.sdk.autoconfigure.spi.metrics.ConfigurableMetricExporter
 import io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterProvider;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
+import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,17 +159,32 @@ public class AzureSpringMonitorAutoConfig {
         return azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
     }
 
+
+    private Resource resource;
+
     /**
      *
      * @return
      */
     @Bean
-    AutoConfigurationCustomizerProvider otelCustomizer() {
+    AutoConfigurationCustomizerProvider resourceCustomizer() {
         return customizer ->
-            customizer.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder.addSpanProcessor(
-                azureMonitorExporterBuilderOpt.get().buildLiveMetricsSpanProcessor()));
+            customizer.addResourceCustomizer(
+                (resource, config) -> {
+                    this.resource = resource;
+                    return resource;});
     }
 
+    /**
+     *
+     * @return
+     */
+    @Bean
+    AutoConfigurationCustomizerProvider liveMetricsCustomizer() {
+        return customizer ->
+            customizer.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder.addSpanProcessor(
+                azureMonitorExporterBuilderOpt.get().buildLiveMetricsSpanProcessor(resource)));
+    }
 
     /**
      * Declare OpenTelemetryVersionCheckRunner bean to check the OpenTelemetry version

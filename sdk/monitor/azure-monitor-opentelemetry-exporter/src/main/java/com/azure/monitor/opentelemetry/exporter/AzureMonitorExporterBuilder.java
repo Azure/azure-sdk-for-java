@@ -36,6 +36,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourcePar
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
+import io.opentelemetry.sdk.extension.incubator.resources.ServiceInstanceIdResourceProvider;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.Aggregation;
 import io.opentelemetry.sdk.metrics.InstrumentSelector;
@@ -43,6 +44,7 @@ import io.opentelemetry.sdk.metrics.View;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import io.opentelemetry.semconv.ServiceAttributes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static java.util.concurrent.TimeUnit.DAYS;
@@ -251,19 +254,21 @@ public final class AzureMonitorExporterBuilder {
      * toto
      * @return toto
      */
-    public LiveMetricsSpanProcessor buildLiveMetricsSpanProcessor() {
+    public LiveMetricsSpanProcessor buildLiveMetricsSpanProcessor(Resource otelResource) {
         System.out.println("AzureMonitorExporterBuilder.buildLiveMetricsSpanProcessor");
         ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
         internalBuildAndFreeze(defaultConfig);
         boolean useNormalizedValueForNonNormalizedCpuPercentage = true;
+        String roleName = otelResource.getAttribute(ServiceAttributes.SERVICE_NAME);
+        String roleInstance = otelResource.getAttribute(ServiceInstanceIdResourceProvider.SERVICE_INSTANCE_ID);
         QuickPulse quickPulse = QuickPulse.create(
             httpPipeline,
             () -> connectionString.getLiveEndpoint(),
             () -> connectionString.getInstrumentationKey(),
-            "roleName",
-            "roleInstance",
+            roleName,
+            roleInstance,
             useNormalizedValueForNonNormalizedCpuPercentage,
-            "sdkVersion");
+            "sdkVersion"); // Also to look at
         SpanDataMapper spanDataMapper = createSpanDataMapper(defaultConfig);
         return new LiveMetricsSpanProcessor(quickPulse, spanDataMapper);
     }
@@ -345,6 +350,21 @@ public final class AzureMonitorExporterBuilder {
 //            return sdkTracerProviderBuilder.addSpanProcessor(
 //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
 //        });
+
+        final AtomicReference<Resource> otelResource = new AtomicReference<>();
+
+        sdkBuilder.addResourceCustomizer(
+            (resource, configProperties) -> {
+                otelResource.set(resource);
+                return resource;
+            });
+        sdkBuilder.addSpanProcessorCustomizer((spanProcessor, configProperties) -> {
+            if (spanProcessor instanceof LiveMetricsSpanProcessor) {
+                internalBuildAndFreeze(configProperties);
+                spanProcessor = buildLiveMetricsSpanProcessor(otelResource.get());
+            }
+            return spanProcessor;
+        });
         sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
             sdkMeterProviderBuilder.registerView(
                 InstrumentSelector.builder()

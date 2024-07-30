@@ -86,6 +86,11 @@
       <artifactId>opentelemetry-semconv-incubating</artifactId>
       <version>1.25.0-alpha</version> <!-- {x-version-update;io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-incubator</artifactId>
+      <version>1.40.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-incubator;external_dependency} -->
+    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
