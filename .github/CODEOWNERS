@@ -853,7 +853,7 @@
 /common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey
 
 # PRLabel: %common
-/common/perf-test-core/                              @alzimmermsft @srnager @g2vinay
+/common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay
 
 # PRLabel: %common
 /.vscode/                                            @alzimmermsft
