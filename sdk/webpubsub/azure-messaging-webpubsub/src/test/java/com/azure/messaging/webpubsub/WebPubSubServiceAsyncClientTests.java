@@ -14,7 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.models.ClientEndpointType;
+import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
@@ -275,7 +275,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetMqttAuthenticationToken() {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setClientEndpointType(ClientEndpointType.MQTT);
+        options.setWebPubSubClientAccess(WebPubSubClientProtocol.MQTT);
         StepVerifier.create(client.getClientAccessToken(options))
             .assertNext(token -> {
                 Assertions.assertNotNull(token);

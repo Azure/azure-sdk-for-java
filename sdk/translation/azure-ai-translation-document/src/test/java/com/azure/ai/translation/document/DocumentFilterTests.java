@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentFilterTests extends DocumentTranslationClientTestBase {
-    
+
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByStatus() {
@@ -51,7 +51,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     @Test
     public void testGetDocumentStatusesFilterByIds() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
-        
+
         // create translation job and get all the document IDs
         TranslationStatus translationStatus = createSingleTranslationJob(2);
         List<String> testIds = new ArrayList<>();
@@ -85,9 +85,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create translation job and get all the document IDs
         TranslationStatus translationStatus = createSingleTranslationJob(5);
-        List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");        
+        List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
         List<String> testCreatedOnDateTimes = new ArrayList<>();
-        
+
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
@@ -100,7 +100,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             e.printStackTrace();
         }
 
-        // Asserting that only the last document is returned        
+        // Asserting that only the last document is returned
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
@@ -138,7 +138,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // add orderBy filter
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
         List<String> testCreatedOnDateTimes = new ArrayList<>();
-        
+
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
@@ -219,17 +219,17 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, Void> poller = documentTranslationClient
-                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest));
+        SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
+            .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
         TranslationStatus translationStatus = poller.waitForCompletion().getValue();
         return translationStatus;
     }
-    
+
     public OffsetDateTime getDateTimeOffset(String dateString) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateString, formatter);
-        return zonedDateTime.toOffsetDateTime();        
+        return zonedDateTime.toOffsetDateTime();
     }
 }
