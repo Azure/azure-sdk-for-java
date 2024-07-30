@@ -947,21 +947,22 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Test
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST2).create();
+        Region localRegion = Region.US_WEST2;
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(localRegion).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(Region.US_WEST2)
+                .withRegion(localRegion)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(Region.US_WEST2, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(localRegion, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -973,9 +974,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .computeManager
                 .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(Region.US_WEST2)
+                .withRegion(localRegion)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
@@ -1000,6 +1001,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Ensure role assigned for resource group
         //
         if (!isPlaybackMode()) {
+            // principalId redacted
             PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
             Assertions.assertNotNull(rgRoleAssignments);
             boolean found = false;

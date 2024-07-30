@@ -389,6 +389,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(2, ma.scopes().size());
             Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
             if (!isPlaybackMode()) {
+                // targetResourceRegion sanitized
                 Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
             }
             Assertions.assertEquals(1, ma.alertCriterias().size());
@@ -418,6 +419,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(2, ma.scopes().size());
             Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
             if (!isPlaybackMode()) {
+                // targetResourceRegion sanitized
                 Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
             }
             Assertions.assertEquals(0, ma.alertCriterias().size());

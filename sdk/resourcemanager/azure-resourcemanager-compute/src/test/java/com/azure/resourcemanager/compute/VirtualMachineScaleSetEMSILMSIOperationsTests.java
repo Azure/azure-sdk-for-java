@@ -30,7 +30,6 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
     private Region region = Region.US_WEST2;
     private final String vmssName = "javavmss";
     private ResourceGroup resourceGroup;
-    VirtualMachineScaleSetSkuTypes virtualMachineScaleSetSkuTypes = VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard");
 
     @BeforeEach
     public void initResources() {
@@ -108,7 +107,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(virtualMachineScaleSetSkuTypes)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -153,23 +152,24 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Ensure expected role assignment exists for explicitly created EMSI
         //
-        PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
-            this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
         boolean found = false;
-        for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment.principalId().equalsIgnoreCase(createdIdentity.principalId())) {
-                found = true;
-                break;
-            }
-        }
-        Assertions
-            .assertTrue(
-                found,
-                "Expected role assignment not found for the virtual network for identity" + createdIdentity.name());
-
         RoleAssignment assignment;
         if (!isPlaybackMode()) {
+            // principalId redacted
+            PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
+                this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
+            for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment.principalId().equalsIgnoreCase(createdIdentity.principalId())) {
+                    found = true;
+                    break;
+                }
+            }
+            Assertions
+                .assertTrue(
+                    found,
+                    "Expected role assignment not found for the virtual network for identity" + createdIdentity.name());
+
             assignment =
                 lookupRoleAssignmentUsingScopeAndRoleAsync(network.id(), BuiltInRole.READER, createdIdentity.principalId())
                     .block();
@@ -177,28 +177,26 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             Assertions
                 .assertNotNull(
                     assignment, "Expected role assignment with ROLE not found for the virtual network for identity");
-        }
 
-        // Ensure expected role assignment exists for explicitly created EMSI
-        //
-        PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
-            this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
+            // Ensure expected role assignment exists for explicitly created EMSI
+            //
+            PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
+                this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
 
-        found = false;
-        for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment.principalId().equalsIgnoreCase(implicitlyCreatedIdentity.principalId())) {
-                found = true;
-                break;
+            found = false;
+            for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment.principalId().equalsIgnoreCase(implicitlyCreatedIdentity.principalId())) {
+                    found = true;
+                    break;
+                }
             }
-        }
-        Assertions
-            .assertTrue(
-                found,
-                "Expected role assignment not found for the resource group for identity"
-                    + implicitlyCreatedIdentity.name());
+            Assertions
+                .assertTrue(
+                    found,
+                    "Expected role assignment not found for the resource group for identity"
+                        + implicitlyCreatedIdentity.name());
 
-        if (!isPlaybackMode()) {
             assignment =
                 lookupRoleAssignmentUsingScopeAndRoleAsync(
                     resourceGroup.id(), BuiltInRole.CONTRIBUTOR, implicitlyCreatedIdentity.principalId())
@@ -355,7 +353,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(virtualMachineScaleSetSkuTypes)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -385,27 +383,27 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Ensure expected role assignment exists for LMSI
         //
-        PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
-            this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
-        boolean found = false;
-        for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
-            }
-        }
-        Assertions
-            .assertTrue(
-                found,
-                "Expected role assignment not found for the virtual network for local identity"
-                    + virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
-
-        RoleAssignment assignment;
         if (!isPlaybackMode()) {
-            assignment =
+            // principalId redacted
+            PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
+                this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
+            boolean found = false;
+            for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment
+                        .principalId()
+                        .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                    found = true;
+                    break;
+                }
+            }
+            Assertions
+                .assertTrue(
+                    found,
+                    "Expected role assignment not found for the virtual network for local identity"
+                        + virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
+
+            RoleAssignment assignment =
                 lookupRoleAssignmentUsingScopeAndRoleAsync(
                     network.id(),
                     BuiltInRole.CONTRIBUTOR,
@@ -416,30 +414,28 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .assertNotNull(
                     assignment,
                     "Expected role assignment with ROLE not found for the virtual network for system assigned identity");
-        }
 
-        // Ensure expected role assignment exists for EMSI
-        //
-        PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
-            this
-                .msiManager
-                .authorizationManager()
-                .roleAssignments()
-                .listByScope(
-                    resourceManager.resourceGroups().getByName(virtualMachineScaleSet.resourceGroupName()).id());
-        found = false;
-        for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
-                found = true;
-                break;
+            // Ensure expected role assignment exists for EMSI
+            //
+            PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
+                this
+                    .msiManager
+                    .authorizationManager()
+                    .roleAssignments()
+                    .listByScope(
+                        resourceManager.resourceGroups().getByName(virtualMachineScaleSet.resourceGroupName()).id());
+            found = false;
+            for (RoleAssignment roleAssignment : roleAssignmentsForResourceGroup) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
+                    found = true;
+                    break;
+                }
             }
-        }
-        Assertions
-            .assertTrue(
-                found, "Expected role assignment not found for the resource group for identity" + identity.name());
+            Assertions
+                .assertTrue(
+                    found, "Expected role assignment not found for the resource group for identity" + identity.name());
 
-        if (!isPlaybackMode()) {
             assignment =
                 lookupRoleAssignmentUsingScopeAndRoleAsync(
                     resourceGroup.id(), BuiltInRole.CONTRIBUTOR, identity.principalId())
@@ -481,7 +477,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(virtualMachineScaleSetSkuTypes)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)

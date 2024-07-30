@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.management.Region;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.TargetAzureResourceType;
@@ -16,8 +16,9 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEnd
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Map;
 
 /** Test of traffic manager management. */
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
@@ -209,7 +210,9 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                 Assertions.assertEquals(endpoint.routingPriority(), 3);
                 Assertions.assertNotNull(endpoint.monitorStatus());
                 if (!isPlaybackMode) {
+                    // targetResourceId sanitized
                     Assertions.assertEquals(endpoint.targetAzureResourceId(), publicIPAddress.id());
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
                     Assertions.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
                 }
                 c++;
@@ -225,6 +228,8 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                 Assertions.assertNotNull(endpoint.monitorStatus());
                 Assertions.assertEquals(endpoint.minimumChildEndpointCount(), 1);
                 if (!isPlaybackMode) {
+                    // targetResourceId sanitized
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
                     Assertions.assertEquals(endpoint.nestedProfileId(), nestedProfile.id());
                     Assertions.assertEquals(endpoint.sourceTrafficLocation(), Region.INDIA_CENTRAL);
                 }
@@ -294,6 +299,8 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                 Assertions.assertEquals(endpoint.routingPriority(), 5);
                 Assertions.assertEquals(endpoint.routingWeight(), 2);
                 if (!isPlaybackMode) {
+                    // targetResourceId sanitized
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
                     Assertions.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
                 }
                 c++;
@@ -345,11 +352,13 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                     .append("\n\t\t\tId: ")
                     .append(endpoint.id())
                     .append("\n\t\t\tType: ")
-                    .append(endpoint.endpointType());
+                    .append(endpoint.endpointType())
+                    .append("\n\t\t\tTarget resourceId: ")
+                    .append(endpoint.targetAzureResourceId());
                 if (!isPlaybackMode) {
-                    info.append("\n\t\t\tTarget resourceId: ")
-                        .append(endpoint.targetAzureResourceId())
-                        .append("\n\t\t\tTarget resourceType: ")
+                    // targetResourceId sanitized
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
+                    info.append("\n\t\t\tTarget resourceType: ")
                         .append(endpoint.targetResourceType());
                 }
                 info.append("\n\t\t\tMonitor status: ")
