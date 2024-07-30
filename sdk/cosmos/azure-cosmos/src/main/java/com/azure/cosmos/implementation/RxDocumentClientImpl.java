@@ -729,7 +729,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this,
                     this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init().thenEmpty((publisher) -> {
-                logger.warn(
+                logger.info(
                     "Initialized DocumentClient [{}] with machineId[{}]"
                         + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
                     clientId,

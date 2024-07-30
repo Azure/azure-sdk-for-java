@@ -1334,7 +1334,7 @@ public class CosmosClientBuilder implements
             }
 
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
-            logger.warn("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
+            logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
