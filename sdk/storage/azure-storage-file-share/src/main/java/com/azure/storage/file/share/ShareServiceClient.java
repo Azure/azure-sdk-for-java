@@ -700,7 +700,6 @@ public final class ShareServiceClient {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return The string to sign that will be used to generate the signature for the SAS URL.
-     * @deprecated For debugging purposes only.
      */
    public String generateAccountSasStringToSign(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)

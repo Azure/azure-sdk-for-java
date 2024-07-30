@@ -2028,7 +2028,6 @@ public class BlobClientBase {
      * @param accountName The account name.
      * @param context Additional context that is passed through the code when generating a SAS.
      * @return The string to sign that will be used to generate the signature for the SAS URL.
-     * @deprecated For debugging purposes only.
      */
    public String generateUserDelegationSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
                                                         UserDelegationKey userDelegationKey, String accountName, Context context) {
@@ -2044,7 +2043,6 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return The string to sign that will be used to generate the signature for the SAS URL.
-     * @deprecated For debugging purposes only.
      */
    public String generateSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return this.client.generateSasStringToSign(blobServiceSasSignatureValues, context);

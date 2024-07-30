@@ -2531,7 +2531,6 @@ public class BlobAsyncClientBase {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return The string to sign that will be used to generate the signature for the SAS URL.
-     * @deprecated For debugging purposes only.
      */
    public String generateUserDelegationSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
                                                         UserDelegationKey userDelegationKey, String accountName, Context context) {
@@ -2548,7 +2547,6 @@ public class BlobAsyncClientBase {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return The string to sign that will be used to generate the signature for the SAS URL.
-     * @deprecated For debugging purposes only.
      */
    public String generateSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
