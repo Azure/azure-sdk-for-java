@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.15.0 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.3.2 and Spring Cloud dependencies version to 2023.0.3
 
 ### Spring Cloud Azure Dependencies (BOM)
 

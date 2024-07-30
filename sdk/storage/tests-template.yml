@@ -49,10 +49,12 @@ stages:
       CloudConfig:
         Preview:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+          ServiceConnection: azure-sdk-tests-preview
         PrivatePreview:
           SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
       SupportedClouds: Preview
+      UseFederatedAuth: true
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2004-storage
@@ -85,9 +87,6 @@ stages:
               JAVA_HOME: $(JAVA_HOME_8_X64)
           condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
       EnvVars:
-        AZURE_TENANT_ID: $(STORAGE_TENANT_ID)
-        AZURE_CLIENT_ID: $(STORAGE_CLIENT_ID)
-        AZURE_CLIENT_SECRET: $(STORAGE_CLIENT_SECRET)
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
       UseHttpFaultInjector: true

@@ -6,30 +6,32 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism would
- * be set to 1 by default.
+ * Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism would be
+ * set to 1 by default.
  */
 @Fluent
-public final class JobConfigurationScheduleTriggerConfig {
+public final class JobConfigurationScheduleTriggerConfig
+    implements JsonSerializable<JobConfigurationScheduleTriggerConfig> {
     /*
      * Minimum number of successful replica completions before overall job completion.
      */
-    @JsonProperty(value = "replicaCompletionCount")
     private Integer replicaCompletionCount;
 
     /*
      * Cron formatted repeating schedule ("* * * * *") of a Cron Job.
      */
-    @JsonProperty(value = "cronExpression", required = true)
     private String cronExpression;
 
     /*
      * Number of parallel replicas of a job that can run at a given time.
      */
-    @JsonProperty(value = "parallelism")
     private Integer parallelism;
 
     /**
@@ -107,10 +109,57 @@ public final class JobConfigurationScheduleTriggerConfig {
      */
     public void validate() {
         if (cronExpression() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cronExpression in model JobConfigurationScheduleTriggerConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cronExpression in model JobConfigurationScheduleTriggerConfig"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobConfigurationScheduleTriggerConfig.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cronExpression", this.cronExpression);
+        jsonWriter.writeNumberField("replicaCompletionCount", this.replicaCompletionCount);
+        jsonWriter.writeNumberField("parallelism", this.parallelism);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobConfigurationScheduleTriggerConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobConfigurationScheduleTriggerConfig if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobConfigurationScheduleTriggerConfig.
+     */
+    public static JobConfigurationScheduleTriggerConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobConfigurationScheduleTriggerConfig deserializedJobConfigurationScheduleTriggerConfig
+                = new JobConfigurationScheduleTriggerConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cronExpression".equals(fieldName)) {
+                    deserializedJobConfigurationScheduleTriggerConfig.cronExpression = reader.getString();
+                } else if ("replicaCompletionCount".equals(fieldName)) {
+                    deserializedJobConfigurationScheduleTriggerConfig.replicaCompletionCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("parallelism".equals(fieldName)) {
+                    deserializedJobConfigurationScheduleTriggerConfig.parallelism
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobConfigurationScheduleTriggerConfig;
+        });
+    }
 }
