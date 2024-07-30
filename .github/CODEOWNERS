@@ -6,7 +6,6 @@
 ################
 # As of 1/30/2023 these paths have no owners:
 
-# /**
 # /.devcontainer/
 # /doc/
 # /samples/
@@ -16,6 +15,7 @@
 ###########
 
 # Catch all
+/**                                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 /sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
