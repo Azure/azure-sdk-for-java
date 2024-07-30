@@ -134,14 +134,7 @@ public class Handle206Test {
         telemetryItems.sort(new Comparator<TelemetryItem>() {
             @Override
             public int compare(TelemetryItem o1, TelemetryItem o2) {
-                String name1, name2;
-                try {
-                    name1 = toMetricsData(o1.getData().getBaseData()).getMetrics().get(0).getName();
-                    name2 = toMetricsData(o2.getData().getBaseData()).getMetrics().get(0).getName();
-                    return name1.compareTo(name2);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                return toMetricsData(o1.getData().getBaseData()).getMetrics().get(0).getName().compareTo(toMetricsData(o2.getData().getBaseData()).getMetrics().get(0).getName());
             }
         });
     }
