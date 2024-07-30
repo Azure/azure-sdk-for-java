@@ -582,6 +582,21 @@
           "code": "java.missing.oldSuperType",
           "old": "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
           "justification": "service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "old": "method com.azure.communication.identity.models.CommunicationTokenScope com.azure.communication.identity.models.CommunicationTokenScope::fromString(java.lang.String)",
+          "new": "method com.azure.communication.identity.models.CommunicationTokenScope com.azure.communication.identity.models.CommunicationTokenScope::fromString(java.lang.String)",
+          "annotation": "@com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.messages\\.models(\\.channels)?.*",
+          "new" : ".*? com\\.azure\\.communication\\.messages\\.models(\\.channels)?.*",
+          "justification": "Migration to azure-json"
         }
       ]
     }

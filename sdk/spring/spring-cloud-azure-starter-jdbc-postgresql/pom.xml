@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
-  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;current} -->
+  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;current} -->
 
   <name>Spring Cloud Azure Starter JDBC PostgreSQL</name>
   <description>Spring Cloud Azure Starter for building applications with JDBC and Azure PostgreSQL Services. Support authenticating with Azure AD.</description>
@@ -88,13 +88,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter</artifactId>
-      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.17</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.1.18</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
     </dependency>
 
     <dependency>
