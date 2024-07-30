@@ -18,7 +18,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.*;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -47,6 +53,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
@@ -68,6 +76,30 @@ public final class TestHelpers {
     public static final String HOTEL_INDEX_NAME = "hotels";
 
 
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+    static {
+        // Add a shutdown hook to shut down the executor service gracefully
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("JVM is shutting down. Shutting down executor service...");
+            shutdownExecutorService();
+        }));
+    }
+
+    private static void shutdownExecutorService() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                    System.err.println("Executor service did not terminate");
+                }
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
 
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
@@ -423,11 +455,41 @@ public final class TestHelpers {
 
         if (testMode == TestMode.PLAYBACK) {
             return new MockTokenCredential();
-        } else if (testMode == TestMode.LIVE) {
-            return new AzurePowerShellCredentialBuilder().build();
-        } else {
-            return new DefaultAzureCredentialBuilder().build();
         }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+            .addLast(new EnvironmentCredentialBuilder().executorService(executorService).build())
+            .addLast(new AzureCliCredentialBuilder().build())
+            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            AzurePipelinesCredential azurePipelinesCredential = new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .executorService(executorService)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
+
+            builder.addLast(trc -> azurePipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic()));
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+
+        return builder.build();
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
