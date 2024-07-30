@@ -86,16 +86,6 @@ jobs:
         parameters:
           runProxy: true
 
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
-        displayName: Dump Test-Proxy Logs
-        condition: succeededOrFailed()
-
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)

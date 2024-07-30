@@ -152,6 +152,17 @@ jobs:
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
 
+
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Logs
+        condition: failed()
+
       # - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
       #   parameters:
       #     ArtifactName: 'test_profile_$(System.JobName)'
