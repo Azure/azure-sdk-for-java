@@ -4,6 +4,9 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.json.JsonProviders;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
@@ -18,6 +21,7 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -195,17 +199,19 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .emit();
     }
 
-    @SuppressWarnings("unchecked")
-    private static void validateSpan(TelemetryItem telemetryItem) {
+    private static void validateSpan(TelemetryItem telemetryItem) throws IOException {
         assertThat(telemetryItem.getName()).isEqualTo("RemoteDependency");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("RemoteDependencyData");
-        Map<String, Object> actualData = telemetryItem.getData().getBaseData().getAdditionalProperties();
-        assertThat(actualData.get("name").toString()).isEqualTo("test");
-        assertThat((Map<String, String>) actualData.get("properties")).containsExactly(entry("color", "red"), entry("name", "apple"));
+
+        // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData
+        RemoteDependencyData actualData = toRemoteDependencyData(telemetryItem.getData().getBaseData());
+        assertThat(actualData.getName()).isEqualTo("test");
+        assertThat(actualData.getProperties())
+            .containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
     @SuppressWarnings("unchecked")
@@ -242,5 +248,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
 
     private static Map<String, String> getConfiguration() {
         return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
+    }
+
+    private static RemoteDependencyData toRemoteDependencyData(MonitorDomain baseData) throws IOException {
+        return RemoteDependencyData.fromJson(JsonProviders.createReader(baseData.toJsonString()));
     }
 }
