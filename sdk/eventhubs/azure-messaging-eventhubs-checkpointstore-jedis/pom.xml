@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.18.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>redis.clients</groupId>

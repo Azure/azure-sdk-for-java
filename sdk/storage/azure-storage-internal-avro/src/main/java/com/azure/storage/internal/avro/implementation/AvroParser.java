@@ -20,12 +20,12 @@ import java.util.Map;
 
 /**
  * A class that represents a push based AvroParser that can parse avro data from a reactive stream.
- *
+ * <p>
  * The parser stores the {@link AvroParserState current state}, the sync marker (parsed from the header),
  * the file type (parsed from the header metadata), and the list of records collected so far.
- *
+ * <p>
  * The {@link AvroParser#parse(ByteBuffer)} method accepts ByteBuffers as they are emitted from the stream.
- *
+ * <p>
  * Header Block Block Block ....
  */
 public class AvroParser {
@@ -47,7 +47,7 @@ public class AvroParser {
     /* Holds objects collected so far. */
     private List<AvroObject> objects;
 
-    private boolean partialRead; /* Whether the Avro Parser will read the Header and Block off different
+    private final boolean partialRead; /* Whether the Avro Parser will read the Header and Block off different
                                      streams. This is custom functionality for Changefeed. */
 
     /**
@@ -59,21 +59,18 @@ public class AvroParser {
         this.partialRead = partialRead;
 
         /* Start off by adding the header schema to the stack so we can parse it. */
-        AvroHeaderSchema headerSchema = new AvroHeaderSchema(
-            this.state,
-            this::onFilteredHeader
-        );
+        AvroHeaderSchema headerSchema = new AvroHeaderSchema(this.state, this::onFilteredHeader);
         headerSchema.pushToStack();
     }
 
     Mono<Void> prepareParserToReadBody(long sourceOffset, long thresholdIndex) {
         if (!this.partialRead) {
-            return Mono.error(new IllegalStateException("This method should only be called when parsing header "
-                + "and body separately."));
+            return Mono.error(new IllegalStateException(
+                "This method should only be called when parsing header and body separately."));
         }
         if (this.objectType == null || this.syncMarker == null) {
-            return Mono.error(new IllegalStateException("Expected to read entire header before preparing "
-                + "parser to read body."));
+            return Mono.error(
+                new IllegalStateException("Expected to read entire header before preparing parser to read body."));
         }
         this.state = new AvroParserState(sourceOffset);
         this.objects = new ArrayList<>();
@@ -111,23 +108,17 @@ public class AvroParser {
      * Block handler.
      *
      * @param beginObjectIndex The object index after which to start aggregating events in the block.
-     *                         By default, this is 0 to collect all objects in the block.
+     * By default, this is 0 to collect all objects in the block.
      */
     private void onBlock(Object beginObjectIndex) {
         /* On reading the block, read another block. */
         AvroSchema.checkType("beginObjectIndex", beginObjectIndex, Long.class);
 
-        final AvroBlockSchema blockSchema = new AvroBlockSchema(
-            this.objectType,
-            (Long) beginObjectIndex,
-            o -> {
-                AvroSchema.checkType("object", o, AvroObject.class);
-                this.objects.add((AvroObject) o);
-            }, /* Object result handler. */
-            this.syncMarker,
-            this.state,
-            this::onBlock
-        );
+        final AvroBlockSchema blockSchema = new AvroBlockSchema(this.objectType, (Long) beginObjectIndex, o -> {
+            AvroSchema.checkType("object", o, AvroObject.class);
+            this.objects.add((AvroObject) o);
+        }, /* Object result handler. */
+            this.syncMarker, this.state, this::onBlock);
         blockSchema.pushToStack();
     }
 
@@ -158,8 +149,8 @@ public class AvroParser {
             return Flux.empty();
         }
         AvroSchema schema = this.state.peekFromStack();
-        while ((schema instanceof AvroCompositeSchema)
-            || ((schema instanceof AvroSimpleSchema) && ((AvroSimpleSchema) schema).canProgress())) {
+        while ((schema instanceof AvroCompositeSchema) || ((schema instanceof AvroSimpleSchema)
+            && ((AvroSimpleSchema) schema).canProgress())) {
             if (schema instanceof AvroSimpleSchema) {
                 ((AvroSimpleSchema) schema).progress();
             }
