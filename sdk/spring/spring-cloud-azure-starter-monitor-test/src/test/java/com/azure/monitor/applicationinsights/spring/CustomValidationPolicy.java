@@ -60,7 +60,7 @@ class CustomValidationPolicy implements HttpPipelinePolicy {
             while ((read = in.read(data, 0, data.length)) != -1) {
                 baos.write(data, 0, read);
             }
-            return baos.toString(StandardCharsets.UTF_8);
+            return baos.toString(StandardCharsets.UTF_8.name());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

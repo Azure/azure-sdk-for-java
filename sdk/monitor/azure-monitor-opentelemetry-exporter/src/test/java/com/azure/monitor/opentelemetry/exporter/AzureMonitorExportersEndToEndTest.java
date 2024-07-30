@@ -40,7 +40,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
     @Test
     public void testBuildTraceExporter() throws Exception {
         // create the OpenTelemetry SDK
-        CountDownLatch countDownLatch = new CountDownLatch(10);
+        final int numberOfSpans = 10;
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfSpans);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         HttpPipeline httpPipeline = getHttpPipeline(customValidationPolicy);
         OpenTelemetry openTelemetry =
@@ -52,10 +53,10 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         }
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        countDownLatch.await(numberOfSpans, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(10);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(numberOfSpans);
 
         // validate span
         TelemetryItem spanTelemetryItem =
