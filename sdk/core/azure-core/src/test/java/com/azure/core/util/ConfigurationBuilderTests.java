@@ -70,7 +70,8 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void emptySourceAddProperty() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, EMPTY_SOURCE).putProperty("foo", "bar");
+        ConfigurationBuilder builder
+            = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, EMPTY_SOURCE).putProperty("foo", "bar");
         assertEquals("bar", builder.build().get(FOO_PROPERTY));
         assertEquals("bar", builder.build().get("foo"));
     }
@@ -93,8 +94,9 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void sourceAddPropertyBuildSection() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo1", "bar1"), EMPTY_SOURCE, EMPTY_SOURCE)
-            .putProperty("az.foo2", "bar2");
+        ConfigurationBuilder builder
+            = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo1", "bar1"), EMPTY_SOURCE, EMPTY_SOURCE)
+                .putProperty("az.foo2", "bar2");
         assertEquals("bar1", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo1").build()));
         assertEquals("bar2", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo2").build()));
         assertEquals("bar2", builder.buildSection("az").get("az.foo2"));
@@ -110,8 +112,9 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void sourceAddPropertySameSysPropertyName() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource().put("foo", "bar1"), EMPTY_SOURCE)
-            .putProperty("foo", "bar2");
+        ConfigurationBuilder builder
+            = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource().put("foo", "bar1"), EMPTY_SOURCE)
+                .putProperty("foo", "bar2");
         assertEquals("bar2", builder.build().get(FOO_PROPERTY));
         assertEquals("bar2", builder.build().get("foo"));
     }
