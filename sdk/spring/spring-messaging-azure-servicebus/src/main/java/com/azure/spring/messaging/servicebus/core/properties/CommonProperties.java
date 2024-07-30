@@ -28,7 +28,6 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
     private String connectionString;
     private String entityName;
     private ServiceBusEntityType entityType;
-
     private String customEndpointAddress;
 
     private String extractFqdnFromConnectionString() {

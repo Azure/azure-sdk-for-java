@@ -70,6 +70,7 @@ class AzureServiceBusProcessorClientConfiguration {
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
                 factory = new ServiceBusProcessorClientBuilderFactory(
                     serviceBusProperties.buildProcessorProperties(),
+                    customizers.orderedStream().toList(),
                     messageListener,
                     errorHandler);
             } else {
@@ -82,7 +83,6 @@ class AzureServiceBusProcessorClientConfiguration {
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
             processorCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
@@ -122,6 +122,7 @@ class AzureServiceBusProcessorClientConfiguration {
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
                 factory = new ServiceBusSessionProcessorClientBuilderFactory(
                     serviceBusProperties.buildProcessorProperties(),
+                    customizers.orderedStream().toList(),
                     messageListener,
                     errorHandler);
             } else {
@@ -133,7 +134,6 @@ class AzureServiceBusProcessorClientConfiguration {
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
             sessionProcessorCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }

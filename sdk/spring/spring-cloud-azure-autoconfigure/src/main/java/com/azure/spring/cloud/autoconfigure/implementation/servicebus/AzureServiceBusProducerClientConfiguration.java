@@ -39,14 +39,13 @@ class AzureServiceBusProducerClientConfiguration {
 
         ServiceBusSenderClientBuilderFactory factory;
         if (isDedicatedConnection(serviceBusProperties.getProducer())) {
-            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties());
+            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties(), customizers.orderedStream().toList());
         } else {
             factory = new ServiceBusSenderClientBuilderFactory(
                 serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProducerProperties());
         }
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-        customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
         senderCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }

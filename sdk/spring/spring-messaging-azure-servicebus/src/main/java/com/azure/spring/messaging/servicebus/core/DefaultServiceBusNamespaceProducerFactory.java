@@ -9,7 +9,6 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -46,7 +45,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
 
-    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers = new ArrayList<>();
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
@@ -111,15 +110,12 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
 
-            ServiceBusClientBuilderFactory clientBuilderFactory = new ServiceBusClientBuilderFactory(producerProperties);
-            clientBuilderFactory.setDefaultTokenCredential(this.defaultCredential);
-            clientBuilderFactory.setTokenCredentialResolver(this.tokenCredentialResolver);
-            clientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-            ServiceBusClientBuilder sharedClientBuilder = clientBuilderFactory.build();
-            customizeClientBuilder(sharedClientBuilder);
+            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties, this.serviceBusClientBuilderCustomizers);
 
-            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(sharedClientBuilder, producerProperties);
-            this.clientBuilderCustomizers.forEach(factory::addClientBuilderCustomizer);
+            factory.setDefaultTokenCredential(this.defaultCredential);
+            factory.setTokenCredentialResolver(this.tokenCredentialResolver);
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+
             ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = factory.build();
             customizeBuilder(name, builder);
             ServiceBusSenderAsyncClient producerClient = builder.buildAsyncClient();
@@ -153,11 +149,11 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      *
      * @param customizer the provided builder customizer.
      */
-    public void addSharedBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
+    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.class.getName());
         } else {
-            this.clientBuilderCustomizers.add(customizer);
+            this.serviceBusClientBuilderCustomizers.add(customizer);
         }
     }
 
@@ -190,10 +186,6 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
         this.dedicatedCustomizers
             .computeIfAbsent(entityName, key -> new ArrayList<>())
             .add(customizer);
-    }
-
-    private void customizeClientBuilder(ServiceBusClientBuilder builder) {
-        this.clientBuilderCustomizers.forEach(customizer -> customizer.customize(builder));
     }
 
     private void customizeBuilder(String entityName, ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {

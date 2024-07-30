@@ -54,14 +54,13 @@ class AzureServiceBusConsumerClientConfiguration {
 
             ServiceBusReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                factory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+                factory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties(), customizers.orderedStream().toList());
             } else {
                 factory = new ServiceBusReceiverClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
             receiverCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
@@ -103,7 +102,7 @@ class AzureServiceBusConsumerClientConfiguration {
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> sessionReceiverCustomizers) {
             ServiceBusSessionReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                factory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+                factory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties(), customizers.orderedStream().toList());
             } else {
                 factory = new ServiceBusSessionReceiverClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
@@ -111,7 +110,6 @@ class AzureServiceBusConsumerClientConfiguration {
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
             sessionReceiverCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }

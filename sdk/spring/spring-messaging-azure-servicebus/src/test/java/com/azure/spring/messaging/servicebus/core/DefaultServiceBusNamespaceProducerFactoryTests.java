@@ -77,7 +77,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
         AtomicInteger senderClientBuilderCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProducerFactory factory = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
 
-        factory.addSharedBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
+        factory.addServiceBusClientBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer(builder -> senderClientBuilderCalledTimes.getAndIncrement());
 
         factory.createProducer("queue-1");
@@ -96,7 +96,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
         AtomicInteger customizer2CalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProducerFactory factory = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
 
-        factory.addSharedBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
+        factory.addServiceBusClientBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("queue-1", builder -> customizer1CalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("topic-2", builder -> customizer2CalledTimes.getAndIncrement());
 

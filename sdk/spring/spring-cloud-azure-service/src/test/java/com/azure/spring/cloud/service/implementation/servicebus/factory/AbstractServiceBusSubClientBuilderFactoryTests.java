@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactoryTests.CONNECTION_STRING_FORMAT;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
@@ -120,7 +121,16 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void connectionStringConfigured(boolean isShareServiceClientBuilder) {
-        verifyConnectionConfigured(isShareServiceClientBuilder);
+        P properties = createMinimalServiceProperties();
+        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+        properties.setConnectionString(connectionString);
+        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
+        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
+        B builder = factory.build();
+        buildClient(builder);
+
+        verify(factory.getServiceBusClientBuilder(), times(1)).connectionString(connectionString);
     }
 
     private void verifyFqdnConfigured(boolean isShareServiceClientBuilder) {
@@ -147,6 +157,7 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
 
         verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(ClientSecretCredential.class));
     }
+
     private void verifyClientCertificateCredentialConfigured(boolean isShareServiceClientBuilder) {
         P properties = createMinimalServiceProperties();
         properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
@@ -243,15 +254,4 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         verify(factory.getServiceBusClientBuilder(), times(1)).transportType(transportType);
     }
 
-    private void verifyConnectionConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        properties.setConnectionString("test-connection-string");
-        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
-        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
-        B builder = factory.build();
-        buildClient(builder);
-
-        verify(factory.getServiceBusClientBuilder(), times(1)).connectionString("test-connection-string");
-    }
 }

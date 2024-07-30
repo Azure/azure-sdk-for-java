@@ -205,7 +205,7 @@ public class ServiceBusBinderConfiguration {
             if (factory instanceof DefaultServiceBusNamespaceProcessorFactory defaultFactory) {
                 defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
-                clientBuilderCustomizers.orderedStream().forEach(defaultFactory::addSharedBuilderCustomizer);
+                clientBuilderCustomizers.orderedStream().forEach(defaultFactory::addServiceBusClientBuilderCustomizer);
                 processorClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
                 sessionProcessorClientBuilderCustomizers.orderedStream()
                                                         .forEach(defaultFactory::addSessionBuilderCustomizer);

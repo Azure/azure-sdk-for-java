@@ -94,7 +94,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
-        factory.addSharedBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
+        factory.addServiceBusClientBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer(builder -> noneSessionClientCalledTimes.getAndIncrement());
         factory.addSessionBuilderCustomizer(builder -> sessionClientCalledTimes.getAndIncrement());
 
@@ -134,7 +134,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
-        factory.addSharedBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
+        factory.addServiceBusClientBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("queue-1", null, builder -> noneSessionClientCalledTimes.getAndIncrement());
         factory.addSessionBuilderCustomizer("queue-1", null, builder -> sessionClientCalledTimes.getAndIncrement());
 
