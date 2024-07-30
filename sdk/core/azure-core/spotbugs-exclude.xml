@@ -455,4 +455,14 @@
     <Class name="com.azure.core.implementation.util.HttpHeadersAccessHelper" />
     <Method name="setAccessor" />
   </Match>
+
+  <Match>
+    <Bug pattern="SE_INNER_CLASS" />
+    <Class name="com.azure.core.implementation.jackson.JacksonDatabind212$1$1" />
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_NO_SERIALVERSIONID" />
+    <Class name="com.azure.core.implementation.jackson.OptionPropertiesModifier" />
+  </Match>
 </FindBugsFilter>
