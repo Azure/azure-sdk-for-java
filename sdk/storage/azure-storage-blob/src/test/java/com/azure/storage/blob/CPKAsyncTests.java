@@ -8,6 +8,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.AppendBlobItem;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
@@ -119,12 +120,13 @@ public class CPKAsyncTests extends BlobTestBase {
     @Test
     public void putBlockListWithCPK() {
         List<String> blockIDList = Arrays.asList(getBlockID(), getBlockID());
-        for (String blockId : blockIDList) {
-            cpkBlockBlob.stageBlock(blockId, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        }
 
-        StepVerifier.create(cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null,
-            null))
+        Mono<Response<BlockBlobItem>> response = Flux.fromIterable(blockIDList)
+            .flatMap(r -> cpkBlockBlob.stageBlock(r, DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
+            .then(cpkBlockBlob.commitBlockListWithResponse(blockIDList, null, null, null,
+                null));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());

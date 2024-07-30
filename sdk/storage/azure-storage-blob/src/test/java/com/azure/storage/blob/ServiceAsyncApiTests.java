@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -47,6 +48,7 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -88,9 +90,9 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         tagValue = testResourceNamer.randomName(prefix, 20);
     }
 
-    private void setInitialProperties() {
+    private Mono<Void> setInitialProperties() {
         BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
-        primaryBlobServiceAsyncClient.setProperties(new BlobServiceProperties()
+        return primaryBlobServiceAsyncClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
             .setDeleteRetentionPolicy(disabled)
             .setCors(null)
@@ -100,7 +102,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .setRetentionPolicy(disabled))
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
-            .setDefaultServiceVersion("2018-03-28")).block();
+            .setDefaultServiceVersion("2018-03-28"));
     }
 
     private void resetProperties() {
@@ -148,6 +150,24 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void listContainersMarker() {
+        /*ListBlobContainersOptions options = new ListBlobContainersOptions().setMaxResultsPerPage(5);
+
+        Mono<List<PagedResponse<BlobContainerItem>>> response = Flux.range(0, 10)
+            .flatMap(r -> primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()))
+            .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(options).byPage())
+            .collectList()
+            .flatMap(r -> {
+                PagedResponse<BlobContainerItem> firstPage = r.get(0);
+                String marker = firstPage.getContinuationToken();
+                return primaryBlobServiceAsyncClient.listBlobContainers().byPage(marker);
+            });
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+            })*/
+
+
+
         for (int i = 0; i < 10; i++) {
             primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         }
@@ -333,8 +353,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void listSystemContainers() {
-        setInitialProperties();
-
         try {
             BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
             BlobAnalyticsLogging logging =
@@ -342,12 +360,13 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             BlobServiceProperties serviceProps = new BlobServiceProperties().setLogging(logging);
 
             // Ensure $logs container exists. These will be reverted in test cleanup
-            primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProps).block();
+            Flux<BlobContainerItem> response = setInitialProperties()
+                .then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProps))
+                .then(Mono.delay(Duration.ofSeconds(30)))
+                .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+                    .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true))));
 
-            sleepIfRunningAgainstService(30 * 1000); // allow the service properties to take effect
-
-            StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
-                .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true))))
+            StepVerifier.create(response)
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(x -> true)
                 .consumeRecordedWith(r -> assertTrue(r.stream().anyMatch(c -> c.getName().equals("$logs"))))
@@ -583,8 +602,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setGetProperties() {
-        setInitialProperties();
-
         try {
             BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
             BlobAnalyticsLogging logging =
@@ -619,18 +636,15 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .setDeleteRetentionPolicy(retentionPolicy)
                 .setStaticWebsite(website);
 
-            StepVerifier.create(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties))
+            StepVerifier.create(setInitialProperties()
+                .then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties)))
                 .assertNext(r -> {
                     assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
                     assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
                 })
                 .verifyComplete();
 
-            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-            sleepIfRunningAgainstService(30 * 1000);
-
-
-            StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(30)).then(primaryBlobServiceAsyncClient.getProperties()))
                 .assertNext(r -> validatePropsSet(sentProperties, r))
                 .verifyComplete();
         } finally {
@@ -642,8 +656,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsMin() {
-        setInitialProperties();
-
         try {
             BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
             BlobAnalyticsLogging logging =
@@ -678,8 +690,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .setDeleteRetentionPolicy(retentionPolicy)
                 .setStaticWebsite(website);
 
-            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties),
-                202);
+            assertAsyncResponseStatusCode(setInitialProperties().
+                then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties)), 202);
         } finally {
             resetProperties();
         }
@@ -688,11 +700,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsCorsCheck() {
-        setInitialProperties();
-
         try {
-            BlobServiceProperties serviceProperties = primaryBlobServiceAsyncClient.getProperties().block();
-
             // Some properties are not set and this test validates that they are not null when sent to the service
             BlobCorsRule rule = new BlobCorsRule()
                 .setAllowedOrigins("microsoft.com")
@@ -700,9 +708,14 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .setAllowedMethods("GET")
                 .setAllowedHeaders("x-ms-version");
 
-            serviceProperties.setCors(Collections.singletonList(rule));
-            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProperties),
-                202);
+            Mono<Response<Void>> response = setInitialProperties()
+                .then(primaryBlobServiceAsyncClient.getProperties())
+                .flatMap(r -> {
+                    r.setCors(Collections.singletonList(rule));
+                    return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r);
+                });
+
+            assertAsyncResponseStatusCode(response, 202);
         } finally {
             resetProperties();
         }
@@ -712,20 +725,20 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsStaticWebsite() {
-        setInitialProperties();
-
         try {
-            BlobServiceProperties serviceProperties = primaryBlobServiceAsyncClient.getProperties().block();
             String errorDocument404Path = "error/404.html";
             String defaultIndexDocumentPath = "index.html";
 
-            serviceProperties.setStaticWebsite(new StaticWebsite()
-                .setEnabled(true)
-                .setErrorDocument404Path(errorDocument404Path)
-                .setDefaultIndexDocumentPath(defaultIndexDocumentPath));
+            Mono<Response<Void>> response = setInitialProperties().then(primaryBlobServiceAsyncClient.getProperties())
+                .flatMap(r -> {
+                    r.setStaticWebsite(new StaticWebsite()
+                        .setEnabled(true)
+                        .setErrorDocument404Path(errorDocument404Path)
+                        .setDefaultIndexDocumentPath(defaultIndexDocumentPath));
+                    return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r);
+                });
 
-            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProperties),
-                202);
+            assertAsyncResponseStatusCode(response, 202);
 
             StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())
                 .assertNext(r -> {
@@ -757,11 +770,9 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void getPropsMin() {
-        setInitialProperties();
-
         try {
-            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.getPropertiesWithResponse(),
-                200);
+            assertAsyncResponseStatusCode(setInitialProperties()
+                .then(primaryBlobServiceAsyncClient.getPropertiesWithResponse()), 200);
         } finally {
             resetProperties();
         }
