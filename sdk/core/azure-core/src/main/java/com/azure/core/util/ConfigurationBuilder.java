@@ -117,6 +117,7 @@ public final class ConfigurationBuilder {
         Objects.requireNonNull(value, "'value' cannot be null.");
 
         mutableSource.put(name, value);
+        environmentConfiguration.put(name, value);
         sharedConfiguration = null;
         return this;
     }

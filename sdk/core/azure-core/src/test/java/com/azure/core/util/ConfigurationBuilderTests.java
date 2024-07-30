@@ -70,8 +70,9 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void emptySourceAddProperty() {
-        ConfigurationBuilder builder = new ConfigurationBuilder().putProperty("foo", "bar");
+        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, EMPTY_SOURCE).putProperty("foo", "bar");
         assertEquals("bar", builder.build().get(FOO_PROPERTY));
+        assertEquals("bar", builder.build().get("foo"));
     }
 
     @Test
@@ -84,15 +85,19 @@ public class ConfigurationBuilderTests {
 
         builder.putProperty("az.foo2", "az.bar2");
         assertEquals("az.bar2", builder.buildSection("az").get(property2));
+        assertEquals("az.bar2", builder.buildSection("az").get("az.foo2"));
+
         assertEquals("az.bar2", builder.root("az").build().get(property2));
+        assertEquals("az.bar2", builder.root("az").build().get("az.foo2"));
     }
 
     @Test
     public void sourceAddPropertyBuildSection() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo1", "bar1"))
+        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo1", "bar1"), EMPTY_SOURCE, EMPTY_SOURCE)
             .putProperty("az.foo2", "bar2");
         assertEquals("bar1", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo1").build()));
         assertEquals("bar2", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo2").build()));
+        assertEquals("bar2", builder.buildSection("az").get("az.foo2"));
     }
 
     @Test
@@ -100,6 +105,15 @@ public class ConfigurationBuilderTests {
         ConfigurationBuilder builder
             = new ConfigurationBuilder(new TestConfigurationSource().put("foo", "bar1")).putProperty("foo", "bar2");
         assertEquals("bar2", builder.build().get(FOO_PROPERTY));
+        assertEquals("bar2", builder.build().get("foo"));
+    }
+
+    @Test
+    public void sourceAddPropertySameSysPropertyName() {
+        ConfigurationBuilder builder = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource().put("foo", "bar1"), EMPTY_SOURCE)
+            .putProperty("foo", "bar2");
+        assertEquals("bar2", builder.build().get(FOO_PROPERTY));
+        assertEquals("bar2", builder.build().get("foo"));
     }
 
     @Test
