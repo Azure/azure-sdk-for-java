@@ -177,6 +177,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName AUTHORIZATION = fromString("Authorization");
 
     /**
+     * {@code Azure-AsyncOperation}/{@code azure-azyncoperation}
+     */
+    public static final HttpHeaderName AZURE_ASYNCOPERATION = fromString("Azure-AsyncOperation");
+
+    /**
      * {@code Cache-Control}/{@code cache-control}
      */
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
@@ -367,6 +372,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName RETRY_AFTER = fromString("Retry-After");
 
     /**
+     * {@code retry-after-ms}
+     */
+    public static final HttpHeaderName RETRY_AFTER_MS = fromString("retry-after-ms");
+
+    /**
      * {@code Server}/{@code server}
      */
     public static final HttpHeaderName SERVER = fromString("Server");
@@ -429,15 +439,30 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     /**
      * {@code x-ms-client-request-id}
      */
+    public static final HttpHeaderName X_MS_CLIENT_ID = fromString("x-ms-client-id");
+
+    /**
+     * {@code x-ms-client-request-id}
+     */
     public static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
+
+    /**
+     * {@code x-ms-date}
+     */
+    public static final HttpHeaderName X_MS_DATE = fromString("x-ms-date");
 
     /**
      * {@code x-ms-request-id}
      */
-    public static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    public static final HttpHeaderName X_MS_REQUEST_ID = fromString("x-ms-request-id");
+
+    /**
+     * {@code x-ms-retry-after-ms}
+     */
+    public static final HttpHeaderName X_MS_RETRY_AFTER_MS = fromString("x-ms-retry-after-ms");
 
     /**
      * {@code traceparent}
      */
-    public static final HttpHeaderName TRACEPARENT = HttpHeaderName.fromString("traceparent");
+    public static final HttpHeaderName TRACEPARENT = fromString("traceparent");
 }
