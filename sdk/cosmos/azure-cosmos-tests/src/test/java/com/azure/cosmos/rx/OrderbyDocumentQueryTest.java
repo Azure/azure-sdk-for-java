@@ -10,27 +10,15 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializerNoExceptionWrapping;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.ResourceValidator;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
@@ -64,6 +52,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private CosmosAsyncClient client;
     private CosmosAsyncContainer createdCollection;
+    private CosmosAsyncContainer roundTripsContainer;
     private CosmosAsyncDatabase createdDatabase;
     private List<InternalObjectNode> createdDocuments = new ArrayList<>();
 
@@ -157,6 +146,25 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .build();
 
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
+    }
+
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    public void queryOrderByRoundTrips() {
+        String query = "SELECT c.v FROM c where c.type='testing' order by c.v asc";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        int pageSize = 5;
+        CosmosPagedFlux<RoundTripDocument> queryObservable = roundTripsContainer.queryItems(query, options, RoundTripDocument.class);
+        FeedResponse<RoundTripDocument> feedResponse = queryObservable.byPage(pageSize).elementAt(0).block();
+        for (RoundTripDocument roundTripDocument : feedResponse.getResults()) {
+            assertThat(roundTripDocument.v).isEqualTo(3);
+        }
+        Map<String, QueryMetrics> queryMetricsMap = ModelBridgeInternal.queryMetricsMap(feedResponse);
+        List<QueryMetrics> queryMetrics = new ArrayList<>(queryMetricsMap.values());
+        for (QueryMetrics queryMetric : queryMetrics) {
+            assertThat(queryMetric.getRetrievedDocumentCount()).isLessThanOrEqualTo(10);
+        }
+
     }
 
     @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
@@ -636,6 +644,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
+        roundTripsContainer = getSharedMultiPartitionCosmosContainer(client);
+        setupRoundTripContainer(roundTripsContainer);
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();
         Map<String, Object> props;
@@ -712,6 +722,53 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         updateCollectionIndex();
+    }
+
+    private void setupRoundTripContainer(CosmosAsyncContainer roundTripsContainer) {
+        String pk = "pk1";
+        for (int i = 0; i < 15; i++) {
+            RoundTripDocument doc;
+            if (i < 13) {
+                 doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 3);
+            } else if (i == 13) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 4);
+            } else {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 5);
+            }
+            roundTripsContainer.createItem(doc).block();
+        }
+        pk = "pk2";
+        for (int i = 0; i < 10; i++) {
+            RoundTripDocument doc;
+            if (i < 1) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 4);
+            } else if (i < 3) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 5);
+            } else if (i < 8) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 6);
+            } else if (i < 9) {
+               doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 7);
+            } else {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 8);
+            }
+            roundTripsContainer.createItem(doc).block();
+        }
+        pk = "pk3";
+        for (int i = 0; i < 11; i++) {
+            RoundTripDocument doc;
+            if (i < 2) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 4);
+            } else if (i < 5){
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 5);
+            } else if (i < 7) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 6);
+            } else if (i < 9) {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 7);
+            } else {
+                doc = new RoundTripDocument(UUID.randomUUID().toString(), pk, "testing", 8);
+            }
+            roundTripsContainer.createItem(doc).block();
+        }
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
@@ -872,4 +929,31 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             throw new IllegalStateException(e);
 		}
 	}
+
+    static class RoundTripDocument {
+        @JsonProperty("id")
+        String id;
+        @JsonProperty("mypk")
+        String pk;
+        @JsonProperty("type")
+        String type;
+        @JsonProperty("v")
+        int v;
+
+
+        public RoundTripDocument(String id, String pk, String type, int v) {
+            this.id = id;
+            this.pk = pk;
+            this.type = type;
+            this.v = v;
+        }
+
+        public RoundTripDocument() {
+        }
+
+        public String getId() {
+            return id;
+        }
+
+    }
 }
