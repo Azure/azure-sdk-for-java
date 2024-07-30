@@ -137,8 +137,7 @@ public class ShareSasImplUtil {
      * @return The string to sign that will be used to generate the signature for the SAS URL.
      * @deprecated For debugging purposes only.
      */
-    @Deprecated
-    public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+   public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         ensureState();
 

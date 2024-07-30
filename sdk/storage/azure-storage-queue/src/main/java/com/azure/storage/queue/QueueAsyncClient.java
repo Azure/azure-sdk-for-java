@@ -1503,8 +1503,7 @@ public final class QueueAsyncClient {
      * @return The string to sign that will be used to generate the signature for the SAS URL.
      * @deprecated For debugging purposes only.
      */
-    @Deprecated
-    public String generateSasStringToSign(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
+   public String generateSasStringToSign(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
             .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }

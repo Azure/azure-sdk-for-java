@@ -195,8 +195,7 @@ public class BlobSasImplUtil {
      * @return The string to sign that will be used to generate the signature for the SAS URL.
      * @deprecated For debugging purposes only.
      */
-    @Deprecated
-    public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+   public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         ensureState();
 
@@ -214,8 +213,7 @@ public class BlobSasImplUtil {
      * @return The string to sign that will be used to generate the signature for the SAS URL.
      * @deprecated For debugging purposes only.
      */
-    @Deprecated
-    public String generateUserDelegationSasStringToSign(UserDelegationKey delegationKey, String accountName, Context context) {
+   public String generateUserDelegationSasStringToSign(UserDelegationKey delegationKey, String accountName, Context context) {
         StorageImplUtils.assertNotNull("delegationKey", delegationKey);
         StorageImplUtils.assertNotNull("accountName", accountName);
         ensureState();

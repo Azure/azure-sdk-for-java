@@ -2030,8 +2030,7 @@ public class BlobClientBase {
      * @return The string to sign that will be used to generate the signature for the SAS URL.
      * @deprecated For debugging purposes only.
      */
-    @Deprecated
-    public String generateUserDelegationSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+   public String generateUserDelegationSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
                                                         UserDelegationKey userDelegationKey, String accountName, Context context) {
         return this.client.generateUserDelegationSasStringToSign(blobServiceSasSignatureValues, userDelegationKey, accountName,
             context);
@@ -2047,8 +2046,7 @@ public class BlobClientBase {
      * @return The string to sign that will be used to generate the signature for the SAS URL.
      * @deprecated For debugging purposes only.
      */
-    @Deprecated
-    public String generateSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
+   public String generateSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return this.client.generateSasStringToSign(blobServiceSasSignatureValues, context);
     }
 
