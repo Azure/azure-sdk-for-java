@@ -20,4 +20,5 @@ module com.azure.security.keyvault.jca {
     requires java.logging;
 
     exports com.azure.security.keyvault.jca;
+    provides java.security.Provider with com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 }
