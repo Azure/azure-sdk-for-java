@@ -114,22 +114,17 @@ public class ClosedClientTests extends TestSuiteBase {
 
             CosmosException cosmosException = Utils.as(ex, CosmosException.class);
 
-            // todo: evaluate whether ClosedClientTransportException can be wrapped in a CosmosException for write operations
-            if (cosmosException == null) {
-                assertThat(ex instanceof ClosedClientTransportException).isTrue();
-            } else {
-                assertThat(cosmosException).isNotNull();
-                assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
-                assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_RESULT);
-                assertThat(cosmosException.getCause() instanceof ClosedClientTransportException).isTrue();
+            assertThat(cosmosException).isNotNull();
+            assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+            assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_RESULT);
+            assertThat(cosmosException.getCause() instanceof ClosedClientTransportException).isTrue();
 
-                CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
-                assertThat(diagnostics).isNotNull();
+            CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+            assertThat(diagnostics).isNotNull();
 
-                CosmosDiagnosticsContext diagnosticsContext = diagnostics.getDiagnosticsContext();
-                assertThat(diagnosticsContext).isNotNull();
-                assertThat(diagnosticsContext.getRetryCount()).isLessThanOrEqualTo(1);
-            }
+            CosmosDiagnosticsContext diagnosticsContext = diagnostics.getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getRetryCount()).isLessThanOrEqualTo(1);
         }
     }
 
