@@ -856,7 +856,7 @@
 /common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay
 
 # PRLabel: %common
-/.vscode/                                            @alzimmermsft
+/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                    @alzimmermsft @srnagar
@@ -885,7 +885,7 @@
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
-/.github/CODEOWNERS                                  @alzimmermsft @srnagar @Azure/azure-sdk-eng
+/.github/CODEOWNERS                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
 /.github/workflows/                                  @Azure/azure-sdk-eng
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
