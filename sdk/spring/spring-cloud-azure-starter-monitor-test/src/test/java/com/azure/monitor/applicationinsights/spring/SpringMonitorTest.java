@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure;
+package com.azure.monitor.applicationinsights.spring;
 
+import com.azure.Application;
+import com.azure.Controller;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.monitor.applicationinsights.spring.OpenTelemetryVersionCheckRunner;
 import com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagnosticsLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.common.internal.OtelVersion;
