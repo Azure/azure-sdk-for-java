@@ -60,7 +60,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void getMetadata() {
         // Arrange
-        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+        final ConnectionStringProperties connectionProperties = TestUtils.getConnectionStringProperties();
 
         // Act
         final EventHubProperties properties = client.getProperties();
@@ -80,7 +80,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void getPartitionProperties() {
         // Arrange
-        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+        final ConnectionStringProperties connectionProperties = TestUtils.getConnectionStringProperties();
         final EventHubProperties properties = client.getProperties();
         final Optional<String> firstPartition = properties.getPartitionIds().stream().findFirst();
 

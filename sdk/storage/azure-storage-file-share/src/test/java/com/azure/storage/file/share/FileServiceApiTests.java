@@ -427,10 +427,15 @@ public class FileServiceApiTests extends FileShareTestBase {
         options.setProtocols(protocols);
         options.setSnapshotVirtualDirectoryAccessEnabled(true);
 
-        ShareClient shareClient = premiumFileServiceClient.getShareClient(generateShareName());
+        String shareName = generateShareName();
+
+        ShareClient shareClient = premiumFileServiceClient.getShareClient(shareName);
         shareClient.createWithResponse(options, null, null);
 
-        ShareItem share = premiumFileServiceClient.listShares().iterator().next();
+        Stream<ShareItem> shares = premiumFileServiceClient.listShares().stream();
+
+        ShareItem share = shares.filter(r -> r.getName().equals(shareName)).findFirst().get();
+
         assertEquals(protocols.toString(), share.getProperties().getProtocols().toString());
         assertTrue(share.getProperties().isSnapshotVirtualDirectoryAccessEnabled());
     }

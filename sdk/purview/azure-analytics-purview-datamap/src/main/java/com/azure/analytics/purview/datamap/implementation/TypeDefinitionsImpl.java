@@ -384,7 +384,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchCreate(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/types/typedefs")
@@ -394,7 +394,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchCreateSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/types/typedefs")
@@ -404,7 +404,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchUpdate(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/types/typedefs")
@@ -414,7 +414,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchUpdateSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedefs")
@@ -424,7 +424,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> batchDelete(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasTypesDef, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 204 })
@@ -433,7 +433,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> batchDeleteSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasTypesDef, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
         @ExpectedResponses({ 200 })
@@ -4971,7 +4971,7 @@ public final class TypeDefinitionsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4980,11 +4980,10 @@ public final class TypeDefinitionsImpl {
      * @return the definitions of types along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchCreateWithResponseAsync(BinaryData atlasTypesDef,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> batchCreateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.batchCreate(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, context));
+            context -> service.batchCreate(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -5555,7 +5554,7 @@ public final class TypeDefinitionsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5564,9 +5563,9 @@ public final class TypeDefinitionsImpl {
      * @return the definitions of types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+    public Response<BinaryData> batchCreateWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.batchCreateSync(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, Context.NONE);
+        return service.batchCreateSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -6138,7 +6137,7 @@ public final class TypeDefinitionsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6147,11 +6146,10 @@ public final class TypeDefinitionsImpl {
      * @return the definitions of types along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchUpdateWithResponseAsync(BinaryData atlasTypesDef,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> batchUpdateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.batchUpdate(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, context));
+            context -> service.batchUpdate(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -6723,7 +6721,7 @@ public final class TypeDefinitionsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6732,9 +6730,9 @@ public final class TypeDefinitionsImpl {
      * @return the definitions of types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+    public Response<BinaryData> batchUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.batchUpdateSync(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, Context.NONE);
+        return service.batchUpdateSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -7022,7 +7020,7 @@ public final class TypeDefinitionsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7031,10 +7029,10 @@ public final class TypeDefinitionsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> batchDeleteWithResponseAsync(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+    public Mono<Response<Void>> batchDeleteWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.batchDelete(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, context));
+            context -> service.batchDelete(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -7322,7 +7320,7 @@ public final class TypeDefinitionsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7331,9 +7329,9 @@ public final class TypeDefinitionsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+    public Response<Void> batchDeleteWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.batchDeleteSync(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, Context.NONE);
+        return service.batchDeleteSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**

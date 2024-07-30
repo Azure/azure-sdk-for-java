@@ -19,6 +19,7 @@ The Azure Monitor Query client library is used to execute read-only queries agai
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - An [Azure subscription][azure_subscription]
 - A [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementation, such as an [Azure Identity library credential type](https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#credential-classes).
 - To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal] or an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
@@ -65,7 +66,7 @@ If you want to take dependency on a particular version of the library that isn't
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -86,7 +87,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -137,7 +138,8 @@ MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
 
 #### Configure client for Azure sovereign cloud
 
-By default, `LogQueryClient` and `MetricQueryClient` are configured to connect to the Azure Public Cloud. To use a sovereign cloud instead, set the correct `endpoint` in the client builders. For example:
+By default, `LogsQueryClient`, `MetricsQueryClient` and `MetricsClient` are configured to connect to the Azure Public Cloud. To use a sovereign cloud instead, set the correct endpoint in the client builders.  
+Additionally, for creating a `MetricsClient` instance, the audience should also be set in `MetricsClientBuilder` as shown in the sample below.
 
 - Creating a `LogsQueryClient` for Azure China Cloud:
 
@@ -156,6 +158,16 @@ By default, `LogQueryClient` and `MetricQueryClient` are configured to connect t
         .endpoint("https://management.chinacloudapi.cn")
         .buildClient();
     ```
+
+- Creating a `MetricsClient` for Azure China Cloud:
+
+    ```java readme-sample-createMetricsClientWithSovereignCloud
+    MetricsClient metricsClient = new MetricsClientBuilder()
+        .endpoint("<endpoint>")
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .audience(MetricsAudience.AZURE_CHINA)
+        .buildClient();
+    ```  
 
 ### Execute the query
 

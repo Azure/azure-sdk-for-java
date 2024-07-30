@@ -24,8 +24,11 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -34,6 +37,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosChangeFeedRequestOptions {
    private final CosmosChangeFeedRequestOptionsImpl actualRequestOptions;
+   private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
        this.actualRequestOptions  = new CosmosChangeFeedRequestOptionsImpl(topBeCloned.actualRequestOptions);
@@ -518,6 +522,30 @@ public final class CosmosChangeFeedRequestOptions {
         return this.actualRequestOptions.getHeaders();
     }
 
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosChangeFeedRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
+        } else {
+            this.actualRequestOptions.setKeywordIdentifiers(EMPTY_KEYWORD_IDENTIFIERS);
+        }
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
+    }
+
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.actualRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
     }
@@ -534,6 +562,22 @@ public final class CosmosChangeFeedRequestOptions {
 
     CosmosChangeFeedRequestOptionsImpl getImpl() {
         return this.actualRequestOptions;
+    }
+
+    String getCollectionRid() {
+        return this.actualRequestOptions.getCollectionRid();
+    }
+
+    void setCollectionRid(String collectionRid) {
+        this.actualRequestOptions.setCollectionRid(collectionRid);
+    }
+
+    PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.actualRequestOptions.getPartitionKeyDefinition();
+    }
+
+    void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -594,6 +638,26 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned) {
                     return new CosmosChangeFeedRequestOptions(toBeCloned);
+                }
+
+                @Override
+                public String getCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getCollectionRid();
+                }
+
+                @Override
+                public void setCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String collectionRid) {
+                    changeFeedRequestOptions.setCollectionRid(collectionRid);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition) {
+                    changeFeedRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
             });
     }

@@ -618,6 +618,10 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
+        if (this.requestOptions != null && this.requestOptions.getKeywordIdentifiers() != null) {
+            ctxNode.put("keywordIdentifiers", String.join(",", this.requestOptions.getKeywordIdentifiers()));
+        }
+
         if (this.maxItemCount != null) {
             ctxNode.put("maxItems", this.maxItemCount);
         }
@@ -913,6 +917,15 @@ public final class CosmosDiagnosticsContext {
 
             return snapshot;
         }
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.requestOptions.getKeywordIdentifiers();
     }
 
     OverridableRequestOptions getRequestOptions() {

@@ -88,8 +88,9 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
      */
     public void validate() {
         if (domainNameLabel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property domainNameLabel in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainNameLabel in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
         }
     }
 

@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineRunCommandInner;
-import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in MachineRunCommandsClient.
@@ -83,72 +82,6 @@ public interface MachineRunCommandsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     MachineRunCommandInner createOrUpdate(String resourceGroupName, String machineName, String runCommandName,
         MachineRunCommandInner runCommandProperties, Context context);
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginUpdate(String resourceGroupName,
-        String machineName, String runCommandName, MachineRunCommandUpdate runCommandProperties);
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginUpdate(String resourceGroupName,
-        String machineName, String runCommandName, MachineRunCommandUpdate runCommandProperties, Context context);
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MachineRunCommandInner update(String resourceGroupName, String machineName, String runCommandName,
-        MachineRunCommandUpdate runCommandProperties);
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MachineRunCommandInner update(String resourceGroupName, String machineName, String runCommandName,
-        MachineRunCommandUpdate runCommandProperties, Context context);
 
     /**
      * The operation to delete a run command.

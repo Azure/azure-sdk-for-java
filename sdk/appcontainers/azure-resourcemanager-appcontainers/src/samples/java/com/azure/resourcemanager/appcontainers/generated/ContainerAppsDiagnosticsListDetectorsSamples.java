@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ContainerAppsDiagnosticsListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ContainerAppsDiagnostics_List.json
      */
     /**
@@ -19,7 +19,7 @@ public final class ContainerAppsDiagnosticsListDetectorsSamples {
      */
     public static void getTheListOfAvailableDiagnosticsForAGivenContainerApp(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsDiagnostics().listDetectors("mikono-workerapp-test-rg", "mikono-capp-stage1",
-            com.azure.core.util.Context.NONE);
+        manager.containerAppsDiagnostics()
+            .listDetectors("mikono-workerapp-test-rg", "mikono-capp-stage1", com.azure.core.util.Context.NONE);
     }
 }

@@ -1488,7 +1488,7 @@ public class CosmosAsyncContainer {
 
         CosmosReadManyRequestOptions options = new CosmosReadManyRequestOptions();
 
-        if (!StringUtils.isNotEmpty(sessionToken)) {
+        if (StringUtils.isNotEmpty(sessionToken)) {
             options = options.setSessionToken(sessionToken);
         }
 
@@ -1526,6 +1526,15 @@ public class CosmosAsyncContainer {
         CosmosReadManyRequestOptions requestOptions,
         Class<T> classType) {
 
+        return withContext(context -> this.readManyInternal(itemIdentityList, requestOptions, classType, context));
+    }
+
+    private <T> Mono<FeedResponse<T>> readManyInternal(
+        List<CosmosItemIdentity> itemIdentityList,
+        CosmosReadManyRequestOptions requestOptions,
+        Class<T> classType,
+        Context context) {
+
         CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
             ? new CosmosQueryRequestOptions()
             : queryOptionsAccessor.clone(readManyOptionsAccessor.getImpl(requestOptions));
@@ -1539,7 +1548,7 @@ public class CosmosAsyncContainer {
         fluxOptions.setMaxItemCount(itemIdentityList != null ? itemIdentityList.size() : 0);
         QueryFeedOperationState state = new QueryFeedOperationState(
             client,
-            this.readAllItemsSpanName,
+            this.readManyItemsSpanName,
             database.getId(),
             this.getId(),
             ResourceType.Document,
@@ -1549,9 +1558,21 @@ public class CosmosAsyncContainer {
             fluxOptions
         );
 
-        return CosmosBridgeInternal
+        Mono<FeedResponse<T>> responseMono = CosmosBridgeInternal
             .getAsyncDocumentClient(this.getDatabase())
             .readMany(itemIdentityList, BridgeInternal.getLink(this), state, classType);
+
+        RequestOptions options = queryOptionsAccessor.toRequestOptions(queryRequestOptions);
+
+        return client
+            .getDiagnosticsProvider()
+            .traceEnabledReadManyResponsePublisher(
+                itemIdentityList,
+                state,
+                responseMono,
+                client,
+                options,
+                context);
     }
 
     /**

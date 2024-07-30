@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -56,13 +57,6 @@ public interface LicenseProfileMachineInstanceView {
     LicenseProfileProductType productType();
 
     /**
-     * Gets the billingStartDate property: The timestamp in UTC when the billing starts.
-     * 
-     * @return the billingStartDate value.
-     */
-    OffsetDateTime billingStartDate();
-
-    /**
      * Gets the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
      * 
      * @return the enrollmentDate value.
@@ -70,11 +64,32 @@ public interface LicenseProfileMachineInstanceView {
     OffsetDateTime enrollmentDate();
 
     /**
+     * Gets the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    OffsetDateTime billingStartDate();
+
+    /**
      * Gets the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
      * 
      * @return the disenrollmentDate value.
      */
     OffsetDateTime disenrollmentDate();
+
+    /**
+     * Gets the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    OffsetDateTime billingEndDate();
+
+    /**
+     * Gets the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    ManagementError error();
 
     /**
      * Gets the productFeatures property: The list of product features.

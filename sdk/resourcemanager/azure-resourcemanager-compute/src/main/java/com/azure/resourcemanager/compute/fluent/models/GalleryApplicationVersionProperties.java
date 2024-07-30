@@ -30,8 +30,6 @@ public final class GalleryApplicationVersionProperties {
     private GalleryApplicationVersionSafetyProfile safetyProfile;
 
     /*
-     * The current state of the gallery or gallery artifact.
-     * 
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -91,9 +89,7 @@ public final class GalleryApplicationVersionProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     * 
-     * The provisioning state, which only appears in the response.
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */
@@ -117,8 +113,9 @@ public final class GalleryApplicationVersionProperties {
      */
     public void validate() {
         if (publishingProfile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publishingProfile in model GalleryApplicationVersionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publishingProfile in model GalleryApplicationVersionProperties"));
         } else {
             publishingProfile().validate();
         }

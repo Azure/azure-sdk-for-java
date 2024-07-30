@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -86,6 +87,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     }
                 }
 
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
                 return this.createDocumentServiceRequestWithFeedRange(headers, querySpecForInit, partitionKeyInternal, feedRange,
                                                          collection.getResourceId(), cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
@@ -106,7 +109,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     createRequestFunc,
                     executeFunc,
                     () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext),
-                    targetRange);
+                    targetRange,
+                    collection.getSelfLink());
 
             documentProducers.add(dp);
         }
@@ -122,7 +126,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                                                                   Function<RxDocumentServiceRequest,
                                                                   Mono<FeedResponse<T>>> executeFunc,
                                                                   Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
-                                                                  FeedRangeEpkImpl feedRange);
+                                                                  FeedRangeEpkImpl feedRange,
+                                                                  String collectionLink);
 
     @Override
     abstract public Flux<FeedResponse<T>> drainAsync(int maxPageSize);
@@ -138,7 +143,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
     protected void initializeReadMany(
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String collectionRid) {
+        DocumentCollection collection) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
         for (Map.Entry<PartitionKeyRange, SqlQuerySpec> entry : rangeQueryMap.entrySet()) {
@@ -152,11 +157,13 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
                 return this.createDocumentServiceRequestWithFeedRange(headers,
                     querySpec,
                     null,
                     partitionKeyRange,
-                    collectionRid,
+                    collection.getResourceId(),
                     cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
@@ -166,7 +173,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
 
             DocumentProducer<T> dp =
                 createDocumentProducer(
-                    collectionRid,
+                    collection.getResourceId(),
                     null,
                     -1,
                     cosmosQueryRequestOptions,
@@ -175,7 +182,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     createRequestFunc,
                     executeFunc,
                     () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext),
-                    feedRangeEpk);
+                    feedRangeEpk,
+                    collection.getSelfLink());
 
             documentProducers.add(dp);
         }

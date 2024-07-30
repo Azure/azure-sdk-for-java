@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Result of the list of all private endpoint connections operation. */
+/**
+ * Result of the list of all private endpoint connections operation.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
-
     /*
      * A collection of private endpoint connection resources.
      */
@@ -27,6 +26,12 @@ public final class PrivateEndpointConnectionListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResult class.
+     */
+    public PrivateEndpointConnectionListResult() {
+    }
 
     /**
      * Get the value property: A collection of private endpoint connection resources.

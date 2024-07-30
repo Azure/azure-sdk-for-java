@@ -26,16 +26,21 @@ public final class VirtualMachineExtensionsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateVMExtension(com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().update("myResourceGroup",
-            "myVM", "myVMExtension",
-            new VirtualMachineExtensionUpdate().withPublisher("extPublisher").withType("extType")
-                .withTypeHandlerVersion("1.2").withAutoUpgradeMinorVersion(true)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .update("myResourceGroup", "myVM", "myVMExtension", new VirtualMachineExtensionUpdate()
+                .withPublisher("extPublisher")
+                .withType("extType")
+                .withTypeHandlerVersion("1.2")
+                .withAutoUpgradeMinorVersion(true)
                 .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
                     .deserialize("{\"UserName\":\"xyz@microsoft.com\"}", Object.class, SerializerEncoding.JSON))
                 .withSuppressFailures(true)
                 .withProtectedSettingsFromKeyVault(new KeyVaultSecretReference().withSecretUrl("fakeTokenPlaceholder")
                     .withSourceVault(new SubResource().withId(
                         "/subscriptions/a53f7094-a16c-47af-abe4-b05c05d0d79a/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kvName"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,6 +4,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
@@ -13,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,6 +29,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 abstract class Fetcher<T> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
     private final OperationContextAndListenerTuple operationContext;
@@ -33,6 +42,8 @@ abstract class Fetcher<T> {
     private final AtomicInteger maxItemCount;
     private final AtomicInteger top;
     private final List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker;
+    private final GlobalEndpointManager globalEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -40,7 +51,9 @@ abstract class Fetcher<T> {
         int top,
         int maxItemCount,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
@@ -64,6 +77,8 @@ abstract class Fetcher<T> {
         }
         this.shouldFetchMore = new AtomicBoolean(true);
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+        this.globalEndpointManager = globalEndpointManager;
+        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
     }
 
     public final boolean shouldFetchMore() {
@@ -154,7 +169,22 @@ abstract class Fetcher<T> {
                 updateState(rsp, request);
                 return rsp;
             })
-            .doOnNext(response -> completed.set(true))
+            .doOnNext(response -> {
+                completed.set(true);
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+
+                    checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
+
+                    checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
+
+                    if (!feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+                        this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+                        feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
+                    }
+                }
+            })
             .doOnError(throwable -> completed.set(true))
             .doFinally(signalType -> {
                 // If the signal type is not cancel(which means success or error), we do not need to tracking the diagnostics here
@@ -169,9 +199,31 @@ abstract class Fetcher<T> {
                     return;
                 }
 
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+
+                    checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
+
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
+                    checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
+
+                    if (!feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+                        if (this.globalEndpointManager != null) {
+                            this.handleCancellationExceptionForPartitionKeyRange(request);
+                        }
+                    }
+                }
+
                 if (request.requestContext != null && request.requestContext.cosmosDiagnostics != null) {
                     this.cancelledRequestDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
                 }
             });
+    }
+
+    private void handleCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
+        URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
+
+        if (firstContactedLocationEndpoint != null) {
+            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+        }
     }
 }

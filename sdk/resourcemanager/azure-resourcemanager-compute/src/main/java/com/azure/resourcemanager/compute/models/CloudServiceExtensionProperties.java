@@ -138,9 +138,9 @@ public final class CloudServiceExtensionProperties {
      * Get the typeHandlerVersion property: Specifies the version of the extension. Specifies the version of the
      * extension. If this element is not specified or an asterisk (*) is used as the value, the latest version of the
      * extension is used. If the value is specified with a major version number and an asterisk as the minor version
-     * number (X.), the latest minor version of the specified major version is selected. If a major version number and
-     * a minor version number are specified (X.Y), the specific extension version is selected. If a version is
-     * specified, an auto-upgrade is performed on the role instance.
+     * number (X.), the latest minor version of the specified major version is selected. If a major version number and a
+     * minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
+     * an auto-upgrade is performed on the role instance.
      * 
      * @return the typeHandlerVersion value.
      */
@@ -152,9 +152,9 @@ public final class CloudServiceExtensionProperties {
      * Set the typeHandlerVersion property: Specifies the version of the extension. Specifies the version of the
      * extension. If this element is not specified or an asterisk (*) is used as the value, the latest version of the
      * extension is used. If the value is specified with a major version number and an asterisk as the minor version
-     * number (X.), the latest minor version of the specified major version is selected. If a major version number and
-     * a minor version number are specified (X.Y), the specific extension version is selected. If a version is
-     * specified, an auto-upgrade is performed on the role instance.
+     * number (X.), the latest minor version of the specified major version is selected. If a major version number and a
+     * minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
+     * an auto-upgrade is performed on the role instance.
      * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the CloudServiceExtensionProperties object itself.

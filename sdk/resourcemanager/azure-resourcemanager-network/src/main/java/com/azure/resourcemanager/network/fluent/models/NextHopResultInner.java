@@ -26,7 +26,8 @@ public final class NextHopResultInner {
     private String nextHopIpAddress;
 
     /*
-     * The resource identifier for the route table associated with the route being returned. If the route being returned does not correspond to any user created routes then this field will be the string 'System Route'.
+     * The resource identifier for the route table associated with the route being returned. If the route being returned
+     * does not correspond to any user created routes then this field will be the string 'System Route'.
      */
     @JsonProperty(value = "routeTableId")
     private String routeTableId;

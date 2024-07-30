@@ -938,6 +938,10 @@ public class EventProcessorClientBuilder implements
             builder.credential(source.getCredentials());
         }
 
+        if (source.getConnectionStringProperties() != null) {
+            builder.setConnectionStringProperties(source.getConnectionStringProperties());
+        }
+
         if (!Objects.isNull(source.getCustomEndpointAddress())) {
             builder.customEndpointAddress(source.getCustomEndpointAddress().toString());
         }

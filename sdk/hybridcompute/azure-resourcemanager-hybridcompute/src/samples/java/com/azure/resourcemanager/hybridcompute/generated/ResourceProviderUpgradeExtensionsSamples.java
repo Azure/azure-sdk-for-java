@@ -14,7 +14,9 @@ import java.util.Map;
  */
 public final class ResourceProviderUpgradeExtensionsSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/extension/Extensions_Upgrade.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * extension/Extensions_Upgrade.json
      */
     /**
      * Sample code: Upgrade Machine Extensions.

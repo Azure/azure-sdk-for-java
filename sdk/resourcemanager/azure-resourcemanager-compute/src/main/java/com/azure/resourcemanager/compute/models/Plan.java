@@ -28,8 +28,8 @@ public final class Plan {
     private String publisher;
 
     /*
-     * Specifies the product of the image from the marketplace. This is the same value as Offer under the
-     * imageReference element.
+     * Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference
+     * element.
      */
     @JsonProperty(value = "product")
     private String product;

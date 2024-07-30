@@ -64,6 +64,9 @@ parameters:
   - name: oneESTemplateTag
     type: string
     default: release
+  - name: EnvVars
+    type: object
+    default: {}
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -116,6 +119,7 @@ extends:
                 - ${{ if eq(parameters.SDKType, 'data') }}:
                   - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
               PreBuildSteps: ${{ parameters.PreBuildSteps }}
+              EnvVars: ${{ parameters.EnvVars }}
               AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
               ${{ if eq(parameters.SDKType, 'data') }}:
                 TestGoals: 'verify'

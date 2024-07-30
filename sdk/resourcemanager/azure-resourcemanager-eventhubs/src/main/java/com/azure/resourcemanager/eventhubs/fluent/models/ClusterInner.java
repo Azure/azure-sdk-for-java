@@ -7,17 +7,17 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ClusterSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** Single Event Hubs Cluster resource in List or Get operations. */
+/**
+ * Single Event Hubs Cluster resource in List or Get operations.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * Properties of the cluster SKU.
      */
@@ -31,11 +31,16 @@ public final class ClusterInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Event Hubs Cluster properties supplied in responses in List or Get
-     * operations.
+     * Event Hubs Cluster properties supplied in responses in List or Get operations.
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
+    public ClusterInner() {
+    }
 
     /**
      * Get the sku property: Properties of the cluster SKU.
@@ -75,14 +80,18 @@ public final class ClusterInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -96,6 +105,15 @@ public final class ClusterInner extends Resource {
      */
     public String createdAt() {
         return this.innerProperties() == null ? null : this.innerProperties().createdAt();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Cluster.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -124,6 +142,29 @@ public final class ClusterInner extends Resource {
      */
     public String status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the supportsScaling property: A value that indicates whether Scaling is Supported.
+     *
+     * @return the supportsScaling value.
+     */
+    public Boolean supportsScaling() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportsScaling();
+    }
+
+    /**
+     * Set the supportsScaling property: A value that indicates whether Scaling is Supported.
+     *
+     * @param supportsScaling the supportsScaling value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withSupportsScaling(Boolean supportsScaling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withSupportsScaling(supportsScaling);
+        return this;
     }
 
     /**

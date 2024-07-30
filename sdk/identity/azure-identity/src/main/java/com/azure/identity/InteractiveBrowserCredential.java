@@ -22,16 +22,10 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
  * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
- * that enables users to sign in to applications and services using a web browser. This authentication method is
- * commonly used for web applications, where users enter their credentials directly into a web page.
- * With interactive browser authentication, the user navigates to a web application and is prompted to enter their
- * username and password credentials. The application then redirects the user to the Microsoft Entra ID sign-in page, where
- * they are prompted to enter their credentials again. After the user successfully authenticates, Microsoft Entra ID issues a
- * security token that the application can use to authorize the user's access to its resources.
- * The InteractiveBrowserCredential interactively authenticates a user and acquires a token with the default system
- * browser and offers a smooth authentication experience by letting a user use their own credentials to authenticate the
- * application. When authenticated, the oauth2 flow notifies the credential of the authentication code through the
- * reply URL. For more information refer to the
+ * that enables users to sign in to applications and services using a web browser.
+ * With interactive browser authentication, the user is directed to a sign-in webpage and is prompted to enter their
+ * credentials. After the user successfully authenticates, Microsoft Entra ID issues a
+ * security token that the application can use to authorize the user's access to its resources. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/interactivebrowsercredential/docs">interactive browser authentication
  * documentation</a>.</p>
 
@@ -44,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *     <li>Go to Microsoft Entra ID in Azure portal and find your app registration.</li>
  *     <li>Navigate to the Authentication section.</li>
  *     <li>Under Suggested Redirected URIs, check the URI that ends with /common/oauth2/nativeclient.</li>
- *     <li>Under Default Client Type, select yes for Treat application as a public client.</li>
+ *     <li>Under Authentication->Advanced settings, enable "Allow public client flows."</li>
  * </ol>
  *
  * <p>These steps will let the application authenticate, but it still won't have permission to log you into
@@ -186,7 +180,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Interactively authenticates a user via the default browser. This method will always generate a challenge to the
+     * user.
      *
      * @param request The details of the authentication request.
      *
@@ -203,7 +198,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Interactively authenticates a user via the default browser. This method will always generate a challenge to the
+     * user.
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via

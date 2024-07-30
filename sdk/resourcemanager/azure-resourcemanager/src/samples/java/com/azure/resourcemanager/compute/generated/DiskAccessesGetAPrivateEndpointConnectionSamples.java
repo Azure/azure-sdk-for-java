@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesGetAPrivateEndpointConnectionSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
      * DiskAccessPrivateEndpointConnection_Get.json
      */
     /**
@@ -20,7 +20,11 @@ public final class DiskAccessesGetAPrivateEndpointConnectionSamples {
      */
     public static void getInformationAboutAPrivateEndpointConnectionUnderADiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().getAPrivateEndpointConnectionWithResponse(
-            "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .getAPrivateEndpointConnectionWithResponse("myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -20,8 +20,12 @@ public final class VirtualMachineImagesListOffersSamples {
      */
     public static void
         virtualMachineImageListOffersMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listOffersWithResponse(
-            "aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listOffersWithResponse("aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +40,10 @@ public final class VirtualMachineImagesListOffersSamples {
      */
     public static void
         virtualMachineImageListOffersMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listOffersWithResponse("aaaaaaa",
-            "aaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listOffersWithResponse("aaaaaaa", "aaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

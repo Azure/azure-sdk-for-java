@@ -9,7 +9,8 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupVaultsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupVaults_Get.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupVaults_Get.json
      */
     /**
      * Sample code: BackupVaults_Get.
