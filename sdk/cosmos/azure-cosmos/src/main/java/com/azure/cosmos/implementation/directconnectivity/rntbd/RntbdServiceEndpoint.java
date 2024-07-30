@@ -539,7 +539,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            throw new ClosedClientTransportException(lenientFormat("%s is closed", this), new IllegalStateException());
+            throw new TransportException(lenientFormat("%s is closed", this), new IllegalStateException());
         }
     }
 
