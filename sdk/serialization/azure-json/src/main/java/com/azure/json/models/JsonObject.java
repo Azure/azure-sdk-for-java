@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON object type.
  */
-public class JsonObject extends JsonElement {
+public final class JsonObject extends JsonElement {
     private final Map<String, JsonElement> properties;
 
     /**
@@ -77,7 +77,7 @@ public class JsonObject extends JsonElement {
     }
 
     @Override
-    public final boolean isObject() {
+    public boolean isObject() {
         return true;
     }
 
@@ -135,31 +135,5 @@ public class JsonObject extends JsonElement {
     private static JsonElement nullCheck(JsonElement element) {
         return Objects.requireNonNull(element,
             "The JsonElement cannot be null. If null must be represented in JSON, use JsonNull.");
-    }
-
-    // Following methods are overridden as final to prevent subtypes from changing the behavior.
-    @Override
-    public final boolean isArray() {
-        return false;
-    }
-
-    @Override
-    public final boolean isBoolean() {
-        return false;
-    }
-
-    @Override
-    public final boolean isNull() {
-        return false;
-    }
-
-    @Override
-    public final boolean isNumber() {
-        return false;
-    }
-
-    @Override
-    public final boolean isString() {
-        return false;
     }
 }
