@@ -16,6 +16,8 @@ com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.17.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.17.2
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.17.2
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.17.2
+com.fasterxml.jackson.module:jackson-module-afterburner;2.17.2
+com.fasterxml.jackson.module:jackson-module-blackbird;2.17.2
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.17.2
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.17.2
 com.github.spotbugs:spotbugs;4.8.3
@@ -350,8 +352,6 @@ org.testcontainers:junit-jupiter;1.17.6
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.17.2
-cosmos_com.fasterxml.jackson.module:jackson-module-blackbird;2.17.2
 cosmos_com.google.guava:guava;33.0.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
@@ -363,6 +363,7 @@ cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos_org.codehaus.mojo:build-helper-maven-plugin;3.5.0
 cosmos_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.15.2
 cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.15.2
 cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
@@ -546,8 +547,10 @@ springboot3_org.testcontainers:testcontainers;1.19.8
 springboot3_org.testcontainers:junit-jupiter;1.19.8
 springboot3_org.testcontainers:azure;1.19.8
 
-# Libraries supporting Java 7
+# Java 7 support
 
+# Jackson dropped support for Java 7 with the release of 2.14.0.
+# Add custom Jackson dependencies for Track 1 libraries using Jackson.
 java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
 java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
 java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5

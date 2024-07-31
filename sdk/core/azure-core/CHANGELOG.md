@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where adding configuration properties with `ConfigurationBuilder.putProperty` did not work when retrieving 
+  them as system properties. ([#41362](https://github.com/Azure/azure-sdk-for-java/pull/41362))
+
 ### Other Changes
 
 ## 1.50.0 (2024-07-12)

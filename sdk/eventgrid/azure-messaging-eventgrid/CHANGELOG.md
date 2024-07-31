@@ -1,14 +1,20 @@
 # Release History
 
-## 4.23.0-beta.1 (Unreleased)
+## 4.23.0 (2024-07-30)
 
-### Features Added
+### Features added
 
-### Breaking Changes
+- New ACS Router events
+- Fix serialization bug in `AcsEmailDeliveryReportReceivedEventData` and `AcsEmailEngagementTrackingReportReceivedEventData`
 
-### Bugs Fixed
+## 4.22.4 (2024-07-26)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
 
 ## 4.22.3 (2024-06-27)
