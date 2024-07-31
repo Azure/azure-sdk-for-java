@@ -254,6 +254,7 @@ public final class AzureMonitorExporterBuilder {
     /**
      * Creates an {@link LiveMetricsSpanProcessor} based on the options set in the builder. This
      *  span processor is an implementation of OpenTelemetry {@link SpanExporter}.
+     * @param otelResource An OpenTelemetry resource.
      * @return An instance of {@link AzureMonitorTraceExporter}.
      */
     public SpanProcessor buildLiveMetricsSpanProcessor(Resource otelResource) {

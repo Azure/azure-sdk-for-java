@@ -162,10 +162,6 @@ public class AzureSpringMonitorAutoConfig {
 
     private Resource resource;
 
-    /**
-     *
-     * @return
-     */
     @Bean
     AutoConfigurationCustomizerProvider resourceCustomizer() {
         return customizer ->
@@ -175,10 +171,6 @@ public class AzureSpringMonitorAutoConfig {
                     return resource;});
     }
 
-    /**
-     *
-     * @return
-     */
     @Bean
     AutoConfigurationCustomizerProvider liveMetricsCustomizer() {
         return customizer ->
