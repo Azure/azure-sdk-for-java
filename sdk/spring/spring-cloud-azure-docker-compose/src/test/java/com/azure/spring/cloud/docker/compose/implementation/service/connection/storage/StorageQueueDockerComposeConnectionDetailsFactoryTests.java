@@ -35,7 +35,9 @@ class StorageQueueDockerComposeConnectionDetailsFactoryTests {
     }
 
     @Configuration
-    @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class})
+    @ImportAutoConfiguration(classes = {
+        AzureGlobalPropertiesAutoConfiguration.class,
+        AzureStorageQueueAutoConfiguration.class})
     static class Config {
     }
 

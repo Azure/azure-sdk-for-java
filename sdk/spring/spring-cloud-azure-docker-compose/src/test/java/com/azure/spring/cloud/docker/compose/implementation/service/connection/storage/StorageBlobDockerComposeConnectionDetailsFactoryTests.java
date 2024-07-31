@@ -42,7 +42,10 @@ class StorageBlobDockerComposeConnectionDetailsFactoryTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureStorageBlobAutoConfiguration.class, AzureStorageBlobResourceAutoConfiguration.class})
+    @ImportAutoConfiguration(classes = {
+        AzureGlobalPropertiesAutoConfiguration.class,
+        AzureStorageBlobAutoConfiguration.class,
+        AzureStorageBlobResourceAutoConfiguration.class})
     static class Config {
     }
 }
