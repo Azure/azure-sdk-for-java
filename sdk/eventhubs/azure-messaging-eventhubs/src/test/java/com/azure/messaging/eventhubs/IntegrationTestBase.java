@@ -158,9 +158,7 @@ public abstract class IntegrationTestBase extends TestBase {
                     final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
                     return builder.credential(fullyQualifiedDomainName, eventHubName, tokenCredential);
                 } else {
-                    return builder
-                        .eventHubName(eventHubName)
-                        .connectionString(connectionString);
+                    return builder.connectionString(connectionString).eventHubName(eventHubName);
                 }
             default:
                 return null;

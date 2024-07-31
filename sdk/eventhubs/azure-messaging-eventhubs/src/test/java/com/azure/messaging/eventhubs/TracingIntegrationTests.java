@@ -286,6 +286,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
             .credential(TestUtils.getPipelineCredential(cachedCredential))
+            .eventHubName(getEventHubName())
+            .fullyQualifiedNamespace(getFullyQualifiedDomainName())
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .maxEventBufferLengthPerPartition(2)
             .maxWaitTime(Duration.ofSeconds(5))
