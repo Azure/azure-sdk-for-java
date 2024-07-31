@@ -53,6 +53,10 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                               P properties) {
         this(serviceBusClientBuilder, properties, null);
+        if (serviceBusClientBuilder == null) {
+            LOGGER.debug("The shared ServiceBusClientBuilder instance is null, the {} instance has used a non-shared ServiceBusClientBuilder "
+                + "and ignored the customizers.", this.getClass().getSimpleName());
+        }
     }
 
     protected AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,

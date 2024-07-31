@@ -36,7 +36,7 @@ public class ServiceBusSenderClientBuilderFactory
      *                                created from this builder.
      * @param senderClientProperties the properties of the Service Bus sender client.
      */
-    public  ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
+    public ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                 ServiceBusSenderClientProperties senderClientProperties) {
         this(serviceBusClientBuilder, senderClientProperties, null);
     }
