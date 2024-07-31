@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
@@ -272,10 +274,11 @@ public final class DeploymentImpl extends
         return this;
     }
 
-    @SuppressWarnings("cast")
     @Override
     public DeploymentImpl withTemplate(String templateJson) throws IOException {
-        return withTemplate((Object) SERIALIZER_ADAPTER.deserialize(templateJson, Object.class, SerializerEncoding.JSON));
+        try (JsonReader jsonReader = JsonProviders.createReader(templateJson)) {
+            return withTemplate(jsonReader.readMap(JsonReader::readUntyped));
+        }
     }
 
     @Override

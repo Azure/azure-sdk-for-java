@@ -3,10 +3,9 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -33,12 +32,10 @@ final class PolicyDefinitionImpl extends
     private final PolicyDefinitionsClient innerCollection;
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private final SerializerAdapter serializerAdapter;
 
     PolicyDefinitionImpl(String name, PolicyDefinitionInner innerModel, PolicyDefinitionsClient innerCollection) {
         super(name, innerModel);
         this.innerCollection = innerCollection;
-        this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
     }
 
     @Override
@@ -108,8 +105,9 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public PolicyDefinitionImpl withPolicyRuleJson(String policyRuleJson) {
-        try {
-            innerModel().withPolicyRule(serializerAdapter.deserialize(policyRuleJson, Object.class, SerializerEncoding.JSON));
+        try (JsonReader jsonReader = JsonProviders.createReader(policyRuleJson)) {
+            Object policyRule = jsonReader.readMap(JsonReader::readUntyped);
+            innerModel().withPolicyRule(policyRule);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
