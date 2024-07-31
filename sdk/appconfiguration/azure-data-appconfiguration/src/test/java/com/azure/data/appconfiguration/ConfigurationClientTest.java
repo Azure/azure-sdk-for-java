@@ -1579,7 +1579,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertTrue(collect.contains(label));
         assertTrue(collect.contains(label2));
         // List all labels
-        PagedIterable<SettingLabel> allLabels = client.listLabels(null);
+        PagedIterable<SettingLabel> allLabels = client.listLabels();
         assertTrue(allLabels.stream().count() >= 2);
     }
 

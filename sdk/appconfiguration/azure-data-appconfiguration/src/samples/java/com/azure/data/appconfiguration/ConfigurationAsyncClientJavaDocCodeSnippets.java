@@ -473,7 +473,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload
     }
 
-
     /**
      * Code snippets for {@link ConfigurationAsyncClient#listSnapshots(SnapshotSelector)}
      */
@@ -487,6 +486,18 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
                     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.listSnapshots
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#listLabels()}
+     */
+    public void listAllLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listAllLabels
+        client.listLabels()
+            .subscribe(label -> {
+                System.out.println("label name = " + label);
+            });
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listAllLabels
     }
 
     /**

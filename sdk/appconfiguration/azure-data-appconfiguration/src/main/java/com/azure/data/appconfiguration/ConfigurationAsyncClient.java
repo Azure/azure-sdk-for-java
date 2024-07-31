@@ -1409,6 +1409,30 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
+     * Gets all labels.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listAllLabels -->
+     * <pre>
+     * client.listLabels&#40;&#41;
+     *     .subscribe&#40;label -&gt; &#123;
+     *         System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listAllLabels -->
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SettingLabel> listLabels() {
+        return listLabels(null);
+    }
+
+    /**
      * Gets a list of labels by given {@link SettingLabelSelector}
      *
      * <p><strong>Code Samples</strong></p>

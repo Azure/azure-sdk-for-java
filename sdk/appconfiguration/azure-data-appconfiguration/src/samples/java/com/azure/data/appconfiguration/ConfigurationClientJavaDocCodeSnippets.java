@@ -574,6 +574,18 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ConfigurationClient#listLabels()}
+     */
+    public void listAllLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationclient.listAllLabels
+        client.listLabels()
+            .forEach(label -> {
+                System.out.println("label name = " + label.getName());
+            });
+        // END: com.azure.data.appconfiguration.configurationclient.listAllLabels
+    }
+
+    /**
      * Code snippets for {@link ConfigurationClient#listLabels(SettingLabelSelector)}
      */
     public void listLabels() {

@@ -1961,7 +1961,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
         // List all labels
         List<SettingLabel> selected = new ArrayList<>();
-        StepVerifier.create(client.listLabels(null))
+        StepVerifier.create(client.listLabels())
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
