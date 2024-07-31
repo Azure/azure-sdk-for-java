@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.integration.tests.servicebus.binder;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,10 +92,7 @@ class ServiceBusSingleBinderIT {
     }
 
     @Test
-    @Timeout(50)
     void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
-        // Wait for Service Bus initialization to complete
-        Thread.sleep(20000);
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
 
