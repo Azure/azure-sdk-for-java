@@ -899,7 +899,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 } else {
                     assertFalse(r.isSnapshotVirtualDirectoryAccessEnabled());
                 }
-            })
+            })sh
             .verifyComplete();
     }
 
