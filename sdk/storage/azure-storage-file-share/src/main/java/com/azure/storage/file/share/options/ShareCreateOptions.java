@@ -163,7 +163,7 @@ public class ShareCreateOptions {
      * This property enables paid bursting on premium file storage accounts.
      * @return the enablePaidBursting value.
      */
-    public Boolean getEnablePaidBursting() {
+    public Boolean isPaidBurstingEnabled() {
         return enablePaidBursting;
     }
 
@@ -174,7 +174,7 @@ public class ShareCreateOptions {
      * @param enablePaidBursting the enablePaidBursting value to set.
      * @return the ShareCreateOptions object itself.
      */
-    public ShareCreateOptions setEnablePaidBursting(Boolean enablePaidBursting) {
+    public ShareCreateOptions setPaidBurstingEnabled(Boolean enablePaidBursting) {
         this.enablePaidBursting = enablePaidBursting;
         return this;
     }

@@ -359,7 +359,7 @@ public class ShareClient {
         Callable<Response<Void>> operation = () -> azureFileStorageClient.getShares()
             .createNoCustomHeadersWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
-                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.getEnablePaidBursting(),
+                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
                 finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -878,7 +878,7 @@ public class ShareClient {
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
             .setPropertiesNoCustomHeadersWithResponse(shareName, null, options.getQuotaInGb(), options.getAccessTier(),
                 requestConditions.getLeaseId(), options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), options.getEnablePaidBursting(),
+                options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));

@@ -120,7 +120,7 @@ public class ShareSetPropertiesOptions {
      * This property enables paid bursting on premium file storage accounts.
      * @return the enablePaidBursting value.
      */
-    public Boolean getEnablePaidBursting() {
+    public Boolean isPaidBurstingEnabled() {
         return enablePaidBursting;
     }
 
@@ -131,7 +131,7 @@ public class ShareSetPropertiesOptions {
      * @param enablePaidBursting the enablePaidBursting value to set.
      * @return the ShareSetPropertiesOptions object itself.
      */
-    public ShareSetPropertiesOptions setEnablePaidBursting(Boolean enablePaidBursting) {
+    public ShareSetPropertiesOptions setPaidBurstingEnabled(Boolean enablePaidBursting) {
         this.enablePaidBursting = enablePaidBursting;
         return this;
     }

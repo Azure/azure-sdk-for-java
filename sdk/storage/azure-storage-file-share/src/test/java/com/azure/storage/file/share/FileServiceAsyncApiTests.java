@@ -337,7 +337,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     @Test
     public void listSharePaidBursting() {
         ShareCreateOptions options = new ShareCreateOptions()
-            .setEnablePaidBursting(true)
+            .setPaidBurstingEnabled(true)
             .setPaidBurstingMaxIops(5000L)
             .setPaidBurstingMaxBandwidthMibps(1000L);
 
@@ -356,7 +356,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
 
         ShareItem share = shares.stream().filter(r -> r.getName().equals(shareName)).findFirst().get();
 
-        assertTrue(share.getProperties().getEnablePaidBursting());
+        assertTrue(share.getProperties().isPaidBurstingEnabled());
         assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
         assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
     }

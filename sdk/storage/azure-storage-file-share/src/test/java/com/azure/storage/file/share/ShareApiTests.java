@@ -1301,7 +1301,7 @@ public class ShareApiTests extends FileShareTestBase {
     @Test
     public void createSharePaidBursting() {
         ShareCreateOptions options = new ShareCreateOptions()
-            .setEnablePaidBursting(true)
+            .setPaidBurstingEnabled(true)
             .setPaidBurstingMaxIops(5000L)
             .setPaidBurstingMaxBandwidthMibps(1000L);
 
@@ -1309,7 +1309,24 @@ public class ShareApiTests extends FileShareTestBase {
 
         ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
 
-        assertTrue(response.getEnablePaidBursting());
+        assertTrue(response.isPaidBurstingEnabled());
+        assertEquals(5000L, response.getPaidBurstingMaxIops());
+        assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBurstingInvalidOptions() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(false)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+
+        assertTrue(response.isPaidBurstingEnabled());
         assertEquals(5000L, response.getPaidBurstingMaxIops());
         assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
     }
@@ -1320,7 +1337,7 @@ public class ShareApiTests extends FileShareTestBase {
         premiumFileServiceClient.getShareClient(shareName).createWithResponse(null, null, null);
 
         ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
-            .setEnablePaidBursting(true)
+            .setPaidBurstingEnabled(true)
             .setPaidBurstingMaxIops(5000L)
             .setPaidBurstingMaxBandwidthMibps(1000L);
 
@@ -1328,7 +1345,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
 
-        assertTrue(response.getEnablePaidBursting());
+        assertTrue(response.isPaidBurstingEnabled());
         assertEquals(5000L, response.getPaidBurstingMaxIops());
         assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
     }

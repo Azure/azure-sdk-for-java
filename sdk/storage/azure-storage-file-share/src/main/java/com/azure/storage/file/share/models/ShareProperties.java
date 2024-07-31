@@ -612,7 +612,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * This property enables paid bursting on premium file storage accounts.
      * @return the enablePaidBursting value.
      */
-    public Boolean getEnablePaidBursting() {
+    public Boolean isPaidBurstingEnabled() {
         return enablePaidBursting;
     }
 
@@ -623,7 +623,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * @param enablePaidBursting the enablePaidBursting value to set.
      * @return the ShareSetPropertiesOptions object itself.
      */
-    public ShareProperties setEnablePaidBursting(Boolean enablePaidBursting) {
+    public ShareProperties setPaidBurstingEnabled(Boolean enablePaidBursting) {
         this.enablePaidBursting = enablePaidBursting;
         return this;
     }

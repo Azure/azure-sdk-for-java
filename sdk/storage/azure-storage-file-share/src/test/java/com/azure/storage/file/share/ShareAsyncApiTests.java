@@ -879,7 +879,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     @Test
     public void createSharePaidBursting() {
         ShareCreateOptions options = new ShareCreateOptions()
-            .setEnablePaidBursting(true)
+            .setPaidBurstingEnabled(true)
             .setPaidBurstingMaxIops(5000L)
             .setPaidBurstingMaxBandwidthMibps(1000L);
 
@@ -888,7 +888,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(response)
             .assertNext(r -> {
-                assertTrue(r.getEnablePaidBursting());
+                assertTrue(r.isPaidBurstingEnabled());
                 assertEquals(5000L, r.getPaidBurstingMaxIops());
                 assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
             })
@@ -899,7 +899,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     @Test
     public void setPropertiesSharePaidBursting() {
         ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
-            .setEnablePaidBursting(true)
+            .setPaidBurstingEnabled(true)
             .setPaidBurstingMaxIops(5000L)
             .setPaidBurstingMaxBandwidthMibps(1000L);
 
@@ -909,7 +909,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(response)
             .assertNext(r -> {
-                assertTrue(r.getEnablePaidBursting());
+                assertTrue(r.isPaidBurstingEnabled());
                 assertEquals(5000L, r.getPaidBurstingMaxIops());
                 assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
             })
