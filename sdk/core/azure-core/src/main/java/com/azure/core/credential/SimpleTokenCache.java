@@ -100,8 +100,6 @@ public class SimpleTokenCache {
         this.refreshDelayString = String.valueOf(refreshDelay.getSeconds());
     }
 
-
-
     /**
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
      * @return a Publisher that emits an AccessToken

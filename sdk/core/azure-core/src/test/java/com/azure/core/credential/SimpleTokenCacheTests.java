@@ -44,7 +44,8 @@ public class SimpleTokenCacheTests {
             return Mono.just(new TokenCacheTests.Token("testToken", 30000, 1000));
         };
 
-        SimpleTokenCache cache = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()), Duration.ofSeconds(0));
+        SimpleTokenCache cache
+            = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()), Duration.ofSeconds(0));
 
         StepVerifier.create(cache.getToken().delayElement(Duration.ofMillis(2000)).flatMap(ignored -> cache.getToken()))
             .assertNext(token -> {
@@ -63,7 +64,8 @@ public class SimpleTokenCacheTests {
             return Mono.just(new TokenCacheTests.Token("testToken", 30000, 4000));
         };
 
-        SimpleTokenCache cache = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()), Duration.ofSeconds(0));
+        SimpleTokenCache cache
+            = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()), Duration.ofSeconds(0));
 
         StepVerifier.create(cache.getToken().delayElement(Duration.ofMillis(2000)).flatMap(ignored -> cache.getToken()))
             .assertNext(token -> {
