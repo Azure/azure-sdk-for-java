@@ -24,8 +24,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.standbypool.fluent.OperationsClient;
+import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolRuntimeViewsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyPoolClient;
+import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolRuntimeViewsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinesClient;
 import java.io.IOException;
@@ -169,6 +171,20 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
     }
 
     /**
+     * The StandbyVirtualMachinePoolRuntimeViewsClient object to access its operations.
+     */
+    private final StandbyVirtualMachinePoolRuntimeViewsClient standbyVirtualMachinePoolRuntimeViews;
+
+    /**
+     * Gets the StandbyVirtualMachinePoolRuntimeViewsClient object to access its operations.
+     * 
+     * @return the StandbyVirtualMachinePoolRuntimeViewsClient object.
+     */
+    public StandbyVirtualMachinePoolRuntimeViewsClient getStandbyVirtualMachinePoolRuntimeViews() {
+        return this.standbyVirtualMachinePoolRuntimeViews;
+    }
+
+    /**
      * The StandbyContainerGroupPoolsClient object to access its operations.
      */
     private final StandbyContainerGroupPoolsClient standbyContainerGroupPools;
@@ -180,6 +196,20 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
      */
     public StandbyContainerGroupPoolsClient getStandbyContainerGroupPools() {
         return this.standbyContainerGroupPools;
+    }
+
+    /**
+     * The StandbyContainerGroupPoolRuntimeViewsClient object to access its operations.
+     */
+    private final StandbyContainerGroupPoolRuntimeViewsClient standbyContainerGroupPoolRuntimeViews;
+
+    /**
+     * Gets the StandbyContainerGroupPoolRuntimeViewsClient object to access its operations.
+     * 
+     * @return the StandbyContainerGroupPoolRuntimeViewsClient object.
+     */
+    public StandbyContainerGroupPoolRuntimeViewsClient getStandbyContainerGroupPoolRuntimeViews() {
+        return this.standbyContainerGroupPoolRuntimeViews;
     }
 
     /**
@@ -199,11 +229,13 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-12-01-preview";
+        this.apiVersion = "2024-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);
+        this.standbyVirtualMachinePoolRuntimeViews = new StandbyVirtualMachinePoolRuntimeViewsClientImpl(this);
         this.standbyContainerGroupPools = new StandbyContainerGroupPoolsClientImpl(this);
+        this.standbyContainerGroupPoolRuntimeViews = new StandbyContainerGroupPoolRuntimeViewsClientImpl(this);
     }
 
     /**

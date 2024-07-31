@@ -6,24 +6,23 @@ package com.azure.communication.messages.models;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The binding object to link values to the template specific locations.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = MessageTemplateBindings.class,
-    visible = true)
-@JsonTypeName("MessageTemplateBindings")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "whatsApp", value = WhatsAppMessageTemplateBindings.class) })
 @Immutable
-public class MessageTemplateBindings {
+public class MessageTemplateBindings implements JsonSerializable<MessageTemplateBindings> {
+
+    /*
+     * The type discriminator describing a template bindings type.
+     */
+    @Generated
+    private MessageTemplateBindingsKind kind = MessageTemplateBindingsKind.fromString("MessageTemplateBindings");
 
     /**
      * Creates an instance of MessageTemplateBindings class.
@@ -31,14 +30,6 @@ public class MessageTemplateBindings {
     @Generated
     public MessageTemplateBindings() {
     }
-
-    /*
-     * The type discriminator describing a template bindings type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private MessageTemplateBindingsKind kind = MessageTemplateBindingsKind.fromString("MessageTemplateBindings");
 
     /**
      * Get the kind property: The type discriminator describing a template bindings type.
@@ -48,5 +39,69 @@ public class MessageTemplateBindings {
     @Generated
     public MessageTemplateBindingsKind getKind() {
         return this.kind;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTemplateBindings from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTemplateBindings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MessageTemplateBindings.
+     */
+    @Generated
+    public static MessageTemplateBindings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("whatsApp".equals(discriminatorValue)) {
+                    return WhatsAppMessageTemplateBindings.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static MessageTemplateBindings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageTemplateBindings deserializedMessageTemplateBindings = new MessageTemplateBindings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    deserializedMessageTemplateBindings.kind
+                        = MessageTemplateBindingsKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedMessageTemplateBindings;
+        });
     }
 }

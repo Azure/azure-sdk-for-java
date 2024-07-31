@@ -6,10 +6,7 @@
 ################
 # As of 1/30/2023 these paths have no owners:
 
-# /**
 # /.devcontainer/
-# /.vscode/
-# /common/perf-test-score/
 # /doc/
 # /samples/
 
@@ -18,6 +15,7 @@
 ###########
 
 # Catch all
+/**                                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 /sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
@@ -854,6 +852,12 @@
 # PRLabel: %common
 /common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey
 
+# PRLabel: %common
+/common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay
+
+# PRLabel: %common
+/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey
+
 # ServiceLabel: %common
 # AzureSdkOwners:                                    @alzimmermsft @srnagar
 
@@ -881,6 +885,7 @@
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
+/.github/CODEOWNERS                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
 /.github/workflows/                                  @Azure/azure-sdk-eng
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
