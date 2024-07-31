@@ -21,66 +21,66 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedAzResiliencyStatusOperationsClient;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedAzResiliencyStatusInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedMaintenanceWindowStatusesClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedMaintenanceWindowStatusInner;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in ManagedAzResiliencyStatusOperationsClient.
+ * An instance of this class provides access to all the operations defined in ManagedMaintenanceWindowStatusesClient.
  */
-public final class ManagedAzResiliencyStatusOperationsClientImpl implements ManagedAzResiliencyStatusOperationsClient {
+public final class ManagedMaintenanceWindowStatusesClientImpl implements ManagedMaintenanceWindowStatusesClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final ManagedAzResiliencyStatusOperationsService service;
+    private final ManagedMaintenanceWindowStatusesService service;
 
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
-     * Initializes an instance of ManagedAzResiliencyStatusOperationsClientImpl.
+     * Initializes an instance of ManagedMaintenanceWindowStatusesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedAzResiliencyStatusOperationsClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedAzResiliencyStatusOperationsService.class, client.getHttpPipeline(),
+    ManagedMaintenanceWindowStatusesClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
+        this.service = RestProxy.create(ManagedMaintenanceWindowStatusesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
      * The interface defining all the services for
-     * ServiceFabricManagedClustersManagementClientManagedAzResiliencyStatusOperations to be used by the proxy service
-     * to perform REST calls.
+     * ServiceFabricManagedClustersMgmtClientManagedMaintenanceWindowStatuses to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")
-    public interface ManagedAzResiliencyStatusOperationsService {
+    public interface ManagedMaintenanceWindowStatusesService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/getazresiliencystatus")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/getMaintenanceWindowStatus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedAzResiliencyStatusInner>> get(@HostParam("$host") String endpoint,
+        Mono<Response<ManagedMaintenanceWindowStatusInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
+     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * @return describes the maintenance window status of the Service Fabric Managed Cluster along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedAzResiliencyStatusInner>> getWithResponseAsync(String resourceGroupName,
+    private Mono<Response<ManagedMaintenanceWindowStatusInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -105,7 +105,7 @@ public final class ManagedAzResiliencyStatusOperationsClientImpl implements Mana
     }
 
     /**
-     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
+     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -113,11 +113,11 @@ public final class ManagedAzResiliencyStatusOperationsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * @return describes the maintenance window status of the Service Fabric Managed Cluster along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedAzResiliencyStatusInner>> getWithResponseAsync(String resourceGroupName,
+    private Mono<Response<ManagedMaintenanceWindowStatusInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -141,23 +141,23 @@ public final class ManagedAzResiliencyStatusOperationsClientImpl implements Mana
     }
 
     /**
-     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
+     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters on
-     * successful completion of {@link Mono}.
+     * @return describes the maintenance window status of the Service Fabric Managed Cluster on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedAzResiliencyStatusInner> getAsync(String resourceGroupName, String clusterName) {
+    private Mono<ManagedMaintenanceWindowStatusInner> getAsync(String resourceGroupName, String clusterName) {
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
+     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -165,27 +165,27 @@ public final class ManagedAzResiliencyStatusOperationsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
-     * with {@link Response}.
+     * @return describes the maintenance window status of the Service Fabric Managed Cluster along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedAzResiliencyStatusInner> getWithResponse(String resourceGroupName, String clusterName,
+    public Response<ManagedMaintenanceWindowStatusInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
     /**
-     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
+     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters.
+     * @return describes the maintenance window status of the Service Fabric Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedAzResiliencyStatusInner get(String resourceGroupName, String clusterName) {
+    public ManagedMaintenanceWindowStatusInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 }

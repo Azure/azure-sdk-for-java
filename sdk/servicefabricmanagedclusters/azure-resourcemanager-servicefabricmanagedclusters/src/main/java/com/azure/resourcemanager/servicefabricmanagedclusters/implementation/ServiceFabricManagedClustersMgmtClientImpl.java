@@ -27,17 +27,17 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.Application
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ApplicationTypesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ApplicationTypeVersionsClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedApplyMaintenanceWindowsClient;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedAzResiliencyStatusOperationsClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedAzResiliencyStatusesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedClusterVersionsClient;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedMaintenanceWindowStatusOperationsClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedMaintenanceWindowStatusesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedUnsupportedVMSizesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.NodeTypesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.NodeTypeSkusClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.OperationResultsClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.OperationsClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.OperationStatusClient;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServiceFabricManagedClustersManagementClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServiceFabricManagedClustersMgmtClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServicesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -49,11 +49,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the ServiceFabricManagedClustersManagementClientImpl type.
+ * Initializes a new instance of the ServiceFabricManagedClustersMgmtClientImpl type.
  */
-@ServiceClient(builder = ServiceFabricManagedClustersManagementClientBuilder.class)
-public final class ServiceFabricManagedClustersManagementClientImpl
-    implements ServiceFabricManagedClustersManagementClient {
+@ServiceClient(builder = ServiceFabricManagedClustersMgmtClientBuilder.class)
+public final class ServiceFabricManagedClustersMgmtClientImpl implements ServiceFabricManagedClustersMgmtClient {
     /**
      * The customer subscription identifier.
      */
@@ -209,31 +208,31 @@ public final class ServiceFabricManagedClustersManagementClientImpl
     }
 
     /**
-     * The ManagedAzResiliencyStatusOperationsClient object to access its operations.
+     * The ManagedAzResiliencyStatusesClient object to access its operations.
      */
-    private final ManagedAzResiliencyStatusOperationsClient managedAzResiliencyStatusOperations;
+    private final ManagedAzResiliencyStatusesClient managedAzResiliencyStatuses;
 
     /**
-     * Gets the ManagedAzResiliencyStatusOperationsClient object to access its operations.
+     * Gets the ManagedAzResiliencyStatusesClient object to access its operations.
      * 
-     * @return the ManagedAzResiliencyStatusOperationsClient object.
+     * @return the ManagedAzResiliencyStatusesClient object.
      */
-    public ManagedAzResiliencyStatusOperationsClient getManagedAzResiliencyStatusOperations() {
-        return this.managedAzResiliencyStatusOperations;
+    public ManagedAzResiliencyStatusesClient getManagedAzResiliencyStatuses() {
+        return this.managedAzResiliencyStatuses;
     }
 
     /**
-     * The ManagedMaintenanceWindowStatusOperationsClient object to access its operations.
+     * The ManagedMaintenanceWindowStatusesClient object to access its operations.
      */
-    private final ManagedMaintenanceWindowStatusOperationsClient managedMaintenanceWindowStatusOperations;
+    private final ManagedMaintenanceWindowStatusesClient managedMaintenanceWindowStatuses;
 
     /**
-     * Gets the ManagedMaintenanceWindowStatusOperationsClient object to access its operations.
+     * Gets the ManagedMaintenanceWindowStatusesClient object to access its operations.
      * 
-     * @return the ManagedMaintenanceWindowStatusOperationsClient object.
+     * @return the ManagedMaintenanceWindowStatusesClient object.
      */
-    public ManagedMaintenanceWindowStatusOperationsClient getManagedMaintenanceWindowStatusOperations() {
-        return this.managedMaintenanceWindowStatusOperations;
+    public ManagedMaintenanceWindowStatusesClient getManagedMaintenanceWindowStatuses() {
+        return this.managedMaintenanceWindowStatuses;
     }
 
     /**
@@ -349,7 +348,7 @@ public final class ServiceFabricManagedClustersManagementClientImpl
     }
 
     /**
-     * Initializes an instance of ServiceFabricManagedClustersManagementClient client.
+     * Initializes an instance of ServiceFabricManagedClustersMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -358,7 +357,7 @@ public final class ServiceFabricManagedClustersManagementClientImpl
      * @param subscriptionId The customer subscription identifier.
      * @param endpoint server parameter.
      */
-    ServiceFabricManagedClustersManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    ServiceFabricManagedClustersMgmtClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -371,8 +370,8 @@ public final class ServiceFabricManagedClustersManagementClientImpl
         this.applications = new ApplicationsClientImpl(this);
         this.services = new ServicesClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
-        this.managedAzResiliencyStatusOperations = new ManagedAzResiliencyStatusOperationsClientImpl(this);
-        this.managedMaintenanceWindowStatusOperations = new ManagedMaintenanceWindowStatusOperationsClientImpl(this);
+        this.managedAzResiliencyStatuses = new ManagedAzResiliencyStatusesClientImpl(this);
+        this.managedMaintenanceWindowStatuses = new ManagedMaintenanceWindowStatusesClientImpl(this);
         this.managedApplyMaintenanceWindows = new ManagedApplyMaintenanceWindowsClientImpl(this);
         this.managedClusterVersions = new ManagedClusterVersionsClientImpl(this);
         this.managedUnsupportedVMSizes = new ManagedUnsupportedVMSizesClientImpl(this);
@@ -509,5 +508,5 @@ public final class ServiceFabricManagedClustersManagementClientImpl
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricManagedClustersManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricManagedClustersMgmtClientImpl.class);
 }

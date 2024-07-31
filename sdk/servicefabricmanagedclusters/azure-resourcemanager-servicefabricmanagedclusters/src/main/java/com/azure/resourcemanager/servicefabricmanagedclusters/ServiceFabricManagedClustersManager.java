@@ -23,31 +23,31 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServiceFabricManagedClustersManagementClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServiceFabricManagedClustersMgmtClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationTypesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationTypeVersionsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedApplyMaintenanceWindowsImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedAzResiliencyStatusOperationsImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedAzResiliencyStatusesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedClustersImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedClusterVersionsImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedMaintenanceWindowStatusOperationsImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedMaintenanceWindowStatusesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedUnsupportedVMSizesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.NodeTypesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.NodeTypeSkusImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationResultsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationStatusImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ServiceFabricManagedClustersManagementClientBuilder;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ServiceFabricManagedClustersMgmtClientBuilder;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ServicesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.Applications;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationTypes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationTypeVersions;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedApplyMaintenanceWindows;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatusOperations;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatuses;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusterVersions;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatusOperations;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatuses;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedUnsupportedVMSizes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSkus;
@@ -77,9 +77,9 @@ public final class ServiceFabricManagedClustersManager {
 
     private ManagedClusters managedClusters;
 
-    private ManagedAzResiliencyStatusOperations managedAzResiliencyStatusOperations;
+    private ManagedAzResiliencyStatuses managedAzResiliencyStatuses;
 
-    private ManagedMaintenanceWindowStatusOperations managedMaintenanceWindowStatusOperations;
+    private ManagedMaintenanceWindowStatuses managedMaintenanceWindowStatuses;
 
     private ManagedApplyMaintenanceWindows managedApplyMaintenanceWindows;
 
@@ -97,13 +97,13 @@ public final class ServiceFabricManagedClustersManager {
 
     private NodeTypeSkus nodeTypeSkus;
 
-    private final ServiceFabricManagedClustersManagementClient clientObject;
+    private final ServiceFabricManagedClustersMgmtClient clientObject;
 
     private ServiceFabricManagedClustersManager(HttpPipeline httpPipeline, AzureProfile profile,
         Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new ServiceFabricManagedClustersManagementClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new ServiceFabricManagedClustersMgmtClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -111,11 +111,11 @@ public final class ServiceFabricManagedClustersManager {
     }
 
     /**
-     * Creates an instance of ServiceFabricManagedClusters service API entry point.
+     * Creates an instance of Service Fabric Managed Clusters service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the ServiceFabricManagedClusters service API instance.
+     * @return the Service Fabric Managed Clusters service API instance.
      */
     public static ServiceFabricManagedClustersManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -124,11 +124,11 @@ public final class ServiceFabricManagedClustersManager {
     }
 
     /**
-     * Creates an instance of ServiceFabricManagedClusters service API entry point.
+     * Creates an instance of Service Fabric Managed Clusters service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the ServiceFabricManagedClusters service API instance.
+     * @return the Service Fabric Managed Clusters service API instance.
      */
     public static ServiceFabricManagedClustersManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
@@ -248,11 +248,11 @@ public final class ServiceFabricManagedClustersManager {
         }
 
         /**
-         * Creates an instance of ServiceFabricManagedClusters service API entry point.
+         * Creates an instance of Service Fabric Managed Clusters service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the ServiceFabricManagedClusters service API instance.
+         * @return the Service Fabric Managed Clusters service API instance.
          */
         public ServiceFabricManagedClustersManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -371,29 +371,29 @@ public final class ServiceFabricManagedClustersManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedAzResiliencyStatusOperations.
+     * Gets the resource collection API of ManagedAzResiliencyStatuses.
      * 
-     * @return Resource collection API of ManagedAzResiliencyStatusOperations.
+     * @return Resource collection API of ManagedAzResiliencyStatuses.
      */
-    public ManagedAzResiliencyStatusOperations managedAzResiliencyStatusOperations() {
-        if (this.managedAzResiliencyStatusOperations == null) {
-            this.managedAzResiliencyStatusOperations = new ManagedAzResiliencyStatusOperationsImpl(
-                clientObject.getManagedAzResiliencyStatusOperations(), this);
+    public ManagedAzResiliencyStatuses managedAzResiliencyStatuses() {
+        if (this.managedAzResiliencyStatuses == null) {
+            this.managedAzResiliencyStatuses
+                = new ManagedAzResiliencyStatusesImpl(clientObject.getManagedAzResiliencyStatuses(), this);
         }
-        return managedAzResiliencyStatusOperations;
+        return managedAzResiliencyStatuses;
     }
 
     /**
-     * Gets the resource collection API of ManagedMaintenanceWindowStatusOperations.
+     * Gets the resource collection API of ManagedMaintenanceWindowStatuses.
      * 
-     * @return Resource collection API of ManagedMaintenanceWindowStatusOperations.
+     * @return Resource collection API of ManagedMaintenanceWindowStatuses.
      */
-    public ManagedMaintenanceWindowStatusOperations managedMaintenanceWindowStatusOperations() {
-        if (this.managedMaintenanceWindowStatusOperations == null) {
-            this.managedMaintenanceWindowStatusOperations = new ManagedMaintenanceWindowStatusOperationsImpl(
-                clientObject.getManagedMaintenanceWindowStatusOperations(), this);
+    public ManagedMaintenanceWindowStatuses managedMaintenanceWindowStatuses() {
+        if (this.managedMaintenanceWindowStatuses == null) {
+            this.managedMaintenanceWindowStatuses
+                = new ManagedMaintenanceWindowStatusesImpl(clientObject.getManagedMaintenanceWindowStatuses(), this);
         }
-        return managedMaintenanceWindowStatusOperations;
+        return managedMaintenanceWindowStatuses;
     }
 
     /**
@@ -496,12 +496,12 @@ public final class ServiceFabricManagedClustersManager {
     }
 
     /**
-     * Gets wrapped service client ServiceFabricManagedClustersManagementClient providing direct access to the
-     * underlying auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client ServiceFabricManagedClustersMgmtClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client ServiceFabricManagedClustersManagementClient.
+     * @return Wrapped service client ServiceFabricManagedClustersMgmtClient.
      */
-    public ServiceFabricManagedClustersManagementClient serviceClient() {
+    public ServiceFabricManagedClustersMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

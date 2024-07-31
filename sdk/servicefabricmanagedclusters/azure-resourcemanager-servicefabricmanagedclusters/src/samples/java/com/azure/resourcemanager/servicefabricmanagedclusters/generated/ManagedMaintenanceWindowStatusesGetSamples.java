@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 
 /**
- * Samples for ManagedMaintenanceWindowStatusOperation Get.
+ * Samples for ManagedMaintenanceWindowStatuses Get.
  */
-public final class ManagedMaintenanceWindowStatusOperationGetSampl {
+public final class ManagedMaintenanceWindowStatusesGetSamples {
     /*
      * x-ms-original-file:
      * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
@@ -20,7 +20,7 @@ public final class ManagedMaintenanceWindowStatusOperationGetSampl {
      */
     public static void maintenanceWindowStatus(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.managedMaintenanceWindowStatusOperations()
+        manager.managedMaintenanceWindowStatuses()
             .getWithResponse("resourceGroup1", "mycluster1", com.azure.core.util.Context.NONE);
     }
 }

@@ -42,22 +42,22 @@ public final class NodeTypeSkusClientImpl implements NodeTypeSkusClient {
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of NodeTypeSkusClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    NodeTypeSkusClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    NodeTypeSkusClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service
             = RestProxy.create(NodeTypeSkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientNodeTypeSkus to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientNodeTypeSkus to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

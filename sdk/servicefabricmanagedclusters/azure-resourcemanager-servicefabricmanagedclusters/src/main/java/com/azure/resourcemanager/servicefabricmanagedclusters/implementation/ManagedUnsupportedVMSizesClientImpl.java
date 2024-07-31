@@ -42,22 +42,22 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of ManagedUnsupportedVMSizesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedUnsupportedVMSizesClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    ManagedUnsupportedVMSizesClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service = RestProxy.create(ManagedUnsupportedVMSizesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientManagedUnsupportedVMSizes
-     * to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientManagedUnsupportedVMSizes to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

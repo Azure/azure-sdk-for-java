@@ -8,15 +8,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedMaintenanceWindowStatusInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedAzResiliencyStatusInner;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * ManagedMaintenanceWindowStatusOperationsClient.
+ * An instance of this class provides access to all the operations defined in ManagedAzResiliencyStatusesClient.
  */
-public interface ManagedMaintenanceWindowStatusOperationsClient {
+public interface ManagedAzResiliencyStatusesClient {
     /**
-     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
+     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -24,23 +23,23 @@ public interface ManagedMaintenanceWindowStatusOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the maintenance window status of the Service Fabric Managed Cluster along with
-     * {@link Response}.
+     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedMaintenanceWindowStatusInner> getWithResponse(String resourceGroupName, String clusterName,
+    Response<ManagedAzResiliencyStatusInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context);
 
     /**
-     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
+     * Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the maintenance window status of the Service Fabric Managed Cluster.
+     * @return describes the result of the request to list Managed VM Sizes for Service Fabric Managed Clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedMaintenanceWindowStatusInner get(String resourceGroupName, String clusterName);
+    ManagedAzResiliencyStatusInner get(String resourceGroupName, String clusterName);
 }

@@ -10,17 +10,17 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatus;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class ManagedAzResiliencyStatusOperationsGetWiMockTests {
+public final class ManagedMaintenanceWindowStatusesGetWithRMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"baseResourceStatus\":[{\"resourceName\":\"slnelx\",\"resourceType\":\"ixynllxecwcrojp\",\"isZoneResilient\":false,\"details\":\"cawjutifdwfmvi\"},{\"resourceName\":\"rqjb\",\"resourceType\":\"zhraglkafh\",\"isZoneResilient\":true,\"details\":\"ujeickp\"},{\"resourceName\":\"cpopmxel\",\"resourceType\":\"clt\",\"isZoneResilient\":true,\"details\":\"ex\"},{\"resourceName\":\"lfmk\",\"resourceType\":\"cazuaw\",\"isZoneResilient\":false,\"details\":\"puamwabzxr\"}],\"isClusterZoneResilient\":false}";
+            = "{\"isWindowEnabled\":false,\"isRegionReady\":false,\"isWindowActive\":false,\"canApplyUpdates\":true,\"lastWindowStatusUpdateAtUTC\":\"2021-01-02T09:30:03Z\",\"lastWindowStartTimeUTC\":\"2021-01-04T00:33:47Z\",\"lastWindowEndTimeUTC\":\"2021-02-04T00:10:52Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,8 @@ public final class ManagedAzResiliencyStatusOperationsGetWiMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ManagedAzResiliencyStatus response = manager.managedAzResiliencyStatusOperations()
-            .getWithResponse("frygznmmax", "izkzobgo", com.azure.core.util.Context.NONE)
+        ManagedMaintenanceWindowStatus response = manager.managedMaintenanceWindowStatuses()
+            .getWithResponse("ushsp", "aivmxyasflvgs", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

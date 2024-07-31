@@ -8,19 +8,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedMaintenanceWindowStatusOperationsClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedMaintenanceWindowStatusesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedMaintenanceWindowStatusInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatus;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatusOperations;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatuses;
 
-public final class ManagedMaintenanceWindowStatusOperationsImpl implements ManagedMaintenanceWindowStatusOperations {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedMaintenanceWindowStatusOperationsImpl.class);
+public final class ManagedMaintenanceWindowStatusesImpl implements ManagedMaintenanceWindowStatuses {
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedMaintenanceWindowStatusesImpl.class);
 
-    private final ManagedMaintenanceWindowStatusOperationsClient innerClient;
+    private final ManagedMaintenanceWindowStatusesClient innerClient;
 
     private final com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager serviceManager;
 
-    public ManagedMaintenanceWindowStatusOperationsImpl(ManagedMaintenanceWindowStatusOperationsClient innerClient,
+    public ManagedMaintenanceWindowStatusesImpl(ManagedMaintenanceWindowStatusesClient innerClient,
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -47,7 +47,7 @@ public final class ManagedMaintenanceWindowStatusOperationsImpl implements Manag
         }
     }
 
-    private ManagedMaintenanceWindowStatusOperationsClient serviceClient() {
+    private ManagedMaintenanceWindowStatusesClient serviceClient() {
         return this.innerClient;
     }
 

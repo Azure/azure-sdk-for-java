@@ -36,23 +36,22 @@ public final class ManagedApplyMaintenanceWindowsClientImpl implements ManagedAp
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of ManagedApplyMaintenanceWindowsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedApplyMaintenanceWindowsClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    ManagedApplyMaintenanceWindowsClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service = RestProxy.create(ManagedApplyMaintenanceWindowsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ServiceFabricManagedClustersManagementClientManagedApplyMaintenanceWindows to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientManagedApplyMaintenanceWindows
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

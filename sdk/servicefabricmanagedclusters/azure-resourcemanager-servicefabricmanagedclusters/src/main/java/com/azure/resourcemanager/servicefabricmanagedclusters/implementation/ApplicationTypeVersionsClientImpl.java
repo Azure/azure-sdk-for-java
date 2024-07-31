@@ -52,22 +52,22 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of ApplicationTypeVersionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ApplicationTypeVersionsClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    ApplicationTypeVersionsClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service = RestProxy.create(ApplicationTypeVersionsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientApplicationTypeVersions
-     * to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientApplicationTypeVersions to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

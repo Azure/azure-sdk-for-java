@@ -8,19 +8,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedAzResiliencyStatusOperationsClient;
+import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedAzResiliencyStatusesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedAzResiliencyStatusInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatus;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatusOperations;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatuses;
 
-public final class ManagedAzResiliencyStatusOperationsImpl implements ManagedAzResiliencyStatusOperations {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedAzResiliencyStatusOperationsImpl.class);
+public final class ManagedAzResiliencyStatusesImpl implements ManagedAzResiliencyStatuses {
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedAzResiliencyStatusesImpl.class);
 
-    private final ManagedAzResiliencyStatusOperationsClient innerClient;
+    private final ManagedAzResiliencyStatusesClient innerClient;
 
     private final com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager serviceManager;
 
-    public ManagedAzResiliencyStatusOperationsImpl(ManagedAzResiliencyStatusOperationsClient innerClient,
+    public ManagedAzResiliencyStatusesImpl(ManagedAzResiliencyStatusesClient innerClient,
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -47,7 +47,7 @@ public final class ManagedAzResiliencyStatusOperationsImpl implements ManagedAzR
         }
     }
 
-    private ManagedAzResiliencyStatusOperationsClient serviceClient() {
+    private ManagedAzResiliencyStatusesClient serviceClient() {
         return this.innerClient;
     }
 

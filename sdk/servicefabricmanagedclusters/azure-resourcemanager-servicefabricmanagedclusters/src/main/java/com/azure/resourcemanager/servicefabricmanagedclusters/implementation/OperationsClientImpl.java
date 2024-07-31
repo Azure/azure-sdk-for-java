@@ -42,22 +42,22 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    OperationsClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientOperations to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientOperations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

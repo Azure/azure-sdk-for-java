@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the ServiceFabricManagedClustersManagementClientImpl type.
+ * A builder for creating a new instance of the ServiceFabricManagedClustersMgmtClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { ServiceFabricManagedClustersManagementClientImpl.class })
-public final class ServiceFabricManagedClustersManagementClientBuilder {
+@ServiceClientBuilder(serviceClients = { ServiceFabricManagedClustersMgmtClientImpl.class })
+public final class ServiceFabricManagedClustersMgmtClientBuilder {
     /*
      * The customer subscription identifier.
      */
@@ -28,9 +28,9 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
      * Sets The customer subscription identifier.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the ServiceFabricManagedClustersManagementClientBuilder.
+     * @return the ServiceFabricManagedClustersMgmtClientBuilder.
      */
-    public ServiceFabricManagedClustersManagementClientBuilder subscriptionId(String subscriptionId) {
+    public ServiceFabricManagedClustersMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +44,9 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the ServiceFabricManagedClustersManagementClientBuilder.
+     * @return the ServiceFabricManagedClustersMgmtClientBuilder.
      */
-    public ServiceFabricManagedClustersManagementClientBuilder endpoint(String endpoint) {
+    public ServiceFabricManagedClustersMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +60,9 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the ServiceFabricManagedClustersManagementClientBuilder.
+     * @return the ServiceFabricManagedClustersMgmtClientBuilder.
      */
-    public ServiceFabricManagedClustersManagementClientBuilder environment(AzureEnvironment environment) {
+    public ServiceFabricManagedClustersMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the ServiceFabricManagedClustersManagementClientBuilder.
+     * @return the ServiceFabricManagedClustersMgmtClientBuilder.
      */
-    public ServiceFabricManagedClustersManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public ServiceFabricManagedClustersMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the ServiceFabricManagedClustersManagementClientBuilder.
+     * @return the ServiceFabricManagedClustersMgmtClientBuilder.
      */
-    public ServiceFabricManagedClustersManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public ServiceFabricManagedClustersMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the ServiceFabricManagedClustersManagementClientBuilder.
+     * @return the ServiceFabricManagedClustersMgmtClientBuilder.
      */
-    public ServiceFabricManagedClustersManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public ServiceFabricManagedClustersMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of ServiceFabricManagedClustersManagementClientImpl with the provided parameters.
+     * Builds an instance of ServiceFabricManagedClustersMgmtClientImpl with the provided parameters.
      * 
-     * @return an instance of ServiceFabricManagedClustersManagementClientImpl.
+     * @return an instance of ServiceFabricManagedClustersMgmtClientImpl.
      */
-    public ServiceFabricManagedClustersManagementClientImpl buildClient() {
+    public ServiceFabricManagedClustersMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class ServiceFabricManagedClustersManagementClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ServiceFabricManagedClustersManagementClientImpl client
-            = new ServiceFabricManagedClustersManagementClientImpl(localPipeline, localSerializerAdapter,
+        ServiceFabricManagedClustersMgmtClientImpl client
+            = new ServiceFabricManagedClustersMgmtClientImpl(localPipeline, localSerializerAdapter,
                 localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }

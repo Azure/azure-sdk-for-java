@@ -37,22 +37,22 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of OperationStatusClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationStatusClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    OperationStatusClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service
             = RestProxy.create(OperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientOperationStatus to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientOperationStatus to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

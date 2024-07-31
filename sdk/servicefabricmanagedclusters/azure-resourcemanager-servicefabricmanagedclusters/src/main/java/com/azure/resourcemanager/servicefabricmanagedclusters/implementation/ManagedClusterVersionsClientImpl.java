@@ -39,22 +39,22 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of ManagedClusterVersionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedClusterVersionsClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    ManagedClusterVersionsClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service = RestProxy.create(ManagedClusterVersionsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientManagedClusterVersions to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientManagedClusterVersions to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")

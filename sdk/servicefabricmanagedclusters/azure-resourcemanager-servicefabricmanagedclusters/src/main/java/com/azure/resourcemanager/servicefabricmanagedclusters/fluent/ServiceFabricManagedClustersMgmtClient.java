@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for ServiceFabricManagedClustersManagementClient class.
+ * The interface for ServiceFabricManagedClustersMgmtClient class.
  */
-public interface ServiceFabricManagedClustersManagementClient {
+public interface ServiceFabricManagedClustersMgmtClient {
     /**
      * Gets The customer subscription identifier.
      * 
@@ -82,18 +82,18 @@ public interface ServiceFabricManagedClustersManagementClient {
     ManagedClustersClient getManagedClusters();
 
     /**
-     * Gets the ManagedAzResiliencyStatusOperationsClient object to access its operations.
+     * Gets the ManagedAzResiliencyStatusesClient object to access its operations.
      * 
-     * @return the ManagedAzResiliencyStatusOperationsClient object.
+     * @return the ManagedAzResiliencyStatusesClient object.
      */
-    ManagedAzResiliencyStatusOperationsClient getManagedAzResiliencyStatusOperations();
+    ManagedAzResiliencyStatusesClient getManagedAzResiliencyStatuses();
 
     /**
-     * Gets the ManagedMaintenanceWindowStatusOperationsClient object to access its operations.
+     * Gets the ManagedMaintenanceWindowStatusesClient object to access its operations.
      * 
-     * @return the ManagedMaintenanceWindowStatusOperationsClient object.
+     * @return the ManagedMaintenanceWindowStatusesClient object.
      */
-    ManagedMaintenanceWindowStatusOperationsClient getManagedMaintenanceWindowStatusOperations();
+    ManagedMaintenanceWindowStatusesClient getManagedMaintenanceWindowStatuses();
 
     /**
      * Gets the ManagedApplyMaintenanceWindowsClient object to access its operations.

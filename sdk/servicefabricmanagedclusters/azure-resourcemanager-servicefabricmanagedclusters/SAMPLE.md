@@ -32,9 +32,9 @@
 
 - [Post](#managedapplymaintenancewindow_post)
 
-## ManagedAzResiliencyStatusOperation
+## ManagedAzResiliencyStatuses
 
-- [Get](#managedazresiliencystatusoperation_get)
+- [Get](#managedazresiliencystatuses_get)
 
 ## ManagedClusterVersion
 
@@ -52,9 +52,9 @@
 - [ListByResourceGroup](#managedclusters_listbyresourcegroup)
 - [Update](#managedclusters_update)
 
-## ManagedMaintenanceWindowStatusOperation
+## ManagedMaintenanceWindowStatuses
 
-- [Get](#managedmaintenancewindowstatusoperation_get)
+- [Get](#managedmaintenancewindowstatuses_get)
 
 ## ManagedUnsupportedVMSizes
 
@@ -698,13 +698,13 @@ public final class ManagedApplyMaintenanceWindowPostSamples {
 }
 ```
 
-### ManagedAzResiliencyStatusOperation_Get
+### ManagedAzResiliencyStatuses_Get
 
 ```java
 /**
- * Samples for ManagedAzResiliencyStatusOperation Get.
+ * Samples for ManagedAzResiliencyStatuses Get.
  */
-public final class ManagedAzResiliencyStatusOperationGetSamples {
+public final class ManagedAzResiliencyStatusesGetSamples {
     /*
      * x-ms-original-file:
      * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
@@ -717,7 +717,7 @@ public final class ManagedAzResiliencyStatusOperationGetSamples {
      */
     public static void azResiliencyStatusOfBaseResources(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.managedAzResiliencyStatusOperations()
+        manager.managedAzResiliencyStatuses()
             .getWithResponse("resourceGroup1", "mycluster1", com.azure.core.util.Context.NONE);
     }
 }
@@ -1151,13 +1151,13 @@ public final class ManagedClustersUpdateSamples {
 }
 ```
 
-### ManagedMaintenanceWindowStatusOperation_Get
+### ManagedMaintenanceWindowStatuses_Get
 
 ```java
 /**
- * Samples for ManagedMaintenanceWindowStatusOperation Get.
+ * Samples for ManagedMaintenanceWindowStatuses Get.
  */
-public final class ManagedMaintenanceWindowStatusOperationGetSampl {
+public final class ManagedMaintenanceWindowStatusesGetSamples {
     /*
      * x-ms-original-file:
      * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/stable/2024-04-01/examples/
@@ -1170,7 +1170,7 @@ public final class ManagedMaintenanceWindowStatusOperationGetSampl {
      */
     public static void maintenanceWindowStatus(
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager manager) {
-        manager.managedMaintenanceWindowStatusOperations()
+        manager.managedMaintenanceWindowStatuses()
             .getWithResponse("resourceGroup1", "mycluster1", com.azure.core.util.Context.NONE);
     }
 }

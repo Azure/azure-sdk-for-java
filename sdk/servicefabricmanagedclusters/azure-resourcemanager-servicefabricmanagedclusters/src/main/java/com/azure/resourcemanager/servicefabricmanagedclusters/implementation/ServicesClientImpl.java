@@ -52,21 +52,21 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * The service client containing this operation class.
      */
-    private final ServiceFabricManagedClustersManagementClientImpl client;
+    private final ServiceFabricManagedClustersMgmtClientImpl client;
 
     /**
      * Initializes an instance of ServicesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ServicesClientImpl(ServiceFabricManagedClustersManagementClientImpl client) {
+    ServicesClientImpl(ServiceFabricManagedClustersMgmtClientImpl client) {
         this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagedClustersManagementClientServices to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagedClustersMgmtClientServices to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManaged")
