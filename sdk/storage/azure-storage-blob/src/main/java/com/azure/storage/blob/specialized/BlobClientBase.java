@@ -57,6 +57,7 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
@@ -264,9 +265,9 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} used to interact with the specific snapshot.
      */
     public BlobClientBase getSnapshotClient(String snapshot) {
-        return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope,
-            getVersionId());
+        return new BlobClientBase(this.client.getSnapshotClient(snapshot), getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), snapshot,
+            getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
 
     /**
@@ -277,9 +278,9 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} used to interact with the specific version.
      */
     public BlobClientBase getVersionClient(String versionId) {
-        return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(),
-            encryptionScope, versionId);
+        return new BlobClientBase(this.client.getVersionClient(versionId), getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
     /**
@@ -293,9 +294,9 @@ public class BlobClientBase {
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
-        return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(),
-            finalEncryptionScope, getVersionId());
+        return new BlobClientBase(this.client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), snapshot,
+            getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -313,9 +314,9 @@ public class BlobClientBase {
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
-        return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getContainerName(), getBlobName(), snapshot, finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+        return new BlobClientBase(this.client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), snapshot,
+            finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**
@@ -694,8 +695,11 @@ public class BlobClientBase {
                     null, null, null, null, null, null, customerProvidedKey, context);
             return new SimpleResponse<>(sendRequest(operation, timeout, BlobStorageException.class), true);
         } catch (RuntimeException e) {
-            if (ModelHelper.checkBlobDoesNotExistStatusCode(e) && e instanceof HttpResponseException) {
-                HttpResponse response = ((HttpResponseException) e).getResponse();
+            HttpResponse response = ((HttpResponseException) e).getResponse();
+            if (e instanceof BlobStorageException
+                && BlobErrorCode.BLOB_USES_CUSTOMER_SPECIFIED_ENCRYPTION.equals(((BlobStorageException) e).getErrorCode())) {
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), true);
+            } else if (ModelHelper.checkBlobDoesNotExistStatusCode(e)) {
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), false);
             } else {
                 throw LOGGER.logExceptionAsError(e);

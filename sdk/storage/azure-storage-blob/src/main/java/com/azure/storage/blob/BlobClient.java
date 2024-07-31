@@ -114,49 +114,6 @@ public class BlobClient extends BlobClientBase {
      * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
-     */
-    protected BlobClient(BlobAsyncClient client, HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
-        this(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
-            customerProvidedKey, null);
-    }
-
-    /**
-     * Protected constructor for use by {@link BlobClientBuilder}.
-     *
-     * @param client the async blob client
-     * @param pipeline The pipeline used to send and receive service requests.
-     * @param url The endpoint where to send service requests.
-     * @param serviceVersion The version of the service to receive requests.
-     * @param accountName The storage account name.
-     * @param containerName The container name.
-     * @param blobName The blob name.
-     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
-     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
-     * {@code null} to allow the service to use its own encryption.
-     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
-     * {@code null} to allow the service to use its own encryption.
-     */
-    protected BlobClient(BlobAsyncClient client, HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope) {
-        this(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, null);
-    }
-
-    /**
-     * Protected constructor for use by {@link BlobClientBuilder}.
-     *
-     * @param client the async blob client
-     * @param pipeline The pipeline used to send and receive service requests.
-     * @param url The endpoint where to send service requests.
-     * @param serviceVersion The version of the service to receive requests.
-     * @param accountName The storage account name.
-     * @param containerName The container name.
-     * @param blobName The blob name.
-     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
-     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
-     * {@code null} to allow the service to use its own encryption.
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
@@ -212,9 +169,9 @@ public class BlobClient extends BlobClientBase {
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
-        return new BlobClient(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+        return new BlobClient(this.client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -233,9 +190,9 @@ public class BlobClient extends BlobClientBase {
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
-        return new BlobClient(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+        return new BlobClient(this.client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**

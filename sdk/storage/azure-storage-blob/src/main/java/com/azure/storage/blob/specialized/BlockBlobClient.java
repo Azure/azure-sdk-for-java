@@ -142,10 +142,9 @@ public final class BlockBlobClient extends BlobClientBase {
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
-        BlockBlobAsyncClient asyncClient = client.getEncryptionScopeAsyncClient(encryptionScope);
-        return new BlockBlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -164,11 +163,9 @@ public final class BlockBlobClient extends BlobClientBase {
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
-        BlockBlobAsyncClient asyncClient = client.getCustomerProvidedKeyAsyncClient(customerProvidedKey);
-
-        return new BlockBlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey,
-            encryptionScope, getVersionId());
+        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**
