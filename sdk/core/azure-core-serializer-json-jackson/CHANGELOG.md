@@ -1,14 +1,13 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.15 (2024-07-31)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+- Upgraded Jackson from `2.13.5` to `2.17.2`.
 
 ## 1.4.14 (2024-07-12)
 ### Other Changes
