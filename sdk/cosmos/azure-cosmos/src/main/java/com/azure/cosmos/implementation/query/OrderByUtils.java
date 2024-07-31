@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import reactor.core.publisher.Flux;
@@ -50,7 +49,7 @@ class OrderByUtils {
                                                        consumeComparer.getSortOrders(), clientSideRequestStatistics))
                 .toArray(Flux[]::new);
         // prefetch is set to 1 to minimize the no. prefetched pages per partition
-        return Flux.mergeOrdered(1, consumeComparer, fluxes);
+        return Flux.mergeComparingDelayError(1, consumeComparer, fluxes);
     }
 
     private static Flux<OrderByRowResult<Document>> toOrderByQueryResultObservable(DocumentProducer<Document> producer,

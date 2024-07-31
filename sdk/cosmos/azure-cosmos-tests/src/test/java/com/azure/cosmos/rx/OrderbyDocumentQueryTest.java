@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ResourceValidator;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
@@ -30,6 +31,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -169,14 +171,23 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 5;
-        CosmosPagedFlux<RoundTripDocument> queryObservable = roundTripsContainer.queryItems(query, options, RoundTripDocument.class);
-        FeedResponse<RoundTripDocument> feedResponse = queryObservable.byPage(pageSize).take(1).blockFirst();
-        assertThat(feedResponse.getResults().size()).isEqualTo(5);
-        for (RoundTripDocument roundTripDocument : feedResponse.getResults()) {
-            assertThat(roundTripDocument.v).isEqualTo(3);
+        for (int i = 0; i < 100; i++) {
+            CosmosPagedFlux<RoundTripDocument> queryObservable = roundTripsContainer.queryItems(query, options, RoundTripDocument.class);
+            FeedResponse<RoundTripDocument> feedResponse = queryObservable.byPage(pageSize).take(1).blockFirst();
+            assertThat(feedResponse.getResults().size()).isEqualTo(5);
+            for (RoundTripDocument roundTripDocument : feedResponse.getResults()) {
+                assertThat(roundTripDocument.v).isEqualTo(3);
+            }
+            Map<String, QueryMetrics> queryMetricsMap = ModelBridgeInternal.queryMetricsMap(feedResponse);
+            List<QueryMetrics> queryMetrics = new ArrayList<>(queryMetricsMap.values());
+            for (QueryMetrics queryMetric : queryMetrics) {
+                // Only one extra page should be prefetched max
+                assertThat(queryMetric.getOutputDocumentCount()).isLessThanOrEqualTo(10);
+            }
+            FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor().getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
+            // 2 partitions 2 requests per partition + 2 prefetch requests
+            assertThat(feedResponseDiagnostics.getClientSideRequestStatistics().size()).isLessThanOrEqualTo(4);
         }
-        FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor().getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
-        assertThat(feedResponseDiagnostics.getClientSideRequestStatistics().size()).isEqualTo(3);
     }
 
     @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
