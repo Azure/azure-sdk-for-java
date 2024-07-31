@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-docker-compose</artifactId>
-  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-docker-compose;current} -->
+  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-docker-compose;current} -->
 
   <name>Spring Cloud Azure Docker Compose</name>
   <description>Spring Cloud Azure Docker Compose</description>
