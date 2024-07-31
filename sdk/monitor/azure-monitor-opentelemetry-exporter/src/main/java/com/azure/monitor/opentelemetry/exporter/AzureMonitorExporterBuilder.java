@@ -43,6 +43,7 @@ import io.opentelemetry.sdk.metrics.InstrumentSelector;
 import io.opentelemetry.sdk.metrics.View;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.ServiceAttributes;
 
@@ -251,10 +252,11 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * toto
-     * @return toto
+     * Creates an {@link LiveMetricsSpanProcessor} based on the options set in the builder. This
+     *  span processor is an implementation of OpenTelemetry {@link SpanExporter}.
+     * @return An instance of {@link AzureMonitorTraceExporter}.
      */
-    public LiveMetricsSpanProcessor buildLiveMetricsSpanProcessor(Resource otelResource) {
+    public SpanProcessor buildLiveMetricsSpanProcessor(Resource otelResource) {
         System.out.println("AzureMonitorExporterBuilder.buildLiveMetricsSpanProcessor");
         ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
         internalBuildAndFreeze(defaultConfig);
@@ -268,7 +270,7 @@ public final class AzureMonitorExporterBuilder {
             roleName,
             roleInstance,
             useNormalizedValueForNonNormalizedCpuPercentage,
-            "sdkVersion"); // Also to look at
+            VersionGenerator.getSdkVersion()); // We take take the version of the exporter. In case of a distro, the distro version could be used. It could be done at the same time as that it will be possible to differentiate the exporter from the distro with the sdk name (see https://github.com/aep-health-and-standards/Telemetry-Collection-Spec/pull/286)
         SpanDataMapper spanDataMapper = createSpanDataMapper(defaultConfig);
         return new LiveMetricsSpanProcessor(quickPulse, spanDataMapper);
     }
