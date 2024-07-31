@@ -29,7 +29,9 @@ steps:
 
   - pwsh: |
       git clone https://github.com/azure/azure-sdk-tools.git --branch additional-debug-output --depth 1 $(Build.BinariesDirectory)
-    displayName: "Install test-proxy from local file"
+      cd $(Build.BinariesDirectory)
+      git log
+    displayName: "Clone the tools directory"
     workingDirectory: $(Build.SourcesDirectory)
 
   - pwsh: |
