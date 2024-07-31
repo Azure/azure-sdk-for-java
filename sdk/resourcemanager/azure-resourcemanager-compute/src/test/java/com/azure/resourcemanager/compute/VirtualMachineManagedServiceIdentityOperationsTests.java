@@ -38,7 +38,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canSetMSIOnNewOrExistingVMWithoutRoleAssignment() throws Exception {
-        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
+        // LiveOnly because "test timing out after latest test proxy update"
         // Create a virtual machine with just MSI enabled without role and scope.
         //
         ResourceGroup resourceGroup =
@@ -253,7 +253,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
-        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
+        // LiveOnly because "test timing out after latest test proxy update"
         ResourceGroup resourceGroup =
             this.resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST2).create();
         VirtualMachine virtualMachine =
