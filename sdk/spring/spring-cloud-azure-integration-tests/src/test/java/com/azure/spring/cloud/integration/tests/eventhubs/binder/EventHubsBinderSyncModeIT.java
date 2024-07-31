@@ -69,7 +69,7 @@ class EventHubsBinderSyncModeIT {
     }
 
     @Test
-    @Timeout(70)
+    @Timeout(90)
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderSyncModeIT begin.");
         EventHubsBinderSyncModeIT.LATCH.await(20, TimeUnit.SECONDS);

@@ -67,7 +67,7 @@ public class ServiceBusIT {
     }
 
     @Test
-    @Timeout(60)
+    @Timeout(120)
     public void testServiceBusOperation() throws InterruptedException {
         LOGGER.info("ServiceBusIT begin.");
         // Wait for Service Bus initialization to complete
