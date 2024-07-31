@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure Model client library for Java. This package contains Microsoft Azure Model client library.
+- Azure AI Inference client library for Java. This package contains Microsoft Azure AI Inference client library.
 
 ### Features Added
 

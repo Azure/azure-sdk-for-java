@@ -17,7 +17,7 @@ import java.io.IOException;
  * via a system or user message.
  */
 @Immutable
-public final class ChatCompletionsResponseFormatJSON extends ChatCompletionsResponseFormat {
+public final class ChatCompletionsResponseFormatJson extends ChatCompletionsResponseFormat {
     /*
      * The response format type to use for chat completions.
      */
@@ -25,10 +25,10 @@ public final class ChatCompletionsResponseFormatJSON extends ChatCompletionsResp
     private String type = "json_object";
 
     /**
-     * Creates an instance of ChatCompletionsResponseFormatJSON class.
+     * Creates an instance of ChatCompletionsResponseFormatJson class.
      */
     @Generated
-    public ChatCompletionsResponseFormatJSON() {
+    public ChatCompletionsResponseFormatJson() {
     }
 
     /**
@@ -54,30 +54,30 @@ public final class ChatCompletionsResponseFormatJSON extends ChatCompletionsResp
     }
 
     /**
-     * Reads an instance of ChatCompletionsResponseFormatJSON from the JsonReader.
+     * Reads an instance of ChatCompletionsResponseFormatJson from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatCompletionsResponseFormatJSON if the JsonReader was pointing to an instance of it, or
+     * @return An instance of ChatCompletionsResponseFormatJson if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ChatCompletionsResponseFormatJSON.
+     * @throws IOException If an error occurs while reading the ChatCompletionsResponseFormatJson.
      */
     @Generated
-    public static ChatCompletionsResponseFormatJSON fromJson(JsonReader jsonReader) throws IOException {
+    public static ChatCompletionsResponseFormatJson fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ChatCompletionsResponseFormatJSON deserializedChatCompletionsResponseFormatJSON
-                = new ChatCompletionsResponseFormatJSON();
+            ChatCompletionsResponseFormatJson deserializedChatCompletionsResponseFormatJson
+                = new ChatCompletionsResponseFormatJson();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedChatCompletionsResponseFormatJSON.type = reader.getString();
+                    deserializedChatCompletionsResponseFormatJson.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedChatCompletionsResponseFormatJSON;
+            return deserializedChatCompletionsResponseFormatJson;
         });
     }
 }

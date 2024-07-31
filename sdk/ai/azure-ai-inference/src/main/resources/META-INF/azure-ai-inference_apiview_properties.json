@@ -23,7 +23,7 @@
     "com.azure.ai.inference.models.ChatCompletionsNamedFunctionToolSelection": "AI.Model.ChatCompletionsNamedFunctionToolSelection",
     "com.azure.ai.inference.models.ChatCompletionsNamedToolSelection": "AI.Model.ChatCompletionsNamedToolSelection",
     "com.azure.ai.inference.models.ChatCompletionsResponseFormat": "AI.Model.ChatCompletionsResponseFormat",
-    "com.azure.ai.inference.models.ChatCompletionsResponseFormatJSON": "AI.Model.ChatCompletionsResponseFormatJSON",
+    "com.azure.ai.inference.models.ChatCompletionsResponseFormatJson": "AI.Model.ChatCompletionsResponseFormatJson",
     "com.azure.ai.inference.models.ChatCompletionsResponseFormatText": "AI.Model.ChatCompletionsResponseFormatText",
     "com.azure.ai.inference.models.ChatCompletionsToolCall": "AI.Model.ChatCompletionsToolCall",
     "com.azure.ai.inference.models.ChatCompletionsToolDefinition": "AI.Model.ChatCompletionsToolDefinition",
