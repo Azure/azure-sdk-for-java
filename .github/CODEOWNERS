@@ -341,7 +341,7 @@
 # ServiceOwners:                                     @kushagraThapar @TheovanKraay @pjohari-ms
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                         @kirankumarkolli @azure-cosmos-java-sdk-connectors
+/sdk/cosmos/                                         @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                     @ccmbpxpcrew
@@ -842,7 +842,7 @@
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @rujche @netyyyy @saragluna @moarychan @azure-cosmos-java-sdk-connectors
+/sdk/spring/azure-spring-data-cosmos/                @rujche @netyyyy @saragluna @moarychan @Azure/azure-cosmos-java-sdk-connectors
 
 # ######## End-to-end tests ########
 
@@ -897,4 +897,4 @@
 /eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
 
 # Add Cosmos source owners as the owners of their specialized matrix
-/eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @azure-cosmos-java-sdk-connectors
+/eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
