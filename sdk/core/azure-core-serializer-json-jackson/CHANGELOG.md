@@ -1,6 +1,11 @@
 # Release History
 
-## 1.4.15 (2024-07-31)
+## 1.5.0 (2024-07-31)
+
+### Features Added
+
+- Added implementations of `azure-json`'s `JsonElement` that wrap `JsonArray` and `JsonObject` to simplify combining
+  Jackson functionality with `azure-json` functionality.
 
 ### Other Changes
 

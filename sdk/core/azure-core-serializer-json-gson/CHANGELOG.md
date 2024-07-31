@@ -1,6 +1,11 @@
 # Release History
 
-## 1.2.15 (2024-07-31)
+## 1.3.0 (2024-07-31)
+
+### Features Added
+
+- Added implementations of `azure-json`'s `JsonElement` that wrap `JsonArray` and `JsonObject` to simplify combining
+  GSON functionality with `azure-json` functionality.
 
 ### Other Changes
 
