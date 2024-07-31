@@ -103,8 +103,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeArrayField("ignoreScripts", this.ignoreScripts,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeBooleanField("outputUnigrams", this.outputUnigrams);

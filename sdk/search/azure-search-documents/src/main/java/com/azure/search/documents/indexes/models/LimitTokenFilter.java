@@ -100,8 +100,7 @@ public final class LimitTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeNumberField("maxTokenCount", this.maxTokenCount);
         jsonWriter.writeBooleanField("consumeAllTokens", this.allTokensConsumed);
         return jsonWriter.writeEndObject();

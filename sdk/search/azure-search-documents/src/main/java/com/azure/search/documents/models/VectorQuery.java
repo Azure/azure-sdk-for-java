@@ -192,13 +192,17 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
-        jsonWriter.writeStringField("fields", this.fields);
-        jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
-        jsonWriter.writeNumberField("oversampling", this.oversampling);
-        jsonWriter.writeNumberField("weight", this.weight);
+        toJsonShared(jsonWriter, this);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter, VectorQuery vectorQuery) throws IOException {
+        jsonWriter.writeStringField("kind", vectorQuery.getKind() == null ? null : vectorQuery.getKind().toString());
+        jsonWriter.writeNumberField("k", vectorQuery.getKNearestNeighborsCount());
+        jsonWriter.writeStringField("fields", vectorQuery.getFields());
+        jsonWriter.writeBooleanField("exhaustive", vectorQuery.isExhaustive());
+        jsonWriter.writeNumberField("oversampling", vectorQuery.getOversampling());
+        jsonWriter.writeNumberField("weight", vectorQuery.getWeight());
     }
 
     /**

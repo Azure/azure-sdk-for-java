@@ -100,8 +100,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeStringField("encoder", this.encoder == null ? null : this.encoder.toString());
         jsonWriter.writeBooleanField("replace", this.originalTokensReplaced);
         return jsonWriter.writeEndObject();

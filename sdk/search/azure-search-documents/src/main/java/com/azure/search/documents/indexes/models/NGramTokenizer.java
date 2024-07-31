@@ -126,8 +126,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeNumberField("minGram", this.minGram);
         jsonWriter.writeNumberField("maxGram", this.maxGram);
         jsonWriter.writeArrayField("tokenChars", this.tokenChars,
