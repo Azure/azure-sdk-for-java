@@ -63,11 +63,6 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
         }
     }
 
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        return runAsync().toFuture();
-    }
-
     /**
      * Sends a GET request to the URL provided in the {@link HttpPipelineOptions options} given to this object's
      * constructor.

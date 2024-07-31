@@ -23,7 +23,7 @@ public class App {
             HttpGet.class,
             HttpGetExecutorService.class,
             HttpGetFuture.class,
-            HttpGetVirtualThreads.class
+            HttpGetVirtualThreads.class,
             // HttpPatch.class,
             // add other stress tests here
         }, args);

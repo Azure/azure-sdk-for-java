@@ -25,8 +25,4 @@ class NoOpTest extends PerfStressTest<PerfStressOptions> {
         return Mono.empty();
     }
 
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        return null;
-    }
 }

@@ -49,10 +49,4 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
      * @return An empty {@link Mono}
      */
     public abstract Mono<Void> runAsync();
-
-    /**
-     * Runs the performance test asynchronously using {@link CompletableFuture}.
-     * @return An empty {@link CompletableFuture}
-     */
-    public abstract Future<Void> runAsyncCompletableFuture();
 }

@@ -76,7 +76,7 @@ public class HttpGetExecutorService extends ScenarioBase<StressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.error(new UnsupportedOperationException("Not implemented"));
+        return Mono.fromFuture(() -> CompletableFuture.runAsync(this::runInternal, executorService));
     }
 
     @Override

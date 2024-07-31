@@ -28,11 +28,4 @@ class ExceptionTest extends PerfStressTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return Mono.error(new IllegalArgumentException());
     }
-
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        future.completeExceptionally(new IllegalArgumentException());
-        return future;
-    }
 }

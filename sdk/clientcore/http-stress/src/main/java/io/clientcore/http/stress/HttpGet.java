@@ -73,14 +73,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.error(new UnsupportedOperationException("Not implemented"));
-    }
-
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        future.completeExceptionally(new UnsupportedOperationException("Not supported"));
-        return future;
+        return Mono.fromRunnable(this::runInternal).then();
     }
 
     private HttpRequest createRequest() {

@@ -45,21 +45,4 @@ class SleepTest extends PerfStressTest<PerfStressOptions> {
         return Mono.delay(Duration.ofSeconds(secondsPerOperation)).then();
     }
 
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        scheduler.schedule(() -> {
-            try {
-                Thread.sleep(secondsPerOperation * 1000);
-                future.complete(null);
-            } catch (InterruptedException e) {
-                future.completeExceptionally(e);
-                Thread.currentThread().interrupt();
-            } finally {
-                scheduler.shutdown();
-            }
-        }, secondsPerOperation, TimeUnit.SECONDS);
-        return future;
-    }
 }

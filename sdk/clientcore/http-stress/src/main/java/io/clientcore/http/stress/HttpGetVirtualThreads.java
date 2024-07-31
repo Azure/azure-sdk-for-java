@@ -76,12 +76,7 @@ public class HttpGetVirtualThreads extends ScenarioBase<StressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.error(new UnsupportedOperationException("Not implemented"));
-    }
-
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        return CompletableFuture.runAsync(this::runInternal, executorService);
+        return Mono.fromFuture(() -> CompletableFuture.runAsync(this::runInternal, executorService));
     }
 
     private HttpRequest createRequest() {
