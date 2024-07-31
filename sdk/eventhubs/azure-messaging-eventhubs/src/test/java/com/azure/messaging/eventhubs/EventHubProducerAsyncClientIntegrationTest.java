@@ -21,6 +21,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**

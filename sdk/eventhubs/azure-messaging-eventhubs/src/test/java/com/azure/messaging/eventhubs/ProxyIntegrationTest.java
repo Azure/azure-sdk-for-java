@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.azure.messaging.eventhubs.TestUtils.getProxyConfiguration;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -46,7 +47,7 @@ class ProxyIntegrationTest extends IntegrationTestBase {
 
         sender = toClose(new EventHubClientBuilder()
             .connectionString(TestUtils.getConnectionString())
-            .retry(new AmqpRetryOptions().setMaxRetries(0))
+            .retryOptions(new AmqpRetryOptions().setMaxRetries(0))
             .proxyOptions(proxyOptions)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .buildProducerClient());

@@ -4,6 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.ProxyAuthenticationType;
+import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
@@ -25,6 +27,8 @@ import reactor.core.scheduler.Schedulers;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.time.Duration;
@@ -45,6 +49,9 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.ProxyOptions.PROXY_AUTHENTICATION_TYPE;
+import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
+import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -53,7 +60,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public final class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
-    private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
+
+    private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
+    private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
+    private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // System and application properties from the generated test message.
@@ -82,6 +92,52 @@ public final class TestUtils {
 
     static Symbol getSymbol(AmqpMessageConstant messageConstant) {
         return Symbol.getSymbol(messageConstant.getValue());
+    }
+
+    /**
+     * Gets the configured ProxyConfiguration from environment variables.
+     */
+    public static ProxyOptions getProxyConfiguration() {
+        final String address = GLOBAL_CONFIGURATION.get(Configuration.PROPERTY_HTTP_PROXY);
+
+        if (address == null) {
+            return null;
+        }
+
+        final String[] host = address.split(":");
+        if (host.length < 2) {
+            LOGGER.warning("Environment variable '{}' cannot be parsed into a proxy. Value: {}",
+                Configuration.PROPERTY_HTTP_PROXY, address);
+            return null;
+        }
+
+        final String hostname = host[0];
+        final int port = Integer.parseInt(host[1]);
+        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
+
+        final String username = GLOBAL_CONFIGURATION.get(PROXY_USERNAME);
+
+        if (username == null) {
+            LOGGER.info("Environment variable '{}' is not set. No authentication used.");
+            return new ProxyOptions(ProxyAuthenticationType.NONE, proxy, null, null);
+        }
+
+        final String password = GLOBAL_CONFIGURATION.get(PROXY_PASSWORD);
+        final String authentication = GLOBAL_CONFIGURATION.get(PROXY_AUTHENTICATION_TYPE);
+
+        final ProxyAuthenticationType authenticationType = CoreUtils.isNullOrEmpty(authentication)
+            ? ProxyAuthenticationType.NONE
+            : ProxyAuthenticationType.valueOf(authentication);
+
+        return new ProxyOptions(authenticationType, proxy, username, password);
+    }
+
+    public static String getFullyQualifiedDomainName() {
+        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
+    }
+
+    public static String getEventHubName() {
+        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_EVENT_HUB_NAME);
     }
 
     /**

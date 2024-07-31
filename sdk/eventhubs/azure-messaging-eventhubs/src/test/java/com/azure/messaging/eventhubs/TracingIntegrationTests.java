@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.TracingOptions;
@@ -54,6 +55,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
+import static com.azure.messaging.eventhubs.TestUtils.getFullyQualifiedDomainName;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -70,6 +73,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
+    private final AtomicReference<TokenCredential> cachedCredential = new AtomicReference<>();
+
     private TestSpanProcessor spanProcessor;
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
@@ -107,22 +113,17 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             options.setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
         }
 
-        producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+
+        producer = toClose(createBuilder()
             .clientOptions(options)
             .buildAsyncProducerClient());
 
-        consumer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+        consumer = toClose(createBuilder()
             .clientOptions(options)
             .consumerGroup("$Default")
             .buildAsyncConsumerClient());
 
-        consumerSync = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+        consumerSync = toClose(createBuilder()
             .clientOptions(options)
             .consumerGroup("$Default")
             .buildConsumerClient());
@@ -284,7 +285,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume") || span.getName().equals("EventHubs.send"));
 
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
+            .credential(TestUtils.getPipelineCredential(cachedCredential))
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .maxEventBufferLengthPerPartition(2)
             .maxWaitTime(Duration.ofSeconds(5))
@@ -450,9 +451,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     @SuppressWarnings("try")
     public void sendNotInstrumentedAndProcess() throws InterruptedException {
-        EventHubProducerAsyncClient notInstrumentedProducer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+        EventHubProducerAsyncClient notInstrumentedProducer = toClose(createBuilder()
             .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
             .buildAsyncProducerClient());
 
