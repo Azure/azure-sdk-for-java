@@ -31,8 +31,11 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
@@ -1031,10 +1034,11 @@ public final class ConfigurationAsyncClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getKeyValuesSinglePageAsync(keyFilter,
                 labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), context)
+                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>)
                     Utility::handleNotModifiedErrorToValidResponse)
@@ -1104,7 +1108,7 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
         List<SettingFields> fields) {
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getKeyValuesSinglePageAsync(null, null, null,
-                null, fields, snapshotName, null, null, context)
+                null, fields, snapshotName, null, null, null, context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(context -> serviceClient.getKeyValuesNextSinglePageAsync(nextLink, null, null, null,
                     context)
@@ -1143,8 +1147,9 @@ public final class ConfigurationAsyncClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        List<String> tags = selector == null ? null : selector.getTagsFilter();
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getRevisionsSinglePageAsync(keyFilter,
-                labelFilter, null, acceptDateTime, settingFields, context)
+                labelFilter, null, acceptDateTime, settingFields, tags, context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(context -> serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime,
                     context)
@@ -1401,6 +1406,60 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
+    }
+
+    /**
+     * Gets all labels.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listAllLabels -->
+     * <pre>
+     * client.listLabels&#40;&#41;
+     *     .subscribe&#40;label -&gt; &#123;
+     *         System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listAllLabels -->
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SettingLabel> listLabels() {
+        return listLabels(null);
+    }
+
+    /**
+     * Gets a list of labels by given {@link SettingLabelSelector}
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
+     * <pre>
+     * String labelNameFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * client.listLabels&#40;new SettingLabelSelector&#40;&#41;.setNameFilter&#40;labelNameFilter&#41;&#41;
+     *         .subscribe&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SettingLabel> listLabels(SettingLabelSelector selector) {
+        final String labelNameFilter = selector == null ? null : selector.getNameFilter();
+        final String acceptDatetime = selector == null ? null
+            : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
+        final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
+        return serviceClient.getLabelsAsync(labelNameFilter, null, acceptDatetime, labelFields);
     }
 
     /**
