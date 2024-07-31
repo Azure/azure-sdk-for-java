@@ -728,6 +728,10 @@
 # ServiceLabel:  %Service Fabric
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
 
+# PRLabel: %Web PubSub
+/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy @zackliu
+/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @zackliu
+
 # ServiceLabel:  %SignalR
 # ServiceOwners:                                     @sffamily @chenkennt
 
