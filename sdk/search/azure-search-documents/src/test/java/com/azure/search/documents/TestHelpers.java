@@ -3,17 +3,22 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.identity.*;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,6 +27,7 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,9 +47,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
-import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -63,6 +70,30 @@ public final class TestHelpers {
     public static final String HOTEL_INDEX_NAME = "hotels";
 
 
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
+
+//    static {
+//        // Add a shutdown hook to shut down the executor service gracefully
+//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//            System.out.println("JVM is shutting down. Shutting down executor service...");
+//            shutdownExecutorService();
+//        }));
+//    }
+//
+//    private static void shutdownExecutorService() {
+//        executorService.shutdown();
+//        try {
+//            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+//                executorService.shutdownNow();
+//                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+//                    System.err.println("Executor service did not terminate");
+//                }
+//            }
+//        } catch (InterruptedException e) {
+//            executorService.shutdownNow();
+//            Thread.currentThread().interrupt();
+//        }
+//    }
 
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
@@ -389,7 +420,8 @@ public final class TestHelpers {
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
@@ -402,6 +434,25 @@ public final class TestHelpers {
             return searchIndexClient;
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
+        }
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential() {
+        if (testMode == null) {
+            testMode = setupTestMode();
+        }
+
+        if (testMode == TestMode.PLAYBACK) {
+            return new MockTokenCredential();
+        } else if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new AzurePowerShellCredentialBuilder().build();
         }
     }
 
@@ -432,7 +483,7 @@ public final class TestHelpers {
     public static SearchIndexClient createSharedSearchIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
             .buildClient();

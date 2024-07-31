@@ -52,7 +52,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
         SearchIndexClient cleanupClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
         boolean synonymMapDeleted = false;
