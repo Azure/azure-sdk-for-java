@@ -188,11 +188,7 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("--> Adding events to Event Hubs.");
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
-        try (EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
-            .clientOptions(OPTIONS_WITH_TRACING)
-            .buildProducerClient()) {
+        try (EventHubProducerClient producer = createBuilder().buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
                 logger.info("--> Adding events to partition: " + partitionId);

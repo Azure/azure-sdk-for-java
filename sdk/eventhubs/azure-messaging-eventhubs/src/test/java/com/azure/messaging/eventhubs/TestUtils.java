@@ -269,10 +269,6 @@ public final class TestUtils {
         });
     }
 
-    static String getConnectionString() {
-        return getConnectionString(false);
-    }
-
     static String getConnectionString(boolean withSas) {
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_CONNECTION_STRING");
         if (withSas) {
@@ -320,10 +316,6 @@ public final class TestUtils {
 
     private static String getPropertyValue(String propertyName) {
         return Configuration.getGlobalConfiguration().get(propertyName, System.getenv(propertyName));
-    }
-
-    private static String getPropertyValue(String propertyName, String defaultValue) {
-        return Configuration.getGlobalConfiguration().get(propertyName, defaultValue);
     }
 
     private TestUtils() {

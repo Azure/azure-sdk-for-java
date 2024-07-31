@@ -413,9 +413,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
+        EventHubClientBuilder builder = createBuilder();
         processor = new EventProcessorClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
@@ -471,10 +471,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .spanBuilder("test")
             .startSpan();
 
+        EventHubClientBuilder builder = createBuilder();
+
         try (Scope scope = test.makeCurrent()) {
             processor = new EventProcessorClientBuilder()
-                .connectionString(TestUtils.getConnectionString())
-                .eventHubName(getEventHubName())
+                .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
                 .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
                 .consumerGroup("$Default")
                 .checkpointStore(new SampleCheckpointStore())
@@ -521,9 +522,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
+        EventHubClientBuilder builder = createBuilder();
+
         processor = new EventProcessorClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())
@@ -573,9 +575,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
+        EventHubClientBuilder builder = createBuilder();
+
         processor = new EventProcessorClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .eventHubName(getEventHubName())
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
             .checkpointStore(new SampleCheckpointStore())

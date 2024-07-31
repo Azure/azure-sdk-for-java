@@ -3,15 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
@@ -39,10 +36,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient());
+        producer = toClose(createBuilder().buildAsyncProducerClient());
     }
 
     /**
@@ -201,31 +195,5 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(client);
         }
-    }
-
-    @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS", matches =
-        ".*ShadAccessSignature .*")
-    void sendWithSasConnectionString() {
-        final EventData event = new EventData("body");
-        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        EventHubProducerAsyncClient eventHubAsyncClient = toClose(new EventHubClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retry(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP)
-            .connectionString(TestUtils.getConnectionString(true))
-            .buildAsyncProducerClient());
-
-        StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
-            .assertNext(properties -> {
-                Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
-
-        StepVerifier.create(eventHubAsyncClient.send(event, options))
-            .expectComplete()
-            .verify(TIMEOUT);
     }
 }

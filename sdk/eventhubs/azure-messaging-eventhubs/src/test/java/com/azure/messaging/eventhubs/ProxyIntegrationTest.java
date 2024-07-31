@@ -45,8 +45,7 @@ class ProxyIntegrationTest extends IntegrationTestBase {
 
         Assumptions.assumeTrue(proxyOptions != null, "Cannot run proxy integration tests without setting proxy configuration.");
 
-        sender = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
+        sender = toClose(createBuilder()
             .retryOptions(new AmqpRetryOptions().setMaxRetries(0))
             .proxyOptions(proxyOptions)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
@@ -71,11 +70,9 @@ class ProxyIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String messageId = UUID.randomUUID().toString();
-        final EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString()).buildAsyncProducerClient());
+        final EventHubProducerAsyncClient producer = toClose(createBuilder().buildAsyncProducerClient());
 
-        final EventHubConsumerClient receiver = toClose(new EventHubClientBuilder()
-                .connectionString(TestUtils.getConnectionString())
+        final EventHubConsumerClient receiver = toClose(createBuilder()
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildConsumerClient());
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
