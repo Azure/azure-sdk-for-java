@@ -313,7 +313,7 @@ def update_changelog_version(sdk_root: str, output_folder: str, current_version:
             with open(changelog_file, "r") as fin:
                 changelog_str = fin.read()
             logging.info("[CHANGELOG][Version] Update changelog latest version")
-            version_pattern = "^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((?P<date>.*?)\)"
+            version_pattern = r"^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((?P<date>.*?)\)"
 
             changelog_str = re.sub(
                 pattern=version_pattern,
