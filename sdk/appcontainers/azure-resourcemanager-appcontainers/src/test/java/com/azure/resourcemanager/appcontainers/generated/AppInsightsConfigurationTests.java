@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AppInsightsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppInsightsConfiguration model = BinaryData.fromString("{\"connectionString\":\"vgsgzwywakoihkn\"}")
+        AppInsightsConfiguration model = BinaryData.fromString("{\"connectionString\":\"ulontacnpqwteht\"}")
             .toObject(AppInsightsConfiguration.class);
-        Assertions.assertEquals("vgsgzwywakoihkn", model.connectionString());
+        Assertions.assertEquals("ulontacnpqwteht", model.connectionString());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppInsightsConfiguration model = new AppInsightsConfiguration().withConnectionString("vgsgzwywakoihkn");
+        AppInsightsConfiguration model = new AppInsightsConfiguration().withConnectionString("ulontacnpqwteht");
         model = BinaryData.fromObject(model).toObject(AppInsightsConfiguration.class);
-        Assertions.assertEquals("vgsgzwywakoihkn", model.connectionString());
+        Assertions.assertEquals("ulontacnpqwteht", model.connectionString());
     }
 }

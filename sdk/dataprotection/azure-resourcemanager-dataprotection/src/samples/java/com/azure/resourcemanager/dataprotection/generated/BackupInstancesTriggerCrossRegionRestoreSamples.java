@@ -22,7 +22,7 @@ import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
 public final class BackupInstancesTriggerCrossRegionRestoreSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * CrossRegionRestore/TriggerCrossRegionRestore.json
      */
     /**
@@ -32,33 +32,39 @@ public final class BackupInstancesTriggerCrossRegionRestoreSamples {
      */
     public static void
         triggerCrossRegionRestore(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().triggerCrossRegionRestore("000pikumar", "EastAsia",
-            new CrossRegionRestoreRequestObject().withRestoreRequestObject(
-                new AzureBackupRecoveryPointBasedRestoreRequest().withRestoreTargetInfo(new RestoreTargetInfo()
-                    .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia")
-                    .withDatasourceInfo(new Datasource()
-                        .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("Datasource")
-                        .withResourceId(
-                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb")
-                        .withResourceLocation("").withResourceName("targetdb")
-                        .withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri(""))
-                    .withDatasourceSetInfo(new DatasourceSet()
-                        .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                        .withObjectType("DatasourceSet")
-                        .withResourceId(
-                            "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
-                        .withResourceLocation("").withResourceName("viveksipgtest")
-                        .withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri(""))
-                    .withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(
-                        new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials")
-                            .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))))
+        manager.backupInstances()
+            .triggerCrossRegionRestore("000pikumar", "EastAsia", new CrossRegionRestoreRequestObject()
+                .withRestoreRequestObject(new AzureBackupRecoveryPointBasedRestoreRequest()
+                    .withRestoreTargetInfo(new RestoreTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
+                        .withRestoreLocation("southeastasia")
+                        .withDatasourceInfo(new Datasource()
+                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
+                            .withObjectType("Datasource")
+                            .withResourceId(
+                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb")
+                            .withResourceLocation("")
+                            .withResourceName("targetdb")
+                            .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
+                            .withResourceUri(""))
+                        .withDatasourceSetInfo(new DatasourceSet()
+                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
+                            .withObjectType("DatasourceSet")
+                            .withResourceId(
+                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
+                            .withResourceLocation("")
+                            .withResourceName("viveksipgtest")
+                            .withResourceType("Microsoft.DBforPostgreSQL/servers")
+                            .withResourceUri(""))
+                        .withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(
+                            new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials")
+                                .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))))
                     .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
                     .withSourceResourceId(
                         "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
                     .withRecoveryPointId("hardcodedRP"))
-                .withCrossRegionRestoreDetails(
-                    new CrossRegionRestoreDetails().withSourceRegion("east asia").withSourceBackupInstanceId(
+                .withCrossRegionRestoreDetails(new CrossRegionRestoreDetails().withSourceRegion("east asia")
+                    .withSourceBackupInstanceId(
                         "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

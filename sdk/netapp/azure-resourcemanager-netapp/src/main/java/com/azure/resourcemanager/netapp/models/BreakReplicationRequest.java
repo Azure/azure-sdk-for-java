@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Break replication request.
  */
 @Fluent
-public final class BreakReplicationRequest {
+public final class BreakReplicationRequest implements JsonSerializable<BreakReplicationRequest> {
     /*
      * If replication is in status transferring and you want to force break the replication, set to true
      */
-    @JsonProperty(value = "forceBreakReplication")
     private Boolean forceBreakReplication;
 
     /**
@@ -52,5 +55,42 @@ public final class BreakReplicationRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("forceBreakReplication", this.forceBreakReplication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BreakReplicationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BreakReplicationRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BreakReplicationRequest.
+     */
+    public static BreakReplicationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BreakReplicationRequest deserializedBreakReplicationRequest = new BreakReplicationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forceBreakReplication".equals(fieldName)) {
+                    deserializedBreakReplicationRequest.forceBreakReplication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBreakReplicationRequest;
+        });
     }
 }

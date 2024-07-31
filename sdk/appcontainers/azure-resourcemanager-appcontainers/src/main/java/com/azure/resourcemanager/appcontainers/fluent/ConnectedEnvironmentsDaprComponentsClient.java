@@ -13,8 +13,7 @@ import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * ConnectedEnvironmentsDaprComponentsClient.
+ * An instance of this class provides access to all the operations defined in ConnectedEnvironmentsDaprComponentsClient.
  */
 public interface ConnectedEnvironmentsDaprComponentsClient {
     /**

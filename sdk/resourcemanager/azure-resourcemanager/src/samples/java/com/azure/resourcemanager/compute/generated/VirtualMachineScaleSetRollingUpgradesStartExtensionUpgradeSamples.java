@@ -19,7 +19,10 @@ public final class VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeSam
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startAnExtensionRollingUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .startExtensionUpgrade("myResourceGroup", "{vmss-name}", com.azure.core.util.Context.NONE);
     }
 }

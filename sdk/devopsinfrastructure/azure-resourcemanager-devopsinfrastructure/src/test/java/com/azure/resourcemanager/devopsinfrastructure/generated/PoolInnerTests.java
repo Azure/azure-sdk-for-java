@@ -13,6 +13,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.ManagedServiceIdent
 import com.azure.resourcemanager.devopsinfrastructure.models.OrganizationProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.UserAssignedIdentity;
 import java.util.HashMap;
@@ -23,36 +24,40 @@ public final class PoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1475071070,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datazvgnwzs\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"glzufc\"},\"identity\":{\"principalId\":\"ohdbihanufh\",\"tenantId\":\"bj\",\"type\":\"None\",\"userAssignedIdentities\":{\"fpikxwczb\":{\"principalId\":\"th\",\"clientId\":\"hab\"}}},\"location\":\"cnpqxuhivyqniwby\",\"tags\":{\"mjgr\":\"xvd\"},\"id\":\"fwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1475071070,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"vg\"},\"identity\":{\"principalId\":\"symglzufcyz\",\"tenantId\":\"hdbihan\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ithxqhabifpi\":{\"principalId\":\"bj\",\"clientId\":\"a\"},\"ivyqniwbybrkxvd\":{\"principalId\":\"wczbys\",\"clientId\":\"pqxu\"},\"yejhk\":{\"principalId\":\"jgrtfwvukxga\",\"clientId\":\"ccsnhsjc\"},\"jnchgej\":{\"principalId\":\"htnapczwlokjyem\",\"clientId\":\"vnipjox\"}}},\"location\":\"odmailzyd\",\"tags\":{\"wixjsprozvcp\":\"jwyahuxinpmqnja\"},\"id\":\"tegjvwmf\",\"name\":\"atscmd\",\"type\":\"pjhulsuuvmkj\"}")
             .toObject(PoolInner.class);
-        Assertions.assertEquals("cnpqxuhivyqniwby", model.location());
-        Assertions.assertEquals("xvd", model.tags().get("mjgr"));
+        Assertions.assertEquals("odmailzyd", model.location());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.tags().get("wixjsprozvcp"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
         Assertions.assertEquals(1475071070, model.properties().maximumConcurrency());
-        Assertions.assertEquals("glzufc", model.properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("vg", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolInner model = new PoolInner().withLocation("cnpqxuhivyqniwby")
-            .withTags(mapOf("mjgr", "xvd"))
-            .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
-                .withMaximumConcurrency(1475071070)
-                .withOrganizationProfile(new OrganizationProfile())
-                .withAgentProfile(new AgentProfile().withResourcePredictions("datazvgnwzs")
-                    .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
-                .withFabricProfile(new FabricProfile())
-                .withDevCenterProjectResourceId("glzufc"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("fpikxwczb", new UserAssignedIdentity())));
+        PoolInner model
+            = new PoolInner().withLocation("odmailzyd")
+                .withTags(mapOf("wixjsprozvcp", "jwyahuxinpmqnja"))
+                .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withMaximumConcurrency(1475071070)
+                    .withOrganizationProfile(new OrganizationProfile())
+                    .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
+                        .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
+                    .withFabricProfile(new FabricProfile())
+                    .withDevCenterProjectResourceId("vg"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("ithxqhabifpi", new UserAssignedIdentity(), "ivyqniwbybrkxvd",
+                            new UserAssignedIdentity(), "yejhk", new UserAssignedIdentity(), "jnchgej",
+                            new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(PoolInner.class);
-        Assertions.assertEquals("cnpqxuhivyqniwby", model.location());
-        Assertions.assertEquals("xvd", model.tags().get("mjgr"));
+        Assertions.assertEquals("odmailzyd", model.location());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.tags().get("wixjsprozvcp"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
         Assertions.assertEquals(1475071070, model.properties().maximumConcurrency());
-        Assertions.assertEquals("glzufc", model.properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("vg", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

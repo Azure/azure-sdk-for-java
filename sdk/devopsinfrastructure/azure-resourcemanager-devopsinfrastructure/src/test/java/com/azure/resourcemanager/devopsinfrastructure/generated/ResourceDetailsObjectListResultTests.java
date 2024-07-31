@@ -13,11 +13,11 @@ public final class ResourceDetailsObjectListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceDetailsObjectListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"status\":\"Updating\",\"image\":\"ktwh\",\"imageVersion\":\"dxwzywqsmbsurexi\"},\"id\":\"ryocfsfksymdd\",\"name\":\"stkiiuxhqyud\",\"type\":\"o\"},{\"properties\":{\"status\":\"PendingReturn\",\"image\":\"nbpoczvyifqrvkdv\",\"imageVersion\":\"sllr\"},\"id\":\"vdfwatkpn\",\"name\":\"ulexxbczwtr\",\"type\":\"wiqzbqjvsovmyo\"},{\"properties\":{\"status\":\"Provisioning\",\"image\":\"spkwlhzdobpxjm\",\"imageVersion\":\"lb\"},\"id\":\"nchrkcciww\",\"name\":\"juqk\",\"type\":\"rsa\"}],\"nextLink\":\"wkuofoskghsauu\"}")
+            "{\"value\":[{\"properties\":{\"status\":\"Leased\",\"image\":\"dyjrrfbyaosv\",\"imageVersion\":\"xc\"},\"id\":\"npc\",\"name\":\"hocohslkev\",\"type\":\"eggzfb\"},{\"properties\":{\"status\":\"Updating\",\"image\":\"mvfaxkffeiith\",\"imageVersion\":\"vmezy\"},\"id\":\"hxmzsbbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}],\"nextLink\":\"uknvudwti\"}")
             .toObject(ResourceDetailsObjectListResult.class);
-        Assertions.assertEquals(ResourceStatus.UPDATING, model.value().get(0).properties().status());
-        Assertions.assertEquals("ktwh", model.value().get(0).properties().image());
-        Assertions.assertEquals("dxwzywqsmbsurexi", model.value().get(0).properties().imageVersion());
-        Assertions.assertEquals("wkuofoskghsauu", model.nextLink());
+        Assertions.assertEquals(ResourceStatus.LEASED, model.value().get(0).properties().status());
+        Assertions.assertEquals("dyjrrfbyaosv", model.value().get(0).properties().image());
+        Assertions.assertEquals("xc", model.value().get(0).properties().imageVersion());
+        Assertions.assertEquals("uknvudwti", model.nextLink());
     }
 }

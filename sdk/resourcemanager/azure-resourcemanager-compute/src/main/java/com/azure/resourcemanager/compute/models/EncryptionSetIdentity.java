@@ -101,8 +101,8 @@ public final class EncryptionSetIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the disk encryption set.
-     * The user identity dictionary key references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The list of user identities associated with the disk encryption set. The
+     * user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @return the userAssignedIdentities value.
@@ -112,8 +112,8 @@ public final class EncryptionSetIdentity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the disk encryption set.
-     * The user identity dictionary key references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The list of user identities associated with the disk encryption set. The
+     * user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.

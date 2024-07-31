@@ -3,13 +3,10 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: attestation
     Location: westus
     Artifacts:
       - name: azure-security-attestation
         groupId: com.azure
         safeName: azuresecurityattestation
-    EnvVars:
-      AZURE_CLIENT_ID: $(ATTESTATION_CLIENT_ID)
-      AZURE_TENANT_ID: $(ATTESTATION_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(ATTESTATION_CLIENT_SECRET)

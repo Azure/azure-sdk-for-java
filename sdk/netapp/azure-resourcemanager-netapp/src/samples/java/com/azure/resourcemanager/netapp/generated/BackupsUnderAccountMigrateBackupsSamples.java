@@ -11,7 +11,9 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderAccountMigrateBackupsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupsUnderAccount_Migrate.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupsUnderAccount_Migrate.
+     * json
      */
     /**
      * Sample code: BackupsUnderAccount_Migrate.

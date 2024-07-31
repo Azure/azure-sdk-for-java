@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The CustomEntitiesResult model. */
+/**
+ * The CustomEntitiesResult model.
+ */
 @Fluent
 public final class CustomEntitiesResult extends CustomResult {
     /*
@@ -19,12 +21,15 @@ public final class CustomEntitiesResult extends CustomResult {
      */
     private List<CustomEntitiesResultDocumentsItem> documents;
 
-    /** Creates an instance of CustomEntitiesResult class. */
-    public CustomEntitiesResult() {}
+    /**
+     * Creates an instance of CustomEntitiesResult class.
+     */
+    public CustomEntitiesResult() {
+    }
 
     /**
      * Get the documents property: Response by document.
-     *
+     * 
      * @return the documents value.
      */
     public List<CustomEntitiesResultDocumentsItem> getDocuments() {
@@ -33,7 +38,7 @@ public final class CustomEntitiesResult extends CustomResult {
 
     /**
      * Set the documents property: Response by document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the CustomEntitiesResult object itself.
      */
@@ -42,34 +47,45 @@ public final class CustomEntitiesResult extends CustomResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResult setProjectName(String projectName) {
         super.setProjectName(projectName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResult setDeploymentName(String deploymentName) {
         super.setDeploymentName(deploymentName);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,40 +99,39 @@ public final class CustomEntitiesResult extends CustomResult {
 
     /**
      * Reads an instance of CustomEntitiesResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomEntitiesResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntitiesResult.
      */
     public static CustomEntitiesResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomEntitiesResult deserializedCustomEntitiesResult = new CustomEntitiesResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomEntitiesResult deserializedCustomEntitiesResult = new CustomEntitiesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedCustomEntitiesResult.setErrors(errors);
-                        } else if ("projectName".equals(fieldName)) {
-                            deserializedCustomEntitiesResult.setProjectName(reader.getString());
-                        } else if ("deploymentName".equals(fieldName)) {
-                            deserializedCustomEntitiesResult.setDeploymentName(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedCustomEntitiesResult.setStatistics(RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<CustomEntitiesResultDocumentsItem> documents =
-                                    reader.readArray(reader1 -> CustomEntitiesResultDocumentsItem.fromJson(reader1));
-                            deserializedCustomEntitiesResult.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("errors".equals(fieldName)) {
+                    List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                    deserializedCustomEntitiesResult.setErrors(errors);
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedCustomEntitiesResult.setProjectName(reader.getString());
+                } else if ("deploymentName".equals(fieldName)) {
+                    deserializedCustomEntitiesResult.setDeploymentName(reader.getString());
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedCustomEntitiesResult.setStatistics(RequestStatistics.fromJson(reader));
+                } else if ("documents".equals(fieldName)) {
+                    List<CustomEntitiesResultDocumentsItem> documents
+                        = reader.readArray(reader1 -> CustomEntitiesResultDocumentsItem.fromJson(reader1));
+                    deserializedCustomEntitiesResult.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomEntitiesResult;
-                });
+            return deserializedCustomEntitiesResult;
+        });
     }
 }

@@ -81,6 +81,8 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
 
+    private boolean useImdsRetryStrategy;
+
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
@@ -575,6 +577,15 @@ public final class IdentityClientOptions implements Cloneable {
     public RetryPolicy getRetryPolicy() {
         return this.retryPolicy;
     }
+
+    public boolean getUseImdsRetryStrategy() {
+        return this.useImdsRetryStrategy;
+    }
+
+    public void setUseImdsRetryStrategy() {
+        this.useImdsRetryStrategy = true;
+    }
+
 
     /**
      * Add a per call policy.

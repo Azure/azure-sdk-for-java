@@ -22,8 +22,8 @@ public final class CloudServiceRoleListResult {
     private List<CloudServiceRoleInner> value;
 
     /*
-     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink
-     * is null to fetch all the resources.
+     * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is
+     * null to fetch all the resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,9 @@ public final class CloudServiceRoleListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CloudServiceRoleListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CloudServiceRoleListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

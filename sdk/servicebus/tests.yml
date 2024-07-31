@@ -3,20 +3,25 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: servicebus
-    Artifacts:
-      - name: azure-messaging-servicebus
-        groupId: com.azure
-        safeName: azuremessagingservicebus
-    SupportedClouds: 'Public,UsGov,China'
+    TestResourceDirectories:
+      - servicebus
+    SupportedClouds: 'Public'
+    CloudConfig:
+      Public:
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
     EnvVars:
       AZURE_LOG_LEVEL: 1
-      AZURE_CLIENT_ID: $(SERVICEBUS_CLIENT_ID)
-      AZURE_TENANT_ID: $(SERVICEBUS_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(SERVICEBUS_CLIENT_SECRET)
-      AZURE_SUBSCRIPTION_ID: $(SERVICEBUS_SUBSCRIPTION_ID)
     AdditionalMatrixConfigs:
       - Name: version_overrides_tests
         Path: sdk/servicebus/version-overrides-matrix.json
         Selection: all
         GenerateVMJobs: true
+    Artifacts:
+      - name: azure-messaging-servicebus
+        groupId: com.azure
+        safeName: azuremessagingservicebus

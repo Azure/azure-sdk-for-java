@@ -13,21 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class OSProfileWindowsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSProfileWindowsConfiguration model = BinaryData
-            .fromString(
-                "{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"AutomaticByOS\"}}")
+        OSProfileWindowsConfiguration model = BinaryData.fromString(
+            "{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\",\"enableHotpatching\":true,\"status\":{\"hotpatchEnablementStatus\":\"PendingEvaluation\"}}}")
             .toObject(OSProfileWindowsConfiguration.class);
-        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.patchMode());
+        Assertions.assertEquals(true, model.enableHotpatching());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OSProfileWindowsConfiguration model
-            = new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
-                .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS);
+            = new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+                .withPatchMode(PatchModeTypes.IMAGE_DEFAULT)
+                .withEnableHotpatching(true);
         model = BinaryData.fromObject(model).toObject(OSProfileWindowsConfiguration.class);
-        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.patchMode());
+        Assertions.assertEquals(true, model.enableHotpatching());
     }
 }

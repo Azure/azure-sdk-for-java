@@ -1,14 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.autorest.customization.*;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
-
-import java.lang.reflect.Modifier;
-import java.util.List;
 
 public class MessagesSdkCustomization extends Customization {
 
@@ -17,205 +21,173 @@ public class MessagesSdkCustomization extends Customization {
         logger.info("Customizing the JobRouterAdministrationClientBuilder class");
         PackageCustomization packageCustomization = libraryCustomization.getPackage("com.azure.communication.messages");
 
-        ClassCustomization notificationMessagesClientBuilderCustomization = packageCustomization.getClass("NotificationMessagesClientBuilder");
-        addAuthTrait(notificationMessagesClientBuilderCustomization);
-        addConnectionStringClientMethod(notificationMessagesClientBuilderCustomization, "NotificationMessagesClientBuilder");
-        addHttpPipelineAuthPolicyMethod(notificationMessagesClientBuilderCustomization);
-        updateHttpPipelineMethod(notificationMessagesClientBuilderCustomization);
+        updateBuilderClass(packageCustomization, "NotificationMessagesClientBuilder");
+        updateBuilderClass(packageCustomization, "MessageTemplateClientBuilder");
 
-        ClassCustomization messageTemplateClientBuilderCustomization = packageCustomization.getClass("MessageTemplateClientBuilder");
-        addAuthTrait(messageTemplateClientBuilderCustomization);
-        addConnectionStringClientMethod(messageTemplateClientBuilderCustomization, "MessageTemplateClientBuilder");
-        addHttpPipelineAuthPolicyMethod(messageTemplateClientBuilderCustomization);
-        updateHttpPipelineMethod(messageTemplateClientBuilderCustomization);
+        PackageCustomization modelsPackage = libraryCustomization.getPackage("com.azure.communication.messages.models");
+        customizeMessageTemplateLocation(modelsPackage);
+        customizeNotificationContentModel(modelsPackage);
+        customizeMessageTemplateValueModel(modelsPackage);
+        customizeMessageTemplateItemModel(modelsPackage);
 
-        updateTemplateLocationConstructorWithGeoPositionParameter(libraryCustomization);
-        addPositionGetterInTemplateLocation(libraryCustomization);
-        updateWhatsAppMessageTemplateItemWithBinaryDataContent(libraryCustomization);
-
-        customizeNotificationContentModel(libraryCustomization);
-        customizeMessageTemplateValueModel(libraryCustomization);
-        customizeMessageTemplateItemModel(libraryCustomization);
+        PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
+            "com.azure.communication.messages.models.channels");
+        updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
     }
 
-    private void customizeNotificationContentModel(LibraryCustomization customization) {
-        PackageCustomization modelPackageCustomization = customization.getPackage("com.azure.communication.messages.models");
-        ClassCustomization notificationContentModelCustomization = modelPackageCustomization.getClass("NotificationContent");
-        notificationContentModelCustomization
-            .setModifier(Modifier.PUBLIC | Modifier.ABSTRACT)
-            .getConstructor("NotificationContent")
-            .setModifier(Modifier.PROTECTED);
+    private void customizeNotificationContentModel(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("NotificationContent")
+            .customizeAst(ast -> ast.getPrimaryType()
+                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
     }
 
-    private void customizeMessageTemplateValueModel(LibraryCustomization customization) {
-        PackageCustomization modelPackageCustomization = customization.getPackage("com.azure.communication.messages.models");
-        ClassCustomization notificationContentModelCustomization = modelPackageCustomization.getClass("MessageTemplateValue");
-        notificationContentModelCustomization
-            .setModifier(Modifier.PUBLIC | Modifier.ABSTRACT)
-            .getConstructor("MessageTemplateValue")
-            .setModifier(Modifier.PROTECTED);
+    private void customizeMessageTemplateValueModel(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("MessageTemplateValue")
+            .customizeAst(ast -> ast.getPrimaryType()
+                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
     }
 
-    private void customizeMessageTemplateItemModel(LibraryCustomization customization) {
-        PackageCustomization modelPackageCustomization = customization.getPackage("com.azure.communication.messages.models");
-        ClassCustomization notificationContentModelCustomization = modelPackageCustomization.getClass("MessageTemplateItem");
-        notificationContentModelCustomization
-            .setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+    private void customizeMessageTemplateItemModel(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("MessageTemplateItem")
+            .customizeAst(ast -> {
+                ast.addImport(
+                    "com.azure.communication.messages.implementation.accesshelpers.MessageTemplateItemAccessHelper");
+                ast.getClassByName("MessageTemplateItem").ifPresent(clazz -> clazz.addStaticInitializer()
+                    .addStatement("MessageTemplateItemAccessHelper.setAccessor(MessageTemplateItem::setName);"));
+            });
     }
 
-    private void addAuthTrait(ClassCustomization classCustomization) {
-        classCustomization.addImports("com.azure.core.client.traits.TokenCredentialTrait");
-        classCustomization.addImports("com.azure.core.client.traits.KeyCredentialTrait");
-        classCustomization.addImports("com.azure.core.client.traits.ConnectionStringTrait");
-        classCustomization.customizeAst(compilationUnit -> {
-            compilationUnit.getClassByName(classCustomization.getClassName()).ifPresent(builderClass -> {
-                ClassOrInterfaceDeclaration clientBuilderClass = builderClass.asClassOrInterfaceDeclaration();
-                NodeList<ClassOrInterfaceType> implementedTypes = clientBuilderClass.getImplementedTypes();
+    private void updateBuilderClass(PackageCustomization packageCustomization, String className) {
+        packageCustomization.getClass(className).customizeAst(ast -> {
+            ast.addImport("com.azure.core.client.traits.TokenCredentialTrait");
+            ast.addImport("com.azure.core.client.traits.KeyCredentialTrait");
+            ast.addImport("com.azure.core.client.traits.ConnectionStringTrait");
+            ast.addImport("com.azure.communication.common.implementation.CommunicationConnectionString");
+            ast.addImport("com.azure.core.credential.AzureKeyCredential");
+            ast.addImport("com.azure.communication.common.implementation.HmacAuthenticationPolicy");
+
+            ast.getClassByName(className).ifPresent(clazz -> {
+                NodeList<ClassOrInterfaceType> implementedTypes = clazz.getImplementedTypes();
                 boolean hasTokenCredentialTrait = implementedTypes.stream()
                     .anyMatch(implementedType -> implementedType.getNameAsString().equals("TokenCredentialTrait"));
                 if (!hasTokenCredentialTrait) {
-                    clientBuilderClass
-                        .addImplementedType(String.format("TokenCredentialTrait<%s>", classCustomization.getClassName()));
+                    clazz.addImplementedType(String.format("TokenCredentialTrait<%s>", className));
                 }
 
                 boolean hasKeyCredentialTrait = implementedTypes.stream()
                     .anyMatch(implementedType -> implementedType.getNameAsString().equals("KeyCredentialTrait"));
                 if (!hasKeyCredentialTrait) {
-                    clientBuilderClass
-                        .addImplementedType(String.format("KeyCredentialTrait<%s>", classCustomization.getClassName()));
+                    clazz.addImplementedType(String.format("KeyCredentialTrait<%s>", className));
                 }
 
                 boolean hasConnectionStringTrait = implementedTypes.stream()
                     .anyMatch(implementedType -> implementedType.getNameAsString().equals("ConnectionStringTrait"));
                 if (!hasConnectionStringTrait) {
-                    clientBuilderClass
-                        .addImplementedType(String.format("ConnectionStringTrait<%s>", classCustomization.getClassName()));
+                    clazz.addImplementedType(String.format("ConnectionStringTrait<%s>", className));
                 }
+
+                clazz.addMethod("connectionString", Modifier.Keyword.PUBLIC)
+                    .addAnnotation("Override")
+                    .addParameter("String", "connectionString")
+                    .setType(className)
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);"
+                        + "this.credential(new KeyCredential(connection.getAccessKey()));"
+                        + "this.endpoint(connection.getEndpoint());" + "return this;" + "}"))
+                    .setJavadocComment(new Javadoc(
+                        JavadocDescription.parseText("Set a connection string for authorization.")).addBlockTag("param",
+                            "connectionString", "valid connectionString as a string.")
+                        .addBlockTag("return", "the updated " + className + " object."));
+
+                clazz.addMethod("createHttpPipelineAuthPolicy", Modifier.Keyword.PRIVATE)
+                    .setType("HttpPipelinePolicy")
+                    .setBody(StaticJavaParser.parseBlock("{" + "if (tokenCredential != null) {"
+                        + "return new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES);"
+                        + "} else if (keyCredential != null) {"
+                        + "return new HmacAuthenticationPolicy(new AzureKeyCredential(keyCredential.getKey()));"
+                        + "} else {"
+                        + "throw LOGGER.logExceptionAsError(new IllegalStateException(\"Missing credential information while building a client.\"));"
+                        + "}" + "}"));
+
+                clazz.getMethodsByName("createHttpPipeline")
+                    .get(0)
+                    .setBody(StaticJavaParser.parseBlock("{Configuration buildConfiguration"
+                        + "            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;"
+                        + "        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;"
+                        + "        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;"
+                        + "        List<HttpPipelinePolicy> policies = new ArrayList<>();"
+                        + "        String clientName = PROPERTIES.getOrDefault(SDK_NAME, \"UnknownName\");"
+                        + "        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, \"UnknownVersion\");"
+                        + "        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);"
+                        + "        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));"
+                        + "        policies.add(new RequestIdPolicy());"
+                        + "        policies.add(new AddHeadersFromContextPolicy());"
+                        + "        HttpHeaders headers = new HttpHeaders();" + "        localClientOptions.getHeaders()"
+                        + "            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));"
+                        + "        if (headers.getSize() > 0) {"
+                        + "            policies.add(new AddHeadersPolicy(headers));" + "        }"
+                        + "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)"
+                        + "            .forEach(p -> policies.add(p));"
+                        + "        HttpPolicyProviders.addBeforeRetryPolicies(policies);"
+                        + "        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));"
+                        + "        policies.add(new AddDatePolicy());"
+                        + "        policies.add(createHttpPipelineAuthPolicy());"
+                        + "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)"
+                        + "            .forEach(p -> policies.add(p));"
+                        + "        HttpPolicyProviders.addAfterRetryPolicies(policies);"
+                        + "        policies.add(new HttpLoggingPolicy(localHttpLogOptions));"
+                        + "        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))"
+                        + "            .httpClient(httpClient).clientOptions(localClientOptions).build();"
+                        + "        return httpPipeline;}"));
             });
         });
     }
 
-    private void addConnectionStringClientMethod(ClassCustomization classCustomization, String methodReturnType) {
-        classCustomization.addMethod(
-            "public "+methodReturnType+" connectionString(String connectionString) {" +
-                "CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);"+
-                "this.credential(new KeyCredential(connection.getAccessKey()));"+
-                "this.endpoint(connection.getEndpoint());"+
-                "return this;"+
-                "}",
-            List.of(
-                "com.azure.communication.common.implementation.CommunicationConnectionString"
-            ));
+    private void customizeMessageTemplateLocation(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("MessageTemplateLocation").customizeAst(ast -> {
+            ast.addImport("com.azure.core.models.GeoPosition");
+            ast.getClassByName("MessageTemplateLocation").ifPresent(clazz -> {
+                clazz.getConstructors().forEach(ctor -> ctor.setModifiers(Modifier.Keyword.PRIVATE));
+                clazz.addConstructor(Modifier.Keyword.PUBLIC)
+                    .addParameter("String", "refValue")
+                    .addParameter("GeoPosition", "geoPosition")
+                    .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("super(refValue);"),
+                        StaticJavaParser.parseStatement("this.latitude = geoPosition.getLatitude();"),
+                        StaticJavaParser.parseStatement("this.longitude = geoPosition.getLongitude();"))))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Creates an instance of MessageTemplateLocation class.")).addBlockTag("param", "refValue",
+                            "the refValue value to set.")
+                        .addBlockTag("param", "geoPosition", "the geoPosition value to set."));
 
-        classCustomization
-            .getMethod("connectionString")
-            .getJavadoc()
-            .setDescription("Set a connection string for authorization.\n" +
-                "@param connectionString valid connectionString as a string.\n" +
-                "@return the updated NotificationMessagesClientBuilder object.");
+                clazz.getMethodsByName("getLatitude").forEach(Node::remove);
+                clazz.getMethodsByName("getLongitude").forEach(Node::remove);
+
+                clazz.addMethod("getPosition", Modifier.Keyword.PUBLIC)
+                    .setType("GeoPosition")
+                    .setBody(StaticJavaParser.parseBlock("{return new GeoPosition(this.longitude, this.latitude);}"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Get the geo position: The longitude and latitude of the location.")).addBlockTag("return",
+                        "the GeoPosition object."));
+            });
+        });
     }
 
-    private void addHttpPipelineAuthPolicyMethod(ClassCustomization classCustomization) {
-        classCustomization.addImports("com.azure.core.credential.AzureKeyCredential");
-        classCustomization.addMethod(
-            "private HttpPipelinePolicy createHttpPipelineAuthPolicy() {" +
-                "        if (tokenCredential != null) {" +
-                "            return new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES);" +
-                "        } else if (keyCredential != null) {" +
-                "            return new HmacAuthenticationPolicy(new AzureKeyCredential(keyCredential.getKey()));" +
-                "        } else {" +
-                "            throw LOGGER.logExceptionAsError(" +
-                "                new IllegalStateException(\"Missing credential information while building a client.\"));" +
-                "        }" +
-                "    }",
-            List.of(
-                "com.azure.communication.common.implementation.HmacAuthenticationPolicy"
-            ));
-    }
+    private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(PackageCustomization channelsModelsPackage) {
+        channelsModelsPackage.getClass("WhatsAppMessageTemplateItem").customizeAst(ast -> {
+            ast.addImport("com.azure.core.util.BinaryData");
+            ast.addImport(
+                "com.azure.communication.messages.implementation.accesshelpers.MessageTemplateItemAccessHelper");
+            ast.getClassByName("WhatsAppMessageTemplateItem").ifPresent(clazz -> {
+                clazz.getMethodsByName("getContent")
+                    .get(0)
+                    .setType("BinaryData")
+                    .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
 
-    private void updateHttpPipelineMethod(ClassCustomization classCustomization) {
-        MethodCustomization methodCustomization = classCustomization.getMethod("createHttpPipeline");
-        methodCustomization.replaceBody("Configuration buildConfiguration" +
-            "            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;" +
-            "        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;" +
-            "        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;" +
-            "        List<HttpPipelinePolicy> policies = new ArrayList<>();" +
-            "        String clientName = PROPERTIES.getOrDefault(SDK_NAME, \"UnknownName\");" +
-            "        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, \"UnknownVersion\");" +
-            "        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);" +
-            "        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));" +
-            "        policies.add(new RequestIdPolicy());" +
-            "        policies.add(new AddHeadersFromContextPolicy());" +
-            "        HttpHeaders headers = new HttpHeaders();" +
-            "        localClientOptions.getHeaders()" +
-            "            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));" +
-            "        if (headers.getSize() > 0) {" +
-            "            policies.add(new AddHeadersPolicy(headers));" +
-            "        }" +
-            "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)" +
-            "            .forEach(p -> policies.add(p));" +
-            "        HttpPolicyProviders.addBeforeRetryPolicies(policies);" +
-            "        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));" +
-            "        policies.add(new AddDatePolicy());" +
-            "        policies.add(createHttpPipelineAuthPolicy());" +
-            "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)" +
-            "            .forEach(p -> policies.add(p));" +
-            "        HttpPolicyProviders.addAfterRetryPolicies(policies);" +
-            "        policies.add(new HttpLoggingPolicy(localHttpLogOptions));" +
-            "        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))" +
-            "            .httpClient(httpClient).clientOptions(localClientOptions).build();" +
-            "        return httpPipeline;");
-    }
-
-    private void updateTemplateLocationConstructorWithGeoPositionParameter(LibraryCustomization libraryCustomization) {
-        ClassCustomization messageTemplateLocationCustomization = libraryCustomization
-            .getPackage("com.azure.communication.messages.models")
-            .getClass("MessageTemplateLocation");
-        messageTemplateLocationCustomization.getConstructor("MessageTemplateLocation")
-            .replaceParameters(
-                "@JsonProperty(value = \"name\") String refValue, GeoPosition geoPosition",
-                List.of("com.azure.core.models.GeoPosition")
-            )
-            .replaceBody( "super(refValue);" +
-                "this.latitude = geoPosition.getLatitude();" +
-                "this.longitude = geoPosition.getLongitude();"
-            );
-        messageTemplateLocationCustomization
-            .getConstructor("MessageTemplateLocation")
-            .getJavadoc()
-            .removeParam("longitude")
-            .removeParam("latitude")
-            .setParam("geoPosition", "the geoPosition value to set.");
-    }
-
-    private void addPositionGetterInTemplateLocation(LibraryCustomization libraryCustomization) {
-        ClassCustomization messageTemplateLocationCustomization = libraryCustomization
-            .getPackage("com.azure.communication.messages.models")
-            .getClass("MessageTemplateLocation");
-
-        messageTemplateLocationCustomization.removeMethod("getLatitude");
-        messageTemplateLocationCustomization.removeMethod("getLongitude");
-
-        messageTemplateLocationCustomization.addMethod(
-            "public GeoPosition getPosition() {" +
-            "    return new GeoPosition(this.longitude, this.latitude);" +
-            "}");
-
-        messageTemplateLocationCustomization
-            .getMethod("getPosition")
-            .getJavadoc()
-            .setDescription("Get the geo position: The longitude and latitude of the location.\n" +
-                "@return the GeoPosition object.");
-    }
-
-    private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(LibraryCustomization libraryCustomization) {
-        ClassCustomization whatsAppMessageTemplateItemCustomization = libraryCustomization
-            .getPackage("com.azure.communication.messages.models.channels")
-            .getClass("WhatsAppMessageTemplateItem");
-
-        whatsAppMessageTemplateItemCustomization
-            .addImports("com.azure.core.util.BinaryData")
-            .getMethod("getContent")
-            .setReturnType("BinaryData", "return BinaryData.fromObject(returnValue);", true);
+                String fromJson = clazz.getMethodsByName("fromJson").get(0).getBody().get().toString()
+                    .replace("deserializedWhatsAppMessageTemplateItem.setName(name);",
+                        "MessageTemplateItemAccessHelper.setName(deserializedWhatsAppMessageTemplateItem, name);");
+                clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
+            });
+        });
     }
 }

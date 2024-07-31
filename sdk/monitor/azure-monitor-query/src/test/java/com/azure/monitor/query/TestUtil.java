@@ -6,7 +6,8 @@ package com.azure.monitor.query;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
@@ -21,7 +22,19 @@ public class TestUtil {
      */
     public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            return new AzurePowerShellCredentialBuilder().build();
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            String serviceConnectionId  = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            return new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {

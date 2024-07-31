@@ -77,8 +77,7 @@ public class ProxySendTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageId);
-        final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
+        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))

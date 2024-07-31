@@ -208,8 +208,8 @@ public final class CapacityReservationInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model CapacityReservationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model CapacityReservationInner"));
         } else {
             sku().validate();
         }

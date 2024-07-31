@@ -37,8 +37,8 @@ public final class RollbackStatusInfo {
     }
 
     /**
-     * Get the successfullyRolledbackInstanceCount property: The number of instances which have been successfully
-     * rolled back.
+     * Get the successfullyRolledbackInstanceCount property: The number of instances which have been successfully rolled
+     * back.
      * 
      * @return the successfullyRolledbackInstanceCount value.
      */

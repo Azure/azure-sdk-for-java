@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ConnectedEnvironmentsDaprComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
      */
     /**
@@ -25,9 +25,13 @@ public final class ConnectedEnvironmentsDaprComponentsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateDaprComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironmentsDaprComponents().define("reddog")
-            .withExistingConnectedEnvironment("examplerg", "myenvironment").withComponentType("state.azure.cosmosdb")
-            .withVersion("v1").withIgnoreErrors(false).withInitTimeout("50s")
+        manager.connectedEnvironmentsDaprComponents()
+            .define("reddog")
+            .withExistingConnectedEnvironment("examplerg", "myenvironment")
+            .withComponentType("state.azure.cosmosdb")
+            .withVersion("v1")
+            .withIgnoreErrors(false)
+            .withInitTimeout("50s")
             .withSecrets(Arrays.asList(new Secret().withName("masterkey").withValue("keyvalue")))
             .withMetadata(Arrays.asList(new DaprMetadata().withName("url").withValue("<COSMOS-URL>"),
                 new DaprMetadata().withName("database").withValue("itemsDB"),

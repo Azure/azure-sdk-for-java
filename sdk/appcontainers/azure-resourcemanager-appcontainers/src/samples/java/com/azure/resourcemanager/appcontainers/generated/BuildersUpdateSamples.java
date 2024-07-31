@@ -14,7 +14,7 @@ import java.util.Map;
 public final class BuildersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Builders_Update.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Builders_Update.json
      */
     /**
      * Sample code: Builders_Update_0.
@@ -23,7 +23,8 @@ public final class BuildersUpdateSamples {
      */
     public static void buildersUpdate0(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         BuilderResource resource = manager.builders()
-            .getByResourceGroupWithResponse("rg", "testBuilder", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg", "testBuilder", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("mytag1", "myvalue1")).apply();
     }
 

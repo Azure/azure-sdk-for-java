@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AccessPolicyAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessPolicyAssignmentsClient.
+ */
 public interface AccessPolicyAssignmentsClient {
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -31,18 +33,15 @@ public interface AccessPolicyAssignmentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to an operation on access policy assignment along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyAssignmentName,
-        RedisCacheAccessPolicyAssignmentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName, RedisCacheAccessPolicyAssignmentInner parameters);
 
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -54,15 +53,12 @@ public interface AccessPolicyAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RedisCacheAccessPolicyAssignmentInner>, RedisCacheAccessPolicyAssignmentInner>
-        beginCreateUpdateAsync(
-            String resourceGroupName,
-            String cacheName,
-            String accessPolicyAssignmentName,
+        beginCreateUpdateAsync(String resourceGroupName, String cacheName, String accessPolicyAssignmentName,
             RedisCacheAccessPolicyAssignmentInner parameters);
 
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -74,15 +70,12 @@ public interface AccessPolicyAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RedisCacheAccessPolicyAssignmentInner>, RedisCacheAccessPolicyAssignmentInner>
-        beginCreateUpdate(
-            String resourceGroupName,
-            String cacheName,
-            String accessPolicyAssignmentName,
+        beginCreateUpdate(String resourceGroupName, String cacheName, String accessPolicyAssignmentName,
             RedisCacheAccessPolicyAssignmentInner parameters);
 
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -95,16 +88,12 @@ public interface AccessPolicyAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RedisCacheAccessPolicyAssignmentInner>, RedisCacheAccessPolicyAssignmentInner>
-        beginCreateUpdate(
-            String resourceGroupName,
-            String cacheName,
-            String accessPolicyAssignmentName,
-            RedisCacheAccessPolicyAssignmentInner parameters,
-            Context context);
+        beginCreateUpdate(String resourceGroupName, String cacheName, String accessPolicyAssignmentName,
+            RedisCacheAccessPolicyAssignmentInner parameters, Context context);
 
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -115,15 +104,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return response to an operation on access policy assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RedisCacheAccessPolicyAssignmentInner> createUpdateAsync(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyAssignmentName,
-        RedisCacheAccessPolicyAssignmentInner parameters);
+    Mono<RedisCacheAccessPolicyAssignmentInner> createUpdateAsync(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName, RedisCacheAccessPolicyAssignmentInner parameters);
 
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -134,15 +120,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return response to an operation on access policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisCacheAccessPolicyAssignmentInner createUpdate(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyAssignmentName,
-        RedisCacheAccessPolicyAssignmentInner parameters);
+    RedisCacheAccessPolicyAssignmentInner createUpdate(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName, RedisCacheAccessPolicyAssignmentInner parameters);
 
     /**
      * Adds the access policy assignment to the specified users.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -154,16 +137,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return response to an operation on access policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisCacheAccessPolicyAssignmentInner createUpdate(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyAssignmentName,
-        RedisCacheAccessPolicyAssignmentInner parameters,
-        Context context);
+    RedisCacheAccessPolicyAssignmentInner createUpdate(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName, RedisCacheAccessPolicyAssignmentInner parameters, Context context);
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -173,12 +152,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName);
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -188,12 +167,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName);
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -203,12 +182,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName);
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -219,12 +198,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName, Context context);
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -238,7 +217,7 @@ public interface AccessPolicyAssignmentsClient {
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -251,7 +230,7 @@ public interface AccessPolicyAssignmentsClient {
 
     /**
      * Deletes the access policy assignment from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -265,7 +244,7 @@ public interface AccessPolicyAssignmentsClient {
 
     /**
      * Gets the list of assignments for an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -273,15 +252,15 @@ public interface AccessPolicyAssignmentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of assignments for an access policy of a redis cache along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RedisCacheAccessPolicyAssignmentInner>> getWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName);
+    Mono<Response<RedisCacheAccessPolicyAssignmentInner>> getWithResponseAsync(String resourceGroupName,
+        String cacheName, String accessPolicyAssignmentName);
 
     /**
      * Gets the list of assignments for an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -291,12 +270,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return the list of assignments for an access policy of a redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RedisCacheAccessPolicyAssignmentInner> getAsync(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName);
+    Mono<RedisCacheAccessPolicyAssignmentInner> getAsync(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName);
 
     /**
      * Gets the list of assignments for an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -307,12 +286,12 @@ public interface AccessPolicyAssignmentsClient {
      * @return the list of assignments for an access policy of a redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RedisCacheAccessPolicyAssignmentInner> getWithResponse(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName, Context context);
+    Response<RedisCacheAccessPolicyAssignmentInner> getWithResponse(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName, Context context);
 
     /**
      * Gets the list of assignments for an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyAssignmentName The name of the access policy assignment.
@@ -322,50 +301,50 @@ public interface AccessPolicyAssignmentsClient {
      * @return the list of assignments for an access policy of a redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisCacheAccessPolicyAssignmentInner get(
-        String resourceGroupName, String cacheName, String accessPolicyAssignmentName);
+    RedisCacheAccessPolicyAssignmentInner get(String resourceGroupName, String cacheName,
+        String accessPolicyAssignmentName);
 
     /**
      * Gets the list of access policy assignments associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policy assignments associated with this redis cache as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of access policy assignments associated with this redis cache as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RedisCacheAccessPolicyAssignmentInner> listAsync(String resourceGroupName, String cacheName);
 
     /**
      * Gets the list of access policy assignments associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policy assignments associated with this redis cache as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of access policy assignments associated with this redis cache as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RedisCacheAccessPolicyAssignmentInner> list(String resourceGroupName, String cacheName);
 
     /**
      * Gets the list of access policy assignments associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policy assignments associated with this redis cache as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of access policy assignments associated with this redis cache as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RedisCacheAccessPolicyAssignmentInner> list(
-        String resourceGroupName, String cacheName, Context context);
+    PagedIterable<RedisCacheAccessPolicyAssignmentInner> list(String resourceGroupName, String cacheName,
+        Context context);
 }

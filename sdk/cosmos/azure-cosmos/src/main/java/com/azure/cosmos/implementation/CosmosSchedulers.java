@@ -86,4 +86,9 @@ public class CosmosSchedulers {
         TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
     );
+
+    public final static Scheduler PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE = Schedulers.newSingle(
+      "partition-availability-staleness-check",
+      true
+    );
 }

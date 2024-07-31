@@ -11,7 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The ExtractedSummaryDocumentResult model. */
+/**
+ * The ExtractedSummaryDocumentResult model.
+ */
 @Fluent
 public final class ExtractedSummaryDocumentResult extends DocumentResult {
     /*
@@ -19,12 +21,15 @@ public final class ExtractedSummaryDocumentResult extends DocumentResult {
      */
     private List<ExtractedSummarySentence> sentences;
 
-    /** Creates an instance of ExtractedSummaryDocumentResult class. */
-    public ExtractedSummaryDocumentResult() {}
+    /**
+     * Creates an instance of ExtractedSummaryDocumentResult class.
+     */
+    public ExtractedSummaryDocumentResult() {
+    }
 
     /**
      * Get the sentences property: A ranked list of sentences representing the extracted summary.
-     *
+     * 
      * @return the sentences value.
      */
     public List<ExtractedSummarySentence> getSentences() {
@@ -33,7 +38,7 @@ public final class ExtractedSummaryDocumentResult extends DocumentResult {
 
     /**
      * Set the sentences property: A ranked list of sentences representing the extracted summary.
-     *
+     * 
      * @param sentences the sentences value to set.
      * @return the ExtractedSummaryDocumentResult object itself.
      */
@@ -42,27 +47,36 @@ public final class ExtractedSummaryDocumentResult extends DocumentResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractedSummaryDocumentResult setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractedSummaryDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExtractedSummaryDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,41 +89,38 @@ public final class ExtractedSummaryDocumentResult extends DocumentResult {
 
     /**
      * Reads an instance of ExtractedSummaryDocumentResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExtractedSummaryDocumentResult if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExtractedSummaryDocumentResult.
      */
     public static ExtractedSummaryDocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExtractedSummaryDocumentResult deserializedExtractedSummaryDocumentResult =
-                            new ExtractedSummaryDocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ExtractedSummaryDocumentResult deserializedExtractedSummaryDocumentResult
+                = new ExtractedSummaryDocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedExtractedSummaryDocumentResult.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedExtractedSummaryDocumentResult.setWarnings(warnings);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedExtractedSummaryDocumentResult.setStatistics(
-                                    DocumentStatistics.fromJson(reader));
-                        } else if ("sentences".equals(fieldName)) {
-                            List<ExtractedSummarySentence> sentences =
-                                    reader.readArray(reader1 -> ExtractedSummarySentence.fromJson(reader1));
-                            deserializedExtractedSummaryDocumentResult.sentences = sentences;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedExtractedSummaryDocumentResult.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedExtractedSummaryDocumentResult.setWarnings(warnings);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedExtractedSummaryDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
+                } else if ("sentences".equals(fieldName)) {
+                    List<ExtractedSummarySentence> sentences
+                        = reader.readArray(reader1 -> ExtractedSummarySentence.fromJson(reader1));
+                    deserializedExtractedSummaryDocumentResult.sentences = sentences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedExtractedSummaryDocumentResult;
-                });
+            return deserializedExtractedSummaryDocumentResult;
+        });
     }
 }

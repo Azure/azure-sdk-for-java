@@ -35,7 +35,8 @@ import java.util.Arrays;
  */
 public final class LoadBalancersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateWithSyncModePropertyOnPool.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * LoadBalancerCreateWithSyncModePropertyOnPool.json
      */
     /**
      * Sample code: Create load balancer with Sync Mode Property on Pool.
@@ -90,7 +91,8 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with two Backend Pool.
@@ -138,7 +140,8 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateWithInboundNatPool.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * LoadBalancerCreateWithInboundNatPool.json
      */
     /**
      * Sample code: Create load balancer with inbound nat pool.
@@ -179,7 +182,9 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateWithZones.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateWithZones.
+     * json
      */
     /**
      * Sample code: Create load balancer with Frontend IP in Zone 1.
@@ -231,7 +236,8 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateWithOutboundRules.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * LoadBalancerCreateWithOutboundRules.json
      */
     /**
      * Sample code: Create load balancer with outbound rules.
@@ -289,7 +295,8 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with one Backend Pool.
@@ -342,7 +349,8 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreate.json
      */
     /**
      * Sample code: Create load balancer.
@@ -393,7 +401,9 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateGlobalTier.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateGlobalTier.
+     * json
      */
     /**
      * Sample code: Create load balancer with Global Tier and one regional load balancer in its backend pool.
@@ -441,7 +451,8 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * LoadBalancerCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Consumer configured.
@@ -495,7 +506,9 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerCreateStandardSku.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateStandardSku
+     * .json
      */
     /**
      * Sample code: Create load balancer with Standard SKU.

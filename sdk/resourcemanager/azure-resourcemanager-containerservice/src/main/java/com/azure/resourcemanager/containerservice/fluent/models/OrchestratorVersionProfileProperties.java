@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     * 
+     *
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -38,7 +39,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     * 
+     *
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileProperties object itself.
      */
@@ -49,13 +50,14 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestrators() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
         } else {
             orchestrators().forEach(e -> e.validate());
         }
