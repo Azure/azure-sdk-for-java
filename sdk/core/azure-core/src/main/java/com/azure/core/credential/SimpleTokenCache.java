@@ -63,9 +63,7 @@ import java.util.function.Supplier;
  * @see com.azure.core.credential.TokenCredential
  */
 public class SimpleTokenCache {
-    // The delay after a refresh to attempt another token refresh
-    private static Duration refreshDelay = Duration.ofSeconds(30);
-    private static final String REFRESH_DELAY_STRING = String.valueOf(refreshDelay.getSeconds());
+
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     // SimpleTokenCache is commonly used, use a static logger.
@@ -77,19 +75,32 @@ public class SimpleTokenCache {
     private final Supplier<Mono<AccessToken>> tokenSupplier;
     private final Predicate<AccessToken> shouldRefresh;
 
+    // The delay after a refresh to attempt another token refresh
+    private final Duration refreshDelay;
+    private final String refreshDelayString;
+
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
      * @param tokenSupplier a method to get a new token
      */
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
+        this(tokenSupplier, Duration.ofSeconds(30));
+
+    }
+
+    SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier, Duration refreshDelay) {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
             .isAfter(accessToken.getRefreshAt() == null
                 ? accessToken.getExpiresAt().minus(REFRESH_OFFSET)
                 : accessToken.getRefreshAt());
+        this.refreshDelay = refreshDelay;
+        this.refreshDelayString = String.valueOf(refreshDelay.getSeconds());
     }
+
+
 
     /**
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
@@ -175,7 +186,7 @@ public class SimpleTokenCache {
         return wip.get();
     }
 
-    private static LoggingEventBuilder buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
+    private LoggingEventBuilder buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
         LoggingEventBuilder logBuilder = LOGGER.atLevel(level);
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
             return logBuilder;
@@ -184,11 +195,7 @@ public class SimpleTokenCache {
         Duration tte = Duration.between(now, cache.getExpiresAt());
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
-            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
+            .addKeyValue("retryAfterSeconds", refreshDelayString)
             .addKeyValue("expired", tte.isNegative());
-    }
-
-    void setRefreshDelay(Duration refreshDelayDuration) {
-        refreshDelay = refreshDelayDuration;
     }
 }
