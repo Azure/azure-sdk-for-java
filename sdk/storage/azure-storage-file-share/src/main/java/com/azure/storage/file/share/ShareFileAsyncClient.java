@@ -360,56 +360,6 @@ public class ShareFileAsyncClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * shareFileAsyncClient.createWithResponse&#40;1024, httpHeaders1, smbProperties1, filePermission1,
-     *     filePermissionFormat, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
-     *
-     * @param maxSize The maximum size in bytes for the file.
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file.
-     * @param filePermissionFormat The file permission format of the file.
-     * @param metadata Optional name-value pairs associated with the file as metadata.
-     * @return A response containing the {@link ShareFileInfo file info} and the status of creating the file.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
-     * directory is an invalid resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        Map<String, String> metadata) {
-        return createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, filePermissionFormat, metadata, null);
-    }
-
-    /**
-     * Creates a file in the storage account and returns a response of ShareFileInfo to interact with it.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
-     *
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions -->
      * <pre>
      * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
@@ -455,66 +405,6 @@ public class ShareFileAsyncClient {
         try {
             return withContext(context ->
                 createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata,
-                    requestConditions, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Creates a file in the storage account and returns a response of ShareFileInfo to interact with it.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map-ShareRequestConditions -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     *
-     * ShareRequestConditions requestConditions1 = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     *
-     * shareFileAsyncClient.createWithResponse&#40;1024, httpHeaders1, smbProperties1, filePermission1,
-     *     filePermissionFormat, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;, requestConditions1&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map-ShareRequestConditions -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
-     *
-     * @param maxSize The maximum size in bytes for the file.
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file.
-     * @param filePermissionFormat The file permission format of the file.
-     * @param metadata Optional name-value pairs associated with the file as metadata.
-     * @param requestConditions {@link ShareRequestConditions}
-     * @return A response containing the {@link ShareFileInfo file info} and the status of creating the file.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
-     * directory is an invalid resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        Map<String, String> metadata, ShareRequestConditions requestConditions) {
-        try {
-            return withContext(context ->
-                createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, filePermissionFormat, metadata,
                     requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1681,57 +1571,6 @@ public class ShareFileAsyncClient {
     /**
      * Sets the user-defined file properties to associate to the file.
      *
-     * <p>If {@code null} is passed for the fileProperties.httpHeaders it will clear the httpHeaders associated to the
-     * file.
-     * If {@code null} is passed for the fileProperties.filesmbproperties it will preserve the filesmb properties
-     * associated with the file.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Set the httpHeaders of contentType of "text/plain"</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * shareFileAsyncClient.setProperties&#40;1024, httpHeaders1, smbProperties1, filePermission1, filePermissionFormat&#41;
-     *     .doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Setting the file properties completed.&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
-     *
-     * @param newFileSize New file size of the file
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file
-     * @param filePermissionFormat The file permission format of the file.
-     * @return The {@link ShareFileInfo file info}
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareFileInfo> setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, filePermissionFormat, null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Sets the user-defined file properties to associate to the file.
-     *
      * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.
      * If {@code null} is passed for the filesmbproperties it will preserve the filesmbproperties associated with the
      * file.</p>
@@ -1865,66 +1704,6 @@ public class ShareFileAsyncClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-ShareRequestConditions -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * ShareRequestConditions requestConditions1 = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * shareFileAsyncClient.setPropertiesWithResponse&#40;1024, httpHeaders1, smbProperties1, filePermission1,
-     *         filePermissionFormat, requestConditions1&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Setting the file properties completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-ShareRequestConditions -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
-     *
-     * @param newFileSize New file size of the file.
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file.
-     * @param requestConditions {@link ShareRequestConditions}
-     * @param filePermissionFormat The file permission format of the file.
-     * @return Response containing the {@link ShareFileInfo file info} and response status code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        ShareRequestConditions requestConditions) {
-        try {
-            return withContext(context ->
-                setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, filePermissionFormat, requestConditions,
-                    context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Sets the user-defined file properties to associate to the file.
-     *
-     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.
-     * If {@code null} is passed for the filesmbproperties it will preserve the filesmbproperties associated with the
-     * file.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Set the httpHeaders of contentType of "text/plain"</p>
-     *
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.setPropertiesWithResponse#ShareFileSetPropertiesOptions -->
      * <pre>
      * ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions&#40;1024&#41;;
@@ -1962,7 +1741,7 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(ShareFileSetPropertiesOptions options) {
         try {
             return withContext(context ->
-                setPropertiesWithResponse(options.getSize(), options.getHttpHeaders(), options.getSmbProperties(),
+                setPropertiesWithResponse(options.getSizeInBytes(), options.getHttpHeaders(), options.getSmbProperties(),
                     options.getFilePermissions().getPermission(), options.getFilePermissions().getPermissionFormat(),
                     options.getRequestConditions(), context));
         } catch (RuntimeException ex) {

@@ -143,13 +143,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertNotNull(it.getValue().getSmbProperties().getFilePermissionKey());
                 FileShareTestHelper.assertResponseStatusCode(it, 201);
             }).verifyComplete();
-
-        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, null, null,
-            permission, filePermissionFormat, null, null))
-            .assertNext(it -> {
-                assertNotNull(it.getValue().getSmbProperties().getFilePermissionKey());
-                FileShareTestHelper.assertResponseStatusCode(it, 201);
-            }).verifyComplete();
     }
 
     @Test
@@ -1183,7 +1176,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void deleteIfExistsFileThatWasAlreadyDeleted() {
-        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null, null).block();
+        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null).block();
         assertEquals(Boolean.TRUE, primaryFileAsyncClient.deleteIfExists().block());
         assertNotEquals(Boolean.TRUE, primaryFileAsyncClient.deleteIfExists().block());
     }
@@ -1304,14 +1297,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
 
         StepVerifier.create(primaryFileAsyncClient.create(512).then(primaryFileAsyncClient.setPropertiesWithResponse(options)))
-            .assertNext(r -> {
-                FileShareTestHelper.assertResponseStatusCode(r, 200);
-                assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());
-            })
-            .verifyComplete();
-
-        StepVerifier.create(primaryFileAsyncClient.setPropertiesWithResponse(1024,
-            null, null, permission, filePermissionFormat, null))
             .assertNext(r -> {
                 FileShareTestHelper.assertResponseStatusCode(r, 200);
                 assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());

@@ -19,7 +19,7 @@ public class ShareFileCreateOptions {
     private final long size;
     private ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
-    private String filePermission;
+    private String filePermissionKey;
     private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
@@ -118,17 +118,17 @@ public class ShareFileCreateOptions {
      * @return file permission.
      */
     public String getFilePermission() {
-        return filePermission;
+        return filePermissionKey;
     }
 
     /**
      * Sets the file permission.
      *
-     * @param filePermission the file permission.
+     * @param filePermissionKey the file permission.
      * @return The updated options.
      */
-    public ShareFileCreateOptions setFilePermission(String filePermission) {
-        this.filePermission = filePermission;
+    public ShareFileCreateOptions setFilePermission(String filePermissionKey) {
+        this.filePermissionKey = filePermissionKey;
         return this;
     }
 

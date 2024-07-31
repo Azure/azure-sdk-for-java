@@ -429,7 +429,6 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#setProperties(FileSmbProperties, String)}
-     * and {@link ShareDirectoryAsyncClient#setProperties(FileSmbProperties, String, FilePermissionFormat)}
      */
     public void setPropertiesAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -440,22 +439,11 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             System.out.printf("Directory latest modified date is %s:", properties.getLastModified());
         });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String
-
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String-FilePermissionFormat
-        FileSmbProperties smbProperties1 = new FileSmbProperties();
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        shareDirectoryAsyncClient.setProperties(smbProperties1, filePermission1, filePermissionFormat)
-            .subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.getLastModified());
-        });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String-FilePermissionFormat
     }
 
     /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties,
-     * String)} and
-     * {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties, String, FilePermissionFormat)}
+     * String)}
      * and {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(ShareDirectorySetPropertiesOptions)}
      */
     public void setPropertiesWithResponse() {
@@ -467,16 +455,6 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
         });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String
-
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat
-        FileSmbProperties smbProperties1 = new FileSmbProperties();
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        shareDirectoryAsyncClient.setPropertiesWithResponse(smbProperties1, filePermission1, filePermissionFormat)
-            .subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
-        });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions
         ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions();

@@ -340,17 +340,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Mono<Response<ShareDirectoryInfo>> bagResponse = primaryDirectoryAsyncClient.create()
             .then(primaryDirectoryAsyncClient.setPropertiesWithResponse(options));
 
-        Mono<Response<ShareDirectoryInfo>> nonBagResponse = primaryDirectoryAsyncClient.setPropertiesWithResponse(null,
-            permission, filePermissionFormat);
-
         StepVerifier.create(bagResponse)
-            .assertNext(r -> {
-                FileShareTestHelper.assertResponseStatusCode(r, 200);
-                assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());
-            })
-            .verifyComplete();
-
-        StepVerifier.create(nonBagResponse)
             .assertNext(r -> {
                 FileShareTestHelper.assertResponseStatusCode(r, 200);
                 assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());

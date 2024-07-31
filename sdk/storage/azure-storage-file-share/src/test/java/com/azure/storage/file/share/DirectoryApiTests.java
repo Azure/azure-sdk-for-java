@@ -604,14 +604,9 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         Response<ShareDirectoryInfo> bagResponse = primaryDirectoryClient.setPropertiesWithResponse(options, null,
             null);
-        Response<ShareDirectoryInfo> nonBagResponse = primaryDirectoryClient.setPropertiesWithResponse(null,
-            permission, filePermissionFormat, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(bagResponse, 200);
-        FileShareTestHelper.assertResponseStatusCode(nonBagResponse, 200);
-
         assertNotNull(bagResponse.getValue().getSmbProperties().getFilePermissionKey());
-        assertNotNull(nonBagResponse.getValue().getSmbProperties().getFilePermissionKey());
     }
 
     @Test

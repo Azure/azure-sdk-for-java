@@ -14,24 +14,25 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  */
 @Fluent
 public class ShareFileSetPropertiesOptions {
-    private final long size;
+    private final long sizeInBytes;
     private ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
     private ShareFilePermission filePermissions;
     private ShareRequestConditions requestConditions;
 
     /**
-     * @param size Specifies the size for the file share.
+     * @param sizeInBytes Specifies the new size for the file share in bytes. If the specified byte value is less than the
+     * current size of the file, then all ranges above the specified byte value are cleared.
      */
-    public ShareFileSetPropertiesOptions(long size) {
-        this.size = size;
+    public ShareFileSetPropertiesOptions(long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
     }
 
     /**
-     * @return Gets the size for the file share.
+     * @return Gets the new size for the file share.
      */
-    public long getSize() {
-        return this.size;
+    public long getSizeInBytes() {
+        return this.sizeInBytes;
     }
 
     /**

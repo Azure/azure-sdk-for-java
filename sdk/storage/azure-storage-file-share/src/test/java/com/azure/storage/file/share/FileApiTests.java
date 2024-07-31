@@ -200,14 +200,9 @@ class FileApiTests extends FileShareTestBase {
             .setFilePermissionFormat(filePermissionFormat);
 
         Response<ShareFileInfo> bagResponse = primaryFileClient.createWithResponse(options, null, null);
-        Response<ShareFileInfo> nonBagResponse = primaryFileClient.createWithResponse(1024, null,
-            null, permission, filePermissionFormat, null, null, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(bagResponse, 201);
-        FileShareTestHelper.assertResponseStatusCode(nonBagResponse, 201);
-
         assertNotNull(bagResponse.getValue().getSmbProperties().getFilePermissionKey());
-        assertNotNull(nonBagResponse.getValue().getSmbProperties().getFilePermissionKey());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
@@ -1992,14 +1987,9 @@ class FileApiTests extends FileShareTestBase {
             .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
 
         Response<ShareFileInfo> bagResponse = primaryFileClient.setPropertiesWithResponse(options, null, null);
-        Response<ShareFileInfo> nonBagResponse = primaryFileClient.setPropertiesWithResponse(1024,
-            null, null, permission, null, filePermissionFormat, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(bagResponse, 200);
-        FileShareTestHelper.assertResponseStatusCode(nonBagResponse, 200);
-
         assertNotNull(bagResponse.getValue().getSmbProperties().getFilePermissionKey());
-        assertNotNull(nonBagResponse.getValue().getSmbProperties().getFilePermissionKey());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")

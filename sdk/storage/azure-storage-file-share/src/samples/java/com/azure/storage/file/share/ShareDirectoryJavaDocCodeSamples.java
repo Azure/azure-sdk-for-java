@@ -411,7 +411,6 @@ public class ShareDirectoryJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#setProperties(FileSmbProperties, String)}
-     * and {@link ShareDirectoryClient#setProperties(FileSmbProperties, String, FilePermissionFormat)}
      */
     public void setProperties() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
@@ -421,21 +420,11 @@ public class ShareDirectoryJavaDocCodeSamples {
         ShareDirectoryInfo response = shareDirectoryClient.setProperties(smbProperties, filePermission);
         System.out.printf("Directory latest modified date is %s.", response.getLastModified());
         // END: com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String
-
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String-FilePermissionFormat
-        FileSmbProperties smbProperties1 = new FileSmbProperties();
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        ShareDirectoryInfo response1 = shareDirectoryClient.setProperties(smbProperties1, filePermission1,
-            filePermissionFormat);
-        System.out.printf("Directory latest modified date is %s.", response1.getLastModified());
-        // END: com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String-FilePermissionFormat
     }
 
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#setPropertiesWithResponse(FileSmbProperties, String,
-     * Duration, Context)} and
-     * {@link ShareDirectoryClient#setPropertiesWithResponse(FileSmbProperties, String, FilePermissionFormat, Duration, Context)}
+     * Duration, Context)}
      * and {@link ShareDirectoryClient#setPropertiesWithResponse(ShareDirectorySetPropertiesOptions, Duration, Context)}
      */
     public void setPropertiesWithResponse() {
@@ -447,15 +436,6 @@ public class ShareDirectoryJavaDocCodeSamples {
             filePermission, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Directory latest modified date is %s.", response.getValue().getLastModified());
         // END: com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context
-
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat-Duration-Context
-        FileSmbProperties smbProperties1 = new FileSmbProperties();
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        Response<ShareDirectoryInfo> response1 = shareDirectoryClient.setPropertiesWithResponse(smbProperties1,
-            filePermission1, filePermissionFormat, Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Directory latest modified date is %s.", response1.getValue().getLastModified());
-        // END: com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat-Duration-Context
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions-Duration-Context
         ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions();

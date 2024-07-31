@@ -184,8 +184,6 @@ public class ShareFileJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link ShareFileClient#createWithResponse(long, ShareFileHttpHeaders, FileSmbProperties,
      * String, Map, ShareRequestConditions, Duration, Context)} and
-     * {@link ShareFileClient#createWithResponse(long, ShareFileHttpHeaders, FileSmbProperties, String, FilePermissionFormat,
-     * Map, ShareRequestConditions, Duration, Context)} and
      * {@link ShareFileClient#createWithResponse(ShareFileCreateOptions, Duration, Context)}
      */
     public void createWithLease() {
@@ -212,30 +210,6 @@ public class ShareFileJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context
-
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map-ShareRequestConditions-Duration-Context
-        ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders()
-            .setContentType("text/html")
-            .setContentEncoding("gzip")
-            .setContentLanguage("en")
-            .setCacheControl("no-transform")
-            .setContentDisposition("attachment");
-        FileSmbProperties smbProperties1 = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .setFileCreationTime(OffsetDateTime.now())
-            .setFileLastWriteTime(OffsetDateTime.now())
-            .setFilePermissionKey("filePermissionKey");
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        // NOTE: filePermission and filePermissionKey should never be both set
-
-        ShareRequestConditions requestConditions1 = new ShareRequestConditions().setLeaseId(leaseId);
-
-        Response<ShareFileInfo> response1 = fileClient.createWithResponse(1024, httpHeaders1, smbProperties1,
-            filePermission1, filePermissionFormat, Collections.singletonMap("directory", "metadata"), requestConditions1,
-            Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Creating the file completed with status code %d", response1.getStatusCode());
-        // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map-ShareRequestConditions-Duration-Context
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.createWithResponse#ShareFileCreateOptions-Duration-Context
         ShareFileCreateOptions options = new ShareFileCreateOptions(1024);
@@ -879,8 +853,7 @@ public class ShareFileJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareFileClient#setProperties(long, ShareFileHttpHeaders, FileSmbProperties,
-     * String)} and
-     * {@link ShareFileClient#setProperties(long, ShareFileHttpHeaders, FileSmbProperties, String, FilePermissionFormat)}
+     * String)}
      */
     public void setHTTPHeaders() {
         ShareFileClient fileClient = createClientWithSASToken();
@@ -901,31 +874,11 @@ public class ShareFileJavaDocCodeSamples {
         fileClient.setProperties(1024, httpHeaders, smbProperties, filePermission);
         System.out.println("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String
-
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat
-        ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders()
-            .setContentType("text/html")
-            .setContentEncoding("gzip")
-            .setContentLanguage("en")
-            .setCacheControl("no-transform")
-            .setContentDisposition("attachment");
-        FileSmbProperties smbProperties1 = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .setFileCreationTime(OffsetDateTime.now())
-            .setFileLastWriteTime(OffsetDateTime.now())
-            .setFilePermissionKey("filePermissionKey");
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        // NOTE: filePermission and filePermissionKey should never be both set
-        fileClient.setProperties(1024, httpHeaders1, smbProperties1, filePermission1, filePermissionFormat);
-        System.out.println("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat
     }
 
     /**
      * Generates a code sample for using {@link ShareFileClient#setPropertiesWithResponse(long, ShareFileHttpHeaders,
-     * FileSmbProperties, String, ShareRequestConditions, Duration, Context)} and
-     * {@link ShareFileClient#setPropertiesWithResponse(long, ShareFileHttpHeaders, FileSmbProperties, String, ShareRequestConditions, FilePermissionFormat, Duration, Context)}
+     * FileSmbProperties, String, ShareRequestConditions, Duration, Context)}
      * and {@link ShareFileClient#setPropertiesWithResponse(ShareFileSetPropertiesOptions, Duration, Context)}
      */
     public void setHttpHeadersWithLease() {
@@ -949,27 +902,6 @@ public class ShareFileJavaDocCodeSamples {
             null);
         System.out.println("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-Duration-Context
-
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-FilePermissionFormat-Duration-Context
-        ShareRequestConditions requestConditions1 = new ShareRequestConditions().setLeaseId(leaseId);
-        ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders()
-            .setContentType("text/html")
-            .setContentEncoding("gzip")
-            .setContentLanguage("en")
-            .setCacheControl("no-transform")
-            .setContentDisposition("attachment");
-        FileSmbProperties smbProperties1 = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .setFileCreationTime(OffsetDateTime.now())
-            .setFileLastWriteTime(OffsetDateTime.now())
-            .setFilePermissionKey("filePermissionKey");
-        String filePermission1 = "filePermission";
-        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-        // NOTE: filePermission and filePermissionKey should never be both set
-        fileClient.setPropertiesWithResponse(1024, httpHeaders1, smbProperties1, filePermission1,
-            requestConditions1, filePermissionFormat, null, null);
-        System.out.println("Setting the file httpHeaders completed.");
-        // END: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-FilePermissionFormat-Duration-Context
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#ShareFileSetPropertiesOptions-Duration-Context
         ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(1024);

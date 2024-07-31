@@ -493,86 +493,6 @@ public class ShareFileClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map-ShareRequestConditions-Duration-Context -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     *
-     * ShareRequestConditions requestConditions1 = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     *
-     * Response&lt;ShareFileInfo&gt; response1 = fileClient.createWithResponse&#40;1024, httpHeaders1, smbProperties1,
-     *     filePermission1, filePermissionFormat, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;, requestConditions1,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;, response1.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat-Map-ShareRequestConditions-Duration-Context -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
-     *
-     * @param maxSize The maximum size in bytes for the file.
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file.
-     * @param filePermissionFormat The file permission format of the file.
-     * @param metadata Optional name-value pairs associated with the file as metadata.
-     * @param requestConditions {@link ShareRequestConditions}
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareFileInfo file info} and the status of creating the file.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
-     * directory is an invalid resource name.
-     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
-     * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        Map<String, String> metadata, ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions = requestConditions == null
-            ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
-        Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () ->
-            this.azureFileStorageClient.getFiles().createWithResponse(shareName, filePath, maxSize, fileAttributes,
-                null, metadata, finalFilePermission, filePermissionFormat, filePermissionKey, fileCreationTime,
-                fileLastWriteTime, fileChangeTime, finalRequestConditions.getLeaseId(), httpHeaders, finalContext);
-
-        return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
-    }
-
-    /**
-     * Creates a file in the storage account and returns a response of ShareFileInfo to interact with it.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create the file with length of 1024 bytes, some headers, file smb properties and metadata.</p>
-     *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createWithResponse#ShareFileCreateOptions-Duration-Context -->
      * <pre>
      * ShareFileCreateOptions options = new ShareFileCreateOptions&#40;1024&#41;;
@@ -1611,55 +1531,6 @@ public class ShareFileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * fileClient.setProperties&#40;1024, httpHeaders1, smbProperties1, filePermission1, filePermissionFormat&#41;;
-     * System.out.println&#40;&quot;Setting the file httpHeaders completed.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.setProperties#long-ShareFileHttpHeaders-FileSmbProperties-String-FilePermissionFormat -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
-     *
-     * @param newFileSize New file size of the file
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file
-     * @param filePermissionFormat The file permission format of the file.
-     * @return The {@link ShareFileInfo file info}
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShareFileInfo setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null,
-            filePermissionFormat, null, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Sets the user-defined httpHeaders to associate to the file.
-     *
-     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Set the httpHeaders of contentType of "text/plain"</p>
-     *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Duration-Context -->
      * <pre>
      * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
@@ -1805,81 +1676,6 @@ public class ShareFileClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-FilePermissionFormat-Duration-Context -->
-     * <pre>
-     * ShareRequestConditions requestConditions1 = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * ShareFileHttpHeaders httpHeaders1 = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission1 = &quot;filePermission&quot;;
-     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * fileClient.setPropertiesWithResponse&#40;1024, httpHeaders1, smbProperties1, filePermission1,
-     *     requestConditions1, filePermissionFormat, null, null&#41;;
-     * System.out.println&#40;&quot;Setting the file httpHeaders completed.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-ShareRequestConditions-FilePermissionFormat-Duration-Context -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-file-properties">Azure Docs</a>.</p>
-     *
-     * @param newFileSize New file size of the file
-     * @param httpHeaders The user settable file http headers.
-     * @param smbProperties The user settable file smb properties.
-     * @param filePermission The file permission of the file
-     * @param requestConditions {@link ShareRequestConditions}
-     * @param filePermissionFormat The file permission format of the file.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return Response containing the {@link ShareFileInfo file info} with headers and status code
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileInfo> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions,
-        FilePermissionFormat filePermissionFormat, Duration timeout, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
-        Callable<ResponseBase<FilesSetHttpHeadersHeaders, Void>> operation = () ->
-            this.azureFileStorageClient.getFiles().setHttpHeadersWithResponse(shareName, filePath, fileAttributes, null,
-                newFileSize, finalFilePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, finalRequestConditions.getLeaseId(), httpHeaders, finalContext);
-
-        return ModelHelper.setPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
-    }
-
-    /**
-     * Sets the user-defined httpHeaders to associate to the file.
-     *
-     * <p>If {@code null} is passed for the httpHeaders it will clear the httpHeaders associated to the file.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Set the httpHeaders of contentType of "text/plain"</p>
-     *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.setPropertiesWithResponse#ShareFileSetPropertiesOptions-Duration-Context -->
      * <pre>
      * ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions&#40;1024&#41;;
@@ -1936,7 +1732,7 @@ public class ShareFileClient {
         String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<FilesSetHttpHeadersHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getFiles().setHttpHeadersWithResponse(shareName, filePath, fileAttributes,
-                null, options.getSize(), finalFilePermission, options.getFilePermissions().getPermissionFormat(),
+                null, options.getSizeInBytes(), finalFilePermission, options.getFilePermissions().getPermissionFormat(),
                 filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, finalRequestConditions.getLeaseId(),
                 options.getHttpHeaders(), finalContext);
 
