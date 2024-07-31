@@ -113,7 +113,7 @@ public final class ClientTelemetryMetrics {
         if (cpuOptions.isEnabled()) {
             DistributionSummary averageSystemCpuUsageMeter = DistributionSummary
                 .builder(CosmosMetricName.SYSTEM_CPU.toString())
-                .baseUnit("%")
+                .baseUnit(cpuOptions.getBaseUnit() != null ? cpuOptions.getBaseUnit() : "%")
                 .description("Avg. System CPU load")
                 .maximumExpectedValue(100d)
                 .publishPercentiles(cpuOptions.getPercentiles())
@@ -125,7 +125,7 @@ public final class ClientTelemetryMetrics {
         if (memoryOptions.isEnabled()) {
             DistributionSummary freeMemoryAvailableInMBMeter = DistributionSummary
                 .builder(CosmosMetricName.SYSTEM_MEMORY_FREE.toString())
-                .baseUnit("MB")
+                .baseUnit(memoryOptions.getBaseUnit() != null ? memoryOptions.getBaseUnit() : "MB")
                 .description("Free memory available")
                 .publishPercentiles()
                 .publishPercentileHistogram(false)
@@ -432,7 +432,7 @@ public final class ClientTelemetryMetrics {
             if (callsOptions.isEnabled()) {
                 Counter operationsCounter = Counter
                     .builder(callsOptions.getMeterName().toString())
-                    .baseUnit("calls")
+                    .baseUnit(callsOptions.getBaseUnit() != null ? callsOptions.getBaseUnit() : "calls")
                     .description("Operation calls")
                     .tags(getEffectiveTags(operationTags, callsOptions))
                     .register(compositeRegistry);
@@ -445,7 +445,7 @@ public final class ClientTelemetryMetrics {
             if (requestChargeOptions.isEnabled()) {
                 DistributionSummary requestChargeMeter = DistributionSummary
                     .builder(requestChargeOptions.getMeterName().toString())
-                    .baseUnit("RU (request unit)")
+                    .baseUnit(requestChargeOptions.getBaseUnit() != null ? requestChargeOptions.getBaseUnit() : "RU (request unit)")
                     .description("Operation RU charge")
                     .maximumExpectedValue(100_000d)
                     .publishPercentiles(requestChargeOptions.getPercentiles())
@@ -462,7 +462,7 @@ public final class ClientTelemetryMetrics {
                 if (regionsOptions.isEnabled()) {
                     DistributionSummary regionsContactedMeter = DistributionSummary
                         .builder(regionsOptions.getMeterName().toString())
-                        .baseUnit("Regions contacted")
+                        .baseUnit(regionsOptions.getBaseUnit() != null ? regionsOptions.getBaseUnit() : "Regions contacted")
                         .description("Operation - regions contacted")
                         .maximumExpectedValue(100d)
                         .publishPercentiles()
@@ -557,7 +557,7 @@ public final class ClientTelemetryMetrics {
                 (!requestsOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                 Counter requestCounter = Counter
                     .builder(requestsOptions.getMeterName().toString())
-                    .baseUnit("requests")
+                    .baseUnit(requestsOptions.getBaseUnit() != null ? requestsOptions.getBaseUnit() : "requests")
                     .description("Gateway requests")
                     .tags(getEffectiveTags(requestTags, requestsOptions))
                     .register(compositeRegistry);
@@ -604,7 +604,7 @@ public final class ClientTelemetryMetrics {
                 (!reqSizeOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                 DistributionSummary requestPayloadSizeMeter = DistributionSummary
                     .builder(reqSizeOptions.getMeterName().toString())
-                    .baseUnit("bytes")
+                    .baseUnit(reqSizeOptions.getBaseUnit() != null ? reqSizeOptions.getBaseUnit() : "bytes")
                     .description("Request payload size in bytes")
                     .maximumExpectedValue(16d * 1024)
                     .publishPercentiles()
@@ -621,7 +621,7 @@ public final class ClientTelemetryMetrics {
                 (!rspSizeOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                 DistributionSummary responsePayloadSizeMeter = DistributionSummary
                     .builder(rspSizeOptions.getMeterName().toString())
-                    .baseUnit("bytes")
+                    .baseUnit(reqSizeOptions.getBaseUnit() != null ? reqSizeOptions.getBaseUnit() : "bytes")
                     .description("Response payload size in bytes")
                     .maximumExpectedValue(16d * 1024)
                     .publishPercentiles()
@@ -645,7 +645,7 @@ public final class ClientTelemetryMetrics {
                 if (maxItemCountOptions.isEnabled()) {
                     DistributionSummary maxItemCountMeter = DistributionSummary
                         .builder(maxItemCountOptions.getMeterName().toString())
-                        .baseUnit("item count")
+                        .baseUnit(maxItemCountOptions.getBaseUnit() != null ? maxItemCountOptions.getBaseUnit() : "item count")
                         .description("Request max. item count")
                         .maximumExpectedValue(100_000d)
                         .publishPercentiles()
@@ -661,7 +661,7 @@ public final class ClientTelemetryMetrics {
                 if (actualItemCountOptions.isEnabled()) {
                     DistributionSummary actualItemCountMeter = DistributionSummary
                         .builder(actualItemCountOptions.getMeterName().toString())
-                        .baseUnit("item count")
+                        .baseUnit(actualItemCountOptions.getBaseUnit() != null ? actualItemCountOptions.getBaseUnit() : "item count")
                         .description("Response actual item count")
                         .maximumExpectedValue(100_000d)
                         .publishPercentiles()
@@ -812,7 +812,7 @@ public final class ClientTelemetryMetrics {
             if (acquiredOptions.isEnabled()) {
                 DistributionSummary acquiredChannelsMeter = DistributionSummary
                     .builder(acquiredOptions.getMeterName().toString())
-                    .baseUnit("#")
+                    .baseUnit(acquiredOptions.getBaseUnit() != null ? acquiredOptions.getBaseUnit() : "#")
                     .description("Endpoint statistics(acquired channels)")
                     .maximumExpectedValue(100_000d)
                     .publishPercentiles()
@@ -829,7 +829,7 @@ public final class ClientTelemetryMetrics {
             if (availableOptions.isEnabled()) {
                 DistributionSummary availableChannelsMeter = DistributionSummary
                     .builder(availableOptions.getMeterName().toString())
-                    .baseUnit("#")
+                    .baseUnit(availableOptions.getBaseUnit() != null ? availableOptions.getBaseUnit() : "#")
                     .description("Endpoint statistics(available channels)")
                     .maximumExpectedValue(100_000d)
                     .publishPercentiles()
@@ -845,7 +845,7 @@ public final class ClientTelemetryMetrics {
             if (inflightOptions.isEnabled()) {
                 DistributionSummary inflightRequestsMeter = DistributionSummary
                     .builder(inflightOptions.getMeterName().toString())
-                    .baseUnit("#")
+                    .baseUnit(inflightOptions.getBaseUnit() != null ? inflightOptions.getBaseUnit() : "#")
                     .description("Endpoint statistics(inflight requests)")
                     .tags(getEffectiveTags(requestTags, inflightOptions))
                     .maximumExpectedValue(1_000_000d)
@@ -931,7 +931,7 @@ public final class ClientTelemetryMetrics {
                         (!beLatencyOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                         DistributionSummary backendRequestLatencyMeter = DistributionSummary
                             .builder(beLatencyOptions.getMeterName().toString())
-                            .baseUnit("ms")
+                            .baseUnit(beLatencyOptions.getBaseUnit() != null ? beLatencyOptions.getBaseUnit() : "ms")
                             .description("Backend service latency")
                             .maximumExpectedValue(6_000d)
                             .publishPercentiles(beLatencyOptions.getPercentiles())
@@ -950,7 +950,7 @@ public final class ClientTelemetryMetrics {
                     double requestCharge = storeResponseDiagnostics.getRequestCharge();
                     DistributionSummary requestChargeMeter = DistributionSummary
                         .builder(ruOptions.getMeterName().toString())
-                        .baseUnit("RU (request unit)")
+                        .baseUnit(ruOptions.getBaseUnit() != null ? ruOptions.getBaseUnit() : "RU (request unit)")
                         .description("RNTBD Request RU charge")
                         .maximumExpectedValue(100_000d)
                         .publishPercentiles(ruOptions.getPercentiles())
@@ -986,7 +986,7 @@ public final class ClientTelemetryMetrics {
                     (!reqOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     Counter requestCounter = Counter
                         .builder(reqOptions.getMeterName().toString())
-                        .baseUnit("requests")
+                        .baseUnit(reqOptions.getBaseUnit() != null ? reqOptions.getBaseUnit() : "requests")
                         .description("RNTBD requests")
                         .tags(getEffectiveTags(requestTags, reqOptions))
                         .register(compositeRegistry);
@@ -1082,7 +1082,7 @@ public final class ClientTelemetryMetrics {
                     (!reqOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     Counter requestCounter = Counter
                         .builder(reqOptions.getMeterName().toString())
-                        .baseUnit("requests")
+                        .baseUnit(reqOptions.getBaseUnit() != null ? reqOptions.getBaseUnit() : "requests")
                         .description("Gateway requests")
                         .tags(getEffectiveTags(requestTags, reqOptions))
                         .register(compositeRegistry);
@@ -1097,7 +1097,7 @@ public final class ClientTelemetryMetrics {
                     double requestCharge = gatewayStats.getRequestCharge();
                     DistributionSummary requestChargeMeter = DistributionSummary
                         .builder(ruOptions.getMeterName().toString())
-                        .baseUnit("RU (request unit)")
+                        .baseUnit(ruOptions.getBaseUnit() != null ? ruOptions.getBaseUnit() : "RU (request unit)")
                         .description("Gateway Request RU charge")
                         .maximumExpectedValue(100_000d)
                         .publishPercentiles(ruOptions.getPercentiles())
@@ -1211,7 +1211,7 @@ public final class ClientTelemetryMetrics {
                     (!reqOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     Counter requestCounter = Counter
                         .builder(reqOptions.getMeterName().toString())
-                        .baseUnit("requests")
+                        .baseUnit(reqOptions.getBaseUnit() != null ? reqOptions.getBaseUnit() : "requests")
                         .description("Address resolution requests")
                         .tags(getEffectiveTags(addressResolutionTags, reqOptions))
                         .register(compositeRegistry);
@@ -1367,7 +1367,7 @@ public final class ClientTelemetryMetrics {
                 if (options.isEnabled()) {
                     DistributionSummary requestSize = DistributionSummary.builder(options.getMeterName().toString())
                                                           .description("RNTBD request size (bytes)")
-                                                          .baseUnit("bytes")
+                                                          .baseUnit(options.getBaseUnit() != null ? options.getBaseUnit() : "bytes")
                                                           .tags(getEffectiveTags(tags, options))
                                                           .maximumExpectedValue(16_000_000d)
                                                           .publishPercentileHistogram(false)
@@ -1381,7 +1381,7 @@ public final class ClientTelemetryMetrics {
                 if (options.isEnabled()) {
                     DistributionSummary responseSize = DistributionSummary.builder(options.getMeterName().toString())
                                                            .description("RNTBD response size (bytes)")
-                                                           .baseUnit("bytes")
+                                                           .baseUnit(options.getBaseUnit() != null ? options.getBaseUnit() : "bytes")
                                                            .tags(getEffectiveTags(tags, options))
                                                            .maximumExpectedValue(16_000_000d)
                                                            .publishPercentileHistogram(false)

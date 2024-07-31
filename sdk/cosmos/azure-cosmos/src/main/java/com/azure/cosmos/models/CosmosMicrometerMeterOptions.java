@@ -19,6 +19,7 @@ public final class CosmosMicrometerMeterOptions {
     private Boolean isEnabled;
 
     private Boolean applyDiagnosticThresholds;
+    private String baseUnit;
 
     /**
      * Instantiates new options for a specific Cosmos DB meter
@@ -28,6 +29,7 @@ public final class CosmosMicrometerMeterOptions {
         this.percentiles = null;
         this.suppressedTagNames = null;
         this.isEnabled = null;
+        this.baseUnit = null;
     }
 
     /**
@@ -110,6 +112,20 @@ public final class CosmosMicrometerMeterOptions {
     public CosmosMicrometerMeterOptions setEnabled(boolean enabled) {
         this.isEnabled = enabled;
         return this;
+    }
+
+    /**
+     * Sets the base unit for this meter.
+     * @param baseUnit the base unit for this meter.
+     * @return the updated {@code MetricsOptions} object.
+     */
+    public CosmosMicrometerMeterOptions setBaseUnit(String baseUnit) {
+        this.baseUnit = baseUnit;
+        return this;
+    }
+
+    String getBaseUnit() {
+        return this.baseUnit;
     }
 
     EnumSet<TagName> getSuppressedTagNames() {
