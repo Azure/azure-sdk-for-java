@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added more HTTP header name constants to `HttpHeaderName`. ([#41354](https://github.com/Azure/azure-sdk-for-java/pull/41354))
+- Added support for "refresh on" in `SimpleTokenCache`. ([#41315](https://github.com/Azure/azure-sdk-for-java/pull/41315))
 
 ### Bugs Fixed
 

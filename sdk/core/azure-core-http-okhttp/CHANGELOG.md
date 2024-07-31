@@ -2,12 +2,6 @@
 
 ## 1.12.2 (2024-07-31)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
