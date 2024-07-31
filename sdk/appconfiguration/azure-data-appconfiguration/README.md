@@ -542,7 +542,7 @@ List multiple labels in the App Configuration store by calling `listLabels`.
 
 ```java readme-sample-listLabels
 String labelNameFilter = "{labelNamePrefix}*";
-configurationClient.listLabels(new LabelSelector().setNameFilter(labelNameFilter))
+configurationClient.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
         .forEach(label -> {
             System.out.println("label name = " + label.getName());
         });

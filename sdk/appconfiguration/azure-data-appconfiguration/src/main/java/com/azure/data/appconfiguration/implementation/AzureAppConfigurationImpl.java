@@ -71,9 +71,9 @@ import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParam
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
-import com.azure.data.appconfiguration.models.Label;
-import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -2761,8 +2761,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsSinglePageAsync(String name, String after, String acceptDatetime,
-        List<LabelFields> select) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsSinglePageAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         String selectConverted = (select == null)
             ? null
@@ -2791,8 +2791,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsSinglePageAsync(String name, String after, String acceptDatetime,
-        List<LabelFields> select, Context context) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsSinglePageAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         String selectConverted = (select == null)
             ? null
@@ -2820,7 +2820,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Label> getLabelsAsync(String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public PagedFlux<SettingLabel> getLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         return new PagedFlux<>(() -> getLabelsSinglePageAsync(name, after, acceptDatetime, select),
             nextLink -> getLabelsNextSinglePageAsync(nextLink, acceptDatetime));
     }
@@ -2840,8 +2841,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Label> getLabelsAsync(String name, String after, String acceptDatetime, List<LabelFields> select,
-        Context context) {
+    public PagedFlux<SettingLabel> getLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         return new PagedFlux<>(() -> getLabelsSinglePageAsync(name, after, acceptDatetime, select, context),
             nextLink -> getLabelsNextSinglePageAsync(nextLink, acceptDatetime, context));
     }
@@ -2860,8 +2861,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsSinglePage(String name, String after, String acceptDatetime,
-        List<LabelFields> select) {
+    public PagedResponse<SettingLabel> getLabelsSinglePage(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         String selectConverted = (select == null)
             ? null
@@ -2889,8 +2890,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsSinglePage(String name, String after, String acceptDatetime,
-        List<LabelFields> select, Context context) {
+    public PagedResponse<SettingLabel> getLabelsSinglePage(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         String selectConverted = (select == null)
             ? null
@@ -2917,7 +2918,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public PagedIterable<SettingLabel> getLabels(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         return new PagedIterable<>(() -> getLabelsSinglePage(name, after, acceptDatetime, select, Context.NONE),
             nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime));
     }
@@ -2937,8 +2939,8 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(String name, String after, String acceptDatetime, List<LabelFields> select,
-        Context context) {
+    public PagedIterable<SettingLabel> getLabels(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         return new PagedIterable<>(() -> getLabelsSinglePage(name, after, acceptDatetime, select, context),
             nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime, context));
     }
@@ -2958,7 +2960,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabelsWithResponseAsync(String name, String after,
-        String acceptDatetime, List<LabelFields> select) {
+        String acceptDatetime, List<SettingLabelFields> select) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -2984,7 +2986,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabelsWithResponseAsync(String name, String after,
-        String acceptDatetime, List<LabelFields> select, Context context) {
+        String acceptDatetime, List<SettingLabelFields> select, Context context) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -3008,7 +3010,8 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         return checkLabelsWithResponseAsync(name, after, acceptDatetime, select).flatMap(ignored -> Mono.empty());
     }
 
@@ -3027,8 +3030,8 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime, List<LabelFields> select,
-        Context context) {
+    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         return checkLabelsWithResponseAsync(name, after, acceptDatetime, select, context)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3049,7 +3052,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<CheckLabelsHeaders, Void> checkLabelsWithResponse(String name, String after,
-        String acceptDatetime, List<LabelFields> select, Context context) {
+        String acceptDatetime, List<SettingLabelFields> select, Context context) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -3072,7 +3075,7 @@ public final class AzureAppConfigurationImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkLabels(String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public void checkLabels(String name, String after, String acceptDatetime, List<SettingLabelFields> select) {
         checkLabelsWithResponse(name, after, acceptDatetime, select, Context.NONE);
     }
 
@@ -4091,7 +4094,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.getLabelsNext(nextLink, this.getEndpoint(), this.getSyncToken(),
@@ -4114,7 +4117,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime,
+    public Mono<PagedResponse<SettingLabel>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime,
         Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         return service.getLabelsNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context)
@@ -4135,7 +4138,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String acceptDatetime) {
+    public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         ResponseBase<GetLabelsNextHeaders, LabelListResult> res = service.getLabelsNextSync(nextLink,
             this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
@@ -4157,7 +4160,8 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String acceptDatetime, Context context) {
+    public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String acceptDatetime,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         ResponseBase<GetLabelsNextHeaders, LabelListResult> res = service.getLabelsNextSync(nextLink,
             this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);

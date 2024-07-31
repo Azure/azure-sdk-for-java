@@ -14,16 +14,16 @@ import java.util.List;
  * A class that contains the label selector options for a GET request to the service.
  */
 @Fluent
-public final class LabelSelector {
+public final class SettingLabelSelector {
     private String nameFilter;
     private OffsetDateTime acceptDatetime;
 
-    private List<LabelFields> fields;
+    private List<SettingLabelFields> fields;
 
     /**
      * Creates a label selector that will populate responses with all of the {@link ConfigurationSetting#getLabel() labels}.
      */
-    public LabelSelector() {
+    public SettingLabelSelector() {
     }
 
     /**
@@ -48,9 +48,9 @@ public final class LabelSelector {
      * for more information about these supported filters.</p>
      *
      * @param nameFilter The expressions to filter ConfigurationSetting labels on.
-     * @return the updated LabelSelector object.
+     * @return the updated SettingLabelSelector object.
      */
-    public LabelSelector setNameFilter(String nameFilter) {
+    public SettingLabelSelector setNameFilter(String nameFilter) {
         this.nameFilter = nameFilter;
         return this;
     }
@@ -69,9 +69,9 @@ public final class LabelSelector {
      * If set, then labels will be retrieved as they existed at the provided datetime.
      *
      * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
-     * @return The updated LabelSelector object.
+     * @return The updated SettingLabelSelector object.
      */
-    public LabelSelector setAcceptDatetime(OffsetDateTime datetime) {
+    public SettingLabelSelector setAcceptDatetime(OffsetDateTime datetime) {
         this.acceptDatetime = datetime;
         return this;
     }
@@ -82,7 +82,7 @@ public final class LabelSelector {
      *
      * @return The set of {@link ConfigurationSnapshot} fields to return for a GET request.
      */
-    public List<LabelFields> getFields() {
+    public List<SettingLabelFields> getFields() {
         return fields;
     }
 
@@ -94,9 +94,9 @@ public final class LabelSelector {
      * @param fields The fields to select for the query response. If none are set, the service will return the
      * snapshot with a default set of properties.
      *
-     * @return The updated LabelSelector object.
+     * @return The updated SettingLabelSelector object.
      */
-    public LabelSelector setFields(LabelFields... fields) {
+    public SettingLabelSelector setFields(SettingLabelFields... fields) {
         this.fields = fields == null ? null : Arrays.asList(fields);
         return this;
     }
@@ -109,9 +109,9 @@ public final class LabelSelector {
      * @param fields The fields to select for the query response. If none are set, the service will return the
      * snapshot with a default set of properties.
      *
-     * @return The updated LabelSelector object.
+     * @return The updated SettingLabelSelector object.
      */
-    public LabelSelector setFields(List<LabelFields> fields) {
+    public SettingLabelSelector setFields(List<SettingLabelFields> fields) {
         this.fields = fields;
         return this;
     }

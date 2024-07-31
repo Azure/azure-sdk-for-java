@@ -6,7 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.LabelSelector;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 
 /**
  * A sample demonstrate how to list labels.
@@ -42,11 +42,11 @@ public class ListLabels {
                 .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List label by exact match:");
-        client.listLabels(new LabelSelector().setNameFilter("prod2"), Context.NONE)
+        client.listLabels(new SettingLabelSelector().setNameFilter("prod2"), Context.NONE)
                 .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List labels by wildcard:");
-        client.listLabels(new LabelSelector().setNameFilter("prod*"), Context.NONE)
+        client.listLabels(new SettingLabelSelector().setNameFilter("prod*"), Context.NONE)
                 .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
     }
 }

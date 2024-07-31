@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c1af3ab8e803da2f40fc90217a6d023bc13b677f/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-11-01/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,LabelFields,Label
+custom-types: SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,ConfigurationSnapshot,ConfigurationSnapshotStatus,SnapshotFields,SettingLabel,LabelFields,SettingLabelFields
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -93,6 +93,9 @@ directive:
   - rename-model:
       from: Snapshot
       to: ConfigurationSnapshot
+  - rename-model:
+      from: Label
+      to: SettingLabel
   - from: swagger-document
     where: $.parameters.KeyValueFields
     transform: >
@@ -100,7 +103,11 @@ directive:
   - from: swagger-document
     where: $.parameters.Status
     transform: >
-      $.items["x-ms-enum"].name = "ConfigurationSnapshotStatus";
+      $.items["x-ms-enum"].name = "ConfigurationSnapshotStatus"
+  - from: swagger-document
+    where: $.parameters.LabelFields
+    transform: >
+      $.items["x-ms-enum"].name = "SettingLabelFields";
 ```
 
 ### Modify SettingField enums

@@ -5,7 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.data.appconfiguration.models.Label;
+import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,7 +21,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
     /*
      * The collection value.
      */
-    private List<Label> items;
+    private List<SettingLabel> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
@@ -39,7 +39,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * 
      * @return the items value.
      */
-    public List<Label> getItems() {
+    public List<SettingLabel> getItems() {
         return this.items;
     }
 
@@ -49,7 +49,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * @param items the items value to set.
      * @return the LabelListResult object itself.
      */
-    public LabelListResult setItems(List<Label> items) {
+    public LabelListResult setItems(List<SettingLabel> items) {
         this.items = items;
         return this;
     }
@@ -101,7 +101,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
                 reader.nextToken();
 
                 if ("items".equals(fieldName)) {
-                    List<Label> items = reader.readArray(reader1 -> Label.fromJson(reader1));
+                    List<SettingLabel> items = reader.readArray(reader1 -> SettingLabel.fromJson(reader1));
                     deserializedLabelListResult.items = items;
                 } else if ("@nextLink".equals(fieldName)) {
                     deserializedLabelListResult.nextLink = reader.getString();

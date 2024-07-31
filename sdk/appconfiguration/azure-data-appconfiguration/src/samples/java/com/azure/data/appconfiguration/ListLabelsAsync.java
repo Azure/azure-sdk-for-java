@@ -4,7 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.models.LabelSelector;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,12 +50,12 @@ public class ListLabelsAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         System.out.println("List label by exact match:");
-        client.listLabels(new LabelSelector().setNameFilter("prod2")).subscribe(
+        client.listLabels(new SettingLabelSelector().setNameFilter("prod2")).subscribe(
                 label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         System.out.println("List labels by wildcard:");
-        client.listLabels(new LabelSelector().setNameFilter("prod*")).subscribe(
+        client.listLabels(new SettingLabelSelector().setNameFilter("prod*")).subscribe(
                 label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
     }

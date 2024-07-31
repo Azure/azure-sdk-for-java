@@ -6,7 +6,7 @@
 
 - Added a new service API support: `2023-11-01`.
 - Added a new method `listLabels` to support listing labels capabilities.
-- Added new class `Label` and `LabelSelector`, and a new enum `LabelFields`.
+- Added new class `SettingLabel` and `SettingLabelSelector`, and a new enum `SettingLabelFields`.
 - Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
 - Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
 

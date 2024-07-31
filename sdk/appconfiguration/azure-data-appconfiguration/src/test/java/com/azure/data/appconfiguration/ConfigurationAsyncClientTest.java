@@ -20,8 +20,8 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.Label;
-import com.azure.data.appconfiguration.models.LabelSelector;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -1950,17 +1950,17 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         ConfigurationSetting setting2 = preparedSettings.get(1);
         // List only the first label var, 'label'
         String label = setting.getLabel();
-        StepVerifier.create(client.listLabels(new LabelSelector().setNameFilter(label)))
+        StepVerifier.create(client.listLabels(new SettingLabelSelector().setNameFilter(label)))
                 .assertNext(actual -> assertEquals(label, actual.getName()))
                 .verifyComplete();
         // List labels with wildcard label filter
         String label2 = setting2.getLabel();
-        StepVerifier.create(client.listLabels(new LabelSelector().setNameFilter("label*")))
+        StepVerifier.create(client.listLabels(new SettingLabelSelector().setNameFilter("label*")))
                 .assertNext(actual -> assertEquals(label, actual.getName()))
                 .assertNext(actual -> assertEquals(label2, actual.getName()))
                 .verifyComplete();
         // List all labels
-        List<Label> selected = new ArrayList<>();
+        List<SettingLabel> selected = new ArrayList<>();
         StepVerifier.create(client.listLabels(null))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)

@@ -8,7 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.LabelSelector;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
@@ -490,12 +490,12 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#listLabels(LabelSelector)}
+     * Code snippets for {@link ConfigurationAsyncClient#listLabels(SettingLabelSelector)}
      */
     public void listLabels() {
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listLabels
         String labelNameFilter = "{labelNamePrefix}*";
-        client.listLabels(new LabelSelector().setNameFilter(labelNameFilter))
+        client.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
                 .subscribe(label -> {
                     System.out.println("label name = " + label);
                 });
