@@ -169,6 +169,7 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         // write properties of base class.
         jsonWriter.writeStringField("recognizeInputType", "speechordtmf");
         jsonWriter.writeJsonField("playPrompt", getPlayPrompt());
+        jsonWriter.writeArrayField("playPrompts", this.getPlayPrompts(), (writer, playPrompt) -> playPrompt.toJson(writer));
         jsonWriter.writeBooleanField("interruptCallMediaOperation", isInterruptCallMediaOperation());
         jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
         jsonWriter.writeStringField("operationContext", getOperationContext());

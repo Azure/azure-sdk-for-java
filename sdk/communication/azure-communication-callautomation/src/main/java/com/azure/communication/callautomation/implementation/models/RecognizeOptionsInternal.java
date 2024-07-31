@@ -223,9 +223,6 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

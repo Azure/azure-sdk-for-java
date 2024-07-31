@@ -72,9 +72,6 @@ public final class SsmlSourceInternal implements JsonSerializable<SsmlSourceInte
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

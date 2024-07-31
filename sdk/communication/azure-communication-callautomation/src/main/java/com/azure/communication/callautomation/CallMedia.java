@@ -11,8 +11,9 @@ import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -222,67 +223,21 @@ public final class CallMedia {
     /**
      * Holds participant in call.
      * @param targetParticipant the target.
-     * @param playSourceInfo audio to play.
-     * @return Response for successful operation.
-     * @deprecated This operations is deprecated, please use Hold instead.
-    */
-    @Deprecated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void startHoldMusic(CommunicationIdentifier targetParticipant,
-                               PlaySource playSourceInfo) {
-        return callMediaAsync.startHoldMusic(targetParticipant, playSourceInfo).block();
-    }
-
-    /**
-     * Holds participant in call.
-     * @param options - Different options to pass to the request.
-     * @param context Context
-     * @return Response for successful operation.
-     * @deprecated This operations is deprecated, please use HoldWithResponse instead
-    */
-    @Deprecated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startHoldMusicWithResponse(StartHoldMusicOptions options,
-                                                     Context context) {
-        return callMediaAsync.startHoldMusicWithResponseInternal(options, context).block();
-    }
-
-    /**
-     * Removes hold from participant in call.
-     * @param targetParticipant the target.
-     * @return Response for successful operation.
-     * @deprecated This operations is deprecated, please use Unhold instead.
-    */
-    @Deprecated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void stopHoldMusic(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.stopHoldMusic(targetParticipant).block();
-    }
-    
-    /**
-     * Removes hold from participant in call.
-     * @param targetParticipant the target.
-     * @param operationContext operational context.
-     * @param context Context.
-     * @return Response for successful operation.
-     * @deprecated This operations is deprecated, please use UnholdWithResponse instead.
-    */
-    @Deprecated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopHoldMusicWithResponse(CommunicationIdentifier targetParticipant,
-                                                     String operationContext,
-                                                     Context context) {
-        return callMediaAsync.stopHoldMusicWithResponseInternal(targetParticipant, operationContext, context).block();
-    }
-
-    /**
-     * Holds participant in call.
-     * @param targetParticipant the target.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hold(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.hold(targetParticipant).block();
+    public void hold(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.hold(targetParticipant).block();
+    }
+
+    /**
+     * Holds participant in call.
+     * @param targetParticipant the target.
+     * @param playSource A {@link PlaySource} representing the source to play.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void hold(CommunicationIdentifier targetParticipant, PlaySource playSource) {
+        callMediaAsync.hold(targetParticipant, playSource).block();
     }
 
     /**
@@ -300,11 +255,10 @@ public final class CallMedia {
     /**
      * Removes hold from participant in call.
      * @param targetParticipant the target.
-     * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void unhold(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.unhold(targetParticipant).block();
+    public void unhold(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.unhold(targetParticipant).block();
     }
 
     /**
@@ -372,13 +326,65 @@ public final class CallMedia {
 
     /**
      * Updates transcription language in the call.
+     * @param locale Defines new locale for transcription.
+     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateTranscription(String locale, String speechRecognitionModelEndpointId) {
+        callMediaAsync.updateTranscription(locale, speechRecognitionModelEndpointId).block();
+    }
+
+    /**
+     * Updates transcription language in the call.
      *
      * @param locale Defines new locale for transcription.
+     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
      * @param context Context
+     * @param operationContext operational context.
      * @return Response for successful update transcription request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateTranscriptionWithResponse(String locale, Context context) {
-        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, context).block();
+    public Response<Void> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId, String operationContext, Context context) {
+        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, operationContext, context).block();
+    }
+
+     /**
+     * Starts media streaming in the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startMediaStreaming() {
+        callMediaAsync.startMediaStreaming().block();
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param options Options for the start media streaming operation.
+     * @param context Context
+     * @return Response for successful start transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startMediaStreamingWithResponse(StartMediaStreamingOptions options, Context context) {
+        return callMediaAsync.startMediaStreamingWithResponseInternal(options, context).block();
+    }
+
+     /**
+     * Stop media streaming in the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopMediaStreaming() {
+        callMediaAsync.stopMediaStreaming().block();
+    }
+
+    /**
+     * Stop media streaming in the call.
+     *
+     * @param options Options for the stop media streaming operation.
+     * @param context Context
+     * @return Response for successful stop transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopMediaStreamingWithResponse(StopMediaStreamingOptions options, Context context) {
+        return callMediaAsync.stopMediaStreamingWithResponseInternal(options, context).block();
     }
 }

@@ -19,7 +19,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
     /*
      * Defines the kind of external storage
      */
-    private RecordingStorageKind recordingStorageKind;
+    private RecordingStorageTypeInternal recordingStorageKind;
 
     /*
      * Uri of a container or a location within a container
@@ -37,7 +37,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * 
      * @return the recordingStorageKind value.
      */
-    public RecordingStorageKind getRecordingStorageKind() {
+    public RecordingStorageTypeInternal getRecordingStorageKind() {
         return this.recordingStorageKind;
     }
 
@@ -47,7 +47,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * @param recordingStorageKind the recordingStorageKind value to set.
      * @return the RecordingStorageInternal object itself.
      */
-    public RecordingStorageInternal setRecordingStorageKind(RecordingStorageKind recordingStorageKind) {
+    public RecordingStorageInternal setRecordingStorageKind(RecordingStorageTypeInternal recordingStorageKind) {
         this.recordingStorageKind = recordingStorageKind;
         return this;
     }
@@ -72,9 +72,6 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +99,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
 
                 if ("recordingStorageKind".equals(fieldName)) {
                     deserializedRecordingStorageInternal.recordingStorageKind
-                        = RecordingStorageKind.fromString(reader.getString());
+                        = RecordingStorageTypeInternal.fromString(reader.getString());
                 } else if ("recordingDestinationContainerUrl".equals(fieldName)) {
                     deserializedRecordingStorageInternal.recordingDestinationContainerUrl = reader.getString();
                 } else {

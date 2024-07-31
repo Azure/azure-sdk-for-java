@@ -17,10 +17,5 @@ module com.azure.communication.callautomation {
     opens com.azure.communication.callautomation.models to com.azure.core;
     opens com.azure.communication.callautomation.models.events to com.azure.core;
     opens com.azure.communication.callautomation.implementation.converters to com.azure.core;
-    exports com.azure.communication.callautomation.models.streaming.media;
-    opens com.azure.communication.callautomation.models.streaming.media to com.azure.core;
-    exports com.azure.communication.callautomation.models.streaming;
-    opens com.azure.communication.callautomation.models.streaming to com.azure.core;
-    exports com.azure.communication.callautomation.models.streaming.transcription;
-    opens com.azure.communication.callautomation.models.streaming.transcription to com.azure.core;
+    
 }

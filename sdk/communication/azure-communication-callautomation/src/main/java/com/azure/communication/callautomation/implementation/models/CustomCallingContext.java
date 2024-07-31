@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The CustomCallingContext model.
+ * The custom calling context which will be sent to the target.
  */
 @Fluent
 public final class CustomCallingContext implements JsonSerializable<CustomCallingContext> {
     /*
-     * Dictionary of <string>
+     * Custom calling context VoiP headers
      */
     private Map<String, String> voipHeaders;
 
     /*
-     * Dictionary of <string>
+     * Custom calling context SIP headers
      */
     private Map<String, String> sipHeaders;
 
@@ -34,7 +34,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Get the voipHeaders property: Dictionary of &lt;string&gt;.
+     * Get the voipHeaders property: Custom calling context VoiP headers.
      * 
      * @return the voipHeaders value.
      */
@@ -43,7 +43,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Set the voipHeaders property: Dictionary of &lt;string&gt;.
+     * Set the voipHeaders property: Custom calling context VoiP headers.
      * 
      * @param voipHeaders the voipHeaders value to set.
      * @return the CustomCallingContext object itself.
@@ -54,7 +54,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Get the sipHeaders property: Dictionary of &lt;string&gt;.
+     * Get the sipHeaders property: Custom calling context SIP headers.
      * 
      * @return the sipHeaders value.
      */
@@ -63,7 +63,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Set the sipHeaders property: Dictionary of &lt;string&gt;.
+     * Set the sipHeaders property: Custom calling context SIP headers.
      * 
      * @param sipHeaders the sipHeaders value to set.
      * @return the CustomCallingContext object itself.
@@ -73,9 +73,6 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

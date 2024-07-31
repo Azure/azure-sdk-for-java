@@ -27,6 +27,11 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     private String serverCallId;
 
     /*
+     * The Acs room id
+     */
+    private String roomId;
+
+    /*
      * The call locator kind.
      */
     private CallLocatorKindInternal kind;
@@ -78,6 +83,26 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     }
 
     /**
+     * Get the roomId property: The Acs room id.
+     * 
+     * @return the roomId value.
+     */
+    public String getRoomId() {
+        return this.roomId;
+    }
+
+    /**
+     * Set the roomId property: The Acs room id.
+     * 
+     * @param roomId the roomId value to set.
+     * @return the CallLocatorInternal object itself.
+     */
+    public CallLocatorInternal setRoomId(String roomId) {
+        this.roomId = roomId;
+        return this;
+    }
+
+    /**
      * Get the kind property: The call locator kind.
      * 
      * @return the kind value.
@@ -97,14 +122,12 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("groupCallId", this.groupCallId);
         jsonWriter.writeStringField("serverCallId", this.serverCallId);
+        jsonWriter.writeStringField("roomId", this.roomId);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -128,6 +151,8 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
                     deserializedCallLocatorInternal.groupCallId = reader.getString();
                 } else if ("serverCallId".equals(fieldName)) {
                     deserializedCallLocatorInternal.serverCallId = reader.getString();
+                } else if ("roomId".equals(fieldName)) {
+                    deserializedCallLocatorInternal.roomId = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedCallLocatorInternal.kind = CallLocatorKindInternal.fromString(reader.getString());
                 } else {

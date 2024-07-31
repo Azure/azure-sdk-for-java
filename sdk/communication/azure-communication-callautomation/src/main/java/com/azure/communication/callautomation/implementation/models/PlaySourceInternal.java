@@ -147,9 +147,6 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -22,6 +22,11 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
     public static final CallLocatorKindInternal SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
     /**
+     * Static value roomCallLocator for CallLocatorKindInternal.
+     */
+    public static final CallLocatorKindInternal ROOM_CALL_LOCATOR = fromString("roomCallLocator");
+
+    /**
      * Creates a new instance of CallLocatorKindInternal value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -13,22 +13,8 @@ import java.io.IOException;
 /** The CallTransferFailed model. */
 @Immutable
 public final class CallTransferFailed extends CallAutomationEventBase {
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
 
     private CallTransferFailed() {
-        this.resultInformation = null;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**
@@ -37,7 +23,6 @@ public final class CallTransferFailed extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -56,12 +41,8 @@ public final class CallTransferFailed extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                if (!event.readField(fieldName, reader)) {
+                    reader.skipChildren();
                 }
             }
             return event;

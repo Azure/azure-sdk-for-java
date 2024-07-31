@@ -193,6 +193,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
         // write properties of base class.
         jsonWriter.writeStringField("recognizeInputType", "dtmf");
         jsonWriter.writeJsonField("playPrompt", getPlayPrompt());
+        jsonWriter.writeArrayField("playPrompts", this.getPlayPrompts(), (writer, playPrompt) -> playPrompt.toJson(writer));
         jsonWriter.writeBooleanField("interruptCallMediaOperation", isInterruptCallMediaOperation());
         jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
         jsonWriter.writeStringField("operationContext", getOperationContext());

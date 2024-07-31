@@ -3,10 +3,13 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.streaming.StreamingDataParser;
-import com.azure.communication.callautomation.models.streaming.media.AudioData;
-import com.azure.communication.callautomation.models.streaming.media.AudioMetadata;
-import com.azure.communication.callautomation.models.streaming.transcription.*;
+import com.azure.communication.callautomation.models.AudioData;
+import com.azure.communication.callautomation.models.AudioMetadata;
+import com.azure.communication.callautomation.models.TranscriptionResultState;
+import com.azure.communication.callautomation.models.TextFormat;
+import com.azure.communication.callautomation.models.TranscriptionData;
+import com.azure.communication.callautomation.models.TranscriptionMetadata;
+import com.azure.communication.callautomation.models.WordData;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
@@ -248,21 +251,21 @@ public class StreamingDataParserUnitTests {
         assertEquals(TextFormat.DISPLAY, transcription.getFormat());
         assertEquals(0.98d, transcription.getConfidence());
         assertEquals(1, transcription.getOffset());
-        assertEquals(2, transcription.getDuration());
+        assertEquals(2 * 100, transcription.getDuration());
 
         // validate individual words
-        List<Word> words = transcription.getWords();
+        List<WordData> words = transcription.getWords();
         assertEquals(2, words.size());
         assertEquals("Hello", words.get(0).getText());
         assertEquals(1, words.get(0).getOffset());
-        assertEquals(1, words.get(0).getDuration());
+        assertEquals(1 * 100, words.get(0).getDuration());
         assertEquals("World", words.get(1).getText());
         assertEquals(6, words.get(1).getOffset());
-        assertEquals(1, words.get(0).getDuration());
+        assertEquals(1 * 100, words.get(0).getDuration());
 
         assertNotNull(transcription.getParticipant());
         assertEquals("abc12345", transcription.getParticipant().getRawId());
-        assertEquals(ResultStatus.FINAL, transcription.getResultStatus());
+        assertEquals(TranscriptionResultState.FINAL, transcription.getResultStatus());
     }
 
     private static void validateTranscriptionMetadata(TranscriptionMetadata transcriptionMetadata) {

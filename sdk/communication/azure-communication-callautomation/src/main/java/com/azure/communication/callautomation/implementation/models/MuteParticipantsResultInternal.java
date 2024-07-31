@@ -47,9 +47,6 @@ public final class MuteParticipantsResultInternal implements JsonSerializable<Mu
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

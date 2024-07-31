@@ -60,6 +60,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
+    protected static final String TRANSPORT_URL = Configuration.getGlobalConfiguration()
+        .get("TRANSPORT_URL",
+            "https://REDACTED");
+    protected static final String COGNITIVE_SERVICE_ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("COGNITIVE_SERVICE_ENDPOINT",
+            "https://REDACTED");
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
         .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
@@ -72,7 +78,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .add("botAppId")
         .add("ivrContext")
         .add("incomingCallContext")
-        .add("serverCallId");
+        .add("serverCallId")
+        .add("transportUrl");
 
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
@@ -91,7 +98,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // Load persisted events back to memory when in playback mode
         if (getTestMode() == TestMode.PLAYBACK) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
+                String fileName = "./src/test/resources/" + testContextManager.getTestName() + ".json";
                 FileInputStream fileInputStream = new FileInputStream(fileName);
                 byte[] jsonData = new byte[fileInputStream.available()];
                 fileInputStream.read(jsonData);
@@ -118,7 +125,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // In recording mode, manually store events from event dispatcher into local disk as the callAutomationClient doesn't do so
         if (getTestMode() == TestMode.RECORD) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
+                String fileName = "./src/test/resources/" + testContextManager.getTestName() + ".json";
 
                 String jsonString;
                 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

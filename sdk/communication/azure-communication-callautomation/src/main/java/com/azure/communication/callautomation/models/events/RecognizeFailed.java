@@ -19,7 +19,6 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -38,12 +37,8 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
-                } else {
-                    if (!event.readField(fieldName, reader)) {
-                        reader.skipChildren();
-                    }
+                if (!event.readField(fieldName, reader)) {
+                    reader.skipChildren();
                 }
             }
             return event;

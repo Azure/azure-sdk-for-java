@@ -3,8 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.HashMap;
-
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -37,16 +35,10 @@ public final class CreateCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
-
     /**
      * Transcription Configuration.
      */
     private TranscriptionOptions transcriptionOptions;
-
-    /**
-     * Custom Context
-     */
-    private final CustomCallingContext customContext;
 
     /**
      * Constructor
@@ -56,7 +48,6 @@ public final class CreateCallOptions {
     public CreateCallOptions(CallInvite callInvite, String callbackUrl) {
         this.callInvite = callInvite;
         this.callbackUrl = callbackUrl;
-        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -71,9 +62,9 @@ public final class CreateCallOptions {
     /**
      * Get the Transcription configuration.
      *
-     * @return the transcriptionConfiguration.
+     * @return the transcriptionOptions
      */
-    public TranscriptionOptions getTranscriptionConfiguration() {
+    public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
     }
 
@@ -92,10 +83,10 @@ public final class CreateCallOptions {
     /**
      * Set the transcription configuration.
      *
-     * @param transcriptionOptions The transcription configuration.
+     * @param transcriptionOptions The transcription options.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+    public CreateCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
     }
@@ -140,28 +131,20 @@ public final class CreateCallOptions {
     /**
      * Get the Media Streaming configuration.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the mediaStreamingOptions.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
+    public MediaStreamingOptions getMediaStreamingOptions() {
         return mediaStreamingOptions;
     }
 
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming options.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+    public CreateCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
-    }
-
-    /**
-     *  get custom context
-     * @return custom context
-     */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
     }
 }

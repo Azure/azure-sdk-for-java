@@ -19,15 +19,6 @@ public abstract class CallAutomationEventBaseWithReasonCode extends CallAutomati
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
      * Returns the reason code of the event
      * @return a ReasonCode object.
      * */

@@ -46,27 +46,28 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * The sequential order in which audio channels are assigned to participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      */
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
      * The channel affinity of call recording
-     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned.
+     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be
+     * automatically assigned.
      * Channel-Participant mapping details can be found in the metadata of the recording.
      * ///
      */
     private List<ChannelAffinityInternal> channelAffinity;
 
     /*
-     * Optional property to specify location where recording will be stored
-     */
-    private RecordingStorageInternal externalStorage;
-
-    /*
      * When set to true will start recording in Pause mode, which can be resumed.
      */
     private Boolean pauseOnStart;
+
+    /*
+     * The externalStorage property.
+     */
+    private RecordingStorageInternal externalStorage;
 
     /**
      * Creates an instance of StartCallRecordingRequestInternal class.
@@ -232,26 +233,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the externalStorage property: Optional property to specify location where recording will be stored.
-     * 
-     * @return the externalStorage value.
-     */
-    public RecordingStorageInternal getExternalStorage() {
-        return this.externalStorage;
-    }
-
-    /**
-     * Set the externalStorage property: Optional property to specify location where recording will be stored.
-     * 
-     * @param externalStorage the externalStorage value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
-        this.externalStorage = externalStorage;
-        return this;
-    }
-
-    /**
      * Get the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
      * 
      * @return the pauseOnStart value.
@@ -272,8 +253,25 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * {@inheritDoc}
+     * Get the externalStorage property: The externalStorage property.
+     * 
+     * @return the externalStorage value.
      */
+    public RecordingStorageInternal getExternalStorage() {
+        return this.externalStorage;
+    }
+
+    /**
+     * Set the externalStorage property: The externalStorage property.
+     * 
+     * @param externalStorage the externalStorage value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
+        this.externalStorage = externalStorage;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -289,8 +287,8 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("channelAffinity", this.channelAffinity,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("externalStorage", this.externalStorage);
         jsonWriter.writeBooleanField("pauseOnStart", this.pauseOnStart);
+        jsonWriter.writeJsonField("externalStorage", this.externalStorage);
         return jsonWriter.writeEndObject();
     }
 
@@ -333,12 +331,12 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
                     List<ChannelAffinityInternal> channelAffinity
                         = reader.readArray(reader1 -> ChannelAffinityInternal.fromJson(reader1));
                     deserializedStartCallRecordingRequestInternal.channelAffinity = channelAffinity;
-                } else if ("externalStorage".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.externalStorage
-                        = RecordingStorageInternal.fromJson(reader);
                 } else if ("pauseOnStart".equals(fieldName)) {
                     deserializedStartCallRecordingRequestInternal.pauseOnStart
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("externalStorage".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.externalStorage
+                        = RecordingStorageInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

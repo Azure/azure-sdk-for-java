@@ -8,7 +8,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 /**
  * Options for the Hold operation.
  */
-public class HoldOptions {
+public final class HoldOptions {
 
     /**
      * Participant to put on hold.
@@ -18,7 +18,7 @@ public class HoldOptions {
     /**
      * Audio to play while on hold.
      */
-    private PlaySource playSourceInfo;
+    private PlaySource playSource;
 
     /**
      * Operation context.
@@ -26,9 +26,9 @@ public class HoldOptions {
     private String operationContext;
 
     /**
-     * operationCallbackUri.
+     * operationCallbackUrl.
      */
-    private String operationCallbackUri;
+    private String operationCallbackUrl;
 
     /**
      * Create a new HoldOptions object.
@@ -50,17 +50,17 @@ public class HoldOptions {
      * Get PlaySourceInfo
      * @return the playSourceInfo.
      */
-    public PlaySource getPlaySourceInfo() {
-        return playSourceInfo;
+    public PlaySource getPlaySource() {
+        return playSource;
     }
 
     /**
-     * Sets the playSourceInfo.
-     * @param playSourceInfo playSourceInfo
+     * Sets the playSource.
+     * @param playSource playSource
      * @return The HoldOptions object.
      */
-    public HoldOptions setPlaySourceInfo(PlaySource playSourceInfo) {
-        this.playSourceInfo = playSourceInfo;
+    public HoldOptions setPlaySource(PlaySource playSource) {
+        this.playSource = playSource;
         return this;
     }
 
@@ -83,20 +83,20 @@ public class HoldOptions {
     }
 
     /**
-     * Get the operationCallbackUri.
-     * @return operationCallbackUri.
+     * Get the operationCallbackUrl.
+     * @return operationCallbackUrl.
      */
-    public String getOperationCallbackUri() {
-        return operationCallbackUri;
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
     }
 
     /**
-     * Sets the operationCallbackUri.
-     * @param operationCallbackUri operationCallbackUri
+     * Sets the operationCallbackUrl.
+     * @param operationCallbackUrl operationCallbackUrl
      * @return The HoldOptions object.
      */
-    public HoldOptions setOperationCallbackUri(String operationCallbackUri) {
-        this.operationCallbackUri = operationCallbackUri;
+    public HoldOptions setOperationCallbackUri(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

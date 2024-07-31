@@ -72,9 +72,6 @@ public final class CancelAddParticipantResponse implements JsonSerializable<Canc
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
