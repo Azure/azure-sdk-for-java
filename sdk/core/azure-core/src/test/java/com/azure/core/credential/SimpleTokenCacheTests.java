@@ -61,11 +61,11 @@ public class SimpleTokenCacheTests {
 
         TokenCredential dummyCred = request -> {
             refreshes.incrementAndGet();
-            return Mono.just(new TokenCacheTests.Token("testToken", 30000, 4000));
+            return Mono.just(new TokenCacheTests.Token("testToken", 30000, 12000));
         };
 
         SimpleTokenCache cache
-            = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()), Duration.ofSeconds(0));
+            = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()), Duration.ofSeconds(1));
 
         StepVerifier.create(cache.getToken().delayElement(Duration.ofMillis(2000)).flatMap(ignored -> cache.getToken()))
             .assertNext(token -> {
