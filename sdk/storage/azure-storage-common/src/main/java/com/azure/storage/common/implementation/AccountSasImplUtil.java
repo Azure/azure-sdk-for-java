@@ -12,6 +12,7 @@ import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
+import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
@@ -68,6 +69,20 @@ public class AccountSasImplUtil {
      * @return A String representing the Sas
      */
     public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        return generateSas(storageSharedKeyCredentials, null, context);
+    }
+
+    /**
+     * Generates a Sas signed with a {@link StorageSharedKeyCredential}
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return A String representing the Sas
+     */
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials,
+        Consumer<String> stringToSignHandler, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         StorageImplUtils.assertNotNull("services", this.services);
         StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
@@ -80,25 +95,11 @@ public class AccountSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
+        if (stringToSignHandler != null) {
+            stringToSignHandler.accept(stringToSign);
+        }
+
         return encode(signature);
-    }
-
-    /**
-     * For debugging purposes only.
-     * Returns the string to sign that will be used to generate the signature for the SAS URL.
-     *
-     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
-     * @param context Additional context that is passed through the code when generating a SAS.
-     * @return The string to sign that will be used to generate the signature for the SAS URL.
-     */
-   public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
-        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
-        StorageImplUtils.assertNotNull("services", this.services);
-        StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
-        StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
-        StorageImplUtils.assertNotNull("permissions", this.permissions);
-
-        return stringToSign(storageSharedKeyCredentials);
     }
 
     private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {

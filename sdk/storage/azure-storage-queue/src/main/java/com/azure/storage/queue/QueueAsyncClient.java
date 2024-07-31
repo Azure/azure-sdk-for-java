@@ -1489,21 +1489,24 @@ public final class QueueAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
-        return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+        return generateSas(queueServiceSasSignatureValues, null, context);
     }
 
     /**
-     * For debugging purposes only.
-     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @return A {@code String} representing the SAS query parameters.
      */
-   public String generateSasStringToSign(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
+    public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

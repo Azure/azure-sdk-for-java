@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
@@ -2101,21 +2102,24 @@ public class ShareClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
-        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+        return generateSas(shareServiceSasSignatureValues, null, context);
     }
 
     /**
-     * For debugging purposes only.
-     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @return A {@code String} representing the SAS query parameters.
      */
-   public String generateSasStringToSign(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
-            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

@@ -115,6 +115,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -2456,9 +2457,30 @@ public class BlobAsyncClientBase {
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, accountName,
+            null, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
+     * @param accountName The account name.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
             getSnapshotId(), getVersionId(), getEncryptionScope())
-            .generateUserDelegationSas(userDelegationKey, accountName, context);
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 
     /**
@@ -2514,44 +2536,26 @@ public class BlobAsyncClientBase {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
-        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId(), getEncryptionScope())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+        return generateSas(blobServiceSasSignatureValues, null, context);
     }
 
     /**
-     * For debugging purposes only.
-     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
-     * how to get a user delegation key.
-     * @param accountName The account name.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @return A {@code String} representing the SAS query parameters.
      */
-   public String generateUserDelegationSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
-                                                        UserDelegationKey userDelegationKey, String accountName, Context context) {
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
             getSnapshotId(), getVersionId(), getEncryptionScope())
-            .generateUserDelegationSasStringToSign(userDelegationKey, accountName, context);
-    }
-
-    /**
-     * For debugging purposes only.
-     * Returns the string to sign that will be used to generate the signature for the SAS URL.
-     *
-     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
-     * @param context Additional context that is passed through the code when generating a SAS.
-     *
-     * @return The string to sign that will be used to generate the signature for the SAS URL.
-     */
-   public String generateSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
-        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId(), getEncryptionScope())
-            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
     /**

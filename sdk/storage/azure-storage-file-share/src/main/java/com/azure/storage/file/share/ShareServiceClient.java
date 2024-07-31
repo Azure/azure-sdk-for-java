@@ -42,6 +42,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -688,22 +689,25 @@ public final class ShareServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+        return generateAccountSas(accountSasSignatureValues, null, context);
     }
 
     /**
-     * For debugging purposes only.
-     * Returns the string to sign that will be used to generate the signature for the SAS URL.
-
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @return A {@code String} representing the SAS query parameters.
      */
-   public String generateAccountSasStringToSign(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
     /**
