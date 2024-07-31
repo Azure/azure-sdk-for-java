@@ -37,21 +37,11 @@ public final class VersionGenerator {
                 + artifactVersion;
     }
 
-    /**
-     * This method returns artifact name.
-     *
-     * @return artifactName.
-     */
-    public static String getArtifactName() {
+    static String getArtifactName() {
         return artifactName;
     }
 
-    /**
-     * This method returns artifact version.
-     *
-     * @return artifactVersion.
-     */
-    public static String getArtifactVersion() {
+    static String getArtifactVersion() {
         return artifactVersion;
     }
 
