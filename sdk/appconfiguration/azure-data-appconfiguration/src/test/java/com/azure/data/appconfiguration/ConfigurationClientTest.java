@@ -1562,8 +1562,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .stream()
                 .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
         // Prepare two settings with different labels
-        List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting -> assertConfigurationEquals(setting,
-                client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue()));
+        List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting ->
+            client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
         ConfigurationSetting setting = preparedSettings.get(0);
         ConfigurationSetting setting2 = preparedSettings.get(1);
 

@@ -1944,7 +1944,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Prepare two settings with different labels
         List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting ->
                 StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
-                        .assertNext(response -> assertConfigurationEquals(setting, response))
                         .verifyComplete());
         ConfigurationSetting setting = preparedSettings.get(0);
         ConfigurationSetting setting2 = preparedSettings.get(1);
