@@ -261,7 +261,8 @@ public final class AzureMonitorExporterBuilder {
         System.out.println("AzureMonitorExporterBuilder.buildLiveMetricsSpanProcessor");
         ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
         internalBuildAndFreeze(defaultConfig);
-        boolean useNormalizedValueForNonNormalizedCpuPercentage = true;
+        // See https://github.com/microsoft/ApplicationInsights-Java/blob/16c0d2ec5cd0428756a280cfe9c5e17b4b7de93f/agent/agent-tooling/src/main/java/com/microsoft/applicationinsights/agent/internal/configuration/Configuration.java#L379
+        boolean useNormalizedValueForNonNormalizedCpuPercentage = false;
         String roleName = otelResource.getAttribute(ServiceAttributes.SERVICE_NAME);
         String roleInstance = otelResource.getAttribute(ServiceInstanceIdResourceProvider.SERVICE_INSTANCE_ID);
         QuickPulse quickPulse = QuickPulse.create(
