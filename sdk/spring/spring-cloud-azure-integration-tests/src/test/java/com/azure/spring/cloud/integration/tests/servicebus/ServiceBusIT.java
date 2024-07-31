@@ -12,6 +12,7 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,11 @@ public class ServiceBusIT {
     }
 
     @Test
+    @Timeout(60)
     public void testServiceBusOperation() throws InterruptedException {
         LOGGER.info("ServiceBusIT begin.");
+        // Wait for Service Bus initialization to complete
+        Thread.sleep(20000);
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
         Assertions.assertEquals(1, receivedMessages.stream().count());
