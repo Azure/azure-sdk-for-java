@@ -34,7 +34,9 @@ public class PolicyTests extends ResourceManagementTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDPolicyDefinition() throws Exception {
+        // LiveOnly because "test timing out after latest test proxy update"
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);
         try {

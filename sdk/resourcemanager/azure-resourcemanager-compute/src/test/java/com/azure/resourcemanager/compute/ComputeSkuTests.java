@@ -98,6 +98,7 @@ public class ComputeSkuTests extends ComputeManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canListSkusByRegion() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         PagedIterable<ComputeSku> skus = this.computeManager.computeSkus().listByRegion(Region.US_EAST2);
@@ -123,6 +124,7 @@ public class ComputeSkuTests extends ComputeManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canListSkusByRegionAndResourceType() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         PagedIterable<ComputeSku> skus =

@@ -584,6 +584,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         String sqlServerAdminName = "sqladmin";
@@ -1653,6 +1654,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testRandomSku() {
         // LiveOnly because "test timing out after latest test proxy update"
         // "M" series is not supported in this region
