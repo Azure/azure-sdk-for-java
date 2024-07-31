@@ -2,7 +2,7 @@
 # make sure the version is same to sdk/spring/scripts/spring_boot_2.7.18_managed_external_dependencies.txt
 # If your version is different from sdk/spring/scripts/spring_boot_2.7.18_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
-# @rujche (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
+# @rujche (rujche), @saragluna (xiada).
 # Thanks.
 
 # Format;
@@ -505,6 +505,7 @@ springboot3_org.springframework.boot:spring-boot-autoconfigure;3.3.2
 springboot3_org.springframework.boot:spring-boot-configuration-metadata;3.3.2
 springboot3_org.springframework.boot:spring-boot-configuration-processor;3.3.2
 springboot3_org.springframework.boot:spring-boot-dependencies;3.3.2
+springboot3_org.springframework.boot:spring-boot-docker-compose;3.3.2
 springboot3_org.springframework.boot:spring-boot-starter-actuator;3.3.2
 springboot3_org.springframework.boot:spring-boot-starter-integration;3.3.2
 springboot3_org.springframework.boot:spring-boot-starter-parent;3.3.2
