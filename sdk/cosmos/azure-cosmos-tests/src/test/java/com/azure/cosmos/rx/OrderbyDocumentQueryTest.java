@@ -10,16 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializerNoExceptionWrapping;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.ResourceValidator;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
@@ -171,17 +162,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         int pageSize = 5;
         CosmosPagedFlux<RoundTripDocument> queryObservable = roundTripsContainer.queryItems(query, options, RoundTripDocument.class);
-        FeedResponse<RoundTripDocument> feedResponse = queryObservable.byPage(pageSize).elementAt(0).block();
+        FeedResponse<RoundTripDocument> feedResponse = queryObservable.byPage(pageSize).take(1).blockFirst();
         assertThat(feedResponse.getResults().size()).isEqualTo(5);
         for (RoundTripDocument roundTripDocument : feedResponse.getResults()) {
             assertThat(roundTripDocument.v).isEqualTo(3);
         }
-        Map<String, QueryMetrics> queryMetricsMap = ModelBridgeInternal.queryMetricsMap(feedResponse);
-        List<QueryMetrics> queryMetrics = new ArrayList<>(queryMetricsMap.values());
-        for (QueryMetrics queryMetric : queryMetrics) {
-            // Only one extra page should be prefetched max
-            assertThat(queryMetric.getRetrievedDocumentCount()).isLessThanOrEqualTo(10);
-        }
+        FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor().getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics());
+        assertThat(feedResponseDiagnostics.getClientSideRequestStatistics().size()).isEqualTo(3);
     }
 
     @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
