@@ -12,7 +12,9 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -121,12 +123,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * connection string to authenticate.
      */
     protected EventHubClientBuilder createBuilder() {
-        return new EventHubClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(RETRY_OPTIONS)
-            .clientOptions(OPTIONS_WITH_TRACING)
-            .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
+        return createBuilder(false);
     }
 
     /**
@@ -135,7 +132,15 @@ public abstract class IntegrationTestBase extends TestBase {
      * {@link com.azure.identity.ClientSecretCredential}.
      */
     protected EventHubClientBuilder createBuilder(boolean shareConnection) {
-        final EventHubClientBuilder builder = createBuilder();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+            .retryOptions(RETRY_OPTIONS)
+            .clientOptions(OPTIONS_WITH_TRACING)
+            .transportType(AmqpTransportType.AMQP)
+            .scheduler(scheduler);
+
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final String eventHubName = TestUtils.getEventHubName();
 
         if (shareConnection) {
             builder.shareConnection();
@@ -143,14 +148,33 @@ public abstract class IntegrationTestBase extends TestBase {
 
         switch (getTestMode()) {
             case PLAYBACK:
-                break;
-            case LIVE:
-                break;
-            case RECORD:
-                break;
-        }
+                Assumptions.assumeTrue(false, "Integration tests are not enabled in playback mode.");
+                return null;
 
-        return builder;
+            case LIVE:
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "EventHubName is not set.");
+
+                final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
+                return builder.credential(fullyQualifiedDomainName, eventHubName, credential);
+
+            case RECORD:
+                final String connectionString = TestUtils.getConnectionString(false);
+
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(eventHubName), "EventHubName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+
+                if (CoreUtils.isNullOrEmpty(connectionString)) {
+                    final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+                    return builder.credential(fullyQualifiedDomainName, eventHubName, tokenCredential);
+                } else {
+                    return builder
+                        .eventHubName(eventHubName)
+                        .connectionString(connectionString);
+                }
+            default:
+                return null;
+        }
     }
 
     /**
