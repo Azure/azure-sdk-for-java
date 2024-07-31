@@ -277,7 +277,7 @@ public final class DeploymentImpl extends
     @Override
     public DeploymentImpl withTemplate(String templateJson) throws IOException {
         try (JsonReader jsonReader = JsonProviders.createReader(templateJson)) {
-            return withTemplate(jsonReader.readMap(JsonReader::readUntyped));
+            return withTemplate(jsonReader.readUntyped());
         }
     }
 

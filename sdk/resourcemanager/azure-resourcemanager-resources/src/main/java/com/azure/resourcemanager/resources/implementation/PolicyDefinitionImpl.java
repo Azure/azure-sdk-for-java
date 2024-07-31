@@ -106,7 +106,7 @@ final class PolicyDefinitionImpl extends
     @Override
     public PolicyDefinitionImpl withPolicyRuleJson(String policyRuleJson) {
         try (JsonReader jsonReader = JsonProviders.createReader(policyRuleJson)) {
-            Object policyRule = jsonReader.readMap(JsonReader::readUntyped);
+            Object policyRule = jsonReader.readUntyped();
             innerModel().withPolicyRule(policyRule);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
