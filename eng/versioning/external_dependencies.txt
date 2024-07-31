@@ -213,6 +213,7 @@ io.opentelemetry:opentelemetry-exporter-otlp;1.40.0
 io.opentelemetry:opentelemetry-sdk-testing;1.40.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.40.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.40.0
+io.opentelemetry:opentelemetry-sdk-extension-incubator;1.40.0
 io.opentelemetry:opentelemetry-bom;1.40.0
 io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.6.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.6.0

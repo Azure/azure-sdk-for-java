@@ -231,7 +231,8 @@
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.semconv:opentelemetry-semconv-incubating:[1.25.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-incubator:[1.40.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-incubator;external_dependency} -->
                 <include>com.squareup.okio:okio:[3.9.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
