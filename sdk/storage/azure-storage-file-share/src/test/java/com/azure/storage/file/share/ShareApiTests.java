@@ -1322,13 +1322,10 @@ public class ShareApiTests extends FileShareTestBase {
             .setPaidBurstingMaxIops(5000L)
             .setPaidBurstingMaxBandwidthMibps(1000L);
 
-        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
-
-        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
-
-        assertTrue(response.isPaidBurstingEnabled());
-        assertEquals(5000L, response.getPaidBurstingMaxIops());
-        assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null));
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.fromString(
+            "InvalidHeaderValue"));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")

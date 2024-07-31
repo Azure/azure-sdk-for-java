@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ShareAsyncApiTests extends FileShareTestBase {
@@ -893,6 +894,19 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
             })
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBurstingInvalidOptions() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(false)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options))
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.fromString("InvalidHeaderValue")));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
