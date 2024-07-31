@@ -98,6 +98,9 @@ public final class TextWord implements JsonSerializable<TextWord> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

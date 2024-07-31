@@ -75,6 +75,9 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
