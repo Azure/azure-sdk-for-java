@@ -36,6 +36,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canSetMSIOnNewOrExistingVMWithoutRoleAssignment() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         // Create a virtual machine with just MSI enabled without role and scope.
@@ -250,6 +251,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         ResourceGroup resourceGroup =
