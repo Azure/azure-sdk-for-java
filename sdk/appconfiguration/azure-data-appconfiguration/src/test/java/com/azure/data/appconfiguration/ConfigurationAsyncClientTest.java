@@ -1944,6 +1944,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Prepare two settings with different labels
         List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting ->
                 StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                        .assertNext(response -> assertConfigurationEquals(setting, response))
                         .verifyComplete());
         ConfigurationSetting setting = preparedSettings.get(0);
         ConfigurationSetting setting2 = preparedSettings.get(1);
@@ -1954,10 +1955,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
         // List labels with wildcard label filter
         String label2 = setting2.getLabel();
-        StepVerifier.create(client.listLabels(new SettingLabelSelector().setNameFilter("label*")))
-                .assertNext(actual -> assertEquals(label, actual.getName()))
-                .assertNext(actual -> assertEquals(label2, actual.getName()))
-                .verifyComplete();
+        StepVerifier.create(client.listLabels(new SettingLabelSelector().setNameFilter("label*"))
+                .map(SettingLabel::getName)
+                .collectList())
+            .assertNext(actualLabels -> {
+                assertTrue(actualLabels.contains(label));
+                assertTrue(actualLabels.contains(label2));
+            })
+            .verifyComplete();
         // List all labels
         List<SettingLabel> selected = new ArrayList<>();
         StepVerifier.create(client.listLabels())
