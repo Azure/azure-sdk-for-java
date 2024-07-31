@@ -16,10 +16,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
@@ -62,7 +60,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final ClientOptions OPTIONS_WITH_TRACING = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
-    private static Scheduler scheduler;
+    private Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
     private List<AutoCloseable> toClose = new ArrayList<>();
 
@@ -70,16 +68,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
-    }
-
-    @BeforeAll
-    public static void beforeAll() {
-        scheduler = Schedulers.newParallel("eh-integration");
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        scheduler.dispose();
     }
 
     @BeforeEach
@@ -91,6 +79,8 @@ public abstract class IntegrationTestBase extends TestBase {
         testName = testContextManager.getTrackerTestName();
         skipIfNotRecordMode();
         toClose = new ArrayList<>();
+
+        scheduler = Schedulers.newParallel("eh-integration");
         beforeTest();
     }
 
@@ -109,7 +99,7 @@ public abstract class IntegrationTestBase extends TestBase {
     public void teardownTest() {
         logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
-
+        scheduler.dispose();
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
 
