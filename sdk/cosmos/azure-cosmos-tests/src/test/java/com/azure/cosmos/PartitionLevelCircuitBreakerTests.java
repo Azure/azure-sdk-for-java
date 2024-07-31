@@ -21,7 +21,7 @@ import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedC
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;

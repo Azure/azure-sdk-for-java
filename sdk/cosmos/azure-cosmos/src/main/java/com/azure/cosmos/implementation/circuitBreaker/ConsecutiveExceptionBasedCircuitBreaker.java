@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.circuitBreaker;
 
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

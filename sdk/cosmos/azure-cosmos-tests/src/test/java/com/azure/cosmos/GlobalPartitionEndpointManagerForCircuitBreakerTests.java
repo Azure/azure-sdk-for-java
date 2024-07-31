@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
