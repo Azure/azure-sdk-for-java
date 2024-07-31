@@ -28,7 +28,7 @@ steps:
 
 
   - pwsh: |
-      git clone https://github.com/azure/azure-sdk-tools.git --branch additional-debug-output --depth 1 $(Build.BinariesDirectory)
+      git clone https://github.com/azure/azure-sdk-tools.git --branch semaphoreslim --depth 1 $(Build.BinariesDirectory)
       cd $(Build.BinariesDirectory)
       git log
     displayName: "Clone the tools directory"
