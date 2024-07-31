@@ -3,6 +3,7 @@
 
 package com.azure.xml;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -12,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.CharBuffer;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -341,8 +343,8 @@ public final class XmlReader implements AutoCloseable {
         }
 
         int readCount = 0;
-        String firstRead = null;
-        String[] buffer = null;
+        CharBuffer firstRead = null;
+        CharBuffer[] buffer = null;
         int stringBufferSize = 0;
         int nextEvent = reader.next();
 
@@ -354,21 +356,23 @@ public final class XmlReader implements AutoCloseable {
                 || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
                 readCount++;
                 if (readCount == 1) {
-                    firstRead = reader.getText();
+                    firstRead
+                        = CharBuffer.wrap(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength());
                     stringBufferSize = firstRead.length();
                 } else {
                     if (readCount == 2) {
-                        buffer = new String[4];
+                        buffer = new CharBuffer[4];
                         buffer[0] = firstRead;
                     }
 
                     if (readCount > buffer.length - 1) {
-                        String[] newBuffer = new String[buffer.length * 2];
+                        CharBuffer[] newBuffer = new CharBuffer[buffer.length * 2];
                         System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
                         buffer = newBuffer;
                     }
 
-                    String readText = reader.getText();
+                    CharBuffer readText
+                        = CharBuffer.wrap(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength());
                     buffer[readCount - 1] = readText;
                     stringBufferSize += readText.length();
                 }
@@ -384,7 +388,7 @@ public final class XmlReader implements AutoCloseable {
         if (readCount == 0) {
             currentElementString = null;
         } else if (readCount == 1) {
-            currentElementString = firstRead;
+            currentElementString = firstRead.toString();
         } else {
             StringBuilder finalText = new StringBuilder(stringBufferSize);
             for (int i = 0; i < readCount; i++) {
@@ -396,6 +400,15 @@ public final class XmlReader implements AutoCloseable {
 
         needToReadElementString = false;
         return currentElementString;
+    }
+
+    private CharBuffer readText() {
+        // Instead of using reader.getText use getTextCharacters, getTextStart, and getTextLength as the default
+        // implementation in Java uses a type called XMLString which needs to be converted to String which can incur
+        // allocation overhead. This accesses the char[] backing the XMLString directly and wraps it in a CharBuffer.
+        // If the element reading is done in one operation this is the same as reader.getText in terms of performance,
+        // but if more than one call happens this can be more efficient.
+        return CharBuffer.wrap(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength());
     }
 
     /**
@@ -594,11 +607,6 @@ public final class XmlReader implements AutoCloseable {
      */
     public <T> T readObject(String namespaceUri, String localName, XmlReadValueCallback<XmlReader, T> converter)
         throws XMLStreamException {
-        return readObject(new QName(namespaceUri, localName), converter);
-    }
-
-    private <T> T readObject(QName startTagName, XmlReadValueCallback<XmlReader, T> converter)
-        throws XMLStreamException {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }
@@ -608,13 +616,33 @@ public final class XmlReader implements AutoCloseable {
                 + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + currentToken() + "'.");
         }
 
-        QName tagName = getElementName();
-        if (!Objects.equals(startTagName, tagName)) {
-            throw new IllegalStateException(
-                "Expected XML element to be '" + startTagName + "' but it was: " + tagName + "'.");
+        String currentLocalName = reader.getLocalName();
+        String currentNamespaceUri = reader.getNamespaceURI();
+        if (!qNameEquals(currentNamespaceUri, currentLocalName, namespaceUri, localName)) {
+            throw new IllegalStateException("Expected XML element to be '" + qNameToString(namespaceUri, localName)
+                + "' but it was: " + qNameToString(currentNamespaceUri, currentLocalName) + "'.");
         }
 
         return converter.read(this);
+    }
+
+    // Optimization to remove needing to instantiate QName.
+    private static boolean qNameEquals(String currentNamespaceUri, String currentLocalName, String namespaceUri,
+        String localName) {
+        if (namespaceUri == null) {
+            namespaceUri = XMLConstants.NULL_NS_URI;
+        }
+
+        if (currentNamespaceUri == null) {
+            currentNamespaceUri = XMLConstants.NULL_NS_URI;
+        }
+
+        return Objects.equals(currentLocalName, localName) && Objects.equals(currentNamespaceUri, namespaceUri);
+    }
+
+    // Optimization to remove needing to instantiate QName.
+    private static String qNameToString(String namespaceUri, String localName) {
+        return (namespaceUri == null) ? localName : "{" + namespaceUri + "}" + localName;
     }
 
     /**
