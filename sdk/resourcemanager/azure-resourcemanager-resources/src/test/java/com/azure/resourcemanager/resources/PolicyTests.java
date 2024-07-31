@@ -5,7 +5,6 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.ParameterType;
@@ -35,7 +34,6 @@ public class PolicyTests extends ResourceManagementTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @LiveOnly
     public void canCRUDPolicyDefinition() throws Exception {
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);
@@ -59,14 +57,16 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertEquals("All", definition.mode());
             Assertions.assertEquals("Compute", ((Map<String, String>) definition.metadata()).get("category"));
             // List
-            PagedIterable<PolicyDefinition> definitions = resourceClient.policyDefinitions().list();
-            boolean found = false;
-            for (PolicyDefinition def : definitions) {
-                if (definition.id().equalsIgnoreCase(def.id())) {
-                    found = true;
+            if (!isPlaybackMode()) {
+                PagedIterable<PolicyDefinition> definitions = resourceClient.policyDefinitions().list();
+                boolean found = false;
+                for (PolicyDefinition def : definitions) {
+                    if (definition.id().equalsIgnoreCase(def.id())) {
+                        found = true;
+                    }
                 }
+                Assertions.assertTrue(found);
             }
-            Assertions.assertTrue(found);
             // Get
             definition = resourceClient.policyDefinitions().getByName(policyName);
             Assertions.assertNotNull(definition);
