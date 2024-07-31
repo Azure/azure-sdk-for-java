@@ -29,30 +29,35 @@ spec:
       args:
         - |
           set -exa;
+          set -o pipefail;
           keytool -import -alias test -file /mnt/outputs/dev-cert.pfx -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit;
           mkdir -p "$DEBUG_SHARE";
           . /mnt/outputs/.env;
+          export AZURE_HTTP_CLIENT_IMPLEMENTATION=com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+          echo "setting http client implementation to $AZURE_HTTP_CLIENT_IMPLEMENTATION";
           java \
-          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
-          -Dotel.traces.sampler=traceidratio \
-          -Dotel.traces.sampler.arg=0.001 \
-          -XX:InitialRAMPercentage=50 \
-          -XX:MaxRAMPercentage=50 \
-          -XX:+HeapDumpOnOutOfMemoryError \
-          -XX:HeapDumpPath="${DEBUG_SHARE}" \
-          -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallelRuns }} \
-          -jar /app/azure-storage-file-datalake-stress-1.0.0-beta.1-jar-with-dependencies.jar \
-          {{ .Stress.testScenario }} \
-          --parallel {{ .Stress.parallelRuns }} \
-          --duration {{ mul 60 .Stress.durationMin }} \
-          --size {{ .Stress.sizeBytes }} \
-          {{ ternary "--sync" "" .Stress.sync }} \
-          {{ ternary "--downloadFaults" "" (default false .Stress.downloadFaults) }} \
-          {{ ternary "--uploadFaults" "" (default false .Stress.uploadFaults) }} \
-          --warmup 0 \
-          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
-          code=$?; \
-          kill `pidof http-fault-injector`; \
+            -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+            -Dotel.traces.sampler=traceidratio \
+            -Dotel.traces.sampler.arg=0.001 \
+            -XX:InitialRAMPercentage=50 \
+            -XX:MaxRAMPercentage=50 \
+            -XX:+HeapDumpOnOutOfMemoryError \
+            -XX:HeapDumpPath="${DEBUG_SHARE}" \
+            -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallelRuns }} \
+            -jar /app/azure-storage-file-datalake-stress-1.0.0-beta.1-jar-with-dependencies.jar \
+            {{ .Stress.testScenario }} \
+            --parallel {{ .Stress.parallelRuns }} \
+            --duration {{ mul 60 .Stress.durationMin }} \
+            --size {{ .Stress.sizeBytes }} \
+            {{ ternary "--sync" "" .Stress.sync }} \
+            {{ ternary "--downloadFaults" "" (default false .Stress.downloadFaults) }} \
+            {{ ternary "--uploadFaults" "" (default false .Stress.uploadFaults) }} \
+            --warmup 0 \
+            2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log";
+          code=$?;
+          echo "before the kill command";
+          kill `pidof http-fault-injector`;
+          echo "HTTP Fault Injector killed";
           exit $code;
       imagePullPolicy: Always
       resources:

@@ -29,9 +29,12 @@ spec:
       args:
         - |
           set -exa;
+          set -o pipefail;
           keytool -import -alias test -file /mnt/outputs/dev-cert.pfx -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit;
           mkdir -p "$DEBUG_SHARE";
           . /mnt/outputs/.env;
+          export AZURE_HTTP_CLIENT_IMPLEMENTATION=com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+          echo "setting http client implementation to $AZURE_HTTP_CLIENT_IMPLEMENTATION";
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
@@ -50,9 +53,11 @@ spec:
           {{ ternary "--downloadFaults" "" (default false .Stress.downloadFaults) }} \
           {{ ternary "--uploadFaults" "" (default false .Stress.uploadFaults) }} \
           --warmup 0 \
-          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
-          code=$?; \
-          kill `pidof http-fault-injector`; \
+          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log";
+          code=$?;
+          echo "before the kill command";
+          kill `pidof http-fault-injector`;
+          echo "HTTP Fault Injector killed";
           exit $code;
       imagePullPolicy: Always
       resources:

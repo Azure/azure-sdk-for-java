@@ -79,19 +79,8 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        LOGGER.info("before calling deleteIfExists");
         return asyncNoFaultClient.deleteIfExists()
-            .doFirst(() -> {
-                // Log before cleanup
-                System.out.println("Cleaning up...");
-                LOGGER.info("Before calling cleanup on blob {}", asyncNoFaultClient.getBlobUrl());
-            })
-            .then(super.cleanupAsync())
-            .doFinally(aVoid -> {
-                // Log on successful completion
-                System.out.println("Cleanup completed successfully.");
-                LOGGER.info("Deleted blob {}", asyncNoFaultClient.getBlobUrl());
-            });
+            .then(super.cleanupAsync());
     }
 
     private Path getTempPath(String prefix) {
