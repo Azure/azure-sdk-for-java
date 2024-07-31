@@ -1,14 +1,11 @@
 # Release History
 
-## 4.23.0-beta.1 (Unreleased)
+## 4.23.0 (2024-07-30)
 
-### Features Added
+### Features added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- New ACS Router events
+- Fix serialization bug in `AcsEmailDeliveryReportReceivedEventData` and `AcsEmailEngagementTrackingReportReceivedEventData`
 
 ## 4.22.4 (2024-07-26)
 
