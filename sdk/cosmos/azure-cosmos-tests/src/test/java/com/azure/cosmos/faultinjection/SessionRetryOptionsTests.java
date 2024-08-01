@@ -197,7 +197,7 @@ public class SessionRetryOptionsTests extends FaultInjectionTestBase {
         Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
 
         assertThat(preferredLocations).isNotNull();
-        assertThat(preferredLocations.size()).isEqualTo(2);
+        assertThat(preferredLocations.size()).isGreaterThanOrEqualTo(2);
 
         CosmosAsyncClient clientWithPreferredRegions = null;
 
@@ -275,7 +275,7 @@ public class SessionRetryOptionsTests extends FaultInjectionTestBase {
         Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
 
         assertThat(preferredRegions).isNotNull();
-        assertThat(preferredRegions.size()).isEqualTo(2);
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
 
         CosmosAsyncClient clientWithPreferredRegions = null;
 

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -25,13 +26,14 @@ public class RetryPolicy implements IRetryPolicyFactory {
         DiagnosticsClientContext diagnosticsClientContext,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover) {
 
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
         this.globalEndpointManager = globalEndpointManager;
         this.throttlingRetryOptions = connectionPolicy.getThrottlingRetryOptions();
-        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
+        this.globalPartitionEndpointManager = globalPartitionEndpointManagerForCircuitBreaker;
     }
 
     @Override
