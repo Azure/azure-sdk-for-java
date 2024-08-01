@@ -65,7 +65,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
         ConnectionStringProperties properties = getConnectionStringProperties(true);
         String fullyQualifiedNamespace = properties.getEndpoint().getHost();
         String sharedAccessSignature = properties.getSharedAccessSignature();
-        String eventHubName = properties.getEntityPath();
+        String eventHubName = TestUtils.getEventHubName();
 
         final EventData testData = new EventData("test-contents".getBytes(UTF_8));
 
