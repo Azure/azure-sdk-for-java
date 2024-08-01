@@ -5,7 +5,7 @@ variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
-  - stage: "supported_spring_boot_compatibility_tests"
+  - stage: "LatestSpringVersionCompatibility"
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
         parameters:
@@ -29,7 +29,8 @@ stages:
               displayName: 'Update supported Spring versions'
           MatrixFilters:
             - JavaTestVersion=^(?!1.8|1.11).*
-  - stage: "end_of_life_spring_boot_compatibility_tests"
+  - stage: "NonLatestSpringVersionsCompatibility"
+    dependsOn: []
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
         parameters:
