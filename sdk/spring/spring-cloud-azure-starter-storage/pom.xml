@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-storage</artifactId>
-  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
+  <version>5.15.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
 
   <name>Spring Cloud Azure Starter Storage</name>
   <description>Spring Cloud Azure Starter Storage</description>
@@ -88,19 +88,19 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
+      <version>5.15.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-file-share</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-file-share;current} -->
+      <version>5.15.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-file-share;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
+      <version>5.15.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
     </dependency>
   </dependencies>
 
