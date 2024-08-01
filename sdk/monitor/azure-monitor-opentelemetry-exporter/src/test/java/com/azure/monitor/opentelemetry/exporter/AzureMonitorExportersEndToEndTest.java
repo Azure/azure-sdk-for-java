@@ -21,7 +21,6 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
