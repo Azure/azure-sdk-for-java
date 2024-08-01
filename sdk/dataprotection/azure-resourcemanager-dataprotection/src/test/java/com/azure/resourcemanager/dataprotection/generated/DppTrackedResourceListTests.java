@@ -12,14 +12,14 @@ public final class DppTrackedResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppTrackedResourceList model
-            = BinaryData.fromString("{\"nextLink\":\"cckwyfzqwhxxbu\"}").toObject(DppTrackedResourceList.class);
-        Assertions.assertEquals("cckwyfzqwhxxbu", model.nextLink());
+            = BinaryData.fromString("{\"nextLink\":\"fjhdg\"}").toObject(DppTrackedResourceList.class);
+        Assertions.assertEquals("fjhdg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppTrackedResourceList model = new DppTrackedResourceList().withNextLink("cckwyfzqwhxxbu");
+        DppTrackedResourceList model = new DppTrackedResourceList().withNextLink("fjhdg");
         model = BinaryData.fromObject(model).toObject(DppTrackedResourceList.class);
-        Assertions.assertEquals("cckwyfzqwhxxbu", model.nextLink());
+        Assertions.assertEquals("fjhdg", model.nextLink());
     }
 }

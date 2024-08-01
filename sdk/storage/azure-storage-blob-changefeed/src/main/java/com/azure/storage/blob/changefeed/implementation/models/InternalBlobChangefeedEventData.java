@@ -38,13 +38,13 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
      * @param requestId The request id.
      * @param eTag The eTag.
      * @param contentType The content type.
-     * @param contentLength Th4e content length.
+     * @param contentLength The content length.
      * @param blobType {@link BlobType}
      * @param contentOffset The content offset.
      * @param destinationUrl The destination url.
      * @param sourceUrl The source url.
      * @param blobUrl The blob url.
-     * @param recursive Whether or not this operation was recursive.
+     * @param recursive Whether this operation was recursive.
      * @param sequencer The sequencer.
      */
     public InternalBlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,

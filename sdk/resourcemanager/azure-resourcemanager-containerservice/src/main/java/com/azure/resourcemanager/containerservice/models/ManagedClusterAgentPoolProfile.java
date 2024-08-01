@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAgentPoolProfileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,6 @@ import java.util.Map;
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
-     * 
      * Windows agent pool names must be 6 characters or less.
      */
     @JsonProperty(value = "name", required = true)
@@ -31,11 +30,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
-     * 
-     * Windows agent pool names must be 6 characters or less.
-     * 
+     * Get the name property: Windows agent pool names must be 6 characters or less.
+     *
      * @return the name value.
      */
     public String name() {
@@ -43,11 +39,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
-     * 
-     * Windows agent pool names must be 6 characters or less.
-     * 
+     * Set the name property: Windows agent pool names must be 6 characters or less.
+     *
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
      */
@@ -427,15 +420,16 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ManagedClusterAgentPoolProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ManagedClusterAgentPoolProfile"));
         }
     }
 

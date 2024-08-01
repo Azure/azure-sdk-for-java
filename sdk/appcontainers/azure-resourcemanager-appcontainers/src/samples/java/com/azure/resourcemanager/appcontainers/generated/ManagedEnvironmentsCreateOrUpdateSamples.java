@@ -13,6 +13,8 @@ import com.azure.resourcemanager.appcontainers.models.Header;
 import com.azure.resourcemanager.appcontainers.models.LogAnalyticsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.LogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appcontainers.models.MetricsConfiguration;
@@ -32,7 +34,7 @@ import java.util.Map;
  */
 public final class ManagedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
      */
     /**
@@ -42,7 +44,9 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
      */
     public static void createEnvironmentWithCustomInfrastructureResourceGroup(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().define("testcontainerenv").withRegion("East US")
+        manager.managedEnvironments()
+            .define("testcontainerenv")
+            .withRegion("East US")
             .withExistingResourceGroup("examplerg")
             .withDaprAIConnectionString(
                 "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/")
@@ -52,20 +56,28 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                 new LogAnalyticsConfiguration().withCustomerId("string").withSharedKey("fakeTokenPlaceholder")))
             .withZoneRedundant(true)
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
-                .withCertificateValue("Y2VydA==".getBytes()).withCertificatePassword("fakeTokenPlaceholder"))
+                .withCertificateValue("Y2VydA==".getBytes())
+                .withCertificatePassword("fakeTokenPlaceholder"))
             .withWorkloadProfiles(Arrays.asList(
-                new WorkloadProfile().withName("My-GP-01").withWorkloadProfileType("GeneralPurpose").withMinimumCount(3)
+                new WorkloadProfile().withName("My-GP-01")
+                    .withWorkloadProfileType("GeneralPurpose")
+                    .withMinimumCount(3)
                     .withMaximumCount(12),
-                new WorkloadProfile().withName("My-MO-01").withWorkloadProfileType("MemoryOptimized")
-                    .withMinimumCount(3).withMaximumCount(6),
-                new WorkloadProfile().withName("My-CO-01").withWorkloadProfileType("ComputeOptimized")
-                    .withMinimumCount(3).withMaximumCount(6),
+                new WorkloadProfile().withName("My-MO-01")
+                    .withWorkloadProfileType("MemoryOptimized")
+                    .withMinimumCount(3)
+                    .withMaximumCount(6),
+                new WorkloadProfile().withName("My-CO-01")
+                    .withWorkloadProfileType("ComputeOptimized")
+                    .withMinimumCount(3)
+                    .withMaximumCount(6),
                 new WorkloadProfile().withName("My-consumption-01").withWorkloadProfileType("Consumption")))
-            .withInfrastructureResourceGroup("myInfrastructureRgName").create();
+            .withInfrastructureResourceGroup("myInfrastructureRgName")
+            .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ManagedEnvironments_CreateOrUpdate.json
      */
     /**
@@ -74,7 +86,9 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void createEnvironments(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().define("testcontainerenv").withRegion("East US")
+        manager.managedEnvironments()
+            .define("testcontainerenv")
+            .withRegion("East US")
             .withExistingResourceGroup("examplerg")
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
@@ -85,9 +99,10 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                 "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/")
             .withVnetConfiguration(new VnetConfiguration().withInfrastructureSubnetId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"))
-            .withAppLogsConfiguration(
-                new AppLogsConfiguration().withLogAnalyticsConfiguration(new LogAnalyticsConfiguration()
-                    .withCustomerId("string").withSharedKey("fakeTokenPlaceholder").withDynamicJsonColumns(true)))
+            .withAppLogsConfiguration(new AppLogsConfiguration()
+                .withLogAnalyticsConfiguration(new LogAnalyticsConfiguration().withCustomerId("string")
+                    .withSharedKey("fakeTokenPlaceholder")
+                    .withDynamicJsonColumns(true)))
             .withAppInsightsConfiguration(new AppInsightsConfiguration().withConnectionString(
                 "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/"))
             .withOpenTelemetryConfiguration(
@@ -97,7 +112,8 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                             .withDataDogConfiguration(
                                 new DataDogConfiguration().withSite("string").withKey("fakeTokenPlaceholder"))
                             .withOtlpConfigurations(Arrays.asList(new OtlpConfiguration().withName("dashboard")
-                                .withEndpoint("dashboard.k8s.region.azurecontainerapps.io:80").withInsecure(true)
+                                .withEndpoint("dashboard.k8s.region.azurecontainerapps.io:80")
+                                .withInsecure(true)
                                 .withHeaders(Arrays
                                     .asList(new Header().withKey("fakeTokenPlaceholder").withValue("xxxxxxxxxxx"))))))
                     .withTracesConfiguration(new TracesConfiguration().withDestinations(Arrays.asList("appInsights")))
@@ -105,17 +121,26 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                     .withMetricsConfiguration(new MetricsConfiguration().withDestinations(Arrays.asList("dataDog"))))
             .withZoneRedundant(true)
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
-                .withCertificateValue("Y2VydA==".getBytes()).withCertificatePassword("fakeTokenPlaceholder"))
+                .withCertificateValue("Y2VydA==".getBytes())
+                .withCertificatePassword("fakeTokenPlaceholder"))
             .withWorkloadProfiles(Arrays.asList(
-                new WorkloadProfile().withName("My-GP-01").withWorkloadProfileType("GeneralPurpose").withMinimumCount(3)
+                new WorkloadProfile().withName("My-GP-01")
+                    .withWorkloadProfileType("GeneralPurpose")
+                    .withMinimumCount(3)
                     .withMaximumCount(12),
-                new WorkloadProfile().withName("My-MO-01").withWorkloadProfileType("MemoryOptimized")
-                    .withMinimumCount(3).withMaximumCount(6),
-                new WorkloadProfile().withName("My-CO-01").withWorkloadProfileType("ComputeOptimized")
-                    .withMinimumCount(3).withMaximumCount(6),
+                new WorkloadProfile().withName("My-MO-01")
+                    .withWorkloadProfileType("MemoryOptimized")
+                    .withMinimumCount(3)
+                    .withMaximumCount(6),
+                new WorkloadProfile().withName("My-CO-01")
+                    .withWorkloadProfileType("ComputeOptimized")
+                    .withMinimumCount(3)
+                    .withMaximumCount(6),
                 new WorkloadProfile().withName("My-consumption-01").withWorkloadProfileType("Consumption")))
             .withPeerAuthentication(
                 new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(true)))
+            .withPeerTrafficConfiguration(new ManagedEnvironmentPropertiesPeerTrafficConfiguration()
+                .withEncryption(new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(true)))
             .create();
     }
 

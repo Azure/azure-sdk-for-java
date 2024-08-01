@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Security Perimeter profile.
  */
 @Immutable
-public final class NetworkSecurityPerimeterProfile {
+public final class NetworkSecurityPerimeterProfile implements JsonSerializable<NetworkSecurityPerimeterProfile> {
     /*
      * Name of the resource
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Access rules version number
      */
-    @JsonProperty(value = "accessRulesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private Integer accessRulesVersion;
 
     /*
      * Collection of access rules for the profile
      */
-    @JsonProperty(value = "accessRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<AccessRule> accessRules;
 
     /*
      * Diagnostic settings version number
      */
-    @JsonProperty(value = "diagnosticSettingsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private Integer diagnosticSettingsVersion;
 
     /*
      * Collection of enabled log categories for the profile
      */
-    @JsonProperty(value = "enabledLogCategories", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> enabledLogCategories;
 
     /**
@@ -103,5 +102,53 @@ public final class NetworkSecurityPerimeterProfile {
         if (accessRules() != null) {
             accessRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityPerimeterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityPerimeterProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterProfile.
+     */
+    public static NetworkSecurityPerimeterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityPerimeterProfile deserializedNetworkSecurityPerimeterProfile
+                = new NetworkSecurityPerimeterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfile.name = reader.getString();
+                } else if ("accessRulesVersion".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfile.accessRulesVersion
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("accessRules".equals(fieldName)) {
+                    List<AccessRule> accessRules = reader.readArray(reader1 -> AccessRule.fromJson(reader1));
+                    deserializedNetworkSecurityPerimeterProfile.accessRules = accessRules;
+                } else if ("diagnosticSettingsVersion".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfile.diagnosticSettingsVersion
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enabledLogCategories".equals(fieldName)) {
+                    List<String> enabledLogCategories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkSecurityPerimeterProfile.enabledLogCategories = enabledLogCategories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityPerimeterProfile;
+        });
     }
 }

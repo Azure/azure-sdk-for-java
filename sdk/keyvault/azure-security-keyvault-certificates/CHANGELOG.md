@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 4.6.5 (2024-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 
 ## 4.6.4 (2024-06-27)
 
@@ -19,7 +28,6 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
-
 
 ## 4.6.3 (2024-05-13)
 
@@ -39,7 +47,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
-
 ## 4.6.1 (2024-03-20)
 
 ### Other Changes
@@ -48,7 +55,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 4.6.0 (2024-02-22)
 Changes when compared to the last stable release (`4.5.9`) include:
@@ -555,10 +561,8 @@ Changes when compared to the last stable release (`4.5.9`) include:
 - Removed `AdministratorContact` constructor overloads and introduced setters for all parameters.
 - Removed `CertificateContact` constructor overloads and introduced setters for all parameters.
 
-For details on the Azure SDK for Java (December 2019 beta) release refer to the [release announcement](https://aka.ms/azure-sdk-beta7-java).
 
 ## 4.0.0-beta.6 (2019-12-04)
-For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 
 
 ### Breaking changes
@@ -590,7 +594,6 @@ For details on the Azure SDK for Java (November 2019 Preview) release refer to t
 
 
 ## 4.0.0-preview.5 (2019-11-01)
-For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 
 ### Breaking changes
 - `beginCreateCertificate` method now returns a SyncPoller in `CertificateClient` and a PollerFlux in`CertificateAsyncClient`

@@ -12,7 +12,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.util.X509CertUtils;
@@ -170,11 +169,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new ClientSecretCredentialBuilder()
-                .clientSecret(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_SECRET"))
-                .clientId(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_ID"))
-                .tenantId(Configuration.getGlobalConfiguration().get("ATTESTATION_TENANT_ID"))
-                .httpClient(httpClient).build());
+            builder.credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder.credential(new MockTokenCredential());
         }
@@ -234,12 +229,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
             // Add a 10-second slack time to account for clock drift between the client and server.
             builder.tokenValidationOptions(new AttestationTokenValidationOptions()
                     .setValidationSlack(Duration.ofSeconds(10)))
-                .credential(new ClientSecretCredentialBuilder()
-                    .clientSecret(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_SECRET"))
-                    .clientId(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_ID"))
-                    .tenantId(Configuration.getGlobalConfiguration().get("ATTESTATION_TENANT_ID"))
-                    .httpClient(httpClient).build())
-                .httpClient(httpClient);
+                .credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder.tokenValidationOptions(new AttestationTokenValidationOptions()
                 .setValidateExpiresOn(false)

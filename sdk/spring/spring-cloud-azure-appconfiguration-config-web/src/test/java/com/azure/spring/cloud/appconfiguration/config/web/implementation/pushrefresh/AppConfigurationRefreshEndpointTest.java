@@ -19,9 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +35,9 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class AppConfigurationRefreshEndpointTest {
 
@@ -117,7 +117,7 @@ public class AppConfigurationRefreshEndpointTest {
         when(lines.collect(Mockito.any())).thenReturn("[{\r\n"
             + "  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",\r\n"
             + "  \"topic\":" + TOPIC + ",\r\n"
-            + "  \"subject\": \"https://fake.test.azconfig.io/kv/Foo?label=FizzBuzz\",\r\n"
+            + " \"subject\": \"https://fake.test.azconfig.io/kv/Foo?label=FizzBuzz\",\r\n"
             + "  \"data\": {\r\n"
             + "    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",\r\n"
             + "    \"validationUrl\":" + VALIDATION_URL + ",\r\n"

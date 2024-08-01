@@ -24,11 +24,16 @@ public final class DedicatedHostsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateADedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().createOrUpdate("myResourceGroup",
-            "myDedicatedHostGroup", "myDedicatedHost",
-            new DedicatedHostInner().withLocation("westus").withTags(mapOf("department", "HR"))
-                .withSku(new Sku().withName("DSv3-Type1")).withPlatformFaultDomain(1),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .createOrUpdate("myResourceGroup", "myDedicatedHostGroup", "myDedicatedHost",
+                new DedicatedHostInner().withLocation("westus")
+                    .withTags(mapOf("department", "HR"))
+                    .withSku(new Sku().withName("DSv3-Type1"))
+                    .withPlatformFaultDomain(1),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

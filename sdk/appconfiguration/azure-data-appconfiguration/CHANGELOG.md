@@ -4,11 +4,31 @@
 
 ### Features Added
 
+- Added a new service API support: `2023-11-01`.
+- Added a new method `listLabels` to support listing labels capabilities.
+- Added new class `SettingLabel` and `SettingLabelSelector`, and a new enum `SettingLabelFields`.
+- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
+- Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 1.6.3 (2024-07-26)
+
+### Bugs Fixed
+
+Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the feature flag prefix `.appconfig.featureflag/` before the input key. ([#33332](https://github.com/Azure/azure-sdk-for-java/issues/33332))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 
 ## 1.6.2 (2024-06-25)
 

@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.HeaderMatch;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Conditions that must be met for a request to be retried.
  */
 @Fluent
-public final class HttpRetryPolicyMatches {
+public final class HttpRetryPolicyMatches implements JsonSerializable<HttpRetryPolicyMatches> {
     /*
      * Headers that must be present for a request to be retried
      */
-    @JsonProperty(value = "headers")
     private List<HeaderMatch> headers;
 
     /*
      * Additional http status codes that can trigger a retry
      */
-    @JsonProperty(value = "httpStatusCodes")
     private List<Integer> httpStatusCodes;
 
     /*
      * Errors that can trigger a retry
      */
-    @JsonProperty(value = "errors")
     private List<String> errors;
 
     /**
@@ -107,5 +108,51 @@ public final class HttpRetryPolicyMatches {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("httpStatusCodes", this.httpStatusCodes,
+            (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpRetryPolicyMatches from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpRetryPolicyMatches if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpRetryPolicyMatches.
+     */
+    public static HttpRetryPolicyMatches fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpRetryPolicyMatches deserializedHttpRetryPolicyMatches = new HttpRetryPolicyMatches();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("headers".equals(fieldName)) {
+                    List<HeaderMatch> headers = reader.readArray(reader1 -> HeaderMatch.fromJson(reader1));
+                    deserializedHttpRetryPolicyMatches.headers = headers;
+                } else if ("httpStatusCodes".equals(fieldName)) {
+                    List<Integer> httpStatusCodes = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedHttpRetryPolicyMatches.httpStatusCodes = httpStatusCodes;
+                } else if ("errors".equals(fieldName)) {
+                    List<String> errors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHttpRetryPolicyMatches.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpRetryPolicyMatches;
+        });
     }
 }

@@ -5,97 +5,89 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Face attributes for the detected face.
  */
 @Immutable
-public final class FaceAttributes {
+public final class FaceAttributes implements JsonSerializable<FaceAttributes> {
 
     /*
      * Age in years.
      */
     @Generated
-    @JsonProperty(value = "age")
     private Double age;
 
     /*
      * Smile intensity, a number between [0,1].
      */
     @Generated
-    @JsonProperty(value = "smile")
     private Double smile;
 
     /*
      * Properties describing facial hair attributes.
      */
     @Generated
-    @JsonProperty(value = "facialHair")
     private FacialHair facialHair;
 
     /*
      * Glasses type if any of the face.
      */
     @Generated
-    @JsonProperty(value = "glasses")
     private GlassesType glasses;
 
     /*
      * 3-D roll/yaw/pitch angles for face direction.
      */
     @Generated
-    @JsonProperty(value = "headPose")
     private HeadPose headPose;
 
     /*
      * Properties describing hair attributes.
      */
     @Generated
-    @JsonProperty(value = "hair")
     private HairProperties hair;
 
     /*
      * Properties describing occlusions on a given face.
      */
     @Generated
-    @JsonProperty(value = "occlusion")
     private OcclusionProperties occlusion;
 
     /*
      * Properties describing any accessories on a given face.
      */
     @Generated
-    @JsonProperty(value = "accessories")
     private List<AccessoryItem> accessories;
 
     /*
      * Properties describing any presence of blur within the image.
      */
     @Generated
-    @JsonProperty(value = "blur")
     private BlurProperties blur;
 
     /*
      * Properties describing exposure level of the image.
      */
     @Generated
-    @JsonProperty(value = "exposure")
     private ExposureProperties exposure;
 
     /*
      * Properties describing noise level of the image.
      */
     @Generated
-    @JsonProperty(value = "noise")
     private NoiseProperties noise;
 
     /*
      * Properties describing the presence of a mask on a given face.
      */
     @Generated
-    @JsonProperty(value = "mask")
     private MaskProperties mask;
 
     /*
@@ -103,7 +95,6 @@ public final class FaceAttributes {
      * sufficient quality to attempt face recognition on.
      */
     @Generated
-    @JsonProperty(value = "qualityForRecognition")
     private QualityForRecognition qualityForRecognition;
 
     /**
@@ -242,5 +233,80 @@ public final class FaceAttributes {
     @Generated
     public QualityForRecognition getQualityForRecognition() {
         return this.qualityForRecognition;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("age", this.age);
+        jsonWriter.writeNumberField("smile", this.smile);
+        jsonWriter.writeJsonField("facialHair", this.facialHair);
+        jsonWriter.writeStringField("glasses", this.glasses == null ? null : this.glasses.toString());
+        jsonWriter.writeJsonField("headPose", this.headPose);
+        jsonWriter.writeJsonField("hair", this.hair);
+        jsonWriter.writeJsonField("occlusion", this.occlusion);
+        jsonWriter.writeArrayField("accessories", this.accessories, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("blur", this.blur);
+        jsonWriter.writeJsonField("exposure", this.exposure);
+        jsonWriter.writeJsonField("noise", this.noise);
+        jsonWriter.writeJsonField("mask", this.mask);
+        jsonWriter.writeStringField("qualityForRecognition",
+            this.qualityForRecognition == null ? null : this.qualityForRecognition.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceAttributes from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceAttributes if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FaceAttributes.
+     */
+    @Generated
+    public static FaceAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FaceAttributes deserializedFaceAttributes = new FaceAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("age".equals(fieldName)) {
+                    deserializedFaceAttributes.age = reader.getNullable(JsonReader::getDouble);
+                } else if ("smile".equals(fieldName)) {
+                    deserializedFaceAttributes.smile = reader.getNullable(JsonReader::getDouble);
+                } else if ("facialHair".equals(fieldName)) {
+                    deserializedFaceAttributes.facialHair = FacialHair.fromJson(reader);
+                } else if ("glasses".equals(fieldName)) {
+                    deserializedFaceAttributes.glasses = GlassesType.fromString(reader.getString());
+                } else if ("headPose".equals(fieldName)) {
+                    deserializedFaceAttributes.headPose = HeadPose.fromJson(reader);
+                } else if ("hair".equals(fieldName)) {
+                    deserializedFaceAttributes.hair = HairProperties.fromJson(reader);
+                } else if ("occlusion".equals(fieldName)) {
+                    deserializedFaceAttributes.occlusion = OcclusionProperties.fromJson(reader);
+                } else if ("accessories".equals(fieldName)) {
+                    List<AccessoryItem> accessories = reader.readArray(reader1 -> AccessoryItem.fromJson(reader1));
+                    deserializedFaceAttributes.accessories = accessories;
+                } else if ("blur".equals(fieldName)) {
+                    deserializedFaceAttributes.blur = BlurProperties.fromJson(reader);
+                } else if ("exposure".equals(fieldName)) {
+                    deserializedFaceAttributes.exposure = ExposureProperties.fromJson(reader);
+                } else if ("noise".equals(fieldName)) {
+                    deserializedFaceAttributes.noise = NoiseProperties.fromJson(reader);
+                } else if ("mask".equals(fieldName)) {
+                    deserializedFaceAttributes.mask = MaskProperties.fromJson(reader);
+                } else if ("qualityForRecognition".equals(fieldName)) {
+                    deserializedFaceAttributes.qualityForRecognition
+                        = QualityForRecognition.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFaceAttributes;
+        });
     }
 }

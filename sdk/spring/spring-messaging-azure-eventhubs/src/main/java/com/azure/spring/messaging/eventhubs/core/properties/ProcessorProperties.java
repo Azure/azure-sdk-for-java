@@ -16,6 +16,12 @@ import java.util.Map;
  */
 public class ProcessorProperties extends ConsumerProperties implements EventProcessorClientProperties {
 
+    /**
+     * Create an instance of {@link ProcessorProperties}.
+     */
+    public ProcessorProperties() {
+    }
+
     private final Map<String, StartPositionProperties> initialPartitionEventPosition = new HashMap<>();
     private final LoadBalancingProperties loadBalancing = new LoadBalancingProperties();
     private final EventBatchProperties batch = new EventBatchProperties();

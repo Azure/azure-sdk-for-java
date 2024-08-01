@@ -104,8 +104,9 @@ public final class OrchestratorProfile {
      */
     public void validate() {
         if (orchestratorVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestratorVersion in model OrchestratorProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestratorVersion in model OrchestratorProfile"));
         }
     }
 

@@ -24,11 +24,14 @@ public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
      */
     public static void virtualMachineScaleSetSetOrchestrationServiceStateMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().setOrchestrationServiceState(
-            "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa",
-            new OrchestrationServiceStateInput().withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
-                .withAction(OrchestrationServiceStateAction.RESUME),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .setOrchestrationServiceState("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa",
+                new OrchestrationServiceStateInput().withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
+                    .withAction(OrchestrationServiceStateAction.RESUME),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -43,10 +46,13 @@ public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
      */
     public static void virtualMachineScaleSetSetOrchestrationServiceStateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().setOrchestrationServiceState(
-            "rgcompute", "aaaaaaaaaaaaaaaa",
-            new OrchestrationServiceStateInput().withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
-                .withAction(OrchestrationServiceStateAction.RESUME),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .setOrchestrationServiceState("rgcompute", "aaaaaaaaaaaaaaaa",
+                new OrchestrationServiceStateInput().withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
+                    .withAction(OrchestrationServiceStateAction.RESUME),
+                com.azure.core.util.Context.NONE);
     }
 }

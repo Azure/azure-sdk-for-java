@@ -304,7 +304,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         }
 
 
-def update_changelog_version(sdk_root:str, output_folder:str, current_version:str):
+def update_changelog_version(sdk_root: str, output_folder: str, current_version: str):
     pwd = os.getcwd()
     try:
         os.chdir(sdk_root)
@@ -313,14 +313,14 @@ def update_changelog_version(sdk_root:str, output_folder:str, current_version:st
             with open(changelog_file, "r") as fin:
                 changelog_str = fin.read()
             logging.info("[CHANGELOG][Version] Update changelog latest version")
-            version_pattern = "^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((?P<date>.*?)\)"
+            version_pattern = r"^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((?P<date>.*?)\)"
 
             changelog_str = re.sub(
-                pattern = version_pattern,
-                repl = f"## {current_version} (\\g<date>)",
-                string = changelog_str,
-                count = 1,
-                flags = re.M
+                pattern=version_pattern,
+                repl=f"## {current_version} (\\g<date>)",
+                string=changelog_str,
+                count=1,
+                flags=re.M,
             )
             with open(changelog_file, "w") as fout:
                 fout.write(changelog_str)
@@ -330,6 +330,7 @@ def update_changelog_version(sdk_root:str, output_folder:str, current_version:st
             logging.info("[Changelog][Skip] Cannot find changelog file under the given output folder")
     finally:
         os.chdir(pwd)
+
 
 def main():
     (parser, args) = parse_args()
@@ -422,7 +423,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         stream=sys.stdout,
         level=logging.INFO,
-        format="%(asctime)s %(levelname)s %(message)s",
+        format="%(asctime)s [%(levelname)s] %(message)s",
         datefmt="%Y-%m-%d %X",
     )
     main()

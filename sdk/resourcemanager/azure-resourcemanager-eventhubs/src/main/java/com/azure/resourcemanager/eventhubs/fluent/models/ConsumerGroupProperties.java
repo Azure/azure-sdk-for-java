@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** Single item in List or Get Consumer group operation. */
+/**
+ * Single item in List or Get Consumer group operation.
+ */
 @Fluent
 public final class ConsumerGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupProperties.class);
-
     /*
      * Exact time the message was created.
      */
@@ -28,13 +27,18 @@ public final class ConsumerGroupProperties {
     private OffsetDateTime updatedAt;
 
     /*
-     * User Metadata is a placeholder to store user-defined string data with
-     * maximum length 1024. e.g. it can be used to store descriptive data, such
-     * as list of teams and their contact information also user-defined
-     * configuration settings can be stored.
+     * User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to
+     * store descriptive data, such as list of teams and their contact information also user-defined configuration
+     * settings can be stored.
      */
     @JsonProperty(value = "userMetadata")
     private String userMetadata;
+
+    /**
+     * Creates an instance of ConsumerGroupProperties class.
+     */
+    public ConsumerGroupProperties() {
+    }
 
     /**
      * Get the createdAt property: Exact time the message was created.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class OsType extends ExpandableStringEnum<OsType> {
      * @param name a name to look for.
      * @return the corresponding OsType.
      */
-    @JsonCreator
     public static OsType fromString(String name) {
         return fromString(name, OsType.class);
     }

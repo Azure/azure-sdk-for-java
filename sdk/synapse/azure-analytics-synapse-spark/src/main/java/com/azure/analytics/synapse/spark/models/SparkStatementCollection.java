@@ -5,27 +5,37 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SparkStatementCollection model. */
+/**
+ * The SparkStatementCollection model.
+ */
 @Fluent
-public final class SparkStatementCollection {
+public final class SparkStatementCollection implements JsonSerializable<SparkStatementCollection> {
     /*
      * The total_statements property.
      */
-    @JsonProperty(value = "total_statements", required = true)
     private int total;
 
     /*
      * The statements property.
      */
-    @JsonProperty(value = "statements")
     private List<SparkStatement> statements;
 
     /**
+     * Creates an instance of SparkStatementCollection class.
+     */
+    public SparkStatementCollection() {
+    }
+
+    /**
      * Get the total property: The total_statements property.
-     *
+     * 
      * @return the total value.
      */
     public int getTotal() {
@@ -34,7 +44,7 @@ public final class SparkStatementCollection {
 
     /**
      * Set the total property: The total_statements property.
-     *
+     * 
      * @param total the total value to set.
      * @return the SparkStatementCollection object itself.
      */
@@ -45,7 +55,7 @@ public final class SparkStatementCollection {
 
     /**
      * Get the statements property: The statements property.
-     *
+     * 
      * @return the statements value.
      */
     public List<SparkStatement> getStatements() {
@@ -54,12 +64,53 @@ public final class SparkStatementCollection {
 
     /**
      * Set the statements property: The statements property.
-     *
+     * 
      * @param statements the statements value to set.
      * @return the SparkStatementCollection object itself.
      */
     public SparkStatementCollection setStatements(List<SparkStatement> statements) {
         this.statements = statements;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("total_statements", this.total);
+        jsonWriter.writeArrayField("statements", this.statements, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkStatementCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkStatementCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkStatementCollection.
+     */
+    public static SparkStatementCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkStatementCollection deserializedSparkStatementCollection = new SparkStatementCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("total_statements".equals(fieldName)) {
+                    deserializedSparkStatementCollection.total = reader.getInt();
+                } else if ("statements".equals(fieldName)) {
+                    List<SparkStatement> statements = reader.readArray(reader1 -> SparkStatement.fromJson(reader1));
+                    deserializedSparkStatementCollection.statements = statements;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkStatementCollection;
+        });
     }
 }

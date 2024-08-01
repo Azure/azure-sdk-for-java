@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation display payload. */
+/**
+ * Operation display payload.
+ */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Resource provider of the operation
      */
@@ -39,8 +37,14 @@ public final class OperationDisplay {
     private String description;
 
     /**
+     * Creates an instance of OperationDisplay class.
+     */
+    public OperationDisplay() {
+    }
+
+    /**
      * Get the provider property: Resource provider of the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: Resource of the operation.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -58,7 +62,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: Localized friendly name for the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -67,7 +71,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: Localized friendly description for the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -76,7 +80,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

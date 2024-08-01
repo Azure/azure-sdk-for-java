@@ -9,7 +9,9 @@ import com.azure.resourcemanager.redis.fluent.models.RedisCacheAccessPolicyInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of access policies (with properties) of a Redis cache. */
+/**
+ * List of access policies (with properties) of a Redis cache.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyList {
     /*
@@ -24,13 +26,15 @@ public final class RedisCacheAccessPolicyList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RedisCacheAccessPolicyList class. */
+    /**
+     * Creates an instance of RedisCacheAccessPolicyList class.
+     */
     public RedisCacheAccessPolicyList() {
     }
 
     /**
      * Get the value property: List of access policies (with properties) of a Redis cache.
-     *
+     * 
      * @return the value value.
      */
     public List<RedisCacheAccessPolicyInner> value() {
@@ -39,7 +43,7 @@ public final class RedisCacheAccessPolicyList {
 
     /**
      * Set the value property: List of access policies (with properties) of a Redis cache.
-     *
+     * 
      * @param value the value value to set.
      * @return the RedisCacheAccessPolicyList object itself.
      */
@@ -50,7 +54,7 @@ public final class RedisCacheAccessPolicyList {
 
     /**
      * Get the nextLink property: Link for next set.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RedisCacheAccessPolicyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

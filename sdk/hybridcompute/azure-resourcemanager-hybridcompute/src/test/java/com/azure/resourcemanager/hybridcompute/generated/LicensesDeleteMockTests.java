@@ -27,7 +27,7 @@ public final class LicensesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.licenses().delete("lefaxvxilcbtgn", "nzeyqxtjj", com.azure.core.util.Context.NONE);
+        manager.licenses().delete("qvlgafcqusrdvetn", "sdtutnwlduyc", com.azure.core.util.Context.NONE);
 
     }
 }

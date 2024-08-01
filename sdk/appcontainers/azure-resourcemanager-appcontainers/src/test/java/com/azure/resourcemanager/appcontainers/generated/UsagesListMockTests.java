@@ -6,54 +6,36 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Usage;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"currentValue\":38.23954,\"limit\":32.95426,\"name\":{\"value\":\"zmuhbcak\",\"localizedValue\":\"hokhoitwhrjsdmm\"}}]}";
+            = "{\"value\":[{\"currentValue\":87.503876,\"limit\":38.785545,\"name\":{\"value\":\"voupr\",\"localizedValue\":\"tqzsslhmgwfnivr\"}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<Usage> response = manager.usages().list("sc", com.azure.core.util.Context.NONE);
 
-        PagedIterable<Usage> response = manager.usages().list("dyhi", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(38.23954f, response.iterator().next().currentValue());
-        Assertions.assertEquals(32.95426f, response.iterator().next().limit());
-        Assertions.assertEquals("zmuhbcak", response.iterator().next().name().value());
-        Assertions.assertEquals("hokhoitwhrjsdmm", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(87.503876f, response.iterator().next().currentValue());
+        Assertions.assertEquals(38.785545f, response.iterator().next().limit());
+        Assertions.assertEquals("voupr", response.iterator().next().name().value());
+        Assertions.assertEquals("tqzsslhmgwfnivr", response.iterator().next().name().localizedValue());
     }
 }

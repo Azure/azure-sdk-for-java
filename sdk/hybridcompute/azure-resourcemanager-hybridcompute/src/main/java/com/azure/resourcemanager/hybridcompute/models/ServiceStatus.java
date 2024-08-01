@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the status and behavior of a service.
  */
 @Fluent
-public final class ServiceStatus {
+public final class ServiceStatus implements JsonSerializable<ServiceStatus> {
     /*
      * The current status of the service.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The behavior of the service when the Arc-enabled machine starts up.
      */
-    @JsonProperty(value = "startupType")
     private String startupType;
 
     /**
@@ -76,5 +78,44 @@ public final class ServiceStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("startupType", this.startupType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceStatus.
+     */
+    public static ServiceStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceStatus deserializedServiceStatus = new ServiceStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedServiceStatus.status = reader.getString();
+                } else if ("startupType".equals(fieldName)) {
+                    deserializedServiceStatus.startupType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceStatus;
+        });
     }
 }

@@ -20,7 +20,10 @@ public final class VirtualMachinesListAvailableSizesSamples {
      */
     public static void listsAllAvailableVirtualMachineSizesToWhichTheSpecifiedVirtualMachineCanBeResized(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().listAvailableSizes("myResourceGroup",
-            "myVmName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .listAvailableSizes("myResourceGroup", "myVmName", com.azure.core.util.Context.NONE);
     }
 }
