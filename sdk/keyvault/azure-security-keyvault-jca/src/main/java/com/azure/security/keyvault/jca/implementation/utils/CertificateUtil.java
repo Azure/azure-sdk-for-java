@@ -42,7 +42,7 @@ public final class CertificateUtil {
         }
     }
 
-    public static Certificate[] loadCertificatesFromSecretBundleValuePem(InputStream inputStream)
+    private static Certificate[] loadCertificatesFromSecretBundleValuePem(InputStream inputStream)
         throws IOException, CertificateException {
         List<Certificate> certificates = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
@@ -63,13 +63,13 @@ public final class CertificateUtil {
         return certificates.toArray(new Certificate[0]);
     }
 
-    public static Certificate[] loadCertificatesFromSecretBundleValuePem(String string)
+    private static Certificate[] loadCertificatesFromSecretBundleValuePem(String string)
         throws IOException, CertificateException {
         InputStream inputStream = new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8));
         return loadCertificatesFromSecretBundleValuePem(inputStream);
     }
 
-    public static Certificate[] loadCertificatesFromSecretBundleValuePKCS12(String string)
+    private static Certificate[] loadCertificatesFromSecretBundleValuePKCS12(String string)
         throws IOException, CertificateException, PKCSException {
         List<Certificate> certificates = new ArrayList<>();
         PKCS12PfxPdu pfx = new PKCS12PfxPdu(Base64.getDecoder().decode(string.getBytes()));
