@@ -92,7 +92,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         }
     }
 
-    // convert a list of byte buffers to big byte array
+    // convert a list of byte buffers to a big byte array
     private static byte[] convertByteBufferListToByteArray(List<ByteBuffer> byteBuffers) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         for (ByteBuffer buffer : byteBuffers) {
