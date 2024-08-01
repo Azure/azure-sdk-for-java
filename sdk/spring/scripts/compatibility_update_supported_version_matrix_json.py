@@ -33,11 +33,11 @@ def get_args():
     )
     parser.add_argument('-mcp', '--matrix-config-path', type=str, default='sdk/spring/pipeline/supported-version-matrix.json')
     parser.add_argument(
-        '--include-the-latest-version',
+        '--use-the-latest-version',
         type=str,
         choices=['yes', 'no'],
         default=None,
-        help='If true only output the latest Spring version, otherwise out the end of life versions. Default value is None then output all compatibility versions.'
+        help='If true only use the latest Spring version, otherwise out the end of life versions. Default value is None then use all compatibility versions.'
     )
     return parser.parse_args()
 
@@ -47,11 +47,11 @@ def change_to_repo_root_dir():
     os.chdir('../../..')
 
 
-def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_version, include_the_latest_version):
+def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_version, use_the_latest_version):
     names = {}
     target_versions = suppoerted_spring_boot_version
-    if include_the_latest_version is not None:
-        if include_the_latest_version == 'yes':
+    if use_the_latest_version is not None:
+        if use_the_latest_version == 'yes':
             target_versions = suppoerted_spring_boot_version[0:1]
         else:
             target_versions = suppoerted_spring_boot_version[1:]
@@ -62,7 +62,7 @@ def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_v
         data = json.load(file)
         data['displayNames'].update(names)
         data['matrix']['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'] = target_versions
-        if include_the_latest_version is not None and include_the_latest_version == 'no':
+        if use_the_latest_version is not None and use_the_latest_version == 'no':
             data['matrix']['Agent'] = {
                 "ubuntu-20.04": {
                     "OSVmImage": "env:LINUXVMIMAGE",
@@ -106,7 +106,7 @@ def main():
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     supported_spring_boot_version = get_supported_spring_boot_version(
         get_args().target_version_prefix, get_args().non_target_version_prefix_list)
-    update_supported_version_matrix_json_file(get_args().matrix_config_path, supported_spring_boot_version, get_args().include_the_latest_version)
+    update_supported_version_matrix_json_file(get_args().matrix_config_path, supported_spring_boot_version, get_args().use_the_latest_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
