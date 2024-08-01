@@ -125,13 +125,6 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void slashTest() {
-        dc = dataLakeFileSystemClient.getDirectoryClient("");
-        dc.getFileClient("sample").create();
-        //assertDoesNotThrow(() -> dc.create());
-    }
-
-    @Test
     public void createDefaults() {
         Response<?> createResponse = dataLakeFileSystemClient.getDirectoryClient(generatePathName())
             .createWithResponse(null, null, null, null, null, null, null);
