@@ -119,9 +119,9 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         String message = null;
         try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
             Response response = Response.fromJson(jsonReader);
-            List<ResponseError> responseErrorList = response.getErrors().stream()
-                .filter(error -> error.getStatusCode() == responseCode).collect(Collectors.toList());
-            message = responseErrorList.get(0).getMessage();
+            if (response.getErrors() != null && !response.getErrors().isEmpty()) {
+                message = response.getErrors().get(0).getMessage();
+            }
         } catch (Exception e) {
             return "Ingestion service returned "
                 + responseCode
