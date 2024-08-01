@@ -142,8 +142,8 @@ public final class MessageData extends MonitorDomain {
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

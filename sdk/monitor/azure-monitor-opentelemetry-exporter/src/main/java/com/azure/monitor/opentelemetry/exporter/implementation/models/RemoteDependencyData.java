@@ -306,8 +306,8 @@ public final class RemoteDependencyData extends MonitorDomain {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("target", this.target);
         jsonWriter.writeBooleanField("success", this.success);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

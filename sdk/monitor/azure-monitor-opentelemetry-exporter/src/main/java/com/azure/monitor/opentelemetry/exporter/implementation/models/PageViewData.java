@@ -226,7 +226,7 @@ public final class PageViewData extends MonitorDomain {
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("duration", this.duration);
         jsonWriter.writeStringField("referredUri", this.referredUri);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

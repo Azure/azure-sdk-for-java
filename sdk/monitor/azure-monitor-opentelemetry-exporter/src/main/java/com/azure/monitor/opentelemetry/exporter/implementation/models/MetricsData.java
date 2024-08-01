@@ -93,7 +93,7 @@ public final class MetricsData extends MonitorDomain {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeArrayField("metrics", this.metrics, JsonWriter::writeJson);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -280,8 +280,8 @@ public final class RequestData extends MonitorDomain {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -173,8 +173,8 @@ public final class TelemetryExceptionData extends MonitorDomain {
         jsonWriter.writeArrayField("exceptions", this.exceptions, JsonWriter::writeJson);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
         jsonWriter.writeStringField("problemId", this.problemId);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

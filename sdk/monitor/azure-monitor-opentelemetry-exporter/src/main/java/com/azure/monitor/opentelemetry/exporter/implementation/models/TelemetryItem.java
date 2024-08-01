@@ -320,7 +320,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
         jsonWriter.writeNumberField("sampleRate", this.sampleRate);
         jsonWriter.writeStringField("seq", this.sequence);
         jsonWriter.writeStringField("iKey", this.instrumentationKey);
-        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString);
         jsonWriter.writeJsonField("data", this.data);
         return jsonWriter.writeEndObject();
     }
