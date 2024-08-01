@@ -138,7 +138,7 @@ public class AzureMonitorStatsbeatTest {
                 AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
     }
 
-    private void verifyStatsbeatTelemetry(CustomValidationPolicy customValidationPolicy) throws IOException {
+    private void verifyStatsbeatTelemetry(CustomValidationPolicy customValidationPolicy) {
         TelemetryItem attachStatsbeat =
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
@@ -168,7 +168,7 @@ public class AzureMonitorStatsbeatTest {
         return map;
     }
 
-    private static void validateAttachStatsbeat(TelemetryItem telemetryItem) throws IOException {
+    private static void validateAttachStatsbeat(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
         MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
         assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
@@ -176,7 +176,7 @@ public class AzureMonitorStatsbeatTest {
         assertThat(metricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
     }
 
-    private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) throws IOException {
+    private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
         MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
         assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("Feature");

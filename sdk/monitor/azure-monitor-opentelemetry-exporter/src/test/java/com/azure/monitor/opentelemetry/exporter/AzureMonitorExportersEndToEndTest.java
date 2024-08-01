@@ -201,7 +201,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .emit();
     }
 
-    private static void validateSpan(TelemetryItem telemetryItem) throws IOException {
+    private static void validateSpan(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getName()).isEqualTo("RemoteDependency");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
@@ -214,7 +214,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(actualData.getProperties()).containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
-    private static void validateMetric(TelemetryItem telemetryItem) throws IOException {
+    private static void validateMetric(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags())
@@ -228,7 +228,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(metricsData.getProperties()).containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
-    private static void validateLog(TelemetryItem telemetryItem) throws IOException {
+    private static void validateLog(TelemetryItem telemetryItem) {
         assertThat(telemetryItem.getName()).isEqualTo("Message");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
