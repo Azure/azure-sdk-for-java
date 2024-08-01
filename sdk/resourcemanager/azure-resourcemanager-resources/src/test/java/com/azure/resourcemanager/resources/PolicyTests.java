@@ -9,7 +9,6 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.management.Region;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
