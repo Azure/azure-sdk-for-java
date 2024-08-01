@@ -98,9 +98,9 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
             .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
-                assertTrue(batch.tryAdd(testData));
-                return asyncProducerClient.send(batch);
-            }))
+            assertTrue(batch.tryAdd(testData));
+            return asyncProducerClient.send(batch);
+        }))
             .expectComplete()
             .verify(TIMEOUT);
     }
