@@ -5,7 +5,7 @@ variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
-  - stage: "LatestSpringVersionCompatibility"
+  - stage: "LatestVersionCompatibility"
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
         parameters:
@@ -14,7 +14,7 @@ stages:
           AdditionalParameters:
             ServiceDirectory: spring
           MatrixConfigs:
-            - Name: spring_boot_supported_version_tests
+            - Name: latest_supported_version_tests
               Path: sdk/spring/pipeline/supported-version-matrix.json
               Selection: sparse
               NonSparseParameters:
@@ -29,7 +29,7 @@ stages:
               displayName: 'Update supported Spring versions'
           MatrixFilters:
             - JavaTestVersion=^(?!1.8|1.11).*
-  - stage: "NonLatestSpringVersionsCompatibility"
+  - stage: "NonLatestVersionsCompatibility"
     dependsOn: []
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
@@ -39,7 +39,7 @@ stages:
           AdditionalParameters:
             ServiceDirectory: spring
           MatrixConfigs:
-            - Name: spring_boot_supported_version_tests
+            - Name: non_latest_supported_version_tests
               Path: sdk/spring/pipeline/supported-version-matrix.json
               Selection: sparse
               NonSparseParameters:
