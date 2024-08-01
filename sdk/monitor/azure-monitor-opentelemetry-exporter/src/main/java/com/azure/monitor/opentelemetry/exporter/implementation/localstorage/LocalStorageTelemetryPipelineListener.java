@@ -75,13 +75,13 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
         if (!errors.isEmpty()) {
             List<ByteBuffer> originalByteBuffers = request.getByteBuffers();
-            byte[] encodedBytes = convertByteBufferListToByteArray(originalByteBuffers);
-            byte[] decodedBytes = ungzip(encodedBytes); // decode is needed in order to split by newline correctly
-            List<byte[]> decodedByteArrayList = splitBytesByNewline(decodedBytes);
+            byte[] gzippedBytes = convertByteBufferListToByteArray(originalByteBuffers);
+            byte[] ungzippedBytes = ungzip(gzippedBytes); // ungzip is needed in order to split by newline correctly
+            List<byte[]> serializedTelemetryItemsByteArrayList = splitBytesByNewline(ungzippedBytes);
             List<ByteBuffer> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
                 if (StatusCode.isRetryable(error.getStatusCode())) {
-                    toBePersisted.add(ByteBuffer.wrap(decodedByteArrayList.get(error.getIndex())));
+                    toBePersisted.add(ByteBuffer.wrap(serializedTelemetryItemsByteArrayList.get(error.getIndex())));
                 }
             }
 
@@ -92,7 +92,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         }
     }
 
-    // convert list of byte buffers to byte array
+    // convert a list of byte buffers to big byte array
     private static byte[] convertByteBufferListToByteArray(List<ByteBuffer> byteBuffers) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         for (ByteBuffer buffer : byteBuffers) {
