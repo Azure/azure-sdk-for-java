@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.test;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -20,18 +21,27 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.implementation.util.IdentityUtil;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.resourcemanager.test.model.AzureUser;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import reactor.core.Exceptions;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -57,7 +67,10 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -214,6 +227,106 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected String clientIdFromFile() {
         String clientId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         return testResourceNamer.recordValueFromConfig(clientId);
+    }
+
+    /**
+     * Return current Azure CLI signed-in user's userPrincipalName.
+     *
+     * @return current Azure CLI signed-in user.
+     */
+    protected AzureUser azureCliSignedInUser() {
+        AzureUser azureCliUser = new AzureUser(testResourceNamer);
+        if (!isPlaybackMode()) {
+            String azCommand = "az ad signed-in-user show --output json";
+
+            final Pattern windowsProcessErrorMessage = Pattern.compile("'azd?' is not recognized");
+            final Pattern shProcessErrorMessage = Pattern.compile("azd?:.*not found");
+            try {
+                String starter;
+                String switcher;
+                if (IdentityUtil.isWindowsPlatform()) {
+                    starter = "cmd.exe";
+                    switcher = "/c";
+                } else {
+                    starter = "/bin/sh";
+                    switcher = "-c";
+                }
+
+                ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+                // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+                builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
+
+                String workingDirectory = getSafeWorkingDirectory();
+                if (workingDirectory != null) {
+                    builder.directory(new File(workingDirectory));
+                } else {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be"
+                        + " found to execute CLI command from. To mitigate this issue, please refer to the troubleshooting "
+                        + " guidelines here at https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                }
+                builder.redirectErrorStream(true);
+                Process process = builder.start();
+
+                StringBuilder output = new StringBuilder();
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                    StandardCharsets.UTF_8))) {
+                    String line;
+                    while (true) {
+                        line = reader.readLine();
+                        if (line == null) {
+                            break;
+                        }
+
+                        if (windowsProcessErrorMessage.matcher(line).find()
+                            || shProcessErrorMessage.matcher(line).find()) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("AzureCliCredential authentication unavailable. Azure CLI not installed."
+                                + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                                + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                        }
+                        output.append(line);
+                    }
+                }
+                String processOutput = output.toString();
+
+                // wait(at most) 10 seconds for the process to complete
+                process.waitFor(10, TimeUnit.SECONDS);
+
+                if (process.exitValue() != 0) {
+                    if (processOutput.length() > 0) {
+                        if (processOutput.contains("az login") || processOutput.contains("az account set")) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("AzureCliCredential authentication unavailable. Azure CLI not installed."
+                                + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                                + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                        }
+                        throw LOGGER.logExceptionAsError(new ClientAuthenticationException("get Azure CLI current signed-in user failed", null));
+                    } else {
+                        throw LOGGER.logExceptionAsError(
+                            new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
+                    }
+                }
+
+                LOGGER.verbose("Get Azure CLI signed-in user => A response was received from Azure CLI, deserializing the"
+                    + " response into an signed-in user.");
+                try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                    Map<String, Object> signedInUserInfo = reader.readMap(JsonReader::readUntyped);
+                    String userPrincipalName = (String) signedInUserInfo.get("userPrincipalName");
+                    String id = (String) signedInUserInfo.get("id");
+                    azureCliUser = new AzureUser(testResourceNamer, id, userPrincipalName);
+                }
+            } catch (IOException | InterruptedException e) {
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            }
+        }
+        return azureCliUser;
+    }
+
+    private static String getSafeWorkingDirectory() {
+        if (IdentityUtil.isWindowsPlatform()) {
+            String windowsSystemRoot = System.getenv("SystemRoot");
+            return CoreUtils.isNullOrEmpty(windowsSystemRoot) ? null : windowsSystemRoot + "\\system32";
+        } else {
+            return "/bin/";
+        }
     }
 
     /**
