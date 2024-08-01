@@ -876,6 +876,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             long totalStreamMessages = chatCompletionsStream.stream().count();
             String functionName = null;
             String toolCallId = null;
+            int toolCallIndex = 0;
             String content = null;
             assertTrue(totalStreamMessages > 0);
 
@@ -898,6 +899,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                             content = chatChoice.getDelta().getContent();
                             functionName = functionCall.getName();
                             toolCallId = toolCall.getId();
+                            toolCallIndex = toolCall.getIndex();
                         }
                         argumentsBuilder.append(functionCall.getArguments());
                     }
@@ -911,7 +913,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             }
             assertFunctionToolCallArgs(argumentsBuilder.toString());
             FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
-            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, toolCallIndex, functionCall);
 
             // we should be passing responseMessage.getContent()) instead of ""; but it's null and Azure does not accept that
             ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(

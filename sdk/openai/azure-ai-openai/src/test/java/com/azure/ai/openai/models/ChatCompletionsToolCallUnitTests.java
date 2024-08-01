@@ -23,7 +23,7 @@ public class ChatCompletionsToolCallUnitTests {
     @Test
     public void testSerialization() {
         ChatCompletionsToolCall functionToolCall =
-                new ChatCompletionsFunctionToolCall("id", new FunctionCall("name", "arguments"));
+                new ChatCompletionsFunctionToolCall("id", 0, new FunctionCall("name", "arguments"));
 
         ChatCompletionsOptions options = new ChatCompletionsOptions(Collections.singletonList(
                 new ChatRequestAssistantMessage("content").setToolCalls(Collections.singletonList(functionToolCall))));

@@ -27,11 +27,12 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
      * Creates an instance of ChatCompletionsFunctionToolCall class.
      *
      * @param id the id value to set.
+     * @param index the index value to set.
      * @param function the function value to set.
      */
     @Generated
-    public ChatCompletionsFunctionToolCall(String id, FunctionCall function) {
-        super(id);
+    public ChatCompletionsFunctionToolCall(String id, int index, FunctionCall function) {
+        super(id, index);
         this.function = function;
     }
 
@@ -71,6 +72,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     public static ChatCompletionsFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
+            int index = 0;
             FunctionCall function = null;
             String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -78,6 +80,8 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("index".equals(fieldName)) {
+                    index = reader.getInt();
                 } else if ("function".equals(fieldName)) {
                     function = FunctionCall.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
@@ -87,7 +91,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
                 }
             }
             ChatCompletionsFunctionToolCall deserializedChatCompletionsFunctionToolCall
-                = new ChatCompletionsFunctionToolCall(id, function);
+                = new ChatCompletionsFunctionToolCall(id, index, function);
             deserializedChatCompletionsFunctionToolCall.type = type;
             return deserializedChatCompletionsFunctionToolCall;
         });
