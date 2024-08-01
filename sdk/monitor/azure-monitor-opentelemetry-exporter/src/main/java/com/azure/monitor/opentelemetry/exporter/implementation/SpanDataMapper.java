@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MessageTelemetryBuilder;
@@ -820,9 +821,23 @@ public final class SpanDataMapper {
         MAPPINGS.map(span.getAttributes(), telemetryBuilder);
 
         // set exception-specific properties
-        telemetryBuilder.setExceptions(Exceptions.minimalParse(errorStack));
+        setExceptions(errorStack, span.getAttributes(), telemetryBuilder);
 
         return telemetryBuilder.build();
+    }
+
+    static void setExceptions(String stack, Attributes attributes, ExceptionTelemetryBuilder telemetryBuilder) {
+        List<ExceptionDetailBuilder> builders = Exceptions.minimalParse(stack);
+        ExceptionDetailBuilder exceptionDetailBuilder = builders.get(0);
+        String type = attributes.get(SemanticAttributes.EXCEPTION_TYPE);
+        if (type != null && !type.isEmpty()) {
+            exceptionDetailBuilder.setTypeName(type);
+        }
+        String message = attributes.get(SemanticAttributes.EXCEPTION_MESSAGE);
+        if (message != null && !message.isEmpty()) {
+            exceptionDetailBuilder.setMessage(message);
+        }
+        telemetryBuilder.setExceptions(builders);
     }
 
     public static <T> T getStableOrOldAttribute(Attributes attributes, AttributeKey<T> stable, AttributeKey<T> old) {
