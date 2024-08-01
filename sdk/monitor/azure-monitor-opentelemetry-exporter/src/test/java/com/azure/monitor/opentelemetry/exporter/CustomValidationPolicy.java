@@ -38,11 +38,7 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
                 .map(TelemetryItemSerialization::ungzip);
         asyncBytes.subscribe(
             value -> {
-                try {
-                    actualTelemetryItems.addAll(deserialize(value));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                actualTelemetryItems.addAll(deserialize(value));
                 countDown.countDown();
             });
         return next.process();

@@ -8,6 +8,7 @@ import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.Response;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,11 +45,7 @@ public class TelemetryPipelineResponse {
 
     public Set<String> getErrorMessages() {
         Set<ResponseError> responseErrors;
-        try {
-            responseErrors = parseErrors(body);
-        } catch (IllegalStateException e) {
-            return singleton("Could not parse response");
-        }
+        responseErrors = parseErrors(body);
         return responseErrors.stream().map(ResponseError::getMessage).collect(Collectors.toSet());
     }
 
@@ -61,8 +58,8 @@ public class TelemetryPipelineResponse {
         try (JsonReader reader = JsonProviders.createReader(body)) {
             Response response = Response.fromJson(reader);
             return new HashSet<>(response.getErrors());
-        } catch (Exception e) {
-            return emptySet();
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to parse response body", e);
         }
     }
 }
