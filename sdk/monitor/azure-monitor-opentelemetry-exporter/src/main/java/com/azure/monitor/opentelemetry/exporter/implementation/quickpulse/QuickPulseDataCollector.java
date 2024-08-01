@@ -113,6 +113,10 @@ final class QuickPulseDataCollector {
         if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
             MonitorDomain data = telemetryItem.getData().getBaseData();
             MetricsData metricsData = (MetricsData) data;
+            System.out.println("Properties: " + metricsData.getProperties());
+            if (metricsData.getProperties() != null && metricsData.getProperties().get("testing") != null) {
+                System.out.println("Type: " + metricsData.getProperties().get("testing").length());
+            }
             MetricDataPoint point = metricsData.getMetrics().get(0);
             this.metricsStorage.addMetric(point.getName(), point.getValue());
         }
@@ -473,23 +477,17 @@ final class QuickPulseDataCollector {
             ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> requestedMetrics = quickPulseConfiguration.getDerivedMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
 
-            for(Map.Entry<String, OTelMetric> entry : this.metrics.entrySet()) {
-                String key = entry.getKey();
-                OTelMetric value = entry.getValue();
-
-                if (requestedMetrics.containsKey(key)) {
-                    for (QuickPulseConfiguration.DerivedMetricInfo metricInfo : requestedMetrics.get(key)) {
-                        if (Objects.equals(metricInfo.getTelemetryType(), "Metric")) {
-                            QuickPulseMetrics processedMetric = processMetric(value, metricInfo);
-                            processedMetrics.add(processedMetric);
-                        }
+            if (requestedMetrics.get("Metric") != null) {
+                for (QuickPulseConfiguration.DerivedMetricInfo metricInfo : requestedMetrics.get("Metric")) {
+                    if (this.getMetrics().get(metricInfo.getProjection()) != null) {
+                        QuickPulseMetrics processedMetric = processMetric(this.getMetrics().get(metricInfo.getProjection()), metricInfo);
+                        processedMetrics.add(processedMetric);
                     }
                 }
             }
 
             this.clearMetrics();
             return processedMetrics;
-
         }
 
         public QuickPulseMetrics processMetric(OTelMetric metric, QuickPulseConfiguration.DerivedMetricInfo metricInfo) {
@@ -500,6 +498,10 @@ final class QuickPulseDataCollector {
 
             String aggregation = metricInfo.getAggregation();
             ArrayList<Double> dataValues = metric.getDataValues();
+
+            if (Objects.equals(metricInfo.getProjection(), "UserEngagement")) {
+                System.out.println("User Engagement: " + dataValues);
+            }
 
             switch (aggregation) {
                 case "Sum":

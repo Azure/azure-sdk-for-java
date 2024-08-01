@@ -177,16 +177,19 @@ class QuickPulsePingSenderTests {
         assertThat("https://new.endpoint.com")
             .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
         assertThat(quickPulseConfiguration.getEtag()).isEqualTo("3::randometag::4::");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().size()).isEqualTo(2);
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getAggregation())
+        assertThat(quickPulseConfiguration.getDerivedMetrics().size()).isEqualTo(1);
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("Metric").size()).isEqualTo(2);
+        ArrayList<QuickPulseConfiguration.DerivedMetricInfo> metricCategory =
+            quickPulseConfiguration.getDerivedMetrics().get("Metric");
+        assertThat(metricCategory.get(0).getAggregation())
             .isEqualTo("Avg");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getTelemetryType())
+        assertThat(metricCategory.get(0).getTelemetryType())
             .isEqualTo("Metric");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getProjection()).isEqualTo("my_gauge");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getId()).isEqualTo("my_gauge");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getAggregation()).isEqualTo("Sum");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getTelemetryType()).isEqualTo("Metric");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getProjection()).isEqualTo("MyFruitCounter");
-        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getId()).isEqualTo("MyFruitCounter");
+        assertThat(metricCategory.get(0).getProjection()).isEqualTo("my_gauge");
+        assertThat(metricCategory.get(0).getId()).isEqualTo("my_gauge");
+        assertThat(metricCategory.get(1).getAggregation()).isEqualTo("Sum");
+        assertThat(metricCategory.get(1).getTelemetryType()).isEqualTo("Metric");
+        assertThat(metricCategory.get(1).getProjection()).isEqualTo("MyFruitCounter");
+        assertThat(metricCategory.get(1).getId()).isEqualTo("MyFruitCounter");
     }
 }

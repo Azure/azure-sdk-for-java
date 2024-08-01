@@ -62,7 +62,7 @@ public class QuickPulseConfiguration {
                     metric.setAggregation(metricNode.get("Aggregation").asText());
                     metric.setTelemetryType(metricNode.get("TelemetryType").asText());
                     metric.setProjection(metricNode.get("Projection").asText());
-                    requestedMetrics.computeIfAbsent(metric.getProjection(), k -> new ArrayList<>()).add(metric);
+                    requestedMetrics.computeIfAbsent(metric.getTelemetryType(), k -> new ArrayList<>()).add(metric);
 
                 }
             }

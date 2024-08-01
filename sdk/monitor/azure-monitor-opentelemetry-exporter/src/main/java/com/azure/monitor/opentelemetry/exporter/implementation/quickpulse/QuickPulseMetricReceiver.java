@@ -53,6 +53,7 @@ public class QuickPulseMetricReceiver implements Runnable {
 
             for (MetricData metricData : metrics) {
                 try {
+                    System.out.println("MetricData: " + metricData.getData().getPoints());
                     mapper.mapMetrics(metricData, quickPulseConsumer);
                     metricReceiverLogger.recordSuccess();
                 } catch (Throwable t) {
