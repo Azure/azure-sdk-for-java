@@ -217,8 +217,10 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertNotNull(identity.name());
         Assertions.assertNotNull(identity.principalId());
 
-        Secret secret1 = createKeyVaultSecret(clientIdFromFile(), identity.principalId());
-        Secret secret2 = createKeyVaultSecret(clientIdFromFile(), identity.principalId());
+        Secret secret1 = createKeyVaultSecret(azureCliSignedInUser().userPrincipalName(),
+            identity.principalId());
+        Secret secret2 = createKeyVaultSecret(azureCliSignedInUser().userPrincipalName(),
+            identity.principalId());
 
         ManagedServiceIdentity serviceIdentity = createManagedServiceIdentityFromIdentity(identity);
 
@@ -280,7 +282,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
         ManagedServiceIdentity serviceIdentity = createManagedServiceIdentityFromIdentity(identity);
 
-        String secretId = createKeyVaultCertificate(clientIdFromFile(), identity.principalId());
+        String secretId = createKeyVaultCertificate(
+            azureCliSignedInUser().userPrincipalName(),
+            identity.principalId());
 
         ApplicationGateway appGateway =
             networkManager
@@ -693,7 +697,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertTrue(appGateway.probes().isEmpty());
     }
 
-    private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {
+    private String createKeyVaultCertificate(String signedInUser, String identityPrincipal) {
         String vaultName = generateRandomResourceName("vlt", 10);
         String secretName = generateRandomResourceName("srt", 10);
 
@@ -704,7 +708,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forServicePrincipal(servicePrincipal)
+                    .forUser(signedInUser)
                     .allowSecretAllPermissions()
                     .allowCertificateAllPermissions()
                     .attach()
@@ -730,7 +734,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         return certificate.getSecretId();
     }
 
-    private Secret createKeyVaultSecret(String servicePrincipal, String identityPrincipal) throws Exception {
+    private Secret createKeyVaultSecret(String signedInUser, String identityPrincipal) throws Exception {
         String vaultName = generateRandomResourceName("vlt", 10);
         String secretName = generateRandomResourceName("srt", 10);
         BufferedReader buff = new BufferedReader(new FileReader(new File(getClass().getClassLoader()
@@ -744,7 +748,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
-                .forServicePrincipal(servicePrincipal)
+                .forUser(signedInUser)
                 .allowSecretAllPermissions()
                 .attach()
                 .defineAccessPolicy()

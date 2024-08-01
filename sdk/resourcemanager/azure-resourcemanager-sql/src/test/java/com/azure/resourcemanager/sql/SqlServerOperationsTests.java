@@ -30,9 +30,9 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
-import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
@@ -731,10 +731,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
-        String id = generateRandomUuid();
-        if (!isPlaybackMode()) {
-            id = clientIdFromFile();
-        }
+        String id = azureCliSignedInUser().id();
 
         SqlServer sqlServer =
             sqlServerManager
