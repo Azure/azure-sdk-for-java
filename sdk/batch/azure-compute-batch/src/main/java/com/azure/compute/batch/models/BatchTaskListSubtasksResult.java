@@ -40,7 +40,10 @@ public final class BatchTaskListSubtasksResult implements JsonSerializable<Batch
     /**
      * Creates a representation of this object as JSON.
      *
+     * @param jsonWriter Where the JSON representation is written to.
+     *
      * @throws IOException Error while writing to JsonWriter.
+     * @return The JsonWriter with the JSON representation of this object.
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -53,7 +56,10 @@ public final class BatchTaskListSubtasksResult implements JsonSerializable<Batch
     /**
      * Creates a {@link BatchTaskListSubtasksResult} from its JSON representation.
      *
+     * @param jsonReader Where the JSON read from to deserialize the object.
+     *
      * @throws IOException Error while reading from JsonReader.
+     * @return Instance read from the JsonReader.
      */
     public static BatchTaskListSubtasksResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

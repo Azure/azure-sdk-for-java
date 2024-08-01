@@ -99,7 +99,10 @@ public final class CloudServiceConfiguration implements JsonSerializable<CloudSe
     /**
      * Creates a representation of this object as JSON.
      *
+     * @param jsonWriter Where the JSON representation is written to.
+     *
      * @throws IOException Error while writing to JsonWriter.
+     * @return The JsonWriter with the JSON representation of this object.
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -114,7 +117,10 @@ public final class CloudServiceConfiguration implements JsonSerializable<CloudSe
     /**
      * Creates a new instance from its JSON representation.
      *
+     * @param jsonReader Where the JSON read from to deserialize the object.
+     *
      * @throws IOException Error while reading from JsonReader.
+     * @return Instance read from the JsonReader.
      */
     public static CloudServiceConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
