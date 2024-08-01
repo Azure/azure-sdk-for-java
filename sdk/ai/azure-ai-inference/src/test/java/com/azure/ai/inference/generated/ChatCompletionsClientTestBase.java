@@ -10,36 +10,97 @@ package com.azure.ai.inference.generated;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
+import com.azure.ai.inference.models.ChatChoice;
+import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.Choice;
+import com.azure.ai.inference.models.Completions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ChatCompletionsClientTestBase extends TestProxyTestBase {
     protected ChatCompletionsClient chatCompletionsClient;
+    private boolean sanitizersRemoved = false;
 
-    @Override
-    protected void beforeTest() {
-        ChatCompletionsClientBuilder chatCompletionsClientbuilder = new ChatCompletionsClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            chatCompletionsClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            chatCompletionsClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            chatCompletionsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+    ChatCompletionsClientBuilder getChatCompletionsClientBuilder(HttpClient httpClient) {
+        ChatCompletionsClientBuilder builder = new ChatCompletionsClientBuilder()
+                .httpClient(httpClient);
+        TestMode testMode = getTestMode();
+        if (testMode != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+                sanitizersRemoved = true;
+            }
         }
-        chatCompletionsClient = chatCompletionsClientbuilder.buildClient();
 
+        if (testMode == TestMode.PLAYBACK) {
+            builder
+                    .endpoint("https://localhost:8080")
+                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else if (testMode == TestMode.RECORD) {
+            builder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+        } else {
+            builder
+                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+        }
+        return builder;
     }
+
+    private void addTestRecordCustomSanitizers() {
+        interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                        "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
+        ));
+    }
+
+    private void addCustomMatchers() {
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
+    }
+
+    @Test
+    public abstract void testGetCompletions(HttpClient httpClient);
+
+    static void assertCompletions(int choicesPerPrompt, Completions actual) {
+        assertNotNull(actual);
+        assertInstanceOf(Completions.class, actual);
+        assertChoices(choicesPerPrompt, actual.getChoices());
+        assertNotNull(actual.getUsage());
+    }
+
+    static void assertChoices(int choicesPerPrompt, List<Choice> actual) {
+        assertEquals(choicesPerPrompt, actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            assertChoice(i, actual.get(i));
+        }
+    }
+
+    static void assertChoice(int index, Choice actual) {
+        assertNotNull(actual.getText());
+        assertEquals(index, actual.getIndex());
+        assertNotNull(actual.getFinishReason());
+    }
+
 }
