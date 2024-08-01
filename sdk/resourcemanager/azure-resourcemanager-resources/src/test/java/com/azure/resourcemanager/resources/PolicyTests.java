@@ -6,19 +6,19 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.management.Region;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
+import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.ParameterType;
-import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.PolicyAssignment;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,8 +38,9 @@ public class PolicyTests extends ResourceManagementTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDPolicyDefinition() throws Exception {
+        // LiveOnly because "test timing out after latest test proxy update"
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);
         try {

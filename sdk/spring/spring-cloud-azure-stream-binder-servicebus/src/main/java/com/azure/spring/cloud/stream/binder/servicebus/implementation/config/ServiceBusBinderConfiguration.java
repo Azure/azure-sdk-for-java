@@ -132,10 +132,12 @@ public class ServiceBusBinderConfiguration {
     ServiceBusProcessorFactoryCustomizer defaultServiceBusProcessorFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
 
         return new DefaultProcessorFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver,
+            clientBuilderCustomizers,
             processorClientBuilderCustomizers,
             sessionProcessorClientBuilderCustomizers);
     }
@@ -182,32 +184,37 @@ public class ServiceBusBinderConfiguration {
 
         private final TokenCredential defaultCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers;
 
         DefaultProcessorFactoryCustomizer(TokenCredential defaultCredential,
                                           AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                          ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
                                           ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
                                           ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
             this.defaultCredential = defaultCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
+            this.clientBuilderCustomizers = clientBuilderCustomizers;
             this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
             this.sessionProcessorClientBuilderCustomizers = sessionProcessorClientBuilderCustomizers;
         }
 
         @Override
         public void customize(ServiceBusProcessorFactory factory) {
-            if (factory instanceof DefaultServiceBusNamespaceProcessorFactory) {
-                DefaultServiceBusNamespaceProcessorFactory defaultFactory =
-                    (DefaultServiceBusNamespaceProcessorFactory) factory;
-
+            if (factory instanceof DefaultServiceBusNamespaceProcessorFactory defaultFactory) {
                 defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
+                clientBuilderCustomizers.orderedStream().forEach(defaultFactory::addServiceBusClientBuilderCustomizer);
                 processorClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
                 sessionProcessorClientBuilderCustomizers.orderedStream()
                                                         .forEach(defaultFactory::addSessionBuilderCustomizer);
             }
 
+        }
+
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> getClientBuilderCustomizers() {
+            return clientBuilderCustomizers;
         }
 
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> getProcessorClientBuilderCustomizers() {

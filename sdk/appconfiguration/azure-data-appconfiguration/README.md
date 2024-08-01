@@ -241,6 +241,7 @@ For "Feature Flag" and "Secret Reference" configuration settings, see [samples][
 * [Recover a snapshot](#recover-a-snapshot)
 * [Retrieve all Snapshots](#retrieve-all-snapshots)
 * [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
+* [Retrieve Labels](#retrieve-labels)
 
 ### Create a Configuration Client
 
@@ -400,6 +401,7 @@ configurationClient.setConfigurationSetting(key2, "new_label", "new_value");
 SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
 PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigurationSettings(selector);
 ```
+For more filters see class `SettingSelector`, such as `tagsFilter` see [samples][samples].
 
 ### List revisions of multiple Configuration Settings
 
@@ -534,6 +536,18 @@ for (ConfigurationSetting setting : configurationSettings) {
         setting.getKey(), setting.getValue());
 }
 ```
+
+### Retrieve Labels
+List multiple labels in the App Configuration store by calling `listLabels`.
+
+```java readme-sample-listLabels
+String labelNameFilter = "{labelNamePrefix}*";
+configurationClient.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
+        .forEach(label -> {
+            System.out.println("label name = " + label.getName());
+        });
+```
+
 
 ## Troubleshooting
 
