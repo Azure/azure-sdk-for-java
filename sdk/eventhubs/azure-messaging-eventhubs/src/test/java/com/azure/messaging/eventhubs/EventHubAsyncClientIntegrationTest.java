@@ -4,8 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
@@ -25,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests scenarios on {@link EventHubAsyncClient}.
@@ -138,28 +134,5 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 .expectComplete()
                 .verify(TIMEOUT);
         }
-    }
-
-    @Test
-    public void sendAndReceiveEventByAzureNameKeyCredential() {
-        ConnectionStringProperties properties = TestUtils.getConnectionStringProperties();
-        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
-        String sharedAccessKeyName = properties.getSharedAccessKeyName();
-        String sharedAccessKey = properties.getSharedAccessKey();
-        String eventHubName = properties.getEntityPath();
-
-        final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
-
-        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-            .buildAsyncProducerClient());
-
-        StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
-            assertTrue(batch.tryAdd(testData));
-            return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
     }
 }

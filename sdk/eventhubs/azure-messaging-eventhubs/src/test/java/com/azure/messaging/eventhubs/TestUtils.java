@@ -215,14 +215,6 @@ public final class TestUtils {
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
     }
 
-    public static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString(false));
-    }
-
-    public static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
-        return new ConnectionStringProperties(getConnectionString(withSas));
-    }
-
     /**
      * Obtain a {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
      * configured with service connections federated identity.
@@ -269,7 +261,7 @@ public final class TestUtils {
         });
     }
 
-    static String getConnectionString(boolean withSas) {
+    public static String getConnectionString(boolean withSas) {
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_CONNECTION_STRING");
         if (withSas) {
             String shareAccessSignatureFormat = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
