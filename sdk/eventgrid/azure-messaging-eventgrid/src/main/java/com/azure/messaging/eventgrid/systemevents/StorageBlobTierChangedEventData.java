@@ -49,6 +49,16 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     private String blobType;
 
     /*
+     * The current tier of the blob.
+     */
+    private StorageBlobAccessTier accessTier;
+
+    /*
+     * The previous tier of the blob.
+     */
+    private StorageBlobAccessTier previousTier;
+
+    /*
      * The path to the blob.
      */
     private String url;
@@ -205,6 +215,46 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
+     * Get the accessTier property: The current tier of the blob.
+     * 
+     * @return the accessTier value.
+     */
+    public StorageBlobAccessTier getAccessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Set the accessTier property: The current tier of the blob.
+     * 
+     * @param accessTier the accessTier value to set.
+     * @return the StorageBlobTierChangedEventData object itself.
+     */
+    public StorageBlobTierChangedEventData setAccessTier(StorageBlobAccessTier accessTier) {
+        this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the previousTier property: The previous tier of the blob.
+     * 
+     * @return the previousTier value.
+     */
+    public StorageBlobAccessTier getPreviousTier() {
+        return this.previousTier;
+    }
+
+    /**
+     * Set the previousTier property: The previous tier of the blob.
+     * 
+     * @param previousTier the previousTier value to set.
+     * @return the StorageBlobTierChangedEventData object itself.
+     */
+    public StorageBlobTierChangedEventData setPreviousTier(StorageBlobAccessTier previousTier) {
+        this.previousTier = previousTier;
+        return this;
+    }
+
+    /**
      * Get the url property: The path to the blob.
      * 
      * @return the url value.
@@ -299,6 +349,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
         jsonWriter.writeStringField("contentType", this.contentType);
         jsonWriter.writeNumberField("contentLength", this.contentLength);
         jsonWriter.writeStringField("blobType", this.blobType);
+        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeStringField("previousTier", this.previousTier == null ? null : this.previousTier.toString());
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("sequencer", this.sequencer);
         jsonWriter.writeStringField("identity", this.identity);
@@ -334,6 +386,12 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
                     deserializedStorageBlobTierChangedEventData.contentLength = reader.getNullable(JsonReader::getLong);
                 } else if ("blobType".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.blobType = reader.getString();
+                } else if ("accessTier".equals(fieldName)) {
+                    deserializedStorageBlobTierChangedEventData.accessTier
+                        = StorageBlobAccessTier.fromString(reader.getString());
+                } else if ("previousTier".equals(fieldName)) {
+                    deserializedStorageBlobTierChangedEventData.previousTier
+                        = StorageBlobAccessTier.fromString(reader.getString());
                 } else if ("url".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.url = reader.getString();
                 } else if ("sequencer".equals(fieldName)) {
