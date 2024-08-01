@@ -2087,19 +2087,10 @@ public class ShareAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createPermissionWithResponse(String filePermission) {
         try {
-            return withContext(context -> createPermissionWithResponse(filePermission, context));
+            return withContext(context -> createPermissionWithResponse(filePermission, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
-        // NOTE: Should we check for null or empty?
-        SharePermission sharePermission = new SharePermission().setPermission(filePermission);
-        return azureFileStorageClient.getShares()
-            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-            .map(response -> new SimpleResponse<>(response,
-                response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**
@@ -2123,20 +2114,21 @@ public class ShareAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> createPermissionWithResponse(ShareFilePermission filePermission) {
         try {
-            return withContext(context -> createPermissionWithResponse(filePermission, context));
+            return withContext(context -> createPermissionWithResponse(filePermission.getPermission(),
+                filePermission.getPermissionFormat(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<String>> createPermissionWithResponse(ShareFilePermission filePermission, Context context) {
+    Mono<Response<String>> createPermissionWithResponse(String filePermission, FilePermissionFormat filePermissionFormat,
+                                                        Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission = new SharePermission().setPermission(filePermission.getPermission())
-            .setFormat(filePermission.getPermissionFormat());
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
         return azureFileStorageClient.getShares()
-            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-            .map(response -> new SimpleResponse<>(response,
-                response.getDeserializedHeaders().getXMsFilePermissionKey()));
+                .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+                .map(response -> new SimpleResponse<>(response,
+                        response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**
