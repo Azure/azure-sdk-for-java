@@ -160,7 +160,8 @@ public class ShareDirectoryJavaDocCodeSamples {
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
-            .setFilePermission(filePermission).setMetadata(Collections.singletonMap("directory", "metadata"));
+            .setFilePermission(filePermission).setFilePermissionFormat(FilePermissionFormat.BINARY)
+            .setMetadata(Collections.singletonMap("directory", "metadata"));
         Response<ShareDirectoryInfo> response = shareDirectoryClient.createWithResponse(options, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.println("Completed creating the directory with status code: " + response.getStatusCode());

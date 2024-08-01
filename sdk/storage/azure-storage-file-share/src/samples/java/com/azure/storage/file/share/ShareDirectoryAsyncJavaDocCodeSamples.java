@@ -132,7 +132,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#createWithResponse(FileSmbProperties, String,
-     * Map)}
+     * Map)} and {@link ShareDirectoryAsyncClient#createWithResponse(ShareDirectoryCreateOptions)}
      */
     public void createDirectoryWithResponseAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -146,6 +146,20 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#FileSmbProperties-String-Map
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
+                .setSmbProperties(new FileSmbProperties())
+                .setFilePermission("filePermission")
+                .setFilePermissionFormat(FilePermissionFormat.BINARY)
+                .setMetadata(Collections.singletonMap("directory", "metadata"));
+
+        shareDirectoryAsyncClient.createWithResponse(options)
+                .subscribe(response ->
+                    System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
+                    error -> System.err.print(error.toString())
+        );
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions
     }
 
     /**

@@ -412,4 +412,11 @@ public class FileShareTestHelper {
             Arguments.of(Collections.singletonMap("testmetadata", "value"), -1, 400,
                 ShareErrorCode.INVALID_HEADER_VALUE));
     }
+
+    protected static Stream<Arguments> filePermissionFormatSupplier() {
+        return Stream.of(
+            Arguments.of(FilePermissionFormat.SDDL),
+            Arguments.of(FilePermissionFormat.BINARY),
+            Arguments.of((Object) null));
+    }
 }

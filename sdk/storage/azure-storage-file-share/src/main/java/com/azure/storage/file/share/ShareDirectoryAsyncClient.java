@@ -310,14 +310,56 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
                                                                  Map<String, String> metadata) {
         try {
-            return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
+            return withContext(context -> createWithResponse(smbProperties, filePermission, null,
+                metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates a directory in the file share and returns a response of ShareDirectoryInfo to interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
+     * <pre>
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;
+     *         .setSmbProperties&#40;new FileSmbProperties&#40;&#41;&#41;
+     *         .setFilePermission&#40;&quot;filePermission&quot;&#41;
+     *         .setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;
+     *         .setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     *
+     * shareDirectoryAsyncClient.createWithResponse&#40;options&#41;
+     *         .subscribe&#40;response -&gt;
+     *             System.out.println&#40;&quot;Completed creating the directory with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
+     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDirectoryCreateOptions}
+     * @return A response containing the directory info and the status of creating the directory.
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
+     * directory name is an invalid resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
+        try {
+            return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
+                options.getFilePermissionFormat(), options.getMetadata(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
-                                                          Map<String, String> metadata, Context context) {
+        FilePermissionFormat filePermissionFormat, Map<String, String> metadata, Context context) {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
@@ -335,7 +377,7 @@ public class ShareDirectoryAsyncClient {
 
         return azureFileStorageClient.getDirectories()
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
-                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
+                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -414,8 +456,9 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options, Context context) {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
-            return createWithResponse(options.getSmbProperties(), options.getFilePermission(), options.getMetadata(),
-                context).onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
+            return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
+                null, options.getMetadata(), context)
+                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
                     .getStatusCode() == 409, t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -1346,7 +1389,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-        return createSubClient.createWithResponse(smbProperties, filePermission, metadata, context)
+        return createSubClient.createWithResponse(smbProperties, filePermission, null, metadata, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 

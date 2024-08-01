@@ -204,6 +204,21 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void createDirectoryFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setFilePermission(permission)
+            .setFilePermissionFormat(filePermissionFormat);
+
+        Response<ShareDirectoryInfo> response = primaryDirectoryClient.createWithResponse(options, null,
+            null);
+
+        FileShareTestHelper.assertResponseStatusCode(response, 201);
+        assertNotNull(response.getValue().getSmbProperties().getFilePermissionKey());
+    }
+
     @Test
     public void createDirectoryWithFilePermissionKey() {
         String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
@@ -585,15 +600,9 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
     }
 
-    private static Stream<Arguments> filePermissionFormatSupplier() {
-        return Stream.of(
-            Arguments.of(FilePermissionFormat.SDDL),
-            Arguments.of(FilePermissionFormat.BINARY),
-            Arguments.of((Object) null));
-    }
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
-    @MethodSource("filePermissionFormatSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
     public void setDirectoryHttpHeadersFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         primaryDirectoryClient.create();
 
@@ -1210,7 +1219,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
-    @MethodSource("filePermissionFormatSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
     public void renameDirectoryFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         primaryDirectoryClient.create();
 

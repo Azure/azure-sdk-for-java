@@ -123,15 +123,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
             FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.OUT_OF_RANGE_INPUT));
     }
 
-    private static Stream<Arguments> filePermissionFormatSupplier() {
-        return Stream.of(
-            Arguments.of(FilePermissionFormat.SDDL),
-            Arguments.of(FilePermissionFormat.BINARY),
-            Arguments.of((Object) null));
-    }
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
-    @MethodSource("filePermissionFormatSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
     public void createFileFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
 
@@ -1287,7 +1281,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
-    @MethodSource("filePermissionFormatSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
     public void setFileHttpHeadersFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         primaryFileAsyncClient.create(512);
 
@@ -1577,7 +1571,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
-    @MethodSource("filePermissionFormatSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
     public void renameFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
 

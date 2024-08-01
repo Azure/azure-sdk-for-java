@@ -315,7 +315,8 @@ public class ShareDirectoryClient {
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
      * String filePermission = &quot;filePermission&quot;;
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
-     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     *     .setFilePermission&#40;filePermission&#41;.setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
      * Response&lt;ShareDirectoryInfo&gt; response = shareDirectoryClient.createWithResponse&#40;options, Duration.ofSeconds&#40;1&#41;,
      *     new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;Completed creating the directory with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
@@ -358,8 +359,8 @@ public class ShareDirectoryClient {
         Callable<ResponseBase<DirectoriesCreateHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getDirectories()
                 .createWithResponse(shareName, directoryPath, fileAttributes, null, finalOptions.getMetadata(),
-                    finalFilePermission,
-                    filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, finalContext);
+                    finalFilePermission, finalOptions.getFilePermissionFormat(), filePermissionKey, fileCreationTime,
+                    fileLastWriteTime, fileChangeTime, finalContext);
 
         return ModelHelper.mapShareDirectoryInfo(sendRequest(operation, timeout, ShareStorageException.class));
     }

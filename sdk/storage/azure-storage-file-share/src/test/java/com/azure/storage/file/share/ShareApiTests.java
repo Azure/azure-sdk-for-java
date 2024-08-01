@@ -1124,15 +1124,9 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(permission, FILE_PERMISSION);
     }
 
-    private static Stream<Arguments> filePermissionFormatSupplier() {
-        return Stream.of(
-                Arguments.of(FilePermissionFormat.SDDL),
-                Arguments.of(FilePermissionFormat.BINARY),
-                Arguments.of((Object) null));
-    }
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
-    @MethodSource("filePermissionFormatSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
     public void createAndGetPermissionFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         primaryShareClient.create();
 

@@ -9,14 +9,14 @@ package com.azure.storage.file.share.models;
  */
 public enum FilePermissionFormat {
     /**
-     * Enum value SDDL.
+     * Enum value Sddl.
      */
-    SDDL("SDDL"),
+    SDDL("Sddl"),
 
     /**
-     * Enum value binary.
+     * Enum value Binary.
      */
-    BINARY("binary");
+    BINARY("Binary");
 
     /**
      * The actual serialized value for a FilePermissionFormat instance.
