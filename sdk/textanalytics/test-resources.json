@@ -36,12 +36,6 @@
                 "description": "The application client id used to run tests."
             }
         },
-        "testApplicationSecret": {
-            "type": "String",
-            "metadata": {
-                "description": "The application client secret used to run tests."
-            }
-        },
         "cognitiveServicesEndpointSuffix": {
             "defaultValue": ".cognitiveservices.azure.com",
             "type": "String"
@@ -89,14 +83,6 @@
         "AZURE_CLIENT_ID": {
             "type": "String",
             "value": "[parameters('testApplicationId')]"
-        },
-        "AZURE_CLIENT_SECRET": {
-            "type": "String",
-            "value": "[parameters('testApplicationSecret')]"
-        },
-        "AZURE_TEXT_ANALYTICS_API_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('textAnalyticsBaseName')), variables('cognitiveServiceApiVersion')).key1]"
         },
         "AZURE_TEXT_ANALYTICS_ENDPOINT": {
             "type": "string",

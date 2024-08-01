@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: textanalytics
     Location: eastus
     SupportedClouds: 'Public,UsGov,China'
@@ -13,9 +14,7 @@ extends:
     # temporary env vars for custom text features
     EnvVars:
       AZURE_TENANT_ID: $(TEXTANALYTICS_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(TEXTANALYTICS_CLIENT_SECRET)
       AZURE_CLIENT_ID: $(TEXTANALYTICS_CLIENT_ID)
-      AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY: $(java-textanalytics-test-api-key)
       AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)
       AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME: $(java-single-category-classify-project-name)
       AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME: $(java-single-category-classify-deployment-name)
