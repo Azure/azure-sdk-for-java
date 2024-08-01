@@ -6,24 +6,31 @@ package com.azure.resourcemanager.qumulo.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User Details of Qumulo FileSystem resource. */
+/**
+ * User Details of Qumulo FileSystem resource.
+ */
 @Fluent
-public final class UserDetails {
+public final class UserDetails implements JsonSerializable<UserDetails> {
     /*
      * User Email
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
-    /** Creates an instance of UserDetails class. */
+    /**
+     * Creates an instance of UserDetails class.
+     */
     public UserDetails() {
     }
 
     /**
      * Get the email property: User Email.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -32,7 +39,7 @@ public final class UserDetails {
 
     /**
      * Set the email property: User Email.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserDetails object itself.
      */
@@ -43,16 +50,52 @@ public final class UserDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property email in model UserDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property email in model UserDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserDetails.
+     */
+    public static UserDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserDetails deserializedUserDetails = new UserDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedUserDetails.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserDetails;
+        });
+    }
 }

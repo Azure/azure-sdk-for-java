@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FileSystems. */
+/**
+ * Resource collection API of FileSystems.
+ */
 public interface FileSystems {
     /**
      * List FileSystemResource resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FileSystemResource list operation as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface FileSystems {
 
     /**
      * List FileSystemResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface FileSystems {
 
     /**
      * List FileSystemResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface FileSystems {
 
     /**
      * List FileSystemResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface FileSystems {
 
     /**
      * Get a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param context The context to associate with this operation.
@@ -64,12 +66,12 @@ public interface FileSystems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a FileSystemResource along with {@link Response}.
      */
-    Response<FileSystemResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String fileSystemName, Context context);
+    Response<FileSystemResource> getByResourceGroupWithResponse(String resourceGroupName, String fileSystemName,
+        Context context);
 
     /**
      * Get a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +83,7 @@ public interface FileSystems {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface FileSystems {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param context The context to associate with this operation.
@@ -104,7 +106,7 @@ public interface FileSystems {
 
     /**
      * Get a FileSystemResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +117,7 @@ public interface FileSystems {
 
     /**
      * Get a FileSystemResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +129,7 @@ public interface FileSystems {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface FileSystems {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface FileSystems {
 
     /**
      * Begins definition for a new FileSystemResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FileSystemResource definition.
      */

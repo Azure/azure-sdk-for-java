@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.qumulo.fluent.models.FileSystemResourceInner;
 import com.azure.resourcemanager.qumulo.models.FileSystemResourceUpdate;
 
-/** An instance of this class provides access to all the operations defined in FileSystemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FileSystemsClient.
+ */
 public interface FileSystemsClient {
     /**
      * List FileSystemResource resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FileSystemResource list operation as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface FileSystemsClient {
 
     /**
      * List FileSystemResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface FileSystemsClient {
 
     /**
      * List FileSystemResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface FileSystemsClient {
 
     /**
      * List FileSystemResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface FileSystemsClient {
 
     /**
      * Get a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param context The context to associate with this operation.
@@ -75,12 +77,12 @@ public interface FileSystemsClient {
      * @return a FileSystemResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileSystemResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String fileSystemName, Context context);
+    Response<FileSystemResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String fileSystemName,
+        Context context);
 
     /**
      * Get a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,22 +95,23 @@ public interface FileSystemsClient {
 
     /**
      * Create a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a FileSystem Resource by Qumulo.
+     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FileSystemResourceInner>, FileSystemResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String fileSystemName, FileSystemResourceInner resource);
+    SyncPoller<PollResult<FileSystemResourceInner>, FileSystemResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String fileSystemName, FileSystemResourceInner resource);
 
     /**
      * Create a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param resource Resource create parameters.
@@ -116,7 +119,8 @@ public interface FileSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a FileSystem Resource by Qumulo.
+     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
+     * type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FileSystemResourceInner>, FileSystemResourceInner> beginCreateOrUpdate(
@@ -124,22 +128,22 @@ public interface FileSystemsClient {
 
     /**
      * Create a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileSystem Resource by Qumulo.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileSystemResourceInner createOrUpdate(
-        String resourceGroupName, String fileSystemName, FileSystemResourceInner resource);
+    FileSystemResourceInner createOrUpdate(String resourceGroupName, String fileSystemName,
+        FileSystemResourceInner resource);
 
     /**
      * Create a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param resource Resource create parameters.
@@ -147,15 +151,15 @@ public interface FileSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileSystem Resource by Qumulo.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileSystemResourceInner createOrUpdate(
-        String resourceGroupName, String fileSystemName, FileSystemResourceInner resource, Context context);
+    FileSystemResourceInner createOrUpdate(String resourceGroupName, String fileSystemName,
+        FileSystemResourceInner resource, Context context);
 
     /**
      * Update a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param properties The resource properties to be updated.
@@ -163,30 +167,31 @@ public interface FileSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileSystem Resource by Qumulo along with {@link Response}.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileSystemResourceInner> updateWithResponse(
-        String resourceGroupName, String fileSystemName, FileSystemResourceUpdate properties, Context context);
+    Response<FileSystemResourceInner> updateWithResponse(String resourceGroupName, String fileSystemName,
+        FileSystemResourceUpdate properties, Context context);
 
     /**
      * Update a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FileSystem Resource by Qumulo.
+     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileSystemResourceInner update(
-        String resourceGroupName, String fileSystemName, FileSystemResourceUpdate properties);
+    FileSystemResourceInner update(String resourceGroupName, String fileSystemName,
+        FileSystemResourceUpdate properties);
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +204,7 @@ public interface FileSystemsClient {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param context The context to associate with this operation.
@@ -213,7 +218,7 @@ public interface FileSystemsClient {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +230,7 @@ public interface FileSystemsClient {
 
     /**
      * Delete a FileSystemResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fileSystemName Name of the File System resource.
      * @param context The context to associate with this operation.
