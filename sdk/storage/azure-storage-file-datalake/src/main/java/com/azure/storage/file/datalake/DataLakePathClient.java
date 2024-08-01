@@ -133,10 +133,14 @@ public class DataLakePathClient {
         this.customerProvidedKey = customerProvidedKey;
         this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
 
-        // Split on / in the path
-        String[] pathParts = pathName.split("/");
-        // Grab last part of path
-        this.objectName = pathParts[pathParts.length - 1];
+        if (pathName.equals("") || pathName.equals("/")) {
+            this.objectName = pathName;
+        } else {
+            // Split on / in the path
+            String[] pathParts = pathName.split("/");
+            // Grab last part of path
+            this.objectName = pathParts[pathParts.length - 1];
+        }
     }
 
     /**
