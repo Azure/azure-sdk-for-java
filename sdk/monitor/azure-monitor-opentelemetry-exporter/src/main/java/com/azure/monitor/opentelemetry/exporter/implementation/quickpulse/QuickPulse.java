@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
@@ -20,7 +21,9 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    static final int QP_INVARIANT_VERSION = 1;
+    //supports OTel metrics but not live filtering
+    // change to 7 once live filtering is also supported
+    static final int QP_INVARIANT_VERSION = 6;
 
     private volatile QuickPulseDataCollector collector;
 
@@ -31,6 +34,8 @@ public class QuickPulse {
         @Nullable String roleName,
         @Nullable String roleInstance,
         boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseMetricReader quickPulseMetricReader,
+        MetricDataMapper metricDataMapper,
         String sdkVersion) {
 
         QuickPulse quickPulse = new QuickPulse();
@@ -54,6 +59,8 @@ public class QuickPulse {
                     roleName,
                     roleInstance,
                     useNormalizedValueForNonNormalizedCpuPercentage,
+                    quickPulseMetricReader,
+                    metricDataMapper,
                     sdkVersion);
             });
         // the condition below will always be false, but by referencing the executor it ensures the
@@ -84,12 +91,15 @@ public class QuickPulse {
         @Nullable String roleName,
         @Nullable String roleInstance,
         boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseMetricReader quickPulseMetricReader,
+        MetricDataMapper metricDataMapper,
         String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
 
-        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
+        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue, quickPulseConfiguration);
 
         String instanceName = roleInstance;
         String machineName = HostName.get();
@@ -102,7 +112,7 @@ public class QuickPulse {
         }
 
         QuickPulseDataCollector collector =
-            new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage);
+            new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage, quickPulseConfiguration);
 
         QuickPulsePingSender quickPulsePingSender =
             new QuickPulsePingSender(
@@ -113,7 +123,9 @@ public class QuickPulse {
                 instanceName,
                 machineName,
                 quickPulseId,
-                sdkVersion);
+                sdkVersion,
+                quickPulseConfiguration);
+
         QuickPulseDataFetcher quickPulseDataFetcher =
             new QuickPulseDataFetcher(
                 collector,
@@ -123,7 +135,8 @@ public class QuickPulse {
                 roleName,
                 instanceName,
                 machineName,
-                quickPulseId);
+                quickPulseId,
+                quickPulseConfiguration);
 
         QuickPulseCoordinatorInitData coordinatorInitData =
             new QuickPulseCoordinatorInitDataBuilder()
@@ -134,6 +147,13 @@ public class QuickPulse {
                 .build();
 
         QuickPulseCoordinator coordinator = new QuickPulseCoordinator(coordinatorInitData);
+
+        QuickPulseMetricReceiver quickPulseMetricReceiver = new QuickPulseMetricReceiver(quickPulseMetricReader, metricDataMapper, collector);
+
+        Thread metricReceiverThread =
+            new Thread(quickPulseMetricReceiver, QuickPulseMetricReceiver.class.getSimpleName());
+        metricReceiverThread.setDaemon(true);
+        metricReceiverThread.start();
 
         Thread senderThread =
             new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());

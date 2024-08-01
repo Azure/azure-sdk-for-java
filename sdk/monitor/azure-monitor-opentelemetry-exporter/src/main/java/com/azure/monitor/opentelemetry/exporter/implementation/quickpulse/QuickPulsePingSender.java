@@ -18,7 +18,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
@@ -45,6 +47,7 @@ class QuickPulsePingSender {
 
     private final HttpPipeline httpPipeline;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private QuickPulseConfiguration quickPulseConfiguration;
     private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
 
     private final Supplier<URL> endpointUrl;
@@ -64,7 +67,8 @@ class QuickPulsePingSender {
         String instanceName,
         String machineName,
         String quickPulseId,
-        String sdkVersion) {
+        String sdkVersion,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.httpPipeline = httpPipeline;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -73,6 +77,7 @@ class QuickPulsePingSender {
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
+        this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {
@@ -107,10 +112,16 @@ class QuickPulsePingSender {
 
             if (networkHelper.isSuccess(response)) {
                 QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
+                QuickPulseMetricReceiver.setQuickPulseHeaderInfo(quickPulseHeaderInfo);
                 switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
                     case QP_IS_OFF:
                     case QP_IS_ON:
                         lastValidTransmission = sendTime;
+                        String etagValue = networkHelper.getEtagHeaderValue(response);
+                        if (etagValue != null) {
+                            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> otelMetrics = quickPulseConfiguration.parseDerivedMetrics(response);
+                            quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
+                        }
                         operationLogger.recordSuccess();
                         return quickPulseHeaderInfo;
 

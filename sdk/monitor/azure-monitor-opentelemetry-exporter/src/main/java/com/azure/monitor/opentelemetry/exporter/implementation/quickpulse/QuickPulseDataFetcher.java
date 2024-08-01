@@ -39,6 +39,7 @@ class QuickPulseDataFetcher {
 
     private final ArrayBlockingQueue<HttpRequest> sendQueue;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private QuickPulseConfiguration quickPulseConfiguration;
 
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
@@ -57,7 +58,8 @@ class QuickPulseDataFetcher {
         String roleName,
         String instanceName,
         String machineName,
-        String quickPulseId) {
+        String quickPulseId,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.endpointUrl = endpointUrl;
@@ -66,6 +68,7 @@ class QuickPulseDataFetcher {
         this.instanceName = instanceName;
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
+        this.quickPulseConfiguration = quickPulseConfiguration;
 
         sdkVersion = getCurrentSdkVersion();
     }
@@ -92,7 +95,7 @@ class QuickPulseDataFetcher {
             String endpointPrefix =
                 Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
             HttpRequest request =
-                networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
+                networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix), quickPulseConfiguration.getEtag());
             request.setBody(buildPostEntity(counters));
 
             if (!sendQueue.offer(request)) {
@@ -140,13 +143,14 @@ class QuickPulseDataFetcher {
         postEnvelope.setStreamId(quickPulseId);
         postEnvelope.setVersion(sdkVersion);
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
-        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
+        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters, collector.retrieveOTelMetrics()));
         envelopes.add(postEnvelope);
         return mapper.writeValueAsString(envelopes);
     }
 
     private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(
-        QuickPulseDataCollector.FinalCounters counters) {
+        QuickPulseDataCollector.FinalCounters counters,
+        List<QuickPulseMetrics> OTelMetrics) {
         List<QuickPulseMetrics> metricsList = new ArrayList<>();
         metricsList.add(
             new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
@@ -188,7 +192,7 @@ class QuickPulseDataFetcher {
             new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.memoryCommitted, 1));
         metricsList.add(
             new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.cpuUsage, 1));
-
+        metricsList.addAll(OTelMetrics);
         return metricsList;
     }
 }
