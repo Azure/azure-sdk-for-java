@@ -51,7 +51,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- SLF4j -->
@@ -242,7 +242,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.bouncycastle:bcpkix-lts8on:[2.73.6]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                 <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>org.slf4j:slf4j-nop:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->

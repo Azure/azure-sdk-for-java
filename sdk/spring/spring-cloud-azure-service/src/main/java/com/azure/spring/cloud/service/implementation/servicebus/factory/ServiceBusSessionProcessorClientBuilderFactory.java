@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import com.azure.spring.cloud.service.listener.MessageListener;
@@ -12,12 +13,13 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessag
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder}.
  */
 public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder, ServiceBusProcessorClientProperties> {
 
-    private final ServiceBusProcessorClientProperties processorClientProperties;
     private final MessageListener<?> messageListener;
     private final ServiceBusErrorHandler errorHandler;
 
@@ -30,9 +32,10 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
      * @param errorHandler the error handler.
      */
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusProcessorClientProperties properties,
+                                                          List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers,
                                                           MessageListener<?> messageListener,
                                                           ServiceBusErrorHandler errorHandler) {
-        this(null, properties, messageListener, errorHandler);
+        this(null, properties, serviceBusClientBuilderCustomizers, messageListener, errorHandler);
     }
 
     /**
@@ -49,9 +52,16 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
                                                           ServiceBusProcessorClientProperties properties,
                                                           MessageListener<?> processingListener,
                                                           ServiceBusErrorHandler errorHandler) {
-        super(serviceBusClientBuilder, properties);
-        this.processorClientProperties = properties;
-        this.messageListener = processingListener;
+        this(serviceBusClientBuilder, properties, null, processingListener, errorHandler);
+    }
+
+    private ServiceBusSessionProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
+                                                           ServiceBusProcessorClientProperties properties,
+                                                           List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers,
+                                                           MessageListener<?> messageListener,
+                                                           ServiceBusErrorHandler errorHandler) {
+        super(serviceBusClientBuilder, properties, serviceBusClientBuilderCustomizers);
+        this.messageListener = messageListener;
         this.errorHandler = errorHandler;
     }
 
@@ -62,25 +72,25 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder) {
-        Assert.notNull(processorClientProperties.getEntityType(), "Entity type cannot be null.");
-        Assert.notNull(processorClientProperties.getEntityName(), "Entity name cannot be null.");
+        Assert.notNull(properties.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(properties.getEntityName(), "Entity name cannot be null.");
         super.configureService(builder);
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (ServiceBusEntityType.QUEUE == processorClientProperties.getEntityType()) {
-            propertyMapper.from(processorClientProperties.getEntityName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC == processorClientProperties.getEntityType()) {
-            propertyMapper.from(processorClientProperties.getEntityName()).to(builder::topicName);
+        if (ServiceBusEntityType.QUEUE == properties.getEntityType()) {
+            propertyMapper.from(properties.getEntityName()).to(builder::queueName);
+        } else if (ServiceBusEntityType.TOPIC == properties.getEntityType()) {
+            propertyMapper.from(properties.getEntityName()).to(builder::topicName);
         }
 
-        propertyMapper.from(processorClientProperties.getSubscriptionName()).to(builder::subscriptionName);
-        propertyMapper.from(processorClientProperties.getReceiveMode()).to(builder::receiveMode);
-        propertyMapper.from(processorClientProperties.getSubQueue()).to(builder::subQueue);
-        propertyMapper.from(processorClientProperties.getPrefetchCount()).to(builder::prefetchCount);
-        propertyMapper.from(processorClientProperties.getMaxAutoLockRenewDuration()).to(builder::maxAutoLockRenewDuration);
-        propertyMapper.from(processorClientProperties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
-        propertyMapper.from(processorClientProperties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
-        propertyMapper.from(processorClientProperties.getMaxConcurrentSessions()).to(builder::maxConcurrentSessions);
+        propertyMapper.from(properties.getSubscriptionName()).to(builder::subscriptionName);
+        propertyMapper.from(properties.getReceiveMode()).to(builder::receiveMode);
+        propertyMapper.from(properties.getSubQueue()).to(builder::subQueue);
+        propertyMapper.from(properties.getPrefetchCount()).to(builder::prefetchCount);
+        propertyMapper.from(properties.getMaxAutoLockRenewDuration()).to(builder::maxAutoLockRenewDuration);
+        propertyMapper.from(properties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
+        propertyMapper.from(properties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
+        propertyMapper.from(properties.getMaxConcurrentSessions()).to(builder::maxConcurrentSessions);
 
         propertyMapper.from(this.errorHandler).to(builder::processError);
 

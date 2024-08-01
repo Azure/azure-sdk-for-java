@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.15.0 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.3.2 and Spring Cloud dependencies version to 2023.0.3
 
 ### Spring Cloud Azure Dependencies (BOM)
 
@@ -12,6 +13,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Add `ConnectionDetails` for Cosmos, Storage Blob and Storage Queue. For more information about `ConnectionDetails`, please refer to [Spring Boot 3.1's ConnectionDetails abstraction](https://spring.io/blog/2023/06/19/spring-boot-31-connectiondetails-abstraction).
+- Add the property `customEndpointAddress` for Service Bus SDK clients [#41279](https://github.com/Azure/azure-sdk-for-java/pull/41279).
+
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+- Support share the 'ServiceBusClientBuilder' for sender client and processor clients creation [#41279](https://github.com/Azure/azure-sdk-for-java/pull/41279).
 
 #### Bugs Fixed
 - Fix bug: DLQ reason and description not work in spring-cloud-azure-stream-binder-servicebus. [40951](https://github.com/Azure/azure-sdk-for-java/issues/40951).

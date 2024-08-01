@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -43,7 +42,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
-import org.testng.xml.XmlSuite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -164,8 +162,9 @@ public class TestSuiteBase extends DocumentClientTest {
 
     @BeforeSuite(groups = {"unit"})
     public static void parallelizeUnitTests(ITestContext context) {
-        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
+//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
@@ -586,24 +585,11 @@ public class TestSuiteBase extends DocumentClientTest {
                     Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
+            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
     }
 
-    public static void safeDeleteDocument(AsyncDocumentClient client, String documentLink, RequestOptions options) {
-        if (client != null && documentLink != null) {
-            try {
-                client.deleteDocument(documentLink, options).block();
-            } catch (Exception e) {
-                CosmosException dce = Utils.as(e, CosmosException.class);
-                if (dce == null || dce.getStatusCode() != 404) {
-                    throw e;
-                }
-            }
-        }
-    }
-
-    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk) {
+    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk, String collectionLink) {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(pk);
         client.deleteDocument(documentLink, options).block();
