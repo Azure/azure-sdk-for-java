@@ -15,6 +15,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.ungzip;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -78,10 +79,10 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
             byte[] gzippedBytes = convertByteBufferListToByteArray(originalByteBuffers);
             byte[] ungzippedBytes = ungzip(gzippedBytes); // ungzip is needed in order to split by newline correctly
             List<byte[]> serializedTelemetryItemsByteArrayList = splitBytesByNewline(ungzippedBytes);
-            List<ByteBuffer> toBePersisted = new ArrayList<>();
+            List<byte[]> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
                 if (StatusCode.isRetryable(error.getStatusCode())) {
-                    toBePersisted.add(ByteBuffer.wrap(serializedTelemetryItemsByteArrayList.get(error.getIndex())));
+                    toBePersisted.add(serializedTelemetryItemsByteArrayList.get(error.getIndex()));
                 }
             }
 
@@ -109,15 +110,12 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     }
 
     // gzip and adding newline delimiter are required before persisting to the offline disk for handling 206 status code
-    private static List<ByteBuffer> gzip(List<ByteBuffer> byteBuffers) {
+    private static List<ByteBuffer> gzip(List<byte[]> byteArrayList) {
         try (ByteBufferOutputStream result = new ByteBufferOutputStream(new AppInsightsByteBufferPool())) {
             GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
-            for (int i = 0; i < byteBuffers.size(); i++) {
-                ByteBuffer byteBuffer = byteBuffers.get(i);
-                byte[] arr = new byte[byteBuffer.remaining()];
-                byteBuffer.get(arr);
-                gzipOutputStream.write(arr);
-                if (i < byteBuffers.size() - 1) {
+            for (int i = 0; i < byteArrayList.size(); i++) {
+                gzipOutputStream.write(byteArrayList.get(i));
+                if (i < byteArrayList.size() - 1) {
                     gzipOutputStream.write('\n');
                 }
             }
@@ -129,6 +127,21 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
             return result.getByteBuffers();
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to encode list of ByteBuffers before persisting to the offline disk", e);
+        }
+    }
+
+    // un-gzip TelemetryItems raw bytes back to original un-gzipped TelemetryItems raw bytes
+    public static byte[] ungzip(byte[] rawBytes) {
+        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes));
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            byte[] data = new byte[1024];
+            int read;
+            while ((read = in.read(data)) != -1) {
+                baos.write(data, 0, read);
+            }
+            return baos.toByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to decode byte[]", e);
         }
     }
 

@@ -19,14 +19,13 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.ungzip;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener.ungzip;
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.deserialize;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toMetricsData;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,8 +88,8 @@ public class Handle206Test {
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
 
         // load expected telemetry items from the file and split bytes by newline
-        String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-        List<TelemetryItem> expectedTelemetryItems = deserialize(expected.getBytes(StandardCharsets.UTF_8));
+        byte[] expected = Resources.readBytes("request_body_result_to_206_status_code.txt");
+        List<TelemetryItem> expectedTelemetryItems = deserialize(expected);
 
         // load the actual telemetry raw bytes from disk
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
@@ -131,11 +130,6 @@ public class Handle206Test {
     }
 
     private static void sort(List<TelemetryItem> telemetryItems) {
-        telemetryItems.sort(new Comparator<TelemetryItem>() {
-            @Override
-            public int compare(TelemetryItem o1, TelemetryItem o2) {
-                return toMetricsData(o1.getData().getBaseData()).getMetrics().get(0).getName().compareTo(toMetricsData(o2.getData().getBaseData()).getMetrics().get(0).getName());
-            }
-        });
+        telemetryItems.sort(Comparator.comparing(telemetryItem -> toMetricsData(telemetryItem.getData().getBaseData()).getMetrics().get(0).getName()));
     }
 }

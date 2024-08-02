@@ -14,6 +14,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineResponse;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -122,7 +123,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
             if (response.getErrors() != null && !response.getErrors().isEmpty()) {
                 message = response.getErrors().get(0).getMessage();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             return "Ingestion service returned "
                 + responseCode
                 + ", but could not parse response as json: "

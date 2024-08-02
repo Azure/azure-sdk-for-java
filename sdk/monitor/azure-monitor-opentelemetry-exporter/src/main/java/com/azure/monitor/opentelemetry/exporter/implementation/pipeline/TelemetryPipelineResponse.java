@@ -45,8 +45,14 @@ public class TelemetryPipelineResponse {
 
     public Set<String> getErrorMessages() {
         Set<ResponseError> responseErrors;
-        responseErrors = parseErrors(body);
-        return responseErrors.stream().map(ResponseError::getMessage).collect(Collectors.toSet());
+        try {
+            responseErrors = parseErrors(body);
+        } catch (IllegalStateException e) {
+            return singleton("Could not parse response");
+        }
+        return responseErrors.stream().map(ResponseError::getMessage)
+            .filter(message -> !message.equals("Telemetry sampled out."))
+            .collect(Collectors.toSet());
     }
 
     public boolean isInvalidInstrumentationKey() {

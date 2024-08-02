@@ -52,8 +52,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         OpenTelemetry openTelemetry =
             TestUtils.createOpenTelemetrySdk(httpPipeline, getConfiguration());
 
-        // generate 10 span
-        for (int i = 0; i < 10; i++) {
+        // generate spans
+        for (int i = 0; i < numberOfSpans; i++) {
             generateSpan(openTelemetry);
         }
 

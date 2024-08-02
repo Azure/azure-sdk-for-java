@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.core.http.HttpPipeline;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
@@ -117,6 +118,24 @@ public final class TestUtils {
     public static MessageData toMessageData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
             return MessageData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // deserialize multiple TelemetryItem raw bytes with newline delimiters to a list of TelemetryItems
+    public static List<TelemetryItem> deserialize(byte[] rawBytes) {
+        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
+            JsonToken token = jsonReader.currentToken();
+            if (token == null) {
+                token = jsonReader.nextToken();
+            }
+
+            List<TelemetryItem> result = new ArrayList<>();
+            do {
+                result.add(TelemetryItem.fromJson(jsonReader));
+            } while (jsonReader.nextToken() == JsonToken.START_OBJECT);
+            return result;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
