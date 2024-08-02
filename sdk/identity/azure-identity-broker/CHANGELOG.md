@@ -1,14 +1,10 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.1.4 (2024-08-02)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+#### Dependency Updates
+- Upgraded `azure-identity` from `1.13.1` to `1.13.2`
+- Upgraded `msal4j` from `1.16.1` to `1.16.2`
 
 ## 1.1.3 (2024-07-16)
 
