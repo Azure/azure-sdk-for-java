@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RemoteDependencyTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RequestTelemetryBuilder;
@@ -37,6 +36,7 @@ import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.SPAN;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -827,17 +827,17 @@ public final class SpanDataMapper {
     }
 
     static void setExceptions(String stack, Attributes attributes, ExceptionTelemetryBuilder telemetryBuilder) {
-        List<ExceptionDetailBuilder> builders = Exceptions.minimalParse(stack);
-        ExceptionDetailBuilder exceptionDetailBuilder = builders.get(0);
+        ExceptionDetailBuilder builder = new ExceptionDetailBuilder();
         String type = attributes.get(SemanticAttributes.EXCEPTION_TYPE);
         if (type != null && !type.isEmpty()) {
-            exceptionDetailBuilder.setTypeName(type);
+            builder.setTypeName(type);
         }
         String message = attributes.get(SemanticAttributes.EXCEPTION_MESSAGE);
         if (message != null && !message.isEmpty()) {
-            exceptionDetailBuilder.setMessage(message);
+            builder.setMessage(message);
         }
-        telemetryBuilder.setExceptions(builders);
+        builder.setStack(stack);
+        telemetryBuilder.setExceptions(singletonList(builder));
     }
 
     public static <T> T getStableOrOldAttribute(Attributes attributes, AttributeKey<T> stable, AttributeKey<T> old) {
