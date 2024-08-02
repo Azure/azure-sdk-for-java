@@ -13,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.CharBuffer;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -408,8 +407,8 @@ public final class XmlReader implements AutoCloseable {
         }
 
         int readCount = 0;
-        CharBuffer firstRead = null;
-        CharBuffer[] buffer = null;
+        String firstRead = null;
+        String[] buffer = null;
         int stringBufferSize = 0;
         int nextEvent = reader.next();
 
@@ -421,21 +420,21 @@ public final class XmlReader implements AutoCloseable {
                 || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
                 readCount++;
                 if (readCount == 1) {
-                    firstRead = readText();
+                    firstRead = reader.getText();
                     stringBufferSize = firstRead.length();
                 } else {
                     if (readCount == 2) {
-                        buffer = new CharBuffer[4];
+                        buffer = new String[4];
                         buffer[0] = firstRead;
                     }
 
                     if (readCount > buffer.length - 1) {
-                        CharBuffer[] newBuffer = new CharBuffer[buffer.length * 2];
+                        String[] newBuffer = new String[buffer.length * 2];
                         System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
                         buffer = newBuffer;
                     }
 
-                    CharBuffer readText = readText();
+                    String readText = reader.getText();
                     buffer[readCount - 1] = readText;
                     stringBufferSize += readText.length();
                 }
@@ -451,7 +450,7 @@ public final class XmlReader implements AutoCloseable {
         if (readCount == 0) {
             currentElementString = null;
         } else if (readCount == 1) {
-            currentElementString = firstRead.toString();
+            currentElementString = firstRead;
         } else {
             StringBuilder finalText = new StringBuilder(stringBufferSize);
             for (int i = 0; i < readCount; i++) {
@@ -463,15 +462,6 @@ public final class XmlReader implements AutoCloseable {
 
         needToReadElementString = false;
         return currentElementString;
-    }
-
-    private CharBuffer readText() {
-        // Instead of using reader.getText use getTextCharacters, getTextStart, and getTextLength as the default
-        // implementation in Java uses a type called XMLString which needs to be converted to String which can incur
-        // allocation overhead. This accesses the char[] backing the XMLString directly and wraps it in a CharBuffer.
-        // If the element reading is done in one operation this is the same as reader.getText in terms of performance,
-        // but if more than one call happens this can be more efficient.
-        return CharBuffer.wrap(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength());
     }
 
     /**
