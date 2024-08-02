@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of IPConfigurationBgpPeeringAddress.
  */
 @Fluent
-public final class IpConfigurationBgpPeeringAddress {
+public final class IpConfigurationBgpPeeringAddress implements JsonSerializable<IpConfigurationBgpPeeringAddress> {
     /*
      * The ID of IP configuration which belongs to gateway.
      */
-    @JsonProperty(value = "ipconfigurationId")
     private String ipconfigurationId;
 
     /*
      * The list of default BGP peering addresses which belong to IP configuration.
      */
-    @JsonProperty(value = "defaultBgpIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> defaultBgpIpAddresses;
 
     /*
      * The list of custom BGP peering addresses which belong to IP configuration.
      */
-    @JsonProperty(value = "customBgpIpAddresses")
     private List<String> customBgpIpAddresses;
 
     /*
      * The list of tunnel public IP addresses which belong to IP configuration.
      */
-    @JsonProperty(value = "tunnelIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tunnelIpAddresses;
 
     /**
@@ -108,5 +108,53 @@ public final class IpConfigurationBgpPeeringAddress {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipconfigurationId", this.ipconfigurationId);
+        jsonWriter.writeArrayField("customBgpIpAddresses", this.customBgpIpAddresses,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpConfigurationBgpPeeringAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpConfigurationBgpPeeringAddress if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpConfigurationBgpPeeringAddress.
+     */
+    public static IpConfigurationBgpPeeringAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpConfigurationBgpPeeringAddress deserializedIpConfigurationBgpPeeringAddress
+                = new IpConfigurationBgpPeeringAddress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipconfigurationId".equals(fieldName)) {
+                    deserializedIpConfigurationBgpPeeringAddress.ipconfigurationId = reader.getString();
+                } else if ("defaultBgpIpAddresses".equals(fieldName)) {
+                    List<String> defaultBgpIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigurationBgpPeeringAddress.defaultBgpIpAddresses = defaultBgpIpAddresses;
+                } else if ("customBgpIpAddresses".equals(fieldName)) {
+                    List<String> customBgpIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigurationBgpPeeringAddress.customBgpIpAddresses = customBgpIpAddresses;
+                } else if ("tunnelIpAddresses".equals(fieldName)) {
+                    List<String> tunnelIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigurationBgpPeeringAddress.tunnelIpAddresses = tunnelIpAddresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpConfigurationBgpPeeringAddress;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class IsGlobal extends ExpandableStringEnum<IsGlobal> {
      * @param name a name to look for.
      * @return the corresponding IsGlobal.
      */
-    @JsonCreator
     public static IsGlobal fromString(String name) {
         return fromString(name, IsGlobal.class);
     }
