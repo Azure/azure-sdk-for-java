@@ -52,7 +52,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         generateSpan(openTelemetry);
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        if (!countDownLatch.await(15, SECONDS)) {
+            throw new IllegalStateException("timed out");
+        }
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
         assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
@@ -82,7 +84,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         openTelemetry.close();
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        if (!countDownLatch.await(15, SECONDS)) {
+            throw new IllegalStateException("timed out");
+        }
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
         assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
@@ -102,7 +106,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         generateLog(openTelemetry);
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        if (!countDownLatch.await(15, SECONDS)) {
+            throw new IllegalStateException("timed out");
+        }
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
         assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
@@ -135,7 +141,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         openTelemetry.close();
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        if (!countDownLatch.await(15, SECONDS)) {
+            throw new IllegalStateException("timed out");
+        }
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
         assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(3);
