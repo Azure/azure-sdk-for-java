@@ -330,6 +330,16 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the logicalSectorSize property: Logical sector size in bytes for disk restore points of UltraSSD_LRS and
+     * PremiumV2_LRS disks. Supported values are 512 and 4096. 4096 is the default.
+     * 
+     * @return the logicalSectorSize value.
+     */
+    public Integer logicalSectorSize() {
+        return this.innerProperties() == null ? null : this.innerProperties().logicalSectorSize();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

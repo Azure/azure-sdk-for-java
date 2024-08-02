@@ -553,7 +553,9 @@ public class OrderByDocumentQueryExecutionContext
         Map<String, String> commonRequestHeaders,
         TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc,
-        Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
+        Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange,
+        String collectionLink) {
+
         return new OrderByDocumentProducer(consumeComparer,
                 client,
                 collectionRid,
@@ -561,7 +563,7 @@ public class OrderByDocumentQueryExecutionContext
                 createRequestFunc,
                 executeFunc,
                 feedRange,
-                collectionRid,
+                collectionLink,
                 createRetryPolicyFunc,
                 resourceType,
                 correlatedActivityId,

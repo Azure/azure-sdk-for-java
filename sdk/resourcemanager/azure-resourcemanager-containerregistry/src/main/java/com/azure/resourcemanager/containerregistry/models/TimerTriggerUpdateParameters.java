@@ -6,29 +6,30 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties for updating a timer trigger.
  */
 @Fluent
-public final class TimerTriggerUpdateParameters {
+public final class TimerTriggerUpdateParameters implements JsonSerializable<TimerTriggerUpdateParameters> {
     /*
      * The CRON expression for the task schedule
      */
-    @JsonProperty(value = "schedule")
     private String schedule;
 
     /*
      * The current status of trigger.
      */
-    @JsonProperty(value = "status")
     private TriggerStatus status;
 
     /*
      * The name of the trigger.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
@@ -104,10 +105,54 @@ public final class TimerTriggerUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model TimerTriggerUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model TimerTriggerUpdateParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TimerTriggerUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("schedule", this.schedule);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimerTriggerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimerTriggerUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimerTriggerUpdateParameters.
+     */
+    public static TimerTriggerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimerTriggerUpdateParameters deserializedTimerTriggerUpdateParameters = new TimerTriggerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTimerTriggerUpdateParameters.name = reader.getString();
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedTimerTriggerUpdateParameters.schedule = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedTimerTriggerUpdateParameters.status = TriggerStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimerTriggerUpdateParameters;
+        });
+    }
 }

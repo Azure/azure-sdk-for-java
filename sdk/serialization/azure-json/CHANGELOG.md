@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,31 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-07-26)
+
+### Features Added
+
+- `JsonArray`, `JsonBoolean`, `JsonElement`, `JsonNull`, `JsonNumber`, `JsonObject`, and `JsonString` have been added
+  to represent a JSON structure with an object-oriented approach. `JsonElement` can be used to generically deserialize
+  JSON content and retain JSON typing information. All classes support serialization to JSON, either at the root or as
+  a portion of the overall JSON structure.
+- Convenience APIs have been added to `JsonSerializable` to support deserialization directly from `String`, `byte[]`,
+  `InputStream`, and `Reader` sources without needing to use `JsonProviders` to create a `JsonReader` instance and to
+  support serialization directly to `String`, `byte[]`, `OutputStream`, and `Writer` targets without needing to use
+  `JsonProviders` to create a `JsonWriter` instance.
+- Overloads to `JsonWriter`'s `writeArray`, `writeArrayField`, `writeMap` and `writeMapField`  methods have been added
+  that can control how null elements in the array or null key-value pair values are handled in serialization.
+
+### Bugs Fixed
+
+- A bug was fixed in `JsonWriter`'s `writeArray`, `writeArrayField`, `writeMap`, and `writeMapField` methods when handling
+  null element values or null key-value pair values in serialization. Previously, handling of null values was left to
+  the `WriteValueCallback` supplied to the methods, and if the callback method being used skipped writing null values it
+  would result in JSON arrays dropping elements and an exception in `Map` serialization. Now, null values are always
+  written in the basic overload and in the new overloads that accept `boolean skipNullElements` / `boolean skipNullValues`,
+  null values are skipped if the corresponding boolean is set to `true`. The basic overload will have a difference in
+  JSON produced, but it will be the correct representation of the data.
 
 ## 1.1.0 (2023-08-04)
 

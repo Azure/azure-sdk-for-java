@@ -13,6 +13,7 @@ import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ public class RequestOptions implements OverridableRequestOptions {
     private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
     private Set<String> keywordIdentifiers;
 
+    private PartitionKeyDefinition partitionKeyDefinition;
+
     public RequestOptions() {
 
         this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
@@ -93,6 +96,7 @@ public class RequestOptions implements OverridableRequestOptions {
         this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
         this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
         this.effectiveItemSerializer= toBeCloned.effectiveItemSerializer;
+        this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
 
         if (toBeCloned.customOptions != null) {
             this.customOptions = new HashMap<>(toBeCloned.customOptions);
@@ -673,5 +677,11 @@ public class RequestOptions implements OverridableRequestOptions {
         return WriteRetryPolicy.DISABLED;
     }
 
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
 
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
+    }
 }

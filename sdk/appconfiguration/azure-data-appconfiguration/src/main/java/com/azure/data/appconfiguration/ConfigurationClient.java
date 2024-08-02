@@ -33,8 +33,11 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
@@ -1056,27 +1059,31 @@ public final class ConfigurationClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedIterable<>(() -> {
-            PagedResponse<KeyValue> pagedResponse;
-            try {
-                pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
-                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), context);
-            } catch (HttpResponseException ex) {
-                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-            }
-            return toConfigurationSettingWithPagedResponse(pagedResponse);
-        },
-            nextLink -> {
-                PagedResponse<KeyValue> pagedResponse;
-                try {
-                    pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
-                        getPageETag(matchConditionsList, pageETagIndex), context);
-                } catch (HttpResponseException ex) {
-                    return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+        return new PagedIterable<>(
+                () -> {
+                    PagedResponse<KeyValue> pagedResponse;
+                    try {
+                        pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
+                            settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
+                            tagsFilter, context);
+                    } catch (HttpResponseException ex) {
+                        return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+                    }
+                    return toConfigurationSettingWithPagedResponse(pagedResponse);
+                },
+                nextLink -> {
+                    PagedResponse<KeyValue> pagedResponse;
+                    try {
+                        pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
+                            getPageETag(matchConditionsList, pageETagIndex), context);
+                    } catch (HttpResponseException ex) {
+                        return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+                    }
+                    return toConfigurationSettingWithPagedResponse(pagedResponse);
                 }
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
         );
     }
 
@@ -1138,7 +1145,7 @@ public final class ConfigurationClient {
         List<SettingFields> fields, Context context) {
         return new PagedIterable<>(() -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
-                fields, snapshotName, null, null, context);
+                fields, snapshotName, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null,
@@ -1216,7 +1223,8 @@ public final class ConfigurationClient {
         return new PagedIterable<>(() -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
                 selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
-                null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()), context);
+                null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
+                    selector == null ? null : selector.getTagsFilter(), context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
@@ -1492,6 +1500,89 @@ public final class ConfigurationClient {
             selector == null ? null : selector.getNameFilter(), null, selector == null ? null : selector.getFields(),
             selector == null ? null : selector.getStatus(), context),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Gets all labels
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listAllLabels -->
+     * <pre>
+     * client.listLabels&#40;&#41;
+     *     .forEach&#40;label -&gt; &#123;
+     *         System.out.println&#40;&quot;label name = &quot; + label.getName&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listAllLabels -->
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SettingLabel> listLabels() {
+        return listLabels(null);
+    }
+
+    /**
+     * Gets a list of labels by given {@link SettingLabelSelector}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabels -->
+     * <pre>
+     * String labelNameFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * client.listLabels&#40;new SettingLabelSelector&#40;&#41;.setNameFilter&#40;labelNameFilter&#41;&#41;
+     *         .forEach&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label.getName&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listLabels -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SettingLabel> listLabels(SettingLabelSelector selector) {
+        return listLabels(selector, Context.NONE);
+    }
+
+    /**
+     * Gets a list of labels by given {@link SettingLabelSelector}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
+     * <pre>
+     * String labelNameFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     *
+     * client.listLabels&#40;new SettingLabelSelector&#40;&#41;.setNameFilter&#40;labelNameFilter&#41;, ctx&#41;
+     *         .forEach&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label.getName&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SettingLabel> listLabels(SettingLabelSelector selector, Context context) {
+        final String labelNameFilter = selector == null ? null : selector.getNameFilter();
+        final String acceptDatetime = selector == null
+            ? null : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
+        final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
+        return serviceClient.getLabels(labelNameFilter, null, acceptDatetime, labelFields, context);
     }
 
     /**

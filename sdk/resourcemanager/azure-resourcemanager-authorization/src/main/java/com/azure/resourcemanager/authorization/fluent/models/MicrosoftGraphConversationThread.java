@@ -5,86 +5,83 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** conversationThread. */
+/**
+ * conversationThread.
+ */
 @Fluent
 public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity {
     /*
      * The Cc: recipients for the thread.
      */
-    @JsonProperty(value = "ccRecipients")
     private List<MicrosoftGraphRecipient> ccRecipients;
 
     /*
      * Indicates whether any of the posts within this thread has at least one attachment.
      */
-    @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
      * Indicates if the thread is locked.
      */
-    @JsonProperty(value = "isLocked")
     private Boolean isLocked;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "lastDeliveredDateTime")
     private OffsetDateTime lastDeliveredDateTime;
 
     /*
      * A short summary from the body of the latest post in this conversation.
      */
-    @JsonProperty(value = "preview")
     private String preview;
 
     /*
      * The topic of the conversation. This property can be set when the conversation is created, but it cannot be
      * updated.
      */
-    @JsonProperty(value = "topic")
     private String topic;
 
     /*
      * The To: recipients for the thread.
      */
-    @JsonProperty(value = "toRecipients")
     private List<MicrosoftGraphRecipient> toRecipients;
 
     /*
      * All the users that sent a message to this thread.
      */
-    @JsonProperty(value = "uniqueSenders")
     private List<String> uniqueSenders;
 
     /*
      * Read-only. Nullable.
      */
-    @JsonProperty(value = "posts")
     private List<MicrosoftGraphPost> posts;
 
     /*
      * conversationThread
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphConversationThread class. */
+    /**
+     * Creates an instance of MicrosoftGraphConversationThread class.
+     */
     public MicrosoftGraphConversationThread() {
     }
 
     /**
      * Get the ccRecipients property: The Cc: recipients for the thread.
-     *
+     * 
      * @return the ccRecipients value.
      */
     public List<MicrosoftGraphRecipient> ccRecipients() {
@@ -93,7 +90,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Set the ccRecipients property: The Cc: recipients for the thread.
-     *
+     * 
      * @param ccRecipients the ccRecipients value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -105,7 +102,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     /**
      * Get the hasAttachments property: Indicates whether any of the posts within this thread has at least one
      * attachment.
-     *
+     * 
      * @return the hasAttachments value.
      */
     public Boolean hasAttachments() {
@@ -115,7 +112,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     /**
      * Set the hasAttachments property: Indicates whether any of the posts within this thread has at least one
      * attachment.
-     *
+     * 
      * @param hasAttachments the hasAttachments value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -126,7 +123,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Get the isLocked property: Indicates if the thread is locked.
-     *
+     * 
      * @return the isLocked value.
      */
     public Boolean isLocked() {
@@ -135,7 +132,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Set the isLocked property: Indicates if the thread is locked.
-     *
+     * 
      * @param isLocked the isLocked value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -148,7 +145,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      * Get the lastDeliveredDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the lastDeliveredDateTime value.
      */
     public OffsetDateTime lastDeliveredDateTime() {
@@ -159,7 +156,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      * Set the lastDeliveredDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param lastDeliveredDateTime the lastDeliveredDateTime value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -170,7 +167,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Get the preview property: A short summary from the body of the latest post in this conversation.
-     *
+     * 
      * @return the preview value.
      */
     public String preview() {
@@ -179,7 +176,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Set the preview property: A short summary from the body of the latest post in this conversation.
-     *
+     * 
      * @param preview the preview value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -191,7 +188,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     /**
      * Get the topic property: The topic of the conversation. This property can be set when the conversation is created,
      * but it cannot be updated.
-     *
+     * 
      * @return the topic value.
      */
     public String topic() {
@@ -201,7 +198,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     /**
      * Set the topic property: The topic of the conversation. This property can be set when the conversation is created,
      * but it cannot be updated.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -212,7 +209,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Get the toRecipients property: The To: recipients for the thread.
-     *
+     * 
      * @return the toRecipients value.
      */
     public List<MicrosoftGraphRecipient> toRecipients() {
@@ -221,7 +218,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Set the toRecipients property: The To: recipients for the thread.
-     *
+     * 
      * @param toRecipients the toRecipients value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -232,7 +229,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Get the uniqueSenders property: All the users that sent a message to this thread.
-     *
+     * 
      * @return the uniqueSenders value.
      */
     public List<String> uniqueSenders() {
@@ -241,7 +238,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Set the uniqueSenders property: All the users that sent a message to this thread.
-     *
+     * 
      * @param uniqueSenders the uniqueSenders value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -252,7 +249,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Get the posts property: Read-only. Nullable.
-     *
+     * 
      * @return the posts value.
      */
     public List<MicrosoftGraphPost> posts() {
@@ -261,7 +258,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Set the posts property: Read-only. Nullable.
-     *
+     * 
      * @param posts the posts value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -272,17 +269,16 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Get the additionalProperties property: conversationThread.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: conversationThread.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
@@ -291,15 +287,9 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphConversationThread withId(String id) {
         super.withId(id);
@@ -308,7 +298,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -323,5 +313,92 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
         if (posts() != null) {
             posts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("ccRecipients", this.ccRecipients, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("hasAttachments", this.hasAttachments);
+        jsonWriter.writeBooleanField("isLocked", this.isLocked);
+        jsonWriter.writeStringField("lastDeliveredDateTime",
+            this.lastDeliveredDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastDeliveredDateTime));
+        jsonWriter.writeStringField("preview", this.preview);
+        jsonWriter.writeStringField("topic", this.topic);
+        jsonWriter.writeArrayField("toRecipients", this.toRecipients, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("uniqueSenders", this.uniqueSenders,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("posts", this.posts, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphConversationThread from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphConversationThread if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphConversationThread.
+     */
+    public static MicrosoftGraphConversationThread fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphConversationThread deserializedMicrosoftGraphConversationThread
+                = new MicrosoftGraphConversationThread();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphConversationThread.withId(reader.getString());
+                } else if ("ccRecipients".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> ccRecipients
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphConversationThread.ccRecipients = ccRecipients;
+                } else if ("hasAttachments".equals(fieldName)) {
+                    deserializedMicrosoftGraphConversationThread.hasAttachments
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isLocked".equals(fieldName)) {
+                    deserializedMicrosoftGraphConversationThread.isLocked = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastDeliveredDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphConversationThread.lastDeliveredDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("preview".equals(fieldName)) {
+                    deserializedMicrosoftGraphConversationThread.preview = reader.getString();
+                } else if ("topic".equals(fieldName)) {
+                    deserializedMicrosoftGraphConversationThread.topic = reader.getString();
+                } else if ("toRecipients".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> toRecipients
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphConversationThread.toRecipients = toRecipients;
+                } else if ("uniqueSenders".equals(fieldName)) {
+                    List<String> uniqueSenders = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphConversationThread.uniqueSenders = uniqueSenders;
+                } else if ("posts".equals(fieldName)) {
+                    List<MicrosoftGraphPost> posts = reader.readArray(reader1 -> MicrosoftGraphPost.fromJson(reader1));
+                    deserializedMicrosoftGraphConversationThread.posts = posts;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphConversationThread.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphConversationThread;
+        });
     }
 }

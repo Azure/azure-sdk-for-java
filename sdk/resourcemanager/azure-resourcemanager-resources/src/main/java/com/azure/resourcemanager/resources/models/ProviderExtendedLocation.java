@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The provider extended location.
  */
 @Fluent
-public final class ProviderExtendedLocation {
+public final class ProviderExtendedLocation implements JsonSerializable<ProviderExtendedLocation> {
     /*
      * The azure location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The extended location type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The extended locations for the azure location.
      */
-    @JsonProperty(value = "extendedLocations")
     private List<String> extendedLocations;
 
     /**
@@ -103,5 +104,49 @@ public final class ProviderExtendedLocation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeArrayField("extendedLocations", this.extendedLocations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderExtendedLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderExtendedLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderExtendedLocation.
+     */
+    public static ProviderExtendedLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderExtendedLocation deserializedProviderExtendedLocation = new ProviderExtendedLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedProviderExtendedLocation.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProviderExtendedLocation.type = reader.getString();
+                } else if ("extendedLocations".equals(fieldName)) {
+                    List<String> extendedLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProviderExtendedLocation.extendedLocations = extendedLocations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderExtendedLocation;
+        });
     }
 }

@@ -5,73 +5,68 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeter;
 import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfigurationPropertiesProfile;
 import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation;
 import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfigurationProvisioningState;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningIssue;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of NetworkSecurityPerimeterConfiguration.
  */
 @Fluent
-public final class NetworkSecurityPerimeterConfigurationProperties {
+public final class NetworkSecurityPerimeterConfigurationProperties
+    implements JsonSerializable<NetworkSecurityPerimeterConfigurationProperties> {
     /*
      * Provisioning state of NetworkSecurityPerimeter configuration propagation
      */
-    @JsonProperty(value = "provisioningState")
     private NetworkSecurityPerimeterConfigurationProvisioningState provisioningState;
 
     /*
      * List of Provisioning Issues if any
      */
-    @JsonProperty(value = "provisioningIssues")
     private List<ProvisioningIssue> provisioningIssues;
 
     /*
      * NetworkSecurityPerimeter related information
      */
-    @JsonProperty(value = "networkSecurityPerimeter", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkSecurityPerimeter networkSecurityPerimeter;
 
     /*
      * Information about resource association
      */
-    @JsonProperty(value = "resourceAssociation", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation resourceAssociation;
 
     /*
      * Information about current network profile
      */
-    @JsonProperty(value = "profile", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkSecurityPerimeterConfigurationPropertiesProfile profile;
 
     /*
      * True if the EventHub namespace is backed by another Azure resource and not visible to end users.
      */
-    @JsonProperty(value = "isBackingResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isBackingResource;
 
     /*
      * Indicates that the NSP controls related to backing association are only applicable to a specific feature in
      * backing resource's data plane.
      */
-    @JsonProperty(value = "applicableFeatures", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> applicableFeatures;
 
     /*
      * Source Resource Association name
      */
-    @JsonProperty(value = "parentAssociationName", access = JsonProperty.Access.WRITE_ONLY)
     private String parentAssociationName;
 
     /*
      * ARM Id of source resource
      */
-    @JsonProperty(value = "sourceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceResourceId;
 
     /**
@@ -82,7 +77,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of NetworkSecurityPerimeter configuration propagation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public NetworkSecurityPerimeterConfigurationProvisioningState provisioningState() {
@@ -91,7 +86,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of NetworkSecurityPerimeter configuration propagation.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the NetworkSecurityPerimeterConfigurationProperties object itself.
      */
@@ -103,7 +98,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the provisioningIssues property: List of Provisioning Issues if any.
-     *
+     * 
      * @return the provisioningIssues value.
      */
     public List<ProvisioningIssue> provisioningIssues() {
@@ -112,7 +107,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Set the provisioningIssues property: List of Provisioning Issues if any.
-     *
+     * 
      * @param provisioningIssues the provisioningIssues value to set.
      * @return the NetworkSecurityPerimeterConfigurationProperties object itself.
      */
@@ -124,7 +119,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the networkSecurityPerimeter property: NetworkSecurityPerimeter related information.
-     *
+     * 
      * @return the networkSecurityPerimeter value.
      */
     public NetworkSecurityPerimeter networkSecurityPerimeter() {
@@ -133,7 +128,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the resourceAssociation property: Information about resource association.
-     *
+     * 
      * @return the resourceAssociation value.
      */
     public NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation resourceAssociation() {
@@ -142,7 +137,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the profile property: Information about current network profile.
-     *
+     * 
      * @return the profile value.
      */
     public NetworkSecurityPerimeterConfigurationPropertiesProfile profile() {
@@ -152,7 +147,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
     /**
      * Get the isBackingResource property: True if the EventHub namespace is backed by another Azure resource and not
      * visible to end users.
-     *
+     * 
      * @return the isBackingResource value.
      */
     public Boolean isBackingResource() {
@@ -162,7 +157,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
     /**
      * Get the applicableFeatures property: Indicates that the NSP controls related to backing association are only
      * applicable to a specific feature in backing resource's data plane.
-     *
+     * 
      * @return the applicableFeatures value.
      */
     public List<String> applicableFeatures() {
@@ -171,7 +166,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the parentAssociationName property: Source Resource Association name.
-     *
+     * 
      * @return the parentAssociationName value.
      */
     public String parentAssociationName() {
@@ -180,7 +175,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Get the sourceResourceId property: ARM Id of source resource.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -189,7 +184,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -205,5 +200,70 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
         if (profile() != null) {
             profile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeArrayField("provisioningIssues", this.provisioningIssues,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityPerimeterConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityPerimeterConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterConfigurationProperties.
+     */
+    public static NetworkSecurityPerimeterConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityPerimeterConfigurationProperties deserializedNetworkSecurityPerimeterConfigurationProperties
+                = new NetworkSecurityPerimeterConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.provisioningState
+                        = NetworkSecurityPerimeterConfigurationProvisioningState.fromString(reader.getString());
+                } else if ("provisioningIssues".equals(fieldName)) {
+                    List<ProvisioningIssue> provisioningIssues
+                        = reader.readArray(reader1 -> ProvisioningIssue.fromJson(reader1));
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.provisioningIssues = provisioningIssues;
+                } else if ("networkSecurityPerimeter".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.networkSecurityPerimeter
+                        = NetworkSecurityPerimeter.fromJson(reader);
+                } else if ("resourceAssociation".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.resourceAssociation
+                        = NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation.fromJson(reader);
+                } else if ("profile".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.profile
+                        = NetworkSecurityPerimeterConfigurationPropertiesProfile.fromJson(reader);
+                } else if ("isBackingResource".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.isBackingResource
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("applicableFeatures".equals(fieldName)) {
+                    List<String> applicableFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.applicableFeatures = applicableFeatures;
+                } else if ("parentAssociationName".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.parentAssociationName
+                        = reader.getString();
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.sourceResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityPerimeterConfigurationProperties;
+        });
     }
 }

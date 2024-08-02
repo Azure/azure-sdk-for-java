@@ -5,42 +5,42 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Attachment to the email. */
+/**
+ * Attachment to the email.
+ */
 @Immutable
-public final class EmailAttachment {
+public final class EmailAttachment implements JsonSerializable<EmailAttachment> {
     /*
      * Name of the attachment
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * MIME type of the content being attached.
      */
-    @JsonProperty(value = "contentType", required = true)
-    private String contentType;
+    private final String contentType;
 
     /*
      * Base64 encoded contents of the attachment
      */
-    @JsonProperty(value = "contentInBase64", required = true)
-    private String contentInBase64;
+    private final String contentInBase64;
 
     /**
      * Creates an instance of EmailAttachment class.
-     *
+     * 
      * @param name the name value to set.
      * @param contentType the contentType value to set.
      * @param contentInBase64 the contentInBase64 value to set.
      */
-    @JsonCreator
-    public EmailAttachment(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "contentType", required = true) String contentType,
-            @JsonProperty(value = "contentInBase64", required = true) String contentInBase64) {
+    public EmailAttachment(String name, String contentType, String contentInBase64) {
         this.name = name;
         this.contentType = contentType;
         this.contentInBase64 = contentInBase64;
@@ -48,7 +48,7 @@ public final class EmailAttachment {
 
     /**
      * Get the name property: Name of the attachment.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -57,7 +57,7 @@ public final class EmailAttachment {
 
     /**
      * Get the contentType property: MIME type of the content being attached.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -66,10 +66,75 @@ public final class EmailAttachment {
 
     /**
      * Get the contentInBase64 property: Base64 encoded contents of the attachment.
-     *
+     * 
      * @return the contentInBase64 value.
      */
     public String getContentInBase64() {
         return this.contentInBase64;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeStringField("contentInBase64", this.contentInBase64);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailAttachment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailAttachment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailAttachment.
+     */
+    public static EmailAttachment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean contentTypeFound = false;
+            String contentType = null;
+            boolean contentInBase64Found = false;
+            String contentInBase64 = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("contentType".equals(fieldName)) {
+                    contentType = reader.getString();
+                    contentTypeFound = true;
+                } else if ("contentInBase64".equals(fieldName)) {
+                    contentInBase64 = reader.getString();
+                    contentInBase64Found = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && contentTypeFound && contentInBase64Found) {
+                return new EmailAttachment(name, contentType, contentInBase64);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!contentTypeFound) {
+                missingProperties.add("contentType");
+            }
+            if (!contentInBase64Found) {
+                missingProperties.add("contentInBase64");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -21,8 +21,9 @@ public final class AzureActiveDirectoryLoginTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureActiveDirectoryLogin model = new AzureActiveDirectoryLogin()
-            .withLoginParameters(Arrays.asList("isdkfthwxmnteiw", "opvkmijcm")).withDisableWwwAuthenticate(false);
+        AzureActiveDirectoryLogin model
+            = new AzureActiveDirectoryLogin().withLoginParameters(Arrays.asList("isdkfthwxmnteiw", "opvkmijcm"))
+                .withDisableWwwAuthenticate(false);
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectoryLogin.class);
         Assertions.assertEquals("isdkfthwxmnteiw", model.loginParameters().get(0));
         Assertions.assertEquals(false, model.disableWwwAuthenticate());

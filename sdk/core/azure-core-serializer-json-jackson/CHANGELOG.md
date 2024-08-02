@@ -1,14 +1,18 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (2024-07-31)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added implementations of `azure-json`'s `JsonElement` that wrap `JsonArray` and `JsonObject` to simplify combining
+  Jackson functionality with `azure-json` functionality.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+- Upgraded Jackson from `2.13.5` to `2.17.2`.
 
 ## 1.4.14 (2024-07-12)
 ### Other Changes

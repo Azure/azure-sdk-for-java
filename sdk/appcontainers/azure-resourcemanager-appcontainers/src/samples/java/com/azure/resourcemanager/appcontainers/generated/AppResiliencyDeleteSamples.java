@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class AppResiliencyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AppResiliency_Delete.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/AppResiliency_Delete.json
      */
     /**
      * Sample code: Delete App Resiliency.
@@ -18,7 +18,7 @@ public final class AppResiliencyDeleteSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void deleteAppResiliency(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.appResiliencies().deleteWithResponse("rg", "testcontainerApp0", "resiliency-policy-1",
-            com.azure.core.util.Context.NONE);
+        manager.appResiliencies()
+            .deleteWithResponse("rg", "testcontainerApp0", "resiliency-policy-1", com.azure.core.util.Context.NONE);
     }
 }

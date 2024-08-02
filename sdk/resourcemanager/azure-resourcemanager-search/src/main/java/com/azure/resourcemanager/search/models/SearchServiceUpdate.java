@@ -6,58 +6,72 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.search.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceProperties;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters used to update a search service. */
+/**
+ * The parameters used to update a search service.
+ */
 @Fluent
 public final class SearchServiceUpdate extends ProxyResource {
     /*
      * Properties of the search service.
      */
-    @JsonProperty(value = "properties")
     private SearchServiceProperties innerProperties;
 
     /*
      * The SKU of the search service, which determines the billing rate and capacity limits. This property is required
      * when creating a new search service.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The geographic location of the resource. This must be one of the supported and registered Azure geo regions (for
-     * example, West US, East US, Southeast Asia, and so forth). This property is required when creating a new
-     * resource.
+     * example, West US, East US, Southeast Asia, and so forth). This property is required when creating a new resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Tags to help categorize the resource in the Azure portal.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
-    /** Creates an instance of SearchServiceUpdate class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SearchServiceUpdate class.
+     */
     public SearchServiceUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of the search service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SearchServiceProperties innerProperties() {
@@ -67,7 +81,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the sku property: The SKU of the search service, which determines the billing rate and capacity limits. This
      * property is required when creating a new search service.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -77,7 +91,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Set the sku property: The SKU of the search service, which determines the billing rate and capacity limits. This
      * property is required when creating a new search service.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -90,7 +104,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * Get the location property: The geographic location of the resource. This must be one of the supported and
      * registered Azure geo regions (for example, West US, East US, Southeast Asia, and so forth). This property is
      * required when creating a new resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -101,7 +115,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * Set the location property: The geographic location of the resource. This must be one of the supported and
      * registered Azure geo regions (for example, West US, East US, Southeast Asia, and so forth). This property is
      * required when creating a new resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -112,7 +126,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Get the tags property: Tags to help categorize the resource in the Azure portal.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -121,7 +135,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Set the tags property: Tags to help categorize the resource in the Azure portal.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -132,7 +146,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -141,7 +155,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -151,9 +165,39 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
-     *
+     * 
      * @return the replicaCount value.
      */
     public Integer replicaCount() {
@@ -163,7 +207,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Set the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
-     *
+     * 
      * @param replicaCount the replicaCount value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -179,7 +223,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * Get the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
      * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
      * set to 'highDensity', the allowed values are between 1 and 3.
-     *
+     * 
      * @return the partitionCount value.
      */
     public Integer partitionCount() {
@@ -190,7 +234,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * Set the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
      * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
      * set to 'highDensity', the allowed values are between 1 and 3.
-     *
+     * 
      * @param partitionCount the partitionCount value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -207,7 +251,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
      * value must be 'default'.
-     *
+     * 
      * @return the hostingMode value.
      */
     public HostingMode hostingMode() {
@@ -219,7 +263,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
      * value must be 'default'.
-     *
+     * 
      * @param hostingMode the hostingMode value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -235,7 +279,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * Get the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
      * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
      * endpoint connections would be the exclusive access method.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -246,7 +290,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * Set the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
      * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
      * endpoint connections would be the exclusive access method.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -268,7 +312,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
      * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
      * provisioned.
-     *
+     * 
      * @return the status value.
      */
     public SearchServiceStatus status() {
@@ -277,7 +321,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Get the statusDetails property: The details of the search service status.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -292,7 +336,7 @@ public final class SearchServiceUpdate extends ProxyResource {
      * operation to see when an operation is completed. If you are using the free service, this value tends to come back
      * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
      * is already set up.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -301,7 +345,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -310,7 +354,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -325,7 +369,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
      * using customer manager keys within a search service.
-     *
+     * 
      * @return the encryptionWithCmk value.
      */
     public EncryptionWithCmk encryptionWithCmk() {
@@ -335,7 +379,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Set the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
      * using customer manager keys within a search service.
-     *
+     * 
      * @param encryptionWithCmk the encryptionWithCmk value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -350,7 +394,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
      * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -360,7 +404,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Set the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
      * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -375,7 +419,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the authOptions property: Defines the options for how the data plane API of a search service authenticates
      * requests. This cannot be set if 'disableLocalAuth' is set to true.
-     *
+     * 
      * @return the authOptions value.
      */
     public DataPlaneAuthOptions authOptions() {
@@ -385,7 +429,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Set the authOptions property: Defines the options for how the data plane API of a search service authenticates
      * requests. This cannot be set if 'disableLocalAuth' is set to true.
-     *
+     * 
      * @param authOptions the authOptions value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -399,7 +443,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -409,7 +453,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the semanticSearch property: Sets options that control the availability of semantic search. This
      * configuration is only possible for certain search SKUs in certain locations.
-     *
+     * 
      * @return the semanticSearch value.
      */
     public SearchSemanticSearch semanticSearch() {
@@ -419,7 +463,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Set the semanticSearch property: Sets options that control the availability of semantic search. This
      * configuration is only possible for certain search SKUs in certain locations.
-     *
+     * 
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceUpdate object itself.
      */
@@ -434,7 +478,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
      * service.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
@@ -443,7 +487,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -456,5 +500,61 @@ public final class SearchServiceUpdate extends ProxyResource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchServiceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchServiceUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchServiceUpdate.
+     */
+    public static SearchServiceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchServiceUpdate deserializedSearchServiceUpdate = new SearchServiceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.innerProperties = SearchServiceProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.sku = Sku.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSearchServiceUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.identity = Identity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchServiceUpdate;
+        });
     }
 }

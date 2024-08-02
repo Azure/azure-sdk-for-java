@@ -51,7 +51,6 @@ public class StoreClient implements IStoreClient {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final Logger logger = LoggerFactory.getLogger(StoreClient.class);
     private final GatewayServiceConfigurationReader serviceConfigurationReader;
-
     private final ISessionContainer sessionContainer;
     private final ReplicatedResourceClient replicatedResourceClient;
     private final TransportClient transportClient;
@@ -189,6 +188,7 @@ public class StoreClient implements IStoreClient {
         RxDocumentServiceResponse rxDocumentServiceResponse =
             new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+
         return rxDocumentServiceResponse;
     }
 

@@ -13,23 +13,28 @@ import java.util.Collection;
  * two key-values containing the same key and label.
  */
 public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComposition> {
-    /** Static value key for SnapshotComposition. */
+    /**
+     * Static value key for SnapshotComposition.
+     */
     public static final SnapshotComposition KEY = fromString("key");
 
-    /** Static value key_label for SnapshotComposition. */
+    /**
+     * Static value key_label for SnapshotComposition.
+     */
     public static final SnapshotComposition KEY_LABEL = fromString("key_label");
 
     /**
      * Creates a new instance of SnapshotComposition value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SnapshotComposition() {}
+    public SnapshotComposition() {
+    }
 
     /**
      * Creates or finds a SnapshotComposition from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SnapshotComposition.
      */
@@ -39,7 +44,7 @@ public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComp
 
     /**
      * Gets known SnapshotComposition values.
-     *
+     * 
      * @return known SnapshotComposition values.
      */
     public static Collection<SnapshotComposition> values() {

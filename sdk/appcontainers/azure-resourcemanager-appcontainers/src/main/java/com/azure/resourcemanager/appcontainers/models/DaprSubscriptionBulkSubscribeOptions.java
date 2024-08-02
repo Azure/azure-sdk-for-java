@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Dapr PubSub Bulk Subscription Options.
  */
 @Fluent
-public final class DaprSubscriptionBulkSubscribeOptions {
+public final class DaprSubscriptionBulkSubscribeOptions
+    implements JsonSerializable<DaprSubscriptionBulkSubscribeOptions> {
     /*
      * Enable bulk subscription
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Maximum number of messages to deliver in a bulk message.
      */
-    @JsonProperty(value = "maxMessagesCount")
     private Integer maxMessagesCount;
 
     /*
      * Maximum duration in milliseconds to wait before a bulk message is sent to the app.
      */
-    @JsonProperty(value = "maxAwaitDurationMs")
     private Integer maxAwaitDurationMs;
 
     /**
@@ -104,5 +106,51 @@ public final class DaprSubscriptionBulkSubscribeOptions {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("maxMessagesCount", this.maxMessagesCount);
+        jsonWriter.writeNumberField("maxAwaitDurationMs", this.maxAwaitDurationMs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprSubscriptionBulkSubscribeOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprSubscriptionBulkSubscribeOptions if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DaprSubscriptionBulkSubscribeOptions.
+     */
+    public static DaprSubscriptionBulkSubscribeOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprSubscriptionBulkSubscribeOptions deserializedDaprSubscriptionBulkSubscribeOptions
+                = new DaprSubscriptionBulkSubscribeOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDaprSubscriptionBulkSubscribeOptions.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxMessagesCount".equals(fieldName)) {
+                    deserializedDaprSubscriptionBulkSubscribeOptions.maxMessagesCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxAwaitDurationMs".equals(fieldName)) {
+                    deserializedDaprSubscriptionBulkSubscribeOptions.maxAwaitDurationMs
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprSubscriptionBulkSubscribeOptions;
+        });
     }
 }

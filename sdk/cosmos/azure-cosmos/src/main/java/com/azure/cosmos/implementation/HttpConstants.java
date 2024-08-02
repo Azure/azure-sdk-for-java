@@ -434,6 +434,8 @@ public class HttpConstants {
         public static final int TIMEOUT_GENERATED_410 = 20002;
         // Client generated operation timeout exception
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
+        // Sub-status code paired with 408 status code
+        public static final int TRANSIT_TIMEOUT = 20911;
 
         // IMPORTANT - below sub status codes have no corresponding .Net
         // version, because they are only applicable in Java

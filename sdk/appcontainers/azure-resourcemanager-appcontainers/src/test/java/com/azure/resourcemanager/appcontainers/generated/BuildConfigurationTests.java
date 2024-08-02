@@ -32,25 +32,32 @@ public final class BuildConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BuildConfiguration model
-            = new BuildConfiguration().withBaseOs("qtkoievs").withPlatform("tgqr").withPlatformVersion("tmuwlauwzi")
-                .withEnvironmentVariables(
-                    Arrays.asList(new EnvironmentVariable().withName("mpgcjefuzmuvpbt").withValue("d")))
-                .withPreBuildSteps(Arrays.asList(
-                    new PreBuildStep().withDescription("p")
-                        .withScripts(Arrays.asList("bmnzbtbhjpgl", "fgohdneuelfphs", "yhtozfikdowwqu", "v"))
-                        .withHttpGet(new HttpGet().withUrl("xclvit").withFileName("qzonosggbhcohf")
-                            .withHeaders(Arrays.asList("jnkaljutiiswacff", "dkzzewkfvhqcrail"))),
-                    new PreBuildStep().withDescription("n")
-                        .withScripts(Arrays.asList("uflrwd", "hdlxyjrxsagafcn", "hgw"))
-                        .withHttpGet(new HttpGet().withUrl("pnedgf").withFileName("vkcvqvpkeqd")
-                            .withHeaders(Arrays.asList("rhvoods", "tbobz", "opcjwvnhd"))),
-                    new PreBuildStep().withDescription("wmgxcxrsl").withScripts(Arrays.asList("twuoegrpkhjwni"))
-                        .withHttpGet(new HttpGet().withUrl("sluicpdggkzz").withFileName("mbmpaxmodfvuefy")
-                            .withHeaders(Arrays.asList("pfvmwyhrfou", "ft"))),
-                    new PreBuildStep().withDescription("kcpwiy")
-                        .withScripts(Arrays.asList("tmnubexkpzksmon", "jmquxvypomgk", "pkwhojvpa"))
-                        .withHttpGet(new HttpGet().withUrl("gxysmocmbqfqvm").withFileName("xozap").withHeaders(
+        BuildConfiguration model = new BuildConfiguration().withBaseOs("qtkoievs")
+            .withPlatform("tgqr")
+            .withPlatformVersion("tmuwlauwzi")
+            .withEnvironmentVariables(
+                Arrays.asList(new EnvironmentVariable().withName("mpgcjefuzmuvpbt").withValue("d")))
+            .withPreBuildSteps(Arrays.asList(
+                new PreBuildStep().withDescription("p")
+                    .withScripts(Arrays.asList("bmnzbtbhjpgl", "fgohdneuelfphs", "yhtozfikdowwqu", "v"))
+                    .withHttpGet(new HttpGet().withUrl("xclvit")
+                        .withFileName("qzonosggbhcohf")
+                        .withHeaders(Arrays.asList("jnkaljutiiswacff", "dkzzewkfvhqcrail"))),
+                new PreBuildStep().withDescription("n")
+                    .withScripts(Arrays.asList("uflrwd", "hdlxyjrxsagafcn", "hgw"))
+                    .withHttpGet(new HttpGet().withUrl("pnedgf")
+                        .withFileName("vkcvqvpkeqd")
+                        .withHeaders(Arrays.asList("rhvoods", "tbobz", "opcjwvnhd"))),
+                new PreBuildStep().withDescription("wmgxcxrsl")
+                    .withScripts(Arrays.asList("twuoegrpkhjwni"))
+                    .withHttpGet(new HttpGet().withUrl("sluicpdggkzz")
+                        .withFileName("mbmpaxmodfvuefy")
+                        .withHeaders(Arrays.asList("pfvmwyhrfou", "ft"))),
+                new PreBuildStep().withDescription("kcpwiy")
+                    .withScripts(Arrays.asList("tmnubexkpzksmon", "jmquxvypomgk", "pkwhojvpa"))
+                    .withHttpGet(new HttpGet().withUrl("gxysmocmbqfqvm")
+                        .withFileName("xozap")
+                        .withHeaders(
                             Arrays.asList("lxprglyatddckcbc", "ejrjxgciqibrho", "xsdqrhzoymibmrqy", "bahwfl")))));
         model = BinaryData.fromObject(model).toObject(BuildConfiguration.class);
         Assertions.assertEquals("qtkoievs", model.baseOs());

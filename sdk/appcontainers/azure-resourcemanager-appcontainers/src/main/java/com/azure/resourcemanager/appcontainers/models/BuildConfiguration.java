@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration of the build.
  */
 @Fluent
-public final class BuildConfiguration {
+public final class BuildConfiguration implements JsonSerializable<BuildConfiguration> {
     /*
      * Base OS used to build and run the app.
      */
-    @JsonProperty(value = "baseOs")
     private String baseOs;
 
     /*
      * Platform to be used to build and run the app.
      */
-    @JsonProperty(value = "platform")
     private String platform;
 
     /*
      * Platform version to be used to build and run the app.
      */
-    @JsonProperty(value = "platformVersion")
     private String platformVersion;
 
     /*
      * List of environment variables to be passed to the build, secrets should not be used in environment variable.
      */
-    @JsonProperty(value = "environmentVariables")
     private List<EnvironmentVariable> environmentVariables;
 
     /*
      * List of steps to perform before the build.
      */
-    @JsonProperty(value = "preBuildSteps")
     private List<PreBuildStep> preBuildSteps;
 
     /**
@@ -163,5 +162,57 @@ public final class BuildConfiguration {
         if (preBuildSteps() != null) {
             preBuildSteps().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("baseOs", this.baseOs);
+        jsonWriter.writeStringField("platform", this.platform);
+        jsonWriter.writeStringField("platformVersion", this.platformVersion);
+        jsonWriter.writeArrayField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("preBuildSteps", this.preBuildSteps, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildConfiguration.
+     */
+    public static BuildConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildConfiguration deserializedBuildConfiguration = new BuildConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseOs".equals(fieldName)) {
+                    deserializedBuildConfiguration.baseOs = reader.getString();
+                } else if ("platform".equals(fieldName)) {
+                    deserializedBuildConfiguration.platform = reader.getString();
+                } else if ("platformVersion".equals(fieldName)) {
+                    deserializedBuildConfiguration.platformVersion = reader.getString();
+                } else if ("environmentVariables".equals(fieldName)) {
+                    List<EnvironmentVariable> environmentVariables
+                        = reader.readArray(reader1 -> EnvironmentVariable.fromJson(reader1));
+                    deserializedBuildConfiguration.environmentVariables = environmentVariables;
+                } else if ("preBuildSteps".equals(fieldName)) {
+                    List<PreBuildStep> preBuildSteps = reader.readArray(reader1 -> PreBuildStep.fromJson(reader1));
+                    deserializedBuildConfiguration.preBuildSteps = preBuildSteps;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildConfiguration;
+        });
     }
 }

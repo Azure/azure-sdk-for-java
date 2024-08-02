@@ -28,8 +28,12 @@ public final class ServicesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesCreateOrUpdateVNetInjection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().createOrUpdate("myResourceGroup", "myservice",
-            new ServiceResourceInner().withLocation("eastus").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .createOrUpdate("myResourceGroup", "myservice", new ServiceResourceInner().withLocation("eastus")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withProperties(new ClusterResourceProperties().withNetworkProfile(new NetworkProfile()
                     .withServiceRuntimeSubnetId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVirtualNetwork/subnets/serviceRuntime")
@@ -38,10 +42,10 @@ public final class ServicesCreateOrUpdateSamples {
                     .withServiceCidr("10.8.0.0/16,10.244.0.0/16,10.245.0.1/16")
                     .withServiceRuntimeNetworkResourceGroup("my-service-runtime-network-rg")
                     .withAppNetworkResourceGroup("my-app-network-rg")
-                    .withIngressConfig(new IngressConfig().withReadTimeoutInSeconds(300))).withVnetAddons(
+                    .withIngressConfig(new IngressConfig().withReadTimeoutInSeconds(300)))
+                    .withVnetAddons(
                         new ServiceVNetAddons().withLogStreamPublicEndpoint(true).withDataPlanePublicEndpoint(true)))
-                .withSku(new Sku().withName("S0").withTier("Standard")),
-            com.azure.core.util.Context.NONE);
+                .withSku(new Sku().withName("S0").withTier("Standard")), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -54,9 +58,14 @@ public final class ServicesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices()
-            .createOrUpdate("myResourceGroup", "myservice", new ServiceResourceInner().withLocation("eastus")
-                .withTags(mapOf("key1", "fakeTokenPlaceholder")).withSku(new Sku().withName("S0").withTier("Standard")),
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .createOrUpdate("myResourceGroup", "myservice",
+                new ServiceResourceInner().withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withSku(new Sku().withName("S0").withTier("Standard")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -70,13 +79,19 @@ public final class ServicesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesCreateOrUpdateEnterprise(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().createOrUpdate("myResourceGroup", "myservice",
-            new ServiceResourceInner().withLocation("eastus").withTags(mapOf("key1", "fakeTokenPlaceholder"))
-                .withProperties(new ClusterResourceProperties()
-                    .withMarketplaceResource(new MarketplaceResource().withPlan("tanzu-asc-ent-mtr")
-                        .withPublisher("vmware-inc").withProduct("azure-spring-cloud-vmware-tanzu-2")))
-                .withSku(new Sku().withName("E0").withTier("Enterprise")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .createOrUpdate("myResourceGroup", "myservice",
+                new ServiceResourceInner().withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withProperties(new ClusterResourceProperties()
+                        .withMarketplaceResource(new MarketplaceResource().withPlan("tanzu-asc-ent-mtr")
+                            .withPublisher("vmware-inc")
+                            .withProduct("azure-spring-cloud-vmware-tanzu-2")))
+                    .withSku(new Sku().withName("E0").withTier("Enterprise")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

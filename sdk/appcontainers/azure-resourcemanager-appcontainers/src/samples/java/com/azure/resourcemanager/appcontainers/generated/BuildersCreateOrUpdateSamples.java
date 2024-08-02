@@ -18,7 +18,7 @@ import java.util.Map;
 public final class BuildersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Builders_CreateOrUpdate.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Builders_CreateOrUpdate.json
      */
     /**
      * Sample code: Builders_CreateOrUpdate_0.
@@ -27,7 +27,10 @@ public final class BuildersCreateOrUpdateSamples {
      */
     public static void
         buildersCreateOrUpdate0(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.builders().define("testBuilder").withRegion("eastus").withExistingResourceGroup("rg")
+        manager.builders()
+            .define("testBuilder")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg")
             .withTags(mapOf("company", "Microsoft"))
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
@@ -36,11 +39,13 @@ public final class BuildersCreateOrUpdateSamples {
                     new UserAssignedIdentity())))
             .withEnvironmentId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.App/managedEnvironments/testEnv")
-            .withContainerRegistries(Arrays.asList(
-                new ContainerRegistry().withContainerRegistryServer("test.azurecr.io").withIdentityResourceId(
+            .withContainerRegistries(Arrays.asList(new ContainerRegistry()
+                .withContainerRegistryServer("test.azurecr.io")
+                .withIdentityResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"),
-                new ContainerRegistry().withContainerRegistryServer("test2.azurecr.io").withIdentityResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
+                new ContainerRegistry().withContainerRegistryServer("test2.azurecr.io")
+                    .withIdentityResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
             .create();
     }
 

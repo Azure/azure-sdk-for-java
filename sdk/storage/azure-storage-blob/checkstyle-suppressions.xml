@@ -19,7 +19,6 @@
   <suppress files="com.azure.storage.blob.implementation.util.ModelHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.implementation.models.PageListHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.blob.implementation.util.BlobRequestConditionProperty.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.blob.implementation.BlobsImpl.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
   <suppress files="com.azure.storage.blob.implementation.BlockBlobsImpl.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
   <suppress files="com.azure.storage.blob.implementation.PageBlobsImpl.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />

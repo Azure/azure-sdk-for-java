@@ -5,68 +5,68 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** sectionGroup. */
+/**
+ * sectionGroup.
+ */
 @Fluent
 public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntityHierarchyModel {
     /*
      * The URL for the sectionGroups navigation property, which returns all the section groups in the section group.
      * Read-only.
      */
-    @JsonProperty(value = "sectionGroupsUrl")
     private String sectionGroupsUrl;
 
     /*
      * The URL for the sections navigation property, which returns all the sections in the section group. Read-only.
      */
-    @JsonProperty(value = "sectionsUrl")
     private String sectionsUrl;
 
     /*
      * notebook
      */
-    @JsonProperty(value = "parentNotebook")
     private MicrosoftGraphNotebook parentNotebook;
 
     /*
      * sectionGroup
      */
-    @JsonProperty(value = "parentSectionGroup")
     private MicrosoftGraphSectionGroup parentSectionGroup;
 
     /*
      * The section groups in the section. Read-only. Nullable.
      */
-    @JsonProperty(value = "sectionGroups")
     private List<MicrosoftGraphSectionGroup> sectionGroups;
 
     /*
      * The sections in the section group. Read-only. Nullable.
      */
-    @JsonProperty(value = "sections")
     private List<MicrosoftGraphOnenoteSection> sections;
 
     /*
      * sectionGroup
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSectionGroup class. */
+    /**
+     * Creates an instance of MicrosoftGraphSectionGroup class.
+     */
     public MicrosoftGraphSectionGroup() {
     }
 
     /**
      * Get the sectionGroupsUrl property: The URL for the sectionGroups navigation property, which returns all the
      * section groups in the section group. Read-only.
-     *
+     * 
      * @return the sectionGroupsUrl value.
      */
     public String sectionGroupsUrl() {
@@ -76,7 +76,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
     /**
      * Set the sectionGroupsUrl property: The URL for the sectionGroups navigation property, which returns all the
      * section groups in the section group. Read-only.
-     *
+     * 
      * @param sectionGroupsUrl the sectionGroupsUrl value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -88,7 +88,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
     /**
      * Get the sectionsUrl property: The URL for the sections navigation property, which returns all the sections in the
      * section group. Read-only.
-     *
+     * 
      * @return the sectionsUrl value.
      */
     public String sectionsUrl() {
@@ -98,7 +98,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
     /**
      * Set the sectionsUrl property: The URL for the sections navigation property, which returns all the sections in the
      * section group. Read-only.
-     *
+     * 
      * @param sectionsUrl the sectionsUrl value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -109,7 +109,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Get the parentNotebook property: notebook.
-     *
+     * 
      * @return the parentNotebook value.
      */
     public MicrosoftGraphNotebook parentNotebook() {
@@ -118,7 +118,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Set the parentNotebook property: notebook.
-     *
+     * 
      * @param parentNotebook the parentNotebook value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -129,7 +129,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Get the parentSectionGroup property: sectionGroup.
-     *
+     * 
      * @return the parentSectionGroup value.
      */
     public MicrosoftGraphSectionGroup parentSectionGroup() {
@@ -138,7 +138,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Set the parentSectionGroup property: sectionGroup.
-     *
+     * 
      * @param parentSectionGroup the parentSectionGroup value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -149,7 +149,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Get the sectionGroups property: The section groups in the section. Read-only. Nullable.
-     *
+     * 
      * @return the sectionGroups value.
      */
     public List<MicrosoftGraphSectionGroup> sectionGroups() {
@@ -158,7 +158,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Set the sectionGroups property: The section groups in the section. Read-only. Nullable.
-     *
+     * 
      * @param sectionGroups the sectionGroups value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -169,7 +169,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Get the sections property: The sections in the section group. Read-only. Nullable.
-     *
+     * 
      * @return the sections value.
      */
     public List<MicrosoftGraphOnenoteSection> sections() {
@@ -178,7 +178,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Set the sections property: The sections in the section group. Read-only. Nullable.
-     *
+     * 
      * @param sections the sections value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -189,17 +189,16 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Get the additionalProperties property: sectionGroup.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: sectionGroup.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSectionGroup object itself.
      */
@@ -208,57 +207,63 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withCreatedBy(MicrosoftGraphIdentitySet createdBy) {
         super.withCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withSelf(String self) {
         super.withSelf(self);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSectionGroup withId(String id) {
         super.withId(id);
@@ -267,7 +272,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -285,5 +290,100 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
         if (sections() != null) {
             sections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("self", self());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("createdBy", createdBy());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("sectionGroupsUrl", this.sectionGroupsUrl);
+        jsonWriter.writeStringField("sectionsUrl", this.sectionsUrl);
+        jsonWriter.writeJsonField("parentNotebook", this.parentNotebook);
+        jsonWriter.writeJsonField("parentSectionGroup", this.parentSectionGroup);
+        jsonWriter.writeArrayField("sectionGroups", this.sectionGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sections", this.sections, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSectionGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSectionGroup if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSectionGroup.
+     */
+    public static MicrosoftGraphSectionGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSectionGroup deserializedMicrosoftGraphSectionGroup = new MicrosoftGraphSectionGroup();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.withId(reader.getString());
+                } else if ("self".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.withSelf(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.withCreatedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.withDisplayName(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("sectionGroupsUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.sectionGroupsUrl = reader.getString();
+                } else if ("sectionsUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.sectionsUrl = reader.getString();
+                } else if ("parentNotebook".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.parentNotebook = MicrosoftGraphNotebook.fromJson(reader);
+                } else if ("parentSectionGroup".equals(fieldName)) {
+                    deserializedMicrosoftGraphSectionGroup.parentSectionGroup
+                        = MicrosoftGraphSectionGroup.fromJson(reader);
+                } else if ("sectionGroups".equals(fieldName)) {
+                    List<MicrosoftGraphSectionGroup> sectionGroups
+                        = reader.readArray(reader1 -> MicrosoftGraphSectionGroup.fromJson(reader1));
+                    deserializedMicrosoftGraphSectionGroup.sectionGroups = sectionGroups;
+                } else if ("sections".equals(fieldName)) {
+                    List<MicrosoftGraphOnenoteSection> sections
+                        = reader.readArray(reader1 -> MicrosoftGraphOnenoteSection.fromJson(reader1));
+                    deserializedMicrosoftGraphSectionGroup.sections = sections;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSectionGroup.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSectionGroup;
+        });
     }
 }

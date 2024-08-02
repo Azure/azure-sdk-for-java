@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Policy that defines tcp request retry conditions.
  */
 @Fluent
-public final class TcpRetryPolicy {
+public final class TcpRetryPolicy implements JsonSerializable<TcpRetryPolicy> {
     /*
      * Maximum number of attempts to connect to the tcp service
      */
-    @JsonProperty(value = "maxConnectAttempts")
     private Integer maxConnectAttempts;
 
     /**
@@ -50,5 +53,41 @@ public final class TcpRetryPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxConnectAttempts", this.maxConnectAttempts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TcpRetryPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TcpRetryPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TcpRetryPolicy.
+     */
+    public static TcpRetryPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TcpRetryPolicy deserializedTcpRetryPolicy = new TcpRetryPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConnectAttempts".equals(fieldName)) {
+                    deserializedTcpRetryPolicy.maxConnectAttempts = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTcpRetryPolicy;
+        });
     }
 }

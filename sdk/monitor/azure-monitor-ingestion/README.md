@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,7 +77,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

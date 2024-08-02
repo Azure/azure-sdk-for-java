@@ -18,7 +18,10 @@ public final class ServicesEnableTestEndpointSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesEnableTestEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().enableTestEndpointWithResponse("myResourceGroup",
-            "myservice", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .enableTestEndpointWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

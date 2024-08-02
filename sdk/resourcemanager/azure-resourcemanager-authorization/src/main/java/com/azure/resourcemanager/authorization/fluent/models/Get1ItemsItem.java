@@ -5,69 +5,106 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Get1ItemsItem. */
+/**
+ * Defines values for Get1ItemsItem.
+ */
 public final class Get1ItemsItem extends ExpandableStringEnum<Get1ItemsItem> {
-    /** Static value id for Get1ItemsItem. */
+    /**
+     * Static value id for Get1ItemsItem.
+     */
     public static final Get1ItemsItem ID = fromString("id");
 
-    /** Static value deletedDateTime for Get1ItemsItem. */
+    /**
+     * Static value deletedDateTime for Get1ItemsItem.
+     */
     public static final Get1ItemsItem DELETED_DATE_TIME = fromString("deletedDateTime");
 
-    /** Static value authenticationType for Get1ItemsItem. */
+    /**
+     * Static value authenticationType for Get1ItemsItem.
+     */
     public static final Get1ItemsItem AUTHENTICATION_TYPE = fromString("authenticationType");
 
-    /** Static value availabilityStatus for Get1ItemsItem. */
+    /**
+     * Static value availabilityStatus for Get1ItemsItem.
+     */
     public static final Get1ItemsItem AVAILABILITY_STATUS = fromString("availabilityStatus");
 
-    /** Static value isAdminManaged for Get1ItemsItem. */
+    /**
+     * Static value isAdminManaged for Get1ItemsItem.
+     */
     public static final Get1ItemsItem IS_ADMIN_MANAGED = fromString("isAdminManaged");
 
-    /** Static value isDefault for Get1ItemsItem. */
+    /**
+     * Static value isDefault for Get1ItemsItem.
+     */
     public static final Get1ItemsItem IS_DEFAULT = fromString("isDefault");
 
-    /** Static value isInitial for Get1ItemsItem. */
+    /**
+     * Static value isInitial for Get1ItemsItem.
+     */
     public static final Get1ItemsItem IS_INITIAL = fromString("isInitial");
 
-    /** Static value isRoot for Get1ItemsItem. */
+    /**
+     * Static value isRoot for Get1ItemsItem.
+     */
     public static final Get1ItemsItem IS_ROOT = fromString("isRoot");
 
-    /** Static value isVerified for Get1ItemsItem. */
+    /**
+     * Static value isVerified for Get1ItemsItem.
+     */
     public static final Get1ItemsItem IS_VERIFIED = fromString("isVerified");
 
-    /** Static value manufacturer for Get1ItemsItem. */
+    /**
+     * Static value manufacturer for Get1ItemsItem.
+     */
     public static final Get1ItemsItem MANUFACTURER = fromString("manufacturer");
 
-    /** Static value model for Get1ItemsItem. */
+    /**
+     * Static value model for Get1ItemsItem.
+     */
     public static final Get1ItemsItem MODEL = fromString("model");
 
-    /** Static value passwordNotificationWindowInDays for Get1ItemsItem. */
-    public static final Get1ItemsItem PASSWORD_NOTIFICATION_WINDOW_IN_DAYS =
-        fromString("passwordNotificationWindowInDays");
+    /**
+     * Static value passwordNotificationWindowInDays for Get1ItemsItem.
+     */
+    public static final Get1ItemsItem PASSWORD_NOTIFICATION_WINDOW_IN_DAYS
+        = fromString("passwordNotificationWindowInDays");
 
-    /** Static value passwordValidityPeriodInDays for Get1ItemsItem. */
+    /**
+     * Static value passwordValidityPeriodInDays for Get1ItemsItem.
+     */
     public static final Get1ItemsItem PASSWORD_VALIDITY_PERIOD_IN_DAYS = fromString("passwordValidityPeriodInDays");
 
-    /** Static value state for Get1ItemsItem. */
+    /**
+     * Static value state for Get1ItemsItem.
+     */
     public static final Get1ItemsItem STATE = fromString("state");
 
-    /** Static value supportedServices for Get1ItemsItem. */
+    /**
+     * Static value supportedServices for Get1ItemsItem.
+     */
     public static final Get1ItemsItem SUPPORTED_SERVICES = fromString("supportedServices");
 
-    /** Static value domainNameReferences for Get1ItemsItem. */
+    /**
+     * Static value domainNameReferences for Get1ItemsItem.
+     */
     public static final Get1ItemsItem DOMAIN_NAME_REFERENCES = fromString("domainNameReferences");
 
-    /** Static value serviceConfigurationRecords for Get1ItemsItem. */
+    /**
+     * Static value serviceConfigurationRecords for Get1ItemsItem.
+     */
     public static final Get1ItemsItem SERVICE_CONFIGURATION_RECORDS = fromString("serviceConfigurationRecords");
 
-    /** Static value verificationDnsRecords for Get1ItemsItem. */
+    /**
+     * Static value verificationDnsRecords for Get1ItemsItem.
+     */
     public static final Get1ItemsItem VERIFICATION_DNS_RECORDS = fromString("verificationDnsRecords");
 
     /**
      * Creates a new instance of Get1ItemsItem value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -76,18 +113,17 @@ public final class Get1ItemsItem extends ExpandableStringEnum<Get1ItemsItem> {
 
     /**
      * Creates or finds a Get1ItemsItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Get1ItemsItem.
      */
-    @JsonCreator
     public static Get1ItemsItem fromString(String name) {
         return fromString(name, Get1ItemsItem.class);
     }
 
     /**
      * Gets known Get1ItemsItem values.
-     *
+     * 
      * @return known Get1ItemsItem values.
      */
     public static Collection<Get1ItemsItem> values() {

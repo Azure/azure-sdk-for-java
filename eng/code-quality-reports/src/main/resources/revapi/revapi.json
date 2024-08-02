@@ -545,6 +545,13 @@
           "justification": "Migration to azure-json"
         },
         {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.email\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.email\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
           "code": "java.class.nowFinal",
           "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
           "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
@@ -582,6 +589,33 @@
           "code": "java.missing.oldSuperType",
           "old": "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
           "justification": "service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "old": "method com.azure.communication.identity.models.CommunicationTokenScope com.azure.communication.identity.models.CommunicationTokenScope::fromString(java.lang.String)",
+          "new": "method com.azure.communication.identity.models.CommunicationTokenScope com.azure.communication.identity.models.CommunicationTokenScope::fromString(java.lang.String)",
+          "annotation": "@com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.messages\\.models(\\.channels)?.*",
+          "new" : ".*? com\\.azure\\.communication\\.messages\\.models(\\.channels)?.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "code": "java.method.returnTypeErasureChanged",
+          "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.InteractiveBrowserCredentialBuilder",
+          "new" : "method com.azure.identity.InteractiveBrowserCredentialBuilder com.azure.identity.InteractiveBrowserCredentialBuilder::clientId(java.lang.String)",
+          "justification": "Override flags this as a potential binary breaking change, but it isn't."
+        },
+        {
+          "code": "java.method.returnTypeErasureChanged",
+          "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
+          "new" : "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
+          "justification": "Override flags this as a potential binary breaking change, but it isn't."
         }
       ]
     }

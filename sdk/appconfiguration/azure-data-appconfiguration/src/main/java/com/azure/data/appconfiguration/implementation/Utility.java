@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -190,5 +191,22 @@ public class Utility {
         }
 
         return nextPageETag;
+    }
+
+    // Convert the Map<String, String> to a filter string
+    public static List<String> getTagsFilterInString(Map<String, String> tagsFilter) {
+        List<String> tagsFilters;
+
+        if (tagsFilter != null) {
+            tagsFilters = new ArrayList<>();
+            tagsFilter.forEach((key, value) -> {
+                if (!CoreUtils.isNullOrEmpty(key) && !CoreUtils.isNullOrEmpty(value)) {
+                    tagsFilters.add(key + "=" + value);
+                }
+            });
+        } else {
+            tagsFilters = null;
+        }
+        return tagsFilters;
     }
 }

@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** optionalClaims. */
+/**
+ * optionalClaims.
+ */
 @Fluent
-public final class MicrosoftGraphOptionalClaims {
+public final class MicrosoftGraphOptionalClaims implements JsonSerializable<MicrosoftGraphOptionalClaims> {
     /*
      * The optional claims returned in the JWT access token.
      */
-    @JsonProperty(value = "accessToken")
     private List<MicrosoftGraphOptionalClaim> accessToken;
 
     /*
      * The optional claims returned in the JWT ID token.
      */
-    @JsonProperty(value = "idToken")
     private List<MicrosoftGraphOptionalClaim> idToken;
 
     /*
      * The optional claims returned in the SAML token.
      */
-    @JsonProperty(value = "saml2Token")
     private List<MicrosoftGraphOptionalClaim> saml2Token;
 
     /*
      * optionalClaims
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOptionalClaims class. */
+    /**
+     * Creates an instance of MicrosoftGraphOptionalClaims class.
+     */
     public MicrosoftGraphOptionalClaims() {
     }
 
     /**
      * Get the accessToken property: The optional claims returned in the JWT access token.
-     *
+     * 
      * @return the accessToken value.
      */
     public List<MicrosoftGraphOptionalClaim> accessToken() {
@@ -54,7 +56,7 @@ public final class MicrosoftGraphOptionalClaims {
 
     /**
      * Set the accessToken property: The optional claims returned in the JWT access token.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the MicrosoftGraphOptionalClaims object itself.
      */
@@ -65,7 +67,7 @@ public final class MicrosoftGraphOptionalClaims {
 
     /**
      * Get the idToken property: The optional claims returned in the JWT ID token.
-     *
+     * 
      * @return the idToken value.
      */
     public List<MicrosoftGraphOptionalClaim> idToken() {
@@ -74,7 +76,7 @@ public final class MicrosoftGraphOptionalClaims {
 
     /**
      * Set the idToken property: The optional claims returned in the JWT ID token.
-     *
+     * 
      * @param idToken the idToken value to set.
      * @return the MicrosoftGraphOptionalClaims object itself.
      */
@@ -85,7 +87,7 @@ public final class MicrosoftGraphOptionalClaims {
 
     /**
      * Get the saml2Token property: The optional claims returned in the SAML token.
-     *
+     * 
      * @return the saml2Token value.
      */
     public List<MicrosoftGraphOptionalClaim> saml2Token() {
@@ -94,7 +96,7 @@ public final class MicrosoftGraphOptionalClaims {
 
     /**
      * Set the saml2Token property: The optional claims returned in the SAML token.
-     *
+     * 
      * @param saml2Token the saml2Token value to set.
      * @return the MicrosoftGraphOptionalClaims object itself.
      */
@@ -105,17 +107,16 @@ public final class MicrosoftGraphOptionalClaims {
 
     /**
      * Get the additionalProperties property: optionalClaims.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: optionalClaims.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOptionalClaims object itself.
      */
@@ -124,17 +125,9 @@ public final class MicrosoftGraphOptionalClaims {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -147,5 +140,64 @@ public final class MicrosoftGraphOptionalClaims {
         if (saml2Token() != null) {
             saml2Token().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("accessToken", this.accessToken, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("idToken", this.idToken, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("saml2Token", this.saml2Token, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOptionalClaims from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOptionalClaims if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOptionalClaims.
+     */
+    public static MicrosoftGraphOptionalClaims fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOptionalClaims deserializedMicrosoftGraphOptionalClaims = new MicrosoftGraphOptionalClaims();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessToken".equals(fieldName)) {
+                    List<MicrosoftGraphOptionalClaim> accessToken
+                        = reader.readArray(reader1 -> MicrosoftGraphOptionalClaim.fromJson(reader1));
+                    deserializedMicrosoftGraphOptionalClaims.accessToken = accessToken;
+                } else if ("idToken".equals(fieldName)) {
+                    List<MicrosoftGraphOptionalClaim> idToken
+                        = reader.readArray(reader1 -> MicrosoftGraphOptionalClaim.fromJson(reader1));
+                    deserializedMicrosoftGraphOptionalClaims.idToken = idToken;
+                } else if ("saml2Token".equals(fieldName)) {
+                    List<MicrosoftGraphOptionalClaim> saml2Token
+                        = reader.readArray(reader1 -> MicrosoftGraphOptionalClaim.fromJson(reader1));
+                    deserializedMicrosoftGraphOptionalClaims.saml2Token = saml2Token;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOptionalClaims.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOptionalClaims;
+        });
     }
 }

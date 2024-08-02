@@ -6,8 +6,11 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ChangeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Change Resource.
@@ -17,8 +20,22 @@ public final class ChangeResourceResultInner extends ProxyResource {
     /*
      * The properties of a change
      */
-    @JsonProperty(value = "properties")
     private ChangeProperties properties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ChangeResourceResultInner class.
@@ -47,6 +64,36 @@ public final class ChangeResourceResultInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -55,5 +102,48 @@ public final class ChangeResourceResultInner extends ProxyResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeResourceResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeResourceResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChangeResourceResultInner.
+     */
+    public static ChangeResourceResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeResourceResultInner deserializedChangeResourceResultInner = new ChangeResourceResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChangeResourceResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedChangeResourceResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedChangeResourceResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedChangeResourceResultInner.properties = ChangeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeResourceResultInner;
+        });
     }
 }

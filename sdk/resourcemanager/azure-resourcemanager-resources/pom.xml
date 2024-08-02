@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-resources</artifactId>
-  <version>2.41.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+  <version>2.42.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Resource Management</name>
@@ -66,6 +66,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
       <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

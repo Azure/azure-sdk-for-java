@@ -11,11 +11,7 @@ module com.azure.resourcemanager.msi {
     exports com.azure.resourcemanager.msi.fluent.models;
     exports com.azure.resourcemanager.msi.models;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.msi.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.msi.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.msi.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.msi.models to com.azure.core;
 }

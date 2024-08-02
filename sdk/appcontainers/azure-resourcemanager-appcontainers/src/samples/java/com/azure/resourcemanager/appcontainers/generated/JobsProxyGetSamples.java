@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsProxyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_ProxyGet.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_ProxyGet.json
      */
     /**
      * Sample code: Get Container App Job by name.

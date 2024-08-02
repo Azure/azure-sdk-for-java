@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskRestorePointListByRestorePointSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
      * diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
      */
     /**
