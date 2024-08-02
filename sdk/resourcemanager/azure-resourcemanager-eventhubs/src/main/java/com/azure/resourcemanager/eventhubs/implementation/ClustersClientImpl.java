@@ -40,10 +40,9 @@ import com.azure.resourcemanager.eventhubs.models.ClusterListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ClustersClient.
@@ -62,7 +61,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Initializes an instance of ClustersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ClustersClientImpl(EventHubManagementClientImpl client) {
@@ -168,7 +167,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Available Clusters operation along with {@link Response} on successful
@@ -193,7 +192,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -219,7 +218,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Available Clusters operation on successful completion of {@link Mono}.
@@ -231,7 +230,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,7 +244,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Available Clusters operation.
@@ -257,7 +256,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Event Hubs Clusters operation along with {@link PagedResponse} on successful
@@ -284,7 +283,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,7 +312,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Event Hubs Clusters operation as paginated response with {@link PagedFlux}.
@@ -326,7 +325,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -341,7 +340,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Event Hubs Clusters operation as paginated response with {@link PagedIterable}.
@@ -353,7 +352,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -367,7 +366,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -400,7 +399,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +434,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -450,7 +449,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -466,7 +465,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,7 +479,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,7 +494,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,7 +531,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -568,7 +567,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,7 +583,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -601,7 +600,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -616,7 +615,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -658,7 +657,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -700,7 +699,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -720,7 +719,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -742,7 +741,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -759,7 +758,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -777,7 +776,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -795,7 +794,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -814,7 +813,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -830,7 +829,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters Parameters for creating a eventhub cluster resource.
@@ -848,7 +847,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -890,7 +889,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -932,7 +931,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -951,7 +950,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -973,7 +972,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -990,7 +989,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -1008,7 +1007,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -1025,7 +1024,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -1044,7 +1043,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -1060,7 +1059,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
@@ -1077,7 +1076,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1111,7 +1110,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1146,7 +1145,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1163,7 +1162,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1183,7 +1182,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1198,7 +1197,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1215,7 +1214,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1230,7 +1229,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1247,7 +1246,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1261,7 +1260,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1276,7 +1275,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1312,7 +1311,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1348,7 +1347,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1364,7 +1363,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param context The context to associate with this operation.
@@ -1381,7 +1380,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1396,7 +1395,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1424,7 +1423,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1451,7 +1450,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1479,7 +1478,7 @@ public final class ClustersClientImpl implements InnerSupportsGet<ClusterInner>,
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

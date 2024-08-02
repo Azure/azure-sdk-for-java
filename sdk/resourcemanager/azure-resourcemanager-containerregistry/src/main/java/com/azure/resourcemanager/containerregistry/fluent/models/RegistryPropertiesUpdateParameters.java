@@ -5,58 +5,55 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The parameters for updating the properties of a container registry.
  */
 @Fluent
-public final class RegistryPropertiesUpdateParameters {
+public final class RegistryPropertiesUpdateParameters implements JsonSerializable<RegistryPropertiesUpdateParameters> {
     /*
      * The value that indicates whether the admin user is enabled.
      */
-    @JsonProperty(value = "adminUserEnabled")
     private Boolean adminUserEnabled;
 
     /*
      * The network rule set for a container registry.
      */
-    @JsonProperty(value = "networkRuleSet")
     private NetworkRuleSet networkRuleSet;
 
     /*
      * The policies for a container registry.
      */
-    @JsonProperty(value = "policies")
     private Policies policies;
 
     /*
      * The encryption settings of container registry.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperty encryption;
 
     /*
      * Enable a single data endpoint per region for serving data.
      */
-    @JsonProperty(value = "dataEndpointEnabled")
     private Boolean dataEndpointEnabled;
 
     /*
      * Whether or not public network access is allowed for the container registry.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Whether to allow trusted Azure services to access a network restricted registry.
      */
-    @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
     /**
@@ -166,8 +163,7 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
-     * registry.
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -176,8 +172,7 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
-     * registry.
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
@@ -188,8 +183,8 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
-     * restricted registry.
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
      * 
      * @return the networkRuleBypassOptions value.
      */
@@ -198,8 +193,8 @@ public final class RegistryPropertiesUpdateParameters {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
-     * restricted registry.
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
      * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
@@ -225,5 +220,66 @@ public final class RegistryPropertiesUpdateParameters {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("adminUserEnabled", this.adminUserEnabled);
+        jsonWriter.writeJsonField("networkRuleSet", this.networkRuleSet);
+        jsonWriter.writeJsonField("policies", this.policies);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeBooleanField("dataEndpointEnabled", this.dataEndpointEnabled);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("networkRuleBypassOptions",
+            this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryPropertiesUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryPropertiesUpdateParameters.
+     */
+    public static RegistryPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryPropertiesUpdateParameters deserializedRegistryPropertiesUpdateParameters
+                = new RegistryPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminUserEnabled".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.adminUserEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkRuleSet".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.networkRuleSet = NetworkRuleSet.fromJson(reader);
+                } else if ("policies".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.policies = Policies.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.encryption = EncryptionProperty.fromJson(reader);
+                } else if ("dataEndpointEnabled".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.dataEndpointEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("networkRuleBypassOptions".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.networkRuleBypassOptions
+                        = NetworkRuleBypassOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryPropertiesUpdateParameters;
+        });
     }
 }

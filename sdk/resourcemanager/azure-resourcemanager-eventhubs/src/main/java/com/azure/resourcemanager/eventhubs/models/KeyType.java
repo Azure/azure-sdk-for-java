@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /**
      * Creates a new instance of KeyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /**
      * Creates or finds a KeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyType.
      */
-    @JsonCreator
     public static KeyType fromString(String name) {
         return fromString(name, KeyType.class);
     }
 
     /**
      * Gets known KeyType values.
-     *
+     * 
      * @return known KeyType values.
      */
     public static Collection<KeyType> values() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class CredentialHealthStatus extends ExpandableStringEnum<Credentia
      * @param name a name to look for.
      * @return the corresponding CredentialHealthStatus.
      */
-    @JsonCreator
     public static CredentialHealthStatus fromString(String name) {
         return fromString(name, CredentialHealthStatus.class);
     }

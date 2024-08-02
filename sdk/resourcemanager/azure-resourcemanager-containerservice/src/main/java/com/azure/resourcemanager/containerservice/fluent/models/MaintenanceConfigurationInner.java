@@ -7,16 +7,18 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.MaintenanceWindow;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
- *
+ * 
  * See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
  * planned maintenance.
  */
@@ -25,25 +27,21 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Properties of a default maintenance configuration.
      */
-    @JsonProperty(value = "properties")
     private MaintenanceConfigurationProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -54,7 +52,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -63,7 +61,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of a default maintenance configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MaintenanceConfigurationProperties innerProperties() {
@@ -73,7 +71,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -82,7 +80,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -101,7 +99,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /**
      * Get the timeInWeek property: If two array entries specify the same day of the week, the applied configuration is
      * the union of times in both entries.
-     *
+     * 
      * @return the timeInWeek value.
      */
     public List<TimeInWeek> timeInWeek() {
@@ -111,7 +109,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /**
      * Set the timeInWeek property: If two array entries specify the same day of the week, the applied configuration is
      * the union of times in both entries.
-     *
+     * 
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -125,7 +123,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the notAllowedTime property: Time slots on which upgrade is not allowed.
-     *
+     * 
      * @return the notAllowedTime value.
      */
     public List<TimeSpan> notAllowedTime() {
@@ -134,7 +132,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Set the notAllowedTime property: Time slots on which upgrade is not allowed.
-     *
+     * 
      * @param notAllowedTime the notAllowedTime value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -148,7 +146,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -157,7 +155,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Set the maintenanceWindow property: Maintenance window for the maintenance configuration.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -171,12 +169,59 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceConfigurationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceConfigurationInner.
+     */
+    public static MaintenanceConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceConfigurationInner deserializedMaintenanceConfigurationInner
+                = new MaintenanceConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.withId(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.innerProperties
+                        = MaintenanceConfigurationProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceConfigurationInner;
+        });
     }
 }

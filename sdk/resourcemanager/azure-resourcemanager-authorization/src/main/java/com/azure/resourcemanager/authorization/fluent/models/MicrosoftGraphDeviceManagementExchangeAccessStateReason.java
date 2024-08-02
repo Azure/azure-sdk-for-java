@@ -5,75 +5,108 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** deviceManagementExchangeAccessStateReason. */
+/**
+ * deviceManagementExchangeAccessStateReason.
+ */
 public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessStateReason> {
-    /** Static value none for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
+    /**
+     * Static value none for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason NONE = fromString("none");
 
-    /** Static value unknown for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
+    /**
+     * Static value unknown for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason UNKNOWN = fromString("unknown");
 
-    /** Static value exchangeGlobalRule for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_GLOBAL_RULE =
-        fromString("exchangeGlobalRule");
+    /**
+     * Static value exchangeGlobalRule for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_GLOBAL_RULE
+        = fromString("exchangeGlobalRule");
 
-    /** Static value exchangeIndividualRule for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_INDIVIDUAL_RULE =
-        fromString("exchangeIndividualRule");
+    /**
+     * Static value exchangeIndividualRule for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_INDIVIDUAL_RULE
+        = fromString("exchangeIndividualRule");
 
-    /** Static value exchangeDeviceRule for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_DEVICE_RULE =
-        fromString("exchangeDeviceRule");
+    /**
+     * Static value exchangeDeviceRule for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_DEVICE_RULE
+        = fromString("exchangeDeviceRule");
 
-    /** Static value exchangeUpgrade for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_UPGRADE =
-        fromString("exchangeUpgrade");
+    /**
+     * Static value exchangeUpgrade for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_UPGRADE
+        = fromString("exchangeUpgrade");
 
-    /** Static value exchangeMailboxPolicy for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_MAILBOX_POLICY =
-        fromString("exchangeMailboxPolicy");
+    /**
+     * Static value exchangeMailboxPolicy for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason EXCHANGE_MAILBOX_POLICY
+        = fromString("exchangeMailboxPolicy");
 
-    /** Static value other for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
+    /**
+     * Static value other for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason OTHER = fromString("other");
 
-    /** Static value compliant for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
+    /**
+     * Static value compliant for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason COMPLIANT = fromString("compliant");
 
-    /** Static value notCompliant for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason NOT_COMPLIANT =
-        fromString("notCompliant");
+    /**
+     * Static value notCompliant for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason NOT_COMPLIANT
+        = fromString("notCompliant");
 
-    /** Static value notEnrolled for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason NOT_ENROLLED =
-        fromString("notEnrolled");
+    /**
+     * Static value notEnrolled for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason NOT_ENROLLED
+        = fromString("notEnrolled");
 
-    /** Static value unknownLocation for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason UNKNOWN_LOCATION =
-        fromString("unknownLocation");
+    /**
+     * Static value unknownLocation for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason UNKNOWN_LOCATION
+        = fromString("unknownLocation");
 
-    /** Static value mfaRequired for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason MFA_REQUIRED =
-        fromString("mfaRequired");
+    /**
+     * Static value mfaRequired for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason MFA_REQUIRED
+        = fromString("mfaRequired");
 
-    /** Static value azureADBlockDueToAccessPolicy for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason AZURE_ADBLOCK_DUE_TO_ACCESS_POLICY =
-        fromString("azureADBlockDueToAccessPolicy");
+    /**
+     * Static value azureADBlockDueToAccessPolicy for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason AZURE_ADBLOCK_DUE_TO_ACCESS_POLICY
+        = fromString("azureADBlockDueToAccessPolicy");
 
-    /** Static value compromisedPassword for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason COMPROMISED_PASSWORD =
-        fromString("compromisedPassword");
+    /**
+     * Static value compromisedPassword for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason COMPROMISED_PASSWORD
+        = fromString("compromisedPassword");
 
-    /** Static value deviceNotKnownWithManagedApp for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
-    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason DEVICE_NOT_KNOWN_WITH_MANAGED_APP =
-        fromString("deviceNotKnownWithManagedApp");
+    /**
+     * Static value deviceNotKnownWithManagedApp for MicrosoftGraphDeviceManagementExchangeAccessStateReason.
+     */
+    public static final MicrosoftGraphDeviceManagementExchangeAccessStateReason DEVICE_NOT_KNOWN_WITH_MANAGED_APP
+        = fromString("deviceNotKnownWithManagedApp");
 
     /**
      * Creates a new instance of MicrosoftGraphDeviceManagementExchangeAccessStateReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -82,18 +115,17 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
 
     /**
      * Creates or finds a MicrosoftGraphDeviceManagementExchangeAccessStateReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphDeviceManagementExchangeAccessStateReason.
      */
-    @JsonCreator
     public static MicrosoftGraphDeviceManagementExchangeAccessStateReason fromString(String name) {
         return fromString(name, MicrosoftGraphDeviceManagementExchangeAccessStateReason.class);
     }
 
     /**
      * Gets known MicrosoftGraphDeviceManagementExchangeAccessStateReason values.
-     *
+     * 
      * @return known MicrosoftGraphDeviceManagementExchangeAccessStateReason values.
      */
     public static Collection<MicrosoftGraphDeviceManagementExchangeAccessStateReason> values() {

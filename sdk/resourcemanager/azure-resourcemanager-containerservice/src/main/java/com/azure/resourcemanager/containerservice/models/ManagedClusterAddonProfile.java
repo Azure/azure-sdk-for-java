@@ -5,32 +5,31 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * A Kubernetes add-on profile for a managed cluster.
  */
 @Fluent
-public final class ManagedClusterAddonProfile {
+public final class ManagedClusterAddonProfile implements JsonSerializable<ManagedClusterAddonProfile> {
     /*
      * Whether the add-on is enabled or not.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Key-value pairs for configuring an add-on.
      */
-    @JsonProperty(value = "config")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> config;
 
     /*
      * Information of user assigned identity used by this add-on.
      */
-    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterAddonProfileIdentity identity;
 
     /**
@@ -97,5 +96,49 @@ public final class ManagedClusterAddonProfile {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeMapField("config", this.config, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterAddonProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterAddonProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterAddonProfile.
+     */
+    public static ManagedClusterAddonProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterAddonProfile deserializedManagedClusterAddonProfile = new ManagedClusterAddonProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterAddonProfile.enabled = reader.getBoolean();
+                } else if ("config".equals(fieldName)) {
+                    Map<String, String> config = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedClusterAddonProfile.config = config;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedManagedClusterAddonProfile.identity
+                        = ManagedClusterAddonProfileIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterAddonProfile;
+        });
     }
 }

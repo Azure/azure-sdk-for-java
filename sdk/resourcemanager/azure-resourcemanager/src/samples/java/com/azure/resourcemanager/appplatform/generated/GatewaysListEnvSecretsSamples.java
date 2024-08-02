@@ -18,7 +18,10 @@ public final class GatewaysListEnvSecretsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewaysListEnvSecrets(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGateways().listEnvSecretsWithResponse("myResourceGroup",
-            "myservice", "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGateways()
+            .listEnvSecretsWithResponse("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** website. */
+/**
+ * website.
+ */
 @Fluent
-public final class MicrosoftGraphWebsite {
+public final class MicrosoftGraphWebsite implements JsonSerializable<MicrosoftGraphWebsite> {
     /*
      * The URL of the website.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The display name of the web site.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * websiteType
      */
-    @JsonProperty(value = "type")
     private MicrosoftGraphWebsiteType type;
 
     /*
      * website
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWebsite class. */
+    /**
+     * Creates an instance of MicrosoftGraphWebsite class.
+     */
     public MicrosoftGraphWebsite() {
     }
 
     /**
      * Get the address property: The URL of the website.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -53,7 +55,7 @@ public final class MicrosoftGraphWebsite {
 
     /**
      * Set the address property: The URL of the website.
-     *
+     * 
      * @param address the address value to set.
      * @return the MicrosoftGraphWebsite object itself.
      */
@@ -64,7 +66,7 @@ public final class MicrosoftGraphWebsite {
 
     /**
      * Get the displayName property: The display name of the web site.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -73,7 +75,7 @@ public final class MicrosoftGraphWebsite {
 
     /**
      * Set the displayName property: The display name of the web site.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphWebsite object itself.
      */
@@ -84,7 +86,7 @@ public final class MicrosoftGraphWebsite {
 
     /**
      * Get the type property: websiteType.
-     *
+     * 
      * @return the type value.
      */
     public MicrosoftGraphWebsiteType type() {
@@ -93,7 +95,7 @@ public final class MicrosoftGraphWebsite {
 
     /**
      * Set the type property: websiteType.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphWebsite object itself.
      */
@@ -104,17 +106,16 @@ public final class MicrosoftGraphWebsite {
 
     /**
      * Get the additionalProperties property: website.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: website.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWebsite object itself.
      */
@@ -123,19 +124,64 @@ public final class MicrosoftGraphWebsite {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWebsite from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWebsite if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWebsite.
+     */
+    public static MicrosoftGraphWebsite fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWebsite deserializedMicrosoftGraphWebsite = new MicrosoftGraphWebsite();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedMicrosoftGraphWebsite.address = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphWebsite.displayName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphWebsite.type = MicrosoftGraphWebsiteType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWebsite.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWebsite;
+        });
     }
 }

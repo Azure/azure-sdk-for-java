@@ -23,14 +23,23 @@ public final class CustomizedAcceleratorsValidateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void customizedAcceleratorsValidate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCustomizedAccelerators().validate("myResourceGroup",
-            "myservice", "default", "acc-name",
-            new CustomizedAcceleratorProperties().withDisplayName("acc-name").withDescription("acc-desc")
-                .withIconUrl("acc-icon").withAcceleratorTags(Arrays.asList("tag-a", "tag-b"))
-                .withGitRepository(new AcceleratorGitRepository().withUrl("git-url").withIntervalInSeconds(70)
-                    .withBranch("git-branch").withCommit("12345").withGitTag("git-tag")
-                    .withAuthSetting(new AcceleratorSshSetting().withHostKey("fakeTokenPlaceholder")
-                        .withHostKeyAlgorithm("fakeTokenPlaceholder").withPrivateKey("fakeTokenPlaceholder"))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCustomizedAccelerators()
+            .validate("myResourceGroup", "myservice", "default", "acc-name",
+                new CustomizedAcceleratorProperties().withDisplayName("acc-name")
+                    .withDescription("acc-desc")
+                    .withIconUrl("acc-icon")
+                    .withAcceleratorTags(Arrays.asList("tag-a", "tag-b"))
+                    .withGitRepository(new AcceleratorGitRepository().withUrl("git-url")
+                        .withIntervalInSeconds(70)
+                        .withBranch("git-branch")
+                        .withCommit("12345")
+                        .withGitTag("git-tag")
+                        .withAuthSetting(new AcceleratorSshSetting().withHostKey("fakeTokenPlaceholder")
+                            .withHostKeyAlgorithm("fakeTokenPlaceholder")
+                            .withPrivateKey("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 }
