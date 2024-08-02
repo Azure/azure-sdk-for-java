@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesDeleteDatabaseConnectionSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteStaticSiteDatabaseConnection.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteStaticSiteDatabaseConnection.json
      */
     /**
      * Sample code: Delete a database connection from a static site.

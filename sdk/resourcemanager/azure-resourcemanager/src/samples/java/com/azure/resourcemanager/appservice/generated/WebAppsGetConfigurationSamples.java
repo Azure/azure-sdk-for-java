@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteConfig.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteConfig.json
      */
     /**
      * Sample code: Get Site Config.

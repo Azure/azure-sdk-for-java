@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.models.WorkflowArtifacts;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,12 +18,11 @@ import java.util.Map;
  */
 public final class WebAppsDeployWorkflowArtifactsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PostDeployWorkflowArtifacts.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PostDeployWorkflowArtifacts.json
      */
     /**
      * Sample code: Deploys workflow artifacts.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploysWorkflowArtifacts(com.azure.resourcemanager.AzureResourceManager azure)
@@ -49,12 +49,11 @@ public final class WebAppsDeployWorkflowArtifactsSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteDeployWorkflowArtifacts.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteDeployWorkflowArtifacts.json
      */
     /**
      * Sample code: Delete workflow artifacts.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteWorkflowArtifacts(com.azure.resourcemanager.AzureResourceManager azure) {

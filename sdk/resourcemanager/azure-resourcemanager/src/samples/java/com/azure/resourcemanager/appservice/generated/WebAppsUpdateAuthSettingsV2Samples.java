@@ -24,6 +24,7 @@ import com.azure.resourcemanager.appservice.models.LoginScopes;
 import com.azure.resourcemanager.appservice.models.Nonce;
 import com.azure.resourcemanager.appservice.models.TokenStore;
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientActionV2;
+
 import java.util.Arrays;
 
 /**
@@ -31,12 +32,11 @@ import java.util.Arrays;
  */
 public final class WebAppsUpdateAuthSettingsV2Samples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettingsV2.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettingsV2.json
      */
     /**
      * Sample code: Update Auth Settings V2.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAuthSettingsV2(com.azure.resourcemanager.AzureResourceManager azure) {

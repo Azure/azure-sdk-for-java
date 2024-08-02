@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListMultiRoleUsagesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * AppServiceEnvironments_ListMultiRoleUsages.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListMultiRoleUsages.json
      */
     /**
      * Sample code: Get usage metrics for a multi-role pool of an App Service Environment.

@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvided
  */
 public final class StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
      */
     /**
      * Sample code: Register a user provided function app with a static site build.

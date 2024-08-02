@@ -9,6 +9,7 @@ import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
 import com.azure.resourcemanager.appservice.models.DomainPatchResource;
 import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
+
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -17,13 +18,11 @@ import java.util.Arrays;
  */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/UpdateAppServiceDomain
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/UpdateAppServiceDomain.json
      */
     /**
      * Sample code: Update App Service Domain.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAppServiceDomain(com.azure.resourcemanager.AzureResourceManager azure) {

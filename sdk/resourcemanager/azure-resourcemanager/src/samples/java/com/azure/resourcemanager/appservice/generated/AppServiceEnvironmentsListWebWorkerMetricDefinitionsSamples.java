@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListWebWorkerMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * AppServiceEnvironments_ListWebWorkerMetricDefinitions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListWebWorkerMetricDefinitions.json
      */
     /**
      * Sample code: Get metric definitions for a worker pool of an App Service Environment.

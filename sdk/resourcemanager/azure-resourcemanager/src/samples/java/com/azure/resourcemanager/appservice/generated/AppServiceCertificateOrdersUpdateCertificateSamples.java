@@ -11,9 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateP
  */
 public final class AppServiceCertificateOrdersUpdateCertificateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/
-     * UpdateAppServiceCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/UpdateAppServiceCertificate.json
      */
     /**
      * Sample code: Update Certificate.

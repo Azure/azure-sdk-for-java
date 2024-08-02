@@ -26,8 +26,7 @@ public final class DomainAvailabilityCheckResultInner {
     private Boolean available;
 
     /*
-     * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing
-     * this domain will simply restore it and this operation will not cost anything.
+     * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this domain will simply restore it and this operation will not cost anything.
      */
     @JsonProperty(value = "domainType")
     private DomainType domainType;

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -38,7 +39,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the PrivateLinkResourcesWrapperInner object itself.
      */
@@ -49,7 +50,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

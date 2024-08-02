@@ -10,6 +10,7 @@ import com.azure.resourcemanager.appservice.models.AuthType;
 import com.azure.resourcemanager.appservice.models.EnvironmentVariable;
 import com.azure.resourcemanager.appservice.models.VolumeMount;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the image property: Image Name.
-     * 
+     *
      * @return the image value.
      */
     public String image() {
@@ -107,7 +108,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the image property: Image Name.
-     * 
+     *
      * @param image the image value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -118,7 +119,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the targetPort property: Target Port.
-     * 
+     *
      * @return the targetPort value.
      */
     public String targetPort() {
@@ -127,7 +128,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the targetPort property: Target Port.
-     * 
+     *
      * @param targetPort the targetPort value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -139,7 +140,7 @@ public final class SiteContainerProperties {
     /**
      * Get the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     * 
+     *
      * @return the isMain value.
      */
     public boolean isMain() {
@@ -149,7 +150,7 @@ public final class SiteContainerProperties {
     /**
      * Set the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     * 
+     *
      * @param isMain the isMain value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -160,7 +161,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the startUpCommand property: StartUp Command.
-     * 
+     *
      * @return the startUpCommand value.
      */
     public String startUpCommand() {
@@ -169,7 +170,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the startUpCommand property: StartUp Command.
-     * 
+     *
      * @param startUpCommand the startUpCommand value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -180,7 +181,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the authType property: Auth Type.
-     * 
+     *
      * @return the authType value.
      */
     public AuthType authType() {
@@ -189,7 +190,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the authType property: Auth Type.
-     * 
+     *
      * @param authType the authType value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -200,7 +201,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the username property: User Name.
-     * 
+     *
      * @return the username value.
      */
     public String username() {
@@ -209,7 +210,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the username property: User Name.
-     * 
+     *
      * @param username the username value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -220,7 +221,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the passwordSecret property: Password Secret.
-     * 
+     *
      * @return the passwordSecret value.
      */
     public String passwordSecret() {
@@ -229,7 +230,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the passwordSecret property: Password Secret.
-     * 
+     *
      * @param passwordSecret the passwordSecret value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -240,7 +241,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     * 
+     *
      * @return the userManagedIdentityClientId value.
      */
     public String userManagedIdentityClientId() {
@@ -249,7 +250,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     * 
+     *
      * @param userManagedIdentityClientId the userManagedIdentityClientId value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -260,7 +261,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the createdTime property: Created Time.
-     * 
+     *
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -269,7 +270,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the lastModifiedTime property: Last Modified Time.
-     * 
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -278,7 +279,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the volumeMounts property: List of volume mounts.
-     * 
+     *
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -287,7 +288,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the volumeMounts property: List of volume mounts.
-     * 
+     *
      * @param volumeMounts the volumeMounts value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -298,7 +299,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the environmentVariables property: List of environment variables.
-     * 
+     *
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -307,7 +308,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the environmentVariables property: List of environment variables.
-     * 
+     *
      * @param environmentVariables the environmentVariables value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -318,7 +319,7 @@ public final class SiteContainerProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

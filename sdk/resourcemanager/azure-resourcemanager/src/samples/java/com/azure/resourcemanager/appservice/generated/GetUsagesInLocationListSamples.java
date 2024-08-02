@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class GetUsagesInLocationListSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetUsagesInLocation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetUsagesInLocation.json
      */
     /**
      * Sample code: Get usages in location for subscription.

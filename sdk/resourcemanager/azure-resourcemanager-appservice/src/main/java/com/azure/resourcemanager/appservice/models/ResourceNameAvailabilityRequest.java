@@ -32,10 +32,7 @@ public final class ResourceNameAvailabilityRequest {
     private Boolean isFqdn;
 
     /*
-     * Azure Resource Manager ID of the customer's selected Container Apps Environment on which to host the Function
-     * app. This must be of the form
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{
-     * managedEnvironmentName}
+     * Azure Resource Manager ID of the customer's selected Container Apps Environment on which to host the Function app. This must be of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}
      */
     @JsonProperty(value = "environmentId")
     private String environmentId;

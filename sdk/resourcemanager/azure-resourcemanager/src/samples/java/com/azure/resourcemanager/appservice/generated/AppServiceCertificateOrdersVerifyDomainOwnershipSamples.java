@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceCertificateOrdersVerifyDomainOwnershipSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/
-     * VerifyDomainOwnership.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/VerifyDomainOwnership.json
      */
     /**
      * Sample code: Verify Domain Ownership.

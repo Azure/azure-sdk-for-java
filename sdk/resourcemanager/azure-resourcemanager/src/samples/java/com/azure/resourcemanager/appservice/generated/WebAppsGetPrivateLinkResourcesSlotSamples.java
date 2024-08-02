@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetPrivateLinkResourcesSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateLinkResourcesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateLinkResourcesSlot.json
      */
     /**
      * Sample code: Get private link resources of a site.

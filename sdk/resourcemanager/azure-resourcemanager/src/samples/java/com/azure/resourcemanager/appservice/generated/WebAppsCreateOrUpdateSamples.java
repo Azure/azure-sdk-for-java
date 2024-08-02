@@ -20,6 +20,7 @@ import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyT
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.RuntimeName;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +30,11 @@ import java.util.Map;
  */
 public final class WebAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * CreateOrUpdateFunctionAppFlexConsumptionWithDetails.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateFunctionAppFlexConsumptionWithDetails.json
      */
     /**
      * Sample code: Create or Update Flex Consumption function app with details.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -61,21 +61,20 @@ public final class WebAppsCreateOrUpdateSamples {
                     .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
                     .withScaleAndConcurrency(new FunctionsScaleAndConcurrency()
                         .withAlwaysReady(
-                            Arrays.asList(new FunctionsAlwaysReadyConfig().withName("http").withInstanceCount(2)))
-                        .withMaximumInstanceCount(100)
-                        .withInstanceMemoryMB(2048)
-                        .withTriggers(new FunctionsScaleAndConcurrencyTriggers()
-                            .withHttp(new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16))))),
+                            Arrays.asList(new FunctionsAlwaysReadyConfig().withName("http").withInstanceCount(2.0F)))
+                        .withMaximumInstanceCount(100.0F)
+                        .withInstanceMemoryMB(2048.0F)
+                        .withTriggers(new FunctionsScaleAndConcurrencyTriggers().withHttp(
+                            new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16.0F))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * CreateOrUpdateFunctionAppFlexConsumption.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateFunctionAppFlexConsumption.json
      */
     /**
      * Sample code: Create or Update Flex Consumption function app.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateFlexConsumptionFunctionApp(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -99,18 +98,17 @@ public final class WebAppsCreateOrUpdateSamples {
                                 .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
                                 .withStorageAccountConnectionStringName("TheAppSettingName"))))
                     .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
-                    .withScaleAndConcurrency(
-                        new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100).withInstanceMemoryMB(2048))),
+                    .withScaleAndConcurrency(new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100.0F)
+                        .withInstanceMemoryMB(2048.0F))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateWebApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateWebApp.json
      */
     /**
      * Sample code: Create or Update web app.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateWebApp(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -130,7 +128,7 @@ public final class WebAppsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Clone web app.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cloneWebApp(com.azure.resourcemanager.AzureResourceManager azure) {

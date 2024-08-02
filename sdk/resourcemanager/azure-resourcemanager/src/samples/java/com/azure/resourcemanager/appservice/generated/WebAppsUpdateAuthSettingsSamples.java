@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
 import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
+
 import java.util.Arrays;
 
 /**
@@ -14,12 +15,11 @@ import java.util.Arrays;
  */
 public final class WebAppsUpdateAuthSettingsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettings.json
      */
     /**
      * Sample code: Update Auth Settings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAuthSettings(com.azure.resourcemanager.AzureResourceManager azure) {

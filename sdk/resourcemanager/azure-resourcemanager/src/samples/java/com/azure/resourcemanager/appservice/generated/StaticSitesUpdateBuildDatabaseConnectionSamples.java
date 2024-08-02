@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchReques
  */
 public final class StaticSitesUpdateBuildDatabaseConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * PatchStaticSiteBuildDatabaseConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PatchStaticSiteBuildDatabaseConnection.json
      */
     /**
      * Sample code: Patch a database connection for a static site build.

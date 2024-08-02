@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListMultiRolePoolSkusSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * AppServiceEnvironments_ListMultiRolePoolSkus.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListMultiRolePoolSkus.json
      */
     /**
      * Sample code: Get available SKUs for scaling a multi-role pool.

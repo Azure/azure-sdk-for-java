@@ -19,8 +19,7 @@ public final class ContainerAppsConfiguration {
     private String daprAIInstrumentationKey;
 
     /*
-     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap
-     * with any other Subnet IP ranges.
+     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other Subnet IP ranges.
      */
     @JsonProperty(value = "platformReservedCidr")
     private String platformReservedCidr;
@@ -32,24 +31,19 @@ public final class ContainerAppsConfiguration {
     private String platformReservedDnsIp;
 
     /*
-     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the
-     * subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if
-     * defined.
+     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "controlPlaneSubnetResourceId")
     private String controlPlaneSubnetResourceId;
 
     /*
-     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the
-     * subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if
-     * defined.
+     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "appSubnetResourceId")
     private String appSubnetResourceId;
 
     /*
-     * CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or
-     * the IP range defined in platformReservedCidr, if defined.
+     * CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "dockerBridgeCidr")
     private String dockerBridgeCidr;

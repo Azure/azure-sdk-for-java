@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowRunActionScopeRepetitionsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * WorkflowRunActionScopeRepetitions_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowRunActionScopeRepetitions_List.json
      */
     /**
      * Sample code: List the scoped repetitions.

@@ -9,6 +9,7 @@ import com.azure.resourcemanager.appservice.models.Address;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
 import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
+
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,13 +20,11 @@ import java.util.Map;
  */
 public final class DomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/CreateAppServiceDomain
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/CreateAppServiceDomain.json
      */
     /**
      * Sample code: Create App Service Domain.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAppServiceDomain(com.azure.resourcemanager.AzureResourceManager azure) {

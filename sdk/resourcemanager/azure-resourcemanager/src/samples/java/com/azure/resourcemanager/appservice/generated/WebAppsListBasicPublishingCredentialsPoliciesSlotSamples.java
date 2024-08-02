@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsListBasicPublishingCredentialsPoliciesSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListPublishingCredentialsPoliciesSlot
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListPublishingCredentialsPoliciesSlot.json
      */
     /**
      * Sample code: List Publishing Credentials Policies.

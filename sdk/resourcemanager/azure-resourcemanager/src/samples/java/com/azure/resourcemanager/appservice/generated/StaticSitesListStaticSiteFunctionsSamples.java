@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesListStaticSiteFunctionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListStaticSiteFunctions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListStaticSiteFunctions.json
      */
     /**
      * Sample code: Gets the functions of a static site.

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class KubeEnvironmentsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_ListBySubscription.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_ListBySubscription.json
      */
     /**
      * Sample code: List kube environments by subscription.

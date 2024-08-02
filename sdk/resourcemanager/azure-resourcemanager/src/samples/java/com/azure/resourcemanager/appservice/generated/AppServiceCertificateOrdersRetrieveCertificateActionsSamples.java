@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceCertificateOrdersRetrieveCertificateActionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/
-     * RetrieveCertificateOrderActions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/RetrieveCertificateOrderActions.json
      */
     /**
      * Sample code: Retrieve Certificate Order Actions.

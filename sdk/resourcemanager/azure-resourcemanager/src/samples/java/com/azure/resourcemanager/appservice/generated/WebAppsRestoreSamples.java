@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.resourcemanager.appservice.fluent.models.RestoreRequestInner;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
 import com.azure.resourcemanager.appservice.models.DatabaseType;
+
 import java.util.Arrays;
 
 /**
@@ -14,12 +15,11 @@ import java.util.Arrays;
  */
 public final class WebAppsRestoreSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RestoreWebAppBackup.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RestoreWebAppBackup.json
      */
     /**
      * Sample code: Restore web app from backup.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restoreWebAppFromBackup(com.azure.resourcemanager.AzureResourceManager azure) {

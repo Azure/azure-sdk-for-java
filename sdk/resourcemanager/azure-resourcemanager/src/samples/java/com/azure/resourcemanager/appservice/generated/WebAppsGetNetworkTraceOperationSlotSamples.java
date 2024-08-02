@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetNetworkTraceOperationSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebSiteNetworkTraceOperation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Get the current status of a network trace operation for a site.

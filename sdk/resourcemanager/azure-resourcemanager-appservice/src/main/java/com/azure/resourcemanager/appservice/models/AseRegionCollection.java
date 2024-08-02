@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.AseRegionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public final class AseRegionCollection {
 
     /**
      * Get the value property: Collection of resources.
-     * 
+     *
      * @return the value value.
      */
     public List<AseRegionInner> value() {
@@ -44,7 +45,7 @@ public final class AseRegionCollection {
 
     /**
      * Set the value property: Collection of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the AseRegionCollection object itself.
      */
@@ -55,7 +56,7 @@ public final class AseRegionCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +65,7 @@ public final class AseRegionCollection {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

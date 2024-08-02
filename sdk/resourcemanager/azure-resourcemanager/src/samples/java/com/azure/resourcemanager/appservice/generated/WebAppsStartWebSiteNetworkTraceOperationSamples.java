@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsStartWebSiteNetworkTraceOperationSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/StartWebSiteNetworkTraceOperation.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/StartWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Start a new network trace operation for a site.

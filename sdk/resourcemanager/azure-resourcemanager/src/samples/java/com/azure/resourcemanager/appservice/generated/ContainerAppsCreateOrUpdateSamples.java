@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appservice.models.Ingress;
 import com.azure.resourcemanager.appservice.models.Scale;
 import com.azure.resourcemanager.appservice.models.ScaleRule;
 import com.azure.resourcemanager.appservice.models.Template;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +23,11 @@ import java.util.Map;
  */
 public final class ContainerAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateContainerApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateContainerApp.json
      */
     /**
      * Sample code: Create or Update Container App.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateContainerApp(com.azure.resourcemanager.AzureResourceManager azure) {

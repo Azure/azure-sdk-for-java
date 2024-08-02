@@ -13,22 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FunctionsDeploymentStorageAuthentication {
     /*
-     * Property to select authentication type to access the selected storage account. Available options:
-     * SystemAssignedIdentity, UserAssignedIdentity, StorageAccountConnectionString.
+     * Property to select authentication type to access the selected storage account. Available options: SystemAssignedIdentity, UserAssignedIdentity, StorageAccountConnectionString.
      */
     @JsonProperty(value = "type")
     private AuthenticationType type;
 
     /*
-     * Use this property for UserAssignedIdentity. Set the resource ID of the identity. Do not set a value for this
-     * property when using other authentication type.
+     * Use this property for UserAssignedIdentity. Set the resource ID of the identity. Do not set a value for this property when using other authentication type.
      */
     @JsonProperty(value = "userAssignedIdentityResourceId")
     private String userAssignedIdentityResourceId;
 
     /*
-     * Use this property for StorageAccountConnectionString. Set the name of the app setting that has the storage
-     * account connection string. Do not set a value for this property when using other authentication type.
+     * Use this property for StorageAccountConnectionString. Set the name of the app setting that has the storage account connection string. Do not set a value for this property when using other authentication type.
      */
     @JsonProperty(value = "storageAccountConnectionStringName")
     private String storageAccountConnectionStringName;

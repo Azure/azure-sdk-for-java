@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ResourceProviderListCustomHostnameSitesSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListCustomSpecificHostNameSites.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListCustomSpecificHostNameSites.json
      */
     /**
      * Sample code: Get specific custom hostname under subscription.
@@ -27,8 +26,7 @@ public final class ResourceProviderListCustomHostnameSitesSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListCustomHostNameSites.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListCustomHostNameSites.json
      */
     /**
      * Sample code: Get custom hostnames under subscription.

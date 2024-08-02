@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DomainsListOwnershipIdentifiersSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/
-     * ListDomainOwnershipIdentifiers.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/ListDomainOwnershipIdentifiers.json
      */
     /**
      * Sample code: List Domain Ownership Identifiers.

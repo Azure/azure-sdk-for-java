@@ -27,6 +27,7 @@ import com.azure.resourcemanager.appservice.models.TlsCipherSuites;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -289,8 +290,7 @@ public final class SiteConfigInner {
     private String vnetName;
 
     /*
-     * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and
-     * User Defined Routes applied.
+     * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.
      */
     @JsonProperty(value = "vnetRouteAllEnabled")
     private Boolean vnetRouteAllEnabled;
@@ -451,11 +451,7 @@ public final class SiteConfigInner {
     private Boolean functionsRuntimeScaleMonitoringEnabled;
 
     /*
-     * Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting
-     * the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux, expects tz database values
-     * https://www.iana.org/time-zones (for a quick reference see
-     * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
-     * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
+     * Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
      */
     @JsonProperty(value = "websiteTimeZone")
     private String websiteTimeZone;
@@ -488,7 +484,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the numberOfWorkers property: Number of workers.
-     * 
+     *
      * @return the numberOfWorkers value.
      */
     public Integer numberOfWorkers() {
@@ -497,7 +493,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the numberOfWorkers property: Number of workers.
-     * 
+     *
      * @param numberOfWorkers the numberOfWorkers value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -508,7 +504,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the defaultDocuments property: Default documents.
-     * 
+     *
      * @return the defaultDocuments value.
      */
     public List<String> defaultDocuments() {
@@ -517,7 +513,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the defaultDocuments property: Default documents.
-     * 
+     *
      * @param defaultDocuments the defaultDocuments value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -528,7 +524,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the netFrameworkVersion property: .NET Framework version.
-     * 
+     *
      * @return the netFrameworkVersion value.
      */
     public String netFrameworkVersion() {
@@ -537,7 +533,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the netFrameworkVersion property: .NET Framework version.
-     * 
+     *
      * @param netFrameworkVersion the netFrameworkVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -548,7 +544,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the phpVersion property: Version of PHP.
-     * 
+     *
      * @return the phpVersion value.
      */
     public String phpVersion() {
@@ -557,7 +553,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the phpVersion property: Version of PHP.
-     * 
+     *
      * @param phpVersion the phpVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -568,7 +564,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the pythonVersion property: Version of Python.
-     * 
+     *
      * @return the pythonVersion value.
      */
     public String pythonVersion() {
@@ -577,7 +573,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the pythonVersion property: Version of Python.
-     * 
+     *
      * @param pythonVersion the pythonVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -588,7 +584,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the nodeVersion property: Version of Node.js.
-     * 
+     *
      * @return the nodeVersion value.
      */
     public String nodeVersion() {
@@ -597,7 +593,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the nodeVersion property: Version of Node.js.
-     * 
+     *
      * @param nodeVersion the nodeVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -608,7 +604,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the powerShellVersion property: Version of PowerShell.
-     * 
+     *
      * @return the powerShellVersion value.
      */
     public String powerShellVersion() {
@@ -617,7 +613,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the powerShellVersion property: Version of PowerShell.
-     * 
+     *
      * @param powerShellVersion the powerShellVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -628,7 +624,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the linuxFxVersion property: Linux App Framework and version.
-     * 
+     *
      * @return the linuxFxVersion value.
      */
     public String linuxFxVersion() {
@@ -637,7 +633,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the linuxFxVersion property: Linux App Framework and version.
-     * 
+     *
      * @param linuxFxVersion the linuxFxVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -648,7 +644,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the windowsFxVersion property: Xenon App Framework and version.
-     * 
+     *
      * @return the windowsFxVersion value.
      */
     public String windowsFxVersion() {
@@ -657,7 +653,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the windowsFxVersion property: Xenon App Framework and version.
-     * 
+     *
      * @param windowsFxVersion the windowsFxVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -669,7 +665,7 @@ public final class SiteConfigInner {
     /**
      * Get the requestTracingEnabled property: &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the requestTracingEnabled value.
      */
     public Boolean requestTracingEnabled() {
@@ -679,7 +675,7 @@ public final class SiteConfigInner {
     /**
      * Set the requestTracingEnabled property: &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param requestTracingEnabled the requestTracingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -690,7 +686,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the requestTracingExpirationTime property: Request tracing expiration time.
-     * 
+     *
      * @return the requestTracingExpirationTime value.
      */
     public OffsetDateTime requestTracingExpirationTime() {
@@ -699,7 +695,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the requestTracingExpirationTime property: Request tracing expiration time.
-     * 
+     *
      * @param requestTracingExpirationTime the requestTracingExpirationTime value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -711,7 +707,7 @@ public final class SiteConfigInner {
     /**
      * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the remoteDebuggingEnabled value.
      */
     public Boolean remoteDebuggingEnabled() {
@@ -721,7 +717,7 @@ public final class SiteConfigInner {
     /**
      * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -732,7 +728,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the remoteDebuggingVersion property: Remote debugging version.
-     * 
+     *
      * @return the remoteDebuggingVersion value.
      */
     public String remoteDebuggingVersion() {
@@ -741,7 +737,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the remoteDebuggingVersion property: Remote debugging version.
-     * 
+     *
      * @param remoteDebuggingVersion the remoteDebuggingVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -753,7 +749,7 @@ public final class SiteConfigInner {
     /**
      * Get the httpLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the httpLoggingEnabled value.
      */
     public Boolean httpLoggingEnabled() {
@@ -763,7 +759,7 @@ public final class SiteConfigInner {
     /**
      * Set the httpLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param httpLoggingEnabled the httpLoggingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -774,7 +770,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     * 
+     *
      * @return the acrUseManagedIdentityCreds value.
      */
     public Boolean acrUseManagedIdentityCreds() {
@@ -783,7 +779,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     * 
+     *
      * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -794,7 +790,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     * 
+     *
      * @return the acrUserManagedIdentityId value.
      */
     public String acrUserManagedIdentityId() {
@@ -803,7 +799,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     * 
+     *
      * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -814,7 +810,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the logsDirectorySizeLimit property: HTTP logs directory size limit.
-     * 
+     *
      * @return the logsDirectorySizeLimit value.
      */
     public Integer logsDirectorySizeLimit() {
@@ -823,7 +819,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the logsDirectorySizeLimit property: HTTP logs directory size limit.
-     * 
+     *
      * @param logsDirectorySizeLimit the logsDirectorySizeLimit value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -835,7 +831,7 @@ public final class SiteConfigInner {
     /**
      * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the detailedErrorLoggingEnabled value.
      */
     public Boolean detailedErrorLoggingEnabled() {
@@ -845,7 +841,7 @@ public final class SiteConfigInner {
     /**
      * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -856,7 +852,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the publishingUsername property: Publishing user name.
-     * 
+     *
      * @return the publishingUsername value.
      */
     public String publishingUsername() {
@@ -865,7 +861,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the publishingUsername property: Publishing user name.
-     * 
+     *
      * @param publishingUsername the publishingUsername value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -876,7 +872,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the appSettings property: Application settings.
-     * 
+     *
      * @return the appSettings value.
      */
     public List<NameValuePair> appSettings() {
@@ -885,7 +881,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the appSettings property: Application settings.
-     * 
+     *
      * @param appSettings the appSettings value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -896,7 +892,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
-     * 
+     *
      * @return the metadata value.
      */
     public List<NameValuePair> metadata() {
@@ -905,7 +901,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -916,7 +912,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the connectionStrings property: Connection strings.
-     * 
+     *
      * @return the connectionStrings value.
      */
     public List<ConnStringInfo> connectionStrings() {
@@ -925,7 +921,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the connectionStrings property: Connection strings.
-     * 
+     *
      * @param connectionStrings the connectionStrings value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -936,7 +932,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the machineKey property: Site MachineKey.
-     * 
+     *
      * @return the machineKey value.
      */
     public SiteMachineKey machineKey() {
@@ -945,7 +941,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the handlerMappings property: Handler mappings.
-     * 
+     *
      * @return the handlerMappings value.
      */
     public List<HandlerMapping> handlerMappings() {
@@ -954,7 +950,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the handlerMappings property: Handler mappings.
-     * 
+     *
      * @param handlerMappings the handlerMappings value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -965,7 +961,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the documentRoot property: Document root.
-     * 
+     *
      * @return the documentRoot value.
      */
     public String documentRoot() {
@@ -974,7 +970,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the documentRoot property: Document root.
-     * 
+     *
      * @param documentRoot the documentRoot value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -985,7 +981,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the scmType property: SCM type.
-     * 
+     *
      * @return the scmType value.
      */
     public ScmType scmType() {
@@ -994,7 +990,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the scmType property: SCM type.
-     * 
+     *
      * @param scmType the scmType value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1006,7 +1002,7 @@ public final class SiteConfigInner {
     /**
      * Get the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the use32BitWorkerProcess value.
      */
     public Boolean use32BitWorkerProcess() {
@@ -1016,7 +1012,7 @@ public final class SiteConfigInner {
     /**
      * Set the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param use32BitWorkerProcess the use32BitWorkerProcess value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1028,7 +1024,7 @@ public final class SiteConfigInner {
     /**
      * Get the webSocketsEnabled property: &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the webSocketsEnabled value.
      */
     public Boolean webSocketsEnabled() {
@@ -1038,7 +1034,7 @@ public final class SiteConfigInner {
     /**
      * Set the webSocketsEnabled property: &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param webSocketsEnabled the webSocketsEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1050,7 +1046,7 @@ public final class SiteConfigInner {
     /**
      * Get the alwaysOn property: &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the alwaysOn value.
      */
     public Boolean alwaysOn() {
@@ -1060,7 +1056,7 @@ public final class SiteConfigInner {
     /**
      * Set the alwaysOn property: &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param alwaysOn the alwaysOn value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1071,7 +1067,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the javaVersion property: Java version.
-     * 
+     *
      * @return the javaVersion value.
      */
     public String javaVersion() {
@@ -1080,7 +1076,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the javaVersion property: Java version.
-     * 
+     *
      * @param javaVersion the javaVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1091,7 +1087,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the javaContainer property: Java container.
-     * 
+     *
      * @return the javaContainer value.
      */
     public String javaContainer() {
@@ -1100,7 +1096,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the javaContainer property: Java container.
-     * 
+     *
      * @param javaContainer the javaContainer value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1111,7 +1107,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the javaContainerVersion property: Java container version.
-     * 
+     *
      * @return the javaContainerVersion value.
      */
     public String javaContainerVersion() {
@@ -1120,7 +1116,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the javaContainerVersion property: Java container version.
-     * 
+     *
      * @param javaContainerVersion the javaContainerVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1131,7 +1127,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the appCommandLine property: App command line to launch.
-     * 
+     *
      * @return the appCommandLine value.
      */
     public String appCommandLine() {
@@ -1140,7 +1136,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the appCommandLine property: App command line to launch.
-     * 
+     *
      * @param appCommandLine the appCommandLine value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1151,7 +1147,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the managedPipelineMode property: Managed pipeline mode.
-     * 
+     *
      * @return the managedPipelineMode value.
      */
     public ManagedPipelineMode managedPipelineMode() {
@@ -1160,7 +1156,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the managedPipelineMode property: Managed pipeline mode.
-     * 
+     *
      * @param managedPipelineMode the managedPipelineMode value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1171,7 +1167,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the virtualApplications property: Virtual applications.
-     * 
+     *
      * @return the virtualApplications value.
      */
     public List<VirtualApplication> virtualApplications() {
@@ -1180,7 +1176,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the virtualApplications property: Virtual applications.
-     * 
+     *
      * @param virtualApplications the virtualApplications value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1191,7 +1187,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the loadBalancing property: Site load balancing.
-     * 
+     *
      * @return the loadBalancing value.
      */
     public SiteLoadBalancing loadBalancing() {
@@ -1200,7 +1196,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the loadBalancing property: Site load balancing.
-     * 
+     *
      * @param loadBalancing the loadBalancing value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1211,7 +1207,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the experiments property: This is work around for polymorphic types.
-     * 
+     *
      * @return the experiments value.
      */
     public Experiments experiments() {
@@ -1220,7 +1216,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the experiments property: This is work around for polymorphic types.
-     * 
+     *
      * @param experiments the experiments value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1231,7 +1227,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the limits property: Site limits.
-     * 
+     *
      * @return the limits value.
      */
     public SiteLimits limits() {
@@ -1240,7 +1236,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the limits property: Site limits.
-     * 
+     *
      * @param limits the limits value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1252,7 +1248,7 @@ public final class SiteConfigInner {
     /**
      * Get the autoHealEnabled property: &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the autoHealEnabled value.
      */
     public Boolean autoHealEnabled() {
@@ -1262,7 +1258,7 @@ public final class SiteConfigInner {
     /**
      * Set the autoHealEnabled property: &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param autoHealEnabled the autoHealEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1273,7 +1269,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the autoHealRules property: Auto Heal rules.
-     * 
+     *
      * @return the autoHealRules value.
      */
     public AutoHealRules autoHealRules() {
@@ -1282,7 +1278,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the autoHealRules property: Auto Heal rules.
-     * 
+     *
      * @param autoHealRules the autoHealRules value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1293,7 +1289,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the tracingOptions property: Tracing options.
-     * 
+     *
      * @return the tracingOptions value.
      */
     public String tracingOptions() {
@@ -1302,7 +1298,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the tracingOptions property: Tracing options.
-     * 
+     *
      * @param tracingOptions the tracingOptions value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1313,7 +1309,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the vnetName property: Virtual Network name.
-     * 
+     *
      * @return the vnetName value.
      */
     public String vnetName() {
@@ -1322,7 +1318,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the vnetName property: Virtual Network name.
-     * 
+     *
      * @param vnetName the vnetName value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1334,7 +1330,7 @@ public final class SiteConfigInner {
     /**
      * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
      * Virtual Network Security Groups and User Defined Routes applied.
-     * 
+     *
      * @return the vnetRouteAllEnabled value.
      */
     public Boolean vnetRouteAllEnabled() {
@@ -1344,7 +1340,7 @@ public final class SiteConfigInner {
     /**
      * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
      * Virtual Network Security Groups and User Defined Routes applied.
-     * 
+     *
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1356,7 +1352,7 @@ public final class SiteConfigInner {
     /**
      * Get the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
      * dynamically on runtime.
-     * 
+     *
      * @return the vnetPrivatePortsCount value.
      */
     public Integer vnetPrivatePortsCount() {
@@ -1366,7 +1362,7 @@ public final class SiteConfigInner {
     /**
      * Set the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
      * dynamically on runtime.
-     * 
+     *
      * @param vnetPrivatePortsCount the vnetPrivatePortsCount value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1377,7 +1373,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     * 
+     *
      * @return the cors value.
      */
     public CorsSettings cors() {
@@ -1386,7 +1382,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     * 
+     *
      * @param cors the cors value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1397,7 +1393,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the push property: Push endpoint settings.
-     * 
+     *
      * @return the push value.
      */
     public PushSettingsInner push() {
@@ -1406,7 +1402,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the push property: Push endpoint settings.
-     * 
+     *
      * @param push the push value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1417,7 +1413,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the apiDefinition property: Information about the formal API definition for the app.
-     * 
+     *
      * @return the apiDefinition value.
      */
     public ApiDefinitionInfo apiDefinition() {
@@ -1426,7 +1422,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the apiDefinition property: Information about the formal API definition for the app.
-     * 
+     *
      * @param apiDefinition the apiDefinition value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1437,7 +1433,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the apiManagementConfig property: Azure API management settings linked to the app.
-     * 
+     *
      * @return the apiManagementConfig value.
      */
     public ApiManagementConfig apiManagementConfig() {
@@ -1446,7 +1442,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the apiManagementConfig property: Azure API management settings linked to the app.
-     * 
+     *
      * @param apiManagementConfig the apiManagementConfig value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1457,7 +1453,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the autoSwapSlotName property: Auto-swap slot name.
-     * 
+     *
      * @return the autoSwapSlotName value.
      */
     public String autoSwapSlotName() {
@@ -1466,7 +1462,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the autoSwapSlotName property: Auto-swap slot name.
-     * 
+     *
      * @param autoSwapSlotName the autoSwapSlotName value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1478,7 +1474,7 @@ public final class SiteConfigInner {
     /**
      * Get the localMySqlEnabled property: &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the localMySqlEnabled value.
      */
     public Boolean localMySqlEnabled() {
@@ -1488,7 +1484,7 @@ public final class SiteConfigInner {
     /**
      * Set the localMySqlEnabled property: &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param localMySqlEnabled the localMySqlEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1499,7 +1495,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the managedServiceIdentityId property: Managed Service Identity Id.
-     * 
+     *
      * @return the managedServiceIdentityId value.
      */
     public Integer managedServiceIdentityId() {
@@ -1508,7 +1504,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the managedServiceIdentityId property: Managed Service Identity Id.
-     * 
+     *
      * @param managedServiceIdentityId the managedServiceIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1519,7 +1515,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the xManagedServiceIdentityId property: Explicit Managed Service Identity Id.
-     * 
+     *
      * @return the xManagedServiceIdentityId value.
      */
     public Integer xManagedServiceIdentityId() {
@@ -1528,7 +1524,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the xManagedServiceIdentityId property: Explicit Managed Service Identity Id.
-     * 
+     *
      * @param xManagedServiceIdentityId the xManagedServiceIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1539,7 +1535,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     * 
+     *
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -1548,7 +1544,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     * 
+     *
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1559,7 +1555,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the ipSecurityRestrictions property: IP security restrictions for main.
-     * 
+     *
      * @return the ipSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> ipSecurityRestrictions() {
@@ -1568,7 +1564,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the ipSecurityRestrictions property: IP security restrictions for main.
-     * 
+     *
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1580,7 +1576,7 @@ public final class SiteConfigInner {
     /**
      * Get the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
      * matched.
-     * 
+     *
      * @return the ipSecurityRestrictionsDefaultAction value.
      */
     public DefaultAction ipSecurityRestrictionsDefaultAction() {
@@ -1590,7 +1586,7 @@ public final class SiteConfigInner {
     /**
      * Set the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
      * matched.
-     * 
+     *
      * @param ipSecurityRestrictionsDefaultAction the ipSecurityRestrictionsDefaultAction value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1601,7 +1597,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the scmIpSecurityRestrictions property: IP security restrictions for scm.
-     * 
+     *
      * @return the scmIpSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
@@ -1610,7 +1606,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the scmIpSecurityRestrictions property: IP security restrictions for scm.
-     * 
+     *
      * @param scmIpSecurityRestrictions the scmIpSecurityRestrictions value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1622,7 +1618,7 @@ public final class SiteConfigInner {
     /**
      * Get the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
      * are matched.
-     * 
+     *
      * @return the scmIpSecurityRestrictionsDefaultAction value.
      */
     public DefaultAction scmIpSecurityRestrictionsDefaultAction() {
@@ -1632,7 +1628,7 @@ public final class SiteConfigInner {
     /**
      * Set the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
      * are matched.
-     * 
+     *
      * @param scmIpSecurityRestrictionsDefaultAction the scmIpSecurityRestrictionsDefaultAction value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1644,7 +1640,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the scmIpSecurityRestrictionsUseMain property: IP security restrictions for scm to use main.
-     * 
+     *
      * @return the scmIpSecurityRestrictionsUseMain value.
      */
     public Boolean scmIpSecurityRestrictionsUseMain() {
@@ -1653,7 +1649,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the scmIpSecurityRestrictionsUseMain property: IP security restrictions for scm to use main.
-     * 
+     *
      * @param scmIpSecurityRestrictionsUseMain the scmIpSecurityRestrictionsUseMain value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1664,7 +1660,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the http20Enabled property: Http20Enabled: configures a web site to allow clients to connect over http2.0.
-     * 
+     *
      * @return the http20Enabled value.
      */
     public Boolean http20Enabled() {
@@ -1673,7 +1669,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the http20Enabled property: Http20Enabled: configures a web site to allow clients to connect over http2.0.
-     * 
+     *
      * @param http20Enabled the http20Enabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1684,7 +1680,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
-     * 
+     *
      * @return the minTlsVersion value.
      */
     public SupportedTlsVersions minTlsVersion() {
@@ -1693,7 +1689,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
-     * 
+     *
      * @param minTlsVersion the minTlsVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1704,7 +1700,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the minTlsCipherSuite property: The minimum strength TLS cipher suite allowed for an application.
-     * 
+     *
      * @return the minTlsCipherSuite value.
      */
     public TlsCipherSuites minTlsCipherSuite() {
@@ -1713,7 +1709,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the minTlsCipherSuite property: The minimum strength TLS cipher suite allowed for an application.
-     * 
+     *
      * @param minTlsCipherSuite the minTlsCipherSuite value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1725,7 +1721,7 @@ public final class SiteConfigInner {
     /**
      * Get the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
      * requests for SCM site.
-     * 
+     *
      * @return the scmMinTlsVersion value.
      */
     public SupportedTlsVersions scmMinTlsVersion() {
@@ -1735,7 +1731,7 @@ public final class SiteConfigInner {
     /**
      * Set the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
      * requests for SCM site.
-     * 
+     *
      * @param scmMinTlsVersion the scmMinTlsVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1746,7 +1742,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the ftpsState property: State of FTP / FTPS service.
-     * 
+     *
      * @return the ftpsState value.
      */
     public FtpsState ftpsState() {
@@ -1755,7 +1751,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the ftpsState property: State of FTP / FTPS service.
-     * 
+     *
      * @param ftpsState the ftpsState value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1767,7 +1763,7 @@ public final class SiteConfigInner {
     /**
      * Get the preWarmedInstanceCount property: Number of preWarmed instances.
      * This setting only applies to the Consumption and Elastic Plans.
-     * 
+     *
      * @return the preWarmedInstanceCount value.
      */
     public Integer preWarmedInstanceCount() {
@@ -1777,7 +1773,7 @@ public final class SiteConfigInner {
     /**
      * Set the preWarmedInstanceCount property: Number of preWarmed instances.
      * This setting only applies to the Consumption and Elastic Plans.
-     * 
+     *
      * @param preWarmedInstanceCount the preWarmedInstanceCount value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1789,7 +1785,7 @@ public final class SiteConfigInner {
     /**
      * Get the functionAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to the Consumption and Elastic Premium Plans.
-     * 
+     *
      * @return the functionAppScaleLimit value.
      */
     public Integer functionAppScaleLimit() {
@@ -1799,7 +1795,7 @@ public final class SiteConfigInner {
     /**
      * Set the functionAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to the Consumption and Elastic Premium Plans.
-     * 
+     *
      * @param functionAppScaleLimit the functionAppScaleLimit value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1811,7 +1807,7 @@ public final class SiteConfigInner {
     /**
      * Get the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
-     * 
+     *
      * @return the elasticWebAppScaleLimit value.
      */
     public Integer elasticWebAppScaleLimit() {
@@ -1821,7 +1817,7 @@ public final class SiteConfigInner {
     /**
      * Set the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
-     * 
+     *
      * @param elasticWebAppScaleLimit the elasticWebAppScaleLimit value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1832,7 +1828,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the healthCheckPath property: Health check path.
-     * 
+     *
      * @return the healthCheckPath value.
      */
     public String healthCheckPath() {
@@ -1841,7 +1837,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the healthCheckPath property: Health check path.
-     * 
+     *
      * @param healthCheckPath the healthCheckPath value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1855,7 +1851,7 @@ public final class SiteConfigInner {
      * runtime scale monitoring is enabled. When enabled,
      * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
-     * 
+     *
      * @return the functionsRuntimeScaleMonitoringEnabled value.
      */
     public Boolean functionsRuntimeScaleMonitoringEnabled() {
@@ -1867,7 +1863,7 @@ public final class SiteConfigInner {
      * runtime scale monitoring is enabled. When enabled,
      * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
-     * 
+     *
      * @param functionsRuntimeScaleMonitoringEnabled the functionsRuntimeScaleMonitoringEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1882,7 +1878,7 @@ public final class SiteConfigInner {
      * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     * 
+     *
      * @return the websiteTimeZone value.
      */
     public String websiteTimeZone() {
@@ -1895,7 +1891,7 @@ public final class SiteConfigInner {
      * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     * 
+     *
      * @param websiteTimeZone the websiteTimeZone value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1907,7 +1903,7 @@ public final class SiteConfigInner {
     /**
      * Get the minimumElasticInstanceCount property: Number of minimum instance count for a site
      * This setting only applies to the Elastic Plans.
-     * 
+     *
      * @return the minimumElasticInstanceCount value.
      */
     public Integer minimumElasticInstanceCount() {
@@ -1917,7 +1913,7 @@ public final class SiteConfigInner {
     /**
      * Set the minimumElasticInstanceCount property: Number of minimum instance count for a site
      * This setting only applies to the Elastic Plans.
-     * 
+     *
      * @param minimumElasticInstanceCount the minimumElasticInstanceCount value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1928,7 +1924,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the azureStorageAccounts property: List of Azure Storage Accounts.
-     * 
+     *
      * @return the azureStorageAccounts value.
      */
     public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
@@ -1937,7 +1933,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the azureStorageAccounts property: List of Azure Storage Accounts.
-     * 
+     *
      * @param azureStorageAccounts the azureStorageAccounts value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1948,7 +1944,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the publicNetworkAccess property: Property to allow or block all public traffic.
-     * 
+     *
      * @return the publicNetworkAccess value.
      */
     public String publicNetworkAccess() {
@@ -1957,7 +1953,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the publicNetworkAccess property: Property to allow or block all public traffic.
-     * 
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1968,7 +1964,7 @@ public final class SiteConfigInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -45,8 +46,7 @@ public final class DiagnosticMetricSet {
     private String timeGrain;
 
     /*
-     * Collection of metric values for the selected period based on the
-     * {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}
+     * Collection of metric values for the selected period based on the {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}
      */
     @JsonProperty(value = "values")
     private List<DiagnosticMetricSample> values;
@@ -59,7 +59,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Get the name property: Name of the metric.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -68,7 +68,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Set the name property: Name of the metric.
-     * 
+     *
      * @param name the name value to set.
      * @return the DiagnosticMetricSet object itself.
      */
@@ -79,7 +79,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Get the unit property: Metric's unit.
-     * 
+     *
      * @return the unit value.
      */
     public String unit() {
@@ -88,7 +88,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Set the unit property: Metric's unit.
-     * 
+     *
      * @param unit the unit value to set.
      * @return the DiagnosticMetricSet object itself.
      */
@@ -99,7 +99,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Get the startTime property: Start time of the period.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -108,7 +108,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Set the startTime property: Start time of the period.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the DiagnosticMetricSet object itself.
      */
@@ -119,7 +119,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Get the endTime property: End time of the period.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -128,7 +128,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Set the endTime property: End time of the period.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the DiagnosticMetricSet object itself.
      */
@@ -139,7 +139,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Get the timeGrain property: Presented time grain. Supported grains at the moment are PT1M, PT1H, P1D.
-     * 
+     *
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -148,7 +148,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Set the timeGrain property: Presented time grain. Supported grains at the moment are PT1M, PT1H, P1D.
-     * 
+     *
      * @param timeGrain the timeGrain value to set.
      * @return the DiagnosticMetricSet object itself.
      */
@@ -160,7 +160,7 @@ public final class DiagnosticMetricSet {
     /**
      * Get the values property: Collection of metric values for the selected period based on the
      * {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}.
-     * 
+     *
      * @return the values value.
      */
     public List<DiagnosticMetricSample> values() {
@@ -170,7 +170,7 @@ public final class DiagnosticMetricSet {
     /**
      * Set the values property: Collection of metric values for the selected period based on the
      * {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}.
-     * 
+     *
      * @param values the values value to set.
      * @return the DiagnosticMetricSet object itself.
      */
@@ -181,7 +181,7 @@ public final class DiagnosticMetricSet {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

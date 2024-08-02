@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class GlobalGetSubscriptionOperationWithAsyncResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * GetSubscriptionOperationWithAsyncResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSubscriptionOperationWithAsyncResponse.json
      */
     /**
      * Sample code: Gets an operation in a subscription and given region.

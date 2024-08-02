@@ -10,6 +10,7 @@ import com.azure.resourcemanager.appservice.models.ManagedPipelineMode;
 import com.azure.resourcemanager.appservice.models.SiteLoadBalancing;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +20,11 @@ import java.util.Map;
  */
 public final class WebAppsCreateOrUpdateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateSiteConfig.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateSiteConfig.json
      */
     /**
      * Sample code: Update Site Config.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateSiteConfig(com.azure.resourcemanager.AzureResourceManager azure) {

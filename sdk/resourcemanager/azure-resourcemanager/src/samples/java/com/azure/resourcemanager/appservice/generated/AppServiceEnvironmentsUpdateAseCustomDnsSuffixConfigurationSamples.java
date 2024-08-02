@@ -11,9 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.CustomDnsSuffixConfigu
  */
 public final class AppServiceEnvironmentsUpdateAseCustomDnsSuffixConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAseCustomDnsSuffixConfiguration
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAseCustomDnsSuffixConfiguration.json
      */
     /**
      * Sample code: Update ASE custom DNS suffix configuration.

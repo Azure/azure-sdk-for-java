@@ -12,8 +12,7 @@ import com.azure.resourcemanager.appservice.models.RegenerateActionParameter;
  */
 public final class WorkflowsRegenerateAccessKeySamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Workflows_RegenerateAccessKey.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Workflows_RegenerateAccessKey.json
      */
     /**
      * Sample code: Regenerate the callback URL access key for request triggers.

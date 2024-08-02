@@ -11,9 +11,7 @@ import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
  */
 public final class AppServiceEnvironmentsChangeVnetSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ChangeVnet.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ChangeVnet.json
      */
     /**
      * Sample code: Move an App Service Environment to a different VNET.

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Get the message property: The error message.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -43,7 +44,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Set the message property: The error message.
-     * 
+     *
      * @param message the message value to set.
      * @return the AzureResourceErrorInfo object itself.
      */
@@ -54,7 +55,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Get the details property: The error details.
-     * 
+     *
      * @return the details value.
      */
     public List<AzureResourceErrorInfo> details() {
@@ -63,7 +64,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Set the details property: The error details.
-     * 
+     *
      * @param details the details value to set.
      * @return the AzureResourceErrorInfo object itself.
      */
@@ -83,7 +84,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

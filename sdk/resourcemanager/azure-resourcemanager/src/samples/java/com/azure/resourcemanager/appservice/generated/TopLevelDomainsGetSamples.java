@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class TopLevelDomainsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/GetTopLevelDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/GetTopLevelDomain.json
      */
     /**
      * Sample code: Get Top Level Domain.

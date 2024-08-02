@@ -10,6 +10,7 @@ import com.azure.resourcemanager.appservice.models.NotificationLevel;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.ResourceScopeType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: Recommendation resource specific properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RecommendationProperties innerProperties() {
@@ -51,7 +52,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the creationTime property: Timestamp when this instance was created.
-     * 
+     *
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -60,7 +61,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the creationTime property: Timestamp when this instance was created.
-     * 
+     *
      * @param creationTime the creationTime value to set.
      * @return the RecommendationInner object itself.
      */
@@ -74,7 +75,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the recommendationId property: A GUID value that each recommendation object is associated with.
-     * 
+     *
      * @return the recommendationId value.
      */
     public UUID recommendationId() {
@@ -83,7 +84,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the recommendationId property: A GUID value that each recommendation object is associated with.
-     * 
+     *
      * @param recommendationId the recommendationId value to set.
      * @return the RecommendationInner object itself.
      */
@@ -97,7 +98,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceId property: Full ARM resource ID string that this recommendation object is associated with.
-     * 
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -106,7 +107,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the resourceId property: Full ARM resource ID string that this recommendation object is associated with.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the RecommendationInner object itself.
      */
@@ -121,7 +122,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Get the resourceScope property: Name of a resource type this recommendation applies, e.g. Subscription,
      * ServerFarm, Site.
-     * 
+     *
      * @return the resourceScope value.
      */
     public ResourceScopeType resourceScope() {
@@ -131,7 +132,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Set the resourceScope property: Name of a resource type this recommendation applies, e.g. Subscription,
      * ServerFarm, Site.
-     * 
+     *
      * @param resourceScope the resourceScope value to set.
      * @return the RecommendationInner object itself.
      */
@@ -145,7 +146,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the ruleName property: Unique name of the rule.
-     * 
+     *
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -154,7 +155,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the ruleName property: Unique name of the rule.
-     * 
+     *
      * @param ruleName the ruleName value to set.
      * @return the RecommendationInner object itself.
      */
@@ -168,7 +169,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: UI friendly name of the rule (may not be unique).
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -177,7 +178,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the displayName property: UI friendly name of the rule (may not be unique).
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the RecommendationInner object itself.
      */
@@ -191,7 +192,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the message property: Recommendation text.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -200,7 +201,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the message property: Recommendation text.
-     * 
+     *
      * @param message the message value to set.
      * @return the RecommendationInner object itself.
      */
@@ -214,7 +215,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the level property: Level indicating how critical this recommendation can impact.
-     * 
+     *
      * @return the level value.
      */
     public NotificationLevel level() {
@@ -223,7 +224,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the level property: Level indicating how critical this recommendation can impact.
-     * 
+     *
      * @param level the level value to set.
      * @return the RecommendationInner object itself.
      */
@@ -237,7 +238,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the channels property: List of channels that this recommendation can apply.
-     * 
+     *
      * @return the channels value.
      */
     public Channels channels() {
@@ -246,7 +247,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the channels property: List of channels that this recommendation can apply.
-     * 
+     *
      * @param channels the channels value to set.
      * @return the RecommendationInner object itself.
      */
@@ -260,7 +261,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the categoryTags property: The list of category tags that this recommendation belongs to.
-     * 
+     *
      * @return the categoryTags value.
      */
     public List<String> categoryTags() {
@@ -269,7 +270,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the actionName property: Name of action recommended by this object.
-     * 
+     *
      * @return the actionName value.
      */
     public String actionName() {
@@ -278,7 +279,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the actionName property: Name of action recommended by this object.
-     * 
+     *
      * @param actionName the actionName value to set.
      * @return the RecommendationInner object itself.
      */
@@ -292,7 +293,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
-     * 
+     *
      * @return the enabled value.
      */
     public Integer enabled() {
@@ -301,7 +302,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the RecommendationInner object itself.
      */
@@ -316,7 +317,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Get the states property: The list of states of this recommendation. If it's null then it should be considered
      * "Active".
-     * 
+     *
      * @return the states value.
      */
     public List<String> states() {
@@ -326,7 +327,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Set the states property: The list of states of this recommendation. If it's null then it should be considered
      * "Active".
-     * 
+     *
      * @param states the states value to set.
      * @return the RecommendationInner object itself.
      */
@@ -340,7 +341,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: The beginning time in UTC of a range that the recommendation refers to.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -349,7 +350,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: The beginning time in UTC of a range that the recommendation refers to.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the RecommendationInner object itself.
      */
@@ -363,7 +364,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: The end time in UTC of a range that the recommendation refers to.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -372,7 +373,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the endTime property: The end time in UTC of a range that the recommendation refers to.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the RecommendationInner object itself.
      */
@@ -387,7 +388,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Get the nextNotificationTime property: When to notify this recommendation next in UTC. Null means that this will
      * never be notified anymore.
-     * 
+     *
      * @return the nextNotificationTime value.
      */
     public OffsetDateTime nextNotificationTime() {
@@ -397,7 +398,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Set the nextNotificationTime property: When to notify this recommendation next in UTC. Null means that this will
      * never be notified anymore.
-     * 
+     *
      * @param nextNotificationTime the nextNotificationTime value to set.
      * @return the RecommendationInner object itself.
      */
@@ -411,7 +412,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the notificationExpirationTime property: Date and time in UTC when this notification expires.
-     * 
+     *
      * @return the notificationExpirationTime value.
      */
     public OffsetDateTime notificationExpirationTime() {
@@ -420,7 +421,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the notificationExpirationTime property: Date and time in UTC when this notification expires.
-     * 
+     *
      * @param notificationExpirationTime the notificationExpirationTime value to set.
      * @return the RecommendationInner object itself.
      */
@@ -435,7 +436,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Get the notifiedTime property: Last timestamp in UTC this instance was actually notified. Null means that this
      * recommendation hasn't been notified yet.
-     * 
+     *
      * @return the notifiedTime value.
      */
     public OffsetDateTime notifiedTime() {
@@ -445,7 +446,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /**
      * Set the notifiedTime property: Last timestamp in UTC this instance was actually notified. Null means that this
      * recommendation hasn't been notified yet.
-     * 
+     *
      * @param notifiedTime the notifiedTime value to set.
      * @return the RecommendationInner object itself.
      */
@@ -459,7 +460,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the score property: A metric value measured by the rule.
-     * 
+     *
      * @return the score value.
      */
     public Double score() {
@@ -468,7 +469,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the score property: A metric value measured by the rule.
-     * 
+     *
      * @param score the score value to set.
      * @return the RecommendationInner object itself.
      */
@@ -482,7 +483,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the isDynamic property: True if this is associated with a dynamically added rule.
-     * 
+     *
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
@@ -491,7 +492,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the isDynamic property: True if this is associated with a dynamically added rule.
-     * 
+     *
      * @param isDynamic the isDynamic value to set.
      * @return the RecommendationInner object itself.
      */
@@ -505,7 +506,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the extensionName property: Extension name of the portal if exists.
-     * 
+     *
      * @return the extensionName value.
      */
     public String extensionName() {
@@ -514,7 +515,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the extensionName property: Extension name of the portal if exists.
-     * 
+     *
      * @param extensionName the extensionName value to set.
      * @return the RecommendationInner object itself.
      */
@@ -528,7 +529,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the bladeName property: Deep link to a blade on the portal.
-     * 
+     *
      * @return the bladeName value.
      */
     public String bladeName() {
@@ -537,7 +538,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the bladeName property: Deep link to a blade on the portal.
-     * 
+     *
      * @param bladeName the bladeName value to set.
      * @return the RecommendationInner object itself.
      */
@@ -551,7 +552,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Get the forwardLink property: Forward link to an external document associated with the rule.
-     * 
+     *
      * @return the forwardLink value.
      */
     public String forwardLink() {
@@ -560,7 +561,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Set the forwardLink property: Forward link to an external document associated with the rule.
-     * 
+     *
      * @param forwardLink the forwardLink value to set.
      * @return the RecommendationInner object itself.
      */
@@ -574,7 +575,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

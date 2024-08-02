@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsGetAseCustomDnsSuffixConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetAseCustomDnsSuffixConfiguration.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetAseCustomDnsSuffixConfiguration.json
      */
     /**
      * Sample code: Get ASE custom DNS suffix configuration.

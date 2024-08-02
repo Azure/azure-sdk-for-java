@@ -12,9 +12,7 @@ import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
  */
 public final class AppServiceEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_CreateOrUpdate
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update an App Service Environment.

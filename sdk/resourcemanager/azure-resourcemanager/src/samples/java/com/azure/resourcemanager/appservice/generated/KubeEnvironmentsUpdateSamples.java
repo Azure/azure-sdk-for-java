@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.KubeEnvironmentPatchResource;
  */
 public final class KubeEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_Update.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_Update.json
      */
     /**
      * Sample code: Update kube environments.

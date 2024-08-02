@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetAppSettingKeyVaultReferenceSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSetting.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSetting.json
      */
     /**
      * Sample code: Get Azure Key Vault app setting reference.

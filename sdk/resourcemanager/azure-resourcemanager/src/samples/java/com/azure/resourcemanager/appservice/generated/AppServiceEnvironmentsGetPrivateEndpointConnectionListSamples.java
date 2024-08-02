@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsGetPrivateEndpointConnectionListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * AppServiceEnvironments_GetPrivateEndpointConnectionList.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_GetPrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Gets the list of private endpoints associated with a hosting environment.

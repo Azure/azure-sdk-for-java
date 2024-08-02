@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetDatabaseConnectionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetStaticSiteDatabaseConnections.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetStaticSiteDatabaseConnections.json
      */
     /**
      * Sample code: List overviews of database connections for the static site.

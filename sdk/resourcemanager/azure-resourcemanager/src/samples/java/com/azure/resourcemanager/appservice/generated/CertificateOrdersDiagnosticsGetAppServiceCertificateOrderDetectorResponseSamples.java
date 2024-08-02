@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/
-     * Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
      */
     /**
      * Sample code: Get app service certificate order detector response.

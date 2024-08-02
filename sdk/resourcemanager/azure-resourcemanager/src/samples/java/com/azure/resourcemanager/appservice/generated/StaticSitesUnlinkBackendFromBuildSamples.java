@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesUnlinkBackendFromBuildSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UnlinkBackendFromStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UnlinkBackendFromStaticSiteBuild.json
      */
     /**
      * Sample code: Unlink a backend from a static site build.

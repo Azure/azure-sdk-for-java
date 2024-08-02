@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -61,8 +62,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
     private CertificateProductType productType;
 
     /*
-     * <code>true</code> if the certificate should be automatically renewed when it expires; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the certificate should be automatically renewed when it expires; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
@@ -153,7 +153,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the certificates property: State of the Key Vault secret.
-     * 
+     *
      * @return the certificates value.
      */
     public Map<String, AppServiceCertificateInner> certificates() {
@@ -162,7 +162,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Set the certificates property: State of the Key Vault secret.
-     * 
+     *
      * @param certificates the certificates value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -174,7 +174,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the distinguishedName property: Certificate distinguished name.
-     * 
+     *
      * @return the distinguishedName value.
      */
     public String distinguishedName() {
@@ -183,7 +183,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Set the distinguishedName property: Certificate distinguished name.
-     * 
+     *
      * @param distinguishedName the distinguishedName value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -194,7 +194,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the domainVerificationToken property: Domain verification token.
-     * 
+     *
      * @return the domainVerificationToken value.
      */
     public String domainVerificationToken() {
@@ -203,7 +203,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the validityInYears property: Duration in years (must be 1).
-     * 
+     *
      * @return the validityInYears value.
      */
     public Integer validityInYears() {
@@ -212,7 +212,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Set the validityInYears property: Duration in years (must be 1).
-     * 
+     *
      * @param validityInYears the validityInYears value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -223,7 +223,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the keySize property: Certificate key size.
-     * 
+     *
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -232,7 +232,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Set the keySize property: Certificate key size.
-     * 
+     *
      * @param keySize the keySize value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -243,7 +243,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the productType property: Certificate product type.
-     * 
+     *
      * @return the productType value.
      */
     public CertificateProductType productType() {
@@ -252,7 +252,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Set the productType property: Certificate product type.
-     * 
+     *
      * @param productType the productType value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -264,7 +264,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
     /**
      * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
      * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the autoRenew value.
      */
     public Boolean autoRenew() {
@@ -274,7 +274,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
     /**
      * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
      * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param autoRenew the autoRenew value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -285,7 +285,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the provisioningState property: Status of certificate order.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -294,7 +294,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the status property: Current order status.
-     * 
+     *
      * @return the status value.
      */
     public CertificateOrderStatus status() {
@@ -303,7 +303,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the signedCertificate property: Signed certificate.
-     * 
+     *
      * @return the signedCertificate value.
      */
     public CertificateDetails signedCertificate() {
@@ -312,7 +312,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the csr property: Last CSR that was created for this order.
-     * 
+     *
      * @return the csr value.
      */
     public String csr() {
@@ -321,7 +321,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Set the csr property: Last CSR that was created for this order.
-     * 
+     *
      * @param csr the csr value to set.
      * @return the AppServiceCertificateOrderPatchResourceProperties object itself.
      */
@@ -332,7 +332,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the intermediate property: Intermediate certificate.
-     * 
+     *
      * @return the intermediate value.
      */
     public CertificateDetails intermediate() {
@@ -341,7 +341,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the root property: Root certificate.
-     * 
+     *
      * @return the root value.
      */
     public CertificateDetails root() {
@@ -350,7 +350,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the serialNumber property: Current serial number of the certificate.
-     * 
+     *
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -359,7 +359,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the lastCertificateIssuanceTime property: Certificate last issuance time.
-     * 
+     *
      * @return the lastCertificateIssuanceTime value.
      */
     public OffsetDateTime lastCertificateIssuanceTime() {
@@ -368,7 +368,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the expirationTime property: Certificate expiration time.
-     * 
+     *
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -378,7 +378,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
     /**
      * Get the isPrivateKeyExternal property: &lt;code&gt;true&lt;/code&gt; if private key is external; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -388,7 +388,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
     /**
      * Get the appServiceCertificateNotRenewableReasons property: Reasons why App Service Certificate is not renewable
      * at the current moment.
-     * 
+     *
      * @return the appServiceCertificateNotRenewableReasons value.
      */
     public List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons() {
@@ -397,7 +397,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the nextAutoRenewalTimestamp property: Time stamp when the certificate would be auto renewed next.
-     * 
+     *
      * @return the nextAutoRenewalTimestamp value.
      */
     public OffsetDateTime nextAutoRenewalTimestamp() {
@@ -406,7 +406,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Get the contact property: Contact info.
-     * 
+     *
      * @return the contact value.
      */
     public CertificateOrderContact contact() {
@@ -415,7 +415,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

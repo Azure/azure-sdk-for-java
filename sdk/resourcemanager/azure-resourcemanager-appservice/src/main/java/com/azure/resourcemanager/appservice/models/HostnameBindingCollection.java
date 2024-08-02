@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public final class HostnameBindingCollection {
 
     /**
      * Get the value property: Collection of resources.
-     * 
+     *
      * @return the value value.
      */
     public List<HostnameBindingInner> value() {
@@ -44,7 +45,7 @@ public final class HostnameBindingCollection {
 
     /**
      * Set the value property: Collection of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the HostnameBindingCollection object itself.
      */
@@ -55,7 +56,7 @@ public final class HostnameBindingCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +65,7 @@ public final class HostnameBindingCollection {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

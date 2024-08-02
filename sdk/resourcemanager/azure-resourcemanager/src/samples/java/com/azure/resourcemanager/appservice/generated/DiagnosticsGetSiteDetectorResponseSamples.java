@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsGetSiteDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * Diagnostics_GetSiteDetectorResponseSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
      */
     /**
      * Sample code: Get App Slot Detector Response.
@@ -27,9 +26,7 @@ public final class DiagnosticsGetSiteDetectorResponseSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Diagnostics_GetSiteDetectorResponse.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Diagnostics_GetSiteDetectorResponse.json
      */
     /**
      * Sample code: Get App Detector Response.

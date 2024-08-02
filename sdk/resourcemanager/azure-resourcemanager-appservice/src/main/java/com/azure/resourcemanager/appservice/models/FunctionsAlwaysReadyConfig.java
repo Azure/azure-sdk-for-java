@@ -13,18 +13,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FunctionsAlwaysReadyConfig {
     /*
-     * Either a function group or a function name is required. For additional information see
-     * https://aka.ms/flexconsumption/alwaysready.
+     * Either a function group or a function name is required. For additional information see https://aka.ms/flexconsumption/alwaysready.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional
-     * information see https://aka.ms/flexconsumption/alwaysready.
+     * Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional information see https://aka.ms/flexconsumption/alwaysready.
      */
     @JsonProperty(value = "instanceCount")
-    private Integer instanceCount;
+    private Float instanceCount;
 
     /**
      * Creates an instance of FunctionsAlwaysReadyConfig class.
@@ -60,7 +58,7 @@ public final class FunctionsAlwaysReadyConfig {
      * 
      * @return the instanceCount value.
      */
-    public Integer instanceCount() {
+    public Float instanceCount() {
         return this.instanceCount;
     }
 
@@ -71,7 +69,7 @@ public final class FunctionsAlwaysReadyConfig {
      * @param instanceCount the instanceCount value to set.
      * @return the FunctionsAlwaysReadyConfig object itself.
      */
-    public FunctionsAlwaysReadyConfig withInstanceCount(Integer instanceCount) {
+    public FunctionsAlwaysReadyConfig withInstanceCount(Float instanceCount) {
         this.instanceCount = instanceCount;
         return this;
     }

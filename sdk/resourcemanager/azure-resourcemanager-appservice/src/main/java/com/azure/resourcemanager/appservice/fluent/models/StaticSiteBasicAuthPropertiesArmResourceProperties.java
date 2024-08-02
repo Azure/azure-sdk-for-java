@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
 
     /**
      * Get the password property: The password for basic auth.
-     * 
+     *
      * @return the password value.
      */
     public String password() {
@@ -61,7 +62,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
 
     /**
      * Set the password property: The password for basic auth.
-     * 
+     *
      * @param password the password value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
@@ -72,7 +73,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
 
     /**
      * Get the secretUrl property: Url to the secret in Key Vault.
-     * 
+     *
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -81,7 +82,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
 
     /**
      * Set the secretUrl property: Url to the secret in Key Vault.
-     * 
+     *
      * @param secretUrl the secretUrl value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
@@ -93,7 +94,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
     /**
      * Get the applicableEnvironmentsMode property: State indicating if basic auth is enabled and for what environments
      * it is active.
-     * 
+     *
      * @return the applicableEnvironmentsMode value.
      */
     public String applicableEnvironmentsMode() {
@@ -103,7 +104,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
     /**
      * Set the applicableEnvironmentsMode property: State indicating if basic auth is enabled and for what environments
      * it is active.
-     * 
+     *
      * @param applicableEnvironmentsMode the applicableEnvironmentsMode value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
@@ -116,7 +117,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
     /**
      * Get the environments property: The list of enabled environments for Basic Auth if ApplicableEnvironmentsMode is
      * set to SpecifiedEnvironments.
-     * 
+     *
      * @return the environments value.
      */
     public List<String> environments() {
@@ -126,7 +127,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
     /**
      * Set the environments property: The list of enabled environments for Basic Auth if ApplicableEnvironmentsMode is
      * set to SpecifiedEnvironments.
-     * 
+     *
      * @param environments the environments value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceProperties object itself.
      */
@@ -137,7 +138,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
 
     /**
      * Get the secretState property: State indicating if basic auth has a secret and what type it is.
-     * 
+     *
      * @return the secretState value.
      */
     public String secretState() {
@@ -146,7 +147,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

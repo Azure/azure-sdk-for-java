@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
-     * DetachUserProvidedFunctionAppFromStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DetachUserProvidedFunctionAppFromStaticSite.json
      */
     /**
      * Sample code: Detach the user provided function app from the static site.

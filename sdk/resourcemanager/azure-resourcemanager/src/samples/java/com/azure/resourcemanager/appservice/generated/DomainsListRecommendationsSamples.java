@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.DomainRecommendationSearchPar
  */
 public final class DomainsListRecommendationsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/
-     * ListDomainRecommendations.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/ListDomainRecommendations.json
      */
     /**
      * Sample code: List domain recommendations.

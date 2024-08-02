@@ -16,7 +16,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp {
      * The maximum number of concurrent HTTP trigger invocations per instance.
      */
     @JsonProperty(value = "perInstanceConcurrency")
-    private Integer perInstanceConcurrency;
+    private Float perInstanceConcurrency;
 
     /**
      * Creates an instance of FunctionsScaleAndConcurrencyTriggersHttp class.
@@ -29,7 +29,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp {
      * 
      * @return the perInstanceConcurrency value.
      */
-    public Integer perInstanceConcurrency() {
+    public Float perInstanceConcurrency() {
         return this.perInstanceConcurrency;
     }
 
@@ -39,7 +39,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp {
      * @param perInstanceConcurrency the perInstanceConcurrency value to set.
      * @return the FunctionsScaleAndConcurrencyTriggersHttp object itself.
      */
-    public FunctionsScaleAndConcurrencyTriggersHttp withPerInstanceConcurrency(Integer perInstanceConcurrency) {
+    public FunctionsScaleAndConcurrencyTriggersHttp withPerInstanceConcurrency(Float perInstanceConcurrency) {
         this.perInstanceConcurrency = perInstanceConcurrency;
         return this;
     }

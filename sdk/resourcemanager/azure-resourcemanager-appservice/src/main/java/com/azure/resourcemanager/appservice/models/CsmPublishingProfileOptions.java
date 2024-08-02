@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CsmPublishingProfileOptions {
     /*
-     * Name of the format. Valid values are:
+     * Name of the format. Valid values are: 
      * FileZilla3
      * WebDeploy -- default
      * Ftp

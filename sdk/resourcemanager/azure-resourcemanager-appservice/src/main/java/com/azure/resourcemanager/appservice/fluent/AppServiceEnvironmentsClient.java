@@ -36,10 +36,11 @@ import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined in AppServiceEnvironmentsClient.
@@ -48,9 +49,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
     InnerSupportsListing<AppServiceEnvironmentResourceInner>, InnerSupportsDelete<Void> {
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,9 +62,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -74,9 +75,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -89,9 +90,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -104,9 +105,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -119,9 +120,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,9 +136,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,9 +154,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,9 +170,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -187,9 +188,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +204,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -222,9 +223,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -241,9 +242,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -259,9 +260,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -279,9 +280,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -297,9 +298,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -315,9 +316,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -334,9 +335,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -353,9 +354,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -371,9 +372,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -387,9 +388,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,9 +404,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -423,9 +424,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -441,9 +442,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -457,9 +458,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,9 +473,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -490,9 +491,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -509,9 +510,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -527,9 +528,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -546,9 +547,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -564,9 +565,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,9 +581,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -596,9 +597,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -613,9 +614,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,9 +631,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,9 +647,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -663,9 +664,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,9 +680,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -696,9 +697,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -713,9 +714,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -732,7 +733,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -748,7 +749,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -763,7 +764,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -779,7 +780,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -793,10 +794,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param customDnsSuffixConfiguration The customDnsSuffixConfiguration parameter.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -810,10 +811,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param customDnsSuffixConfiguration The customDnsSuffixConfiguration parameter.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -826,10 +827,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param customDnsSuffixConfiguration The customDnsSuffixConfiguration parameter.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -844,10 +845,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param customDnsSuffixConfiguration The customDnsSuffixConfiguration parameter.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -860,7 +861,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -875,7 +876,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -889,7 +890,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -905,7 +906,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -919,9 +920,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -937,9 +938,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -953,9 +954,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -971,9 +972,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -987,12 +988,12 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param aseNetworkingConfiguration The aseNetworkingConfiguration parameter.
+     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1006,12 +1007,12 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param aseNetworkingConfiguration The aseNetworkingConfiguration parameter.
+     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1024,12 +1025,12 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param aseNetworkingConfiguration The aseNetworkingConfiguration parameter.
+     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1043,12 +1044,12 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param aseNetworkingConfiguration The aseNetworkingConfiguration parameter.
+     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1061,9 +1062,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,9 +1080,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1095,9 +1096,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1113,9 +1114,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1129,9 +1130,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -1148,9 +1149,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -1166,9 +1167,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -1185,9 +1186,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -1203,9 +1204,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,9 +1221,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1237,9 +1238,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1255,9 +1256,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1271,9 +1272,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1287,9 +1288,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1304,9 +1305,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1321,9 +1322,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1337,9 +1338,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1355,9 +1356,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1371,9 +1372,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1390,9 +1391,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1408,9 +1409,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1426,9 +1427,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1445,9 +1446,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1463,9 +1464,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1481,9 +1482,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1500,9 +1501,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1519,9 +1520,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1537,9 +1538,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1556,9 +1557,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -1574,10 +1575,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -1593,10 +1594,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -1612,10 +1613,10 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -1632,9 +1633,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1648,9 +1649,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1664,9 +1665,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1682,9 +1683,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1698,9 +1699,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1714,9 +1715,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1731,7 +1732,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1745,7 +1746,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1759,7 +1760,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1774,7 +1775,7 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1787,9 +1788,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1803,9 +1804,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1819,9 +1820,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1835,9 +1836,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1852,9 +1853,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1868,9 +1869,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1883,9 +1884,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1899,9 +1900,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1915,9 +1916,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1931,9 +1932,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1948,9 +1949,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1964,9 +1965,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1980,9 +1981,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1997,9 +1998,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2013,9 +2014,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2030,9 +2031,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2047,9 +2048,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2065,9 +2066,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2082,9 +2083,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2099,9 +2100,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2117,9 +2118,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -2136,9 +2137,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -2154,9 +2155,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -2173,9 +2174,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -2191,13 +2192,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2212,13 +2213,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2233,13 +2234,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2254,13 +2255,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -2276,13 +2277,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2296,13 +2297,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -2316,13 +2317,13 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -2337,9 +2338,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2355,9 +2356,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2373,9 +2374,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2391,9 +2392,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2410,9 +2411,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2428,9 +2429,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2445,9 +2446,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -2464,9 +2465,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2482,9 +2483,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2498,9 +2499,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2516,9 +2517,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2532,9 +2533,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2548,9 +2549,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2564,9 +2565,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2581,9 +2582,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2596,9 +2597,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2612,9 +2613,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2628,9 +2629,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2645,9 +2646,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2661,9 +2662,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2677,9 +2678,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2694,9 +2695,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -2711,9 +2712,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2727,9 +2728,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2743,9 +2744,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -2762,9 +2763,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2778,9 +2779,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2794,9 +2795,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2811,9 +2812,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -2830,9 +2831,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2846,9 +2847,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2862,9 +2863,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -2882,9 +2883,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2898,9 +2899,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2914,9 +2915,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2931,9 +2932,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -2950,9 +2951,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -2967,9 +2968,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -2986,9 +2987,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3003,9 +3004,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3023,9 +3024,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3042,9 +3043,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3061,9 +3062,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3082,9 +3083,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3101,9 +3102,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3120,9 +3121,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3140,9 +3141,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3160,9 +3161,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3179,9 +3180,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3199,9 +3200,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3218,9 +3219,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3237,9 +3238,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3256,9 +3257,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3276,9 +3277,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3294,9 +3295,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3312,9 +3313,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3331,9 +3332,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3348,9 +3349,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3365,9 +3366,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3384,9 +3385,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3401,9 +3402,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -3418,9 +3419,9 @@ public interface AppServiceEnvironmentsClient extends InnerSupportsGet<AppServic
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.

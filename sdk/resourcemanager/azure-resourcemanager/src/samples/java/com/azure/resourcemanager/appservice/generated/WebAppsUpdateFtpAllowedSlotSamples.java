@@ -11,9 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentia
  */
 public final class WebAppsUpdateFtpAllowedSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdatePublishingCredentialsPolicySlot
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdatePublishingCredentialsPolicySlot.json
      */
     /**
      * Sample code: Update FTP Allowed.

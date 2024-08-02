@@ -19,8 +19,7 @@ public final class FunctionsDeploymentStorage {
     private FunctionsDeploymentStorageType type;
 
     /*
-     * Property to set the URL for the selected Azure Storage type. Example: For blobContainer, the value could be
-     * https://<storageAccountName>.blob.core.windows.net/<containerName>.
+     * Property to set the URL for the selected Azure Storage type. Example: For blobContainer, the value could be https://<storageAccountName>.blob.core.windows.net/<containerName>.
      */
     @JsonProperty(value = "value")
     private String value;

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -16,16 +17,14 @@ import java.util.List;
 @Fluent
 public final class SiteAuthSettingsProperties {
     /*
-     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
-     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
-     * module.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization module.
      */
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
@@ -37,16 +36,14 @@ public final class SiteAuthSettingsProperties {
     private UnauthenticatedClientAction unauthenticatedClientAction;
 
     /*
-     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows;
-     * otherwise, <code>false</code>.
-     * The default is <code>false</code>.
+     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows; otherwise, <code>false</code>.
+     *  The default is <code>false</code>.
      */
     @JsonProperty(value = "tokenStoreEnabled")
     private Boolean tokenStoreEnabled;
 
     /*
-     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query
-     * string part of the URL is ignored.
+     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
@@ -78,10 +75,8 @@ public final class SiteAuthSettingsProperties {
     private String clientId;
 
     /*
-     * The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the
-     * Key).
-     * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to
-     * authenticate end users.
+     * The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the Key).
+     * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to authenticate end users.
      * Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
@@ -95,8 +90,7 @@ public final class SiteAuthSettingsProperties {
     private String clientSecretSettingName;
 
     /*
-     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This
-     * property acts as
+     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as
      * a replacement for the Client Secret. It is also optional.
      */
     @JsonProperty(value = "clientSecretCertificateThumbprint")
@@ -104,8 +98,7 @@ public final class SiteAuthSettingsProperties {
 
     /*
      * The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
-     * https://sts.windows.net/{tenant-guid}/.
+     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g. https://sts.windows.net/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
      */
@@ -312,7 +305,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
      * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -322,7 +315,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
      * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -336,7 +329,7 @@ public final class SiteAuthSettingsProperties {
      * current app.
      * The setting in this value can control the behavior of certain features in the Authentication / Authorization
      * module.
-     * 
+     *
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -348,7 +341,7 @@ public final class SiteAuthSettingsProperties {
      * current app.
      * The setting in this value can control the behavior of certain features in the Authentication / Authorization
      * module.
-     * 
+     *
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -360,7 +353,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the unauthenticatedClientAction property: The action to take when an unauthenticated client attempts to
      * access the app.
-     * 
+     *
      * @return the unauthenticatedClientAction value.
      */
     public UnauthenticatedClientAction unauthenticatedClientAction() {
@@ -370,7 +363,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the unauthenticatedClientAction property: The action to take when an unauthenticated client attempts to
      * access the app.
-     * 
+     *
      * @param unauthenticatedClientAction the unauthenticatedClientAction value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -384,7 +377,7 @@ public final class SiteAuthSettingsProperties {
      * Get the tokenStoreEnabled property: &lt;code&gt;true&lt;/code&gt; to durably store platform-specific security
      * tokens that are obtained during login flows; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * The default is &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the tokenStoreEnabled value.
      */
     public Boolean tokenStoreEnabled() {
@@ -395,7 +388,7 @@ public final class SiteAuthSettingsProperties {
      * Set the tokenStoreEnabled property: &lt;code&gt;true&lt;/code&gt; to durably store platform-specific security
      * tokens that are obtained during login flows; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * The default is &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param tokenStoreEnabled the tokenStoreEnabled value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -409,7 +402,7 @@ public final class SiteAuthSettingsProperties {
      * logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
-     * 
+     *
      * @return the allowedExternalRedirectUrls value.
      */
     public List<String> allowedExternalRedirectUrls() {
@@ -421,7 +414,7 @@ public final class SiteAuthSettingsProperties {
      * logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
-     * 
+     *
      * @param allowedExternalRedirectUrls the allowedExternalRedirectUrls value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -435,7 +428,7 @@ public final class SiteAuthSettingsProperties {
      * configured.
      * This setting is only needed if multiple providers are configured and the unauthenticated client
      * action is set to "RedirectToLoginPage".
-     * 
+     *
      * @return the defaultProvider value.
      */
     public BuiltInAuthenticationProvider defaultProvider() {
@@ -447,7 +440,7 @@ public final class SiteAuthSettingsProperties {
      * configured.
      * This setting is only needed if multiple providers are configured and the unauthenticated client
      * action is set to "RedirectToLoginPage".
-     * 
+     *
      * @param defaultProvider the defaultProvider value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -460,7 +453,7 @@ public final class SiteAuthSettingsProperties {
      * Get the tokenRefreshExtensionHours property: The number of hours after session token expiration that a session
      * token can be used to
      * call the token refresh API. The default is 72 hours.
-     * 
+     *
      * @return the tokenRefreshExtensionHours value.
      */
     public Double tokenRefreshExtensionHours() {
@@ -471,7 +464,7 @@ public final class SiteAuthSettingsProperties {
      * Set the tokenRefreshExtensionHours property: The number of hours after session token expiration that a session
      * token can be used to
      * call the token refresh API. The default is 72 hours.
-     * 
+     *
      * @param tokenRefreshExtensionHours the tokenRefreshExtensionHours value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -485,7 +478,7 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
-     * 
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -497,7 +490,7 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -513,7 +506,7 @@ public final class SiteAuthSettingsProperties {
      * authenticate end users.
      * Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
-     * 
+     *
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -527,7 +520,7 @@ public final class SiteAuthSettingsProperties {
      * authenticate end users.
      * Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
-     * 
+     *
      * @param clientSecret the clientSecret value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -539,7 +532,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the clientSecretSettingName property: The app setting name that contains the client secret of the relying
      * party application.
-     * 
+     *
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
@@ -549,7 +542,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the clientSecretSettingName property: The app setting name that contains the client secret of the relying
      * party application.
-     * 
+     *
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -562,7 +555,7 @@ public final class SiteAuthSettingsProperties {
      * Get the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
      * of a certificate used for signing purposes. This property acts as
      * a replacement for the Client Secret. It is also optional.
-     * 
+     *
      * @return the clientSecretCertificateThumbprint value.
      */
     public String clientSecretCertificateThumbprint() {
@@ -573,7 +566,7 @@ public final class SiteAuthSettingsProperties {
      * Set the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
      * of a certificate used for signing purposes. This property acts as
      * a replacement for the Client Secret. It is also optional.
-     * 
+     *
      * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -589,7 +582,7 @@ public final class SiteAuthSettingsProperties {
      * https://sts.windows.net/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
-     * 
+     *
      * @return the issuer value.
      */
     public String issuer() {
@@ -603,7 +596,7 @@ public final class SiteAuthSettingsProperties {
      * https://sts.windows.net/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
-     * 
+     *
      * @param issuer the issuer value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -615,7 +608,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the validateIssuer property: Gets a value indicating whether the issuer should be a valid HTTPS url and be
      * validated as such.
-     * 
+     *
      * @return the validateIssuer value.
      */
     public Boolean validateIssuer() {
@@ -625,7 +618,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the validateIssuer property: Gets a value indicating whether the issuer should be a valid HTTPS url and be
      * validated as such.
-     * 
+     *
      * @param validateIssuer the validateIssuer value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -638,7 +631,7 @@ public final class SiteAuthSettingsProperties {
      * Get the allowedAudiences property: Allowed audience values to consider when validating JSON Web Tokens issued by
      * Azure Active Directory. Note that the &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
      * allowed audience, regardless of this setting.
-     * 
+     *
      * @return the allowedAudiences value.
      */
     public List<String> allowedAudiences() {
@@ -649,7 +642,7 @@ public final class SiteAuthSettingsProperties {
      * Set the allowedAudiences property: Allowed audience values to consider when validating JSON Web Tokens issued by
      * Azure Active Directory. Note that the &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
      * allowed audience, regardless of this setting.
-     * 
+     *
      * @param allowedAudiences the allowedAudiences value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -662,7 +655,7 @@ public final class SiteAuthSettingsProperties {
      * Get the additionalLoginParams property: Login parameters to send to the OpenID Connect authorization endpoint
      * when
      * a user logs in. Each parameter must be in the form "key=value".
-     * 
+     *
      * @return the additionalLoginParams value.
      */
     public List<String> additionalLoginParams() {
@@ -673,7 +666,7 @@ public final class SiteAuthSettingsProperties {
      * Set the additionalLoginParams property: Login parameters to send to the OpenID Connect authorization endpoint
      * when
      * a user logs in. Each parameter must be in the form "key=value".
-     * 
+     *
      * @param additionalLoginParams the additionalLoginParams value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -684,7 +677,7 @@ public final class SiteAuthSettingsProperties {
 
     /**
      * Get the aadClaimsAuthorization property: Gets a JSON string containing the Azure AD Acl settings.
-     * 
+     *
      * @return the aadClaimsAuthorization value.
      */
     public String aadClaimsAuthorization() {
@@ -693,7 +686,7 @@ public final class SiteAuthSettingsProperties {
 
     /**
      * Set the aadClaimsAuthorization property: Gets a JSON string containing the Azure AD Acl settings.
-     * 
+     *
      * @param aadClaimsAuthorization the aadClaimsAuthorization value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -706,7 +699,7 @@ public final class SiteAuthSettingsProperties {
      * Get the googleClientId property: The OpenID Connect Client ID for the Google web application.
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/.
-     * 
+     *
      * @return the googleClientId value.
      */
     public String googleClientId() {
@@ -717,7 +710,7 @@ public final class SiteAuthSettingsProperties {
      * Set the googleClientId property: The OpenID Connect Client ID for the Google web application.
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/.
-     * 
+     *
      * @param googleClientId the googleClientId value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -730,7 +723,7 @@ public final class SiteAuthSettingsProperties {
      * Get the googleClientSecret property: The client secret associated with the Google web application.
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/.
-     * 
+     *
      * @return the googleClientSecret value.
      */
     public String googleClientSecret() {
@@ -741,7 +734,7 @@ public final class SiteAuthSettingsProperties {
      * Set the googleClientSecret property: The client secret associated with the Google web application.
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/.
-     * 
+     *
      * @param googleClientSecret the googleClientSecret value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -754,7 +747,7 @@ public final class SiteAuthSettingsProperties {
      * Get the googleClientSecretSettingName property: The app setting name that contains the client secret associated
      * with
      * the Google web application.
-     * 
+     *
      * @return the googleClientSecretSettingName value.
      */
     public String googleClientSecretSettingName() {
@@ -765,7 +758,7 @@ public final class SiteAuthSettingsProperties {
      * Set the googleClientSecretSettingName property: The app setting name that contains the client secret associated
      * with
      * the Google web application.
-     * 
+     *
      * @param googleClientSecretSettingName the googleClientSecretSettingName value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -779,7 +772,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is optional. If not specified, "openid", "profile", and "email" are used as default scopes.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/.
-     * 
+     *
      * @return the googleOAuthScopes value.
      */
     public List<String> googleOAuthScopes() {
@@ -791,7 +784,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is optional. If not specified, "openid", "profile", and "email" are used as default scopes.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/.
-     * 
+     *
      * @param googleOAuthScopes the googleOAuthScopes value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -804,7 +797,7 @@ public final class SiteAuthSettingsProperties {
      * Get the facebookAppId property: The App ID of the Facebook app used for login.
      * This setting is required for enabling Facebook Login.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login.
-     * 
+     *
      * @return the facebookAppId value.
      */
     public String facebookAppId() {
@@ -815,7 +808,7 @@ public final class SiteAuthSettingsProperties {
      * Set the facebookAppId property: The App ID of the Facebook app used for login.
      * This setting is required for enabling Facebook Login.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login.
-     * 
+     *
      * @param facebookAppId the facebookAppId value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -828,7 +821,7 @@ public final class SiteAuthSettingsProperties {
      * Get the facebookAppSecret property: The App Secret of the Facebook app used for Facebook Login.
      * This setting is required for enabling Facebook Login.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login.
-     * 
+     *
      * @return the facebookAppSecret value.
      */
     public String facebookAppSecret() {
@@ -839,7 +832,7 @@ public final class SiteAuthSettingsProperties {
      * Set the facebookAppSecret property: The App Secret of the Facebook app used for Facebook Login.
      * This setting is required for enabling Facebook Login.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login.
-     * 
+     *
      * @param facebookAppSecret the facebookAppSecret value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -851,7 +844,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the facebookAppSecretSettingName property: The app setting name that contains the app secret used for
      * Facebook Login.
-     * 
+     *
      * @return the facebookAppSecretSettingName value.
      */
     public String facebookAppSecretSettingName() {
@@ -861,7 +854,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the facebookAppSecretSettingName property: The app setting name that contains the app secret used for
      * Facebook Login.
-     * 
+     *
      * @param facebookAppSecretSettingName the facebookAppSecretSettingName value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -875,7 +868,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is optional.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login.
-     * 
+     *
      * @return the facebookOAuthScopes value.
      */
     public List<String> facebookOAuthScopes() {
@@ -887,7 +880,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is optional.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login.
-     * 
+     *
      * @param facebookOAuthScopes the facebookOAuthScopes value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -899,7 +892,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the gitHubClientId property: The Client Id of the GitHub app used for login.
      * This setting is required for enabling Github login.
-     * 
+     *
      * @return the gitHubClientId value.
      */
     public String gitHubClientId() {
@@ -909,7 +902,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the gitHubClientId property: The Client Id of the GitHub app used for login.
      * This setting is required for enabling Github login.
-     * 
+     *
      * @param gitHubClientId the gitHubClientId value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -921,7 +914,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the gitHubClientSecret property: The Client Secret of the GitHub app used for Github Login.
      * This setting is required for enabling Github login.
-     * 
+     *
      * @return the gitHubClientSecret value.
      */
     public String gitHubClientSecret() {
@@ -931,7 +924,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the gitHubClientSecret property: The Client Secret of the GitHub app used for Github Login.
      * This setting is required for enabling Github login.
-     * 
+     *
      * @param gitHubClientSecret the gitHubClientSecret value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -944,7 +937,7 @@ public final class SiteAuthSettingsProperties {
      * Get the gitHubClientSecretSettingName property: The app setting name that contains the client secret of the
      * Github
      * app used for GitHub Login.
-     * 
+     *
      * @return the gitHubClientSecretSettingName value.
      */
     public String gitHubClientSecretSettingName() {
@@ -955,7 +948,7 @@ public final class SiteAuthSettingsProperties {
      * Set the gitHubClientSecretSettingName property: The app setting name that contains the client secret of the
      * Github
      * app used for GitHub Login.
-     * 
+     *
      * @param gitHubClientSecretSettingName the gitHubClientSecretSettingName value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -968,7 +961,7 @@ public final class SiteAuthSettingsProperties {
      * Get the gitHubOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of GitHub Login
      * authentication.
      * This setting is optional.
-     * 
+     *
      * @return the gitHubOAuthScopes value.
      */
     public List<String> gitHubOAuthScopes() {
@@ -979,7 +972,7 @@ public final class SiteAuthSettingsProperties {
      * Set the gitHubOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of GitHub Login
      * authentication.
      * This setting is optional.
-     * 
+     *
      * @param gitHubOAuthScopes the gitHubOAuthScopes value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -992,7 +985,7 @@ public final class SiteAuthSettingsProperties {
      * Get the twitterConsumerKey property: The OAuth 1.0a consumer key of the Twitter application used for sign-in.
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
-     * 
+     *
      * @return the twitterConsumerKey value.
      */
     public String twitterConsumerKey() {
@@ -1003,7 +996,7 @@ public final class SiteAuthSettingsProperties {
      * Set the twitterConsumerKey property: The OAuth 1.0a consumer key of the Twitter application used for sign-in.
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
-     * 
+     *
      * @param twitterConsumerKey the twitterConsumerKey value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1017,7 +1010,7 @@ public final class SiteAuthSettingsProperties {
      * sign-in.
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
-     * 
+     *
      * @return the twitterConsumerSecret value.
      */
     public String twitterConsumerSecret() {
@@ -1029,7 +1022,7 @@ public final class SiteAuthSettingsProperties {
      * sign-in.
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
-     * 
+     *
      * @param twitterConsumerSecret the twitterConsumerSecret value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1042,7 +1035,7 @@ public final class SiteAuthSettingsProperties {
      * Get the twitterConsumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer
      * secret of the Twitter
      * application used for sign-in.
-     * 
+     *
      * @return the twitterConsumerSecretSettingName value.
      */
     public String twitterConsumerSecretSettingName() {
@@ -1053,7 +1046,7 @@ public final class SiteAuthSettingsProperties {
      * Set the twitterConsumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer
      * secret of the Twitter
      * application used for sign-in.
-     * 
+     *
      * @param twitterConsumerSecretSettingName the twitterConsumerSecretSettingName value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1067,7 +1060,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is required for enabling Microsoft Account authentication.
      * Microsoft Account OAuth documentation: https://dev.onedrive.com/auth/msa_oauth.htm.
-     * 
+     *
      * @return the microsoftAccountClientId value.
      */
     public String microsoftAccountClientId() {
@@ -1079,7 +1072,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is required for enabling Microsoft Account authentication.
      * Microsoft Account OAuth documentation: https://dev.onedrive.com/auth/msa_oauth.htm.
-     * 
+     *
      * @param microsoftAccountClientId the microsoftAccountClientId value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1093,7 +1086,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is required for enabling Microsoft Account authentication.
      * Microsoft Account OAuth documentation: https://dev.onedrive.com/auth/msa_oauth.htm.
-     * 
+     *
      * @return the microsoftAccountClientSecret value.
      */
     public String microsoftAccountClientSecret() {
@@ -1105,7 +1098,7 @@ public final class SiteAuthSettingsProperties {
      * authentication.
      * This setting is required for enabling Microsoft Account authentication.
      * Microsoft Account OAuth documentation: https://dev.onedrive.com/auth/msa_oauth.htm.
-     * 
+     *
      * @param microsoftAccountClientSecret the microsoftAccountClientSecret value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1118,7 +1111,7 @@ public final class SiteAuthSettingsProperties {
      * Get the microsoftAccountClientSecretSettingName property: The app setting name containing the OAuth 2.0 client
      * secret that was created for the
      * app used for authentication.
-     * 
+     *
      * @return the microsoftAccountClientSecretSettingName value.
      */
     public String microsoftAccountClientSecretSettingName() {
@@ -1129,7 +1122,7 @@ public final class SiteAuthSettingsProperties {
      * Set the microsoftAccountClientSecretSettingName property: The app setting name containing the OAuth 2.0 client
      * secret that was created for the
      * app used for authentication.
-     * 
+     *
      * @param microsoftAccountClientSecretSettingName the microsoftAccountClientSecretSettingName value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1144,7 +1137,7 @@ public final class SiteAuthSettingsProperties {
      * Account authentication.
      * This setting is optional. If not specified, "wl.basic" is used as the default scope.
      * Microsoft Account Scopes and permissions documentation: https://msdn.microsoft.com/en-us/library/dn631845.aspx.
-     * 
+     *
      * @return the microsoftAccountOAuthScopes value.
      */
     public List<String> microsoftAccountOAuthScopes() {
@@ -1156,7 +1149,7 @@ public final class SiteAuthSettingsProperties {
      * Account authentication.
      * This setting is optional. If not specified, "wl.basic" is used as the default scope.
      * Microsoft Account Scopes and permissions documentation: https://msdn.microsoft.com/en-us/library/dn631845.aspx.
-     * 
+     *
      * @param microsoftAccountOAuthScopes the microsoftAccountOAuthScopes value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1168,7 +1161,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the isAuthFromFile property: "true" if the auth config settings should be read from a file,
      * "false" otherwise.
-     * 
+     *
      * @return the isAuthFromFile value.
      */
     public String isAuthFromFile() {
@@ -1178,7 +1171,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the isAuthFromFile property: "true" if the auth config settings should be read from a file,
      * "false" otherwise.
-     * 
+     *
      * @param isAuthFromFile the isAuthFromFile value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1190,7 +1183,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Get the authFilePath property: The path of the config file containing auth settings.
      * If the path is relative, base will the site's root directory.
-     * 
+     *
      * @return the authFilePath value.
      */
     public String authFilePath() {
@@ -1200,7 +1193,7 @@ public final class SiteAuthSettingsProperties {
     /**
      * Set the authFilePath property: The path of the config file containing auth settings.
      * If the path is relative, base will the site's root directory.
-     * 
+     *
      * @param authFilePath the authFilePath value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1213,7 +1206,7 @@ public final class SiteAuthSettingsProperties {
      * Get the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
      * current app.
      * The setting in this value can control the behavior of the control plane for Authentication / Authorization.
-     * 
+     *
      * @return the configVersion value.
      */
     public String configVersion() {
@@ -1224,7 +1217,7 @@ public final class SiteAuthSettingsProperties {
      * Set the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
      * current app.
      * The setting in this value can control the behavior of the control plane for Authentication / Authorization.
-     * 
+     *
      * @param configVersion the configVersion value to set.
      * @return the SiteAuthSettingsProperties object itself.
      */
@@ -1235,7 +1228,7 @@ public final class SiteAuthSettingsProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

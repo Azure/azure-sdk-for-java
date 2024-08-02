@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -23,14 +24,13 @@ public final class FunctionsScaleAndConcurrency {
      * The maximum number of instances for the function app.
      */
     @JsonProperty(value = "maximumInstanceCount")
-    private Integer maximumInstanceCount;
+    private Long maximumInstanceCount;
 
     /*
-     * Set the amount of memory allocated to each instance of the function app in MB. CPU and network bandwidth are
-     * allocated proportionally.
+     * Set the amount of memory allocated to each instance of the function app in MB. CPU and network bandwidth are allocated proportionally.
      */
     @JsonProperty(value = "instanceMemoryMB")
-    private Integer instanceMemoryMB;
+    private Long instanceMemoryMB;
 
     /*
      * Scale and concurrency settings for the function app triggers.
@@ -46,7 +46,7 @@ public final class FunctionsScaleAndConcurrency {
 
     /**
      * Get the alwaysReady property: 'Always Ready' configuration for the function app.
-     * 
+     *
      * @return the alwaysReady value.
      */
     public List<FunctionsAlwaysReadyConfig> alwaysReady() {
@@ -55,7 +55,7 @@ public final class FunctionsScaleAndConcurrency {
 
     /**
      * Set the alwaysReady property: 'Always Ready' configuration for the function app.
-     * 
+     *
      * @param alwaysReady the alwaysReady value to set.
      * @return the FunctionsScaleAndConcurrency object itself.
      */
@@ -66,49 +66,49 @@ public final class FunctionsScaleAndConcurrency {
 
     /**
      * Get the maximumInstanceCount property: The maximum number of instances for the function app.
-     * 
+     *
      * @return the maximumInstanceCount value.
      */
-    public Integer maximumInstanceCount() {
-        return this.maximumInstanceCount;
+    public Float maximumInstanceCount() {
+        return this.maximumInstanceCount == null ? null : this.maximumInstanceCount.floatValue();
     }
 
     /**
      * Set the maximumInstanceCount property: The maximum number of instances for the function app.
-     * 
+     *
      * @param maximumInstanceCount the maximumInstanceCount value to set.
      * @return the FunctionsScaleAndConcurrency object itself.
      */
-    public FunctionsScaleAndConcurrency withMaximumInstanceCount(Integer maximumInstanceCount) {
-        this.maximumInstanceCount = maximumInstanceCount;
+    public FunctionsScaleAndConcurrency withMaximumInstanceCount(Float maximumInstanceCount) {
+        this.maximumInstanceCount = maximumInstanceCount == null ? null : maximumInstanceCount.longValue();
         return this;
     }
 
     /**
      * Get the instanceMemoryMB property: Set the amount of memory allocated to each instance of the function app in MB.
      * CPU and network bandwidth are allocated proportionally.
-     * 
+     *
      * @return the instanceMemoryMB value.
      */
-    public Integer instanceMemoryMB() {
-        return this.instanceMemoryMB;
+    public Float instanceMemoryMB() {
+        return this.instanceMemoryMB == null ? null : this.instanceMemoryMB.floatValue();
     }
 
     /**
      * Set the instanceMemoryMB property: Set the amount of memory allocated to each instance of the function app in MB.
      * CPU and network bandwidth are allocated proportionally.
-     * 
+     *
      * @param instanceMemoryMB the instanceMemoryMB value to set.
      * @return the FunctionsScaleAndConcurrency object itself.
      */
-    public FunctionsScaleAndConcurrency withInstanceMemoryMB(Integer instanceMemoryMB) {
-        this.instanceMemoryMB = instanceMemoryMB;
+    public FunctionsScaleAndConcurrency withInstanceMemoryMB(Float instanceMemoryMB) {
+        this.instanceMemoryMB = instanceMemoryMB == null ? null : instanceMemoryMB.longValue();
         return this;
     }
 
     /**
      * Get the triggers property: Scale and concurrency settings for the function app triggers.
-     * 
+     *
      * @return the triggers value.
      */
     public FunctionsScaleAndConcurrencyTriggers triggers() {
@@ -117,7 +117,7 @@ public final class FunctionsScaleAndConcurrency {
 
     /**
      * Set the triggers property: Scale and concurrency settings for the function app triggers.
-     * 
+     *
      * @param triggers the triggers value to set.
      * @return the FunctionsScaleAndConcurrency object itself.
      */
@@ -128,7 +128,7 @@ public final class FunctionsScaleAndConcurrency {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

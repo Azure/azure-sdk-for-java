@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetPrivateEndpointConnectionListSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateEndpointConnectionList.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Get a list of private endpoint connections associated with a site.
