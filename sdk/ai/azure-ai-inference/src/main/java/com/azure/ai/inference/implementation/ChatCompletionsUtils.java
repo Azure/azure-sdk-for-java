@@ -3,16 +3,22 @@
 
 package com.azure.ai.inference.implementation;
 
-import com.azure.ai.openai.inference.CompleteOptions;
-import com.azure.ai.openai.inference.ChatRequestUserMessage;
+import com.azure.ai.inference.implementation.models.CompleteOptions;
+import com.azure.ai.inference.models.ChatRequestMessage;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.StringReader;
+import java.io.IOException;
 
 /** This class contains convenience methods and constants for operations related to ChatCompletions */
 public final class ChatCompletionsUtils {
 
+    private static final ClientLogger LOGGER = new ClientLogger(ChatCompletionsUtils.class);
     private ChatCompletionsUtils() {
     }
 
@@ -22,12 +28,21 @@ public final class ChatCompletionsUtils {
      * @return A CompleteOptions object
      * */
     public static CompleteOptions defaultCompleteOptions(String prompt) {
-        List<ChatRequestUserMessage> messages = new ArrayList<>();
-        String contentString = String.format("{\"content\":\"%s\"}", prompt);
-        ChatRequestUserMessage message = new ChatRequestUserMessage(
-            BinaryData.fromString(contentString)
-        );
-        messages.add(message);
+        List<ChatRequestMessage> messages = new ArrayList<>();
+        String jsonPrompt = "{"
+            + "\"role\":\"user\","
+            + "\"content\":\"%s\","
+            + "}";
+        String contentString = String.format(jsonPrompt, prompt);
+        try {
+            ChatRequestMessage message = ChatRequestMessage.fromJson(
+                JsonProviders.createReader(new StringReader(contentString))
+            );
+            messages.add(message);
+        } catch (IOException ex) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                "prompt string not accepted for JSON parsing"));
+        }
         return new CompleteOptions(messages);
     }
 

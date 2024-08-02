@@ -8,6 +8,7 @@ import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
 import com.azure.ai.inference.implementation.models.CompleteOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
+import com.azure.ai.inference.implementation.ChatCompletionsUtils;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
@@ -202,6 +203,25 @@ public final class ChatCompletionsClient {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
         return completeWithResponse(completeRequest, requestOptions).getValue().toObject(ChatCompletions.class);
+    }
+
+    /**
+     * Gets completions for the provided input prompt. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     *
+     * @param prompt The prompt to generate completion text from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions for the provided input prompts. Chat completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatCompletions complete(String prompt) {
+        return complete(ChatCompletionsUtils.defaultCompleteOptions(prompt));
     }
 
     /**

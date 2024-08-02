@@ -5,7 +5,6 @@ package com.azure.ai.inference;
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.models.ChatCompletions;
-import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -23,7 +22,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -46,7 +45,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     public void testGetChatCompletions(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsRunner((prompt) -> {
-            ChatCompletions resultCompletions = client.complete(new CompleteOptions(prompt));
+            ChatCompletions resultCompletions = client.complete(prompt);
             assertChatCompletions(1, resultCompletions);
         });
     }
