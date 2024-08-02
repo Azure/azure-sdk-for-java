@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public final class DeploymentStacksValidateStackAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackManagementGroupValidate.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * DeploymentStackManagementGroupValidate.json
      */
     /**
      * Sample code: DeploymentStacksManagementGroupValidate.
