@@ -192,6 +192,53 @@ public final class XmlReader implements AutoCloseable {
         return reader.getName();
     }
 
+//    /**
+//     * Gets the namespace URI for the current XML element.
+//     * <p>
+//     * If the current element doesn't have a namespace URI, {@link XMLConstants#NULL_NS_URI} will be returned.
+//     *
+//     * @return The namespace URI for the current XML element.
+//     */
+//    public String getElementNamespaceUri() {
+//        String namespaceUri = reader.getNamespaceURI();
+//        return namespaceUri == null ? XMLConstants.NULL_NS_URI : namespaceUri;
+//    }
+//
+//    /**
+//     * Gets the local name for the current XML element.
+//     *
+//     * @return The local name for the current XML element.
+//     */
+//    public String getElementLocalName() {
+//        return reader.getLocalName();
+//    }
+
+    /**
+     * Checks if the current element name matches the provided local name.
+     * <p>
+     * If the namespace of the current element also needs to be validated use
+     * {@link #elementNameMatches(String, String)}.
+     *
+     * @param localName The local name to match.
+     * @return Whether the current element name matches the provided local name.
+     */
+    public boolean elementNameMatches(String localName) {
+        return elementNameMatches(null, localName);
+    }
+
+    /**
+     * Checks if the current element namespace URI and name matches the provided namespace URI and local name.
+     * <p>
+     * Namespace URI validation replaces null values with {@link XMLConstants#NULL_NS_URI}.
+     *
+     * @param namespaceUri The namespace URI to match.
+     * @param localName The local name to match.
+     * @return Whether the current element namespace URI and name matches the provided namespace URI and local name.
+     */
+    public boolean elementNameMatches(String namespaceUri, String localName) {
+        return qNameEquals(reader.getNamespaceURI(), reader.getLocalName(), namespaceUri, localName);
+    }
+
     /**
      * Gets the string value for the attribute in the XML element.
      * <p>
