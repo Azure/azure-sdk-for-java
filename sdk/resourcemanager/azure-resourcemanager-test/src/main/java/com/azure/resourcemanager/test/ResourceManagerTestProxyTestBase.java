@@ -39,7 +39,6 @@ import reactor.core.Exceptions;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -255,14 +254,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
                 builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
-                String workingDirectory = getSafeWorkingDirectory();
-                if (workingDirectory != null) {
-                    builder.directory(new File(workingDirectory));
-                } else {
-                    throw LOGGER.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be"
-                        + " found to execute CLI command from. To mitigate this issue, please refer to the troubleshooting "
-                        + " guidelines here at https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-                }
                 builder.redirectErrorStream(true);
                 Process process = builder.start();
 
