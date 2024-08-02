@@ -10,7 +10,7 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import javax.xml.namespace.QName;
+
 import javax.xml.stream.XMLStreamException;
 
 /**
@@ -61,7 +61,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
-     * 
+     *
      * @return the serviceEndpoint value.
      */
     public String getServiceEndpoint() {
@@ -70,7 +70,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the serviceEndpoint property: The ServiceEndpoint property.
-     * 
+     *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -81,7 +81,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the containerName property: The ContainerName property.
-     * 
+     *
      * @return the containerName value.
      */
     public String getContainerName() {
@@ -90,7 +90,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the containerName property: The ContainerName property.
-     * 
+     *
      * @param containerName the containerName value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -101,7 +101,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the prefix property: The Prefix property.
-     * 
+     *
      * @return the prefix value.
      */
     public String getPrefix() {
@@ -110,7 +110,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the prefix property: The Prefix property.
-     * 
+     *
      * @param prefix the prefix value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -121,7 +121,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the marker property: The Marker property.
-     * 
+     *
      * @return the marker value.
      */
     public String getMarker() {
@@ -130,7 +130,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the marker property: The Marker property.
-     * 
+     *
      * @param marker the marker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -141,7 +141,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the maxResults property: The MaxResults property.
-     * 
+     *
      * @return the maxResults value.
      */
     public int getMaxResults() {
@@ -150,7 +150,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the maxResults property: The MaxResults property.
-     * 
+     *
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -161,7 +161,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the segment property: The Segment property.
-     * 
+     *
      * @return the segment value.
      */
     public BlobFlatListSegment getSegment() {
@@ -170,7 +170,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the segment property: The Segment property.
-     * 
+     *
      * @param segment the segment value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -181,7 +181,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Get the nextMarker property: The NextMarker property.
-     * 
+     *
      * @return the nextMarker value.
      */
     public String getNextMarker() {
@@ -190,7 +190,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Set the nextMarker property: The NextMarker property.
-     * 
+     *
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
@@ -220,7 +220,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Reads an instance of ListBlobsFlatSegmentResponse from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of ListBlobsFlatSegmentResponse if the XmlReader was pointing to an instance of it, or null
      * if it was pointing to XML null.
@@ -233,7 +233,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
 
     /**
      * Reads an instance of ListBlobsFlatSegmentResponse from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
@@ -251,21 +251,21 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
                 = reader.getStringAttribute(null, "ServiceEndpoint");
             deserializedListBlobsFlatSegmentResponse.containerName = reader.getStringAttribute(null, "ContainerName");
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Prefix".equals(elementName.getLocalPart())) {
-                    deserializedListBlobsFlatSegmentResponse.prefix = reader.getStringElement();
-                } else if ("Marker".equals(elementName.getLocalPart())) {
-                    deserializedListBlobsFlatSegmentResponse.marker = reader.getStringElement();
-                } else if ("MaxResults".equals(elementName.getLocalPart())) {
-                    deserializedListBlobsFlatSegmentResponse.maxResults = reader.getIntElement();
-                } else if ("Blobs".equals(elementName.getLocalPart())) {
-                    deserializedListBlobsFlatSegmentResponse.segment = BlobFlatListSegment.fromXml(reader, "Blobs");
-                } else if ("NextMarker".equals(elementName.getLocalPart())) {
-                    deserializedListBlobsFlatSegmentResponse.nextMarker = reader.getStringElement();
-                } else {
-                    reader.skipElement();
-                }
+                reader.processNextElement((namespaceUri, localName, reader1) -> {
+                    if ("Prefix".equals(localName)) {
+                        deserializedListBlobsFlatSegmentResponse.prefix = reader1.getStringElement();
+                    } else if ("Marker".equals(localName)) {
+                        deserializedListBlobsFlatSegmentResponse.marker = reader1.getStringElement();
+                    } else if ("MaxResults".equals(localName)) {
+                        deserializedListBlobsFlatSegmentResponse.maxResults = reader1.getIntElement();
+                    } else if ("Blobs".equals(localName)) {
+                        deserializedListBlobsFlatSegmentResponse.segment = BlobFlatListSegment.fromXml(reader1, "Blobs");
+                    } else if ("NextMarker".equals(localName)) {
+                        deserializedListBlobsFlatSegmentResponse.nextMarker = reader1.getStringElement();
+                    } else {
+                        reader1.skipElement();
+                    }
+                });
             }
 
             return deserializedListBlobsFlatSegmentResponse;

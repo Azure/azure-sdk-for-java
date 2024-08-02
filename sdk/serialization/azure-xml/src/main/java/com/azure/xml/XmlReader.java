@@ -192,26 +192,26 @@ public final class XmlReader implements AutoCloseable {
         return reader.getName();
     }
 
-//    /**
-//     * Gets the namespace URI for the current XML element.
-//     * <p>
-//     * If the current element doesn't have a namespace URI, {@link XMLConstants#NULL_NS_URI} will be returned.
-//     *
-//     * @return The namespace URI for the current XML element.
-//     */
-//    public String getElementNamespaceUri() {
-//        String namespaceUri = reader.getNamespaceURI();
-//        return namespaceUri == null ? XMLConstants.NULL_NS_URI : namespaceUri;
-//    }
-//
-//    /**
-//     * Gets the local name for the current XML element.
-//     *
-//     * @return The local name for the current XML element.
-//     */
-//    public String getElementLocalName() {
-//        return reader.getLocalName();
-//    }
+    //    /**
+    //     * Gets the namespace URI for the current XML element.
+    //     * <p>
+    //     * If the current element doesn't have a namespace URI, {@link XMLConstants#NULL_NS_URI} will be returned.
+    //     *
+    //     * @return The namespace URI for the current XML element.
+    //     */
+    //    public String getElementNamespaceUri() {
+    //        String namespaceUri = reader.getNamespaceURI();
+    //        return namespaceUri == null ? XMLConstants.NULL_NS_URI : namespaceUri;
+    //    }
+    //
+    //    /**
+    //     * Gets the local name for the current XML element.
+    //     *
+    //     * @return The local name for the current XML element.
+    //     */
+    //    public String getElementLocalName() {
+    //        return reader.getLocalName();
+    //    }
 
     /**
      * Checks if the current element name matches the provided local name.
@@ -237,6 +237,24 @@ public final class XmlReader implements AutoCloseable {
      */
     public boolean elementNameMatches(String namespaceUri, String localName) {
         return qNameEquals(reader.getNamespaceURI(), reader.getLocalName(), namespaceUri, localName);
+    }
+
+    /**
+     * Processes the next element in the XML stream.
+     * <p>
+     * The {@code callback} will be invoked with the current element's namespace URI, where null is replaced with
+     * {@link XMLConstants#NULL_NS_URI}, and local name and this {@link XmlReader}.
+     *
+     * @param callback The callback to process the next element.
+     * @throws XMLStreamException If the next element cannot be processed.
+     */
+    public void processNextElement(XmlProcessElementCallback callback) throws XMLStreamException {
+        String namespaceUri = reader.getNamespaceURI();
+        if (namespaceUri == null) {
+            namespaceUri = XMLConstants.NULL_NS_URI;
+        }
+        String localName = reader.getLocalName();
+        callback.process(namespaceUri, localName, this);
     }
 
     /**
@@ -403,8 +421,7 @@ public final class XmlReader implements AutoCloseable {
                 || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
                 readCount++;
                 if (readCount == 1) {
-                    firstRead
-                        = CharBuffer.wrap(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength());
+                    firstRead = readText();
                     stringBufferSize = firstRead.length();
                 } else {
                     if (readCount == 2) {
@@ -418,8 +435,7 @@ public final class XmlReader implements AutoCloseable {
                         buffer = newBuffer;
                     }
 
-                    CharBuffer readText
-                        = CharBuffer.wrap(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength());
+                    CharBuffer readText = readText();
                     buffer[readCount - 1] = readText;
                     stringBufferSize += readText.length();
                 }
