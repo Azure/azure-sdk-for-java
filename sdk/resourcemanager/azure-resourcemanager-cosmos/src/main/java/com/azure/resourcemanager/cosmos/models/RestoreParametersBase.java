@@ -5,25 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Parameters to indicate the information about the restore.
  */
 @Fluent
-public class RestoreParametersBase {
+public class RestoreParametersBase implements JsonSerializable<RestoreParametersBase> {
     /*
-     * The id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
+     * The id of the restorable database account from which the restore has to be initiated. For example:
+     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{
+     * restorableDatabaseAccountName}
      */
-    @JsonProperty(value = "restoreSource")
     private String restoreSource;
 
     /*
      * Time to which the account has to be restored (ISO-8601 format).
      */
-    @JsonProperty(value = "restoreTimestampInUtc")
     private OffsetDateTime restoreTimestampInUtc;
 
     /**
@@ -36,7 +41,7 @@ public class RestoreParametersBase {
      * Get the restoreSource property: The id of the restorable database account from which the restore has to be
      * initiated. For example:
      * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
+     * 
      * @return the restoreSource value.
      */
     public String restoreSource() {
@@ -47,7 +52,7 @@ public class RestoreParametersBase {
      * Set the restoreSource property: The id of the restorable database account from which the restore has to be
      * initiated. For example:
      * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
+     * 
      * @param restoreSource the restoreSource value to set.
      * @return the RestoreParametersBase object itself.
      */
@@ -58,7 +63,7 @@ public class RestoreParametersBase {
 
     /**
      * Get the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
+     * 
      * @return the restoreTimestampInUtc value.
      */
     public OffsetDateTime restoreTimestampInUtc() {
@@ -67,7 +72,7 @@ public class RestoreParametersBase {
 
     /**
      * Set the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
+     * 
      * @param restoreTimestampInUtc the restoreTimestampInUtc value to set.
      * @return the RestoreParametersBase object itself.
      */
@@ -78,9 +83,52 @@ public class RestoreParametersBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("restoreSource", this.restoreSource);
+        jsonWriter.writeStringField("restoreTimestampInUtc",
+            this.restoreTimestampInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restoreTimestampInUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreParametersBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreParametersBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreParametersBase.
+     */
+    public static RestoreParametersBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreParametersBase deserializedRestoreParametersBase = new RestoreParametersBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreSource".equals(fieldName)) {
+                    deserializedRestoreParametersBase.restoreSource = reader.getString();
+                } else if ("restoreTimestampInUtc".equals(fieldName)) {
+                    deserializedRestoreParametersBase.restoreTimestampInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreParametersBase;
+        });
     }
 }

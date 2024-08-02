@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,8 +21,22 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
     /*
      * The properties of an Azure Cosmos DB storedProcedure
      */
-    @JsonProperty(value = "properties")
     private SqlStoredProcedureGetProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of SqlStoredProcedureGetResultsInner class.
@@ -34,6 +51,36 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
      */
     private SqlStoredProcedureGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -88,5 +135,57 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlStoredProcedureGetResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlStoredProcedureGetResultsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlStoredProcedureGetResultsInner.
+     */
+    public static SqlStoredProcedureGetResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlStoredProcedureGetResultsInner deserializedSqlStoredProcedureGetResultsInner
+                = new SqlStoredProcedureGetResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlStoredProcedureGetResultsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlStoredProcedureGetResultsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlStoredProcedureGetResultsInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSqlStoredProcedureGetResultsInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlStoredProcedureGetResultsInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlStoredProcedureGetResultsInner.innerProperties
+                        = SqlStoredProcedureGetProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlStoredProcedureGetResultsInner;
+        });
     }
 }

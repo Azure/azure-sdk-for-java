@@ -11,7 +11,8 @@ import com.azure.resourcemanager.cosmos.models.SqlRoleAssignmentCreateUpdatePara
  */
 public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBSqlRoleAssignmentCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentCreateUpdate.

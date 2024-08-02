@@ -11,7 +11,8 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesStartSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBNotebookWorkspaceStart.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBNotebookWorkspaceStart.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceStart.
