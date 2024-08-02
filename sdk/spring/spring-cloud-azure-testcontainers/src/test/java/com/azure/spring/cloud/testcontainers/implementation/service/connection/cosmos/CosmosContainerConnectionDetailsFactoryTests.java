@@ -45,7 +45,7 @@ class CosmosContainerConnectionDetailsFactoryTests {
 
     @Container
     @ServiceConnection
-    private static final CosmosDBEmulatorContainer cosmos = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
+    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
         .waitingFor(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure())
         .withStartupTimeout(Duration.ofMinutes(3));
 
@@ -55,11 +55,11 @@ class CosmosContainerConnectionDetailsFactoryTests {
     @BeforeAll
     static void beforeAll() throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
         Path keyStoreFile = new File(tempFolder, "azure-cosmos-emulator.keystore").toPath();
-        KeyStore keyStore = cosmos.buildNewKeyStore();
-        keyStore.store(Files.newOutputStream(keyStoreFile.toFile().toPath()), cosmos.getEmulatorKey().toCharArray());
+        KeyStore keyStore = COSMOS_DB_EMULATOR_CONTAINER.buildNewKeyStore();
+        keyStore.store(Files.newOutputStream(keyStoreFile.toFile().toPath()), COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey().toCharArray());
 
         System.setProperty("javax.net.ssl.trustStore", keyStoreFile.toString());
-        System.setProperty("javax.net.ssl.trustStorePassword", cosmos.getEmulatorKey());
+        System.setProperty("javax.net.ssl.trustStorePassword", COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey());
         System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
     }
 
@@ -81,10 +81,10 @@ class CosmosContainerConnectionDetailsFactoryTests {
         private String id;
         private String name;
 
-        public Person() {
+        Person() {
         }
 
-        public Person(String name) {
+        Person(String name) {
             this.name = name;
         }
 
