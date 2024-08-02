@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The blob service properties for change feed events.
  */
 @Fluent
-public final class ChangeFeed {
+public final class ChangeFeed implements JsonSerializable<ChangeFeed> {
     /*
      * Indicates whether change feed event logging is enabled for the Blob service.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days
      * (400 years). A null value indicates an infinite retention of the change feed.
      */
-    @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
     /**
@@ -79,5 +81,44 @@ public final class ChangeFeed {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("retentionInDays", this.retentionInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeFeed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeFeed if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ChangeFeed.
+     */
+    public static ChangeFeed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeFeed deserializedChangeFeed = new ChangeFeed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedChangeFeed.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("retentionInDays".equals(fieldName)) {
+                    deserializedChangeFeed.retentionInDays = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeFeed;
+        });
     }
 }

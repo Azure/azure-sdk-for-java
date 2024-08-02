@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Lease Container response schema.
  */
 @Fluent
-public final class LeaseContainerResponseInner {
+public final class LeaseContainerResponseInner implements JsonSerializable<LeaseContainerResponseInner> {
     /*
      * Returned unique lease ID that must be included with any request to delete the container, or to renew, change, or
      * release the lease.
      */
-    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /*
      * Approximate time remaining in the lease period, in seconds.
      */
-    @JsonProperty(value = "leaseTimeSeconds")
     private String leaseTimeSeconds;
 
     /**
@@ -79,5 +81,44 @@ public final class LeaseContainerResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("leaseId", this.leaseId);
+        jsonWriter.writeStringField("leaseTimeSeconds", this.leaseTimeSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LeaseContainerResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LeaseContainerResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LeaseContainerResponseInner.
+     */
+    public static LeaseContainerResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LeaseContainerResponseInner deserializedLeaseContainerResponseInner = new LeaseContainerResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("leaseId".equals(fieldName)) {
+                    deserializedLeaseContainerResponseInner.leaseId = reader.getString();
+                } else if ("leaseTimeSeconds".equals(fieldName)) {
+                    deserializedLeaseContainerResponseInner.leaseTimeSeconds = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLeaseContainerResponseInner;
+        });
     }
 }
