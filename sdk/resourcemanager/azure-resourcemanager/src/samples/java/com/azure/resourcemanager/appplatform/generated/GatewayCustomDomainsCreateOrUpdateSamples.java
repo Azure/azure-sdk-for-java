@@ -21,9 +21,13 @@ public final class GatewayCustomDomainsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewayCustomDomainsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGatewayCustomDomains().createOrUpdate(
-            "myResourceGroup", "myservice", "default", "myDomainName", new GatewayCustomDomainResourceInner()
-                .withProperties(new GatewayCustomDomainProperties().withThumbprint("*")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGatewayCustomDomains()
+            .createOrUpdate(
+                "myResourceGroup", "myservice", "default", "myDomainName", new GatewayCustomDomainResourceInner()
+                    .withProperties(new GatewayCustomDomainProperties().withThumbprint("*")),
+                com.azure.core.util.Context.NONE);
     }
 }

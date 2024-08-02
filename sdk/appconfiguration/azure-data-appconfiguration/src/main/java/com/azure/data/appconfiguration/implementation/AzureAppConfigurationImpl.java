@@ -23,7 +23,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
@@ -37,9 +36,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.appconfiguration.implementation.models.CheckKeysHeaders;
 import com.azure.data.appconfiguration.implementation.models.CheckKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.CheckKeyValuesHeaders;
-import com.azure.data.appconfiguration.implementation.models.CheckKeysHeaders;
 import com.azure.data.appconfiguration.implementation.models.CheckLabelsHeaders;
 import com.azure.data.appconfiguration.implementation.models.CheckRevisionsHeaders;
 import com.azure.data.appconfiguration.implementation.models.CheckSnapshotHeaders;
@@ -47,11 +46,11 @@ import com.azure.data.appconfiguration.implementation.models.CheckSnapshotsHeade
 import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.DeleteLockHeaders;
+import com.azure.data.appconfiguration.implementation.models.GetKeysHeaders;
+import com.azure.data.appconfiguration.implementation.models.GetKeysNextHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValuesHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValuesNextHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetKeysHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetKeysNextHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetLabelsHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetLabelsNextHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetRevisionsHeaders;
@@ -63,8 +62,6 @@ import com.azure.data.appconfiguration.implementation.models.Key;
 import com.azure.data.appconfiguration.implementation.models.KeyListResult;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueListResult;
-import com.azure.data.appconfiguration.implementation.models.Label;
-import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.implementation.models.LabelListResult;
 import com.azure.data.appconfiguration.implementation.models.OperationDetails;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
@@ -75,71 +72,88 @@ import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeade
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
 import com.azure.data.appconfiguration.models.SnapshotFields;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureAppConfiguration type. */
+/**
+ * Initializes a new instance of the AzureAppConfiguration type.
+ */
 public final class AzureAppConfigurationImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AzureAppConfigurationService service;
 
-    /** Used to guarantee real-time consistency between requests. */
+    /**
+     * Used to guarantee real-time consistency between requests.
+     */
     private final String syncToken;
 
     /**
      * Gets Used to guarantee real-time consistency between requests.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
         return this.syncToken;
     }
 
-    /** The endpoint of the App Configuration instance to send requests to. */
+    /**
+     * The endpoint of the App Configuration instance to send requests to.
+     */
     private final String endpoint;
 
     /**
      * Gets The endpoint of the App Configuration instance to send requests to.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -148,25 +162,19 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Initializes an instance of AzureAppConfiguration client.
-     *
+     * 
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
     public AzureAppConfigurationImpl(String syncToken, String endpoint, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                syncToken,
-                endpoint,
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), syncToken, endpoint, apiVersion);
     }
 
     /**
      * Initializes an instance of AzureAppConfiguration client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
@@ -178,26 +186,22 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Initializes an instance of AzureAppConfiguration client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param endpoint The endpoint of the App Configuration instance to send requests to.
      * @param apiVersion Api Version.
      */
-    public AzureAppConfigurationImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String syncToken,
-            String endpoint,
-            String apiVersion) {
+    public AzureAppConfigurationImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String syncToken,
+        String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.syncToken = syncToken;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
-        this.service =
-                RestProxy.create(AzureAppConfigurationService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AzureAppConfigurationService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -208,702 +212,476 @@ public final class AzureAppConfigurationImpl {
     @ServiceInterface(name = "AzureAppConfiguratio")
     public interface AzureAppConfigurationService {
         @Get("/keys")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetKeysHeaders, KeyListResult>> getKeys(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<GetKeysHeaders, KeyListResult>> getKeys(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/keys")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetKeysHeaders, KeyListResult> getKeysSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetKeysHeaders, KeyListResult> getKeysSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Head("/keys")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckKeysHeaders, Void>> checkKeys(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                Context context);
+        Mono<ResponseBase<CheckKeysHeaders, Void>> checkKeys(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, Context context);
 
         @Head("/keys")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckKeysHeaders, Void> checkKeysSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                Context context);
+        ResponseBase<CheckKeysHeaders, Void> checkKeysSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, Context context);
 
         @Get("/kv")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetKeyValuesHeaders, KeyValueListResult>> getKeyValues(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @QueryParam("snapshot") String snapshot,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<GetKeyValuesHeaders, KeyValueListResult>> getKeyValues(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/kv")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetKeyValuesHeaders, KeyValueListResult> getKeyValuesSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @QueryParam("snapshot") String snapshot,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetKeyValuesHeaders, KeyValueListResult> getKeyValuesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Head("/kv")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckKeyValuesHeaders, Void>> checkKeyValues(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @QueryParam("snapshot") String snapshot,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                Context context);
+        Mono<ResponseBase<CheckKeyValuesHeaders, Void>> checkKeyValues(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags, Context context);
 
         @Head("/kv")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckKeyValuesHeaders, Void> checkKeyValuesSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @QueryParam("snapshot") String snapshot,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                Context context);
+        ResponseBase<CheckKeyValuesHeaders, Void> checkKeyValuesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags, Context context);
 
         @Get("/kv/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetKeyValueHeaders, KeyValue>> getKeyValue(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<GetKeyValueHeaders, KeyValue>> getKeyValue(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/kv/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetKeyValueHeaders, KeyValue> getKeyValueSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetKeyValueHeaders, KeyValue> getKeyValueSync(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/kv/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<PutKeyValueHeaders, KeyValue>> putKeyValue(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @BodyParam("application/json") KeyValue entity,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<PutKeyValueHeaders, KeyValue>> putKeyValue(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") KeyValue entity, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/kv/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<PutKeyValueHeaders, KeyValue> putKeyValueSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @BodyParam("application/json") KeyValue entity,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<PutKeyValueHeaders, KeyValue> putKeyValueSync(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") KeyValue entity, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/kv/{key}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<DeleteKeyValueHeaders, KeyValue>> deleteKeyValue(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<DeleteKeyValueHeaders, KeyValue>> deleteKeyValue(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/kv/{key}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<DeleteKeyValueHeaders, KeyValue> deleteKeyValueSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<DeleteKeyValueHeaders, KeyValue> deleteKeyValueSync(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
 
         @Head("/kv/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckKeyValueHeaders, Void>> checkKeyValue(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("$Select") String select,
-                Context context);
+        Mono<ResponseBase<CheckKeyValueHeaders, Void>> checkKeyValue(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select, Context context);
 
         @Head("/kv/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckKeyValueHeaders, Void> checkKeyValueSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("$Select") String select,
-                Context context);
+        ResponseBase<CheckKeyValueHeaders, Void> checkKeyValueSync(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select, Context context);
 
         @Get("/snapshots")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetSnapshotsHeaders, SnapshotListResult>> getSnapshots(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @QueryParam("$Select") String select,
-                @QueryParam("status") String status,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<GetSnapshotsHeaders, SnapshotListResult>> getSnapshots(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @QueryParam("$Select") String select, @QueryParam("status") String status,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/snapshots")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetSnapshotsHeaders, SnapshotListResult> getSnapshotsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @QueryParam("$Select") String select,
-                @QueryParam("status") String status,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetSnapshotsHeaders, SnapshotListResult> getSnapshotsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @QueryParam("$Select") String select, @QueryParam("status") String status,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Head("/snapshots")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckSnapshotsHeaders, Void>> checkSnapshots(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                Context context);
+        Mono<ResponseBase<CheckSnapshotsHeaders, Void>> checkSnapshots(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, Context context);
 
         @Head("/snapshots")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckSnapshotsHeaders, Void> checkSnapshotsSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                Context context);
+        ResponseBase<CheckSnapshotsHeaders, Void> checkSnapshotsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, Context context);
 
         @Get("/snapshots/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot>> getSnapshot(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("name") String name,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam("$Select") String select, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/snapshots/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> getSnapshotSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("name") String name,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> getSnapshotSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @PathParam("name") String name, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/snapshots/{name}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>> createSnapshot(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ConfigurationSnapshot entity,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ConfigurationSnapshot entity, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/snapshots/{name}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot> createSnapshotSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ConfigurationSnapshot entity,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ConfigurationSnapshot entity, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/snapshots/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot>> updateSnapshot(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @BodyParam("application/json") SnapshotUpdateParameters entity,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") SnapshotUpdateParameters entity, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Patch("/snapshots/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> updateSnapshotSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @BodyParam("application/json") SnapshotUpdateParameters entity,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") SnapshotUpdateParameters entity, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Head("/snapshots/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckSnapshotHeaders, Void>> checkSnapshot(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                Context context);
+        Mono<ResponseBase<CheckSnapshotHeaders, Void>> checkSnapshot(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Head("/snapshots/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckSnapshotHeaders, Void> checkSnapshotSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                Context context);
+        ResponseBase<CheckSnapshotHeaders, Void> checkSnapshotSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("/labels")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetLabelsHeaders, LabelListResult>> getLabels(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<GetLabelsHeaders, LabelListResult>> getLabels(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @QueryParam("$Select") String select,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/labels")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetLabelsHeaders, LabelListResult> getLabelsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetLabelsHeaders, LabelListResult> getLabelsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @QueryParam("$Select") String select,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Head("/labels")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabels(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                Context context);
+        Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabels(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @QueryParam("$Select") String select,
+            Context context);
 
         @Head("/labels")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckLabelsHeaders, Void> checkLabelsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("name") String name,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                Context context);
+        ResponseBase<CheckLabelsHeaders, Void> checkLabelsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
+            @QueryParam("api-version") String apiVersion, @QueryParam("After") String after,
+            @HeaderParam("Accept-Datetime") String acceptDatetime, @QueryParam("$Select") String select,
+            Context context);
 
         @Put("/locks/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<PutLockHeaders, KeyValue>> putLock(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<PutLockHeaders, KeyValue>> putLock(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/locks/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<PutLockHeaders, KeyValue> putLockSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<PutLockHeaders, KeyValue> putLockSync(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/locks/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<DeleteLockHeaders, KeyValue>> deleteLock(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<DeleteLockHeaders, KeyValue>> deleteLock(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/locks/{key}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<DeleteLockHeaders, KeyValue> deleteLockSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<DeleteLockHeaders, KeyValue> deleteLockSync(@HostParam("endpoint") String endpoint,
+            @PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/revisions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetRevisionsHeaders, KeyValueListResult>> getRevisions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<GetRevisionsHeaders, KeyValueListResult>> getRevisions(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/revisions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetRevisionsHeaders, KeyValueListResult> getRevisionsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        ResponseBase<GetRevisionsHeaders, KeyValueListResult> getRevisionsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Head("/revisions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                Context context);
+        Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisions(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags, Context context);
 
         @Head("/revisions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CheckRevisionsHeaders, Void> checkRevisionsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("key") String key,
-                @QueryParam("label") String label,
-                @HeaderParam("Sync-Token") String syncToken,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("After") String after,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @QueryParam("$Select") String select,
-                Context context);
+        ResponseBase<CheckRevisionsHeaders, Void> checkRevisionsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken, @QueryParam("api-version") String apiVersion,
+            @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @QueryParam("$Select") String select,
+            @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags, Context context);
 
         @Get("/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<OperationDetails>> getOperationDetails(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("snapshot") String snapshot,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<OperationDetails>> getOperationDetails(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<OperationDetails> getOperationDetailsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("snapshot") String snapshot,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<OperationDetails> getOperationDetailsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("snapshot") String snapshot,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<GetKeysNextHeaders, KeyListResult>> getKeysNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<GetKeysNextHeaders, KeyListResult> getKeysNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult>> getKeyValuesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> getKeyValuesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult>> getSnapshotsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> getSnapshotsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<GetLabelsNextHeaders, LabelListResult>> getLabelsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<GetLabelsNextHeaders, LabelListResult> getLabelsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<ResponseBase<GetRevisionsNextHeaders, KeyValueListResult>> getRevisionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<GetRevisionsNextHeaders, KeyValueListResult> getRevisionsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Sync-Token") String syncToken,
-                @HeaderParam("Accept-Datetime") String acceptDatetime,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -913,34 +691,19 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Key>> getKeysSinglePageAsync(String name, String after, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getKeys(
-                                        this.getEndpoint(),
-                                        name,
-                                        this.getSyncToken(),
-                                        this.getApiVersion(),
-                                        after,
-                                        acceptDatetime,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return FluxUtil
+            .withContext(context -> service.getKeys(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(),
+                after, acceptDatetime, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -949,35 +712,22 @@ public final class AzureAppConfigurationImpl {
      * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Key>> getKeysSinglePageAsync(
-            String name, String after, String acceptDatetime, Context context) {
+    public Mono<PagedResponse<Key>> getKeysSinglePageAsync(String name, String after, String acceptDatetime,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        return service.getKeys(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return service
+            .getKeys(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -986,17 +736,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Key> getKeysAsync(String name, String after, String acceptDatetime) {
-        return new PagedFlux<>(
-                () -> getKeysSinglePageAsync(name, after, acceptDatetime),
-                nextLink -> getKeysNextSinglePageAsync(nextLink, acceptDatetime));
+        return new PagedFlux<>(() -> getKeysSinglePageAsync(name, after, acceptDatetime),
+            nextLink -> getKeysNextSinglePageAsync(nextLink, acceptDatetime));
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1006,17 +755,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Key> getKeysAsync(String name, String after, String acceptDatetime, Context context) {
-        return new PagedFlux<>(
-                () -> getKeysSinglePageAsync(name, after, acceptDatetime, context),
-                nextLink -> getKeysNextSinglePageAsync(nextLink, acceptDatetime, context));
+        return new PagedFlux<>(() -> getKeysSinglePageAsync(name, after, acceptDatetime, context),
+            nextLink -> getKeysNextSinglePageAsync(nextLink, acceptDatetime, context));
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1026,31 +774,18 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysSinglePage(String name, String after, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        ResponseBase<GetKeysHeaders, KeyListResult> res =
-                service.getKeysSync(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetKeysHeaders, KeyListResult> res = service.getKeysSync(this.getEndpoint(), name,
+            this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1061,31 +796,18 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysSinglePage(String name, String after, String acceptDatetime, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        ResponseBase<GetKeysHeaders, KeyListResult> res =
-                service.getKeysSync(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetKeysHeaders, KeyListResult> res = service.getKeysSync(this.getEndpoint(), name,
+            this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1094,17 +816,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String name, String after, String acceptDatetime) {
-        return new PagedIterable<>(
-                () -> getKeysSinglePage(name, after, acceptDatetime, Context.NONE),
-                nextLink -> getKeysNextSinglePage(nextLink, acceptDatetime));
+        return new PagedIterable<>(() -> getKeysSinglePage(name, after, acceptDatetime, Context.NONE),
+            nextLink -> getKeysNextSinglePage(nextLink, acceptDatetime));
     }
 
     /**
      * Gets a list of keys.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1114,17 +835,16 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String name, String after, String acceptDatetime, Context context) {
-        return new PagedIterable<>(
-                () -> getKeysSinglePage(name, after, acceptDatetime, context),
-                nextLink -> getKeysNextSinglePage(nextLink, acceptDatetime, context));
+        return new PagedIterable<>(() -> getKeysSinglePage(name, after, acceptDatetime, context),
+            nextLink -> getKeysNextSinglePage(nextLink, acceptDatetime, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1132,26 +852,18 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckKeysHeaders, Void>> checkKeysWithResponseAsync(
-            String name, String after, String acceptDatetime) {
-        return FluxUtil.withContext(
-                context ->
-                        service.checkKeys(
-                                this.getEndpoint(),
-                                name,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                after,
-                                acceptDatetime,
-                                context));
+    public Mono<ResponseBase<CheckKeysHeaders, Void>> checkKeysWithResponseAsync(String name, String after,
+        String acceptDatetime) {
+        return FluxUtil.withContext(context -> service.checkKeys(this.getEndpoint(), name, this.getSyncToken(),
+            this.getApiVersion(), after, acceptDatetime, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1160,18 +872,18 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckKeysHeaders, Void>> checkKeysWithResponseAsync(
-            String name, String after, String acceptDatetime, Context context) {
-        return service.checkKeys(
-                this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, context);
+    public Mono<ResponseBase<CheckKeysHeaders, Void>> checkKeysWithResponseAsync(String name, String after,
+        String acceptDatetime, Context context) {
+        return service.checkKeys(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after,
+            acceptDatetime, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1185,10 +897,10 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1203,10 +915,10 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1215,18 +927,18 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CheckKeysHeaders, Void> checkKeysWithResponse(
-            String name, String after, String acceptDatetime, Context context) {
-        return service.checkKeysSync(
-                this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, context);
+    public ResponseBase<CheckKeysHeaders, Void> checkKeysWithResponse(String name, String after, String acceptDatetime,
+        Context context) {
+        return service.checkKeysSync(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after,
+            acceptDatetime, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1239,79 +951,60 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
+    public Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(String key, String label, String after,
+        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                        context ->
-                                service.getKeyValues(
-                                        this.getEndpoint(),
-                                        key,
-                                        label,
-                                        this.getSyncToken(),
-                                        this.getApiVersion(),
-                                        after,
-                                        acceptDatetime,
-                                        selectConverted,
-                                        snapshot,
-                                        ifMatch,
-                                        ifNoneMatch,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil
+            .withContext(context -> service.getKeyValues(this.getEndpoint(), key, label, this.getSyncToken(),
+                this.getApiVersion(), after, acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch,
+                tagsConverted, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1319,96 +1012,68 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
+    public Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(String key, String label, String after,
+        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getKeyValues(
-                        this.getEndpoint(),
-                        key,
-                        label,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        snapshot,
-                        ifMatch,
-                        ifNoneMatch,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service
+            .getKeyValues(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+                acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyValue> getKeyValuesAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
-        return new PagedFlux<>(
-                () ->
-                        getKeyValuesSinglePageAsync(
-                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch),
-                nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
+    public PagedFlux<KeyValue> getKeyValuesAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
+        return new PagedFlux<>(() -> getKeyValuesSinglePageAsync(key, label, after, acceptDatetime, select, snapshot,
+            ifMatch, ifNoneMatch, tags),
+            nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1416,95 +1081,69 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyValue> getKeyValuesAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
+    public PagedFlux<KeyValue> getKeyValuesAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags,
+        Context context) {
         return new PagedFlux<>(
-                () ->
-                        getKeyValuesSinglePageAsync(
-                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context),
-                nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
+            () -> getKeyValuesSinglePageAsync(key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
+                tags, context),
+            nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesSinglePage(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
+    public PagedResponse<KeyValue> getKeyValuesSinglePage(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetKeyValuesHeaders, KeyValueListResult> res =
-                service.getKeyValuesSync(
-                        this.getEndpoint(),
-                        key,
-                        label,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        snapshot,
-                        ifMatch,
-                        ifNoneMatch,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        ResponseBase<GetKeyValuesHeaders, KeyValueListResult> res
+            = service.getKeyValuesSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+                acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1512,103 +1151,69 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesSinglePage(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
+    public PagedResponse<KeyValue> getKeyValuesSinglePage(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetKeyValuesHeaders, KeyValueListResult> res =
-                service.getKeyValuesSync(
-                        this.getEndpoint(),
-                        key,
-                        label,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        snapshot,
-                        ifMatch,
-                        ifNoneMatch,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        ResponseBase<GetKeyValuesHeaders, KeyValueListResult> res
+            = service.getKeyValuesSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+                acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
+    public PagedIterable<KeyValue> getKeyValues(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
         return new PagedIterable<>(
-                () ->
-                        getKeyValuesSinglePage(
-                                key,
-                                label,
-                                after,
-                                acceptDatetime,
-                                select,
-                                snapshot,
-                                ifMatch,
-                                ifNoneMatch,
-                                Context.NONE),
-                nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
+            () -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
+                tags, Context.NONE),
+            nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
     /**
      * Gets a list of key-values.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
-     *     valid when used with 'key' and 'label' filters.
+     * valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1616,85 +1221,65 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
+    public PagedIterable<KeyValue> getKeyValues(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags,
+        Context context) {
         return new PagedIterable<>(
-                () ->
-                        getKeyValuesSinglePage(
-                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context),
-                nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
+            () -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
+                tags, context),
+            nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckKeyValuesHeaders, Void>> checkKeyValuesWithResponseAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+    public Mono<ResponseBase<CheckKeyValuesHeaders, Void>> checkKeyValuesWithResponseAsync(String key, String label,
+        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
-                context ->
-                        service.checkKeyValues(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                after,
-                                acceptDatetime,
-                                selectConverted,
-                                snapshot,
-                                ifMatch,
-                                ifNoneMatch,
-                                context));
+            context -> service.checkKeyValues(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+                after, acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1702,81 +1287,61 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckKeyValuesHeaders, Void>> checkKeyValuesWithResponseAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkKeyValues(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                after,
-                acceptDatetime,
-                selectConverted,
-                snapshot,
-                ifMatch,
-                ifNoneMatch,
-                context);
+    public Mono<ResponseBase<CheckKeyValuesHeaders, Void>> checkKeyValuesWithResponseAsync(String key, String label,
+        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.checkKeyValues(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+            acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkKeyValuesAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
-        return checkKeyValuesWithResponseAsync(
-                        key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> checkKeyValuesAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
+        return checkKeyValuesWithResponseAsync(key, label, after, acceptDatetime, select, snapshot, ifMatch,
+            ifNoneMatch, tags).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1784,34 +1349,27 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkKeyValuesAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
-        return checkKeyValuesWithResponseAsync(
-                        key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> checkKeyValuesAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags,
+        Context context) {
+        return checkKeyValuesWithResponseAsync(key, label, after, acceptDatetime, select, snapshot, ifMatch,
+            ifNoneMatch, tags, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1819,75 +1377,55 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CheckKeyValuesHeaders, Void> checkKeyValuesWithResponse(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch,
-            Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkKeyValuesSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                after,
-                acceptDatetime,
-                selectConverted,
-                snapshot,
-                ifMatch,
-                ifNoneMatch,
-                context);
+    public ResponseBase<CheckKeyValuesHeaders, Void> checkKeyValuesWithResponse(String key, String label, String after,
+        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.checkKeyValuesSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            after, acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkKeyValues(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            String snapshot,
-            String ifMatch,
-            String ifNoneMatch) {
-        checkKeyValuesWithResponse(
-                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, Context.NONE);
+    public void checkKeyValues(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
+        checkKeyValuesWithResponse(key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, tags,
+            Context.NONE);
     }
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1895,43 +1433,27 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<GetKeyValueHeaders, KeyValue>> getKeyValueWithResponseAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select) {
+    public Mono<ResponseBase<GetKeyValueHeaders, KeyValue>> getKeyValueWithResponseAsync(String key, String label,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, List<SettingFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context ->
-                        service.getKeyValue(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                acceptDatetime,
-                                ifMatch,
-                                ifNoneMatch,
-                                selectConverted,
-                                accept,
-                                context));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.getKeyValue(this.getEndpoint(), key, label, this.getSyncToken(),
+            this.getApiVersion(), acceptDatetime, ifMatch, ifNoneMatch, selectConverted, accept, context));
     }
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1940,42 +1462,27 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<GetKeyValueHeaders, KeyValue>> getKeyValueWithResponseAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select,
-            Context context) {
+    public Mono<ResponseBase<GetKeyValueHeaders, KeyValue>> getKeyValueWithResponseAsync(String key, String label,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, List<SettingFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getKeyValue(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                acceptDatetime,
-                ifMatch,
-                ifNoneMatch,
-                selectConverted,
-                accept,
-                context);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.getKeyValue(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            acceptDatetime, ifMatch, ifNoneMatch, selectConverted, accept, context);
     }
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1983,26 +1490,21 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyValue> getKeyValueAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select) {
+    public Mono<KeyValue> getKeyValueAsync(String key, String label, String acceptDatetime, String ifMatch,
+        String ifNoneMatch, List<SettingFields> select) {
         return getKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2011,27 +1513,21 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyValue> getKeyValueAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select,
-            Context context) {
+    public Mono<KeyValue> getKeyValueAsync(String key, String label, String acceptDatetime, String ifMatch,
+        String ifNoneMatch, List<SettingFields> select, Context context) {
         return getKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2040,42 +1536,27 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<GetKeyValueHeaders, KeyValue> getKeyValueWithResponse(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select,
-            Context context) {
+    public ResponseBase<GetKeyValueHeaders, KeyValue> getKeyValueWithResponse(String key, String label,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, List<SettingFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getKeyValueSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                acceptDatetime,
-                ifMatch,
-                ifNoneMatch,
-                selectConverted,
-                accept,
-                context);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.getKeyValueSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            acceptDatetime, ifMatch, ifNoneMatch, selectConverted, accept, context);
     }
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2083,25 +1564,20 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyValue getKeyValue(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select) {
+    public KeyValue getKeyValue(String key, String label, String acceptDatetime, String ifMatch, String ifNoneMatch,
+        List<SettingFields> select) {
         return getKeyValueWithResponse(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, Context.NONE)
-                .getValue();
+            .getValue();
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param label The label of the key-value to create.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param entity The key-value to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2109,32 +1585,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<PutKeyValueHeaders, KeyValue>> putKeyValueWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity) {
+    public Mono<ResponseBase<PutKeyValueHeaders, KeyValue>> putKeyValueWithResponseAsync(String key, String label,
+        String ifMatch, String ifNoneMatch, KeyValue entity) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return FluxUtil.withContext(
-                context ->
-                        service.putKeyValue(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                ifMatch,
-                                ifNoneMatch,
-                                entity,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.putKeyValue(this.getEndpoint(), key, label, this.getSyncToken(),
+            this.getApiVersion(), ifMatch, ifNoneMatch, entity, accept, context));
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param label The label of the key-value to create.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param entity The key-value to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2143,30 +1608,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<PutKeyValueHeaders, KeyValue>> putKeyValueWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+    public Mono<ResponseBase<PutKeyValueHeaders, KeyValue>> putKeyValueWithResponseAsync(String key, String label,
+        String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.putKeyValue(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                entity,
-                accept,
-                context);
+        return service.putKeyValue(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, entity, accept, context);
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param label The label of the key-value to create.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param entity The key-value to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2174,20 +1630,20 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyValue> putKeyValueAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity) {
+    public Mono<KeyValue> putKeyValueAsync(String key, String label, String ifMatch, String ifNoneMatch,
+        KeyValue entity) {
         return putKeyValueWithResponseAsync(key, label, ifMatch, ifNoneMatch, entity)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param label The label of the key-value to create.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param entity The key-value to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2196,20 +1652,20 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyValue> putKeyValueAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+    public Mono<KeyValue> putKeyValueAsync(String key, String label, String ifMatch, String ifNoneMatch,
+        KeyValue entity, Context context) {
         return putKeyValueWithResponseAsync(key, label, ifMatch, ifNoneMatch, entity, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param label The label of the key-value to create.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param entity The key-value to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2218,30 +1674,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<PutKeyValueHeaders, KeyValue> putKeyValueWithResponse(
-            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+    public ResponseBase<PutKeyValueHeaders, KeyValue> putKeyValueWithResponse(String key, String label, String ifMatch,
+        String ifNoneMatch, KeyValue entity, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.putKeyValueSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                entity,
-                accept,
-                context);
+        return service.putKeyValueSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            ifMatch, ifNoneMatch, entity, accept, context);
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param label The label of the key-value to create.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param entity The key-value to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2255,7 +1702,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param label The label of the key-value to delete.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
@@ -2265,25 +1712,16 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DeleteKeyValueHeaders, KeyValue>> deleteKeyValueWithResponseAsync(
-            String key, String label, String ifMatch) {
+    public Mono<ResponseBase<DeleteKeyValueHeaders, KeyValue>> deleteKeyValueWithResponseAsync(String key, String label,
+        String ifMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteKeyValue(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                ifMatch,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteKeyValue(this.getEndpoint(), key, label,
+            this.getSyncToken(), this.getApiVersion(), ifMatch, accept, context));
     }
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param label The label of the key-value to delete.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
@@ -2294,16 +1732,16 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DeleteKeyValueHeaders, KeyValue>> deleteKeyValueWithResponseAsync(
-            String key, String label, String ifMatch, Context context) {
+    public Mono<ResponseBase<DeleteKeyValueHeaders, KeyValue>> deleteKeyValueWithResponseAsync(String key, String label,
+        String ifMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.deleteKeyValue(
-                this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), ifMatch, accept, context);
+        return service.deleteKeyValue(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            ifMatch, accept, context);
     }
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param label The label of the key-value to delete.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
@@ -2319,7 +1757,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param label The label of the key-value to delete.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
@@ -2332,12 +1770,12 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyValue> deleteKeyValueAsync(String key, String label, String ifMatch, Context context) {
         return deleteKeyValueWithResponseAsync(key, label, ifMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param label The label of the key-value to delete.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
@@ -2348,16 +1786,16 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DeleteKeyValueHeaders, KeyValue> deleteKeyValueWithResponse(
-            String key, String label, String ifMatch, Context context) {
+    public ResponseBase<DeleteKeyValueHeaders, KeyValue> deleteKeyValueWithResponse(String key, String label,
+        String ifMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.deleteKeyValueSync(
-                this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), ifMatch, accept, context);
+        return service.deleteKeyValueSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            ifMatch, accept, context);
     }
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param label The label of the key-value to delete.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
@@ -2373,13 +1811,13 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2387,41 +1825,26 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckKeyValueHeaders, Void>> checkKeyValueWithResponseAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context ->
-                        service.checkKeyValue(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                acceptDatetime,
-                                ifMatch,
-                                ifNoneMatch,
-                                selectConverted,
-                                context));
+    public Mono<ResponseBase<CheckKeyValueHeaders, Void>> checkKeyValueWithResponseAsync(String key, String label,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, List<SettingFields> select) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.checkKeyValue(this.getEndpoint(), key, label,
+            this.getSyncToken(), this.getApiVersion(), acceptDatetime, ifMatch, ifNoneMatch, selectConverted, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2430,40 +1853,26 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckKeyValueHeaders, Void>> checkKeyValueWithResponseAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select,
-            Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkKeyValue(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                acceptDatetime,
-                ifMatch,
-                ifNoneMatch,
-                selectConverted,
-                context);
+    public Mono<ResponseBase<CheckKeyValueHeaders, Void>> checkKeyValueWithResponseAsync(String key, String label,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, List<SettingFields> select, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.checkKeyValue(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            acceptDatetime, ifMatch, ifNoneMatch, selectConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2471,26 +1880,21 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkKeyValueAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select) {
+    public Mono<Void> checkKeyValueAsync(String key, String label, String acceptDatetime, String ifMatch,
+        String ifNoneMatch, List<SettingFields> select) {
         return checkKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2499,27 +1903,21 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkKeyValueAsync(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select,
-            Context context) {
+    public Mono<Void> checkKeyValueAsync(String key, String label, String acceptDatetime, String ifMatch,
+        String ifNoneMatch, List<SettingFields> select, Context context) {
         return checkKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2528,62 +1926,43 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CheckKeyValueHeaders, Void> checkKeyValueWithResponse(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select,
-            Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkKeyValueSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                acceptDatetime,
-                ifMatch,
-                ifNoneMatch,
-                selectConverted,
-                context);
+    public ResponseBase<CheckKeyValueHeaders, Void> checkKeyValueWithResponse(String key, String label,
+        String acceptDatetime, String ifMatch, String ifNoneMatch, List<SettingFields> select, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.checkKeyValueSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            acceptDatetime, ifMatch, ifNoneMatch, selectConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkKeyValue(
-            String key,
-            String label,
-            String acceptDatetime,
-            String ifMatch,
-            String ifNoneMatch,
-            List<SettingFields> select) {
+    public void checkKeyValue(String key, String label, String acceptDatetime, String ifMatch, String ifNoneMatch,
+        List<SettingFields> select) {
         checkKeyValueWithResponse(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, Context.NONE);
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2592,46 +1971,32 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
-            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
+    public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(String name, String after,
+        List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String statusConverted =
-                (status == null)
-                        ? null
-                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                        context ->
-                                service.getSnapshots(
-                                        this.getEndpoint(),
-                                        name,
-                                        this.getSyncToken(),
-                                        this.getApiVersion(),
-                                        after,
-                                        selectConverted,
-                                        statusConverted,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String statusConverted = (status == null)
+            ? null
+            : status.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil
+            .withContext(context -> service.getSnapshots(this.getEndpoint(), name, this.getSyncToken(),
+                this.getApiVersion(), after, selectConverted, statusConverted, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param context The context to associate with this operation.
@@ -2641,48 +2006,32 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
-            String name,
-            String after,
-            List<SnapshotFields> select,
-            List<ConfigurationSnapshotStatus> status,
-            Context context) {
+    public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(String name, String after,
+        List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String statusConverted =
-                (status == null)
-                        ? null
-                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getSnapshots(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        selectConverted,
-                        statusConverted,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String statusConverted = (status == null)
+            ? null
+            : status.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service
+            .getSnapshots(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after, selectConverted,
+                statusConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2691,19 +2040,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSnapshot> getSnapshotsAsync(
-            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
-        return new PagedFlux<>(
-                () -> getSnapshotsSinglePageAsync(name, after, select, status),
-                nextLink -> getSnapshotsNextSinglePageAsync(nextLink));
+    public PagedFlux<ConfigurationSnapshot> getSnapshotsAsync(String name, String after, List<SnapshotFields> select,
+        List<ConfigurationSnapshotStatus> status) {
+        return new PagedFlux<>(() -> getSnapshotsSinglePageAsync(name, after, select, status),
+            nextLink -> getSnapshotsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param context The context to associate with this operation.
@@ -2713,23 +2061,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSnapshot> getSnapshotsAsync(
-            String name,
-            String after,
-            List<SnapshotFields> select,
-            List<ConfigurationSnapshotStatus> status,
-            Context context) {
-        return new PagedFlux<>(
-                () -> getSnapshotsSinglePageAsync(name, after, select, status, context),
-                nextLink -> getSnapshotsNextSinglePageAsync(nextLink, context));
+    public PagedFlux<ConfigurationSnapshot> getSnapshotsAsync(String name, String after, List<SnapshotFields> select,
+        List<ConfigurationSnapshotStatus> status, Context context) {
+        return new PagedFlux<>(() -> getSnapshotsSinglePageAsync(name, after, select, status, context),
+            nextLink -> getSnapshotsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2738,43 +2081,31 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(
-            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
+    public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(String name, String after,
+        List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String statusConverted =
-                (status == null)
-                        ? null
-                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetSnapshotsHeaders, SnapshotListResult> res =
-                service.getSnapshotsSync(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        selectConverted,
-                        statusConverted,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String statusConverted = (status == null)
+            ? null
+            : status.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        ResponseBase<GetSnapshotsHeaders, SnapshotListResult> res = service.getSnapshotsSync(this.getEndpoint(), name,
+            this.getSyncToken(), this.getApiVersion(), after, selectConverted, statusConverted, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param context The context to associate with this operation.
@@ -2784,47 +2115,31 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(
-            String name,
-            String after,
-            List<SnapshotFields> select,
-            List<ConfigurationSnapshotStatus> status,
-            Context context) {
+    public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(String name, String after,
+        List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        String statusConverted =
-                (status == null)
-                        ? null
-                        : status.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetSnapshotsHeaders, SnapshotListResult> res =
-                service.getSnapshotsSync(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        selectConverted,
-                        statusConverted,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String statusConverted = (status == null)
+            ? null
+            : status.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        ResponseBase<GetSnapshotsHeaders, SnapshotListResult> res = service.getSnapshotsSync(this.getEndpoint(), name,
+            this.getSyncToken(), this.getApiVersion(), after, selectConverted, statusConverted, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2833,19 +2148,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(
-            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
-        return new PagedIterable<>(
-                () -> getSnapshotsSinglePage(name, after, select, status, Context.NONE),
-                nextLink -> getSnapshotsNextSinglePage(nextLink));
+    public PagedIterable<ConfigurationSnapshot> getSnapshots(String name, String after, List<SnapshotFields> select,
+        List<ConfigurationSnapshotStatus> status) {
+        return new PagedIterable<>(() -> getSnapshotsSinglePage(name, after, select, status, Context.NONE),
+            nextLink -> getSnapshotsNextSinglePage(nextLink));
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param context The context to associate with this operation.
@@ -2855,22 +2169,17 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(
-            String name,
-            String after,
-            List<SnapshotFields> select,
-            List<ConfigurationSnapshotStatus> status,
-            Context context) {
-        return new PagedIterable<>(
-                () -> getSnapshotsSinglePage(name, after, select, status, context),
-                nextLink -> getSnapshotsNextSinglePage(nextLink, context));
+    public PagedIterable<ConfigurationSnapshot> getSnapshots(String name, String after, List<SnapshotFields> select,
+        List<ConfigurationSnapshotStatus> status, Context context) {
+        return new PagedIterable<>(() -> getSnapshotsSinglePage(name, after, select, status, context),
+            nextLink -> getSnapshotsNextSinglePage(nextLink, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2878,17 +2187,15 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CheckSnapshotsHeaders, Void>> checkSnapshotsWithResponseAsync(String after) {
-        return FluxUtil.withContext(
-                context ->
-                        service.checkSnapshots(
-                                this.getEndpoint(), this.getSyncToken(), this.getApiVersion(), after, context));
+        return FluxUtil.withContext(context -> service.checkSnapshots(this.getEndpoint(), this.getSyncToken(),
+            this.getApiVersion(), after, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2896,16 +2203,16 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckSnapshotsHeaders, Void>> checkSnapshotsWithResponseAsync(
-            String after, Context context) {
+    public Mono<ResponseBase<CheckSnapshotsHeaders, Void>> checkSnapshotsWithResponseAsync(String after,
+        Context context) {
         return service.checkSnapshots(this.getEndpoint(), this.getSyncToken(), this.getApiVersion(), after, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2918,9 +2225,9 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2934,9 +2241,9 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2945,15 +2252,15 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<CheckSnapshotsHeaders, Void> checkSnapshotsWithResponse(String after, Context context) {
-        return service.checkSnapshotsSync(
-                this.getEndpoint(), this.getSyncToken(), this.getApiVersion(), after, context);
+        return service.checkSnapshotsSync(this.getEndpoint(), this.getSyncToken(), this.getApiVersion(), after,
+            context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2965,11 +2272,11 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to retrieve.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2977,34 +2284,25 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot>> getSnapshotWithResponseAsync(
-            String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
+    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot>> getSnapshotWithResponseAsync(String name,
+        String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context ->
-                        service.getSnapshot(
-                                this.getEndpoint(),
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                name,
-                                ifMatch,
-                                ifNoneMatch,
-                                selectConverted,
-                                accept,
-                                context));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.getSnapshot(this.getEndpoint(), this.getSyncToken(),
+            this.getApiVersion(), name, ifMatch, ifNoneMatch, selectConverted, accept, context));
     }
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to retrieve.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3013,32 +2311,25 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot>> getSnapshotWithResponseAsync(
-            String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
+    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot>> getSnapshotWithResponseAsync(String name,
+        String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getSnapshot(
-                this.getEndpoint(),
-                this.getSyncToken(),
-                this.getApiVersion(),
-                name,
-                ifMatch,
-                ifNoneMatch,
-                selectConverted,
-                accept,
-                context);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.getSnapshot(this.getEndpoint(), this.getSyncToken(), this.getApiVersion(), name, ifMatch,
+            ifNoneMatch, selectConverted, accept, context);
     }
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to retrieve.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3046,19 +2337,19 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSnapshot> getSnapshotAsync(
-            String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
+    public Mono<ConfigurationSnapshot> getSnapshotAsync(String name, String ifMatch, String ifNoneMatch,
+        List<SnapshotFields> select) {
         return getSnapshotWithResponseAsync(name, ifMatch, ifNoneMatch, select)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to retrieve.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3067,19 +2358,19 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSnapshot> getSnapshotAsync(
-            String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
+    public Mono<ConfigurationSnapshot> getSnapshotAsync(String name, String ifMatch, String ifNoneMatch,
+        List<SnapshotFields> select, Context context) {
         return getSnapshotWithResponseAsync(name, ifMatch, ifNoneMatch, select, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to retrieve.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3088,32 +2379,25 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> getSnapshotWithResponse(
-            String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
+    public ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> getSnapshotWithResponse(String name, String ifMatch,
+        String ifNoneMatch, List<SnapshotFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getSnapshotSync(
-                this.getEndpoint(),
-                this.getSyncToken(),
-                this.getApiVersion(),
-                name,
-                ifMatch,
-                ifNoneMatch,
-                selectConverted,
-                accept,
-                context);
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.getSnapshotSync(this.getEndpoint(), this.getSyncToken(), this.getApiVersion(), name, ifMatch,
+            ifNoneMatch, selectConverted, accept, context);
     }
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to retrieve.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3121,14 +2405,14 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSnapshot getSnapshot(
-            String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
+    public ConfigurationSnapshot getSnapshot(String name, String ifMatch, String ifNoneMatch,
+        List<SnapshotFields> select) {
         return getSnapshotWithResponse(name, ifMatch, ifNoneMatch, select, Context.NONE).getValue();
     }
 
     /**
      * Creates a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to create.
      * @param entity The key-value snapshot to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3137,24 +2421,16 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>> createSnapshotWithResponseAsync(
-            String name, ConfigurationSnapshot entity) {
+    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>> createSnapshotWithResponseAsync(String name,
+        ConfigurationSnapshot entity) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createSnapshot(
-                                this.getEndpoint(),
-                                name,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                entity,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.createSnapshot(this.getEndpoint(), name, this.getSyncToken(),
+            this.getApiVersion(), entity, accept, context));
     }
 
     /**
      * Creates a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to create.
      * @param entity The key-value snapshot to create.
      * @param context The context to associate with this operation.
@@ -3164,16 +2440,16 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>> createSnapshotWithResponseAsync(
-            String name, ConfigurationSnapshot entity, Context context) {
+    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>> createSnapshotWithResponseAsync(String name,
+        ConfigurationSnapshot entity, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        return service.createSnapshot(
-                this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), entity, accept, context);
+        return service.createSnapshot(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), entity,
+            accept, context);
     }
 
     /**
      * Creates a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to create.
      * @param entity The key-value snapshot to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3188,7 +2464,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Creates a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to create.
      * @param entity The key-value snapshot to create.
      * @param context The context to associate with this operation.
@@ -3204,7 +2480,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Creates a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to create.
      * @param entity The key-value snapshot to create.
      * @param context The context to associate with this operation.
@@ -3214,16 +2490,16 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot> createSnapshotWithResponse(
-            String name, ConfigurationSnapshot entity, Context context) {
+    public ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot> createSnapshotWithResponse(String name,
+        ConfigurationSnapshot entity, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        return service.createSnapshotSync(
-                this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), entity, accept, context);
+        return service.createSnapshotSync(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), entity,
+            accept, context);
     }
 
     /**
      * Creates a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to create.
      * @param entity The key-value snapshot to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3238,43 +2514,33 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot>> updateSnapshotWithResponseAsync(
-            String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
+    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot>> updateSnapshotWithResponseAsync(String name,
+        SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        return FluxUtil.withContext(
-                context ->
-                        service.updateSnapshot(
-                                this.getEndpoint(),
-                                name,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                ifMatch,
-                                ifNoneMatch,
-                                entity,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.updateSnapshot(this.getEndpoint(), name, this.getSyncToken(),
+            this.getApiVersion(), ifMatch, ifNoneMatch, entity, accept, context));
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3282,49 +2548,41 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot>> updateSnapshotWithResponseAsync(
-            String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
+    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot>> updateSnapshotWithResponseAsync(String name,
+        SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        return service.updateSnapshot(
-                this.getEndpoint(),
-                name,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                entity,
-                accept,
-                context);
+        return service.updateSnapshot(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, entity, accept, context);
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSnapshot> updateSnapshotAsync(
-            String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
+    public Mono<ConfigurationSnapshot> updateSnapshotAsync(String name, SnapshotUpdateParameters entity, String ifMatch,
+        String ifNoneMatch) {
         return updateSnapshotWithResponseAsync(name, entity, ifMatch, ifNoneMatch)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3332,20 +2590,20 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSnapshot> updateSnapshotAsync(
-            String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
+    public Mono<ConfigurationSnapshot> updateSnapshotAsync(String name, SnapshotUpdateParameters entity, String ifMatch,
+        String ifNoneMatch, Context context) {
         return updateSnapshotWithResponseAsync(name, entity, ifMatch, ifNoneMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3353,74 +2611,58 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> updateSnapshotWithResponse(
-            String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
+    public ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> updateSnapshotWithResponse(String name,
+        SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
-        return service.updateSnapshotSync(
-                this.getEndpoint(),
-                name,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                entity,
-                accept,
-                context);
+        return service.updateSnapshotSync(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, entity, accept, context);
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param name The name of the key-value snapshot to update.
      * @param entity The parameters used to update the snapshot.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSnapshot updateSnapshot(
-            String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
+    public ConfigurationSnapshot updateSnapshot(String name, SnapshotUpdateParameters entity, String ifMatch,
+        String ifNoneMatch) {
         return updateSnapshotWithResponse(name, entity, ifMatch, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckSnapshotHeaders, Void>> checkSnapshotWithResponseAsync(
-            String name, String ifMatch, String ifNoneMatch) {
-        return FluxUtil.withContext(
-                context ->
-                        service.checkSnapshot(
-                                this.getEndpoint(),
-                                name,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                ifMatch,
-                                ifNoneMatch,
-                                context));
+    public Mono<ResponseBase<CheckSnapshotHeaders, Void>> checkSnapshotWithResponseAsync(String name, String ifMatch,
+        String ifNoneMatch) {
+        return FluxUtil.withContext(context -> service.checkSnapshot(this.getEndpoint(), name, this.getSyncToken(),
+            this.getApiVersion(), ifMatch, ifNoneMatch, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3428,19 +2670,19 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckSnapshotHeaders, Void>> checkSnapshotWithResponseAsync(
-            String name, String ifMatch, String ifNoneMatch, Context context) {
-        return service.checkSnapshot(
-                this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), ifMatch, ifNoneMatch, context);
+    public Mono<ResponseBase<CheckSnapshotHeaders, Void>> checkSnapshotWithResponseAsync(String name, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return service.checkSnapshot(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3453,11 +2695,11 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3471,11 +2713,11 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3483,19 +2725,19 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CheckSnapshotHeaders, Void> checkSnapshotWithResponse(
-            String name, String ifMatch, String ifNoneMatch, Context context) {
-        return service.checkSnapshotSync(
-                this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), ifMatch, ifNoneMatch, context);
+    public ResponseBase<CheckSnapshotHeaders, Void> checkSnapshotWithResponse(String name, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return service.checkSnapshotSync(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3507,10 +2749,10 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3519,42 +2761,27 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsSinglePageAsync(
-            String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsSinglePageAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                        context ->
-                                service.getLabels(
-                                        this.getEndpoint(),
-                                        name,
-                                        this.getSyncToken(),
-                                        this.getApiVersion(),
-                                        after,
-                                        acceptDatetime,
-                                        selectConverted,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil
+            .withContext(context -> service.getLabels(this.getEndpoint(), name, this.getSyncToken(),
+                this.getApiVersion(), after, acceptDatetime, selectConverted, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3564,40 +2791,27 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsSinglePageAsync(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsSinglePageAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getLabels(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service
+            .getLabels(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after, acceptDatetime,
+                selectConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3606,18 +2820,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Label> getLabelsAsync(String name, String after, String acceptDatetime, List<LabelFields> select) {
-        return new PagedFlux<>(
-                () -> getLabelsSinglePageAsync(name, after, acceptDatetime, select),
-                nextLink -> getLabelsNextSinglePageAsync(nextLink, acceptDatetime));
+    public PagedFlux<SettingLabel> getLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
+        return new PagedFlux<>(() -> getLabelsSinglePageAsync(name, after, acceptDatetime, select),
+            nextLink -> getLabelsNextSinglePageAsync(nextLink, acceptDatetime));
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3627,19 +2841,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Label> getLabelsAsync(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
-        return new PagedFlux<>(
-                () -> getLabelsSinglePageAsync(name, after, acceptDatetime, select, context),
-                nextLink -> getLabelsNextSinglePageAsync(nextLink, acceptDatetime, context));
+    public PagedFlux<SettingLabel> getLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
+        return new PagedFlux<>(() -> getLabelsSinglePageAsync(name, after, acceptDatetime, select, context),
+            nextLink -> getLabelsNextSinglePageAsync(nextLink, acceptDatetime, context));
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3648,39 +2861,26 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsSinglePage(
-            String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public PagedResponse<SettingLabel> getLabelsSinglePage(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetLabelsHeaders, LabelListResult> res =
-                service.getLabelsSync(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        ResponseBase<GetLabelsHeaders, LabelListResult> res = service.getLabelsSync(this.getEndpoint(), name,
+            this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, selectConverted, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3690,39 +2890,26 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsSinglePage(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
+    public PagedResponse<SettingLabel> getLabelsSinglePage(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetLabelsHeaders, LabelListResult> res =
-                service.getLabelsSync(
-                        this.getEndpoint(),
-                        name,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        ResponseBase<GetLabelsHeaders, LabelListResult> res = service.getLabelsSync(this.getEndpoint(), name,
+            this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, selectConverted, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3731,18 +2918,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(String name, String after, String acceptDatetime, List<LabelFields> select) {
-        return new PagedIterable<>(
-                () -> getLabelsSinglePage(name, after, acceptDatetime, select, Context.NONE),
-                nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime));
+    public PagedIterable<SettingLabel> getLabels(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
+        return new PagedIterable<>(() -> getLabelsSinglePage(name, after, acceptDatetime, select, Context.NONE),
+            nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime));
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3752,19 +2939,18 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
-        return new PagedIterable<>(
-                () -> getLabelsSinglePage(name, after, acceptDatetime, select, context),
-                nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime, context));
+    public PagedIterable<SettingLabel> getLabels(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
+        return new PagedIterable<>(() -> getLabelsSinglePage(name, after, acceptDatetime, select, context),
+            nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3773,31 +2959,23 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabelsWithResponseAsync(
-            String name, String after, String acceptDatetime, List<LabelFields> select) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context ->
-                        service.checkLabels(
-                                this.getEndpoint(),
-                                name,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                after,
-                                acceptDatetime,
-                                selectConverted,
-                                context));
+    public Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabelsWithResponseAsync(String name, String after,
+        String acceptDatetime, List<SettingLabelFields> select) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.checkLabels(this.getEndpoint(), name, this.getSyncToken(),
+            this.getApiVersion(), after, acceptDatetime, selectConverted, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3807,29 +2985,23 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabelsWithResponseAsync(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkLabels(
-                this.getEndpoint(),
-                name,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                after,
-                acceptDatetime,
-                selectConverted,
-                context);
+    public Mono<ResponseBase<CheckLabelsHeaders, Void>> checkLabelsWithResponseAsync(String name, String after,
+        String acceptDatetime, List<SettingLabelFields> select, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.checkLabels(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after,
+            acceptDatetime, selectConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3838,16 +3010,17 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select) {
         return checkLabelsWithResponseAsync(name, after, acceptDatetime, select).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3857,18 +3030,18 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkLabelsAsync(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
+    public Mono<Void> checkLabelsAsync(String name, String after, String acceptDatetime,
+        List<SettingLabelFields> select, Context context) {
         return checkLabelsWithResponseAsync(name, after, acceptDatetime, select, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param context The context to associate with this operation.
@@ -3878,29 +3051,23 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CheckLabelsHeaders, Void> checkLabelsWithResponse(
-            String name, String after, String acceptDatetime, List<LabelFields> select, Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkLabelsSync(
-                this.getEndpoint(),
-                name,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                after,
-                acceptDatetime,
-                selectConverted,
-                context);
+    public ResponseBase<CheckLabelsHeaders, Void> checkLabelsWithResponse(String name, String after,
+        String acceptDatetime, List<SettingLabelFields> select, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.checkLabelsSync(this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), after,
+            acceptDatetime, selectConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3908,49 +3075,39 @@ public final class AzureAppConfigurationImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkLabels(String name, String after, String acceptDatetime, List<LabelFields> select) {
+    public void checkLabels(String name, String after, String acceptDatetime, List<SettingLabelFields> select) {
         checkLabelsWithResponse(name, after, acceptDatetime, select, Context.NONE);
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param label The label, if any, of the key-value to lock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<PutLockHeaders, KeyValue>> putLockWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch) {
+    public Mono<ResponseBase<PutLockHeaders, KeyValue>> putLockWithResponseAsync(String key, String label,
+        String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return FluxUtil.withContext(
-                context ->
-                        service.putLock(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                ifMatch,
-                                ifNoneMatch,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.putLock(this.getEndpoint(), key, label, this.getSyncToken(),
+            this.getApiVersion(), ifMatch, ifNoneMatch, accept, context));
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param label The label, if any, of the key-value to lock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3958,29 +3115,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<PutLockHeaders, KeyValue>> putLockWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, Context context) {
+    public Mono<ResponseBase<PutLockHeaders, KeyValue>> putLockWithResponseAsync(String key, String label,
+        String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.putLock(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                accept,
-                context);
+        return service.putLock(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, accept, context);
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param label The label, if any, of the key-value to lock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3989,17 +3138,17 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyValue> putLockAsync(String key, String label, String ifMatch, String ifNoneMatch) {
         return putLockWithResponseAsync(key, label, ifMatch, ifNoneMatch)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param label The label, if any, of the key-value to lock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4009,17 +3158,17 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyValue> putLockAsync(String key, String label, String ifMatch, String ifNoneMatch, Context context) {
         return putLockWithResponseAsync(key, label, ifMatch, ifNoneMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param label The label, if any, of the key-value to lock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4027,29 +3176,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<PutLockHeaders, KeyValue> putLockWithResponse(
-            String key, String label, String ifMatch, String ifNoneMatch, Context context) {
+    public ResponseBase<PutLockHeaders, KeyValue> putLockWithResponse(String key, String label, String ifMatch,
+        String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.putLockSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                accept,
-                context);
+        return service.putLockSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, accept, context);
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param label The label, if any, of the key-value to lock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4062,43 +3203,33 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param label The label, if any, of the key-value to unlock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DeleteLockHeaders, KeyValue>> deleteLockWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch) {
+    public Mono<ResponseBase<DeleteLockHeaders, KeyValue>> deleteLockWithResponseAsync(String key, String label,
+        String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteLock(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                ifMatch,
-                                ifNoneMatch,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteLock(this.getEndpoint(), key, label, this.getSyncToken(),
+            this.getApiVersion(), ifMatch, ifNoneMatch, accept, context));
     }
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param label The label, if any, of the key-value to unlock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4106,29 +3237,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DeleteLockHeaders, KeyValue>> deleteLockWithResponseAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, Context context) {
+    public Mono<ResponseBase<DeleteLockHeaders, KeyValue>> deleteLockWithResponseAsync(String key, String label,
+        String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.deleteLock(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                accept,
-                context);
+        return service.deleteLock(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), ifMatch,
+            ifNoneMatch, accept, context);
     }
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param label The label, if any, of the key-value to unlock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4137,17 +3260,17 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyValue> deleteLockAsync(String key, String label, String ifMatch, String ifNoneMatch) {
         return deleteLockWithResponseAsync(key, label, ifMatch, ifNoneMatch)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param label The label, if any, of the key-value to unlock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4155,20 +3278,20 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyValue> deleteLockAsync(
-            String key, String label, String ifMatch, String ifNoneMatch, Context context) {
+    public Mono<KeyValue> deleteLockAsync(String key, String label, String ifMatch, String ifNoneMatch,
+        Context context) {
         return deleteLockWithResponseAsync(key, label, ifMatch, ifNoneMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param label The label, if any, of the key-value to unlock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4176,29 +3299,21 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DeleteLockHeaders, KeyValue> deleteLockWithResponse(
-            String key, String label, String ifMatch, String ifNoneMatch, Context context) {
+    public ResponseBase<DeleteLockHeaders, KeyValue> deleteLockWithResponse(String key, String label, String ifMatch,
+        String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
-        return service.deleteLockSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                accept,
-                context);
+        return service.deleteLockSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            ifMatch, ifNoneMatch, accept, context);
     }
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param label The label, if any, of the key-value to unlock.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4211,59 +3326,48 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
+    public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(String key, String label, String after,
+        String acceptDatetime, List<SettingFields> select, List<String> tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                        context ->
-                                service.getRevisions(
-                                        this.getEndpoint(),
-                                        key,
-                                        label,
-                                        this.getSyncToken(),
-                                        this.getApiVersion(),
-                                        after,
-                                        acceptDatetime,
-                                        selectConverted,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil
+            .withContext(context -> service.getRevisions(this.getEndpoint(), key, label, this.getSyncToken(),
+                this.getApiVersion(), after, acceptDatetime, selectConverted, tagsConverted, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4271,71 +3375,56 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
+    public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(String key, String label, String after,
+        String acceptDatetime, List<SettingFields> select, List<String> tags, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.getRevisions(
-                        this.getEndpoint(),
-                        key,
-                        label,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service
+            .getRevisions(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+                acceptDatetime, selectConverted, tagsConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyValue> getRevisionsAsync(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
-        return new PagedFlux<>(
-                () -> getRevisionsSinglePageAsync(key, label, after, acceptDatetime, select),
-                nextLink -> getRevisionsNextSinglePageAsync(nextLink, acceptDatetime));
+    public PagedFlux<KeyValue> getRevisionsAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags) {
+        return new PagedFlux<>(() -> getRevisionsSinglePageAsync(key, label, after, acceptDatetime, select, tags),
+            nextLink -> getRevisionsNextSinglePageAsync(nextLink, acceptDatetime));
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4343,70 +3432,57 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyValue> getRevisionsAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
+    public PagedFlux<KeyValue> getRevisionsAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags, Context context) {
         return new PagedFlux<>(
-                () -> getRevisionsSinglePageAsync(key, label, after, acceptDatetime, select, context),
-                nextLink -> getRevisionsNextSinglePageAsync(nextLink, acceptDatetime, context));
+            () -> getRevisionsSinglePageAsync(key, label, after, acceptDatetime, select, tags, context),
+            nextLink -> getRevisionsNextSinglePageAsync(nextLink, acceptDatetime, context));
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getRevisionsSinglePage(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
+    public PagedResponse<KeyValue> getRevisionsSinglePage(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetRevisionsHeaders, KeyValueListResult> res =
-                service.getRevisionsSync(
-                        this.getEndpoint(),
-                        key,
-                        label,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        ResponseBase<GetRevisionsHeaders, KeyValueListResult> res
+            = service.getRevisionsSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+                acceptDatetime, selectConverted, tagsConverted, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4414,70 +3490,57 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getRevisionsSinglePage(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
+    public PagedResponse<KeyValue> getRevisionsSinglePage(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        ResponseBase<GetRevisionsHeaders, KeyValueListResult> res =
-                service.getRevisionsSync(
-                        this.getEndpoint(),
-                        key,
-                        label,
-                        this.getSyncToken(),
-                        this.getApiVersion(),
-                        after,
-                        acceptDatetime,
-                        selectConverted,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        ResponseBase<GetRevisionsHeaders, KeyValueListResult> res
+            = service.getRevisionsSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+                acceptDatetime, selectConverted, tagsConverted, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
+    public PagedIterable<KeyValue> getRevisions(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags) {
         return new PagedIterable<>(
-                () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, Context.NONE),
-                nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime));
+            () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, tags, Context.NONE),
+            nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime));
     }
 
     /**
      * Gets a list of key-value revisions.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4485,62 +3548,53 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
+    public PagedIterable<KeyValue> getRevisions(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags, Context context) {
         return new PagedIterable<>(
-                () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, context),
-                nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime, context));
+            () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, tags, context),
+            nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisionsWithResponseAsync(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context ->
-                        service.checkRevisions(
-                                this.getEndpoint(),
-                                key,
-                                label,
-                                this.getSyncToken(),
-                                this.getApiVersion(),
-                                after,
-                                acceptDatetime,
-                                selectConverted,
-                                context));
+    public Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisionsWithResponseAsync(String key, String label,
+        String after, String acceptDatetime, List<SettingFields> select, List<String> tags) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil.withContext(context -> service.checkRevisions(this.getEndpoint(), key, label,
+            this.getSyncToken(), this.getApiVersion(), after, acceptDatetime, selectConverted, tagsConverted, context));
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4548,59 +3602,52 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisionsWithResponseAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkRevisions(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                after,
-                acceptDatetime,
-                selectConverted,
-                context);
+    public Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisionsWithResponseAsync(String key, String label,
+        String after, String acceptDatetime, List<SettingFields> select, List<String> tags, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.checkRevisions(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(), after,
+            acceptDatetime, selectConverted, tagsConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkRevisionsAsync(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
-        return checkRevisionsWithResponseAsync(key, label, after, acceptDatetime, select)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> checkRevisionsAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags) {
+        return checkRevisionsWithResponseAsync(key, label, after, acceptDatetime, select, tags)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4608,26 +3655,22 @@ public final class AzureAppConfigurationImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> checkRevisionsAsync(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
-        return checkRevisionsWithResponseAsync(key, label, after, acceptDatetime, select, context)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> checkRevisionsAsync(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags, Context context) {
+        return checkRevisionsWithResponseAsync(key, label, after, acceptDatetime, select, tags, context)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4635,77 +3678,67 @@ public final class AzureAppConfigurationImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CheckRevisionsHeaders, Void> checkRevisionsWithResponse(
-            String key,
-            String label,
-            String after,
-            String acceptDatetime,
-            List<SettingFields> select,
-            Context context) {
-        String selectConverted =
-                (select == null)
-                        ? null
-                        : select.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
-        return service.checkRevisionsSync(
-                this.getEndpoint(),
-                key,
-                label,
-                this.getSyncToken(),
-                this.getApiVersion(),
-                after,
-                acceptDatetime,
-                selectConverted,
-                context);
+    public ResponseBase<CheckRevisionsHeaders, Void> checkRevisionsWithResponse(String key, String label, String after,
+        String acceptDatetime, List<SettingFields> select, List<String> tags, Context context) {
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        List<String> tagsConverted = (tags == null)
+            ? new ArrayList<>()
+            : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.checkRevisionsSync(this.getEndpoint(), key, label, this.getSyncToken(), this.getApiVersion(),
+            after, acceptDatetime, selectConverted, tagsConverted, context);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
-     * @param key A filter used to match keys.
-     * @param label A filter used to match labels.
+     * 
+     * @param key A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
+     * @param label A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @param after Instructs the server to return elements that appear after the element referred to by the specified
-     *     token.
+     * token.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
+     * @param tags A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkRevisions(
-            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
-        checkRevisionsWithResponse(key, label, after, acceptDatetime, select, Context.NONE);
+    public void checkRevisions(String key, String label, String after, String acceptDatetime,
+        List<SettingFields> select, List<String> tags) {
+        checkRevisionsWithResponse(key, label, after, acceptDatetime, select, tags, Context.NONE);
     }
 
     /**
      * Gets the state of a long running operation.
-     *
+     * 
      * @param snapshot Snapshot identifier for the long running operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the state of a long running operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the state of a long running operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationDetails>> getOperationDetailsWithResponseAsync(String snapshot) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getOperationDetails(
-                                this.getEndpoint(), this.getApiVersion(), snapshot, accept, context));
+        return FluxUtil.withContext(context -> service.getOperationDetails(this.getEndpoint(), this.getApiVersion(),
+            snapshot, accept, context));
     }
 
     /**
      * Gets the state of a long running operation.
-     *
+     * 
      * @param snapshot Snapshot identifier for the long running operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the state of a long running operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the state of a long running operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationDetails>> getOperationDetailsWithResponseAsync(String snapshot, Context context) {
@@ -4715,7 +3748,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets the state of a long running operation.
-     *
+     * 
      * @param snapshot Snapshot identifier for the long running operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4729,7 +3762,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets the state of a long running operation.
-     *
+     * 
      * @param snapshot Snapshot identifier for the long running operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4744,7 +3777,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets the state of a long running operation.
-     *
+     * 
      * @param snapshot Snapshot identifier for the long running operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4760,7 +3793,7 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Gets the state of a long running operation.
-     *
+     * 
      * @param snapshot Snapshot identifier for the long running operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4774,9 +3807,10 @@ public final class AzureAppConfigurationImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4786,31 +3820,19 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getKeysNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSyncToken(),
-                                        acceptDatetime,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return FluxUtil
+            .withContext(context -> service.getKeysNext(nextLink, this.getEndpoint(), this.getSyncToken(),
+                acceptDatetime, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4819,26 +3841,20 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(
-            String nextLink, String acceptDatetime, Context context) {
+    public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(String nextLink, String acceptDatetime,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
         return service.getKeysNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4848,23 +3864,18 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        ResponseBase<GetKeysNextHeaders, KeyListResult> res =
-                service.getKeysNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetKeysNextHeaders, KeyListResult> res = service.getKeysNextSync(nextLink, this.getEndpoint(),
+            this.getSyncToken(), acceptDatetime, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4875,67 +3886,48 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String acceptDatetime, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
-        ResponseBase<GetKeysNextHeaders, KeyListResult> res =
-                service.getKeysNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetKeysNextHeaders, KeyListResult> res = service.getKeysNextSync(nextLink, this.getEndpoint(),
+            this.getSyncToken(), acceptDatetime, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(
-            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch) {
+    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(String nextLink, String acceptDatetime,
+        String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getKeyValuesNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSyncToken(),
-                                        acceptDatetime,
-                                        ifMatch,
-                                        ifNoneMatch,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return FluxUtil
+            .withContext(context -> service.getKeyValuesNext(nextLink, this.getEndpoint(), this.getSyncToken(),
+                acceptDatetime, ifMatch, ifNoneMatch, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4943,75 +3935,51 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(
-            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch, Context context) {
+    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(String nextLink, String acceptDatetime,
+        String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        return service.getKeyValuesNext(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSyncToken(),
-                        acceptDatetime,
-                        ifMatch,
-                        ifNoneMatch,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return service
+            .getKeyValuesNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, ifMatch, ifNoneMatch,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(
-            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch) {
+    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String acceptDatetime, String ifMatch,
+        String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> res =
-                service.getKeyValuesNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSyncToken(),
-                        acceptDatetime,
-                        ifMatch,
-                        ifNoneMatch,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> res = service.getKeyValuesNextSync(nextLink,
+            this.getEndpoint(), this.getSyncToken(), acceptDatetime, ifMatch, ifNoneMatch, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
-     *     provided.
+     * provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5019,90 +3987,65 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(
-            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch, Context context) {
+    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String acceptDatetime, String ifMatch,
+        String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> res =
-                service.getKeyValuesNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSyncToken(),
-                        acceptDatetime,
-                        ifMatch,
-                        ifNoneMatch,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> res = service.getKeyValuesNextSync(nextLink,
+            this.getEndpoint(), this.getSyncToken(), acceptDatetime, ifMatch, ifNoneMatch, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextSinglePageAsync(String nextLink) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getSnapshotsNext(
-                                        nextLink, this.getEndpoint(), this.getSyncToken(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return FluxUtil
+            .withContext(
+                context -> service.getSnapshotsNext(nextLink, this.getEndpoint(), this.getSyncToken(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextSinglePageAsync(String nextLink,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         return service.getSnapshotsNext(nextLink, this.getEndpoint(), this.getSyncToken(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5111,22 +4054,18 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(String nextLink) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> res =
-                service.getSnapshotsNextSync(nextLink, this.getEndpoint(), this.getSyncToken(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> res
+            = service.getSnapshotsNextSync(nextLink, this.getEndpoint(), this.getSyncToken(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5136,22 +4075,18 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
-        ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> res =
-                service.getSnapshotsNextSync(nextLink, this.getEndpoint(), this.getSyncToken(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> res
+            = service.getSnapshotsNextSync(nextLink, this.getEndpoint(), this.getSyncToken(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5159,33 +4094,21 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getLabelsNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSyncToken(),
-                                        acceptDatetime,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return FluxUtil
+            .withContext(context -> service.getLabelsNext(nextLink, this.getEndpoint(), this.getSyncToken(),
+                acceptDatetime, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5194,26 +4117,20 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Label>> getLabelsNextSinglePageAsync(
-            String nextLink, String acceptDatetime, Context context) {
+    public Mono<PagedResponse<SettingLabel>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         return service.getLabelsNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5221,25 +4138,20 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String acceptDatetime) {
+    public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        ResponseBase<GetLabelsNextHeaders, LabelListResult> res =
-                service.getLabelsNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetLabelsNextHeaders, LabelListResult> res = service.getLabelsNextSync(nextLink,
+            this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5248,25 +4160,21 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String acceptDatetime, Context context) {
+    public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String acceptDatetime,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
-        ResponseBase<GetLabelsNextHeaders, LabelListResult> res =
-                service.getLabelsNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetLabelsNextHeaders, LabelListResult> res = service.getLabelsNextSync(nextLink,
+            this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5276,31 +4184,19 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getRevisionsNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSyncToken(),
-                                        acceptDatetime,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return FluxUtil
+            .withContext(context -> service.getRevisionsNext(nextLink, this.getEndpoint(), this.getSyncToken(),
+                acceptDatetime, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5309,27 +4205,21 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(
-            String nextLink, String acceptDatetime, Context context) {
+    public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(String nextLink, String acceptDatetime,
+        Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        return service.getRevisionsNext(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getItems(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+        return service
+            .getRevisionsNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5339,23 +4229,18 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String acceptDatetime) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        ResponseBase<GetRevisionsNextHeaders, KeyValueListResult> res =
-                service.getRevisionsNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetRevisionsNextHeaders, KeyValueListResult> res = service.getRevisionsNextSync(nextLink,
+            this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5366,15 +4251,9 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String acceptDatetime, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
-        ResponseBase<GetRevisionsNextHeaders, KeyValueListResult> res =
-                service.getRevisionsNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getItems(),
-                res.getValue().getNextLink(),
-                res.getDeserializedHeaders());
+        ResponseBase<GetRevisionsNextHeaders, KeyValueListResult> res = service.getRevisionsNextSync(nextLink,
+            this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getItems(), res.getValue().getNextLink(), res.getDeserializedHeaders());
     }
 }

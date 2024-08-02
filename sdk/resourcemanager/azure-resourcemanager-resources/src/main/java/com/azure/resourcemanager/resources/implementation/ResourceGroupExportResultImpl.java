@@ -4,12 +4,15 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.resources.fluent.models.ResourceGroupExportResultInner;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.resources.models.DeploymentExportResult;
 import com.azure.resourcemanager.resources.models.ResourceGroupExportResult;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.fluent.models.ResourceGroupExportResultInner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 /**
  * Implementation for {@link DeploymentExportResult}.
@@ -19,11 +22,11 @@ final class ResourceGroupExportResultImpl extends
         implements
         ResourceGroupExportResult {
 
-    private ObjectMapper mapper;
+    private final SerializerAdapter serializerAdapter;
 
     ResourceGroupExportResultImpl(ResourceGroupExportResultInner innerModel) {
         super(innerModel);
-        mapper = new ObjectMapper();
+        this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
     }
 
     @Override
@@ -34,8 +37,8 @@ final class ResourceGroupExportResultImpl extends
     @Override
     public String templateJson() {
         try {
-            return mapper.writeValueAsString(template());
-        } catch (JsonProcessingException e) {
+            return serializerAdapter.serialize(template(), SerializerEncoding.JSON);
+        } catch (IOException e) {
             return null;
         }
     }

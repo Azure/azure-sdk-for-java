@@ -21,11 +21,14 @@ public final class CacheRulesCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cacheRuleCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getCacheRules().create("myResourceGroup", "myRegistry",
-            "myCacheRule",
-            new CacheRuleInner().withCredentialSetResourceId("fakeTokenPlaceholder")
-                .withSourceRepository("docker.io/library/hello-world")
-                .withTargetRepository("cached-docker-hub/hello-world"),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getCacheRules()
+            .create("myResourceGroup", "myRegistry", "myCacheRule",
+                new CacheRuleInner().withCredentialSetResourceId("fakeTokenPlaceholder")
+                    .withSourceRepository("docker.io/library/hello-world")
+                    .withTargetRepository("cached-docker-hub/hello-world"),
+                com.azure.core.util.Context.NONE);
     }
 }

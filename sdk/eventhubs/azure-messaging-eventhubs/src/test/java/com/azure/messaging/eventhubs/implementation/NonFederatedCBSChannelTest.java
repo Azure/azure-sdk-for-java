@@ -50,7 +50,7 @@ import java.util.Map;
  * Verifies we authorize with Event Hubs CBS node correctly.
  */
 @Tag(TestUtils.INTEGRATION)
-class CBSChannelTest extends IntegrationTestBase {
+class NonFederatedCBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
     private static String product;
     private static String clientVersion;
@@ -71,8 +71,8 @@ class CBSChannelTest extends IntegrationTestBase {
     private String tokenAudience;
     private AutoCloseable closeable;
 
-    CBSChannelTest() {
-        super(new ClientLogger(CBSChannelTest.class));
+    NonFederatedCBSChannelTest() {
+        super(new ClientLogger(NonFederatedCBSChannelTest.class));
     }
 
     @BeforeAll
@@ -86,10 +86,13 @@ class CBSChannelTest extends IntegrationTestBase {
     protected void beforeTest() {
         closeable = MockitoAnnotations.openMocks(this);
 
-        connectionProperties = TestUtils.getConnectionStringProperties();
+        connectionProperties = new ConnectionStringProperties(TestUtils.getConnectionString(false));
+
+        final String eventHubName = TestUtils.getEventHubName();
+
         azureTokenManagerProvider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             connectionProperties.getEndpoint().getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-        tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionProperties.getEntityPath());
+        tokenAudience = azureTokenManagerProvider.getScopesFromResource(eventHubName);
 
         retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(1));
         reactorProvider = new ReactorProvider();

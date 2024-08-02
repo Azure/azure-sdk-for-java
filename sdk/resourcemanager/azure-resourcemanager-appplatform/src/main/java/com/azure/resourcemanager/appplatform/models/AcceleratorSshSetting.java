@@ -5,39 +5,50 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Auth setting for SSH auth.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("SSH")
 @Fluent
 public final class AcceleratorSshSetting extends AcceleratorAuthSetting {
     /*
+     * The type of the auth setting.
+     */
+    private String authType = "SSH";
+
+    /*
      * Public SSH Key of git repository.
      */
-    @JsonProperty(value = "hostKey")
     private String hostKey;
 
     /*
      * SSH Key algorithm of git repository.
      */
-    @JsonProperty(value = "hostKeyAlgorithm")
     private String hostKeyAlgorithm;
 
     /*
      * Private SSH Key algorithm of git repository.
      */
-    @JsonProperty(value = "privateKey")
     private String privateKey;
 
     /**
      * Creates an instance of AcceleratorSshSetting class.
      */
     public AcceleratorSshSetting() {
+    }
+
+    /**
+     * Get the authType property: The type of the auth setting.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public String authType() {
+        return this.authType;
     }
 
     /**
@@ -108,5 +119,50 @@ public final class AcceleratorSshSetting extends AcceleratorAuthSetting {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType);
+        jsonWriter.writeStringField("hostKey", this.hostKey);
+        jsonWriter.writeStringField("hostKeyAlgorithm", this.hostKeyAlgorithm);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcceleratorSshSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcceleratorSshSetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcceleratorSshSetting.
+     */
+    public static AcceleratorSshSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcceleratorSshSetting deserializedAcceleratorSshSetting = new AcceleratorSshSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedAcceleratorSshSetting.authType = reader.getString();
+                } else if ("hostKey".equals(fieldName)) {
+                    deserializedAcceleratorSshSetting.hostKey = reader.getString();
+                } else if ("hostKeyAlgorithm".equals(fieldName)) {
+                    deserializedAcceleratorSshSetting.hostKeyAlgorithm = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedAcceleratorSshSetting.privateKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcceleratorSshSetting;
+        });
     }
 }

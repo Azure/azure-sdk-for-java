@@ -19,7 +19,10 @@ public final class CertificatesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void certificatesDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCertificates().delete("myResourceGroup", "myservice",
-            "mycertificate", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCertificates()
+            .delete("myResourceGroup", "myservice", "mycertificate", com.azure.core.util.Context.NONE);
     }
 }

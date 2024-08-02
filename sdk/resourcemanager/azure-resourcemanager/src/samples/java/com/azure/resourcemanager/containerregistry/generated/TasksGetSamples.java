@@ -19,7 +19,10 @@ public final class TasksGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().getWithResponse("myResourceGroup",
-            "myRegistry", "myTask", com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .getWithResponse("myResourceGroup", "myRegistry", "myTask", com.azure.core.util.Context.NONE);
     }
 }

@@ -19,7 +19,8 @@ import java.util.Map;
  */
 public final class DeploymentStacksCreateOrUpdateAtSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionCreate.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * DeploymentStackSubscriptionCreate.json
      */
     /**
      * Sample code: DeploymentStacksSubscriptionCreateOrUpdate.

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The result of the request or operation. */
+/**
+ * The result of the request or operation.
+ */
 @Immutable
-public final class DeleteOperationResultInner {
+public final class DeleteOperationResultInner implements JsonSerializable<DeleteOperationResultInner> {
     /*
      * The result of the operation or request.
      */
-    @JsonProperty(value = "boolean", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean operationResult;
 
-    /** Creates an instance of DeleteOperationResultInner class. */
+    /**
+     * Creates an instance of DeleteOperationResultInner class.
+     */
     public DeleteOperationResultInner() {
     }
 
     /**
      * Get the operationResult property: The result of the operation or request.
-     *
+     * 
      * @return the operationResult value.
      */
     public Boolean operationResult() {
@@ -31,9 +38,44 @@ public final class DeleteOperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteOperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteOperationResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeleteOperationResultInner.
+     */
+    public static DeleteOperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteOperationResultInner deserializedDeleteOperationResultInner = new DeleteOperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("boolean".equals(fieldName)) {
+                    deserializedDeleteOperationResultInner.operationResult = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeleteOperationResultInner;
+        });
     }
 }

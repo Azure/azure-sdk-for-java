@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onPremisesProvisioningError. */
+/**
+ * onPremisesProvisioningError.
+ */
 @Fluent
-public final class MicrosoftGraphOnPremisesProvisioningError {
+public final class MicrosoftGraphOnPremisesProvisioningError
+    implements JsonSerializable<MicrosoftGraphOnPremisesProvisioningError> {
     /*
      * Category of the provisioning error. Note: Currently, there is only one possible value. Possible value:
      * PropertyConflict - indicates a property value is not unique. Other objects contain the same value for the
      * property.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The date and time at which the error occurred.
      */
-    @JsonProperty(value = "occurredDateTime")
     private OffsetDateTime occurredDateTime;
 
     /*
      * Name of the directory property causing the error. Current possible values: UserPrincipalName or ProxyAddress
      */
-    @JsonProperty(value = "propertyCausingError")
     private String propertyCausingError;
 
     /*
      * Value of the property causing the error.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * onPremisesProvisioningError
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnPremisesProvisioningError class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnPremisesProvisioningError class.
+     */
     public MicrosoftGraphOnPremisesProvisioningError() {
     }
 
@@ -55,7 +59,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
      * Get the category property: Category of the provisioning error. Note: Currently, there is only one possible value.
      * Possible value: PropertyConflict - indicates a property value is not unique. Other objects contain the same value
      * for the property.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -66,7 +70,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
      * Set the category property: Category of the provisioning error. Note: Currently, there is only one possible value.
      * Possible value: PropertyConflict - indicates a property value is not unique. Other objects contain the same value
      * for the property.
-     *
+     * 
      * @param category the category value to set.
      * @return the MicrosoftGraphOnPremisesProvisioningError object itself.
      */
@@ -77,7 +81,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
 
     /**
      * Get the occurredDateTime property: The date and time at which the error occurred.
-     *
+     * 
      * @return the occurredDateTime value.
      */
     public OffsetDateTime occurredDateTime() {
@@ -86,7 +90,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
 
     /**
      * Set the occurredDateTime property: The date and time at which the error occurred.
-     *
+     * 
      * @param occurredDateTime the occurredDateTime value to set.
      * @return the MicrosoftGraphOnPremisesProvisioningError object itself.
      */
@@ -98,7 +102,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
     /**
      * Get the propertyCausingError property: Name of the directory property causing the error. Current possible values:
      * UserPrincipalName or ProxyAddress.
-     *
+     * 
      * @return the propertyCausingError value.
      */
     public String propertyCausingError() {
@@ -108,7 +112,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
     /**
      * Set the propertyCausingError property: Name of the directory property causing the error. Current possible values:
      * UserPrincipalName or ProxyAddress.
-     *
+     * 
      * @param propertyCausingError the propertyCausingError value to set.
      * @return the MicrosoftGraphOnPremisesProvisioningError object itself.
      */
@@ -119,7 +123,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
 
     /**
      * Get the value property: Value of the property causing the error.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -128,7 +132,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
 
     /**
      * Set the value property: Value of the property causing the error.
-     *
+     * 
      * @param value the value value to set.
      * @return the MicrosoftGraphOnPremisesProvisioningError object itself.
      */
@@ -139,39 +143,91 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
 
     /**
      * Get the additionalProperties property: onPremisesProvisioningError.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onPremisesProvisioningError.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnPremisesProvisioningError object itself.
      */
-    public MicrosoftGraphOnPremisesProvisioningError withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphOnPremisesProvisioningError
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("occurredDateTime",
+            this.occurredDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.occurredDateTime));
+        jsonWriter.writeStringField("propertyCausingError", this.propertyCausingError);
+        jsonWriter.writeStringField("value", this.value);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnPremisesProvisioningError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnPremisesProvisioningError if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnPremisesProvisioningError.
+     */
+    public static MicrosoftGraphOnPremisesProvisioningError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnPremisesProvisioningError deserializedMicrosoftGraphOnPremisesProvisioningError
+                = new MicrosoftGraphOnPremisesProvisioningError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesProvisioningError.category = reader.getString();
+                } else if ("occurredDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesProvisioningError.occurredDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("propertyCausingError".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesProvisioningError.propertyCausingError = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesProvisioningError.value = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnPremisesProvisioningError.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnPremisesProvisioningError;
+        });
     }
 }

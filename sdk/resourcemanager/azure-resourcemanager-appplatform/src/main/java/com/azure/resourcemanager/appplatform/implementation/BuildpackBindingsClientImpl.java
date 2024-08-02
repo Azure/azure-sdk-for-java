@@ -646,8 +646,10 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     public SyncPoller<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName,
         String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
-            buildpackBindingName, buildpackBinding).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+                buildpackBindingName, buildpackBinding)
+            .getSyncPoller();
     }
 
     /**
@@ -670,8 +672,10 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     public SyncPoller<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName,
         String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
-            buildpackBindingName, buildpackBinding, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+                buildpackBindingName, buildpackBinding, context)
+            .getSyncPoller();
     }
 
     /**
@@ -957,8 +961,10 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
         String buildServiceName, String builderName, String buildpackBindingName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName,
-            buildpackBindingName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -979,7 +985,8 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String buildServiceName,
         String builderName, String buildpackBindingName) {
         return beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1230,9 +1237,7 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1259,9 +1264,7 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1289,9 +1292,7 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1317,9 +1318,7 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

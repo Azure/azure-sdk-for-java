@@ -25,12 +25,18 @@ public final class ConfigurationServicesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configurationServicesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getConfigurationServices()
-            .createOrUpdate("myResourceGroup", "myservice", "default", new ConfigurationServiceResourceInner()
-                .withProperties(new ConfigurationServiceProperties().withSettings(new ConfigurationServiceSettings()
-                    .withGitProperty(new ConfigurationServiceGitProperty().withRepositories(Arrays.asList(
-                        new ConfigurationServiceGitRepository().withName("fake").withPatterns(Arrays.asList("app/dev"))
-                            .withUri("https://github.com/fake-user/fake-repository").withLabel("master")))))),
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getConfigurationServices()
+            .createOrUpdate("myResourceGroup", "myservice", "default",
+                new ConfigurationServiceResourceInner()
+                    .withProperties(new ConfigurationServiceProperties().withSettings(
+                        new ConfigurationServiceSettings().withGitProperty(new ConfigurationServiceGitProperty()
+                            .withRepositories(Arrays.asList(new ConfigurationServiceGitRepository().withName("fake")
+                                .withPatterns(Arrays.asList("app/dev"))
+                                .withUri("https://github.com/fake-user/fake-repository")
+                                .withLabel("master")))))),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -7,9 +7,11 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.ApplicationGroupPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,20 +22,32 @@ public final class ApplicationGroupInner extends ProxyResource {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGroupProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ApplicationGroupInner class.
@@ -43,7 +57,7 @@ public final class ApplicationGroupInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGroupProperties innerProperties() {
@@ -52,7 +66,7 @@ public final class ApplicationGroupInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -61,7 +75,7 @@ public final class ApplicationGroupInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,10 +83,40 @@ public final class ApplicationGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the isEnabled property: Determines if Application Group is allowed to create connection with namespace or
      * not. Once the isEnabled is set to false, all the existing connections of application group gets dropped and no
      * new connections will be allowed.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -83,7 +127,7 @@ public final class ApplicationGroupInner extends ProxyResource {
      * Set the isEnabled property: Determines if Application Group is allowed to create connection with namespace or
      * not. Once the isEnabled is set to false, all the existing connections of application group gets dropped and no
      * new connections will be allowed.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -98,7 +142,7 @@ public final class ApplicationGroupInner extends ProxyResource {
     /**
      * Get the clientAppGroupIdentifier property: The Unique identifier for application group.Supports
      * SAS(SASKeyName=KeyName) or AAD(AADAppID=Guid).
-     *
+     * 
      * @return the clientAppGroupIdentifier value.
      */
     public String clientAppGroupIdentifier() {
@@ -108,7 +152,7 @@ public final class ApplicationGroupInner extends ProxyResource {
     /**
      * Set the clientAppGroupIdentifier property: The Unique identifier for application group.Supports
      * SAS(SASKeyName=KeyName) or AAD(AADAppID=Guid).
-     *
+     * 
      * @param clientAppGroupIdentifier the clientAppGroupIdentifier value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -123,7 +167,7 @@ public final class ApplicationGroupInner extends ProxyResource {
     /**
      * Get the policies property: List of group policies that define the behavior of application group. The policies can
      * support resource governance scenarios such as limiting ingress or egress traffic.
-     *
+     * 
      * @return the policies value.
      */
     public List<ApplicationGroupPolicy> policies() {
@@ -133,7 +177,7 @@ public final class ApplicationGroupInner extends ProxyResource {
     /**
      * Set the policies property: List of group policies that define the behavior of application group. The policies can
      * support resource governance scenarios such as limiting ingress or egress traffic.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -147,12 +191,59 @@ public final class ApplicationGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGroupInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGroupInner.
+     */
+    public static ApplicationGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGroupInner deserializedApplicationGroupInner = new ApplicationGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGroupInner.innerProperties = ApplicationGroupProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationGroupInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationGroupInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGroupInner;
+        });
     }
 }

@@ -5,62 +5,60 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** visualInfo. */
+/**
+ * visualInfo.
+ */
 @Fluent
-public final class MicrosoftGraphVisualInfo {
+public final class MicrosoftGraphVisualInfo implements JsonSerializable<MicrosoftGraphVisualInfo> {
     /*
      * imageInfo
      */
-    @JsonProperty(value = "attribution")
     private MicrosoftGraphImageInfo attribution;
 
     /*
      * Optional. Background color used to render the activity in the UI - brand color for the application source of the
      * activity. Must be a valid hex color
      */
-    @JsonProperty(value = "backgroundColor")
     private String backgroundColor;
 
     /*
      * Json
      */
-    @JsonProperty(value = "content")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> content;
 
     /*
      * The description property.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Required. Short text description of the user's unique activity (for example, document name in cases where an
      * activity refers to document creation)
      */
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * visualInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphVisualInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphVisualInfo class.
+     */
     public MicrosoftGraphVisualInfo() {
     }
 
     /**
      * Get the attribution property: imageInfo.
-     *
+     * 
      * @return the attribution value.
      */
     public MicrosoftGraphImageInfo attribution() {
@@ -69,7 +67,7 @@ public final class MicrosoftGraphVisualInfo {
 
     /**
      * Set the attribution property: imageInfo.
-     *
+     * 
      * @param attribution the attribution value to set.
      * @return the MicrosoftGraphVisualInfo object itself.
      */
@@ -81,7 +79,7 @@ public final class MicrosoftGraphVisualInfo {
     /**
      * Get the backgroundColor property: Optional. Background color used to render the activity in the UI - brand color
      * for the application source of the activity. Must be a valid hex color.
-     *
+     * 
      * @return the backgroundColor value.
      */
     public String backgroundColor() {
@@ -91,7 +89,7 @@ public final class MicrosoftGraphVisualInfo {
     /**
      * Set the backgroundColor property: Optional. Background color used to render the activity in the UI - brand color
      * for the application source of the activity. Must be a valid hex color.
-     *
+     * 
      * @param backgroundColor the backgroundColor value to set.
      * @return the MicrosoftGraphVisualInfo object itself.
      */
@@ -102,7 +100,7 @@ public final class MicrosoftGraphVisualInfo {
 
     /**
      * Get the content property: Json.
-     *
+     * 
      * @return the content value.
      */
     public Map<String, Object> content() {
@@ -111,7 +109,7 @@ public final class MicrosoftGraphVisualInfo {
 
     /**
      * Set the content property: Json.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphVisualInfo object itself.
      */
@@ -122,7 +120,7 @@ public final class MicrosoftGraphVisualInfo {
 
     /**
      * Get the description property: The description property.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -131,7 +129,7 @@ public final class MicrosoftGraphVisualInfo {
 
     /**
      * Set the description property: The description property.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphVisualInfo object itself.
      */
@@ -143,7 +141,7 @@ public final class MicrosoftGraphVisualInfo {
     /**
      * Get the displayText property: Required. Short text description of the user's unique activity (for example,
      * document name in cases where an activity refers to document creation).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -153,7 +151,7 @@ public final class MicrosoftGraphVisualInfo {
     /**
      * Set the displayText property: Required. Short text description of the user's unique activity (for example,
      * document name in cases where an activity refers to document creation).
-     *
+     * 
      * @param displayText the displayText value to set.
      * @return the MicrosoftGraphVisualInfo object itself.
      */
@@ -164,17 +162,16 @@ public final class MicrosoftGraphVisualInfo {
 
     /**
      * Get the additionalProperties property: visualInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: visualInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphVisualInfo object itself.
      */
@@ -183,22 +180,74 @@ public final class MicrosoftGraphVisualInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (attribution() != null) {
             attribution().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("attribution", this.attribution);
+        jsonWriter.writeStringField("backgroundColor", this.backgroundColor);
+        jsonWriter.writeMapField("content", this.content, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayText", this.displayText);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphVisualInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphVisualInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphVisualInfo.
+     */
+    public static MicrosoftGraphVisualInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphVisualInfo deserializedMicrosoftGraphVisualInfo = new MicrosoftGraphVisualInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attribution".equals(fieldName)) {
+                    deserializedMicrosoftGraphVisualInfo.attribution = MicrosoftGraphImageInfo.fromJson(reader);
+                } else if ("backgroundColor".equals(fieldName)) {
+                    deserializedMicrosoftGraphVisualInfo.backgroundColor = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    Map<String, Object> content = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphVisualInfo.content = content;
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphVisualInfo.description = reader.getString();
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedMicrosoftGraphVisualInfo.displayText = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphVisualInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphVisualInfo;
+        });
     }
 }

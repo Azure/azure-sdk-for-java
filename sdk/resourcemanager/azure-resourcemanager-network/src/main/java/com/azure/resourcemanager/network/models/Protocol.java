@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
      * @param name a name to look for.
      * @return the corresponding Protocol.
      */
-    @JsonCreator
     public static Protocol fromString(String name) {
         return fromString(name, Protocol.class);
     }

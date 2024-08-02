@@ -27,12 +27,18 @@ public final class TaskRunsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void taskRunsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTaskRuns().create("myResourceGroup", "myRegistry",
-            "myRun",
-            new TaskRunInner().withRunRequest(new EncodedTaskRunRequest().withEncodedTaskContent("fakeTokenPlaceholder")
-                .withEncodedValuesContent("fakeTokenPlaceholder").withValues(Arrays.asList())
-                .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                .withCredentials(new Credentials())).withForceUpdateTag("test"),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTaskRuns()
+            .create("myResourceGroup", "myRegistry", "myRun",
+                new TaskRunInner()
+                    .withRunRequest(new EncodedTaskRunRequest().withEncodedTaskContent("fakeTokenPlaceholder")
+                        .withEncodedValuesContent("fakeTokenPlaceholder")
+                        .withValues(Arrays.asList())
+                        .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
+                        .withCredentials(new Credentials()))
+                    .withForceUpdateTag("test"),
+                com.azure.core.util.Context.NONE);
     }
 }

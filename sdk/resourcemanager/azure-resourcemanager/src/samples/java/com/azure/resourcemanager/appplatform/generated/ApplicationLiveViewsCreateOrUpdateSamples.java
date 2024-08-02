@@ -21,9 +21,12 @@ public final class ApplicationLiveViewsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void applicationLiveViewsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApplicationLiveViews().createOrUpdate("myResourceGroup",
-            "myservice", "default",
-            new ApplicationLiveViewResourceInner().withProperties(new ApplicationLiveViewProperties()),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApplicationLiveViews()
+            .createOrUpdate("myResourceGroup", "myservice", "default",
+                new ApplicationLiveViewResourceInner().withProperties(new ApplicationLiveViewProperties()),
+                com.azure.core.util.Context.NONE);
     }
 }

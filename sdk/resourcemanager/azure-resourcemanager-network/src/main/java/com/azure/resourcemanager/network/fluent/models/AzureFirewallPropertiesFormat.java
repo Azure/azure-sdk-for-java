@@ -6,6 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
@@ -15,8 +19,7 @@ import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,84 +27,70 @@ import java.util.Map;
  * Properties of the Azure Firewall.
  */
 @Fluent
-public final class AzureFirewallPropertiesFormat {
+public final class AzureFirewallPropertiesFormat implements JsonSerializable<AzureFirewallPropertiesFormat> {
     /*
      * Collection of application rule collections used by Azure Firewall.
      */
-    @JsonProperty(value = "applicationRuleCollections")
     private List<AzureFirewallApplicationRuleCollection> applicationRuleCollections;
 
     /*
      * Collection of NAT rule collections used by Azure Firewall.
      */
-    @JsonProperty(value = "natRuleCollections")
     private List<AzureFirewallNatRuleCollection> natRuleCollections;
 
     /*
      * Collection of network rule collections used by Azure Firewall.
      */
-    @JsonProperty(value = "networkRuleCollections")
     private List<AzureFirewallNetworkRuleCollection> networkRuleCollections;
 
     /*
      * IP configuration of the Azure Firewall resource.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<AzureFirewallIpConfiguration> ipConfigurations;
 
     /*
      * IP configuration of the Azure Firewall used for management traffic.
      */
-    @JsonProperty(value = "managementIpConfiguration")
     private AzureFirewallIpConfiguration managementIpConfiguration;
 
     /*
      * The provisioning state of the Azure firewall resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The operation mode for Threat Intelligence.
      */
-    @JsonProperty(value = "threatIntelMode")
     private AzureFirewallThreatIntelMode threatIntelMode;
 
     /*
      * The virtualHub to which the firewall belongs.
      */
-    @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
     /*
      * The firewallPolicy associated with this azure firewall.
      */
-    @JsonProperty(value = "firewallPolicy")
     private SubResource firewallPolicy;
 
     /*
      * IP addresses associated with AzureFirewall.
      */
-    @JsonProperty(value = "hubIPAddresses")
     private HubIpAddresses hubIpAddresses;
 
     /*
      * IpGroups associated with AzureFirewall.
      */
-    @JsonProperty(value = "ipGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureFirewallIpGroups> ipGroups;
 
     /*
      * The Azure Firewall Resource SKU.
      */
-    @JsonProperty(value = "sku")
     private AzureFirewallSku sku;
 
     /*
      * The additional properties used to further config this azure firewall.
      */
-    @JsonProperty(value = "additionalProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalProperties;
 
     /**
@@ -382,5 +371,96 @@ public final class AzureFirewallPropertiesFormat {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("applicationRuleCollections", this.applicationRuleCollections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("natRuleCollections", this.natRuleCollections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("networkRuleCollections", this.networkRuleCollections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("managementIpConfiguration", this.managementIpConfiguration);
+        jsonWriter.writeStringField("threatIntelMode",
+            this.threatIntelMode == null ? null : this.threatIntelMode.toString());
+        jsonWriter.writeJsonField("virtualHub", this.virtualHub);
+        jsonWriter.writeJsonField("firewallPolicy", this.firewallPolicy);
+        jsonWriter.writeJsonField("hubIPAddresses", this.hubIpAddresses);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallPropertiesFormat.
+     */
+    public static AzureFirewallPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallPropertiesFormat deserializedAzureFirewallPropertiesFormat
+                = new AzureFirewallPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationRuleCollections".equals(fieldName)) {
+                    List<AzureFirewallApplicationRuleCollection> applicationRuleCollections
+                        = reader.readArray(reader1 -> AzureFirewallApplicationRuleCollection.fromJson(reader1));
+                    deserializedAzureFirewallPropertiesFormat.applicationRuleCollections = applicationRuleCollections;
+                } else if ("natRuleCollections".equals(fieldName)) {
+                    List<AzureFirewallNatRuleCollection> natRuleCollections
+                        = reader.readArray(reader1 -> AzureFirewallNatRuleCollection.fromJson(reader1));
+                    deserializedAzureFirewallPropertiesFormat.natRuleCollections = natRuleCollections;
+                } else if ("networkRuleCollections".equals(fieldName)) {
+                    List<AzureFirewallNetworkRuleCollection> networkRuleCollections
+                        = reader.readArray(reader1 -> AzureFirewallNetworkRuleCollection.fromJson(reader1));
+                    deserializedAzureFirewallPropertiesFormat.networkRuleCollections = networkRuleCollections;
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<AzureFirewallIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> AzureFirewallIpConfiguration.fromJson(reader1));
+                    deserializedAzureFirewallPropertiesFormat.ipConfigurations = ipConfigurations;
+                } else if ("managementIpConfiguration".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.managementIpConfiguration
+                        = AzureFirewallIpConfiguration.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("threatIntelMode".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.threatIntelMode
+                        = AzureFirewallThreatIntelMode.fromString(reader.getString());
+                } else if ("virtualHub".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.virtualHub = SubResource.fromJson(reader);
+                } else if ("firewallPolicy".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.firewallPolicy = SubResource.fromJson(reader);
+                } else if ("hubIPAddresses".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.hubIpAddresses = HubIpAddresses.fromJson(reader);
+                } else if ("ipGroups".equals(fieldName)) {
+                    List<AzureFirewallIpGroups> ipGroups
+                        = reader.readArray(reader1 -> AzureFirewallIpGroups.fromJson(reader1));
+                    deserializedAzureFirewallPropertiesFormat.ipGroups = ipGroups;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.sku = AzureFirewallSku.fromJson(reader);
+                } else if ("additionalProperties".equals(fieldName)) {
+                    Map<String, String> additionalProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureFirewallPropertiesFormat.additionalProperties = additionalProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallPropertiesFormat;
+        });
     }
 }

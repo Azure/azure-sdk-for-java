@@ -5,63 +5,62 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * managedAppPolicy
- *
- * <p>The ManagedAppPolicy resource represents a base type for platform specific policies.
+ * 
+ * The ManagedAppPolicy resource represents a base type for platform specific policies.
  */
 @Fluent
 public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
     /*
      * The date and time the policy was created.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * The policy's description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Policy display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Last time the policy was modified.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Version of the entity.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The ManagedAppPolicy resource represents a base type for platform specific policies.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphManagedAppPolicy class. */
+    /**
+     * Creates an instance of MicrosoftGraphManagedAppPolicy class.
+     */
     public MicrosoftGraphManagedAppPolicy() {
     }
 
     /**
      * Get the createdDateTime property: The date and time the policy was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -70,7 +69,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Set the createdDateTime property: The date and time the policy was created.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphManagedAppPolicy object itself.
      */
@@ -81,7 +80,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Get the description property: The policy's description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +89,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Set the description property: The policy's description.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphManagedAppPolicy object itself.
      */
@@ -101,7 +100,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: Policy display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -110,7 +109,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: Policy display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphManagedAppPolicy object itself.
      */
@@ -121,7 +120,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Get the lastModifiedDateTime property: Last time the policy was modified.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -130,7 +129,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedDateTime property: Last time the policy was modified.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphManagedAppPolicy object itself.
      */
@@ -141,7 +140,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Get the version property: Version of the entity.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -150,7 +149,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Set the version property: Version of the entity.
-     *
+     * 
      * @param version the version value to set.
      * @return the MicrosoftGraphManagedAppPolicy object itself.
      */
@@ -162,10 +161,9 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
     /**
      * Get the additionalProperties property: The ManagedAppPolicy resource represents a base type for platform specific
      * policies.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -173,7 +171,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
     /**
      * Set the additionalProperties property: The ManagedAppPolicy resource represents a base type for platform specific
      * policies.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphManagedAppPolicy object itself.
      */
@@ -182,15 +180,9 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphManagedAppPolicy withId(String id) {
         super.withId(id);
@@ -199,11 +191,80 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("version", this.version);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphManagedAppPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphManagedAppPolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphManagedAppPolicy.
+     */
+    public static MicrosoftGraphManagedAppPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphManagedAppPolicy deserializedMicrosoftGraphManagedAppPolicy
+                = new MicrosoftGraphManagedAppPolicy();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppPolicy.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppPolicy.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppPolicy.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppPolicy.displayName = reader.getString();
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppPolicy.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppPolicy.version = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphManagedAppPolicy.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphManagedAppPolicy;
+        });
     }
 }

@@ -6,47 +6,45 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details about the pod identity assigned to the Managed Cluster.
  */
 @Fluent
-public final class ManagedClusterPodIdentity {
+public final class ManagedClusterPodIdentity implements JsonSerializable<ManagedClusterPodIdentity> {
     /*
      * The name of the pod identity.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The namespace of the pod identity.
      */
-    @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /*
      * The binding selector to use for the AzureIdentityBinding resource.
      */
-    @JsonProperty(value = "bindingSelector")
     private String bindingSelector;
 
     /*
      * The user assigned identity details.
      */
-    @JsonProperty(value = "identity", required = true)
     private UserAssignedIdentity identity;
 
     /*
      * The current provisioning state of the pod identity.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterPodIdentityProvisioningState provisioningState;
 
     /*
      * The provisioningInfo property.
      */
-    @JsonProperty(value = "provisioningInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterPodIdentityProvisioningInfo provisioningInfo;
 
     /**
@@ -181,4 +179,56 @@ public final class ManagedClusterPodIdentity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("bindingSelector", this.bindingSelector);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterPodIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterPodIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterPodIdentity.
+     */
+    public static ManagedClusterPodIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterPodIdentity deserializedManagedClusterPodIdentity = new ManagedClusterPodIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentity.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentity.namespace = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentity.identity = UserAssignedIdentity.fromJson(reader);
+                } else if ("bindingSelector".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentity.bindingSelector = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentity.provisioningState
+                        = ManagedClusterPodIdentityProvisioningState.fromString(reader.getString());
+                } else if ("provisioningInfo".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentity.provisioningInfo
+                        = ManagedClusterPodIdentityProvisioningInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterPodIdentity;
+        });
+    }
 }

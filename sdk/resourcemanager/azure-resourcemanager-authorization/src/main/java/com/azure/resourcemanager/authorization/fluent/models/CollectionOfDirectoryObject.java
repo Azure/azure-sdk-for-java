@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Collection of directoryObject. */
+/**
+ * Collection of directoryObject.
+ */
 @Fluent
-public final class CollectionOfDirectoryObject {
+public final class CollectionOfDirectoryObject implements JsonSerializable<CollectionOfDirectoryObject> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<MicrosoftGraphDirectoryObjectInner> value;
 
     /*
      * The @odata.nextLink property.
      */
-    @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
     /*
      * Collection of directoryObject
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CollectionOfDirectoryObject class. */
+    /**
+     * Creates an instance of CollectionOfDirectoryObject class.
+     */
     public CollectionOfDirectoryObject() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> value() {
@@ -48,7 +51,7 @@ public final class CollectionOfDirectoryObject {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the CollectionOfDirectoryObject object itself.
      */
@@ -58,8 +61,8 @@ public final class CollectionOfDirectoryObject {
     }
 
     /**
-     * Get the odataNextLink property: The @odata.nextLink property.
-     *
+     * Get the odataNextLink property: The &#064;odata.nextLink property.
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -67,8 +70,8 @@ public final class CollectionOfDirectoryObject {
     }
 
     /**
-     * Set the odataNextLink property: The @odata.nextLink property.
-     *
+     * Set the odataNextLink property: The &#064;odata.nextLink property.
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the CollectionOfDirectoryObject object itself.
      */
@@ -79,17 +82,16 @@ public final class CollectionOfDirectoryObject {
 
     /**
      * Get the additionalProperties property: Collection of directoryObject.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Collection of directoryObject.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CollectionOfDirectoryObject object itself.
      */
@@ -98,22 +100,66 @@ public final class CollectionOfDirectoryObject {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@odata.nextLink", this.odataNextLink);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CollectionOfDirectoryObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CollectionOfDirectoryObject if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CollectionOfDirectoryObject.
+     */
+    public static CollectionOfDirectoryObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CollectionOfDirectoryObject deserializedCollectionOfDirectoryObject = new CollectionOfDirectoryObject();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> value
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedCollectionOfDirectoryObject.value = value;
+                } else if ("@odata.nextLink".equals(fieldName)) {
+                    deserializedCollectionOfDirectoryObject.odataNextLink = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCollectionOfDirectoryObject.additionalProperties = additionalProperties;
+
+            return deserializedCollectionOfDirectoryObject;
+        });
     }
 }

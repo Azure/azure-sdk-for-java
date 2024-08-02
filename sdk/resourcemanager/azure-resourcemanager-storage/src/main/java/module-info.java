@@ -11,11 +11,7 @@ module com.azure.resourcemanager.storage {
     exports com.azure.resourcemanager.storage.fluent.models;
     exports com.azure.resourcemanager.storage.models;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.storage.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.storage.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.storage.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.storage.models to com.azure.core;
 }

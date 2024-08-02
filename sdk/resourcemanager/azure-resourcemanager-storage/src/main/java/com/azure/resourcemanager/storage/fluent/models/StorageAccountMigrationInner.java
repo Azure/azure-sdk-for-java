@@ -6,38 +6,38 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.MigrationStatus;
 import com.azure.resourcemanager.storage.models.SkuName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The parameters or status associated with an ongoing or enqueued storage account migration in order to update its
  * current SKU or region.
  */
 @Fluent
-public final class StorageAccountMigrationInner {
+public final class StorageAccountMigrationInner implements JsonSerializable<StorageAccountMigrationInner> {
     /*
      * Migration Resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * current value is 'default' for customer initiated migration
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * SrpAccountMigrationType in ARM contract which is 'accountMigrations'
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The properties of a storage account’s ongoing or enqueued migration.
      */
-    @JsonProperty(value = "properties", required = true)
     private StorageAccountMigrationProperties innerStorageAccountMigrationDetails
         = new StorageAccountMigrationProperties();
 
@@ -180,4 +180,50 @@ public final class StorageAccountMigrationInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountMigrationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerStorageAccountMigrationDetails);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountMigrationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountMigrationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountMigrationInner.
+     */
+    public static StorageAccountMigrationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountMigrationInner deserializedStorageAccountMigrationInner = new StorageAccountMigrationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.innerStorageAccountMigrationDetails
+                        = StorageAccountMigrationProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountMigrationInner;
+        });
+    }
 }

@@ -5,53 +5,80 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** scheduleEntityTheme. */
+/**
+ * scheduleEntityTheme.
+ */
 public final class MicrosoftGraphScheduleEntityTheme extends ExpandableStringEnum<MicrosoftGraphScheduleEntityTheme> {
-    /** Static value white for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value white for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme WHITE = fromString("white");
 
-    /** Static value blue for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value blue for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme BLUE = fromString("blue");
 
-    /** Static value green for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value green for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme GREEN = fromString("green");
 
-    /** Static value purple for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value purple for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme PURPLE = fromString("purple");
 
-    /** Static value pink for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value pink for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme PINK = fromString("pink");
 
-    /** Static value yellow for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value yellow for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme YELLOW = fromString("yellow");
 
-    /** Static value gray for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value gray for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme GRAY = fromString("gray");
 
-    /** Static value darkBlue for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value darkBlue for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme DARK_BLUE = fromString("darkBlue");
 
-    /** Static value darkGreen for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value darkGreen for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme DARK_GREEN = fromString("darkGreen");
 
-    /** Static value darkPurple for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value darkPurple for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme DARK_PURPLE = fromString("darkPurple");
 
-    /** Static value darkPink for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value darkPink for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme DARK_PINK = fromString("darkPink");
 
-    /** Static value darkYellow for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value darkYellow for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme DARK_YELLOW = fromString("darkYellow");
 
-    /** Static value unknownFutureValue for MicrosoftGraphScheduleEntityTheme. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphScheduleEntityTheme.
+     */
     public static final MicrosoftGraphScheduleEntityTheme UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphScheduleEntityTheme value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,18 +87,17 @@ public final class MicrosoftGraphScheduleEntityTheme extends ExpandableStringEnu
 
     /**
      * Creates or finds a MicrosoftGraphScheduleEntityTheme from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphScheduleEntityTheme.
      */
-    @JsonCreator
     public static MicrosoftGraphScheduleEntityTheme fromString(String name) {
         return fromString(name, MicrosoftGraphScheduleEntityTheme.class);
     }
 
     /**
      * Gets known MicrosoftGraphScheduleEntityTheme values.
-     *
+     * 
      * @return known MicrosoftGraphScheduleEntityTheme values.
      */
     public static Collection<MicrosoftGraphScheduleEntityTheme> values() {
