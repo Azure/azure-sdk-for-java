@@ -2,13 +2,10 @@
 
 ## 2.42.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Type of `maximumInstanceCount` and `instanceMemoryMB` changed from Double to Integer.
+  This was fix to an incorrect service specification. 
 
 ## 2.41.0 (2024-07-25)
 
