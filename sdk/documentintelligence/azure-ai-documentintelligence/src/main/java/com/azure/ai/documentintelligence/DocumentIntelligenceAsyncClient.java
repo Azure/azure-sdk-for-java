@@ -26,11 +26,14 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous DocumentIntelligenceClient type.
@@ -97,45 +100,6 @@ public final class DocumentIntelligenceAsyncClient {
     }
 
     /**
-     * Classifies document with document classifier.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
-     * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     urlSource: String (Optional)
-     *     base64Source: byte[] (Optional)
-     * }
-     * }</pre>
-     * 
-     * @param classifierId Unique document classifier name.
-     * @param classifyRequest Classify request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginClassifyDocumentAsync(classifierId, classifyRequest, requestOptions);
-    }
-
-    /**
      * Analyzes batch documents with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -189,6 +153,96 @@ public final class DocumentIntelligenceAsyncClient {
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId,
         RequestOptions requestOptions) {
         return this.serviceClient.beginAnalyzeBatchDocumentsAsync(modelId, requestOptions);
+    }
+
+    /**
+     * Gets the generated searchable PDF output from document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the generated searchable PDF output from document analysis along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAnalyzeResultPdfWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAnalyzeResultPdfWithResponseAsync(modelId, resultId, requestOptions);
+    }
+
+    /**
+     * Gets the generated cropped image of specified figure from document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param figureId Figure ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the generated cropped image of specified figure from document analysis along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAnalyzeResultFigureWithResponse(String modelId, String resultId,
+        String figureId, RequestOptions requestOptions) {
+        return this.serviceClient.getAnalyzeResultFigureWithResponseAsync(modelId, resultId, figureId, requestOptions);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     urlSource: String (Optional)
+     *     base64Source: byte[] (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param classifyRequest Classify request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginClassifyDocumentAsync(classifierId, classifyRequest, requestOptions);
     }
 
     /**
@@ -280,64 +334,6 @@ public final class DocumentIntelligenceAsyncClient {
     }
 
     /**
-     * Classifies document with document classifier.
-     * 
-     * @param classifierId Unique document classifier name.
-     * @param classifyRequest Classify request parameters.
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param split Document splitting mode.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
-        ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
-        // Generated convenience method for beginClassifyDocumentWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        if (stringIndexType != null) {
-            requestOptions.addQueryParam("stringIndexType", stringIndexType.toString(), false);
-        }
-        if (split != null) {
-            requestOptions.addQueryParam("split", split.toString(), false);
-        }
-        if (pages != null) {
-            requestOptions.addQueryParam("pages", pages, false);
-        }
-        return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
-            requestOptions);
-    }
-
-    /**
-     * Classifies document with document classifier.
-     * 
-     * @param classifierId Unique document classifier name.
-     * @param classifyRequest Classify request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
-        ClassifyDocumentRequest classifyRequest) {
-        // Generated convenience method for beginClassifyDocumentWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
-            requestOptions);
-    }
-
-    /**
      * Analyzes batch documents with document model.
      * 
      * @param modelId Unique document model name.
@@ -423,5 +419,108 @@ public final class DocumentIntelligenceAsyncClient {
         // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginAnalyzeBatchDocumentsWithModelAsync(modelId, requestOptions);
+    }
+
+    /**
+     * Gets the generated searchable PDF output from document analysis.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the generated searchable PDF output from document analysis on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getAnalyzeResultPdf(String modelId, String resultId) {
+        // Generated convenience method for getAnalyzeResultPdfWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAnalyzeResultPdfWithResponse(modelId, resultId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the generated cropped image of specified figure from document analysis.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param figureId Figure ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the generated cropped image of specified figure from document analysis on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getAnalyzeResultFigure(String modelId, String resultId, String figureId) {
+        // Generated convenience method for getAnalyzeResultFigureWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAnalyzeResultFigureWithResponse(modelId, resultId, figureId, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param classifyRequest Classify request parameters.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param split Document splitting mode.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+        ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
+        // Generated convenience method for beginClassifyDocumentWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (stringIndexType != null) {
+            requestOptions.addQueryParam("stringIndexType", stringIndexType.toString(), false);
+        }
+        if (split != null) {
+            requestOptions.addQueryParam("split", split.toString(), false);
+        }
+        if (pages != null) {
+            requestOptions.addQueryParam("pages", pages, false);
+        }
+        return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
+            requestOptions);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+        ClassifyDocumentRequest classifyRequest) {
+        // Generated convenience method for beginClassifyDocumentWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginClassifyDocumentWithModelAsync(classifierId, BinaryData.fromObject(classifyRequest),
+            requestOptions);
     }
 }
