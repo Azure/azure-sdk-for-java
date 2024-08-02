@@ -13,13 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TopLevelDomainAgreementOption {
     /*
-     * If <code>true</code>, then the list of agreements will include agreements for domain privacy as well; otherwise, <code>false</code>.
+     * If <code>true</code>, then the list of agreements will include agreements for domain privacy as well; otherwise,
+     * <code>false</code>.
      */
     @JsonProperty(value = "includePrivacy")
     private Boolean includePrivacy;
 
     /*
-     * If <code>true</code>, then the list of agreements will include agreements for domain transfer as well; otherwise, <code>false</code>.
+     * If <code>true</code>, then the list of agreements will include agreements for domain transfer as well; otherwise,
+     * <code>false</code>.
      */
     @JsonProperty(value = "forTransfer")
     private Boolean forTransfer;

@@ -13,8 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TokenStore {
     /*
-     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows; otherwise, <code>false</code>.
-     *  The default is <code>false</code>.
+     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows;
+     * otherwise, <code>false</code>.
+     * The default is <code>false</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;

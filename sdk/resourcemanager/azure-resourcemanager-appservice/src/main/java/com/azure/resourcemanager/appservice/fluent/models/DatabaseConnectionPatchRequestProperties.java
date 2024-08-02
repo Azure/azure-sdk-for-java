@@ -19,7 +19,9 @@ public final class DatabaseConnectionPatchRequestProperties {
     private String resourceId;
 
     /*
-     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
+     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the
+     * system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned
+     * managed identity is indicated with the resource id of the managed identity resource.
      */
     @JsonProperty(value = "connectionIdentity")
     private String connectionIdentity;

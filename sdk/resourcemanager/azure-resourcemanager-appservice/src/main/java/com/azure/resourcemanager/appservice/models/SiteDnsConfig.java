@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -39,13 +38,15 @@ public final class SiteDnsConfig {
     private Integer dnsRetryAttemptCount;
 
     /*
-     * Custom time for DNS to be cached in seconds. Allowed range: 0-60. Default is 30 seconds. 0 means caching disabled.
+     * Custom time for DNS to be cached in seconds. Allowed range: 0-60. Default is 30 seconds. 0 means caching
+     * disabled.
      */
     @JsonProperty(value = "dnsMaxCacheTimeout")
     private Integer dnsMaxCacheTimeout;
 
     /*
-     * Indicates that sites using Virtual network custom DNS servers are still sorting the list of DNS servers. Read-Only.
+     * Indicates that sites using Virtual network custom DNS servers are still sorting the list of DNS servers.
+     * Read-Only.
      */
     @JsonProperty(value = "dnsLegacySortOrder", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean dnsLegacySortOrder;
@@ -59,7 +60,7 @@ public final class SiteDnsConfig {
     /**
      * Get the dnsServers property: List of custom DNS servers to be used by an app for lookups. Maximum 5 dns servers
      * can be set.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -69,7 +70,7 @@ public final class SiteDnsConfig {
     /**
      * Set the dnsServers property: List of custom DNS servers to be used by an app for lookups. Maximum 5 dns servers
      * can be set.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the SiteDnsConfig object itself.
      */
@@ -81,7 +82,7 @@ public final class SiteDnsConfig {
     /**
      * Get the dnsAltServer property: Alternate DNS server to be used by apps. This property replicates the
      * WEBSITE_DNS_ALT_SERVER app setting.
-     *
+     * 
      * @return the dnsAltServer value.
      */
     public String dnsAltServer() {
@@ -91,7 +92,7 @@ public final class SiteDnsConfig {
     /**
      * Set the dnsAltServer property: Alternate DNS server to be used by apps. This property replicates the
      * WEBSITE_DNS_ALT_SERVER app setting.
-     *
+     * 
      * @param dnsAltServer the dnsAltServer value to set.
      * @return the SiteDnsConfig object itself.
      */
@@ -103,7 +104,7 @@ public final class SiteDnsConfig {
     /**
      * Get the dnsRetryAttemptTimeout property: Timeout for a single dns lookup in seconds. Allowed range: 1-30. Default
      * is 3.
-     *
+     * 
      * @return the dnsRetryAttemptTimeout value.
      */
     public Integer dnsRetryAttemptTimeout() {
@@ -113,7 +114,7 @@ public final class SiteDnsConfig {
     /**
      * Set the dnsRetryAttemptTimeout property: Timeout for a single dns lookup in seconds. Allowed range: 1-30. Default
      * is 3.
-     *
+     * 
      * @param dnsRetryAttemptTimeout the dnsRetryAttemptTimeout value to set.
      * @return the SiteDnsConfig object itself.
      */
@@ -124,7 +125,7 @@ public final class SiteDnsConfig {
 
     /**
      * Get the dnsRetryAttemptCount property: Total number of retries for dns lookup. Allowed range: 1-5. Default is 3.
-     *
+     * 
      * @return the dnsRetryAttemptCount value.
      */
     public Integer dnsRetryAttemptCount() {
@@ -133,7 +134,7 @@ public final class SiteDnsConfig {
 
     /**
      * Set the dnsRetryAttemptCount property: Total number of retries for dns lookup. Allowed range: 1-5. Default is 3.
-     *
+     * 
      * @param dnsRetryAttemptCount the dnsRetryAttemptCount value to set.
      * @return the SiteDnsConfig object itself.
      */
@@ -145,7 +146,7 @@ public final class SiteDnsConfig {
     /**
      * Get the dnsMaxCacheTimeout property: Custom time for DNS to be cached in seconds. Allowed range: 0-60. Default is
      * 30 seconds. 0 means caching disabled.
-     *
+     * 
      * @return the dnsMaxCacheTimeout value.
      */
     public Integer dnsMaxCacheTimeout() {
@@ -155,7 +156,7 @@ public final class SiteDnsConfig {
     /**
      * Set the dnsMaxCacheTimeout property: Custom time for DNS to be cached in seconds. Allowed range: 0-60. Default is
      * 30 seconds. 0 means caching disabled.
-     *
+     * 
      * @param dnsMaxCacheTimeout the dnsMaxCacheTimeout value to set.
      * @return the SiteDnsConfig object itself.
      */
@@ -167,7 +168,7 @@ public final class SiteDnsConfig {
     /**
      * Get the dnsLegacySortOrder property: Indicates that sites using Virtual network custom DNS servers are still
      * sorting the list of DNS servers. Read-Only.
-     *
+     * 
      * @return the dnsLegacySortOrder value.
      */
     public Boolean dnsLegacySortOrder() {
@@ -176,7 +177,7 @@ public final class SiteDnsConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

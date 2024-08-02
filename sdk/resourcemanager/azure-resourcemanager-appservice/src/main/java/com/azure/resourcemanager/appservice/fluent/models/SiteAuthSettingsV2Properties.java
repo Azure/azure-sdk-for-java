@@ -24,13 +24,15 @@ public final class SiteAuthSettingsV2Properties {
     private AuthPlatform platform;
 
     /*
-     * The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
+     * The configuration settings that determines the validation flow of users using App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "globalValidation")
     private GlobalValidation globalValidation;
 
     /*
-     * The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
+     * The configuration settings of each of the identity providers used to configure App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "identityProviders")
     private IdentityProviders identityProviders;
@@ -42,7 +44,8 @@ public final class SiteAuthSettingsV2Properties {
     private Login login;
 
     /*
-     * The configuration settings of the HTTP requests for authentication and authorization requests made against App Service Authentication/Authorization.
+     * The configuration settings of the HTTP requests for authentication and authorization requests made against App
+     * Service Authentication/Authorization.
      */
     @JsonProperty(value = "httpSettings")
     private HttpSettings httpSettings;

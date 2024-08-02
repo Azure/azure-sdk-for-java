@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +109,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the runtimeVersion property: Function App stack minor version (runtime only).
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -120,7 +119,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the remoteDebuggingSupported property: &lt;code&gt;true&lt;/code&gt; if remote debugging is supported for the
      * stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the remoteDebuggingSupported value.
      */
     public Boolean remoteDebuggingSupported() {
@@ -129,7 +128,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the appInsightsSettings property: Application Insights settings associated with the minor version.
-     *
+     * 
      * @return the appInsightsSettings value.
      */
     public AppInsightsWebAppStackSettings appInsightsSettings() {
@@ -138,7 +137,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the gitHubActionSettings property: GitHub Actions settings associated with the minor version.
-     *
+     * 
      * @return the gitHubActionSettings value.
      */
     public GitHubActionWebAppStackSettings gitHubActionSettings() {
@@ -147,7 +146,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the appSettingsDictionary property: Application settings associated with the minor version.
-     *
+     * 
      * @return the appSettingsDictionary value.
      */
     public Map<String, String> appSettingsDictionary() {
@@ -156,7 +155,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the siteConfigPropertiesDictionary property: Configuration settings associated with the minor version.
-     *
+     * 
      * @return the siteConfigPropertiesDictionary value.
      */
     public SiteConfigPropertiesDictionary siteConfigPropertiesDictionary() {
@@ -165,7 +164,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the supportedFunctionsExtensionVersions property: List of supported Functions extension versions.
-     *
+     * 
      * @return the supportedFunctionsExtensionVersions value.
      */
     public List<String> supportedFunctionsExtensionVersions() {
@@ -175,7 +174,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isPreview property: &lt;code&gt;true&lt;/code&gt; if the stack is in preview; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -185,7 +184,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public Boolean isDeprecated() {
@@ -195,7 +194,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isHidden property: &lt;code&gt;true&lt;/code&gt; if the stack should be hidden; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -204,7 +203,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Get the endOfLifeDate property: End-of-life date for the minor version.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -214,7 +213,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isAutoUpdate property: &lt;code&gt;true&lt;/code&gt; if the stack version is auto-updated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isAutoUpdate value.
      */
     public Boolean isAutoUpdate() {
@@ -224,7 +223,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isEarlyAccess property: &lt;code&gt;true&lt;/code&gt; if the minor version is early-access; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isEarlyAccess value.
      */
     public Boolean isEarlyAccess() {
@@ -234,7 +233,7 @@ public final class FunctionAppRuntimeSettings {
     /**
      * Get the isDefault property: &lt;code&gt;true&lt;/code&gt; if the minor version the default; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -243,7 +242,7 @@ public final class FunctionAppRuntimeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -49,7 +49,8 @@ public final class HybridConnectionProperties {
     private String sendKeyName;
 
     /*
-     * The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned
+     * The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be
+     * returned
      * normally, use the POST /listKeys API instead.
      */
     @JsonProperty(value = "sendKeyValue")

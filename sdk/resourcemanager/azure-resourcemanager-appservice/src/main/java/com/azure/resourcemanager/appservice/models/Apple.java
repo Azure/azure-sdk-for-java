@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Apple {
     /*
-     * <code>false</code> if the Apple provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the Apple provider should not be enabled despite the set registration; otherwise,
+     * <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;

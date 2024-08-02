@@ -51,7 +51,7 @@ public final class StampCapacityInner {
     private WorkerSizeOptions workerSize;
 
     /*
-     * Size ID of machines: 
+     * Size ID of machines:
      * 0 - Small
      * 1 - Medium
      * 2 - Large

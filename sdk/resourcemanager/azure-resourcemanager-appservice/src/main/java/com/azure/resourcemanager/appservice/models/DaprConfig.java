@@ -37,7 +37,8 @@ public final class DaprConfig {
     private Integer httpReadBufferSize;
 
     /*
-     * Increasing max size of request body http servers parameter in MB to handle uploading of big files. Default is 4 MB.
+     * Increasing max size of request body http servers parameter in MB to handle uploading of big files. Default is 4
+     * MB.
      */
     @JsonProperty(value = "httpMaxRequestSize")
     private Integer httpMaxRequestSize;

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -45,7 +44,7 @@ public final class RuntimeName extends ExpandableStringEnum<RuntimeName> {
 
     /**
      * Creates a new instance of RuntimeName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,7 +53,7 @@ public final class RuntimeName extends ExpandableStringEnum<RuntimeName> {
 
     /**
      * Creates or finds a RuntimeName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RuntimeName.
      */
@@ -65,7 +64,7 @@ public final class RuntimeName extends ExpandableStringEnum<RuntimeName> {
 
     /**
      * Gets known RuntimeName values.
-     *
+     * 
      * @return known RuntimeName values.
      */
     public static Collection<RuntimeName> values() {

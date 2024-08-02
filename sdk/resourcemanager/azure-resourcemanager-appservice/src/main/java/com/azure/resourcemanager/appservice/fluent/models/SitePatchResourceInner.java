@@ -17,7 +17,6 @@ import com.azure.resourcemanager.appservice.models.SiteDnsConfig;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -47,7 +46,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: SitePatchResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SitePatchResourcePropertiesInner innerProperties() {
@@ -56,7 +55,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the identity property: Managed service identity.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -65,7 +64,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the identity property: Managed service identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -85,7 +84,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the state property: Current state of the app.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -94,7 +93,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the hostNames property: Hostnames associated with the app.
-     *
+     * 
      * @return the hostNames value.
      */
     public List<String> hostNames() {
@@ -103,7 +102,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the repositorySiteName property: Name of the repository site.
-     *
+     * 
      * @return the repositorySiteName value.
      */
     public String repositorySiteName() {
@@ -112,7 +111,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the usageState property: State indicating whether the app has exceeded its quota usage. Read-only.
-     *
+     * 
      * @return the usageState value.
      */
     public UsageState usageState() {
@@ -122,7 +121,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline).
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -132,7 +131,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Set the enabled property: &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline).
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -148,7 +147,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Get the enabledHostNames property: Enabled hostnames for the app.Hostnames need to be assigned (see HostNames)
      * AND enabled. Otherwise,
      * the app is not served on those hostnames.
-     *
+     * 
      * @return the enabledHostNames value.
      */
     public List<String> enabledHostNames() {
@@ -157,7 +156,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the availabilityState property: Management information availability state for the app.
-     *
+     * 
      * @return the availabilityState value.
      */
     public SiteAvailabilityState availabilityState() {
@@ -166,7 +165,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
-     *
+     * 
      * @return the hostnameSslStates value.
      */
     public List<HostnameSslState> hostnameSslStates() {
@@ -175,7 +174,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
-     *
+     * 
      * @param hostnameSslStates the hostnameSslStates value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -190,7 +189,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
      * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-     *
+     * 
      * @return the serverFarmId value.
      */
     public String serverFarmId() {
@@ -200,7 +199,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
      * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-     *
+     * 
      * @param serverFarmId the serverFarmId value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -214,7 +213,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the reserved property: &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the reserved value.
      */
     public Boolean reserved() {
@@ -223,7 +222,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the reserved property: &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param reserved the reserved value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -237,7 +236,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the isXenon property: Obsolete: Hyper-V sandbox.
-     *
+     * 
      * @return the isXenon value.
      */
     public Boolean isXenon() {
@@ -246,7 +245,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the isXenon property: Obsolete: Hyper-V sandbox.
-     *
+     * 
      * @param isXenon the isXenon value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -260,7 +259,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the hyperV property: Hyper-V sandbox.
-     *
+     * 
      * @return the hyperV value.
      */
     public Boolean hyperV() {
@@ -269,7 +268,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the hyperV property: Hyper-V sandbox.
-     *
+     * 
      * @param hyperV the hyperV value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -283,7 +282,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the lastModifiedTimeUtc property: Last time the app was modified, in UTC. Read-only.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -292,7 +291,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the dnsConfiguration property: Property to configure various DNS related settings for a site.
-     *
+     * 
      * @return the dnsConfiguration value.
      */
     public SiteDnsConfig dnsConfiguration() {
@@ -301,7 +300,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the dnsConfiguration property: Property to configure various DNS related settings for a site.
-     *
+     * 
      * @param dnsConfiguration the dnsConfiguration value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -315,7 +314,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the siteConfig property: Configuration of the app.
-     *
+     * 
      * @return the siteConfig value.
      */
     public SiteConfigInner siteConfig() {
@@ -324,7 +323,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the siteConfig property: Configuration of the app.
-     *
+     * 
      * @param siteConfig the siteConfig value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -338,7 +337,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the trafficManagerHostNames property: Azure Traffic Manager hostnames associated with the app. Read-only.
-     *
+     * 
      * @return the trafficManagerHostNames value.
      */
     public List<String> trafficManagerHostNames() {
@@ -348,7 +347,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the scmSiteAlsoStopped property: &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is
      * stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the scmSiteAlsoStopped value.
      */
     public Boolean scmSiteAlsoStopped() {
@@ -358,7 +357,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Set the scmSiteAlsoStopped property: &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is
      * stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param scmSiteAlsoStopped the scmSiteAlsoStopped value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -372,7 +371,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the targetSwapSlot property: Specifies which deployment slot this app will swap into. Read-only.
-     *
+     * 
      * @return the targetSwapSlot value.
      */
     public String targetSwapSlot() {
@@ -381,7 +380,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the hostingEnvironmentProfile property: App Service Environment to use for the app.
-     *
+     * 
      * @return the hostingEnvironmentProfile value.
      */
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
@@ -390,7 +389,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the hostingEnvironmentProfile property: App Service Environment to use for the app.
-     *
+     * 
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -406,7 +405,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Get the clientAffinityEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity;
      * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same
      * session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the clientAffinityEnabled value.
      */
     public Boolean clientAffinityEnabled() {
@@ -417,7 +416,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Set the clientAffinityEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity;
      * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same
      * session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param clientAffinityEnabled the clientAffinityEnabled value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -433,7 +432,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Get the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the clientCertEnabled value.
      */
     public Boolean clientCertEnabled() {
@@ -444,7 +443,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Set the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param clientCertEnabled the clientCertEnabled value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -461,7 +460,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * - ClientCertEnabled: false means ClientCert is ignored.
      * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
      * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
+     * 
      * @return the clientCertMode value.
      */
     public ClientCertMode clientCertMode() {
@@ -473,7 +472,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * - ClientCertEnabled: false means ClientCert is ignored.
      * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
      * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
+     * 
      * @param clientCertMode the clientCertMode value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -487,7 +486,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
-     *
+     * 
      * @return the clientCertExclusionPaths value.
      */
     public String clientCertExclusionPaths() {
@@ -496,7 +495,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
-     *
+     * 
      * @param clientCertExclusionPaths the clientCertExclusionPaths value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -512,7 +511,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Get the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
-     *
+     * 
      * @return the hostNamesDisabled value.
      */
     public Boolean hostNamesDisabled() {
@@ -523,7 +522,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * Set the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
-     *
+     * 
      * @param hostNamesDisabled the hostNamesDisabled value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -538,7 +537,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
      * app. Customer will add this id to a txt record for verification.
-     *
+     * 
      * @return the customDomainVerificationId value.
      */
     public String customDomainVerificationId() {
@@ -548,7 +547,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Set the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
      * app. Customer will add this id to a txt record for verification.
-     *
+     * 
      * @param customDomainVerificationId the customDomainVerificationId value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -563,7 +562,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the outboundIpAddresses property: List of IP addresses that the app uses for outbound connections (e.g.
      * database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public String outboundIpAddresses() {
@@ -573,7 +572,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the possibleOutboundIpAddresses property: List of IP addresses that the app uses for outbound connections
      * (e.g. database access). Includes VIPs from all tenants except dataComponent. Read-only.
-     *
+     * 
      * @return the possibleOutboundIpAddresses value.
      */
     public String possibleOutboundIpAddresses() {
@@ -582,7 +581,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the containerSize property: Size of the function container.
-     *
+     * 
      * @return the containerSize value.
      */
     public Integer containerSize() {
@@ -591,7 +590,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the containerSize property: Size of the function container.
-     *
+     * 
      * @param containerSize the containerSize value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -605,7 +604,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
-     *
+     * 
      * @return the dailyMemoryTimeQuota value.
      */
     public Integer dailyMemoryTimeQuota() {
@@ -614,7 +613,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
-     *
+     * 
      * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -628,7 +627,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the suspendedTill property: App suspended till in case memory-time quota is exceeded.
-     *
+     * 
      * @return the suspendedTill value.
      */
     public OffsetDateTime suspendedTill() {
@@ -638,7 +637,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the maxNumberOfWorkers property: Maximum number of workers.
      * This only applies to Functions container.
-     *
+     * 
      * @return the maxNumberOfWorkers value.
      */
     public Integer maxNumberOfWorkers() {
@@ -647,7 +646,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the cloningInfo property: If specified during app creation, the app is cloned from a source app.
-     *
+     * 
      * @return the cloningInfo value.
      */
     public CloningInfo cloningInfo() {
@@ -656,7 +655,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the cloningInfo property: If specified during app creation, the app is cloned from a source app.
-     *
+     * 
      * @param cloningInfo the cloningInfo value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -670,7 +669,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceGroup property: Name of the resource group the app belongs to. Read-only.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -680,7 +679,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the isDefaultContainer property: &lt;code&gt;true&lt;/code&gt; if the app is a default container; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDefaultContainer value.
      */
     public Boolean isDefaultContainer() {
@@ -689,7 +688,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the defaultHostname property: Default hostname of the app. Read-only.
-     *
+     * 
      * @return the defaultHostname value.
      */
     public String defaultHostname() {
@@ -698,7 +697,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the slotSwapStatus property: Status of the last deployment slot swap operation.
-     *
+     * 
      * @return the slotSwapStatus value.
      */
     public SlotSwapStatus slotSwapStatus() {
@@ -708,7 +707,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Get the httpsOnly property: HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests.
-     *
+     * 
      * @return the httpsOnly value.
      */
     public Boolean httpsOnly() {
@@ -718,7 +717,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     /**
      * Set the httpsOnly property: HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests.
-     *
+     * 
      * @param httpsOnly the httpsOnly value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -732,7 +731,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the redundancyMode property: Site redundancy mode.
-     *
+     * 
      * @return the redundancyMode value.
      */
     public RedundancyMode redundancyMode() {
@@ -741,7 +740,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the redundancyMode property: Site redundancy mode.
-     *
+     * 
      * @param redundancyMode the redundancyMode value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -755,7 +754,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the inProgressOperationId property: Specifies an operation id if this site has a pending operation.
-     *
+     * 
      * @return the inProgressOperationId value.
      */
     public UUID inProgressOperationId() {
@@ -764,7 +763,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
-     *
+     * 
      * @return the storageAccountRequired value.
      */
     public Boolean storageAccountRequired() {
@@ -773,7 +772,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
-     *
+     * 
      * @param storageAccountRequired the storageAccountRequired value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -787,7 +786,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -796,7 +795,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -813,7 +812,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
+     * 
      * @return the virtualNetworkSubnetId value.
      */
     public String virtualNetworkSubnetId() {
@@ -825,7 +824,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
+     * 
      * @param virtualNetworkSubnetId the virtualNetworkSubnetId value to set.
      * @return the SitePatchResourceInner object itself.
      */
@@ -839,7 +838,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

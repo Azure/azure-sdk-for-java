@@ -13,7 +13,6 @@ import com.azure.resourcemanager.appservice.models.RunActionCorrelation;
 import com.azure.resourcemanager.appservice.models.WorkflowResource;
 import com.azure.resourcemanager.appservice.models.WorkflowStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the innerProperties property: The workflow run action repetition properties definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowRunActionRepetitionProperties innerProperties() {
@@ -64,7 +63,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the repetitionIndexes property: The repetition indexes.
-     *
+     * 
      * @return the repetitionIndexes value.
      */
     public List<RepetitionIndex> repetitionIndexes() {
@@ -73,7 +72,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the repetitionIndexes property: The repetition indexes.
-     *
+     * 
      * @param repetitionIndexes the repetitionIndexes value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -87,7 +86,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -96,7 +95,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the inputs property: Gets the inputs.
-     *
+     * 
      * @return the inputs value.
      */
     public Object inputs() {
@@ -105,7 +104,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -114,7 +113,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -123,7 +122,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -132,7 +131,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -141,7 +140,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -150,7 +149,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -164,7 +163,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the iterationCount property: The iterationCount property.
-     *
+     * 
      * @return the iterationCount value.
      */
     public Integer iterationCount() {
@@ -173,7 +172,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the iterationCount property: The iterationCount property.
-     *
+     * 
      * @param iterationCount the iterationCount value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -187,7 +186,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -196,7 +195,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the startTime property: The start time of the workflow scope repetition.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -210,7 +209,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -219,7 +218,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the endTime property: The end time of the workflow scope repetition.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -233,7 +232,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -242,7 +241,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -256,7 +255,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -265,7 +264,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the status property: The status of the workflow scope repetition.
-     *
+     * 
      * @param status the status value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -279,7 +278,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the code property: The workflow scope repetition code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -288,7 +287,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the code property: The workflow scope repetition code.
-     *
+     * 
      * @param code the code value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -302,7 +301,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Get the error property: Anything.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -311,7 +310,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Set the error property: Anything.
-     *
+     * 
      * @param error the error value to set.
      * @return the WorkflowRunActionRepetitionDefinitionInner object itself.
      */
@@ -325,7 +324,7 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -14,7 +14,6 @@ import com.azure.resourcemanager.appservice.models.UpgradeAvailability;
 import com.azure.resourcemanager.appservice.models.UpgradePreference;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppServiceEnvironmentInner innerProperties() {
@@ -54,7 +53,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the provisioningState property: Provisioning state of the App Service Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -63,7 +62,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the status property: Current status of the App Service Environment.
-     *
+     * 
      * @return the status value.
      */
     public HostingEnvironmentStatus status() {
@@ -72,7 +71,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the virtualNetwork property: Description of the Virtual Network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public VirtualNetworkProfile virtualNetwork() {
@@ -81,7 +80,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the virtualNetwork property: Description of the Virtual Network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -96,7 +95,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
     /**
      * Get the internalLoadBalancingMode property: Specifies which endpoints to serve internally in the Virtual Network
      * for the App Service Environment.
-     *
+     * 
      * @return the internalLoadBalancingMode value.
      */
     public LoadBalancingMode internalLoadBalancingMode() {
@@ -106,7 +105,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
     /**
      * Set the internalLoadBalancingMode property: Specifies which endpoints to serve internally in the Virtual Network
      * for the App Service Environment.
-     *
+     * 
      * @param internalLoadBalancingMode the internalLoadBalancingMode value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -121,7 +120,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the multiSize property: Front-end VM size, e.g. "Medium", "Large".
-     *
+     * 
      * @return the multiSize value.
      */
     public String multiSize() {
@@ -130,7 +129,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the multiSize property: Front-end VM size, e.g. "Medium", "Large".
-     *
+     * 
      * @param multiSize the multiSize value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -144,7 +143,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the multiRoleCount property: Number of front-end instances.
-     *
+     * 
      * @return the multiRoleCount value.
      */
     public Integer multiRoleCount() {
@@ -153,7 +152,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
-     *
+     * 
      * @return the ipsslAddressCount value.
      */
     public Integer ipsslAddressCount() {
@@ -162,7 +161,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
-     *
+     * 
      * @param ipsslAddressCount the ipsslAddressCount value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -176,7 +175,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the dnsSuffix property: DNS suffix of the App Service Environment.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -185,7 +184,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the dnsSuffix property: DNS suffix of the App Service Environment.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -199,7 +198,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the maximumNumberOfMachines property: Maximum number of VMs in the App Service Environment.
-     *
+     * 
      * @return the maximumNumberOfMachines value.
      */
     public Integer maximumNumberOfMachines() {
@@ -208,7 +207,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the frontEndScaleFactor property: Scale factor for front-ends.
-     *
+     * 
      * @return the frontEndScaleFactor value.
      */
     public Integer frontEndScaleFactor() {
@@ -217,7 +216,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the frontEndScaleFactor property: Scale factor for front-ends.
-     *
+     * 
      * @param frontEndScaleFactor the frontEndScaleFactor value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -234,7 +233,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
      * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
      * available
      * (most likely because NSG blocked the incoming traffic).
-     *
+     * 
      * @return the suspended value.
      */
     public Boolean suspended() {
@@ -243,7 +242,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the clusterSettings property: Custom settings for changing the behavior of the App Service Environment.
-     *
+     * 
      * @return the clusterSettings value.
      */
     public List<NameValuePair> clusterSettings() {
@@ -252,7 +251,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the clusterSettings property: Custom settings for changing the behavior of the App Service Environment.
-     *
+     * 
      * @param clusterSettings the clusterSettings value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -266,7 +265,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the userWhitelistedIpRanges property: User added ip ranges to whitelist on ASE db.
-     *
+     * 
      * @return the userWhitelistedIpRanges value.
      */
     public List<String> userWhitelistedIpRanges() {
@@ -275,7 +274,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the userWhitelistedIpRanges property: User added ip ranges to whitelist on ASE db.
-     *
+     * 
      * @param userWhitelistedIpRanges the userWhitelistedIpRanges value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -289,7 +288,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the hasLinuxWorkers property: Flag that displays whether an ASE has linux workers or not.
-     *
+     * 
      * @return the hasLinuxWorkers value.
      */
     public Boolean hasLinuxWorkers() {
@@ -298,7 +297,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the upgradePreference property: Upgrade Preference.
-     *
+     * 
      * @return the upgradePreference value.
      */
     public UpgradePreference upgradePreference() {
@@ -307,7 +306,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the upgradePreference property: Upgrade Preference.
-     *
+     * 
      * @param upgradePreference the upgradePreference value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -321,7 +320,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the dedicatedHostCount property: Dedicated Host Count.
-     *
+     * 
      * @return the dedicatedHostCount value.
      */
     public Integer dedicatedHostCount() {
@@ -330,7 +329,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the dedicatedHostCount property: Dedicated Host Count.
-     *
+     * 
      * @param dedicatedHostCount the dedicatedHostCount value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -344,7 +343,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -353,7 +352,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -367,7 +366,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
-     *
+     * 
      * @return the customDnsSuffixConfiguration value.
      */
     public CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration() {
@@ -376,7 +375,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
-     *
+     * 
      * @param customDnsSuffixConfiguration the customDnsSuffixConfiguration value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -391,7 +390,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the networkingConfiguration property: Full view of networking configuration for an ASE.
-     *
+     * 
      * @return the networkingConfiguration value.
      */
     public AseV3NetworkingConfigurationInner networkingConfiguration() {
@@ -400,7 +399,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the networkingConfiguration property: Full view of networking configuration for an ASE.
-     *
+     * 
      * @param networkingConfiguration the networkingConfiguration value to set.
      * @return the AppServiceEnvironmentPatchResourceInner object itself.
      */
@@ -415,7 +414,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the upgradeAvailability property: Whether an upgrade is available for this App Service Environment.
-     *
+     * 
      * @return the upgradeAvailability value.
      */
     public UpgradeAvailability upgradeAvailability() {
@@ -424,7 +423,7 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

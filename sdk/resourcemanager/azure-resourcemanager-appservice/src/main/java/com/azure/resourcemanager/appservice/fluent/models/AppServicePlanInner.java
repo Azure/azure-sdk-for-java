@@ -13,7 +13,6 @@ import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -54,7 +53,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the innerProperties property: AppServicePlan resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppServicePlanProperties innerProperties() {
@@ -63,7 +62,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the sku property: Description of a SKU for a scalable resource.
-     *
+     * 
      * @return the sku value.
      */
     public SkuDescription sku() {
@@ -72,7 +71,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the sku property: Description of a SKU for a scalable resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -83,7 +82,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the extendedLocation property: Extended Location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -92,7 +91,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the extendedLocation property: Extended Location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -103,7 +102,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the kind property: Kind of resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -112,7 +111,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the kind property: Kind of resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -141,7 +140,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the workerTierName property: Target worker tier assigned to the App Service plan.
-     *
+     * 
      * @return the workerTierName value.
      */
     public String workerTierName() {
@@ -150,7 +149,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the workerTierName property: Target worker tier assigned to the App Service plan.
-     *
+     * 
      * @param workerTierName the workerTierName value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -164,7 +163,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the status property: App Service plan status.
-     *
+     * 
      * @return the status value.
      */
     public StatusOptions status() {
@@ -173,7 +172,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the subscription property: App Service plan subscription.
-     *
+     * 
      * @return the subscription value.
      */
     public String subscription() {
@@ -183,7 +182,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the hostingEnvironmentProfile property: Specification for the App Service Environment to use for the App
      * Service plan.
-     *
+     * 
      * @return the hostingEnvironmentProfile value.
      */
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
@@ -193,7 +192,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the hostingEnvironmentProfile property: Specification for the App Service Environment to use for the App
      * Service plan.
-     *
+     * 
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -208,7 +207,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the maximumNumberOfWorkers property: Maximum number of instances that can be assigned to this App Service
      * plan.
-     *
+     * 
      * @return the maximumNumberOfWorkers value.
      */
     public Integer maximumNumberOfWorkers() {
@@ -217,7 +216,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the numberOfWorkers property: The number of instances that are assigned to this App Service plan.
-     *
+     * 
      * @return the numberOfWorkers value.
      */
     public Integer numberOfWorkers() {
@@ -226,7 +225,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the geoRegion property: Geographical location for the App Service plan.
-     *
+     * 
      * @return the geoRegion value.
      */
     public String geoRegion() {
@@ -238,7 +237,7 @@ public final class AppServicePlanInner extends Resource {
      * scaled independently.
      * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all instances of the
      * plan.
-     *
+     * 
      * @return the perSiteScaling value.
      */
     public Boolean perSiteScaling() {
@@ -250,7 +249,7 @@ public final class AppServicePlanInner extends Resource {
      * scaled independently.
      * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all instances of the
      * plan.
-     *
+     * 
      * @param perSiteScaling the perSiteScaling value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -265,7 +264,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
      * ServerFarm was ElasticPremium sku.
-     *
+     * 
      * @return the elasticScaleEnabled value.
      */
     public Boolean elasticScaleEnabled() {
@@ -275,7 +274,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
      * ServerFarm was ElasticPremium sku.
-     *
+     * 
      * @param elasticScaleEnabled the elasticScaleEnabled value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -290,7 +289,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
      * App Service Plan.
-     *
+     * 
      * @return the maximumElasticWorkerCount value.
      */
     public Integer maximumElasticWorkerCount() {
@@ -300,7 +299,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
      * App Service Plan.
-     *
+     * 
      * @param maximumElasticWorkerCount the maximumElasticWorkerCount value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -314,7 +313,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the numberOfSites property: Number of apps assigned to this App Service plan.
-     *
+     * 
      * @return the numberOfSites value.
      */
     public Integer numberOfSites() {
@@ -323,7 +322,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the isSpot property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
-     *
+     * 
      * @return the isSpot value.
      */
     public Boolean isSpot() {
@@ -332,7 +331,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the isSpot property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
-     *
+     * 
      * @param isSpot the isSpot value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -347,7 +346,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the spotExpirationTime property: The time when the server farm expires. Valid only if it is a spot server
      * farm.
-     *
+     * 
      * @return the spotExpirationTime value.
      */
     public OffsetDateTime spotExpirationTime() {
@@ -357,7 +356,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the spotExpirationTime property: The time when the server farm expires. Valid only if it is a spot server
      * farm.
-     *
+     * 
      * @param spotExpirationTime the spotExpirationTime value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -371,7 +370,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the freeOfferExpirationTime property: The time when the server farm free offer expires.
-     *
+     * 
      * @return the freeOfferExpirationTime value.
      */
     public OffsetDateTime freeOfferExpirationTime() {
@@ -380,7 +379,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the freeOfferExpirationTime property: The time when the server farm free offer expires.
-     *
+     * 
      * @param freeOfferExpirationTime the freeOfferExpirationTime value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -394,7 +393,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the resourceGroup property: Resource group of the App Service plan.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -404,7 +403,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the reserved value.
      */
     public Boolean reserved() {
@@ -414,7 +413,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param reserved the reserved value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -429,7 +428,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the isXenon property: Obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the isXenon value.
      */
     public Boolean isXenon() {
@@ -439,7 +438,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the isXenon property: Obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param isXenon the isXenon value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -454,7 +453,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the hyperV property: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the hyperV value.
      */
     public Boolean hyperV() {
@@ -464,7 +463,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the hyperV property: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param hyperV the hyperV value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -478,7 +477,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the targetWorkerCount property: Scaling worker count.
-     *
+     * 
      * @return the targetWorkerCount value.
      */
     public Integer targetWorkerCount() {
@@ -487,7 +486,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the targetWorkerCount property: Scaling worker count.
-     *
+     * 
      * @param targetWorkerCount the targetWorkerCount value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -501,7 +500,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the targetWorkerSizeId property: Scaling worker size ID.
-     *
+     * 
      * @return the targetWorkerSizeId value.
      */
     public Integer targetWorkerSizeId() {
@@ -510,7 +509,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Set the targetWorkerSizeId property: Scaling worker size ID.
-     *
+     * 
      * @param targetWorkerSizeId the targetWorkerSizeId value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -524,7 +523,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the App Service Plan.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -534,7 +533,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
      * plan.
-     *
+     * 
      * @return the kubeEnvironmentProfile value.
      */
     public KubeEnvironmentProfile kubeEnvironmentProfile() {
@@ -544,7 +543,7 @@ public final class AppServicePlanInner extends Resource {
     /**
      * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
      * plan.
-     *
+     * 
      * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -560,7 +559,7 @@ public final class AppServicePlanInner extends Resource {
      * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
      * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -571,7 +570,7 @@ public final class AppServicePlanInner extends Resource {
      * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
      * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the AppServicePlanInner object itself.
      */
@@ -585,7 +584,7 @@ public final class AppServicePlanInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

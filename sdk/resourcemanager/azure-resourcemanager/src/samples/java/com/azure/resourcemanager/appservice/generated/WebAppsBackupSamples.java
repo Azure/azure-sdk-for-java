@@ -9,7 +9,6 @@ import com.azure.resourcemanager.appservice.models.BackupSchedule;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
 import com.azure.resourcemanager.appservice.models.DatabaseType;
 import com.azure.resourcemanager.appservice.models.FrequencyUnit;
-
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -22,7 +21,7 @@ public final class WebAppsBackupSamples {
      */
     /**
      * Sample code: Backup web app.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void backupWebApp(com.azure.resourcemanager.AzureResourceManager azure) {

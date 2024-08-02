@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -17,19 +16,22 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class BackupSchedule {
     /*
-     * How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day)
+     * How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should
+     * be set to Day)
      */
     @JsonProperty(value = "frequencyInterval", required = true)
     private int frequencyInterval;
 
     /*
-     * The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and FrequencyInterval should be set to 7)
+     * The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day
+     * and FrequencyInterval should be set to 7)
      */
     @JsonProperty(value = "frequencyUnit", required = true)
     private FrequencyUnit frequencyUnit;
 
     /*
-     * True if the retention policy should always keep at least one backup in the storage account, regardless how old it is; false otherwise.
+     * True if the retention policy should always keep at least one backup in the storage account, regardless how old it
+     * is; false otherwise.
      */
     @JsonProperty(value = "keepAtLeastOneBackup", required = true)
     private boolean keepAtLeastOneBackup;
@@ -61,7 +63,7 @@ public final class BackupSchedule {
     /**
      * Get the frequencyInterval property: How often the backup should be executed (e.g. for weekly backup, this should
      * be set to 7 and FrequencyUnit should be set to Day).
-     *
+     * 
      * @return the frequencyInterval value.
      */
     public int frequencyInterval() {
@@ -71,7 +73,7 @@ public final class BackupSchedule {
     /**
      * Set the frequencyInterval property: How often the backup should be executed (e.g. for weekly backup, this should
      * be set to 7 and FrequencyUnit should be set to Day).
-     *
+     * 
      * @param frequencyInterval the frequencyInterval value to set.
      * @return the BackupSchedule object itself.
      */
@@ -83,7 +85,7 @@ public final class BackupSchedule {
     /**
      * Get the frequencyUnit property: The unit of time for how often the backup should be executed (e.g. for weekly
      * backup, this should be set to Day and FrequencyInterval should be set to 7).
-     *
+     * 
      * @return the frequencyUnit value.
      */
     public FrequencyUnit frequencyUnit() {
@@ -93,7 +95,7 @@ public final class BackupSchedule {
     /**
      * Set the frequencyUnit property: The unit of time for how often the backup should be executed (e.g. for weekly
      * backup, this should be set to Day and FrequencyInterval should be set to 7).
-     *
+     * 
      * @param frequencyUnit the frequencyUnit value to set.
      * @return the BackupSchedule object itself.
      */
@@ -105,7 +107,7 @@ public final class BackupSchedule {
     /**
      * Get the keepAtLeastOneBackup property: True if the retention policy should always keep at least one backup in the
      * storage account, regardless how old it is; false otherwise.
-     *
+     * 
      * @return the keepAtLeastOneBackup value.
      */
     public boolean keepAtLeastOneBackup() {
@@ -115,7 +117,7 @@ public final class BackupSchedule {
     /**
      * Set the keepAtLeastOneBackup property: True if the retention policy should always keep at least one backup in the
      * storage account, regardless how old it is; false otherwise.
-     *
+     * 
      * @param keepAtLeastOneBackup the keepAtLeastOneBackup value to set.
      * @return the BackupSchedule object itself.
      */
@@ -126,7 +128,7 @@ public final class BackupSchedule {
 
     /**
      * Get the retentionPeriodInDays property: After how many days backups should be deleted.
-     *
+     * 
      * @return the retentionPeriodInDays value.
      */
     public int retentionPeriodInDays() {
@@ -135,7 +137,7 @@ public final class BackupSchedule {
 
     /**
      * Set the retentionPeriodInDays property: After how many days backups should be deleted.
-     *
+     * 
      * @param retentionPeriodInDays the retentionPeriodInDays value to set.
      * @return the BackupSchedule object itself.
      */
@@ -146,7 +148,7 @@ public final class BackupSchedule {
 
     /**
      * Get the startTime property: When the schedule should start working.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -155,7 +157,7 @@ public final class BackupSchedule {
 
     /**
      * Set the startTime property: When the schedule should start working.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the BackupSchedule object itself.
      */
@@ -166,7 +168,7 @@ public final class BackupSchedule {
 
     /**
      * Get the lastExecutionTime property: Last time when this schedule was triggered.
-     *
+     * 
      * @return the lastExecutionTime value.
      */
     public OffsetDateTime lastExecutionTime() {
@@ -175,7 +177,7 @@ public final class BackupSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

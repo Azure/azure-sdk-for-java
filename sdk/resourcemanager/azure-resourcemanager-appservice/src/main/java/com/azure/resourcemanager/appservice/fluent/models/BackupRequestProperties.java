@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BackupSchedule;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -24,7 +23,8 @@ public final class BackupRequestProperties {
     private String backupName;
 
     /*
-     * True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
+     * True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be
+     * disabled.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
@@ -55,7 +55,7 @@ public final class BackupRequestProperties {
 
     /**
      * Get the backupName property: Name of the backup.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -64,7 +64,7 @@ public final class BackupRequestProperties {
 
     /**
      * Set the backupName property: Name of the backup.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the BackupRequestProperties object itself.
      */
@@ -76,7 +76,7 @@ public final class BackupRequestProperties {
     /**
      * Get the enabled property: True if the backup schedule is enabled (must be included in that case), false if the
      * backup schedule should be disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -86,7 +86,7 @@ public final class BackupRequestProperties {
     /**
      * Set the enabled property: True if the backup schedule is enabled (must be included in that case), false if the
      * backup schedule should be disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BackupRequestProperties object itself.
      */
@@ -97,7 +97,7 @@ public final class BackupRequestProperties {
 
     /**
      * Get the storageAccountUrl property: SAS URL to the container.
-     *
+     * 
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
@@ -106,7 +106,7 @@ public final class BackupRequestProperties {
 
     /**
      * Set the storageAccountUrl property: SAS URL to the container.
-     *
+     * 
      * @param storageAccountUrl the storageAccountUrl value to set.
      * @return the BackupRequestProperties object itself.
      */
@@ -117,7 +117,7 @@ public final class BackupRequestProperties {
 
     /**
      * Get the backupSchedule property: Schedule for the backup if it is executed periodically.
-     *
+     * 
      * @return the backupSchedule value.
      */
     public BackupSchedule backupSchedule() {
@@ -126,7 +126,7 @@ public final class BackupRequestProperties {
 
     /**
      * Set the backupSchedule property: Schedule for the backup if it is executed periodically.
-     *
+     * 
      * @param backupSchedule the backupSchedule value to set.
      * @return the BackupRequestProperties object itself.
      */
@@ -137,7 +137,7 @@ public final class BackupRequestProperties {
 
     /**
      * Get the databases property: Databases included in the backup.
-     *
+     * 
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
@@ -146,7 +146,7 @@ public final class BackupRequestProperties {
 
     /**
      * Set the databases property: Databases included in the backup.
-     *
+     * 
      * @param databases the databases value to set.
      * @return the BackupRequestProperties object itself.
      */
@@ -157,7 +157,7 @@ public final class BackupRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

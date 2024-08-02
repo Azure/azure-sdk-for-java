@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -20,7 +19,7 @@ public final class FunctionsDeploymentStorageType extends ExpandableStringEnum<F
 
     /**
      * Creates a new instance of FunctionsDeploymentStorageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +28,7 @@ public final class FunctionsDeploymentStorageType extends ExpandableStringEnum<F
 
     /**
      * Creates or finds a FunctionsDeploymentStorageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FunctionsDeploymentStorageType.
      */
@@ -40,7 +39,7 @@ public final class FunctionsDeploymentStorageType extends ExpandableStringEnum<F
 
     /**
      * Gets known FunctionsDeploymentStorageType values.
-     *
+     * 
      * @return known FunctionsDeploymentStorageType values.
      */
     public static Collection<FunctionsDeploymentStorageType> values() {

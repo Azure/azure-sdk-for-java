@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.CloneAbilityResult;
 import com.azure.resourcemanager.appservice.models.SiteCloneabilityCriterion;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Get the result property: Name of app.
-     *
+     * 
      * @return the result value.
      */
     public CloneAbilityResult result() {
@@ -58,7 +57,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Set the result property: Name of app.
-     *
+     * 
      * @param result the result value to set.
      * @return the SiteCloneabilityInner object itself.
      */
@@ -69,7 +68,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Get the blockingFeatures property: List of features enabled on app that prevent cloning.
-     *
+     * 
      * @return the blockingFeatures value.
      */
     public List<SiteCloneabilityCriterion> blockingFeatures() {
@@ -78,7 +77,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Set the blockingFeatures property: List of features enabled on app that prevent cloning.
-     *
+     * 
      * @param blockingFeatures the blockingFeatures value to set.
      * @return the SiteCloneabilityInner object itself.
      */
@@ -91,7 +90,7 @@ public final class SiteCloneabilityInner {
      * Get the unsupportedFeatures property: List of features enabled on app that are non-blocking but cannot be cloned.
      * The app can still be cloned
      * but the features in this list will not be set up on cloned app.
-     *
+     * 
      * @return the unsupportedFeatures value.
      */
     public List<SiteCloneabilityCriterion> unsupportedFeatures() {
@@ -102,7 +101,7 @@ public final class SiteCloneabilityInner {
      * Set the unsupportedFeatures property: List of features enabled on app that are non-blocking but cannot be cloned.
      * The app can still be cloned
      * but the features in this list will not be set up on cloned app.
-     *
+     * 
      * @param unsupportedFeatures the unsupportedFeatures value to set.
      * @return the SiteCloneabilityInner object itself.
      */
@@ -113,7 +112,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Get the blockingCharacteristics property: List of blocking application characteristics.
-     *
+     * 
      * @return the blockingCharacteristics value.
      */
     public List<SiteCloneabilityCriterion> blockingCharacteristics() {
@@ -122,7 +121,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Set the blockingCharacteristics property: List of blocking application characteristics.
-     *
+     * 
      * @param blockingCharacteristics the blockingCharacteristics value to set.
      * @return the SiteCloneabilityInner object itself.
      */
@@ -133,7 +132,7 @@ public final class SiteCloneabilityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

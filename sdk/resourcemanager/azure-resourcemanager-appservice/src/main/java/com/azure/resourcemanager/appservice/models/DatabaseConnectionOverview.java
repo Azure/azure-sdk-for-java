@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -21,7 +20,9 @@ public final class DatabaseConnectionOverview {
     private String resourceId;
 
     /*
-     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
+     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the
+     * system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned
+     * managed identity is indicated with the resource id of the managed identity resource.
      */
     @JsonProperty(value = "connectionIdentity", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionIdentity;
@@ -52,7 +53,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the resourceId property: The resource id of the database.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -64,7 +65,7 @@ public final class DatabaseConnectionOverview {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     *
+     * 
      * @return the connectionIdentity value.
      */
     public String connectionIdentity() {
@@ -73,7 +74,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the region property: The region of the database resource.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -82,7 +83,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the configurationFiles property: A list of configuration files associated with this database connection.
-     *
+     * 
      * @return the configurationFiles value.
      */
     public List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles() {
@@ -91,7 +92,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the name property: If present, the name of this database connection resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -100,7 +101,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

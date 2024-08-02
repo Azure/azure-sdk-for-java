@@ -14,7 +14,6 @@ import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -96,8 +95,9 @@ public final class DomainPatchResourceProperties {
     private Boolean autoRenew;
 
     /*
-     * <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value will be <code>true</code> if domain registration status is active and
-     *  it is hosted on name servers Azure has programmatic access to.
+     * <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value
+     * will be <code>true</code> if domain registration status is active and
+     * it is hosted on name servers Azure has programmatic access to.
      */
     @JsonProperty(value = "readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean readyForDnsRecordManagement;
@@ -152,7 +152,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the contactAdmin property: Administrative contact.
-     *
+     * 
      * @return the contactAdmin value.
      */
     public Contact contactAdmin() {
@@ -161,7 +161,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the contactAdmin property: Administrative contact.
-     *
+     * 
      * @param contactAdmin the contactAdmin value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -172,7 +172,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the contactBilling property: Billing contact.
-     *
+     * 
      * @return the contactBilling value.
      */
     public Contact contactBilling() {
@@ -181,7 +181,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the contactBilling property: Billing contact.
-     *
+     * 
      * @param contactBilling the contactBilling value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -192,7 +192,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the contactRegistrant property: Registrant contact.
-     *
+     * 
      * @return the contactRegistrant value.
      */
     public Contact contactRegistrant() {
@@ -201,7 +201,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the contactRegistrant property: Registrant contact.
-     *
+     * 
      * @param contactRegistrant the contactRegistrant value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -212,7 +212,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the contactTech property: Technical contact.
-     *
+     * 
      * @return the contactTech value.
      */
     public Contact contactTech() {
@@ -221,7 +221,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the contactTech property: Technical contact.
-     *
+     * 
      * @param contactTech the contactTech value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -232,7 +232,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the registrationStatus property: Domain registration status.
-     *
+     * 
      * @return the registrationStatus value.
      */
     public DomainStatus registrationStatus() {
@@ -241,7 +241,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the provisioningState property: Domain provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -250,7 +250,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the nameServers property: Name servers.
-     *
+     * 
      * @return the nameServers value.
      */
     public List<String> nameServers() {
@@ -260,7 +260,7 @@ public final class DomainPatchResourceProperties {
     /**
      * Get the privacy property: &lt;code&gt;true&lt;/code&gt; if domain privacy is enabled for this domain; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the privacy value.
      */
     public Boolean privacy() {
@@ -270,7 +270,7 @@ public final class DomainPatchResourceProperties {
     /**
      * Set the privacy property: &lt;code&gt;true&lt;/code&gt; if domain privacy is enabled for this domain; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param privacy the privacy value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -281,7 +281,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the createdTime property: Domain creation timestamp.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -290,7 +290,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the expirationTime property: Domain expiration timestamp.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -299,7 +299,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the lastRenewedTime property: Timestamp when the domain was renewed last time.
-     *
+     * 
      * @return the lastRenewedTime value.
      */
     public OffsetDateTime lastRenewedTime() {
@@ -309,7 +309,7 @@ public final class DomainPatchResourceProperties {
     /**
      * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the domain should be automatically renewed;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the autoRenew value.
      */
     public Boolean autoRenew() {
@@ -319,7 +319,7 @@ public final class DomainPatchResourceProperties {
     /**
      * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the domain should be automatically renewed;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param autoRenew the autoRenew value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -333,7 +333,7 @@ public final class DomainPatchResourceProperties {
      * App Service apps; otherwise, &lt;code&gt;false&lt;/code&gt;. This value will be &lt;code&gt;true&lt;/code&gt; if
      * domain registration status is active and
      * it is hosted on name servers Azure has programmatic access to.
-     *
+     * 
      * @return the readyForDnsRecordManagement value.
      */
     public Boolean readyForDnsRecordManagement() {
@@ -342,7 +342,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the managedHostNames property: All hostnames derived from the domain and assigned to Azure resources.
-     *
+     * 
      * @return the managedHostNames value.
      */
     public List<Hostname> managedHostNames() {
@@ -351,7 +351,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the consent property: Legal agreement consent.
-     *
+     * 
      * @return the consent value.
      */
     public DomainPurchaseConsent consent() {
@@ -360,7 +360,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the consent property: Legal agreement consent.
-     *
+     * 
      * @param consent the consent value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -371,7 +371,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the domainNotRenewableReasons property: Reasons why domain is not renewable.
-     *
+     * 
      * @return the domainNotRenewableReasons value.
      */
     public List<ResourceNotRenewableReason> domainNotRenewableReasons() {
@@ -380,7 +380,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the dnsType property: Current DNS type.
-     *
+     * 
      * @return the dnsType value.
      */
     public DnsType dnsType() {
@@ -389,7 +389,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the dnsType property: Current DNS type.
-     *
+     * 
      * @param dnsType the dnsType value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -400,7 +400,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the dnsZoneId property: Azure DNS Zone to use.
-     *
+     * 
      * @return the dnsZoneId value.
      */
     public String dnsZoneId() {
@@ -409,7 +409,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the dnsZoneId property: Azure DNS Zone to use.
-     *
+     * 
      * @param dnsZoneId the dnsZoneId value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -420,7 +420,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the targetDnsType property: Target DNS type (would be used for migration).
-     *
+     * 
      * @return the targetDnsType value.
      */
     public DnsType targetDnsType() {
@@ -429,7 +429,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the targetDnsType property: Target DNS type (would be used for migration).
-     *
+     * 
      * @param targetDnsType the targetDnsType value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -440,7 +440,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Get the authCode property: The authCode property.
-     *
+     * 
      * @return the authCode value.
      */
     public String authCode() {
@@ -449,7 +449,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Set the authCode property: The authCode property.
-     *
+     * 
      * @param authCode the authCode value to set.
      * @return the DomainPatchResourceProperties object itself.
      */
@@ -460,7 +460,7 @@ public final class DomainPatchResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

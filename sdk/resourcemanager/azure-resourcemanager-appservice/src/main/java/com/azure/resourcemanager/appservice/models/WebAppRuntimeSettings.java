@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -82,7 +81,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the runtimeVersion property: Web App stack minor version (runtime only).
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -92,7 +91,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the remoteDebuggingSupported property: &lt;code&gt;true&lt;/code&gt; if remote debugging is supported for the
      * stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the remoteDebuggingSupported value.
      */
     public Boolean remoteDebuggingSupported() {
@@ -101,7 +100,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the appInsightsSettings property: Application Insights settings associated with the minor version.
-     *
+     * 
      * @return the appInsightsSettings value.
      */
     public AppInsightsWebAppStackSettings appInsightsSettings() {
@@ -110,7 +109,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the gitHubActionSettings property: GitHub Actions settings associated with the minor version.
-     *
+     * 
      * @return the gitHubActionSettings value.
      */
     public GitHubActionWebAppStackSettings gitHubActionSettings() {
@@ -120,7 +119,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isPreview property: &lt;code&gt;true&lt;/code&gt; if the stack is in preview; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -130,7 +129,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public Boolean isDeprecated() {
@@ -140,7 +139,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isHidden property: &lt;code&gt;true&lt;/code&gt; if the stack should be hidden; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -149,7 +148,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the endOfLifeDate property: End-of-life date for the minor version.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -159,7 +158,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isAutoUpdate property: &lt;code&gt;true&lt;/code&gt; if the stack version is auto-updated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isAutoUpdate value.
      */
     public Boolean isAutoUpdate() {
@@ -169,7 +168,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isEarlyAccess property: &lt;code&gt;true&lt;/code&gt; if the minor version is early-access; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isEarlyAccess value.
      */
     public Boolean isEarlyAccess() {
@@ -178,7 +177,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

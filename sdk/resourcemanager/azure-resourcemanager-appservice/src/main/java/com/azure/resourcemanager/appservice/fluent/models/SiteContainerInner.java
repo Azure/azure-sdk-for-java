@@ -10,7 +10,6 @@ import com.azure.resourcemanager.appservice.models.EnvironmentVariable;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VolumeMount;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: SiteContainer resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteContainerProperties innerProperties() {
@@ -51,7 +50,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the image property: Image Name.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -60,7 +59,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the image property: Image Name.
-     *
+     * 
      * @param image the image value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -74,7 +73,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the targetPort property: Target Port.
-     *
+     * 
      * @return the targetPort value.
      */
     public String targetPort() {
@@ -83,7 +82,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the targetPort property: Target Port.
-     *
+     * 
      * @param targetPort the targetPort value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -98,7 +97,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     /**
      * Get the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the isMain value.
      */
     public Boolean isMain() {
@@ -108,7 +107,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     /**
      * Set the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param isMain the isMain value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -122,7 +121,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the startUpCommand property: StartUp Command.
-     *
+     * 
      * @return the startUpCommand value.
      */
     public String startUpCommand() {
@@ -131,7 +130,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the startUpCommand property: StartUp Command.
-     *
+     * 
      * @param startUpCommand the startUpCommand value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -145,7 +144,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the authType property: Auth Type.
-     *
+     * 
      * @return the authType value.
      */
     public AuthType authType() {
@@ -154,7 +153,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the authType property: Auth Type.
-     *
+     * 
      * @param authType the authType value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -168,7 +167,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the username property: User Name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -177,7 +176,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the username property: User Name.
-     *
+     * 
      * @param username the username value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -191,7 +190,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the passwordSecret property: Password Secret.
-     *
+     * 
      * @return the passwordSecret value.
      */
     public String passwordSecret() {
@@ -200,7 +199,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the passwordSecret property: Password Secret.
-     *
+     * 
      * @param passwordSecret the passwordSecret value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -214,7 +213,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     *
+     * 
      * @return the userManagedIdentityClientId value.
      */
     public String userManagedIdentityClientId() {
@@ -223,7 +222,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     *
+     * 
      * @param userManagedIdentityClientId the userManagedIdentityClientId value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -237,7 +236,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the createdTime property: Created Time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -246,7 +245,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the lastModifiedTime property: Last Modified Time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -255,7 +254,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the volumeMounts property: List of volume mounts.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -264,7 +263,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the volumeMounts property: List of volume mounts.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -278,7 +277,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the environmentVariables property: List of environment variables.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -287,7 +286,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the environmentVariables property: List of environment variables.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -301,7 +300,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
