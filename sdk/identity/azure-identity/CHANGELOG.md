@@ -12,7 +12,6 @@
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
-- Upgraded `msal4j` from `1.16.0` to `1.16.1`
 
 ## 1.14.0-beta.1 (2024-07-24)
 
@@ -30,9 +29,6 @@
 #### Dependency Updates
 - Upgraded `azure-core` from `1.49.1` to `1.50.0`
 - Upgraded `azure-core-http-netty` from `1.15.1` to `1.15.2`
-- Upgraded `msal4j` from `1.16.0` to `1.16.1`
-
-#### Dependency Updates
 - Upgraded `msal4j` from `1.16.0` to `1.16.1`
 
 ## 1.13.0 (2024-06-20)
