@@ -56,10 +56,9 @@ import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ManagedClustersClient.
@@ -78,7 +77,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Initializes an instance of ManagedClustersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedClustersClientImpl(ContainerServiceManagementClientImpl client) {
@@ -375,10 +374,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
+     * 
      * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
      * details on preview status of the version.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -409,10 +408,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
+     * 
      * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
      * details on preview status of the version.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -444,10 +443,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
+     * 
      * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
      * details on preview status of the version.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,10 +460,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
+     * 
      * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
      * details on preview status of the version.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,10 +479,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
+     * 
      * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
      * details on preview status of the version.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -497,7 +496,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription along with {@link PagedResponse} on successful
@@ -525,7 +524,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,7 +552,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription as paginated response with {@link PagedFlux}.
@@ -565,7 +564,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -580,7 +579,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription as paginated response with
@@ -593,7 +592,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -608,7 +607,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,7 +641,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,7 +677,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -693,7 +692,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -709,7 +708,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -723,7 +722,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -738,7 +737,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,7 +774,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -812,7 +811,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,7 +828,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -846,7 +845,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -861,13 +860,13 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets an access profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -907,13 +906,13 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets an access profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -953,13 +952,13 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets an access profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -977,13 +976,13 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets an access profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -1001,13 +1000,13 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets an access profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -1024,7 +1023,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1061,7 +1060,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1098,7 +1097,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1116,7 +1115,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1135,7 +1134,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1152,7 +1151,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1192,7 +1191,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1232,7 +1231,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1250,7 +1249,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1272,7 +1271,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1290,7 +1289,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1327,7 +1326,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1364,7 +1363,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1382,7 +1381,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -1401,7 +1400,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1418,7 +1417,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1454,7 +1453,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1490,7 +1489,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1506,7 +1505,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1523,7 +1522,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1538,7 +1537,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1580,7 +1579,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1622,7 +1621,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1642,7 +1641,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1664,7 +1663,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1681,7 +1680,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1699,7 +1698,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1717,7 +1716,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1736,7 +1735,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1753,7 +1752,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -1771,7 +1770,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1813,7 +1812,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1855,7 +1854,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1875,7 +1874,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1897,7 +1896,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1914,7 +1913,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1932,7 +1931,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1950,7 +1949,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1969,7 +1968,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1985,7 +1984,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -2003,7 +2002,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2038,7 +2037,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2074,7 +2073,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2091,7 +2090,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2111,7 +2110,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2126,7 +2125,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2143,7 +2142,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2158,7 +2157,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2175,7 +2174,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2189,7 +2188,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2204,9 +2203,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2248,9 +2247,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2292,9 +2291,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2314,9 +2313,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2338,9 +2337,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2357,9 +2356,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2378,9 +2377,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2398,9 +2397,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2419,9 +2418,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2437,9 +2436,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
+     * 
      * This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -2456,10 +2455,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2501,10 +2500,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2546,10 +2545,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2569,10 +2568,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2594,10 +2593,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2614,10 +2613,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2635,10 +2634,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2656,10 +2655,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2678,10 +2677,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2696,10 +2695,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
+     * 
      * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -2716,10 +2715,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2755,10 +2754,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2794,10 +2793,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2816,10 +2815,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2840,10 +2839,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2859,10 +2858,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2879,10 +2878,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2898,10 +2897,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2918,10 +2917,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2935,10 +2934,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
+     * 
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2953,11 +2952,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2993,11 +2992,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3033,11 +3032,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3055,11 +3054,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3080,11 +3079,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3099,11 +3098,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3120,11 +3119,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3140,11 +3139,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3161,11 +3160,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3179,11 +3178,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Aborts last operation running on managed cluster.
-     *
+     * 
      * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
      * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3198,7 +3197,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3234,7 +3233,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3270,7 +3269,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3289,7 +3288,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3310,7 +3309,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3326,7 +3325,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3343,7 +3342,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3359,7 +3358,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3377,7 +3376,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3391,7 +3390,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3406,12 +3405,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3446,12 +3445,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3487,12 +3486,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3509,12 +3508,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3534,12 +3533,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3554,12 +3553,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3576,12 +3575,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3596,12 +3595,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3618,12 +3617,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3637,12 +3636,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Managed Cluster
-     *
+     * 
      * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3657,10 +3656,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3695,10 +3694,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3734,10 +3733,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3754,10 +3753,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3777,10 +3776,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3795,10 +3794,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3815,10 +3814,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3833,10 +3832,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3853,10 +3852,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3870,10 +3869,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
+     * 
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -3888,10 +3887,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -3933,10 +3932,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -3978,10 +3977,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4002,10 +4001,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4027,10 +4026,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4047,10 +4046,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4068,10 +4067,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4089,10 +4088,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4111,10 +4110,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4131,10 +4130,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
+     * 
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -4152,7 +4151,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -4193,7 +4192,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -4234,7 +4233,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -4253,7 +4252,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -4271,7 +4270,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -4288,10 +4287,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
+     * 
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4331,10 +4330,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
+     * 
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -4376,10 +4375,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
+     * 
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4399,10 +4398,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
+     * 
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -4423,10 +4422,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
+     * 
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4444,10 +4443,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
+     * 
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -4466,10 +4465,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists mesh revision profiles for all meshes in the specified location.
-     *
+     * 
      * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4502,10 +4501,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists mesh revision profiles for all meshes in the specified location.
-     *
+     * 
      * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4540,10 +4539,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists mesh revision profiles for all meshes in the specified location.
-     *
+     * 
      * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4558,10 +4557,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists mesh revision profiles for all meshes in the specified location.
-     *
+     * 
      * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4577,10 +4576,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists mesh revision profiles for all meshes in the specified location.
-     *
+     * 
      * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4594,10 +4593,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists mesh revision profiles for all meshes in the specified location.
-     *
+     * 
      * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4612,10 +4611,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a mesh revision profile for a specified mesh in the specified location.
-     *
+     * 
      * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4650,10 +4649,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a mesh revision profile for a specified mesh in the specified location.
-     *
+     * 
      * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @param context The context to associate with this operation.
@@ -4688,10 +4687,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a mesh revision profile for a specified mesh in the specified location.
-     *
+     * 
      * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4706,10 +4705,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a mesh revision profile for a specified mesh in the specified location.
-     *
+     * 
      * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @param context The context to associate with this operation.
@@ -4726,10 +4725,10 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets a mesh revision profile for a specified mesh in the specified location.
-     *
+     * 
      * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4744,7 +4743,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists available upgrades for all service meshes in a specific cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4783,7 +4782,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists available upgrades for all service meshes in a specific cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -4823,7 +4822,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists available upgrades for all service meshes in a specific cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4840,7 +4839,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists available upgrades for all service meshes in a specific cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -4858,7 +4857,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists available upgrades for all service meshes in a specific cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4874,7 +4873,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Lists available upgrades for all service meshes in a specific cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -4891,7 +4890,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets available upgrades for a service mesh in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param mode The mode of the mesh.
@@ -4932,7 +4931,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets available upgrades for a service mesh in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param mode The mode of the mesh.
@@ -4973,7 +4972,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets available upgrades for a service mesh in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param mode The mode of the mesh.
@@ -4991,7 +4990,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets available upgrades for a service mesh in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param mode The mode of the mesh.
@@ -5009,7 +5008,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets available upgrades for a service mesh in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param mode The mode of the mesh.
@@ -5025,7 +5024,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5051,7 +5050,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5078,7 +5077,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5106,7 +5105,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5134,7 +5133,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5163,7 +5162,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5192,7 +5191,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5220,7 +5219,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5248,7 +5247,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5276,7 +5275,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

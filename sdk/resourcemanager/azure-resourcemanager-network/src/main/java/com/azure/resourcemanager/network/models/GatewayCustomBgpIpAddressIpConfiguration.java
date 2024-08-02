@@ -6,23 +6,26 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * GatewayCustomBgpIpAddressIpConfiguration for a virtual network gateway connection.
  */
 @Fluent
-public final class GatewayCustomBgpIpAddressIpConfiguration {
+public final class GatewayCustomBgpIpAddressIpConfiguration
+    implements JsonSerializable<GatewayCustomBgpIpAddressIpConfiguration> {
     /*
      * The IpconfigurationId of ipconfiguration which belongs to gateway.
      */
-    @JsonProperty(value = "ipConfigurationId", required = true)
     private String ipConfigurationId;
 
     /*
      * The custom BgpPeeringAddress which belongs to IpconfigurationId.
      */
-    @JsonProperty(value = "customBgpIpAddress", required = true)
     private String customBgpIpAddress;
 
     /**
@@ -90,4 +93,45 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GatewayCustomBgpIpAddressIpConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipConfigurationId", this.ipConfigurationId);
+        jsonWriter.writeStringField("customBgpIpAddress", this.customBgpIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayCustomBgpIpAddressIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayCustomBgpIpAddressIpConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GatewayCustomBgpIpAddressIpConfiguration.
+     */
+    public static GatewayCustomBgpIpAddressIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayCustomBgpIpAddressIpConfiguration deserializedGatewayCustomBgpIpAddressIpConfiguration
+                = new GatewayCustomBgpIpAddressIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurationId".equals(fieldName)) {
+                    deserializedGatewayCustomBgpIpAddressIpConfiguration.ipConfigurationId = reader.getString();
+                } else if ("customBgpIpAddress".equals(fieldName)) {
+                    deserializedGatewayCustomBgpIpAddressIpConfiguration.customBgpIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayCustomBgpIpAddressIpConfiguration;
+        });
+    }
 }

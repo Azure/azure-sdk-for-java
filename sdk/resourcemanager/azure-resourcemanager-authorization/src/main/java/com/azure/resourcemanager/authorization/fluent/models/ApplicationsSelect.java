@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationsSelect. */
+/**
+ * Defines values for ApplicationsSelect.
+ */
 public final class ApplicationsSelect extends ExpandableStringEnum<ApplicationsSelect> {
-    /** Static value id for ApplicationsSelect. */
+    /**
+     * Static value id for ApplicationsSelect.
+     */
     public static final ApplicationsSelect ID = fromString("id");
 
-    /** Static value deletedDateTime for ApplicationsSelect. */
+    /**
+     * Static value deletedDateTime for ApplicationsSelect.
+     */
     public static final ApplicationsSelect DELETED_DATE_TIME = fromString("deletedDateTime");
 
-    /** Static value appDisplayName for ApplicationsSelect. */
+    /**
+     * Static value appDisplayName for ApplicationsSelect.
+     */
     public static final ApplicationsSelect APP_DISPLAY_NAME = fromString("appDisplayName");
 
-    /** Static value dataType for ApplicationsSelect. */
+    /**
+     * Static value dataType for ApplicationsSelect.
+     */
     public static final ApplicationsSelect DATA_TYPE = fromString("dataType");
 
-    /** Static value isSyncedFromOnPremises for ApplicationsSelect. */
+    /**
+     * Static value isSyncedFromOnPremises for ApplicationsSelect.
+     */
     public static final ApplicationsSelect IS_SYNCED_FROM_ON_PREMISES = fromString("isSyncedFromOnPremises");
 
-    /** Static value name for ApplicationsSelect. */
+    /**
+     * Static value name for ApplicationsSelect.
+     */
     public static final ApplicationsSelect NAME = fromString("name");
 
-    /** Static value targetObjects for ApplicationsSelect. */
+    /**
+     * Static value targetObjects for ApplicationsSelect.
+     */
     public static final ApplicationsSelect TARGET_OBJECTS = fromString("targetObjects");
 
     /**
      * Creates a new instance of ApplicationsSelect value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class ApplicationsSelect extends ExpandableStringEnum<ApplicationsS
 
     /**
      * Creates or finds a ApplicationsSelect from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationsSelect.
      */
-    @JsonCreator
     public static ApplicationsSelect fromString(String name) {
         return fromString(name, ApplicationsSelect.class);
     }
 
     /**
      * Gets known ApplicationsSelect values.
-     *
+     * 
      * @return known ApplicationsSelect values.
      */
     public static Collection<ApplicationsSelect> values() {

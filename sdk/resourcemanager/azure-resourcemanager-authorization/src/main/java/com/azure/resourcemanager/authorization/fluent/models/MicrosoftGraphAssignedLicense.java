@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** assignedLicense. */
+/**
+ * assignedLicense.
+ */
 @Fluent
-public final class MicrosoftGraphAssignedLicense {
+public final class MicrosoftGraphAssignedLicense implements JsonSerializable<MicrosoftGraphAssignedLicense> {
     /*
      * A collection of the unique identifiers for plans that have been disabled.
      */
-    @JsonProperty(value = "disabledPlans")
     private List<UUID> disabledPlans;
 
     /*
      * The unique identifier for the SKU.
      */
-    @JsonProperty(value = "skuId")
     private UUID skuId;
 
     /*
      * assignedLicense
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAssignedLicense class. */
+    /**
+     * Creates an instance of MicrosoftGraphAssignedLicense class.
+     */
     public MicrosoftGraphAssignedLicense() {
     }
 
     /**
      * Get the disabledPlans property: A collection of the unique identifiers for plans that have been disabled.
-     *
+     * 
      * @return the disabledPlans value.
      */
     public List<UUID> disabledPlans() {
@@ -49,7 +53,7 @@ public final class MicrosoftGraphAssignedLicense {
 
     /**
      * Set the disabledPlans property: A collection of the unique identifiers for plans that have been disabled.
-     *
+     * 
      * @param disabledPlans the disabledPlans value to set.
      * @return the MicrosoftGraphAssignedLicense object itself.
      */
@@ -60,7 +64,7 @@ public final class MicrosoftGraphAssignedLicense {
 
     /**
      * Get the skuId property: The unique identifier for the SKU.
-     *
+     * 
      * @return the skuId value.
      */
     public UUID skuId() {
@@ -69,7 +73,7 @@ public final class MicrosoftGraphAssignedLicense {
 
     /**
      * Set the skuId property: The unique identifier for the SKU.
-     *
+     * 
      * @param skuId the skuId value to set.
      * @return the MicrosoftGraphAssignedLicense object itself.
      */
@@ -80,17 +84,16 @@ public final class MicrosoftGraphAssignedLicense {
 
     /**
      * Get the additionalProperties property: assignedLicense.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: assignedLicense.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAssignedLicense object itself.
      */
@@ -99,19 +102,66 @@ public final class MicrosoftGraphAssignedLicense {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("disabledPlans", this.disabledPlans,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeStringField("skuId", Objects.toString(this.skuId, null));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAssignedLicense from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAssignedLicense if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAssignedLicense.
+     */
+    public static MicrosoftGraphAssignedLicense fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAssignedLicense deserializedMicrosoftGraphAssignedLicense
+                = new MicrosoftGraphAssignedLicense();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disabledPlans".equals(fieldName)) {
+                    List<UUID> disabledPlans = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedMicrosoftGraphAssignedLicense.disabledPlans = disabledPlans;
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedMicrosoftGraphAssignedLicense.skuId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAssignedLicense.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAssignedLicense;
+        });
     }
 }

@@ -18,7 +18,10 @@ public final class BuildServiceListBuildResultsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceListBuildResults(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServices().listBuildResults("myResourceGroup",
-            "myservice", "default", "mybuild", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServices()
+            .listBuildResults("myResourceGroup", "myservice", "default", "mybuild", com.azure.core.util.Context.NONE);
     }
 }

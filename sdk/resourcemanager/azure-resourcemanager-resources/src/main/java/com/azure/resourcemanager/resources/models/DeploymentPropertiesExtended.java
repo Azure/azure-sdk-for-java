@@ -6,8 +6,13 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,109 +20,90 @@ import java.util.List;
  * Deployment properties with additional details.
  */
 @Immutable
-public final class DeploymentPropertiesExtended {
+public final class DeploymentPropertiesExtended implements JsonSerializable<DeploymentPropertiesExtended> {
     /*
      * Denotes the state of provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The correlation ID of the deployment.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * The timestamp of the template deployment.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * The duration of the template deployment.
      */
-    @JsonProperty(value = "duration", access = JsonProperty.Access.WRITE_ONLY)
     private String duration;
 
     /*
      * Key/value pairs that represent deployment output.
      */
-    @JsonProperty(value = "outputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object outputs;
 
     /*
      * The list of resource providers needed for the deployment.
      */
-    @JsonProperty(value = "providers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderInner> providers;
 
     /*
      * The list of deployment dependencies.
      */
-    @JsonProperty(value = "dependencies", access = JsonProperty.Access.WRITE_ONLY)
     private List<Dependency> dependencies;
 
     /*
      * The URI referencing the template.
      */
-    @JsonProperty(value = "templateLink", access = JsonProperty.Access.WRITE_ONLY)
     private TemplateLink templateLink;
 
     /*
-     * Deployment parameters. 
+     * Deployment parameters.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private Object parameters;
 
     /*
-     * The URI referencing the parameters. 
+     * The URI referencing the parameters.
      */
-    @JsonProperty(value = "parametersLink", access = JsonProperty.Access.WRITE_ONLY)
     private ParametersLink parametersLink;
 
     /*
      * The deployment mode. Possible values are Incremental and Complete.
      */
-    @JsonProperty(value = "mode", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentMode mode;
 
     /*
      * The debug setting of the deployment.
      */
-    @JsonProperty(value = "debugSetting", access = JsonProperty.Access.WRITE_ONLY)
     private DebugSetting debugSetting;
 
     /*
      * The deployment on error behavior.
      */
-    @JsonProperty(value = "onErrorDeployment", access = JsonProperty.Access.WRITE_ONLY)
     private OnErrorDeploymentExtended onErrorDeployment;
 
     /*
      * The hash produced for the template.
      */
-    @JsonProperty(value = "templateHash", access = JsonProperty.Access.WRITE_ONLY)
     private String templateHash;
 
     /*
      * Array of provisioned resources.
      */
-    @JsonProperty(value = "outputResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceReference> outputResources;
 
     /*
      * Array of validated resources.
      */
-    @JsonProperty(value = "validatedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceReference> validatedResources;
 
     /*
-     * Error Response
-     * 
      * The deployment error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
     /**
@@ -271,9 +257,7 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the error property: Error Response
-     * 
-     * The deployment error.
+     * Get the error property: The deployment error.
      * 
      * @return the error value.
      */
@@ -311,5 +295,81 @@ public final class DeploymentPropertiesExtended {
         if (validatedResources() != null) {
             validatedResources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentPropertiesExtended from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentPropertiesExtended if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentPropertiesExtended.
+     */
+    public static DeploymentPropertiesExtended fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentPropertiesExtended deserializedDeploymentPropertiesExtended = new DeploymentPropertiesExtended();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.correlationId = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("duration".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.duration = reader.getString();
+                } else if ("outputs".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.outputs = reader.readUntyped();
+                } else if ("providers".equals(fieldName)) {
+                    List<ProviderInner> providers = reader.readArray(reader1 -> ProviderInner.fromJson(reader1));
+                    deserializedDeploymentPropertiesExtended.providers = providers;
+                } else if ("dependencies".equals(fieldName)) {
+                    List<Dependency> dependencies = reader.readArray(reader1 -> Dependency.fromJson(reader1));
+                    deserializedDeploymentPropertiesExtended.dependencies = dependencies;
+                } else if ("templateLink".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.templateLink = TemplateLink.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.parameters = reader.readUntyped();
+                } else if ("parametersLink".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.parametersLink = ParametersLink.fromJson(reader);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.mode = DeploymentMode.fromString(reader.getString());
+                } else if ("debugSetting".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.debugSetting = DebugSetting.fromJson(reader);
+                } else if ("onErrorDeployment".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.onErrorDeployment
+                        = OnErrorDeploymentExtended.fromJson(reader);
+                } else if ("templateHash".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.templateHash = reader.getString();
+                } else if ("outputResources".equals(fieldName)) {
+                    List<ResourceReference> outputResources
+                        = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedDeploymentPropertiesExtended.outputResources = outputResources;
+                } else if ("validatedResources".equals(fieldName)) {
+                    List<ResourceReference> validatedResources
+                        = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedDeploymentPropertiesExtended.validatedResources = validatedResources;
+                } else if ("error".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentPropertiesExtended;
+        });
     }
 }

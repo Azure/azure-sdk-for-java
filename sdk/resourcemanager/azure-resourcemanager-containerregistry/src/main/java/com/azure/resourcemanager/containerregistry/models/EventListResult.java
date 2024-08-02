@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.EventInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of a request to list events for a webhook.
  */
 @Fluent
-public final class EventListResult {
+public final class EventListResult implements JsonSerializable<EventListResult> {
     /*
-     * The list of events. Since this list may be incomplete, the nextLink field should be used to request the next
-     * list of events.
+     * The list of events. Since this list may be incomplete, the nextLink field should be used to request the next list
+     * of events.
      */
-    @JsonProperty(value = "value")
     private List<EventInner> value;
 
     /*
      * The URI that can be used to request the next list of events.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -84,5 +86,45 @@ public final class EventListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventListResult.
+     */
+    public static EventListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventListResult deserializedEventListResult = new EventListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EventInner> value = reader.readArray(reader1 -> EventInner.fromJson(reader1));
+                    deserializedEventListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEventListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventListResult;
+        });
     }
 }

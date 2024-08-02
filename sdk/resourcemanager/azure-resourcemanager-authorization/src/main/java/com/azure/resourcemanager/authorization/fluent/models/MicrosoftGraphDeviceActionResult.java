@@ -5,57 +5,58 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * deviceActionResult
- *
- * <p>Device action result.
+ * 
+ * Device action result.
  */
 @Fluent
-public final class MicrosoftGraphDeviceActionResult {
+public final class MicrosoftGraphDeviceActionResult implements JsonSerializable<MicrosoftGraphDeviceActionResult> {
     /*
      * Action name
      */
-    @JsonProperty(value = "actionName")
     private String actionName;
 
     /*
      * actionState
      */
-    @JsonProperty(value = "actionState")
     private MicrosoftGraphActionState actionState;
 
     /*
      * Time the action state was last updated
      */
-    @JsonProperty(value = "lastUpdatedDateTime")
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Time the action was initiated
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * Device action result
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDeviceActionResult class. */
+    /**
+     * Creates an instance of MicrosoftGraphDeviceActionResult class.
+     */
     public MicrosoftGraphDeviceActionResult() {
     }
 
     /**
      * Get the actionName property: Action name.
-     *
+     * 
      * @return the actionName value.
      */
     public String actionName() {
@@ -64,7 +65,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Set the actionName property: Action name.
-     *
+     * 
      * @param actionName the actionName value to set.
      * @return the MicrosoftGraphDeviceActionResult object itself.
      */
@@ -75,7 +76,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Get the actionState property: actionState.
-     *
+     * 
      * @return the actionState value.
      */
     public MicrosoftGraphActionState actionState() {
@@ -84,7 +85,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Set the actionState property: actionState.
-     *
+     * 
      * @param actionState the actionState value to set.
      * @return the MicrosoftGraphDeviceActionResult object itself.
      */
@@ -95,7 +96,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Get the lastUpdatedDateTime property: Time the action state was last updated.
-     *
+     * 
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime lastUpdatedDateTime() {
@@ -104,7 +105,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Set the lastUpdatedDateTime property: Time the action state was last updated.
-     *
+     * 
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the MicrosoftGraphDeviceActionResult object itself.
      */
@@ -115,7 +116,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Get the startDateTime property: Time the action was initiated.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -124,7 +125,7 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Set the startDateTime property: Time the action was initiated.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphDeviceActionResult object itself.
      */
@@ -135,17 +136,16 @@ public final class MicrosoftGraphDeviceActionResult {
 
     /**
      * Get the additionalProperties property: Device action result.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Device action result.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDeviceActionResult object itself.
      */
@@ -154,19 +154,75 @@ public final class MicrosoftGraphDeviceActionResult {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionName", this.actionName);
+        jsonWriter.writeStringField("actionState", this.actionState == null ? null : this.actionState.toString());
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDeviceActionResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDeviceActionResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDeviceActionResult.
+     */
+    public static MicrosoftGraphDeviceActionResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDeviceActionResult deserializedMicrosoftGraphDeviceActionResult
+                = new MicrosoftGraphDeviceActionResult();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionName".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceActionResult.actionName = reader.getString();
+                } else if ("actionState".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceActionResult.actionState
+                        = MicrosoftGraphActionState.fromString(reader.getString());
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceActionResult.lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceActionResult.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDeviceActionResult.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDeviceActionResult;
+        });
     }
 }

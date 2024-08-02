@@ -20,9 +20,12 @@ public final class DeploymentsGenerateThreadDumpSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsGenerateHeapDump(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().generateThreadDump("myResourceGroup",
-            "myservice", "myapp", "mydeployment",
-            new DiagnosticParameters().withAppInstance("myappinstance").withFilePath("/byos/diagnose"),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .generateThreadDump("myResourceGroup", "myservice", "myapp", "mydeployment",
+                new DiagnosticParameters().withAppInstance("myappinstance").withFilePath("/byos/diagnose"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -25,10 +25,15 @@ public final class RegistriesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries().update("myResourceGroup", "myRegistry",
-            new RegistryUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
-                .withSku(new Sku().withName(SkuName.STANDARD)).withAdminUserEnabled(true),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .update("myResourceGroup", "myRegistry",
+                new RegistryUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withAdminUserEnabled(true),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class ManagementLocksListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_ListAtSubscriptionLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/
+     * ManagementLocks_ListAtSubscriptionLevel.json
      */
     /**
      * Sample code: List management locks at subscription level.

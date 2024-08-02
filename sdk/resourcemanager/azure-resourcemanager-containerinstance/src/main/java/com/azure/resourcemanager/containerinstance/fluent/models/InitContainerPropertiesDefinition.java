@@ -5,59 +5,61 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.InitContainerPropertiesDefinitionInstanceView;
 import com.azure.resourcemanager.containerinstance.models.SecurityContextDefinition;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The init container definition properties. */
+/**
+ * The init container definition properties.
+ */
 @Fluent
-public final class InitContainerPropertiesDefinition {
+public final class InitContainerPropertiesDefinition implements JsonSerializable<InitContainerPropertiesDefinition> {
     /*
      * The image of the init container.
      */
-    @JsonProperty(value = "image")
     private String image;
 
     /*
      * The command to execute within the init container in exec form.
      */
-    @JsonProperty(value = "command")
     private List<String> command;
 
     /*
      * The environment variables to set in the init container.
      */
-    @JsonProperty(value = "environmentVariables")
     private List<EnvironmentVariable> environmentVariables;
 
     /*
      * The instance view of the init container. Only valid in response.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private InitContainerPropertiesDefinitionInstanceView instanceView;
 
     /*
      * The volume mounts available to the init container.
      */
-    @JsonProperty(value = "volumeMounts")
     private List<VolumeMount> volumeMounts;
 
     /*
      * The container security properties.
      */
-    @JsonProperty(value = "securityContext")
     private SecurityContextDefinition securityContext;
 
-    /** Creates an instance of InitContainerPropertiesDefinition class. */
+    /**
+     * Creates an instance of InitContainerPropertiesDefinition class.
+     */
     public InitContainerPropertiesDefinition() {
     }
 
     /**
      * Get the image property: The image of the init container.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -66,7 +68,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Set the image property: The image of the init container.
-     *
+     * 
      * @param image the image value to set.
      * @return the InitContainerPropertiesDefinition object itself.
      */
@@ -77,7 +79,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Get the command property: The command to execute within the init container in exec form.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -86,7 +88,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Set the command property: The command to execute within the init container in exec form.
-     *
+     * 
      * @param command the command value to set.
      * @return the InitContainerPropertiesDefinition object itself.
      */
@@ -97,7 +99,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Get the environmentVariables property: The environment variables to set in the init container.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -106,7 +108,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Set the environmentVariables property: The environment variables to set in the init container.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the InitContainerPropertiesDefinition object itself.
      */
@@ -117,7 +119,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Get the instanceView property: The instance view of the init container. Only valid in response.
-     *
+     * 
      * @return the instanceView value.
      */
     public InitContainerPropertiesDefinitionInstanceView instanceView() {
@@ -126,7 +128,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Get the volumeMounts property: The volume mounts available to the init container.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -135,7 +137,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Set the volumeMounts property: The volume mounts available to the init container.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the InitContainerPropertiesDefinition object itself.
      */
@@ -146,7 +148,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Get the securityContext property: The container security properties.
-     *
+     * 
      * @return the securityContext value.
      */
     public SecurityContextDefinition securityContext() {
@@ -155,7 +157,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Set the securityContext property: The container security properties.
-     *
+     * 
      * @param securityContext the securityContext value to set.
      * @return the InitContainerPropertiesDefinition object itself.
      */
@@ -166,7 +168,7 @@ public final class InitContainerPropertiesDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -182,5 +184,63 @@ public final class InitContainerPropertiesDefinition {
         if (securityContext() != null) {
             securityContext().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("volumeMounts", this.volumeMounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("securityContext", this.securityContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InitContainerPropertiesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InitContainerPropertiesDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InitContainerPropertiesDefinition.
+     */
+    public static InitContainerPropertiesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InitContainerPropertiesDefinition deserializedInitContainerPropertiesDefinition
+                = new InitContainerPropertiesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedInitContainerPropertiesDefinition.image = reader.getString();
+                } else if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInitContainerPropertiesDefinition.command = command;
+                } else if ("environmentVariables".equals(fieldName)) {
+                    List<EnvironmentVariable> environmentVariables
+                        = reader.readArray(reader1 -> EnvironmentVariable.fromJson(reader1));
+                    deserializedInitContainerPropertiesDefinition.environmentVariables = environmentVariables;
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedInitContainerPropertiesDefinition.instanceView
+                        = InitContainerPropertiesDefinitionInstanceView.fromJson(reader);
+                } else if ("volumeMounts".equals(fieldName)) {
+                    List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
+                    deserializedInitContainerPropertiesDefinition.volumeMounts = volumeMounts;
+                } else if ("securityContext".equals(fieldName)) {
+                    deserializedInitContainerPropertiesDefinition.securityContext
+                        = SecurityContextDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInitContainerPropertiesDefinition;
+        });
     }
 }

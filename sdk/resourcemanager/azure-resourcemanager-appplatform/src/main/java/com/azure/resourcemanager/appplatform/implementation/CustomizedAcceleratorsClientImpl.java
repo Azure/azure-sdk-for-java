@@ -638,8 +638,10 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     public SyncPoller<PollResult<CustomizedAcceleratorResourceInner>, CustomizedAcceleratorResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String applicationAcceleratorName,
             String customizedAcceleratorName, CustomizedAcceleratorResourceInner customizedAcceleratorResource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            customizedAcceleratorName, customizedAcceleratorResource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
+                customizedAcceleratorName, customizedAcceleratorResource)
+            .getSyncPoller();
     }
 
     /**
@@ -662,8 +664,10 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String applicationAcceleratorName,
             String customizedAcceleratorName, CustomizedAcceleratorResourceInner customizedAcceleratorResource,
             Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            customizedAcceleratorName, customizedAcceleratorResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
+                customizedAcceleratorName, customizedAcceleratorResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -686,7 +690,7 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
         CustomizedAcceleratorResourceInner customizedAcceleratorResource) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
             customizedAcceleratorName, customizedAcceleratorResource).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -710,7 +714,7 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
         CustomizedAcceleratorResourceInner customizedAcceleratorResource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
             customizedAcceleratorName, customizedAcceleratorResource, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -935,8 +939,10 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
         String applicationAcceleratorName, String customizedAcceleratorName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            customizedAcceleratorName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, applicationAcceleratorName, customizedAcceleratorName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -956,7 +962,8 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String applicationAcceleratorName,
         String customizedAcceleratorName) {
         return beginDeleteAsync(resourceGroupName, serviceName, applicationAcceleratorName, customizedAcceleratorName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1200,8 +1207,10 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     public SyncPoller<PollResult<CustomizedAcceleratorValidateResultInner>, CustomizedAcceleratorValidateResultInner>
         beginValidate(String resourceGroupName, String serviceName, String applicationAcceleratorName,
             String customizedAcceleratorName, CustomizedAcceleratorProperties properties) {
-        return this.beginValidateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            customizedAcceleratorName, properties).getSyncPoller();
+        return this
+            .beginValidateAsync(resourceGroupName, serviceName, applicationAcceleratorName, customizedAcceleratorName,
+                properties)
+            .getSyncPoller();
     }
 
     /**
@@ -1223,8 +1232,10 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     public SyncPoller<PollResult<CustomizedAcceleratorValidateResultInner>, CustomizedAcceleratorValidateResultInner>
         beginValidate(String resourceGroupName, String serviceName, String applicationAcceleratorName,
             String customizedAcceleratorName, CustomizedAcceleratorProperties properties, Context context) {
-        return this.beginValidateAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            customizedAcceleratorName, properties, context).getSyncPoller();
+        return this
+            .beginValidateAsync(resourceGroupName, serviceName, applicationAcceleratorName, customizedAcceleratorName,
+                properties, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1320,9 +1331,7 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1347,9 +1356,7 @@ public final class CustomizedAcceleratorsClientImpl implements CustomizedAcceler
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

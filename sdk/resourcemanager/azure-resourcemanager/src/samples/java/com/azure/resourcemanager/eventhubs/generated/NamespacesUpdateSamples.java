@@ -7,7 +7,6 @@ package com.azure.resourcemanager.eventhubs.generated;
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.azure.resourcemanager.eventhubs.models.Identity;
 import com.azure.resourcemanager.eventhubs.models.ManagedServiceIdentityType;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public final class NamespacesUpdateSamples {
      */
     /**
      * Sample code: NamespacesUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void namespacesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

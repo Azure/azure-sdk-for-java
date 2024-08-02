@@ -6,85 +6,77 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressPrefixItem;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Security admin rule resource.
  */
 @Fluent
-public final class AdminPropertiesFormat {
+public final class AdminPropertiesFormat implements JsonSerializable<AdminPropertiesFormat> {
     /*
      * A description for this rule. Restricted to 140 chars.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Network protocol this rule applies to.
      */
-    @JsonProperty(value = "protocol", required = true)
     private SecurityConfigurationRuleProtocol protocol;
 
     /*
      * The CIDR or source IP ranges.
      */
-    @JsonProperty(value = "sources")
     private List<AddressPrefixItem> sources;
 
     /*
      * The destination address prefixes. CIDR or destination IP ranges.
      */
-    @JsonProperty(value = "destinations")
     private List<AddressPrefixItem> destinations;
 
     /*
      * The source port ranges.
      */
-    @JsonProperty(value = "sourcePortRanges")
     private List<String> sourcePortRanges;
 
     /*
      * The destination port ranges.
      */
-    @JsonProperty(value = "destinationPortRanges")
     private List<String> destinationPortRanges;
 
     /*
      * Indicates the access allowed for this particular rule
      */
-    @JsonProperty(value = "access", required = true)
     private SecurityConfigurationRuleAccess access;
 
     /*
      * The priority of the rule. The value can be between 1 and 4096. The priority number must be unique for each rule
      * in the collection. The lower the priority number, the higher the priority of the rule.
      */
-    @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
      * Indicates if the traffic matched against the rule in inbound or outbound.
      */
-    @JsonProperty(value = "direction", required = true)
     private SecurityConfigurationRuleDirection direction;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
@@ -95,7 +87,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +96,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @param description the description value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -115,7 +107,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the protocol property: Network protocol this rule applies to.
-     *
+     * 
      * @return the protocol value.
      */
     public SecurityConfigurationRuleProtocol protocol() {
@@ -124,7 +116,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the protocol property: Network protocol this rule applies to.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -135,7 +127,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the sources property: The CIDR or source IP ranges.
-     *
+     * 
      * @return the sources value.
      */
     public List<AddressPrefixItem> sources() {
@@ -144,7 +136,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the sources property: The CIDR or source IP ranges.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -155,7 +147,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     *
+     * 
      * @return the destinations value.
      */
     public List<AddressPrefixItem> destinations() {
@@ -164,7 +156,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -175,7 +167,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the sourcePortRanges property: The source port ranges.
-     *
+     * 
      * @return the sourcePortRanges value.
      */
     public List<String> sourcePortRanges() {
@@ -184,7 +176,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the sourcePortRanges property: The source port ranges.
-     *
+     * 
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -195,7 +187,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the destinationPortRanges property: The destination port ranges.
-     *
+     * 
      * @return the destinationPortRanges value.
      */
     public List<String> destinationPortRanges() {
@@ -204,7 +196,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the destinationPortRanges property: The destination port ranges.
-     *
+     * 
      * @param destinationPortRanges the destinationPortRanges value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -215,7 +207,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the access property: Indicates the access allowed for this particular rule.
-     *
+     * 
      * @return the access value.
      */
     public SecurityConfigurationRuleAccess access() {
@@ -224,7 +216,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the access property: Indicates the access allowed for this particular rule.
-     *
+     * 
      * @param access the access value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -237,7 +229,7 @@ public final class AdminPropertiesFormat {
      * Get the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -248,7 +240,7 @@ public final class AdminPropertiesFormat {
      * Set the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -259,7 +251,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     *
+     * 
      * @return the direction value.
      */
     public SecurityConfigurationRuleDirection direction() {
@@ -268,7 +260,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -279,7 +271,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -288,7 +280,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -297,7 +289,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -323,4 +315,80 @@ public final class AdminPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdminPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("access", this.access == null ? null : this.access.toString());
+        jsonWriter.writeIntField("priority", this.priority);
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sourcePortRanges", this.sourcePortRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationPortRanges", this.destinationPortRanges,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdminPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdminPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdminPropertiesFormat.
+     */
+    public static AdminPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdminPropertiesFormat deserializedAdminPropertiesFormat = new AdminPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.protocol
+                        = SecurityConfigurationRuleProtocol.fromString(reader.getString());
+                } else if ("access".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.access
+                        = SecurityConfigurationRuleAccess.fromString(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.priority = reader.getInt();
+                } else if ("direction".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.direction
+                        = SecurityConfigurationRuleDirection.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.description = reader.getString();
+                } else if ("sources".equals(fieldName)) {
+                    List<AddressPrefixItem> sources = reader.readArray(reader1 -> AddressPrefixItem.fromJson(reader1));
+                    deserializedAdminPropertiesFormat.sources = sources;
+                } else if ("destinations".equals(fieldName)) {
+                    List<AddressPrefixItem> destinations
+                        = reader.readArray(reader1 -> AddressPrefixItem.fromJson(reader1));
+                    deserializedAdminPropertiesFormat.destinations = destinations;
+                } else if ("sourcePortRanges".equals(fieldName)) {
+                    List<String> sourcePortRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdminPropertiesFormat.sourcePortRanges = sourcePortRanges;
+                } else if ("destinationPortRanges".equals(fieldName)) {
+                    List<String> destinationPortRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdminPropertiesFormat.destinationPortRanges = destinationPortRanges;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedAdminPropertiesFormat.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdminPropertiesFormat;
+        });
+    }
 }

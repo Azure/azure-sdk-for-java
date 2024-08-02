@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information regarding paired region.
  */
 @Immutable
-public final class PairedRegion {
+public final class PairedRegion implements JsonSerializable<PairedRegion> {
     /*
      * The name of the paired region.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The fully qualified ID of the location. For example, /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
+     * The fully qualified ID of the location. For example,
+     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The subscription ID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
@@ -70,5 +72,44 @@ public final class PairedRegion {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PairedRegion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PairedRegion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PairedRegion.
+     */
+    public static PairedRegion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PairedRegion deserializedPairedRegion = new PairedRegion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPairedRegion.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedPairedRegion.id = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedPairedRegion.subscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPairedRegion;
+        });
     }
 }
