@@ -46,7 +46,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsRunner((prompt) -> {
             ChatCompletions resultCompletions = client.complete(prompt);
-            assertChatCompletions(1, resultCompletions);
+            assertCompletions(1, resultCompletions);
         });
     }
 

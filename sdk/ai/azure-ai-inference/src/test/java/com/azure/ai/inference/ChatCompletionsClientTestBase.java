@@ -13,6 +13,8 @@ import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -25,13 +27,16 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import reactor.core.publisher.Mono;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.azure.ai.inference.TestUtils.FAKE_API_KEY;
 
 public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     protected ChatCompletionsClient chatCompletionsClient;
@@ -84,9 +89,13 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void testGetChatCompletions(HttpClient httpClient);
 
+    void getChatCompletionsRunner(Consumer<String> testRunner) {
+        testRunner.accept("Say this is a test");
+    }
+
     static void assertCompletions(int choicesPerPrompt, ChatCompletions actual) {
         assertNotNull(actual);
-        assertInstanceOf(Completions.class, actual);
+        assertInstanceOf(ChatCompletions.class, actual);
         assertChoices(choicesPerPrompt, actual.getChoices());
         assertNotNull(actual.getUsage());
     }
@@ -99,7 +108,7 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     }
 
     static void assertChoice(int index, ChatChoice actual) {
-        assertNotNull(actual.getText());
+        assertNotNull(actual.getMessage().getContent());
         assertEquals(index, actual.getIndex());
         assertNotNull(actual.getFinishReason());
     }
