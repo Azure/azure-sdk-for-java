@@ -66,7 +66,9 @@ public class AzureMonitorStatsbeatTest {
         Thread.sleep(2000);
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        if (!countDownLatch.await(15, SECONDS)) {
+            throw new IllegalStateException("timed out");
+        }
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
@@ -108,7 +110,9 @@ public class AzureMonitorStatsbeatTest {
         Thread.sleep(2000);
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        if (!countDownLatch.await(15, SECONDS)) {
+            throw new IllegalStateException("timed out");
+        }
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
