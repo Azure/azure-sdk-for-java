@@ -170,6 +170,17 @@ public class ShareApiTests extends FileShareTestBase {
         assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createShareOAuth() {
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        FileShareTestHelper.assertResponseStatusCode(shareClient.createWithResponse(null, null,
+            null, null), 201);
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
@@ -361,6 +372,17 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void deleteShareOAuth() {
+        primaryShareClient.create();
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        FileShareTestHelper.assertResponseStatusCode(shareClient.deleteWithResponse(null, null), 202);
+    }
+
     @Test
     public void deleteShareDeleteSnapshotOptions() {
         primaryShareClient.create();
@@ -498,6 +520,21 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void getPropertiesOAuth() {
+        primaryShareClient.createWithResponse(testMetadata, 1, null, null);
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        Response<ShareProperties> getPropertiesResponse = shareClient.getPropertiesWithResponse(null, null);
+
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
+        assertEquals(testMetadata, getPropertiesResponse.getValue().getMetadata());
+        assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void getPropertiesLease() {
@@ -578,6 +615,27 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(primaryShareClient.getAccessPolicy().iterator().next().getId(), "0000");
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setAccessPolicyOAuth() {
+        primaryShareClient.create();
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .setPermissions("r"));
+
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
+        shareClient.setAccessPolicy(ids);
+        assertEquals(shareClient.getAccessPolicy().iterator().next().getId(), "0000");
+    }
+
     @Test
     public void setAccessPolicyIds() {
         primaryShareClient.create();
@@ -651,6 +709,34 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.setAccessPolicy(ids);
 
         ShareSignedIdentifier id = primaryShareClient.getAccessPolicy().iterator().next();
+
+        assertEquals(id.getId(), identifier.getId());
+        assertEquals(id.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
+        assertEquals(id.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
+        assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void getAccessPolicyOAuth() {
+        primaryShareClient.create();
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier()
+            .setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                    .plusDays(1))
+                .setPermissions("r"));
+
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
+        shareClient.setAccessPolicy(ids);
+
+        ShareSignedIdentifier id = shareClient.getAccessPolicy().iterator().next();
 
         assertEquals(id.getId(), identifier.getId());
         assertEquals(id.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
@@ -750,6 +836,20 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesOAuth() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        Response<ShareInfo> setAccessTierResponse = shareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL), null, null);
+
+        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
+    }
+
     @Test
     public void setMetadata() {
         primaryShareClient.createWithResponse(testMetadata, null, null, null);
@@ -759,6 +859,26 @@ public class ShareApiTests extends FileShareTestBase {
         Response<ShareInfo> setMetadataResponse = primaryShareClient.setMetadataWithResponse(metadataAfterSet, null,
             null);
         ShareProperties getMetadataAfterResponse = primaryShareClient.getProperties();
+
+        assertEquals(testMetadata, getMetadataBeforeResponse.getMetadata());
+        FileShareTestHelper.assertResponseStatusCode(setMetadataResponse, 200);
+        assertEquals(metadataAfterSet, getMetadataAfterResponse.getMetadata());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setMetadataOAuth() {
+        primaryShareClient.createWithResponse(testMetadata, null, null, null);
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        Map<String, String> metadataAfterSet = Collections.singletonMap("afterset", "value");
+
+        ShareProperties getMetadataBeforeResponse = shareClient.getProperties();
+        Response<ShareInfo> setMetadataResponse = shareClient.setMetadataWithResponse(metadataAfterSet, null,
+            null);
+        ShareProperties getMetadataAfterResponse = shareClient.getProperties();
 
         assertEquals(testMetadata, getMetadataBeforeResponse.getMetadata());
         FileShareTestHelper.assertResponseStatusCode(setMetadataResponse, 200);

@@ -11,6 +11,7 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -108,6 +109,18 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
                 assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
             });
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createShareOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(shareClient.createWithResponse(null, (Integer) null))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -235,6 +248,17 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void deleteShareOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(primaryShareAsyncClient.create().then(shareClient.deleteWithResponse()))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
+    }
+
     @Test
     public void deleteShareError() {
         StepVerifier.create(primaryShareAsyncClient.delete())
@@ -287,6 +311,22 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void getPropertiesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(primaryShareAsyncClient.createWithResponse(testMetadata, 1).then(shareClient.getPropertiesWithResponse()))
+            .assertNext(it -> {
+                FileShareTestHelper.assertResponseStatusCode(it, 200);
+                assertEquals(testMetadata, it.getValue().getMetadata());
+                assertEquals(it.getValue().getQuota(), 1);
+            })
+            .verifyComplete();
+    }
+
     @Test
     public void getPropertiesError() {
         StepVerifier.create(primaryShareAsyncClient.getProperties()).verifyErrorSatisfies(it ->
@@ -334,6 +374,20 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        StepVerifier.create(primaryShareAsyncClient.createWithResponse(new ShareCreateOptions()
+            .setAccessTier(ShareAccessTier.HOT))
+            .then(shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL))))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
     @Test
     public void setQuota() {
         primaryShareAsyncClient.createWithResponse(null, 1).block();
@@ -361,6 +415,26 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.getProperties()).assertNext(it ->
             assertEquals(metadataAfterSet, it.getMetadata())).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setMetadataOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
+
+        Map<String, String> metadataAfterSet = Collections.singletonMap("afterset", "value");
+        StepVerifier.create(primaryShareAsyncClient.createWithResponse(testMetadata, null)
+            .then(shareClient.getProperties()))
+            .assertNext(it -> assertEquals(testMetadata, it.getMetadata()))
+            .verifyComplete();
+        StepVerifier.create(shareClient.setMetadataWithResponse(metadataAfterSet))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
+            .verifyComplete();
+        StepVerifier.create(shareClient.getProperties()).assertNext(it ->
+            assertEquals(metadataAfterSet, it.getMetadata()))
+            .verifyComplete();
     }
 
     @Test
