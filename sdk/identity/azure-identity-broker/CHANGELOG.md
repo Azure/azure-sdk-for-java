@@ -2,6 +2,7 @@
 
 ## 1.1.4 (2024-08-02)
 
+### Other Changes
 #### Dependency Updates
 - Upgraded `azure-identity` from `1.13.1` to `1.13.2`
 - Upgraded `msal4j` from `1.16.1` to `1.16.2`
