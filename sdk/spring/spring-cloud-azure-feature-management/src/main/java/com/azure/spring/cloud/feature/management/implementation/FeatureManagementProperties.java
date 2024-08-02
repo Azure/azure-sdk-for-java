@@ -147,19 +147,16 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
         ServerSideFeature serverSideFeature = null;
         try {
-            LinkedHashMap<String, Object> ff = new LinkedHashMap<String, Object>();
-            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+            LinkedHashMap<String, Object> ff = new LinkedHashMap<>();
+            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class)) {
                 ff = (LinkedHashMap<String, Object>) featureValue;
             }
-            LinkedHashMap<String, Object> conditions = new LinkedHashMap<String, Object>();
+            LinkedHashMap<String, Object> conditions = new LinkedHashMap<>();
             if (ff.containsKey("conditions")
-                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class)) {
                 conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
             }
-
-            if (conditions.get("client_filters") instanceof List) {
-                conditions.put("client_filters", null);
-            }
+            FeatureFilterUtils.updateValueFromMapToList(conditions, "client_filters");
 
             serverSideFeature = MAPPER.convertValue(featureValue, ServerSideFeature.class);
         } catch (IllegalArgumentException e) {
@@ -173,7 +170,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 final Feature feature = new Feature();
                 feature.setKey(serverSideFeature.getId());
                 feature.setEvaluate(serverSideFeature.isEnabled());
-                feature.setEnabledFor(serverSideFeature.getConditions().getClientFilters());
+                feature.setEnabledFor(serverSideFeature.getConditions().getClientFiltersAsMap());
                 feature.setRequirementType(serverSideFeature.getConditions().getRequirementType());
                 featureManagement.put(serverSideFeature.getId(), feature);
             } else {
