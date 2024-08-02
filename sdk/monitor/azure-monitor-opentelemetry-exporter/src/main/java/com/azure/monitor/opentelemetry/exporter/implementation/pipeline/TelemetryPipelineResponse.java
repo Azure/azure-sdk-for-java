@@ -9,7 +9,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.Response;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,9 +49,7 @@ public class TelemetryPipelineResponse {
         } catch (IllegalStateException e) {
             return singleton("Could not parse response");
         }
-        return responseErrors.stream().map(ResponseError::getMessage)
-            .filter(message -> !message.equals("Telemetry sampled out."))
-            .collect(Collectors.toSet());
+        return responseErrors.stream().map(ResponseError::getMessage).collect(Collectors.toSet());
     }
 
     public boolean isInvalidInstrumentationKey() {
@@ -63,7 +60,9 @@ public class TelemetryPipelineResponse {
     static Set<ResponseError> parseErrors(String body) {
         try (JsonReader reader = JsonProviders.createReader(body)) {
             Response response = Response.fromJson(reader);
-            return new HashSet<>(response.getErrors());
+            return response.getErrors().stream()
+                .filter(error -> !error.getMessage().equals("Telemetry sampled out."))
+                .collect(Collectors.toSet());
         } catch (IOException e) {
             throw new IllegalStateException("Failed to parse response body", e);
         }

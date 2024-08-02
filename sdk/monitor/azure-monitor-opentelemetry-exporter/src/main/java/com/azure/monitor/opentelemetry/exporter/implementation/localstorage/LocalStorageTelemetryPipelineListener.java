@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -146,22 +147,17 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     }
 
     // split the byte array by newline character
-    private static List<byte[]> splitBytesByNewline(byte[] inputBytes) {
+    static List<byte[]> splitBytesByNewline(byte[] inputBytes) {
         List<byte[]> lines = new ArrayList<>();
         int start = 0;
         for (int i = 0; i < inputBytes.length; i++) {
             if (inputBytes[i] == '\n') {
-                byte[] line = new byte[i - start];
-                System.arraycopy(inputBytes, start, line, 0, i - start);
-                lines.add(line);
+                lines.add(Arrays.copyOfRange(inputBytes, start, i));
                 start = i + 1;
             }
         }
-        // Add the last line (if any)
         if (start < inputBytes.length) {
-            byte[] lastLine = new byte[inputBytes.length - start];
-            System.arraycopy(inputBytes, start, lastLine, 0, inputBytes.length - start);
-            lines.add(lastLine);
+            lines.add(Arrays.copyOfRange(inputBytes, start, inputBytes.length));
         }
         return lines;
     }
