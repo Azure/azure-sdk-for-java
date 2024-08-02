@@ -22,7 +22,7 @@
     "dir": "azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=package-2022-04-01 --stream-style-serialization=false"
+    "args": "--tag=package-2022-04-01 --stream-style-serialization=true"
   },
   "authorization-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
@@ -52,13 +52,13 @@
     "dir": "azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
-    "args": "--tag=package-2023-05 --remove-inner=Container,Operation,CachedImages,Capabilities --rename-model=ContainerGroupPropertiesProperties:ContainerGroupProperties,UserAssignedIdentities:ContainerGroupIdentityUserAssignedIdentities --stream-style-serialization=false"
+    "args": "--tag=package-2023-05 --remove-inner=Container,Operation,CachedImages,Capabilities --rename-model=ContainerGroupPropertiesProperties:ContainerGroupProperties,UserAssignedIdentities:ContainerGroupIdentityUserAssignedIdentities"
   },
   "containerregistry": {
     "dir": "azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--tag=package-2023-07 --modelerfour.lenient-model-deduplication=true --stream-style-serialization=false"
+    "args": "--tag=package-2023-07 --modelerfour.lenient-model-deduplication=true"
   },
   "containerregistry-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
@@ -70,7 +70,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2024-05 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku --stream-style-serialization=false"
+    "args": "--tag=package-2024-05 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
@@ -94,7 +94,7 @@
     "dir": "azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
-    "args": "--tag=package-2018-05 --stream-style-serialization=false"
+    "args": "--tag=package-2018-05"
   },
   "dns-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-dns",
@@ -106,7 +106,7 @@
     "dir": "azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
-    "args": "--tag=package-2024-01 --stream-style-serialization=false"
+    "args": "--tag=package-2024-01"
   },
   "eventhubs-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-eventhubs",
@@ -131,7 +131,7 @@
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=v1.0 --graalvm-config-suffix=msgraph --title=MicrosoftGraphClient --models-subpackage=fluent.models --stream-style-serialization=false"
+    "args": "--tag=v1.0 --graalvm-config-suffix=msgraph --title=MicrosoftGraphClient --models-subpackage=fluent.models"
   },
   "msgraph-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
@@ -143,7 +143,7 @@
     "dir": "azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
-    "args": "--tag=package-2023-07 --stream-style-serialization=false",
+    "args": "--tag=package-2023-07",
     "note": "use local azure-rest-api-specs and remove keys.json, secrets.json and keysManagedHsm.json in README.md tag"
   },
   "keyvault-hybrid": {
@@ -207,7 +207,7 @@
     "dir": "azure-resourcemanager-privatedns",
     "source": "specification/privatedns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.privatedns",
-    "args": "--tag=package-2020-06 --stream-style-serialization=false"
+    "args": "--tag=package-2020-06"
   },
   "redis": {
     "dir": "azure-resourcemanager-redis",
@@ -238,7 +238,7 @@
     "dir": "azure-resourcemanager-search",
     "source": "specification/search/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.search",
-    "args": "--tag=package-2023-11 --remove-inner=CheckNameAvailabilityOutput --stream-style-serialization=false"
+    "args": "--tag=package-2023-11 --remove-inner=CheckNameAvailabilityOutput"
   },
   "servicebus": {
     "dir": "azure-resourcemanager-servicebus",
@@ -258,7 +258,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2023-05 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity --stream-style-serialization=false"
+    "args": "--tag=package-2023-05 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",
@@ -282,13 +282,13 @@
     "dir": "azure-resourcemanager-trafficmanager",
     "source": "specification/trafficmanager/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.trafficmanager",
-    "args": "--tag=package-2022-04 --rename-model=EndpointType:EndpointTypes --stream-style-serialization=false"
+    "args": "--tag=package-2022-04 --rename-model=EndpointType:EndpointTypes"
   },
   "msi": {
     "dir": "azure-resourcemanager-msi",
     "source": "specification/msi/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.msi",
-    "args": "--tag=package-2023-01-31 --add-client-flatten=Identity --stream-style-serialization=false"
+    "args": "--tag=package-2023-01-31 --add-client-flatten=Identity"
   },
   "changes": {
     "dir": "azure-resourcemanager-resources",
