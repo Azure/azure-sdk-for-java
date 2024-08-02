@@ -54,6 +54,9 @@
     <javadoc.excludePackageNames/>
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
 
+    <!-- Ignore shaded code -->
+    <checkstyle.excludes>**/aalto/xml/**/*.java</checkstyle.excludes>
+
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
 
     <spotbugs.skip>false</spotbugs.skip>
@@ -149,4 +152,134 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- This profile is used to generate a sources JAR with stax2-api and aalto-xml shaded into com.azure.xml.implementation.aalto / stax2 -->
+    <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded stax2-api and aalto-xml code needs to be updated. -->
+    <!-- -->
+    <!-- To update the shaded stax2-api and aalto-xml code, run Maven build with '-Dshade-aalto-xml' included in the command. -->
+    <!-- In the target folder, extract the sources azure-xml JAR, the path com/azure/xml/implementation/aalto / stax2 will contain the stax2-api and aalto-xml source code. -->
+    <!-- Copy this code into the com.azure.xml.implementation.aalto / stax2 package in the azure-xml project and overwrite the existing files. -->
+    <!-- -->
+    <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
+    <!-- This serves as another way to attribute the shaded code to Stax2 and Aalto XML. -->
+    <profile>
+      <id>shade-aalto-xml</id>
+      <activation>
+        <property>
+          <name>shade-aalto-xml</name>
+        </property>
+      </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.woodstox</groupId>
+          <artifactId>stax2-api</artifactId>
+          <version>4.2.2</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.fasterxml</groupId>
+          <artifactId>aalto-xml</artifactId>
+          <version>1.3.3</version> <!-- {x-version-update;com.fasterxml:aalto-xml;external_dependency} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+
+            <executions>
+              <execution>
+                <id>shade</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+
+              <artifactSet>
+                <includes>
+                  <include>org.codehaus.woodstox:stax2-api</include>
+                  <include>com.fasterxml:aalto-xml</include>
+                </includes>
+              </artifactSet>
+
+              <relocations>
+                <relocation>
+                  <pattern>com.fasterxml.aalto</pattern>
+                  <shadedPattern>com.azure.xml.implementation.aalto</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.codehaus.stax2</pattern>
+                  <shadedPattern>com.azure.xml.implementation.stax2</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <includes>
+                    <include>org.codehaus.woodstox:stax2-api:[4.2.2]</include> <!-- {x-include-update;org.codehaus.woodstox:stax2-api;external_dependency} -->
+                    <include>com.fasterxml:aalto-xml:[1.3.3]</include> <!-- {x-include-update;com.fasterxml:aalto-xml;external_dependency} -->
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- This profile runs a script that adds a code comment to each shaded file attributing the shaded code back to the Aalto XML and Stax2 project. -->
+    <!-- This profile must be run after every time the 'shade-aalto-xml' profile is ran and the steps to copy the shaded source code is followed. -->
+    <profile>
+      <id>add-license-comment</id>
+      <activation>
+        <property>
+          <name>add-license-comment</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.2.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>add-license-comment</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>${project.basedir}/add-shaded-code-comment.py</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

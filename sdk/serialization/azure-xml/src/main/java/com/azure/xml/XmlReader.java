@@ -3,6 +3,8 @@
 
 package com.azure.xml;
 
+import com.azure.xml.implementation.aalto.stax.InputFactoryImpl;
+
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -23,7 +25,12 @@ public final class XmlReader implements AutoCloseable {
     private static final XMLInputFactory XML_INPUT_FACTORY;
 
     static {
-        XML_INPUT_FACTORY = XMLInputFactory.newInstance();
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        if ("com.sun.xml.internal.stream.XMLInputFactoryImpl".equals(xmlInputFactory.getClass().getName())) {
+            xmlInputFactory = InputFactoryImpl.newInstance();
+        }
+
+        XML_INPUT_FACTORY = xmlInputFactory;
         XML_INPUT_FACTORY.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         XML_INPUT_FACTORY.setProperty(XMLInputFactory.SUPPORT_DTD, false);
     }
