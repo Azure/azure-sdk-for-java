@@ -59,6 +59,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
 
         // wait for export
         countDownLatch.await(numberOfSpans, SECONDS);
+        Thread.sleep(1000); // wait for the last span to be processed. macOS test kept failing on CI due to URL is null.
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
         assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(numberOfSpans);
