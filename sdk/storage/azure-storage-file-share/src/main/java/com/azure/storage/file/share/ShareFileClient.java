@@ -1188,12 +1188,13 @@ public class ShareFileClient {
 
         Callable<ShareFileDownloadResponse> operation = () -> {
             String initialETag = null;
+            String currentETag = null;
             int retryCount = 0;
             while (retryCount <= retryOptions.getMaxRetryRequests()) {
                 try {
                     ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(range,
                         getRangeContentMd5, requestConditions, context);
-                    String currentETag = ModelHelper.getETag(response.getHeaders());
+                    currentETag = ModelHelper.getETag(response.getHeaders());
                     if (initialETag != null && !initialETag.equals(currentETag)) {
                         throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
                             + initialETag + ", Received eTag: " + currentETag);
@@ -1214,12 +1215,13 @@ public class ShareFileClient {
                     }
                     return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(), null, headers));
-                } catch (IOException | ConcurrentModificationException e) {
-                    if (retryCount >= retryOptions.getMaxRetryRequests() || !(e instanceof IOException)) {
-                        throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
-                    }
+                } catch (IOException e) {
+                    System.out.println("inside the catch clause");
                     retryCount++;
-                    LOGGER.info("Retrying download due to Exception. Attempt: " + retryCount);
+                    LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
+                } catch (ConcurrentModificationException e) {
+                    throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+                        + initialETag + ", Received eTag: " + currentETag);
                 }
             }
             throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
