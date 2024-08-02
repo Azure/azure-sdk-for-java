@@ -5,12 +5,15 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl;
+import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
@@ -630,6 +633,81 @@ public final class DocumentIntelligenceAdministrationClient {
     }
 
     /**
+     * Generates authorization to copy a document classifier to this location with
+     * specified classifierId and optional description.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     classifierId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     targetResourceId: String (Required)
+     *     targetResourceRegion: String (Required)
+     *     targetClassifierId: String (Required)
+     *     targetClassifierLocation: String (Required)
+     *     accessToken: String (Required)
+     *     expirationDateTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     * 
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return authorization to copy a document classifier to the specified target resource and
+     * classifierId along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> authorizeClassifierCopyWithResponse(BinaryData authorizeCopyRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.authorizeClassifierCopyWithResponse(authorizeCopyRequest, requestOptions);
+    }
+
+    /**
+     * Copies document classifier to the target resource, region, and classifierId.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     targetResourceId: String (Required)
+     *     targetResourceRegion: String (Required)
+     *     targetClassifierId: String (Required)
+     *     targetClassifierLocation: String (Required)
+     *     accessToken: String (Required)
+     *     expirationDateTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param copyToRequest Copy to request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCopyClassifierTo(String classifierId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginCopyClassifierTo(classifierId, copyToRequest, requestOptions);
+    }
+
+    /**
      * Builds a custom document analysis model.
      * 
      * @param buildRequest Build request parameters.
@@ -909,5 +987,52 @@ public final class DocumentIntelligenceAdministrationClient {
         // Generated convenience method for deleteClassifierWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteClassifierWithResponse(classifierId, requestOptions).getValue();
+    }
+
+    /**
+     * Generates authorization to copy a document classifier to this location with
+     * specified classifierId and optional description.
+     * 
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a document classifier to the specified target resource and
+     * classifierId.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClassifierCopyAuthorization authorizeClassifierCopy(AuthorizeClassifierCopyRequest authorizeCopyRequest) {
+        // Generated convenience method for authorizeClassifierCopyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return authorizeClassifierCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
+            .getValue()
+            .toObject(ClassifierCopyAuthorization.class);
+    }
+
+    /**
+     * Copies document classifier to the target resource, region, and classifierId.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<DocumentClassifierCopyToOperationDetails, DocumentClassifierDetails>
+        beginCopyClassifierTo(String classifierId, ClassifierCopyAuthorization copyToRequest) {
+        // Generated convenience method for beginCopyClassifierToWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginCopyClassifierToWithModel(classifierId, BinaryData.fromObject(copyToRequest),
+            requestOptions);
     }
 }
