@@ -6,10 +6,12 @@ package com.azure.storage.common.test.shared.policy;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -22,12 +24,22 @@ public class MockDownloadHttpResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
     private final Flux<ByteBuffer> body;
+    private final BinaryData binaryData;
 
     public MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
         super(response.getRequest());
         this.statusCode = statusCode;
         this.headers = response.getHeaders();
         this.body = body;
+        this.binaryData = null;
+    }
+
+    public MockDownloadHttpResponse(HttpResponse response, int statusCode, BinaryData binaryData) {
+        super(response.getRequest());
+        this.statusCode = statusCode;
+        this.headers = response.getHeaders();
+        this.body = null;
+        this.binaryData = binaryData;
     }
 
     @Override
@@ -69,4 +81,14 @@ public class MockDownloadHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         return Mono.error(new IOException());
     }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromObject(new IOException());
+    }
+
+//    @Override
+//    public Mono<InputStream> getBodyAsInputStream() {
+//        return new RuntimeException("Not implemented");
+//    }
 }

@@ -987,20 +987,31 @@ public class ShareFileClient {
                     }
                     chunks.add(new ShareFileRange(pos, pos + count - 1));
                 }
-
                 for (ShareFileRange chunkRange : chunks) {
-                    // Download the chunk
-                    ResponseBase<FilesDownloadHeaders, InputStream> downloadResponse = downloadRange(chunkRange, false,
-                        finalRequestConditions, context);
+                    int retries = 0;
+                    boolean success = false;
+                    while (!success) {
+                        try {
+                            // Download the chunk
+                            ResponseBase<FilesDownloadHeaders, InputStream> downloadResponse = downloadRange(chunkRange,
+                                false, finalRequestConditions, context);
 
-                    // Write the chunk to the file
-                    try (InputStream stream = downloadResponse.getValue()) {
-                        // Adjust buffer size based on the size of the current chunk
-                        int bufferSize = (int) (chunkRange.getEnd() - chunkRange.getStart() + 1);
-                        byte[] buffer = new byte[bufferSize];
-                        int bytesRead;
-                        while ((bytesRead = stream.read(buffer)) != -1) {
-                            fileChannel.write(ByteBuffer.wrap(buffer, 0, bytesRead));
+                            // Write the chunk to the file
+                            try (InputStream stream = downloadResponse.getValue()) {
+                                int bufferSize = (int) (chunkRange.getEnd() - chunkRange.getStart() + 1);
+                                byte[] buffer = new byte[bufferSize];
+                                int bytesRead;
+                                while ((bytesRead = stream.read(buffer)) != -1) {
+                                    fileChannel.write(ByteBuffer.wrap(buffer, 0, bytesRead));
+                                }
+                            }
+                            success = true; // Mark as successful if no exception is thrown
+                        } catch (IOException e) {
+                            retries++;
+                            if (retries > 3) {
+                                throw e; // Rethrow after max retries
+                            }
+                            LOGGER.info("Retrying download due to " + e.getClass().getSimpleName() + ". Attempt: " + retries);
                         }
                     }
                 }
@@ -1186,7 +1197,7 @@ public class ShareFileClient {
             : options.getRetryOptions();
         Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
 
-        Callable<ShareFileDownloadResponse> operation = () -> {
+//        Callable<ShareFileDownloadResponse> operation = () -> {
             String initialETag = null;
             String currentETag = null;
             int retryCount = 0;
@@ -1215,19 +1226,27 @@ public class ShareFileClient {
                     }
                     return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(), null, headers));
-                } catch (IOException e) {
+                } catch (Exception e) {
+                    System.out.println(e.getClass().getName());
+                    if (e instanceof IOException) {
+                        System.out.println("inside the IOException");
+                    }
                     System.out.println("inside the catch clause");
                     retryCount++;
+                    if (retryCount >= retryOptions.getMaxRetryRequests()) {
+                        throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
+                    }
                     LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
-                } catch (ConcurrentModificationException e) {
-                    throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-                        + initialETag + ", Received eTag: " + currentETag);
                 }
+//                catch (ConcurrentModificationException e) {
+//                    throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+//                        + initialETag + ", Received eTag: " + currentETag);
+//                }
             }
             throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
-        };
-
-        return sendRequest(operation, timeout, ShareStorageException.class);
+//        };
+//
+//        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     private ResponseBase<FilesDownloadHeaders, InputStream> downloadRange(ShareFileRange range,
