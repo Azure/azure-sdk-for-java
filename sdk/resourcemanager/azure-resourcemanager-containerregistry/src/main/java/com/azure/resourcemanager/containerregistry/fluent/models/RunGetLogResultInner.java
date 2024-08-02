@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The result of get log link operation.
  */
 @Fluent
-public final class RunGetLogResultInner {
+public final class RunGetLogResultInner implements JsonSerializable<RunGetLogResultInner> {
     /*
      * The link to logs for a run on a azure container registry.
      */
-    @JsonProperty(value = "logLink")
     private String logLink;
 
     /*
      * The link to logs in registry for a run on a azure container registry.
      */
-    @JsonProperty(value = "logArtifactLink")
     private String logArtifactLink;
 
     /**
@@ -76,5 +78,44 @@ public final class RunGetLogResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logLink", this.logLink);
+        jsonWriter.writeStringField("logArtifactLink", this.logArtifactLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunGetLogResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunGetLogResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunGetLogResultInner.
+     */
+    public static RunGetLogResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunGetLogResultInner deserializedRunGetLogResultInner = new RunGetLogResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logLink".equals(fieldName)) {
+                    deserializedRunGetLogResultInner.logLink = reader.getString();
+                } else if ("logArtifactLink".equals(fieldName)) {
+                    deserializedRunGetLogResultInner.logArtifactLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunGetLogResultInner;
+        });
     }
 }

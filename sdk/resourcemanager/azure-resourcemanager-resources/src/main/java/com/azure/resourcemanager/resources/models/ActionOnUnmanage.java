@@ -6,29 +6,33 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the behavior of resources that are no longer managed after the stack is updated or deleted.
  */
 @Fluent
-public final class ActionOnUnmanage {
+public final class ActionOnUnmanage implements JsonSerializable<ActionOnUnmanage> {
     /*
-     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
+     * will leave the resource in it's current state.
      */
-    @JsonProperty(value = "resources", required = true)
     private DeploymentStacksDeleteDetachEnum resources;
 
     /*
-     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
+     * will leave the resource in it's current state.
      */
-    @JsonProperty(value = "resourceGroups")
     private DeploymentStacksDeleteDetachEnum resourceGroups;
 
     /*
-     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
+     * will leave the resource in it's current state.
      */
-    @JsonProperty(value = "managementGroups")
     private DeploymentStacksDeleteDetachEnum managementGroups;
 
     /**
@@ -116,4 +120,52 @@ public final class ActionOnUnmanage {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActionOnUnmanage.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resources", this.resources == null ? null : this.resources.toString());
+        jsonWriter.writeStringField("resourceGroups",
+            this.resourceGroups == null ? null : this.resourceGroups.toString());
+        jsonWriter.writeStringField("managementGroups",
+            this.managementGroups == null ? null : this.managementGroups.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionOnUnmanage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionOnUnmanage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionOnUnmanage.
+     */
+    public static ActionOnUnmanage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionOnUnmanage deserializedActionOnUnmanage = new ActionOnUnmanage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resources".equals(fieldName)) {
+                    deserializedActionOnUnmanage.resources
+                        = DeploymentStacksDeleteDetachEnum.fromString(reader.getString());
+                } else if ("resourceGroups".equals(fieldName)) {
+                    deserializedActionOnUnmanage.resourceGroups
+                        = DeploymentStacksDeleteDetachEnum.fromString(reader.getString());
+                } else if ("managementGroups".equals(fieldName)) {
+                    deserializedActionOnUnmanage.managementGroups
+                        = DeploymentStacksDeleteDetachEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionOnUnmanage;
+        });
+    }
 }

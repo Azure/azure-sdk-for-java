@@ -6,26 +6,33 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A rule governing the accessibility of a managed HSM pool from a specific IP address or IP range. */
+/**
+ * A rule governing the accessibility of a managed HSM pool from a specific IP address or IP range.
+ */
 @Fluent
-public final class MhsmipRule {
+public final class MhsmipRule implements JsonSerializable<MhsmipRule> {
     /*
      * An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all
      * addresses that start with 124.56.78).
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of MhsmipRule class. */
+    /**
+     * Creates an instance of MhsmipRule class.
+     */
     public MhsmipRule() {
     }
 
     /**
      * Get the value property: An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or
      * '124.56.78.0/24' (all addresses that start with 124.56.78).
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -35,7 +42,7 @@ public final class MhsmipRule {
     /**
      * Set the value property: An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or
      * '124.56.78.0/24' (all addresses that start with 124.56.78).
-     *
+     * 
      * @param value the value value to set.
      * @return the MhsmipRule object itself.
      */
@@ -46,16 +53,52 @@ public final class MhsmipRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model MhsmipRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model MhsmipRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MhsmipRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MhsmipRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MhsmipRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MhsmipRule.
+     */
+    public static MhsmipRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MhsmipRule deserializedMhsmipRule = new MhsmipRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedMhsmipRule.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMhsmipRule;
+        });
+    }
 }

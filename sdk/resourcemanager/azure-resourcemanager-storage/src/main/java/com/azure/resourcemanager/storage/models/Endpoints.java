@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object.
  */
 @Fluent
-public final class Endpoints {
+public final class Endpoints implements JsonSerializable<Endpoints> {
     /*
      * Gets the blob endpoint.
      */
-    @JsonProperty(value = "blob", access = JsonProperty.Access.WRITE_ONLY)
     private String blob;
 
     /*
      * Gets the queue endpoint.
      */
-    @JsonProperty(value = "queue", access = JsonProperty.Access.WRITE_ONLY)
     private String queue;
 
     /*
      * Gets the table endpoint.
      */
-    @JsonProperty(value = "table", access = JsonProperty.Access.WRITE_ONLY)
     private String table;
 
     /*
      * Gets the file endpoint.
      */
-    @JsonProperty(value = "file", access = JsonProperty.Access.WRITE_ONLY)
     private String file;
 
     /*
      * Gets the web endpoint.
      */
-    @JsonProperty(value = "web", access = JsonProperty.Access.WRITE_ONLY)
     private String web;
 
     /*
      * Gets the dfs endpoint.
      */
-    @JsonProperty(value = "dfs", access = JsonProperty.Access.WRITE_ONLY)
     private String dfs;
 
     /*
      * Gets the microsoft routing storage endpoints.
      */
-    @JsonProperty(value = "microsoftEndpoints")
     private StorageAccountMicrosoftEndpoints microsoftEndpoints;
 
     /*
      * Gets the internet routing storage endpoints
      */
-    @JsonProperty(value = "internetEndpoints")
     private StorageAccountInternetEndpoints internetEndpoints;
 
     /**
@@ -172,5 +168,56 @@ public final class Endpoints {
         if (internetEndpoints() != null) {
             internetEndpoints().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("microsoftEndpoints", this.microsoftEndpoints);
+        jsonWriter.writeJsonField("internetEndpoints", this.internetEndpoints);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Endpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Endpoints if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Endpoints.
+     */
+    public static Endpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Endpoints deserializedEndpoints = new Endpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blob".equals(fieldName)) {
+                    deserializedEndpoints.blob = reader.getString();
+                } else if ("queue".equals(fieldName)) {
+                    deserializedEndpoints.queue = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedEndpoints.table = reader.getString();
+                } else if ("file".equals(fieldName)) {
+                    deserializedEndpoints.file = reader.getString();
+                } else if ("web".equals(fieldName)) {
+                    deserializedEndpoints.web = reader.getString();
+                } else if ("dfs".equals(fieldName)) {
+                    deserializedEndpoints.dfs = reader.getString();
+                } else if ("microsoftEndpoints".equals(fieldName)) {
+                    deserializedEndpoints.microsoftEndpoints = StorageAccountMicrosoftEndpoints.fromJson(reader);
+                } else if ("internetEndpoints".equals(fieldName)) {
+                    deserializedEndpoints.internetEndpoints = StorageAccountInternetEndpoints.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpoints;
+        });
     }
 }

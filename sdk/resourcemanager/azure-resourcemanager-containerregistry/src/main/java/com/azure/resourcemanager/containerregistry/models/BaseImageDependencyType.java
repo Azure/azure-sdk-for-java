@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class BaseImageDependencyType extends ExpandableStringEnum<BaseImag
      * @param name a name to look for.
      * @return the corresponding BaseImageDependencyType.
      */
-    @JsonCreator
     public static BaseImageDependencyType fromString(String name) {
         return fromString(name, BaseImageDependencyType.class);
     }

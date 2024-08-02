@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.models.TagsObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public final class SnapshotsUpdateTagsSamples {
      */
     /**
      * Sample code: Update Snapshot Tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateSnapshotTags(com.azure.resourcemanager.AzureResourceManager azure) {

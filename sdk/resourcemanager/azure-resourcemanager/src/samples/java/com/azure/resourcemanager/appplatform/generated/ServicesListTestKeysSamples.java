@@ -19,7 +19,10 @@ public final class ServicesListTestKeysSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesListTestKeys(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().listTestKeysWithResponse("myResourceGroup",
-            "myservice", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .listTestKeysWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

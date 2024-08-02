@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** shiftPreferences. */
+/**
+ * shiftPreferences.
+ */
 @Fluent
 public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTrackedEntity {
     /*
      * Availability of the user to be scheduled for work and its recurrence pattern.
      */
-    @JsonProperty(value = "availability")
     private List<MicrosoftGraphShiftAvailability> availability;
 
     /*
      * shiftPreferences
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphShiftPreferences class. */
+    /**
+     * Creates an instance of MicrosoftGraphShiftPreferences class.
+     */
     public MicrosoftGraphShiftPreferences() {
     }
 
     /**
      * Get the availability property: Availability of the user to be scheduled for work and its recurrence pattern.
-     *
+     * 
      * @return the availability value.
      */
     public List<MicrosoftGraphShiftAvailability> availability() {
@@ -43,7 +48,7 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
 
     /**
      * Set the availability property: Availability of the user to be scheduled for work and its recurrence pattern.
-     *
+     * 
      * @param availability the availability value to set.
      * @return the MicrosoftGraphShiftPreferences object itself.
      */
@@ -54,17 +59,16 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
 
     /**
      * Get the additionalProperties property: shiftPreferences.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: shiftPreferences.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphShiftPreferences object itself.
      */
@@ -73,36 +77,36 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftPreferences withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftPreferences withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftPreferences withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftPreferences withId(String id) {
         super.withId(id);
@@ -111,7 +115,7 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -120,5 +124,74 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
         if (availability() != null) {
             availability().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeArrayField("availability", this.availability, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphShiftPreferences from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphShiftPreferences if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphShiftPreferences.
+     */
+    public static MicrosoftGraphShiftPreferences fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphShiftPreferences deserializedMicrosoftGraphShiftPreferences
+                = new MicrosoftGraphShiftPreferences();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftPreferences.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftPreferences.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftPreferences
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftPreferences.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("availability".equals(fieldName)) {
+                    List<MicrosoftGraphShiftAvailability> availability
+                        = reader.readArray(reader1 -> MicrosoftGraphShiftAvailability.fromJson(reader1));
+                    deserializedMicrosoftGraphShiftPreferences.availability = availability;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphShiftPreferences.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphShiftPreferences;
+        });
     }
 }

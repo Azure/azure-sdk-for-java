@@ -5,69 +5,65 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * deviceConfigurationState
- *
- * <p>Device Configuration State for a given device.
+ * 
+ * Device Configuration State for a given device.
  */
 @Fluent
 public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraphEntity {
     /*
      * The name of the policy for this policyBase
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * policyPlatformType
      */
-    @JsonProperty(value = "platformType")
     private MicrosoftGraphPolicyPlatformType platformType;
 
     /*
      * Count of how many setting a policy holds
      */
-    @JsonProperty(value = "settingCount")
     private Integer settingCount;
 
     /*
      * The settingStates property.
      */
-    @JsonProperty(value = "settingStates")
     private List<MicrosoftGraphDeviceConfigurationSettingState> settingStates;
 
     /*
      * complianceStatus
      */
-    @JsonProperty(value = "state")
     private MicrosoftGraphComplianceStatus state;
 
     /*
      * The version of the policy
      */
-    @JsonProperty(value = "version")
     private Integer version;
 
     /*
      * Device Configuration State for a given device.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDeviceConfigurationState class. */
+    /**
+     * Creates an instance of MicrosoftGraphDeviceConfigurationState class.
+     */
     public MicrosoftGraphDeviceConfigurationState() {
     }
 
     /**
      * Get the displayName property: The name of the policy for this policyBase.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -76,7 +72,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Set the displayName property: The name of the policy for this policyBase.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
@@ -87,7 +83,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Get the platformType property: policyPlatformType.
-     *
+     * 
      * @return the platformType value.
      */
     public MicrosoftGraphPolicyPlatformType platformType() {
@@ -96,7 +92,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Set the platformType property: policyPlatformType.
-     *
+     * 
      * @param platformType the platformType value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
@@ -107,7 +103,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Get the settingCount property: Count of how many setting a policy holds.
-     *
+     * 
      * @return the settingCount value.
      */
     public Integer settingCount() {
@@ -116,7 +112,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Set the settingCount property: Count of how many setting a policy holds.
-     *
+     * 
      * @param settingCount the settingCount value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
@@ -127,7 +123,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Get the settingStates property: The settingStates property.
-     *
+     * 
      * @return the settingStates value.
      */
     public List<MicrosoftGraphDeviceConfigurationSettingState> settingStates() {
@@ -136,19 +132,19 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Set the settingStates property: The settingStates property.
-     *
+     * 
      * @param settingStates the settingStates value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
-    public MicrosoftGraphDeviceConfigurationState withSettingStates(
-        List<MicrosoftGraphDeviceConfigurationSettingState> settingStates) {
+    public MicrosoftGraphDeviceConfigurationState
+        withSettingStates(List<MicrosoftGraphDeviceConfigurationSettingState> settingStates) {
         this.settingStates = settingStates;
         return this;
     }
 
     /**
      * Get the state property: complianceStatus.
-     *
+     * 
      * @return the state value.
      */
     public MicrosoftGraphComplianceStatus state() {
@@ -157,7 +153,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Set the state property: complianceStatus.
-     *
+     * 
      * @param state the state value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
@@ -168,7 +164,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Get the version property: The version of the policy.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -177,7 +173,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Set the version property: The version of the policy.
-     *
+     * 
      * @param version the version value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
@@ -188,17 +184,16 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Get the additionalProperties property: Device Configuration State for a given device.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Device Configuration State for a given device.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDeviceConfigurationState object itself.
      */
@@ -207,15 +202,9 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDeviceConfigurationState withId(String id) {
         super.withId(id);
@@ -224,7 +213,7 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -233,5 +222,76 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
         if (settingStates() != null) {
             settingStates().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("platformType", this.platformType == null ? null : this.platformType.toString());
+        jsonWriter.writeNumberField("settingCount", this.settingCount);
+        jsonWriter.writeArrayField("settingStates", this.settingStates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeNumberField("version", this.version);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDeviceConfigurationState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDeviceConfigurationState if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDeviceConfigurationState.
+     */
+    public static MicrosoftGraphDeviceConfigurationState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDeviceConfigurationState deserializedMicrosoftGraphDeviceConfigurationState
+                = new MicrosoftGraphDeviceConfigurationState();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceConfigurationState.withId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceConfigurationState.displayName = reader.getString();
+                } else if ("platformType".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceConfigurationState.platformType
+                        = MicrosoftGraphPolicyPlatformType.fromString(reader.getString());
+                } else if ("settingCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceConfigurationState.settingCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("settingStates".equals(fieldName)) {
+                    List<MicrosoftGraphDeviceConfigurationSettingState> settingStates
+                        = reader.readArray(reader1 -> MicrosoftGraphDeviceConfigurationSettingState.fromJson(reader1));
+                    deserializedMicrosoftGraphDeviceConfigurationState.settingStates = settingStates;
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceConfigurationState.state
+                        = MicrosoftGraphComplianceStatus.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceConfigurationState.version = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDeviceConfigurationState.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDeviceConfigurationState;
+        });
     }
 }

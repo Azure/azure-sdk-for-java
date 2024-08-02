@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class ManagementLocksDeleteSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_DeleteAtResourceGroupLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/
+     * ManagementLocks_DeleteAtResourceGroupLevel.json
      */
     /**
      * Sample code: Delete management lock at resource group level.

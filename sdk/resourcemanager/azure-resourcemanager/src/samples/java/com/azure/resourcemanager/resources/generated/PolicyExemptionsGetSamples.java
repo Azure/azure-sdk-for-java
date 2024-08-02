@@ -9,7 +9,9 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyExemptionsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/getPolicyExemptionWithResourceSelectors.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
+     * getPolicyExemptionWithResourceSelectors.json
      */
     /**
      * Sample code: Retrieve a policy exemption with resource selectors.
@@ -27,7 +29,9 @@ public final class PolicyExemptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/getPolicyExemption.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
+     * getPolicyExemption.json
      */
     /**
      * Sample code: Retrieve a policy exemption.

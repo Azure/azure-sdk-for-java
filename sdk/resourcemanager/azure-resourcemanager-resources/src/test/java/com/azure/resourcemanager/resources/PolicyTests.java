@@ -4,8 +4,11 @@
 package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.Region;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
@@ -15,7 +18,6 @@ import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +28,7 @@ import java.util.Map;
 public class PolicyTests extends ResourceManagementTest {
     private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
     private String policyRule2 = "{\"if\":{\"not\":{\"field\":\"name\",\"like\":\"[concat(parameters('prefix'),'*',parameters('suffix'))]\"}},\"then\":{\"effect\":\"deny\"}}";
+    private final SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     @Override
     protected void cleanUpResources() {
@@ -131,7 +134,7 @@ public class PolicyTests extends ResourceManagementTest {
                     .withoutPlan()
                     .withApiVersion("2020-12-01")
                     .withParentResourcePath("")
-                    .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
+                    .withProperties(serializerAdapter.deserialize("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}", Object.class, SerializerEncoding.JSON))
                     .create();
 
             PolicyAssignment assignment2 = resourceClient.policyAssignments().define(assignmentName2)

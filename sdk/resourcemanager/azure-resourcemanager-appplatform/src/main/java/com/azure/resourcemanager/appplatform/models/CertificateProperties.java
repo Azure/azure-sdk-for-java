@@ -5,78 +5,76 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Certificate resource payload.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CertificateProperties.class)
-@JsonTypeName("CertificateProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "KeyVaultCertificate", value = KeyVaultCertificateProperties.class),
-    @JsonSubTypes.Type(name = "ContentCertificate", value = ContentCertificateProperties.class) })
 @Immutable
-public class CertificateProperties {
+public class CertificateProperties implements JsonSerializable<CertificateProperties> {
+    /*
+     * The type of the certificate source.
+     */
+    private String type = "CertificateProperties";
+
     /*
      * The thumbprint of certificate.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * The issuer of certificate.
      */
-    @JsonProperty(value = "issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /*
      * The issue date of certificate.
      */
-    @JsonProperty(value = "issuedDate", access = JsonProperty.Access.WRITE_ONLY)
     private String issuedDate;
 
     /*
      * The expiration date of certificate.
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
     /*
      * The activate date of certificate.
      */
-    @JsonProperty(value = "activateDate", access = JsonProperty.Access.WRITE_ONLY)
     private String activateDate;
 
     /*
      * The subject name of certificate.
      */
-    @JsonProperty(value = "subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
 
     /*
      * The domain list of certificate.
      */
-    @JsonProperty(value = "dnsNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dnsNames;
 
     /*
      * Provisioning state of the Certificate
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of CertificateProperties class.
      */
     public CertificateProperties() {
+    }
+
+    /**
+     * Get the type property: The type of the certificate source.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -89,12 +87,34 @@ public class CertificateProperties {
     }
 
     /**
+     * Set the thumbprint property: The thumbprint of certificate.
+     * 
+     * @param thumbprint the thumbprint value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withThumbprint(String thumbprint) {
+        this.thumbprint = thumbprint;
+        return this;
+    }
+
+    /**
      * Get the issuer property: The issuer of certificate.
      * 
      * @return the issuer value.
      */
     public String issuer() {
         return this.issuer;
+    }
+
+    /**
+     * Set the issuer property: The issuer of certificate.
+     * 
+     * @param issuer the issuer value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withIssuer(String issuer) {
+        this.issuer = issuer;
+        return this;
     }
 
     /**
@@ -107,12 +127,34 @@ public class CertificateProperties {
     }
 
     /**
+     * Set the issuedDate property: The issue date of certificate.
+     * 
+     * @param issuedDate the issuedDate value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withIssuedDate(String issuedDate) {
+        this.issuedDate = issuedDate;
+        return this;
+    }
+
+    /**
      * Get the expirationDate property: The expiration date of certificate.
      * 
      * @return the expirationDate value.
      */
     public String expirationDate() {
         return this.expirationDate;
+    }
+
+    /**
+     * Set the expirationDate property: The expiration date of certificate.
+     * 
+     * @param expirationDate the expirationDate value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+        return this;
     }
 
     /**
@@ -125,12 +167,34 @@ public class CertificateProperties {
     }
 
     /**
+     * Set the activateDate property: The activate date of certificate.
+     * 
+     * @param activateDate the activateDate value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withActivateDate(String activateDate) {
+        this.activateDate = activateDate;
+        return this;
+    }
+
+    /**
      * Get the subjectName property: The subject name of certificate.
      * 
      * @return the subjectName value.
      */
     public String subjectName() {
         return this.subjectName;
+    }
+
+    /**
+     * Set the subjectName property: The subject name of certificate.
+     * 
+     * @param subjectName the subjectName value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+        return this;
     }
 
     /**
@@ -143,6 +207,17 @@ public class CertificateProperties {
     }
 
     /**
+     * Set the dnsNames property: The domain list of certificate.
+     * 
+     * @param dnsNames the dnsNames value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withDnsNames(List<String> dnsNames) {
+        this.dnsNames = dnsNames;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the Certificate.
      * 
      * @return the provisioningState value.
@@ -152,10 +227,102 @@ public class CertificateProperties {
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the Certificate.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the CertificateProperties object itself.
+     */
+    CertificateProperties withProvisioningState(CertificateResourceProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateProperties.
+     */
+    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("KeyVaultCertificate".equals(discriminatorValue)) {
+                    return KeyVaultCertificateProperties.fromJson(readerToUse.reset());
+                } else if ("ContentCertificate".equals(discriminatorValue)) {
+                    return ContentCertificateProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static CertificateProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateProperties deserializedCertificateProperties = new CertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCertificateProperties.type = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateProperties.thumbprint = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateProperties.issuer = reader.getString();
+                } else if ("issuedDate".equals(fieldName)) {
+                    deserializedCertificateProperties.issuedDate = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCertificateProperties.expirationDate = reader.getString();
+                } else if ("activateDate".equals(fieldName)) {
+                    deserializedCertificateProperties.activateDate = reader.getString();
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedCertificateProperties.subjectName = reader.getString();
+                } else if ("dnsNames".equals(fieldName)) {
+                    List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCertificateProperties.dnsNames = dnsNames;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCertificateProperties.provisioningState
+                        = CertificateResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateProperties;
+        });
     }
 }

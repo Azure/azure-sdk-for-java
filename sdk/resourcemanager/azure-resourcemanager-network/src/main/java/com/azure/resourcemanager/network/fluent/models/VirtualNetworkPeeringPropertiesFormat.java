@@ -6,38 +6,40 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the virtual network peering.
  */
 @Fluent
-public final class VirtualNetworkPeeringPropertiesFormat {
+public final class VirtualNetworkPeeringPropertiesFormat
+    implements JsonSerializable<VirtualNetworkPeeringPropertiesFormat> {
     /*
      * Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network
      * space.
      */
-    @JsonProperty(value = "allowVirtualNetworkAccess")
     private Boolean allowVirtualNetworkAccess;
 
     /*
      * Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote
      * virtual network.
      */
-    @JsonProperty(value = "allowForwardedTraffic")
     private Boolean allowForwardedTraffic;
 
     /*
      * If gateway links can be used in remote virtual networking to link to this virtual network.
      */
-    @JsonProperty(value = "allowGatewayTransit")
     private Boolean allowGatewayTransit;
 
     /*
@@ -45,7 +47,6 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one
      * peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
      */
-    @JsonProperty(value = "useRemoteGateways")
     private Boolean useRemoteGateways;
 
     /*
@@ -53,97 +54,81 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      */
-    @JsonProperty(value = "remoteVirtualNetwork")
     private SubResource remoteVirtualNetwork;
 
     /*
      * The local address space of the local virtual network that is peered.
      */
-    @JsonProperty(value = "localAddressSpace")
     private AddressSpace localAddressSpace;
 
     /*
      * The current local address space of the local virtual network that is peered.
      */
-    @JsonProperty(value = "localVirtualNetworkAddressSpace")
     private AddressSpace localVirtualNetworkAddressSpace;
 
     /*
      * The reference to the address space peered with the remote virtual network.
      */
-    @JsonProperty(value = "remoteAddressSpace")
     private AddressSpace remoteAddressSpace;
 
     /*
      * The reference to the current address space of the remote virtual network.
      */
-    @JsonProperty(value = "remoteVirtualNetworkAddressSpace")
     private AddressSpace remoteVirtualNetworkAddressSpace;
 
     /*
      * The reference to the remote virtual network's Bgp Communities.
      */
-    @JsonProperty(value = "remoteBgpCommunities")
     private VirtualNetworkBgpCommunities remoteBgpCommunities;
 
     /*
      * The reference to the remote virtual network's encryption
      */
-    @JsonProperty(value = "remoteVirtualNetworkEncryption", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkEncryption remoteVirtualNetworkEncryption;
 
     /*
      * The status of the virtual network peering.
      */
-    @JsonProperty(value = "peeringState")
     private VirtualNetworkPeeringState peeringState;
 
     /*
      * The peering sync status of the virtual network peering.
      */
-    @JsonProperty(value = "peeringSyncLevel")
     private VirtualNetworkPeeringLevel peeringSyncLevel;
 
     /*
      * The provisioning state of the virtual network peering resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * If we need to verify the provisioning state of the remote gateway.
      */
-    @JsonProperty(value = "doNotVerifyRemoteGateways")
     private Boolean doNotVerifyRemoteGateways;
 
     /*
      * The resourceGuid property of the Virtual Network peering resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * Whether complete virtual network address space is peered.
      */
-    @JsonProperty(value = "peerCompleteVnets")
     private Boolean peerCompleteVnets;
 
     /*
      * Whether only Ipv6 address space is peered for subnet peering.
      */
-    @JsonProperty(value = "enableOnlyIPv6Peering")
     private Boolean enableOnlyIPv6Peering;
 
     /*
      * List of local subnet names that are subnet peered with remote virtual network.
      */
-    @JsonProperty(value = "localSubnetNames")
     private List<String> localSubnetNames;
 
     /*
      * List of remote subnet names from remote virtual network that are subnet peered.
      */
-    @JsonProperty(value = "remoteSubnetNames")
     private List<String> remoteSubnetNames;
 
     /**
@@ -568,5 +553,117 @@ public final class VirtualNetworkPeeringPropertiesFormat {
         if (remoteVirtualNetworkEncryption() != null) {
             remoteVirtualNetworkEncryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowVirtualNetworkAccess", this.allowVirtualNetworkAccess);
+        jsonWriter.writeBooleanField("allowForwardedTraffic", this.allowForwardedTraffic);
+        jsonWriter.writeBooleanField("allowGatewayTransit", this.allowGatewayTransit);
+        jsonWriter.writeBooleanField("useRemoteGateways", this.useRemoteGateways);
+        jsonWriter.writeJsonField("remoteVirtualNetwork", this.remoteVirtualNetwork);
+        jsonWriter.writeJsonField("localAddressSpace", this.localAddressSpace);
+        jsonWriter.writeJsonField("localVirtualNetworkAddressSpace", this.localVirtualNetworkAddressSpace);
+        jsonWriter.writeJsonField("remoteAddressSpace", this.remoteAddressSpace);
+        jsonWriter.writeJsonField("remoteVirtualNetworkAddressSpace", this.remoteVirtualNetworkAddressSpace);
+        jsonWriter.writeJsonField("remoteBgpCommunities", this.remoteBgpCommunities);
+        jsonWriter.writeStringField("peeringState", this.peeringState == null ? null : this.peeringState.toString());
+        jsonWriter.writeStringField("peeringSyncLevel",
+            this.peeringSyncLevel == null ? null : this.peeringSyncLevel.toString());
+        jsonWriter.writeBooleanField("doNotVerifyRemoteGateways", this.doNotVerifyRemoteGateways);
+        jsonWriter.writeBooleanField("peerCompleteVnets", this.peerCompleteVnets);
+        jsonWriter.writeBooleanField("enableOnlyIPv6Peering", this.enableOnlyIPv6Peering);
+        jsonWriter.writeArrayField("localSubnetNames", this.localSubnetNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("remoteSubnetNames", this.remoteSubnetNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPeeringPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPeeringPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPeeringPropertiesFormat.
+     */
+    public static VirtualNetworkPeeringPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPeeringPropertiesFormat deserializedVirtualNetworkPeeringPropertiesFormat
+                = new VirtualNetworkPeeringPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowVirtualNetworkAccess".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.allowVirtualNetworkAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowForwardedTraffic".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.allowForwardedTraffic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowGatewayTransit".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.allowGatewayTransit
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useRemoteGateways".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.useRemoteGateways
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("remoteVirtualNetwork".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteVirtualNetwork
+                        = SubResource.fromJson(reader);
+                } else if ("localAddressSpace".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.localAddressSpace = AddressSpace.fromJson(reader);
+                } else if ("localVirtualNetworkAddressSpace".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.localVirtualNetworkAddressSpace
+                        = AddressSpace.fromJson(reader);
+                } else if ("remoteAddressSpace".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteAddressSpace
+                        = AddressSpace.fromJson(reader);
+                } else if ("remoteVirtualNetworkAddressSpace".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteVirtualNetworkAddressSpace
+                        = AddressSpace.fromJson(reader);
+                } else if ("remoteBgpCommunities".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteBgpCommunities
+                        = VirtualNetworkBgpCommunities.fromJson(reader);
+                } else if ("remoteVirtualNetworkEncryption".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteVirtualNetworkEncryption
+                        = VirtualNetworkEncryption.fromJson(reader);
+                } else if ("peeringState".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.peeringState
+                        = VirtualNetworkPeeringState.fromString(reader.getString());
+                } else if ("peeringSyncLevel".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.peeringSyncLevel
+                        = VirtualNetworkPeeringLevel.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("doNotVerifyRemoteGateways".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.doNotVerifyRemoteGateways
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("peerCompleteVnets".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.peerCompleteVnets
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableOnlyIPv6Peering".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.enableOnlyIPv6Peering
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("localSubnetNames".equals(fieldName)) {
+                    List<String> localSubnetNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkPeeringPropertiesFormat.localSubnetNames = localSubnetNames;
+                } else if ("remoteSubnetNames".equals(fieldName)) {
+                    List<String> remoteSubnetNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteSubnetNames = remoteSubnetNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPeeringPropertiesFormat;
+        });
     }
 }

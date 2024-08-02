@@ -731,10 +731,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
-        String id = generateRandomUuid();
-        if (!isPlaybackMode()) {
-            id = clientIdFromFile();
-        }
+        String id = azureCliSignedInUser().id();
 
         SqlServer sqlServer =
             sqlServerManager

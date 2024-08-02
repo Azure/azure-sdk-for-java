@@ -39,7 +39,6 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayUrlConfigurati
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +53,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Application Gateway.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createApplicationGateway(com.azure.resourcemanager.AzureResourceManager azure) {

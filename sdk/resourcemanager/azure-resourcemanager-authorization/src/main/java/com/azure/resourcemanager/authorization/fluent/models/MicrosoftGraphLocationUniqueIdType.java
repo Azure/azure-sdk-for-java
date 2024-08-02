@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** locationUniqueIdType. */
+/**
+ * locationUniqueIdType.
+ */
 public final class MicrosoftGraphLocationUniqueIdType extends ExpandableStringEnum<MicrosoftGraphLocationUniqueIdType> {
-    /** Static value unknown for MicrosoftGraphLocationUniqueIdType. */
+    /**
+     * Static value unknown for MicrosoftGraphLocationUniqueIdType.
+     */
     public static final MicrosoftGraphLocationUniqueIdType UNKNOWN = fromString("unknown");
 
-    /** Static value locationStore for MicrosoftGraphLocationUniqueIdType. */
+    /**
+     * Static value locationStore for MicrosoftGraphLocationUniqueIdType.
+     */
     public static final MicrosoftGraphLocationUniqueIdType LOCATION_STORE = fromString("locationStore");
 
-    /** Static value directory for MicrosoftGraphLocationUniqueIdType. */
+    /**
+     * Static value directory for MicrosoftGraphLocationUniqueIdType.
+     */
     public static final MicrosoftGraphLocationUniqueIdType DIRECTORY = fromString("directory");
 
-    /** Static value private for MicrosoftGraphLocationUniqueIdType. */
+    /**
+     * Static value private for MicrosoftGraphLocationUniqueIdType.
+     */
     public static final MicrosoftGraphLocationUniqueIdType PRIVATE = fromString("private");
 
-    /** Static value bing for MicrosoftGraphLocationUniqueIdType. */
+    /**
+     * Static value bing for MicrosoftGraphLocationUniqueIdType.
+     */
     public static final MicrosoftGraphLocationUniqueIdType BING = fromString("bing");
 
     /**
      * Creates a new instance of MicrosoftGraphLocationUniqueIdType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class MicrosoftGraphLocationUniqueIdType extends ExpandableStringEn
 
     /**
      * Creates or finds a MicrosoftGraphLocationUniqueIdType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphLocationUniqueIdType.
      */
-    @JsonCreator
     public static MicrosoftGraphLocationUniqueIdType fromString(String name) {
         return fromString(name, MicrosoftGraphLocationUniqueIdType.class);
     }
 
     /**
      * Gets known MicrosoftGraphLocationUniqueIdType values.
-     *
+     * 
      * @return known MicrosoftGraphLocationUniqueIdType values.
      */
     public static Collection<MicrosoftGraphLocationUniqueIdType> values() {

@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * device
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -25,20 +27,17 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /*
      * true if the account is enabled; otherwise, false. Required.
      */
-    @JsonProperty(value = "accountEnabled")
     private Boolean accountEnabled;
 
     /*
      * For internal use only. Not nullable.
      */
-    @JsonProperty(value = "alternativeSecurityIds")
     private List<MicrosoftGraphAlternativeSecurityId> alternativeSecurityIds;
 
     /*
      * The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
      */
-    @JsonProperty(value = "approximateLastSignInDateTime")
     private OffsetDateTime approximateLastSignInDateTime;
 
     /*
@@ -46,51 +45,43 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
      * like this: '2014-01-01T00:00:00Z'. Read-only.
      */
-    @JsonProperty(value = "complianceExpirationDateTime")
     private OffsetDateTime complianceExpirationDateTime;
 
     /*
      * Unique identifier set by Azure Device Registration Service at the time of registration.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
      * For internal use only. Set to null.
      */
-    @JsonProperty(value = "deviceMetadata")
     private String deviceMetadata;
 
     /*
      * For internal use only.
      */
-    @JsonProperty(value = "deviceVersion")
     private Integer deviceVersion;
 
     /*
      * The display name for the device. Required.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only. This can
      * only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices.
      */
-    @JsonProperty(value = "isCompliant")
     private Boolean isCompliant;
 
     /*
-     * true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be
-     * updated by Intune for any device OS type or by an approved MDM app for Windows OS devices.
+     * true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be updated
+     * by Intune for any device OS type or by an approved MDM app for Windows OS devices.
      */
-    @JsonProperty(value = "isManaged")
     private Boolean isManaged;
 
     /*
      * Application identifier used to register device into MDM. Read-only. Supports $filter.
      */
-    @JsonProperty(value = "mdmAppId")
     private String mdmAppId;
 
     /*
@@ -98,7 +89,6 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014
      * would look like this: '2014-01-01T00:00:00Z' Read-only.
      */
-    @JsonProperty(value = "onPremisesLastSyncDateTime")
     private OffsetDateTime onPremisesLastSyncDateTime;
 
     /*
@@ -106,37 +96,31 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * on-premises directory but is no longer synced; null if this object has never been synced from an on-premises
      * directory (default). Read-only.
      */
-    @JsonProperty(value = "onPremisesSyncEnabled")
     private Boolean onPremisesSyncEnabled;
 
     /*
      * The type of operating system on the device. Required.
      */
-    @JsonProperty(value = "operatingSystem")
     private String operatingSystem;
 
     /*
      * The version of the operating system on the device. Required.
      */
-    @JsonProperty(value = "operatingSystemVersion")
     private String operatingSystemVersion;
 
     /*
      * For internal use only. Not nullable.
      */
-    @JsonProperty(value = "physicalIds")
     private List<String> physicalIds;
 
     /*
      * The profile type of the device. Possible values:RegisteredDevice (default)SecureVMPrinterSharedIoT
      */
-    @JsonProperty(value = "profileType")
     private String profileType;
 
     /*
      * List of labels applied to the device by the system.
      */
-    @JsonProperty(value = "systemLabels")
     private List<String> systemLabels;
 
     /*
@@ -144,55 +128,50 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined devices joined to Azure AD. For
      * more details, see Introduction to device management in Azure Active Directory
      */
-    @JsonProperty(value = "trustType")
     private String trustType;
 
     /*
      * Groups that this group is a member of. HTTP Methods: GET (supported for all groups). Read-only. Nullable.
      */
-    @JsonProperty(value = "memberOf")
     private List<MicrosoftGraphDirectoryObjectInner> memberOf;
 
     /*
      * The user that cloud joined the device or registered their personal device. The registered owner is set at the
      * time of registration. Currently, there can be only one owner. Read-only. Nullable.
      */
-    @JsonProperty(value = "registeredOwners")
     private List<MicrosoftGraphDirectoryObjectInner> registeredOwners;
 
     /*
      * Collection of registered users of the device. For cloud joined devices and registered personal devices,
-     * registered users are set to the same value as registered owners at the time of registration. Read-only.
-     * Nullable.
+     * registered users are set to the same value as registered owners at the time of registration. Read-only. Nullable.
      */
-    @JsonProperty(value = "registeredUsers")
     private List<MicrosoftGraphDirectoryObjectInner> registeredUsers;
 
     /*
      * The transitiveMemberOf property.
      */
-    @JsonProperty(value = "transitiveMemberOf")
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf;
 
     /*
      * The collection of open extensions defined for the device. Read-only. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDevice class. */
+    /**
+     * Creates an instance of MicrosoftGraphDevice class.
+     */
     public MicrosoftGraphDevice() {
     }
 
     /**
      * Get the accountEnabled property: true if the account is enabled; otherwise, false. Required.
-     *
+     * 
      * @return the accountEnabled value.
      */
     public Boolean accountEnabled() {
@@ -201,7 +180,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the accountEnabled property: true if the account is enabled; otherwise, false. Required.
-     *
+     * 
      * @param accountEnabled the accountEnabled value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -212,7 +191,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the alternativeSecurityIds property: For internal use only. Not nullable.
-     *
+     * 
      * @return the alternativeSecurityIds value.
      */
     public List<MicrosoftGraphAlternativeSecurityId> alternativeSecurityIds() {
@@ -221,12 +200,12 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the alternativeSecurityIds property: For internal use only. Not nullable.
-     *
+     * 
      * @param alternativeSecurityIds the alternativeSecurityIds value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
-    public MicrosoftGraphDevice withAlternativeSecurityIds(
-        List<MicrosoftGraphAlternativeSecurityId> alternativeSecurityIds) {
+    public MicrosoftGraphDevice
+        withAlternativeSecurityIds(List<MicrosoftGraphAlternativeSecurityId> alternativeSecurityIds) {
         this.alternativeSecurityIds = alternativeSecurityIds;
         return this;
     }
@@ -235,7 +214,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the approximateLastSignInDateTime property: The timestamp type represents date and time information using ISO
      * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Read-only.
-     *
+     * 
      * @return the approximateLastSignInDateTime value.
      */
     public OffsetDateTime approximateLastSignInDateTime() {
@@ -246,7 +225,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the approximateLastSignInDateTime property: The timestamp type represents date and time information using ISO
      * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Read-only.
-     *
+     * 
      * @param approximateLastSignInDateTime the approximateLastSignInDateTime value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -259,7 +238,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the complianceExpirationDateTime property: The timestamp when the device is no longer deemed compliant. The
      * timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example,
      * midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
-     *
+     * 
      * @return the complianceExpirationDateTime value.
      */
     public OffsetDateTime complianceExpirationDateTime() {
@@ -270,7 +249,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the complianceExpirationDateTime property: The timestamp when the device is no longer deemed compliant. The
      * timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example,
      * midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
-     *
+     * 
      * @param complianceExpirationDateTime the complianceExpirationDateTime value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -282,7 +261,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Get the deviceId property: Unique identifier set by Azure Device Registration Service at the time of
      * registration.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -292,7 +271,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Set the deviceId property: Unique identifier set by Azure Device Registration Service at the time of
      * registration.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -303,7 +282,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the deviceMetadata property: For internal use only. Set to null.
-     *
+     * 
      * @return the deviceMetadata value.
      */
     public String deviceMetadata() {
@@ -312,7 +291,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the deviceMetadata property: For internal use only. Set to null.
-     *
+     * 
      * @param deviceMetadata the deviceMetadata value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -323,7 +302,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the deviceVersion property: For internal use only.
-     *
+     * 
      * @return the deviceVersion value.
      */
     public Integer deviceVersion() {
@@ -332,7 +311,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the deviceVersion property: For internal use only.
-     *
+     * 
      * @param deviceVersion the deviceVersion value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -343,7 +322,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the displayName property: The display name for the device. Required.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -352,7 +331,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the displayName property: The display name for the device. Required.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -365,7 +344,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the isCompliant property: true if the device complies with Mobile Device Management (MDM) policies;
      * otherwise, false. Read-only. This can only be updated by Intune for any device OS type or by an approved MDM app
      * for Windows OS devices.
-     *
+     * 
      * @return the isCompliant value.
      */
     public Boolean isCompliant() {
@@ -376,7 +355,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the isCompliant property: true if the device complies with Mobile Device Management (MDM) policies;
      * otherwise, false. Read-only. This can only be updated by Intune for any device OS type or by an approved MDM app
      * for Windows OS devices.
-     *
+     * 
      * @param isCompliant the isCompliant value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -389,7 +368,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the isManaged property: true if the device is managed by a Mobile Device Management (MDM) app; otherwise,
      * false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS
      * devices.
-     *
+     * 
      * @return the isManaged value.
      */
     public Boolean isManaged() {
@@ -400,7 +379,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the isManaged property: true if the device is managed by a Mobile Device Management (MDM) app; otherwise,
      * false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS
      * devices.
-     *
+     * 
      * @param isManaged the isManaged value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -411,7 +390,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the mdmAppId property: Application identifier used to register device into MDM. Read-only. Supports $filter.
-     *
+     * 
      * @return the mdmAppId value.
      */
     public String mdmAppId() {
@@ -420,7 +399,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the mdmAppId property: Application identifier used to register device into MDM. Read-only. Supports $filter.
-     *
+     * 
      * @param mdmAppId the mdmAppId value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -433,7 +412,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the onPremisesLastSyncDateTime property: The last time at which the object was synced with the on-premises
      * directory. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC
      * time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z' Read-only.
-     *
+     * 
      * @return the onPremisesLastSyncDateTime value.
      */
     public OffsetDateTime onPremisesLastSyncDateTime() {
@@ -444,7 +423,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the onPremisesLastSyncDateTime property: The last time at which the object was synced with the on-premises
      * directory. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC
      * time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z' Read-only.
-     *
+     * 
      * @param onPremisesLastSyncDateTime the onPremisesLastSyncDateTime value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -457,7 +436,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the onPremisesSyncEnabled property: true if this object is synced from an on-premises directory; false if
      * this object was originally synced from an on-premises directory but is no longer synced; null if this object has
      * never been synced from an on-premises directory (default). Read-only.
-     *
+     * 
      * @return the onPremisesSyncEnabled value.
      */
     public Boolean onPremisesSyncEnabled() {
@@ -468,7 +447,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the onPremisesSyncEnabled property: true if this object is synced from an on-premises directory; false if
      * this object was originally synced from an on-premises directory but is no longer synced; null if this object has
      * never been synced from an on-premises directory (default). Read-only.
-     *
+     * 
      * @param onPremisesSyncEnabled the onPremisesSyncEnabled value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -479,7 +458,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the operatingSystem property: The type of operating system on the device. Required.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
@@ -488,7 +467,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the operatingSystem property: The type of operating system on the device. Required.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -499,7 +478,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the operatingSystemVersion property: The version of the operating system on the device. Required.
-     *
+     * 
      * @return the operatingSystemVersion value.
      */
     public String operatingSystemVersion() {
@@ -508,7 +487,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the operatingSystemVersion property: The version of the operating system on the device. Required.
-     *
+     * 
      * @param operatingSystemVersion the operatingSystemVersion value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -519,7 +498,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the physicalIds property: For internal use only. Not nullable.
-     *
+     * 
      * @return the physicalIds value.
      */
     public List<String> physicalIds() {
@@ -528,7 +507,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the physicalIds property: For internal use only. Not nullable.
-     *
+     * 
      * @param physicalIds the physicalIds value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -540,7 +519,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Get the profileType property: The profile type of the device. Possible values:RegisteredDevice
      * (default)SecureVMPrinterSharedIoT.
-     *
+     * 
      * @return the profileType value.
      */
     public String profileType() {
@@ -550,7 +529,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Set the profileType property: The profile type of the device. Possible values:RegisteredDevice
      * (default)SecureVMPrinterSharedIoT.
-     *
+     * 
      * @param profileType the profileType value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -561,7 +540,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the systemLabels property: List of labels applied to the device by the system.
-     *
+     * 
      * @return the systemLabels value.
      */
     public List<String> systemLabels() {
@@ -570,7 +549,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the systemLabels property: List of labels applied to the device by the system.
-     *
+     * 
      * @param systemLabels the systemLabels value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -583,7 +562,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the trustType property: Type of trust for the joined device. Read-only. Possible values: Workplace -
      * indicates bring your own personal devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined
      * devices joined to Azure AD. For more details, see Introduction to device management in Azure Active Directory.
-     *
+     * 
      * @return the trustType value.
      */
     public String trustType() {
@@ -594,7 +573,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the trustType property: Type of trust for the joined device. Read-only. Possible values: Workplace -
      * indicates bring your own personal devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined
      * devices joined to Azure AD. For more details, see Introduction to device management in Azure Active Directory.
-     *
+     * 
      * @param trustType the trustType value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -606,7 +585,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Get the memberOf property: Groups that this group is a member of. HTTP Methods: GET (supported for all groups).
      * Read-only. Nullable.
-     *
+     * 
      * @return the memberOf value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> memberOf() {
@@ -616,7 +595,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Set the memberOf property: Groups that this group is a member of. HTTP Methods: GET (supported for all groups).
      * Read-only. Nullable.
-     *
+     * 
      * @param memberOf the memberOf value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -628,7 +607,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Get the registeredOwners property: The user that cloud joined the device or registered their personal device. The
      * registered owner is set at the time of registration. Currently, there can be only one owner. Read-only. Nullable.
-     *
+     * 
      * @return the registeredOwners value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> registeredOwners() {
@@ -638,7 +617,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Set the registeredOwners property: The user that cloud joined the device or registered their personal device. The
      * registered owner is set at the time of registration. Currently, there can be only one owner. Read-only. Nullable.
-     *
+     * 
      * @param registeredOwners the registeredOwners value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -651,7 +630,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Get the registeredUsers property: Collection of registered users of the device. For cloud joined devices and
      * registered personal devices, registered users are set to the same value as registered owners at the time of
      * registration. Read-only. Nullable.
-     *
+     * 
      * @return the registeredUsers value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> registeredUsers() {
@@ -662,7 +641,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      * Set the registeredUsers property: Collection of registered users of the device. For cloud joined devices and
      * registered personal devices, registered users are set to the same value as registered owners at the time of
      * registration. Read-only. Nullable.
-     *
+     * 
      * @param registeredUsers the registeredUsers value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -673,7 +652,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the transitiveMemberOf property: The transitiveMemberOf property.
-     *
+     * 
      * @return the transitiveMemberOf value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf() {
@@ -682,7 +661,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the transitiveMemberOf property: The transitiveMemberOf property.
-     *
+     * 
      * @param transitiveMemberOf the transitiveMemberOf value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -693,7 +672,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Get the extensions property: The collection of open extensions defined for the device. Read-only. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -702,7 +681,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Set the extensions property: The collection of open extensions defined for the device. Read-only. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -714,10 +693,9 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -725,7 +703,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDevice object itself.
      */
@@ -734,22 +712,18 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDevice withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDevice withId(String id) {
         super.withId(id);
@@ -758,7 +732,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -782,5 +756,159 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeBooleanField("accountEnabled", this.accountEnabled);
+        jsonWriter.writeArrayField("alternativeSecurityIds", this.alternativeSecurityIds,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("approximateLastSignInDateTime",
+            this.approximateLastSignInDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.approximateLastSignInDateTime));
+        jsonWriter.writeStringField("complianceExpirationDateTime",
+            this.complianceExpirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.complianceExpirationDateTime));
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("deviceMetadata", this.deviceMetadata);
+        jsonWriter.writeNumberField("deviceVersion", this.deviceVersion);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isCompliant", this.isCompliant);
+        jsonWriter.writeBooleanField("isManaged", this.isManaged);
+        jsonWriter.writeStringField("mdmAppId", this.mdmAppId);
+        jsonWriter.writeStringField("onPremisesLastSyncDateTime",
+            this.onPremisesLastSyncDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.onPremisesLastSyncDateTime));
+        jsonWriter.writeBooleanField("onPremisesSyncEnabled", this.onPremisesSyncEnabled);
+        jsonWriter.writeStringField("operatingSystem", this.operatingSystem);
+        jsonWriter.writeStringField("operatingSystemVersion", this.operatingSystemVersion);
+        jsonWriter.writeArrayField("physicalIds", this.physicalIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("profileType", this.profileType);
+        jsonWriter.writeArrayField("systemLabels", this.systemLabels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("trustType", this.trustType);
+        jsonWriter.writeArrayField("memberOf", this.memberOf, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registeredOwners", this.registeredOwners,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registeredUsers", this.registeredUsers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("transitiveMemberOf", this.transitiveMemberOf,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDevice from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDevice if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDevice.
+     */
+    public static MicrosoftGraphDevice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDevice deserializedMicrosoftGraphDevice = new MicrosoftGraphDevice();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("accountEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.accountEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alternativeSecurityIds".equals(fieldName)) {
+                    List<MicrosoftGraphAlternativeSecurityId> alternativeSecurityIds
+                        = reader.readArray(reader1 -> MicrosoftGraphAlternativeSecurityId.fromJson(reader1));
+                    deserializedMicrosoftGraphDevice.alternativeSecurityIds = alternativeSecurityIds;
+                } else if ("approximateLastSignInDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.approximateLastSignInDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("complianceExpirationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.complianceExpirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deviceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.deviceId = reader.getString();
+                } else if ("deviceMetadata".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.deviceMetadata = reader.getString();
+                } else if ("deviceVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.deviceVersion = reader.getNullable(JsonReader::getInt);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.displayName = reader.getString();
+                } else if ("isCompliant".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.isCompliant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isManaged".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.isManaged = reader.getNullable(JsonReader::getBoolean);
+                } else if ("mdmAppId".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.mdmAppId = reader.getString();
+                } else if ("onPremisesLastSyncDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.onPremisesLastSyncDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("onPremisesSyncEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.onPremisesSyncEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("operatingSystem".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.operatingSystem = reader.getString();
+                } else if ("operatingSystemVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.operatingSystemVersion = reader.getString();
+                } else if ("physicalIds".equals(fieldName)) {
+                    List<String> physicalIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphDevice.physicalIds = physicalIds;
+                } else if ("profileType".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.profileType = reader.getString();
+                } else if ("systemLabels".equals(fieldName)) {
+                    List<String> systemLabels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphDevice.systemLabels = systemLabels;
+                } else if ("trustType".equals(fieldName)) {
+                    deserializedMicrosoftGraphDevice.trustType = reader.getString();
+                } else if ("memberOf".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> memberOf
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDevice.memberOf = memberOf;
+                } else if ("registeredOwners".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> registeredOwners
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDevice.registeredOwners = registeredOwners;
+                } else if ("registeredUsers".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> registeredUsers
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDevice.registeredUsers = registeredUsers;
+                } else if ("transitiveMemberOf".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDevice.transitiveMemberOf = transitiveMemberOf;
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphDevice.extensions = extensions;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDevice.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDevice;
+        });
     }
 }

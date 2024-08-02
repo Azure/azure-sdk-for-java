@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class DnsEndpointType extends ExpandableStringEnum<DnsEndpointType>
      * @param name a name to look for.
      * @return the corresponding DnsEndpointType.
      */
-    @JsonCreator
     public static DnsEndpointType fromString(String name) {
         return fromString(name, DnsEndpointType.class);
     }

@@ -5,88 +5,83 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** video. */
+/**
+ * video.
+ */
 @Fluent
-public final class MicrosoftGraphVideo {
+public final class MicrosoftGraphVideo implements JsonSerializable<MicrosoftGraphVideo> {
     /*
      * Number of audio bits per sample.
      */
-    @JsonProperty(value = "audioBitsPerSample")
     private Integer audioBitsPerSample;
 
     /*
      * Number of audio channels.
      */
-    @JsonProperty(value = "audioChannels")
     private Integer audioChannels;
 
     /*
      * Name of the audio format (AAC, MP3, etc.).
      */
-    @JsonProperty(value = "audioFormat")
     private String audioFormat;
 
     /*
      * Number of audio samples per second.
      */
-    @JsonProperty(value = "audioSamplesPerSecond")
     private Integer audioSamplesPerSecond;
 
     /*
      * Bit rate of the video in bits per second.
      */
-    @JsonProperty(value = "bitrate")
     private Integer bitrate;
 
     /*
      * Duration of the file in milliseconds.
      */
-    @JsonProperty(value = "duration")
     private Long duration;
 
     /*
      * 'Four character code' name of the video format.
      */
-    @JsonProperty(value = "fourCC")
     private String fourCC;
 
     /*
      * Frame rate of the video.
      */
-    @JsonProperty(value = "frameRate")
     private Double frameRate;
 
     /*
      * Height of the video, in pixels.
      */
-    @JsonProperty(value = "height")
     private Integer height;
 
     /*
      * Width of the video, in pixels.
      */
-    @JsonProperty(value = "width")
     private Integer width;
 
     /*
      * video
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphVideo class. */
+    /**
+     * Creates an instance of MicrosoftGraphVideo class.
+     */
     public MicrosoftGraphVideo() {
     }
 
     /**
      * Get the audioBitsPerSample property: Number of audio bits per sample.
-     *
+     * 
      * @return the audioBitsPerSample value.
      */
     public Integer audioBitsPerSample() {
@@ -95,7 +90,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the audioBitsPerSample property: Number of audio bits per sample.
-     *
+     * 
      * @param audioBitsPerSample the audioBitsPerSample value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -106,7 +101,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the audioChannels property: Number of audio channels.
-     *
+     * 
      * @return the audioChannels value.
      */
     public Integer audioChannels() {
@@ -115,7 +110,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the audioChannels property: Number of audio channels.
-     *
+     * 
      * @param audioChannels the audioChannels value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -126,7 +121,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the audioFormat property: Name of the audio format (AAC, MP3, etc.).
-     *
+     * 
      * @return the audioFormat value.
      */
     public String audioFormat() {
@@ -135,7 +130,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the audioFormat property: Name of the audio format (AAC, MP3, etc.).
-     *
+     * 
      * @param audioFormat the audioFormat value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -146,7 +141,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the audioSamplesPerSecond property: Number of audio samples per second.
-     *
+     * 
      * @return the audioSamplesPerSecond value.
      */
     public Integer audioSamplesPerSecond() {
@@ -155,7 +150,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the audioSamplesPerSecond property: Number of audio samples per second.
-     *
+     * 
      * @param audioSamplesPerSecond the audioSamplesPerSecond value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -166,7 +161,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the bitrate property: Bit rate of the video in bits per second.
-     *
+     * 
      * @return the bitrate value.
      */
     public Integer bitrate() {
@@ -175,7 +170,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the bitrate property: Bit rate of the video in bits per second.
-     *
+     * 
      * @param bitrate the bitrate value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -186,7 +181,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the duration property: Duration of the file in milliseconds.
-     *
+     * 
      * @return the duration value.
      */
     public Long duration() {
@@ -195,7 +190,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the duration property: Duration of the file in milliseconds.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -206,7 +201,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the fourCC property: 'Four character code' name of the video format.
-     *
+     * 
      * @return the fourCC value.
      */
     public String fourCC() {
@@ -215,7 +210,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the fourCC property: 'Four character code' name of the video format.
-     *
+     * 
      * @param fourCC the fourCC value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -226,7 +221,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the frameRate property: Frame rate of the video.
-     *
+     * 
      * @return the frameRate value.
      */
     public Double frameRate() {
@@ -235,7 +230,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the frameRate property: Frame rate of the video.
-     *
+     * 
      * @param frameRate the frameRate value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -246,7 +241,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the height property: Height of the video, in pixels.
-     *
+     * 
      * @return the height value.
      */
     public Integer height() {
@@ -255,7 +250,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the height property: Height of the video, in pixels.
-     *
+     * 
      * @param height the height value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -266,7 +261,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the width property: Width of the video, in pixels.
-     *
+     * 
      * @return the width value.
      */
     public Integer width() {
@@ -275,7 +270,7 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Set the width property: Width of the video, in pixels.
-     *
+     * 
      * @param width the width value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -286,17 +281,16 @@ public final class MicrosoftGraphVideo {
 
     /**
      * Get the additionalProperties property: video.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: video.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphVideo object itself.
      */
@@ -305,19 +299,85 @@ public final class MicrosoftGraphVideo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("audioBitsPerSample", this.audioBitsPerSample);
+        jsonWriter.writeNumberField("audioChannels", this.audioChannels);
+        jsonWriter.writeStringField("audioFormat", this.audioFormat);
+        jsonWriter.writeNumberField("audioSamplesPerSecond", this.audioSamplesPerSecond);
+        jsonWriter.writeNumberField("bitrate", this.bitrate);
+        jsonWriter.writeNumberField("duration", this.duration);
+        jsonWriter.writeStringField("fourCC", this.fourCC);
+        jsonWriter.writeNumberField("frameRate", this.frameRate);
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeNumberField("width", this.width);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphVideo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphVideo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphVideo.
+     */
+    public static MicrosoftGraphVideo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphVideo deserializedMicrosoftGraphVideo = new MicrosoftGraphVideo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("audioBitsPerSample".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.audioBitsPerSample = reader.getNullable(JsonReader::getInt);
+                } else if ("audioChannels".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.audioChannels = reader.getNullable(JsonReader::getInt);
+                } else if ("audioFormat".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.audioFormat = reader.getString();
+                } else if ("audioSamplesPerSecond".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.audioSamplesPerSecond = reader.getNullable(JsonReader::getInt);
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.bitrate = reader.getNullable(JsonReader::getInt);
+                } else if ("duration".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.duration = reader.getNullable(JsonReader::getLong);
+                } else if ("fourCC".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.fourCC = reader.getString();
+                } else if ("frameRate".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.frameRate = reader.getNullable(JsonReader::getDouble);
+                } else if ("height".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.height = reader.getNullable(JsonReader::getInt);
+                } else if ("width".equals(fieldName)) {
+                    deserializedMicrosoftGraphVideo.width = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphVideo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphVideo;
+        });
     }
 }

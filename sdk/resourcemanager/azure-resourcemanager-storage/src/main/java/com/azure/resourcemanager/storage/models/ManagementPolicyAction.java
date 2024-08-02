@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Actions are applied to the filtered blobs when the execution condition is met.
  */
 @Fluent
-public final class ManagementPolicyAction {
+public final class ManagementPolicyAction implements JsonSerializable<ManagementPolicyAction> {
     /*
      * The management policy action for base blob
      */
-    @JsonProperty(value = "baseBlob")
     private ManagementPolicyBaseBlob baseBlob;
 
     /*
      * The management policy action for snapshot
      */
-    @JsonProperty(value = "snapshot")
     private ManagementPolicySnapShot snapshot;
 
     /*
      * The management policy action for version
      */
-    @JsonProperty(value = "version")
     private ManagementPolicyVersion version;
 
     /**
@@ -111,5 +112,47 @@ public final class ManagementPolicyAction {
         if (version() != null) {
             version().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("baseBlob", this.baseBlob);
+        jsonWriter.writeJsonField("snapshot", this.snapshot);
+        jsonWriter.writeJsonField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementPolicyAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementPolicyAction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementPolicyAction.
+     */
+    public static ManagementPolicyAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementPolicyAction deserializedManagementPolicyAction = new ManagementPolicyAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseBlob".equals(fieldName)) {
+                    deserializedManagementPolicyAction.baseBlob = ManagementPolicyBaseBlob.fromJson(reader);
+                } else if ("snapshot".equals(fieldName)) {
+                    deserializedManagementPolicyAction.snapshot = ManagementPolicySnapShot.fromJson(reader);
+                } else if ("version".equals(fieldName)) {
+                    deserializedManagementPolicyAction.version = ManagementPolicyVersion.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementPolicyAction;
+        });
     }
 }

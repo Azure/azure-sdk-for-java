@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** folder. */
+/**
+ * folder.
+ */
 @Fluent
-public final class MicrosoftGraphFolder {
+public final class MicrosoftGraphFolder implements JsonSerializable<MicrosoftGraphFolder> {
     /*
      * Number of children contained immediately within this container.
      */
-    @JsonProperty(value = "childCount")
     private Integer childCount;
 
     /*
      * folderView
      */
-    @JsonProperty(value = "view")
     private MicrosoftGraphFolderView view;
 
     /*
      * folder
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphFolder class. */
+    /**
+     * Creates an instance of MicrosoftGraphFolder class.
+     */
     public MicrosoftGraphFolder() {
     }
 
     /**
      * Get the childCount property: Number of children contained immediately within this container.
-     *
+     * 
      * @return the childCount value.
      */
     public Integer childCount() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphFolder {
 
     /**
      * Set the childCount property: Number of children contained immediately within this container.
-     *
+     * 
      * @param childCount the childCount value to set.
      * @return the MicrosoftGraphFolder object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphFolder {
 
     /**
      * Get the view property: folderView.
-     *
+     * 
      * @return the view value.
      */
     public MicrosoftGraphFolderView view() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphFolder {
 
     /**
      * Set the view property: folderView.
-     *
+     * 
      * @param view the view value to set.
      * @return the MicrosoftGraphFolder object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphFolder {
 
     /**
      * Get the additionalProperties property: folder.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: folder.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphFolder object itself.
      */
@@ -97,22 +99,64 @@ public final class MicrosoftGraphFolder {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (view() != null) {
             view().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("childCount", this.childCount);
+        jsonWriter.writeJsonField("view", this.view);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphFolder from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphFolder if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphFolder.
+     */
+    public static MicrosoftGraphFolder fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphFolder deserializedMicrosoftGraphFolder = new MicrosoftGraphFolder();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("childCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphFolder.childCount = reader.getNullable(JsonReader::getInt);
+                } else if ("view".equals(fieldName)) {
+                    deserializedMicrosoftGraphFolder.view = MicrosoftGraphFolderView.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphFolder.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphFolder;
+        });
     }
 }

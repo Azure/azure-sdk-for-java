@@ -6,64 +6,58 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationType;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Properties of the IpAllocation.
  */
 @Fluent
-public final class IpAllocationPropertiesFormat {
+public final class IpAllocationPropertiesFormat implements JsonSerializable<IpAllocationPropertiesFormat> {
     /*
      * The Subnet that using the prefix of this IpAllocation resource.
      */
-    @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource subnet;
 
     /*
      * The VirtualNetwork that using the prefix of this IpAllocation resource.
      */
-    @JsonProperty(value = "virtualNetwork", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource virtualNetwork;
 
     /*
      * The type for the IpAllocation.
      */
-    @JsonProperty(value = "type")
     private IpAllocationType type;
 
     /*
      * The address prefix for the IpAllocation.
      */
-    @JsonProperty(value = "prefix")
     private String prefix;
 
     /*
      * The address prefix length for the IpAllocation.
      */
-    @JsonProperty(value = "prefixLength")
     private Integer prefixLength;
 
     /*
      * The address prefix Type for the IpAllocation.
      */
-    @JsonProperty(value = "prefixType")
     private IpVersion prefixType;
 
     /*
      * The IPAM allocation ID.
      */
-    @JsonProperty(value = "ipamAllocationId")
     private String ipamAllocationId;
 
     /*
      * IpAllocation tags.
      */
-    @JsonProperty(value = "allocationTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> allocationTags;
 
     /**
@@ -216,5 +210,62 @@ public final class IpAllocationPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeNumberField("prefixLength", this.prefixLength);
+        jsonWriter.writeStringField("prefixType", this.prefixType == null ? null : this.prefixType.toString());
+        jsonWriter.writeStringField("ipamAllocationId", this.ipamAllocationId);
+        jsonWriter.writeMapField("allocationTags", this.allocationTags,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpAllocationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpAllocationPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpAllocationPropertiesFormat.
+     */
+    public static IpAllocationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpAllocationPropertiesFormat deserializedIpAllocationPropertiesFormat = new IpAllocationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.subnet = SubResource.fromJson(reader);
+                } else if ("virtualNetwork".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.virtualNetwork = SubResource.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.type = IpAllocationType.fromString(reader.getString());
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.prefix = reader.getString();
+                } else if ("prefixLength".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.prefixLength = reader.getNullable(JsonReader::getInt);
+                } else if ("prefixType".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.prefixType = IpVersion.fromString(reader.getString());
+                } else if ("ipamAllocationId".equals(fieldName)) {
+                    deserializedIpAllocationPropertiesFormat.ipamAllocationId = reader.getString();
+                } else if ("allocationTags".equals(fieldName)) {
+                    Map<String, String> allocationTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIpAllocationPropertiesFormat.allocationTags = allocationTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpAllocationPropertiesFormat;
+        });
     }
 }

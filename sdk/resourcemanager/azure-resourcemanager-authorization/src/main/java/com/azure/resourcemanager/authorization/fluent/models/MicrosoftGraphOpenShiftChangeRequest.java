@@ -5,35 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** openShiftChangeRequest. */
+/**
+ * openShiftChangeRequest.
+ */
 @Fluent
 public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphScheduleChangeRequest {
     /*
      * ID for the open shift.
      */
-    @JsonProperty(value = "openShiftId")
     private String openShiftId;
 
     /*
      * openShiftChangeRequest
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOpenShiftChangeRequest class. */
+    /**
+     * Creates an instance of MicrosoftGraphOpenShiftChangeRequest class.
+     */
     public MicrosoftGraphOpenShiftChangeRequest() {
     }
 
     /**
      * Get the openShiftId property: ID for the open shift.
-     *
+     * 
      * @return the openShiftId value.
      */
     public String openShiftId() {
@@ -42,7 +47,7 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
 
     /**
      * Set the openShiftId property: ID for the open shift.
-     *
+     * 
      * @param openShiftId the openShiftId value to set.
      * @return the MicrosoftGraphOpenShiftChangeRequest object itself.
      */
@@ -53,17 +58,16 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
 
     /**
      * Get the additionalProperties property: openShiftChangeRequest.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: openShiftChangeRequest.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOpenShiftChangeRequest object itself.
      */
@@ -72,92 +76,108 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withAssignedTo(MicrosoftGraphScheduleChangeRequestActor assignedTo) {
         super.withAssignedTo(assignedTo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withManagerActionDateTime(OffsetDateTime managerActionDateTime) {
         super.withManagerActionDateTime(managerActionDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withManagerActionMessage(String managerActionMessage) {
         super.withManagerActionMessage(managerActionMessage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withManagerUserId(String managerUserId) {
         super.withManagerUserId(managerUserId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withSenderDateTime(OffsetDateTime senderDateTime) {
         super.withSenderDateTime(senderDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withSenderMessage(String senderMessage) {
         super.withSenderMessage(senderMessage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withSenderUserId(String senderUserId) {
         super.withSenderUserId(senderUserId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withState(MicrosoftGraphScheduleChangeState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftChangeRequest withId(String id) {
         super.withId(id);
@@ -166,11 +186,110 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("assignedTo", assignedTo() == null ? null : assignedTo().toString());
+        jsonWriter.writeStringField("managerActionDateTime",
+            managerActionDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(managerActionDateTime()));
+        jsonWriter.writeStringField("managerActionMessage", managerActionMessage());
+        jsonWriter.writeStringField("managerUserId", managerUserId());
+        jsonWriter.writeStringField("senderDateTime",
+            senderDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(senderDateTime()));
+        jsonWriter.writeStringField("senderMessage", senderMessage());
+        jsonWriter.writeStringField("senderUserId", senderUserId());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("openShiftId", this.openShiftId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOpenShiftChangeRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOpenShiftChangeRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOpenShiftChangeRequest.
+     */
+    public static MicrosoftGraphOpenShiftChangeRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOpenShiftChangeRequest deserializedMicrosoftGraphOpenShiftChangeRequest
+                = new MicrosoftGraphOpenShiftChangeRequest();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("assignedTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest
+                        .withAssignedTo(MicrosoftGraphScheduleChangeRequestActor.fromString(reader.getString()));
+                } else if ("managerActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withManagerActionDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("managerActionMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withManagerActionMessage(reader.getString());
+                } else if ("managerUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withManagerUserId(reader.getString());
+                } else if ("senderDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withSenderDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("senderMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withSenderMessage(reader.getString());
+                } else if ("senderUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.withSenderUserId(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest
+                        .withState(MicrosoftGraphScheduleChangeState.fromString(reader.getString()));
+                } else if ("openShiftId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftChangeRequest.openShiftId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOpenShiftChangeRequest.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOpenShiftChangeRequest;
+        });
     }
 }
