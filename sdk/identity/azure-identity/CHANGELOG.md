@@ -1,27 +1,14 @@
 # Release History
 
-## 1.14.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.14.0-beta.1 (2024-07-24)
-
-### Bugs Fixed
-- Fixed bugs in `AzurePowerShellCredential` - Fixed break on Windows related to ordering of parameters, and fixed [#41234](https://github.com/Azure/azure-sdk-for-java/issues/41234)
-
 ## 1.13.1 (2024-07-16)
 
 ### Features Added
-- Added support in `EnvironmentCredential` (and thus `DefaultAzureCredential` when it chooses `EnvironmentCredential`) for using subject name / issuer authentication with client certificates by setting `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` to `1` or `true`. [#40013](https://github.com/Azure/azure-sdk-for-java/issues/40013)
+- Added support in `EnvironmentCredential` (and thus `DefaultAzureCredential` when it chooses `EnvironmentCredential`) for using subject name / issuer authentication with client certificates by setting `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` to `1` or `true`. [#40013](https://github.com/Azure/azure-sdk-for-java/issues/40013) 
+
 ### Bugs Fixed
 - Fixed certificate type detection, which fixes using a PFX certificate without a password. [#37210](https://github.com/Azure/azure-sdk-for-java/issues/37210)
 - Fix `PowershellCredential` issue when user had a profile [#41030](https://github.com/Azure/azure-sdk-for-java/pull/41030)
+
 #### Dependency Updates
 - Upgraded `azure-core` from `1.49.1` to `1.50.0`
 - Upgraded `azure-core-http-netty` from `1.15.1` to `1.15.2`
@@ -62,7 +49,6 @@
 - Added `AzurePipelinesCredential` to support [Microsoft Entra Workload ID](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) in Azure Pipelines service connections.
 
 ### Other Changes
-- Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
 
 ## 1.12.1 (2024-05-02)
 

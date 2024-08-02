@@ -29,7 +29,6 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -45,7 +44,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URI;
@@ -84,7 +82,6 @@ public class IdentityClient extends IdentityClientBase {
 
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessorWithCae;
     private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
-    private final SynchronizedAccessor<ManagedIdentityApplication> managedIdentityMsalApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> workloadIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
@@ -134,24 +131,11 @@ public class IdentityClient extends IdentityClientBase {
         this.managedIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getManagedIdentityConfidentialClientApplication);
 
-        this.managedIdentityMsalApplicationAccessor =
-            new SynchronizedAccessor<>(this::getManagedIdentityMsalClient);
-
         this.workloadIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getWorkloadIdentityConfidentialClientApplication);
 
         Duration cacheTimeout = (clientAssertionTimeout == null) ? Duration.ofMinutes(5) : clientAssertionTimeout;
         this.clientAssertionAccessor = new SynchronizedAccessor<>(this::parseClientAssertion, cacheTimeout);
-    }
-
-    public Mono<ManagedIdentityApplication> getManagedIdentityMsalClient() {
-        return Mono.defer(() -> {
-            try {
-                return Mono.just(this.getManagedIdentityMsalApplication());
-            } catch (RuntimeException e) {
-                return Mono.error(e);
-            }
-        });
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication(boolean enableCae) {
@@ -501,63 +485,45 @@ public class IdentityClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(ex);
         }
         return Mono.defer(() -> {
-            String sep = System.lineSeparator();
-
-            String command = "$ErrorActionPreference = 'Stop'" + sep
-                + "[version]$minimumVersion = '2.2.0'" + sep
-                + "" + sep
-                + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue" + sep
-                + "" + sep
-                + "if (! $m) {" + sep
-                + "    Write-Output 'VersionTooOld'" + sep
-                + "    exit" + sep
-                + "}" + sep
-                + "" + sep
-                + "$useSecureString = $m.Version -ge [version]'2.17.0'" + sep
-                + "" + sep
-                + "$params = @{" + sep
-                + "    'WarningAction'='Ignore'" + sep
-                + "    'ResourceUrl'='" + scope + "'" + sep
-                + "}" + sep
-                + "" + sep
-                + "if ($useSecureString) {" + sep
-                + "    $params['AsSecureString'] = $true" + sep
-                + "}" + sep
-                + "" + sep
-                + "$token = Get-AzAccessToken @params" + sep
-                + "$customToken = New-Object -TypeName psobject" + sep
-                + "" + sep
-                + "$customToken | Add-Member -MemberType NoteProperty -Name Token -Value ($useSecureString -eq $true ? (ConvertFrom-SecureString -AsPlainText $token.Token) : $token.Token)" + sep
-                + "$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn" + sep
-                + "" + sep
-                + "return $customToken | ConvertTo-Json";
-            return powershellManager.runCommand(command).flatMap(output -> {
-                if (output.contains("VersionTooOld")) {
+            String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
+            return powershellManager.runCommand(azAccountsCommand).flatMap(output -> {
+                if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
+                                    + "because no valid module file")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                         new CredentialUnavailableException("Az.Account module with version >= 2.2.0 is not installed. "
-                            + "It needs to be installed to use Azure PowerShell "
-                            + "Credential.")));
+                                                           + "It needs to be installed to use Azure PowerShell "
+                                                           + "Credential.")));
                 }
 
-                if (output.contains("Run Connect-AzAccount to login")) {
-                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                        new CredentialUnavailableException(
-                            "Run Connect-AzAccount to login to Azure account in PowerShell.")));
-                }
+                LOGGER.verbose("Az.accounts module was found installed.");
+                String command = "Get-AzAccessToken -ResourceUrl '"
+                    + scope
+                    + "' | ConvertTo-Json";
+                LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
+                               + "Powershell to retrieve the Access Token.", command);
 
+                return powershellManager.runCommand(command).flatMap(out -> {
+                    if (out.contains("Run Connect-AzAccount to login")) {
+                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException(
+                                "Run Connect-AzAccount to login to Azure account in PowerShell.")));
+                    }
 
-                try {
-                    Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(output, Map.class,
-                        SerializerEncoding.JSON);
-                    String accessToken = objectMap.get("Token");
-                    String time = objectMap.get("ExpiresOn");
-                    OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
-                    return Mono.just(new AccessToken(accessToken, expiresOn));
-                } catch (IOException e) {
-                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                        new CredentialUnavailableException(
-                            "Encountered error when deserializing response from Azure Power Shell.", e)));
-                }
+                    try {
+                        LOGGER.verbose("Azure Powershell Authentication => Attempting to deserialize the "
+                                       + "received response from Azure Powershell.");
+                        Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
+                            SerializerEncoding.JSON);
+                        String accessToken = objectMap.get("Token");
+                        String time = objectMap.get("ExpiresOn");
+                        OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+                        return Mono.just(new AccessToken(accessToken, expiresOn));
+                    } catch (IOException e) {
+                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException(
+                                "Encountered error when deserializing response from Azure Power Shell.", e)));
+                    }
+                });
             });
         });
     }
@@ -609,30 +575,6 @@ public class IdentityClient extends IdentityClientBase {
                             .tenant(IdentityUtil
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
-                }
-            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
-            .map(MsalToken::new);
-    }
-
-    public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
-        String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
-
-        String  managedIdnetitySourceType = String.valueOf(ManagedIdentityApplication.getManagedIdentitySource());
-        return Mono.fromSupplier(() -> options.isChained() && "DEFAULT_TO_IMDS".equals(managedIdnetitySourceType))
-            .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
-            .flatMap(ignored ->  getTokenFromMsalMIClient(resource));
-    }
-
-    private Mono<AccessToken> getTokenFromMsalMIClient(String resource) {
-        return managedIdentityMsalApplicationAccessor.getValue()
-            .flatMap(managedIdentityApplication -> Mono.fromFuture(() -> {
-                    com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
-                        com.microsoft.aad.msal4j.ManagedIdentityParameters.builder(resource);
-                    try {
-                        return managedIdentityApplication.acquireTokenForManagedIdentity(builder.build());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
                 }
             )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
             .map(MsalToken::new);
@@ -1255,7 +1197,8 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(exception);
         }
 
-        String endpoint = getImdsEndpoint();
+        String endpoint = TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
+            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
@@ -1337,11 +1280,6 @@ public class IdentityClient extends IdentityClientBase {
                     String.format("MSI: Failed to acquire tokens after retrying %s times",
                     options.getMaxRetry())));
         }));
-    }
-
-    private String getImdsEndpoint() {
-        return TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
-            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
     }
 
     int getRetryTimeoutInMs(int retry) {

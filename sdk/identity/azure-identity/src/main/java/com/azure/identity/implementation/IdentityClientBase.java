@@ -17,7 +17,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -47,8 +46,6 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
-import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -462,35 +459,6 @@ public abstract class IdentityClientBase {
         return applicationBuilder.build();
     }
 
-    ManagedIdentityApplication getManagedIdentityMsalApplication() {
-
-        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
-            ? (CoreUtils.isNullOrEmpty(resourceId)
-            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
-            : ManagedIdentityId.userAssignedClientId(clientId);
-
-        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
-            .builder(managedIdentityId)
-            .logPii(options.isUnsafeSupportLoggingEnabled());
-
-        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
-            options.setUseImdsRetryStrategy();
-        }
-
-        initializeHttpPipelineAdapter();
-        if (httpPipelineAdapter != null) {
-            miBuilder.httpClient(httpPipelineAdapter);
-        } else {
-            miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        if (options.getExecutorService() != null) {
-            miBuilder.executorService(options.getExecutorService());
-        }
-
-        return miBuilder.build();
-    }
-
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
             + "/" + tenantId;
@@ -895,11 +863,7 @@ public abstract class IdentityClientBase {
         policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         // Add retry policy.
-        RetryPolicy retryPolicy = options.getRetryPolicy();
-        if (retryPolicy == null && options.getUseImdsRetryStrategy()) {
-            retryPolicy = new RetryPolicy(new ImdsRetryStrategy());
-        }
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, options.getRetryOptions()));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(options.getRetryPolicy(), options.getRetryOptions()));
         policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -916,7 +880,6 @@ public abstract class IdentityClientBase {
     }
 
     HttpPipeline getPipeline() {
-
         // if we've already initialized, return the pipeline
         if (this.httpPipeline != null) {
             return httpPipeline;
