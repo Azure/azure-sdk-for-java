@@ -52,6 +52,8 @@ class KuduClient {
     private final String host;
     private final KuduService service;
 
+    private static final String DEPLOYER_JAVA_SDK = "JavaSDK";
+
     KuduClient(WebAppBase webAppBase) {
         if (webAppBase.defaultHostname() == null) {
             throw logger.logExceptionAsError(
@@ -63,22 +65,6 @@ class KuduClient {
         String[] parts = host.split("\\.", 2);
         host = parts[0] + ".scm." + parts[1];
         this.host = "https://" + host;
-
-        // Kudu's authentication changed from Basic Auth to AAD Auth
-//        List<HttpPipelinePolicy> policies = new ArrayList<>();
-//        for (int i = 0, count = webAppBase.manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-//            HttpPipelinePolicy policy = webAppBase.manager().httpPipeline().getPolicy(i);
-//            if (!(policy instanceof AuthenticationPolicy)
-//                && !(policy instanceof ProviderRegistrationPolicy)
-//                && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
-//                policies.add(policy);
-//            }
-//        }
-//        policies.add(new KuduAuthenticationPolicy(webAppBase));
-//        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-//            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-//            .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
-//            .build();
 
         service = RestProxy.create(KuduService.class, webAppBase.manager().httpPipeline(),
             SerializerFactory.createDefaultManagementSerializerAdapter());
@@ -102,17 +88,6 @@ class KuduClient {
         @Get("api/logstream")
         Mono<StreamResponse> streamAllLogs(@HostParam("$host") String host);
 
-//        @Headers({
-//            "Content-Type: application/octet-stream",
-//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps warDeploy",
-//            "x-ms-body-logging: false"
-//        })
-//        @Post("api/wardeploy")
-//        Mono<Void> warDeploy(
-//            @HostParam("$host") String host,
-//            @BodyParam("application/octet-stream") byte[] warFile,
-//            @QueryParam("name") String appName);
-
         @Headers({"Content-Type: application/octet-stream"})
         @Post("api/wardeploy")
         Mono<Void> warDeploy(
@@ -121,16 +96,6 @@ class KuduClient {
             @HeaderParam("content-length") long size,
             @QueryParam("name") String appName);
 
-//        @Headers({
-//            "Content-Type: application/octet-stream",
-//            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps zipDeploy",
-//            "x-ms-body-logging: false"
-//        })
-//        @Post("api/zipdeploy")
-//        Mono<Void> zipDeploy(
-//            @HostParam("$host") String host,
-//            @BodyParam("application/octet-stream") byte[] zipFile);
-
         @Headers({"Content-Type: application/octet-stream"})
         @Post("api/zipdeploy")
         Mono<Void> zipDeploy(
@@ -138,6 +103,7 @@ class KuduClient {
             @BodyParam("application/octet-stream") Flux<ByteBuffer> zipFile,
             @HeaderParam("content-length") long size);
 
+        // OneDeploy
         @Headers({"Content-Type: application/octet-stream"})
         @Post("api/publish")
         Mono<Response<Void>> deploy(
@@ -149,11 +115,10 @@ class KuduClient {
             @QueryParam("restart") Boolean restart,
             @QueryParam("clean") Boolean clean,
             @QueryParam("isAsync") Boolean isAsync,
-            @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress,
-            @QueryParam("remoteBuild") Boolean remoteBuild,
-            @QueryParam("deployer") String deployer
+            @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress
         );
 
+        // OneDeploy for FunctionApp of Flex Consumption plan
         @Headers({"Content-Type: application/zip"})
         @Post("api/publish")
         Mono<Response<Void>> deployFlexConsumption(
@@ -282,15 +247,6 @@ class KuduClient {
                 });
     }
 
-//    Mono<Void> zipDeployAsync(InputStream zipFile) {
-//        InputStreamFlux flux = fluxFromInputStream(zipFile);
-//        if (flux.flux != null) {
-//            return withRetry(service.zipDeploy(host, flux.flux, flux.size));
-//        } else {
-//            return withRetry(service.zipDeploy(host, flux.bytes));
-//        }
-//    }
-
     Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
         return retryOnError(service.zipDeploy(host, flux, length));
@@ -312,7 +268,7 @@ class KuduClient {
                            InputStream file, long length,
                            String path, Boolean restart, Boolean clean) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false, null, null))
+        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false))
             .then();
     }
 
@@ -321,7 +277,7 @@ class KuduClient {
                            String path, Boolean restart, Boolean clean) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, false, false, null, null))
+            type, path, restart, clean, false, false))
             .then()
             .doFinally(ignored -> {
                 try {
@@ -332,17 +288,17 @@ class KuduClient {
             });
     }
 
-    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
-        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deployFlexConsumption(host, flux, length,
-            false, "JavaSDK"))
-            .then();
-    }
+//    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
+//        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+//        return retryOnError(service.deployFlexConsumption(host, flux, length,
+//            false, DEPLOYER_JAVA_SDK))
+//            .then();
+//    }
 
     Mono<Void> deployFlexConsumptionAsync(File file) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deployFlexConsumption(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            false, "JavaSDK"))
+            false, DEPLOYER_JAVA_SDK))
             .then()
             .doFinally(ignored -> {
                 try {
@@ -359,7 +315,7 @@ class KuduClient {
 
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, true, trackDeployment, null, null))
+            type, path, restart, clean, true, trackDeployment))
             .map(response -> {
                 HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
                 if (trackDeploymentProgress && (deploymentIdHeader == null || deploymentIdHeader.getValue() == null

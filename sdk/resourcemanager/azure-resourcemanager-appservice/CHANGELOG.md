@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `deploy` function to `FunctionApp` class for deploying zip file to FunctionApp of Flex Consumption plan.
+
 ### Breaking Changes
 
 ### Bugs Fixed
