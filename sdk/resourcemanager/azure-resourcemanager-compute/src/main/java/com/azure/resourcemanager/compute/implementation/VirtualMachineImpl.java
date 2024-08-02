@@ -443,6 +443,7 @@ class VirtualMachineImpl
         resultMap.put("contentVersion", captureResultInner.contentVersion());
         resultMap.put("schema", captureResultInner.schema());
         resultMap.put("resources", captureResultInner.resources());
+        resultMap.put("parameters", captureResultInner.parameters());
         try {
             return SerializerFactory.createDefaultManagementSerializerAdapter()
                 .serialize(resultMap, SerializerEncoding.JSON);
