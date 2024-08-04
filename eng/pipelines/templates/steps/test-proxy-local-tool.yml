@@ -28,7 +28,7 @@ steps:
 
 
   - pwsh: |
-      git clone https://github.com/azure/azure-sdk-tools.git --branch further-lock-elimination --depth 1 $(Build.BinariesDirectory)
+      git clone https://github.com/semick-dev/azure-sdk-tools.git --branch audit-log --depth 1 $(Build.BinariesDirectory)
       cd $(Build.BinariesDirectory)
       git log
     displayName: "Clone the tools directory"
