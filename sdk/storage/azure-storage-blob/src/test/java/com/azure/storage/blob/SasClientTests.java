@@ -34,9 +34,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -177,6 +179,107 @@ public class SasClientTests extends BlobTestBase {
             BlobProperties properties = client.getProperties();
 
             assertEquals(DATA.getDefaultText(), os.toString());
+            assertTrue(validateSasProperties(properties));
+        });
+    }
+
+    @Test
+    public void directorySasAllPermissionsSuccess() {
+        // FE will reject a permission string it doesn't recognize
+        BlobSasPermission allPermissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true);
+
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
+            allPermissions
+                .setMovePermission(true)
+                .setExecutePermission(true)
+                .setDeleteVersionPermission(true)
+                .setTagsPermission(true);
+        }
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-02-10") >= 0) {
+            allPermissions.setPermanentDeletePermission(true);
+        }
+
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-06-12") >= 0) {
+            allPermissions.setImmutabilityPolicyPermission(true);
+        }
+
+        BlobServiceSasSignatureValues sasValues = generateValues(allPermissions);
+        sasValues.setDirectoryDepth(blobName.split("/").length - 1);
+
+        String sas = sasClient.generateSas(sasValues);
+
+        String blobInFolderName = testResourceNamer.randomName(blobName + "/", 100);
+        BlockBlobClient client = getBlobClient(sas, cc.getBlobContainerUrl(), blobInFolderName).getBlockBlobClient();
+
+        InputStream in = new ByteArrayInputStream(new byte[0]);
+        client.upload(in, 0);
+        BlobProperties properties = client.getProperties();
+
+        assertEquals(DATA.getDefaultText(), in.toString());
+        assertTrue(validateSasProperties(properties));
+    }
+
+    @Test
+    public void directorySasReadPermissions() {
+        BlobSasPermission permissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true);
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
+            permissions.setMovePermission(true).setExecutePermission(true);
+        }
+
+        BlobServiceSasSignatureValues sasValues = generateValues(permissions);
+        sasValues.setDirectoryDepth(blobName.split("/").length - 1);
+
+        String sas = sasClient.generateSas(sasValues);
+
+        String blobInFolderName = testResourceNamer.randomName(blobName + "/", 100);
+        BlockBlobClient client = getBlobClient(sas, cc.getBlobContainerUrl(), blobInFolderName).getBlockBlobClient();
+
+        InputStream in = new ByteArrayInputStream(new byte[0]);
+        client.upload(in, 0);
+        BlobProperties properties = client.getProperties();
+        assertEquals(DATA.getDefaultText(), in.toString());
+        assertTrue(validateSasProperties(properties));
+    }
+
+    // RBAC replication lag
+    @Test
+    public void directorySasUserDelegation() {
+        liveTestScenarioWithRetry(() -> {
+            BlobSasPermission permissions = new BlobSasPermission()
+                .setReadPermission(true)
+                .setWritePermission(true)
+                .setCreatePermission(true)
+                .setDeletePermission(true)
+                .setAddPermission(true)
+                .setListPermission(true);
+            if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
+                permissions.setMovePermission(true).setExecutePermission(true);
+            }
+
+            BlobServiceSasSignatureValues sasValues = generateValues(permissions);
+            sasValues.setDirectoryDepth(blobName.split("/").length - 1);
+
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            BlockBlobClient client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient();
+
+            InputStream in = new ByteArrayInputStream(new byte[0]);
+            client.upload(in, 0);
+            BlobProperties properties = client.getProperties();
+
+            assertEquals(DATA.getDefaultText(), in.toString());
             assertTrue(validateSasProperties(properties));
         });
     }
