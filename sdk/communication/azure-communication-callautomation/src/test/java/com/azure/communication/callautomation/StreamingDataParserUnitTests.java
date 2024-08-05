@@ -254,7 +254,7 @@ public class StreamingDataParserUnitTests {
         assertEquals(2 * 100, transcription.getDuration().toNanos());
 
         // validate individual words
-        List<WordData> words = transcription.getWords();
+        List<WordData> words = transcription.getTranscripeWords();
         assertEquals(2, words.size());
         assertEquals("Hello", words.get(0).getText());
         assertEquals(1, words.get(0).getOffset());

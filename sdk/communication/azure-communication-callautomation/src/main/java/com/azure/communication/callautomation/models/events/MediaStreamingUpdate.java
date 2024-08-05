@@ -39,17 +39,6 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     }
 
     /**
-     * Set the contentType property: The contentType property.
-     *
-     * @param contentType the contentType value to set.
-     * @return the MediaStreamingUpdate object itself.
-     */
-    public MediaStreamingUpdate setContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
-    }
-
-    /**
      * Get the mediaStreamingStatus property: The mediaStreamingStatus property.
      *
      * @return the mediaStreamingStatus value.
@@ -59,35 +48,12 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     }
 
     /**
-     * Set the mediaStreamingStatus property: The mediaStreamingStatus property.
-     *
-     * @param mediaStreamingStatus the mediaStreamingStatus value to set.
-     * @return the MediaStreamingUpdate object itself.
-     */
-    public MediaStreamingUpdate setMediaStreamingStatus(MediaStreamingStatus mediaStreamingStatus) {
-        this.mediaStreamingStatus = mediaStreamingStatus;
-        return this;
-    }
-
-    /**
      * Get the mediaStreamingStatusDetails property: The mediaStreamingStatusDetails property.
      *
      * @return the mediaStreamingStatusDetails value.
      */
     public MediaStreamingStatusDetails getMediaStreamingStatusDetails() {
         return this.mediaStreamingStatusDetails;
-    }
-
-    /**
-     * Set the mediaStreamingStatusDetails property: The mediaStreamingStatusDetails property.
-     *
-     * @param mediaStreamingStatusDetails the mediaStreamingStatusDetails value to set.
-     * @return the MediaStreamingUpdate object itself.
-     */
-    public MediaStreamingUpdate setMediaStreamingStatusDetails(
-            MediaStreamingStatusDetails mediaStreamingStatusDetails) {
-        this.mediaStreamingStatusDetails = mediaStreamingStatusDetails;
-        return this;
     }
 
     /**

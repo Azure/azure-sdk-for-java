@@ -281,25 +281,6 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
         return this;
     }
 
-     /**
-     * Get the speech model endpoint id.
-     *
-     * @return the speech model endpoint id.
-     */
-    public String getSpeechModelEndpointId() {
-        return speechModelEndpointId;
-    }
-    /**
-     * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
-     *
-     * @param speechModelEndpointId the initialSilenceTimeout value to set.
-     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
-     */
-    public CallMediaRecognizeOptions setSpeechModelEndpointId(String speechModelEndpointId) {
-        this.speechModelEndpointId = speechModelEndpointId;
-        return this;
-    }
-
     /**
      * Reads an instance of CallMediaRecognizeOptions from the JsonReader.
      *

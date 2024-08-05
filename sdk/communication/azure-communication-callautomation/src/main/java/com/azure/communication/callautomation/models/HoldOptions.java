@@ -95,7 +95,7 @@ public final class HoldOptions {
      * @param operationCallbackUrl operationCallbackUrl
      * @return The HoldOptions object.
      */
-    public HoldOptions setOperationCallbackUri(String operationCallbackUrl) {
+    public HoldOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }

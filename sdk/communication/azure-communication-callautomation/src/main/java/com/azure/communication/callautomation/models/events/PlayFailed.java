@@ -17,12 +17,27 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
     private PlayFailed() {
     }
 
+    /*
+     * Contains the index of the failed play source.
+     */
+    private Integer failedPlaySourceIndex;
+
+    /**
+     * Get the failedPlaySourceIndex property: Contains the index of the failed play source.
+     * 
+     * @return the failedPlaySourceIndex value.
+     */
+    public Integer getFailedPlaySourceIndex() {
+        return this.failedPlaySourceIndex;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("failedPlaySourceIndex", failedPlaySourceIndex);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -41,9 +56,13 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-            
-                if (!event.readField(fieldName, reader)) {
-                    reader.skipChildren();
+                if ("failedPlaySourceIndex".equals(fieldName)) {
+                    event.failedPlaySourceIndex = reader.getInt();
+                }
+                else {
+                    if (!event.readField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

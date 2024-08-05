@@ -199,7 +199,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
         jsonWriter.writeStringField("operationContext", getOperationContext());
         jsonWriter.writeBooleanField("interruptPrompt", isInterruptPrompt());
         jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
-        jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
         final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(getTargetParticipant());
         jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
@@ -233,7 +232,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
             String operationContext = null;
             Boolean interruptPrompt = null;
             Duration initialSilenceTimeout = null;
-            String speechModelEndpointId = null;
             String operationCallbackUrl = null;
             CommunicationIdentifier targetParticipant = null;
 
@@ -261,8 +259,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
                 } else if ("initialSilenceTimeout".equals(fieldName)) {
                     final String value = reader.getString();
                     initialSilenceTimeout = value != null ? Duration.parse(value) : null;
-                } else if ("speechModelEndpointId".equals(fieldName)) {
-                    speechModelEndpointId = reader.getString();
                 } else if ("operationCallbackUrl".equals(fieldName)) {
                     operationCallbackUrl = reader.getString();
                 } else if ("targetParticipant".equals(fieldName)) {
@@ -282,7 +278,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
             options.setOperationContext(operationContext);
             options.setInterruptPrompt(interruptPrompt);
             options.setInitialSilenceTimeout(initialSilenceTimeout);
-            options.setSpeechModelEndpointId(speechModelEndpointId);
             options.setOperationCallbackUrl(operationCallbackUrl);
 
             return options;

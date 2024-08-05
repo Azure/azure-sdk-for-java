@@ -224,6 +224,7 @@ directive:
 - remove-model: PlayFailed
 - remove-model: PlayStarted
 - remove-model: PlayCanceled
+- remove-model: HoldFailed
 - remove-model: ResultInfo
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed

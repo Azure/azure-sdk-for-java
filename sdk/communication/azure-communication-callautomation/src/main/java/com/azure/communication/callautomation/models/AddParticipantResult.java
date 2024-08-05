@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /** The AddParticipantResult model. */
 @Immutable
-public class AddParticipantResult {
+public final class AddParticipantResult {
     /*
      * The participant property.
      */

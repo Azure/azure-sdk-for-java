@@ -150,7 +150,7 @@ public final class TranscriptionData extends StreamingData {
      *
      * @return the words value.
      */
-    public List<WordData> getWords() {
+    public List<WordData> getTranscripeWords() {
         return words;
     }
 
