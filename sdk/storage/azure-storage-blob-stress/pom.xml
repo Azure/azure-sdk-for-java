@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.26</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <version>1.0.0-beta.27</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
