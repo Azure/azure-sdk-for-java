@@ -44,6 +44,7 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -94,6 +95,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -107,6 +111,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -120,6 +127,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -133,6 +143,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -553,6 +566,7 @@ public final class SharesImpl {
         Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermission(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -563,6 +577,7 @@ public final class SharesImpl {
         Mono<Response<SharePermission>> getPermissionNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -573,6 +588,7 @@ public final class SharesImpl {
         ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -583,6 +599,7 @@ public final class SharesImpl {
         Response<SharePermission> getPermissionNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -597,6 +614,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -610,6 +630,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -623,6 +646,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -636,6 +662,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -872,6 +901,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -880,12 +915,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(), shareName, restype, timeout,
             metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, this.client.getFileRequestIntent(), accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -902,6 +939,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -911,12 +954,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
             this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -933,6 +978,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -941,9 +992,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -960,6 +1013,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -969,9 +1028,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -988,6 +1049,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -996,12 +1063,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype,
             timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, this.client.getFileRequestIntent(), accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1018,6 +1087,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1027,12 +1102,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
             accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -1049,6 +1126,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1058,12 +1141,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesCreateHeaders, Void> createWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
             this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -1080,6 +1165,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1087,9 +1178,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, Context.NONE);
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, Context.NONE);
     }
 
     /**
@@ -1106,6 +1199,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1115,12 +1214,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
             accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -3392,6 +3493,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3402,13 +3508,14 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>>
-        getPermissionWithResponseAsync(String shareName, String filePermissionKey, Integer timeout) {
+    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
+        String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getPermission(this.client.getUrl(), shareName, restype, comp,
-            filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
+            filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3416,6 +3523,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3427,13 +3539,15 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>>
-        getPermissionWithResponseAsync(String shareName, String filePermissionKey, Integer timeout, Context context) {
+    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
+        String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout,
+        Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
-        return service.getPermission(this.client.getUrl(), shareName, restype, comp, filePermissionKey, timeout,
-            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+        return service.getPermission(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3441,6 +3555,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3450,8 +3569,9 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey, Integer timeout) {
-        return getPermissionWithResponseAsync(shareName, filePermissionKey, timeout)
+    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout) {
+        return getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, timeout)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3460,6 +3580,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3470,9 +3595,9 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey, Integer timeout,
-        Context context) {
-        return getPermissionWithResponseAsync(shareName, filePermissionKey, timeout, context)
+    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
+        return getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, timeout, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3481,6 +3606,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3492,13 +3622,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
-        String filePermissionKey, Integer timeout) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
-            accept, context));
+            restype, comp, filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3506,6 +3636,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3518,12 +3653,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
-            timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3531,6 +3667,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3542,12 +3683,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionWithResponse(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
-        return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey, timeout,
-            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+        return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3555,6 +3697,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3564,8 +3711,10 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharePermission getPermission(String shareName, String filePermissionKey, Integer timeout) {
-        return getPermissionWithResponse(shareName, filePermissionKey, timeout, Context.NONE).getValue();
+    public SharePermission getPermission(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout) {
+        return getPermissionWithResponse(shareName, filePermissionKey, filePermissionFormat, timeout, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3573,6 +3722,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3584,12 +3738,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharePermission> getPermissionNoCustomHeadersWithResponse(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return service.getPermissionNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp,
-            filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+            filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3604,6 +3759,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3612,13 +3773,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setProperties(this.client.getUrl(), shareName, restype, comp,
             timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, this.client.getFileRequestIntent(), accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3633,6 +3796,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3642,13 +3811,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setProperties(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
-            quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+            paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3663,6 +3833,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3670,9 +3846,11 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3687,6 +3865,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3695,9 +3879,11 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3712,6 +3898,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3720,13 +3912,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName,
             restype, comp, timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, this.client.getFileRequestIntent(), accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3741,6 +3935,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3750,13 +3950,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
             this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -3771,6 +3973,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3780,13 +3988,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesSetPropertiesHeaders, Void> setPropertiesWithResponse(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesSync(this.client.getUrl(), shareName, restype, comp, timeout,
             this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -3801,15 +4011,23 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, Context.NONE);
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, Context.NONE);
     }
 
     /**
@@ -3824,6 +4042,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3833,13 +4057,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer quota,
         ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
             this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
-            this.client.getFileRequestIntent(), accept, context);
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
