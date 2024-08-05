@@ -8,7 +8,6 @@ import com.azure.json.implementation.jackson.core.base.GeneratorBase;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 import com.azure.json.implementation.jackson.core.util.VersionUtil;
 
 /**
@@ -29,15 +28,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
      * (first 128 character codes), used for single-byte UTF-8 characters.
      */
     protected final static int[] sOutputEscapes = CharTypes.get7BitOutputEscapes();
-
-    /**
-     * Default capabilities for JSON generator implementations which do not
-     * different from "general textual" defaults
-     *
-     * @since 2.12
-     */
-    protected final static JacksonFeatureSet<StreamWriteCapability> JSON_WRITE_CAPABILITIES
-        = DEFAULT_TEXTUAL_WRITE_CAPABILITIES;
 
     /*
     /**********************************************************
@@ -89,13 +79,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
      */
 
     /**
-     * Separator to use, if any, between root-level values.
-     *
-     * @since 2.1
-     */
-    protected SerializableString _rootValueSeparator = JsonFactory.DEFAULT_ROOT_VALUE_SEPARATOR;
-
-    /**
      * Flag that is set if quoting is not to be added around
      * JSON Object property names.
      *
@@ -117,8 +100,8 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
      */
 
     @SuppressWarnings("deprecation")
-    public JsonGeneratorImpl(IOContext ctxt, int features, ObjectCodec codec) {
-        super(features, codec, ctxt);
+    public JsonGeneratorImpl(IOContext ctxt, int features) {
+        super(features, ctxt);
         _streamWriteConstraints = ctxt.streamWriteConstraints();
         if (Feature.ESCAPE_NON_ASCII.enabledIn(features)) {
             // inlined `setHighestNonEscapedChar()`
@@ -190,13 +173,8 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
 
     @Override
     public JsonGenerator setHighestNonEscapedChar(int charCode) {
-        _maximumNonEscapedChar = (charCode < 0) ? 0 : charCode;
+        _maximumNonEscapedChar = Math.max(charCode, 0);
         return this;
-    }
-
-    @Override
-    public int getHighestEscapedChar() {
-        return _maximumNonEscapedChar;
     }
 
     @Override
@@ -208,66 +186,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
             _outputEscapes = esc.getEscapeCodesForAscii();
         }
         return this;
-    }
-
-    /**
-     * Method for accessing custom escapes factory uses for {@link JsonGenerator}s
-     * it creates.
-     */
-    @Override
-    public CharacterEscapes getCharacterEscapes() {
-        return _characterEscapes;
-    }
-
-    @Override
-    public JsonGenerator setRootValueSeparator(SerializableString sep) {
-        _rootValueSeparator = sep;
-        return this;
-    }
-
-    @Override
-    public JacksonFeatureSet<StreamWriteCapability> getWriteCapabilities() {
-        return JSON_WRITE_CAPABILITIES;
-    }
-
-    /*
-    /**********************************************************
-    /* Shared helper methods
-    /**********************************************************
-     */
-
-    protected void _verifyPrettyValueWrite(String typeMsg, int status) throws IOException {
-        // If we have a pretty printer, it knows what to do:
-        switch (status) {
-            case JsonWriteContext.STATUS_OK_AFTER_COMMA: // array
-                _cfgPrettyPrinter.writeArrayValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AFTER_COLON:
-                _cfgPrettyPrinter.writeObjectFieldValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AFTER_SPACE:
-                _cfgPrettyPrinter.writeRootValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AS_IS:
-                // First entry, but of which context?
-                if (_writeContext.inArray()) {
-                    _cfgPrettyPrinter.beforeArrayValues(this);
-                } else if (_writeContext.inObject()) {
-                    _cfgPrettyPrinter.beforeObjectEntries(this);
-                }
-                break;
-
-            case JsonWriteContext.STATUS_EXPECT_NAME:
-                _reportCantWriteValueExpectName(typeMsg);
-                break;
-
-            default:
-                _throwInternal();
-                break;
-        }
     }
 
     protected void _reportCantWriteValueExpectName(String typeMsg) throws IOException {

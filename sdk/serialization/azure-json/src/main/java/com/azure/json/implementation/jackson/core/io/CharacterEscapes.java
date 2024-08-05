@@ -13,11 +13,6 @@ import com.azure.json.implementation.jackson.core.SerializableString;
 @SuppressWarnings("serial")
 public abstract class CharacterEscapes implements java.io.Serializable // since 2.1
 {
-    /**
-     * Value used for lookup tables to indicate that matching characters
-     * do not need to be escaped.
-     */
-    public final static int ESCAPE_NONE = 0;
 
     /**
      * Value used for lookup tables to indicate that matching characters

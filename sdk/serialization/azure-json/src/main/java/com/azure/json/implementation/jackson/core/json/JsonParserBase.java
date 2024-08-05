@@ -1,14 +1,10 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.json;
 
-import java.io.IOException;
-
 import com.azure.json.implementation.jackson.core.*;
-import com.azure.json.implementation.jackson.core.JsonParser.NumberTypeFP;
 import com.azure.json.implementation.jackson.core.base.ParserBase;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 
 /**
  * Another intermediate base class, only used by actual JSON-backed parser
@@ -43,32 +39,14 @@ public abstract class JsonParserBase extends ParserBase {
     /**********************************************************
      */
 
-    /**
-     * Codec used for data binding when (if) requested; typically full
-     * <code>ObjectMapper</code>, but that abstract is not part of core
-     * package.
-     */
-    protected ObjectCodec _objectCodec;
-
     /*
     /**********************************************************************
     /* Life-cycle
     /**********************************************************************
      */
 
-    protected JsonParserBase(IOContext ioCtxt, int features, ObjectCodec codec) {
+    protected JsonParserBase(IOContext ioCtxt, int features) {
         super(ioCtxt, features);
-        _objectCodec = codec;
-    }
-
-    @Override
-    public ObjectCodec getCodec() {
-        return _objectCodec;
-    }
-
-    @Override
-    public void setCodec(ObjectCodec c) {
-        _objectCodec = c;
     }
 
     /*
@@ -77,29 +55,11 @@ public abstract class JsonParserBase extends ParserBase {
     /**********************************************************************
      */
 
-    @Override
-    public final JacksonFeatureSet<StreamReadCapability> getReadCapabilities() {
-        return JSON_READ_CAPABILITIES;
-    }
-
     /*
     /**********************************************************************
     /* Overrides
     /**********************************************************************
      */
-
-    /**
-     * JSON format does not have native information on "correct" floating-point
-     * type to use, unlike some formats (most binary formats), so it needs to
-     * indicate this as {@link NumberTypeFP#UNKNOWN}.
-     *
-     * @return Natural floating-point type if known; {@link NumberTypeFP#UNKNOWN} for
-     *    all JSON-backed parsers.
-     */
-    @Override // added in 2.17
-    public NumberTypeFP getNumberTypeFP() throws IOException {
-        return NumberTypeFP.UNKNOWN;
-    }
 
     /*
     /**********************************************************************

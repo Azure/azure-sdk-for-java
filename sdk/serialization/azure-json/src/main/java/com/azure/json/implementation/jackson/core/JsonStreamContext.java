@@ -69,25 +69,6 @@ public abstract class JsonStreamContext {
     protected JsonStreamContext() {
     }
 
-    /**
-     * Copy constructor used by sub-classes for creating copies for
-     * buffering.
-     *
-     * @param base Context instance to copy type and index from
-     *
-     * @since 2.9
-     */
-    protected JsonStreamContext(JsonStreamContext base) {
-        _type = base._type;
-        _index = base._index;
-    }
-
-    // @since 2.9
-    protected JsonStreamContext(int type, int index) {
-        _type = type;
-        _index = index;
-    }
-
     /*
     /**********************************************************
     /* Public API, accessors
@@ -189,17 +170,10 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * @return Number of entries that are complete and started.
-     */
-    public final int getEntryCount() {
-        return _index + 1;
-    }
-
-    /**
      * @return Index of the currently processed entry, if any
      */
     public final int getCurrentIndex() {
-        return (_index < 0) ? 0 : _index;
+        return Math.max(_index, 0);
     }
 
     /**
@@ -228,7 +202,7 @@ public abstract class JsonStreamContext {
      * have been read or written.
      *<p>
      * Method is mostly used to determine whether this context should be used for
-     * constructing {@link JsonPointer}
+     * constructing {@code JsonPointer}
      *
      * @return {@code True} if this context has value path segment to access, {@code false} otherwise
      *
@@ -290,34 +264,6 @@ public abstract class JsonStreamContext {
      * @since 2.5
      */
     public void setCurrentValue(Object v) {
-    }
-
-    /**
-     * Factory method for constructing a {@link JsonPointer} that points to the current
-     * location within the stream that this context is for, excluding information about
-     * "root context" (only relevant for multi-root-value cases)
-     *
-     * @return Pointer instance constructed
-     *
-     * @since 2.9
-     */
-    public JsonPointer pathAsPointer() {
-        return JsonPointer.forPath(this, false);
-    }
-
-    /**
-     * Factory method for constructing a {@link JsonPointer} that points to the current
-     * location within the stream that this context is for, optionally including
-     * "root value index"
-     *
-     * @param includeRoot Whether root-value offset is included as the first segment or not;
-     *
-     * @return Pointer instance constructed
-     *
-     * @since 2.9
-     */
-    public JsonPointer pathAsPointer(boolean includeRoot) {
-        return JsonPointer.forPath(this, includeRoot);
     }
 
     /**

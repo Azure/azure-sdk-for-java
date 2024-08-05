@@ -1,7 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.exc;
 
-import com.azure.json.implementation.jackson.core.JsonLocation;
 import com.azure.json.implementation.jackson.core.JsonProcessingException;
 
 /**
@@ -18,7 +17,4 @@ public class StreamConstraintsException extends JsonProcessingException {
         super(msg);
     }
 
-    public StreamConstraintsException(String msg, JsonLocation loc) {
-        super(msg, loc);
-    }
 }

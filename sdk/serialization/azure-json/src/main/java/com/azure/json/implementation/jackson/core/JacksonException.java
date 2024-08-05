@@ -18,10 +18,6 @@ public abstract class JacksonException extends java.io.IOException {
         super(msg);
     }
 
-    protected JacksonException(Throwable t) {
-        super(t);
-    }
-
     protected JacksonException(String msg, Throwable rootCause) {
         super(msg, rootCause);
         // 23-Sep-2020, tatu: before 2.12, had null checks for some reason...
@@ -50,16 +46,6 @@ public abstract class JacksonException extends java.io.IOException {
      *    available; {@code null} otherwise.
      */
     public abstract JsonLocation getLocation();
-
-    /**
-     * Method that allows accessing the original "message" argument,
-     * without additional decorations (like location information)
-     * that overridden {@link #getMessage} adds.
-     *
-     * @return Original, unmodified {@code message} argument used to construct
-     *    this exception instance
-     */
-    public abstract String getOriginalMessage();
 
     /**
      * Method that allows accessing underlying processor that triggered

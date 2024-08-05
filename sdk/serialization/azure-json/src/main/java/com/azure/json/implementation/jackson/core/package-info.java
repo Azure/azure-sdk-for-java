@@ -12,13 +12,13 @@
  * is found from the "jackson-databind" bundle, except for following
  * base interfaces that are defined here:
  * <ul>
- *<li>{@link com.azure.json.implementation.jackson.core.TreeNode} is included
+ *<li>{@code com.azure.json.implementation.jackson.core.TreeNode} is included
  *within Streaming API to support integration of the Tree Model
  *(which is based on <code>JsonNode</code>) with the basic
  *parsers and generators (iff using mapping-supporting factory: which
  *is part of Mapping API, not core)
  *  </li>
- *<li>{@link com.azure.json.implementation.jackson.core.ObjectCodec} is included so that
+ *<li>{@code com.azure.json.implementation.jackson.core.ObjectCodec} is included so that
  *  reference to the object capable of serializing/deserializing
  *  Objects to/from JSON (usually, <code>com.fasterxml.jackson.databind.ObjectMapper</code>)
  *  can be exposed, without adding direct dependency to implementation.

@@ -99,20 +99,4 @@ public final class SegmentedStringWriter extends Writer implements BufferRecycle
     /**********************************************************************
      */
 
-    /**
-     * Main access method that will construct a String that contains
-     * all the contents, release all internal buffers we may have,
-     * and return result String.
-     * Note that the method is not idempotent -- if called second time,
-     * will just return an empty String.
-     *
-     * @return String that contains all aggregated content
-     * @throws IOException if there are general I/O or parse issues, including if the text is too large,
-     * see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
-     */
-    public String getAndClear() throws IOException {
-        String result = _buffer.contentsAsString();
-        _buffer.releaseBuffers();
-        return result;
-    }
 }

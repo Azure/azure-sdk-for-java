@@ -128,27 +128,11 @@ public enum StreamReadFeature implements JacksonFeature // since 2.12
      */
     final private JsonParser.Feature _mappedFeature;
 
-    private StreamReadFeature(JsonParser.Feature mapTo) {
+    StreamReadFeature(JsonParser.Feature mapTo) {
         // only for 2.x, let's map everything to legacy feature:
         _mappedFeature = mapTo;
         _mask = mapTo.getMask();
         _defaultState = mapTo.enabledByDefault();
-    }
-
-    /**
-     * Method that calculates bit set (flags) of all features that
-     * are enabled by default.
-     *
-     * @return Bit mask of all features that are enabled by default
-     */
-    public static int collectDefaults() {
-        int flags = 0;
-        for (StreamReadFeature f : values()) {
-            if (f.enabledByDefault()) {
-                flags |= f.getMask();
-            }
-        }
-        return flags;
     }
 
     @Override

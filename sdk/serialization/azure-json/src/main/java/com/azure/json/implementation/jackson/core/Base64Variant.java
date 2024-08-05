@@ -41,7 +41,7 @@ public final class Base64Variant implements java.io.Serializable {
          * exception thrown based on existence or absence, as long as proper
          * padding characters are used.
          */
-        PADDING_ALLOWED;
+        PADDING_ALLOWED
     }
 
     private final static int INT_SPACE = 0x20;
@@ -53,7 +53,7 @@ public final class Base64Variant implements java.io.Serializable {
      * Placeholder used by "no padding" variant, to be used when a character
      * value is needed.
      */
-    protected final static char PADDING_CHAR_NONE = '\0';
+    final static char PADDING_CHAR_NONE = '\0';
 
     /**
      * Marker used to denote ascii characters that do not correspond
@@ -287,13 +287,12 @@ public final class Base64Variant implements java.io.Serializable {
     //   possible to create differently configured instances.
     //   Need to start with name to regenerate tables etc but then
     //   handle overrides
-    protected Object readResolve() {
+    private Object readResolve() {
         Base64Variant base = Base64Variants.valueOf(_name);
         if ((_writePadding != base._writePadding)
             || (_paddingChar != base._paddingChar)
             || (_paddingReadBehaviour != base._paddingReadBehaviour)
-            || (_maxLineLength != base._maxLineLength)
-            || (_writePadding != base._writePadding)) {
+            || (_maxLineLength != base._maxLineLength)) {
             return new Base64Variant(base, _name, _writePadding, _paddingChar, _paddingReadBehaviour, _maxLineLength);
         }
         return base;
@@ -343,22 +342,8 @@ public final class Base64Variant implements java.io.Serializable {
         return ch == _paddingChar;
     }
 
-    /**
-     * @return Indicator on how this Base64 encoding will handle possible padding
-     *   in content when reading.
-     *
-     * @since 2.12
-     */
-    public PaddingReadBehaviour paddingReadBehaviour() {
-        return _paddingReadBehaviour;
-    }
-
     public char getPaddingChar() {
         return _paddingChar;
-    }
-
-    public byte getPaddingByte() {
-        return (byte) _paddingChar;
     }
 
     public int getMaxLineLength() {
@@ -377,21 +362,11 @@ public final class Base64Variant implements java.io.Serializable {
      * @return 6-bit decoded value, if valid character;
      */
     public int decodeBase64Char(char c) {
-        int ch = c;
-        return (ch <= 127) ? _asciiToBase64[ch] : BASE64_VALUE_INVALID;
+        return ((int) c <= 127) ? _asciiToBase64[c] : BASE64_VALUE_INVALID;
     }
 
     public int decodeBase64Char(int ch) {
         return (ch <= 127) ? _asciiToBase64[ch] : BASE64_VALUE_INVALID;
-    }
-
-    public int decodeBase64Byte(byte b) {
-        int ch = b;
-        // note: cast retains sign, so it's from -128 to +127
-        if (ch < 0) {
-            return BASE64_VALUE_INVALID;
-        }
-        return _asciiToBase64[ch];
     }
 
     /*
@@ -399,12 +374,6 @@ public final class Base64Variant implements java.io.Serializable {
     /* Encoding support
     /**********************************************************
      */
-
-    public char encodeBase64BitsAsChar(int value) {
-        // Let's assume caller has done necessary checks; this
-        // method must be fast and inlinable
-        return _base64ToAsciiC[value];
-    }
 
     /**
      * Method that encodes given right-aligned (LSB) 24-bit value
@@ -424,13 +393,6 @@ public final class Base64Variant implements java.io.Serializable {
         buffer[outPtr++] = _base64ToAsciiC[(b24 >> 6) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiC[b24 & 0x3F];
         return outPtr;
-    }
-
-    public void encodeBase64Chunk(StringBuilder sb, int b24) {
-        sb.append(_base64ToAsciiC[(b24 >> 18) & 0x3F]);
-        sb.append(_base64ToAsciiC[(b24 >> 12) & 0x3F]);
-        sb.append(_base64ToAsciiC[(b24 >> 6) & 0x3F]);
-        sb.append(_base64ToAsciiC[b24 & 0x3F]);
     }
 
     /**
@@ -458,24 +420,6 @@ public final class Base64Variant implements java.io.Serializable {
             }
         }
         return outPtr;
-    }
-
-    public void encodeBase64Partial(StringBuilder sb, int bits, int outputBytes) {
-        sb.append(_base64ToAsciiC[(bits >> 18) & 0x3F]);
-        sb.append(_base64ToAsciiC[(bits >> 12) & 0x3F]);
-        if (usesPadding()) {
-            sb.append((outputBytes == 2) ? _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar);
-            sb.append(_paddingChar);
-        } else {
-            if (outputBytes == 2) {
-                sb.append(_base64ToAsciiC[(bits >> 6) & 0x3F]);
-            }
-        }
-    }
-
-    public byte encodeBase64BitsAsByte(int value) {
-        // As with above, assuming it is 6-bit value
-        return _base64ToAsciiB[value];
     }
 
     /**
@@ -529,124 +473,6 @@ public final class Base64Variant implements java.io.Serializable {
     /* Convenience conversion methods for String to/from bytes use case
     /**********************************************************
      */
-
-    /**
-     * Convenience method for converting given byte array as base64 encoded
-     * String using this variant's settings.
-     * Resulting value is "raw", that is, not enclosed in double-quotes.
-     *
-     * @param input Byte array to encode
-     *
-     * @return Base64 encoded String of encoded {@code input} bytes, not surrounded by quotes
-     */
-    public String encode(byte[] input) {
-        return encode(input, false);
-    }
-
-    /**
-     * Convenience method for converting given byte array as base64 encoded String
-     * using this variant's settings, optionally enclosed in double-quotes.
-     * Linefeeds added, if needed, are expressed as 2-character JSON (and Java source)
-     * escape sequence of backslash + `n`.
-     *
-     * @param input Byte array to encode
-     * @param addQuotes Whether to surround resulting value in double quotes or not
-     *
-     * @return Base64 encoded String of encoded {@code input} bytes, possibly
-     *     surrounded by quotes (if {@code addQuotes} enabled)
-     */
-    public String encode(byte[] input, boolean addQuotes) {
-        final int inputEnd = input.length;
-        final StringBuilder sb = new StringBuilder(inputEnd + (inputEnd >> 2) + (inputEnd >> 3));
-        if (addQuotes) {
-            sb.append('"');
-        }
-
-        int chunksBeforeLF = getMaxLineLength() >> 2;
-
-        // Ok, first we loop through all full triplets of data:
-        int inputPtr = 0;
-        int safeInputEnd = inputEnd - 3; // to get only full triplets
-
-        while (inputPtr <= safeInputEnd) {
-            // First, mash 3 bytes into lsb of 32-bit int
-            int b24 = (input[inputPtr++]) << 8;
-            b24 |= (input[inputPtr++]) & 0xFF;
-            b24 = (b24 << 8) | ((input[inputPtr++]) & 0xFF);
-            encodeBase64Chunk(sb, b24);
-            if (--chunksBeforeLF <= 0) {
-                // note: must quote in JSON value, so not really useful...
-                sb.append('\\');
-                sb.append('n');
-                chunksBeforeLF = getMaxLineLength() >> 2;
-            }
-        }
-
-        // And then we may have 1 or 2 leftover bytes to encode
-        int inputLeft = inputEnd - inputPtr; // 0, 1 or 2
-        if (inputLeft > 0) { // yes, but do we have room for output?
-            int b24 = (input[inputPtr++]) << 16;
-            if (inputLeft == 2) {
-                b24 |= ((input[inputPtr++]) & 0xFF) << 8;
-            }
-            encodeBase64Partial(sb, b24, inputLeft);
-        }
-
-        if (addQuotes) {
-            sb.append('"');
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Convenience method for converting given byte array as base64 encoded String
-     * using this variant's settings, optionally enclosed in double-quotes.
-     * Linefeed character to use is passed explicitly.
-     *
-     * @param input Byte array to encode
-     * @param addQuotes Whether to surround resulting value in double quotes or not
-     * @param linefeed Linefeed to use for encoded content
-     *
-     * @return Base64 encoded String of encoded {@code input} bytes
-     *
-     * @since 2.10
-     */
-    public String encode(byte[] input, boolean addQuotes, String linefeed) {
-        final int inputEnd = input.length;
-        final StringBuilder sb = new StringBuilder(inputEnd + (inputEnd >> 2) + (inputEnd >> 3));
-        if (addQuotes) {
-            sb.append('"');
-        }
-
-        int chunksBeforeLF = getMaxLineLength() >> 2;
-
-        int inputPtr = 0;
-        int safeInputEnd = inputEnd - 3;
-
-        while (inputPtr <= safeInputEnd) {
-            int b24 = (input[inputPtr++]) << 8;
-            b24 |= (input[inputPtr++]) & 0xFF;
-            b24 = (b24 << 8) | ((input[inputPtr++]) & 0xFF);
-            encodeBase64Chunk(sb, b24);
-            if (--chunksBeforeLF <= 0) {
-                sb.append(linefeed);
-                chunksBeforeLF = getMaxLineLength() >> 2;
-            }
-        }
-        int inputLeft = inputEnd - inputPtr;
-        if (inputLeft > 0) {
-            int b24 = (input[inputPtr++]) << 16;
-            if (inputLeft == 2) {
-                b24 |= ((input[inputPtr++]) & 0xFF) << 8;
-            }
-            encodeBase64Partial(sb, b24, inputLeft);
-        }
-
-        if (addQuotes) {
-            sb.append('"');
-        }
-        return sb.toString();
-    }
 
     /**
      * Convenience method for decoding contents of a Base64-encoded String,
@@ -821,7 +647,7 @@ public final class Base64Variant implements java.io.Serializable {
      *   and 3 (as unit has exactly 4 characters)
      * @param msg Base message to use for exception
      */
-    protected void _reportInvalidBase64(char ch, int bindex, String msg) throws IllegalArgumentException {
+    private void _reportInvalidBase64(char ch, int bindex, String msg) throws IllegalArgumentException {
         String base;
         if (ch <= INT_SPACE) {
             base = "Illegal white space character (code 0x" + Integer.toHexString(ch) + ") as character #"
@@ -841,11 +667,11 @@ public final class Base64Variant implements java.io.Serializable {
         throw new IllegalArgumentException(base);
     }
 
-    protected void _reportBase64EOF() throws IllegalArgumentException {
+    private void _reportBase64EOF() throws IllegalArgumentException {
         throw new IllegalArgumentException(missingPaddingMessage());
     }
 
-    protected void _reportBase64UnexpectedPadding() throws IllegalArgumentException {
+    private void _reportBase64UnexpectedPadding() throws IllegalArgumentException {
         throw new IllegalArgumentException(unexpectedPaddingMessage());
     }
 
@@ -857,7 +683,7 @@ public final class Base64Variant implements java.io.Serializable {
      *
      * @since 2.12
      */
-    protected String unexpectedPaddingMessage() {
+    private String unexpectedPaddingMessage() {
         return String.format(
             "Unexpected end of base64-encoded String: base64 variant '%s' expects no padding at the end while decoding. This Base64Variant might have been incorrectly configured",
             getName());

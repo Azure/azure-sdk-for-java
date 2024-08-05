@@ -25,25 +25,8 @@ public abstract class StreamReadException extends JsonProcessingException {
      */
     protected RequestPayload _requestPayload;
 
-    // @since 2.15
-    protected StreamReadException(String msg) {
-        this(null, msg, null, null);
-    }
-
     protected StreamReadException(JsonParser p, String msg) {
         this(p, msg, _currentLocation(p), null);
-    }
-
-    protected StreamReadException(JsonParser p, String msg, Throwable rootCause) {
-        this(p, msg, _currentLocation(p), rootCause);
-    }
-
-    protected StreamReadException(JsonParser p, String msg, JsonLocation loc) {
-        this(p, msg, loc, null);
-    }
-
-    protected StreamReadException(String msg, JsonLocation loc, Throwable rootCause) {
-        this(null, msg, loc, rootCause);
     }
 
     // Canonical constructor
@@ -52,18 +35,6 @@ public abstract class StreamReadException extends JsonProcessingException {
         super(msg, loc, rootCause);
         _processor = p;
     }
-
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     *
-     * @param p Parser instance to assign to this exception
-     *
-     * @return This exception instance to allow call chaining
-     */
-    public abstract StreamReadException withParser(JsonParser p);
 
     /**
      * Fluent method that may be used to assign payload to this exception,
@@ -109,7 +80,7 @@ public abstract class StreamReadException extends JsonProcessingException {
     public String getMessage() {
         String msg = super.getMessage();
         if (_requestPayload != null) {
-            msg += "\nRequest payload : " + _requestPayload.toString();
+            msg += "\nRequest payload : " + _requestPayload;
         }
         return msg;
     }

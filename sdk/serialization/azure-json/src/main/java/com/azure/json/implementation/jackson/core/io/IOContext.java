@@ -102,12 +102,6 @@ public class IOContext implements AutoCloseable {
     protected byte[] _writeEncodingBuffer;
 
     /**
-     * Reference to the buffer allocated for temporary use with
-     * base64 encoding or decoding.
-     */
-    protected byte[] _base64Buffer;
-
-    /**
      * Reference to the buffer allocated for tokenization purposes,
      * in which character input is read, and from which it can be
      * further returned.
@@ -169,7 +163,7 @@ public class IOContext implements AutoCloseable {
      * @param managedResource Whether input source is managed (owned) by Jackson library
      *
      * @since 2.15
-     * @deprecated Since 2.16. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints, 
+     * @deprecated Since 2.16. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints,
      * ErrorReportConfiguration, BufferRecycler, ContentReference, boolean)} instead.
      */
     @Deprecated
@@ -187,7 +181,7 @@ public class IOContext implements AutoCloseable {
      * @param managedResource Whether input source is managed (owned) by Jackson library
      *
      * @since 2.13
-     * @deprecated Since 2.15. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints, 
+     * @deprecated Since 2.15. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints,
      * ErrorReportConfiguration, BufferRecycler, ContentReference, boolean)} instead.
      */
     @Deprecated // since 2.15
@@ -236,7 +230,7 @@ public class IOContext implements AutoCloseable {
     }
 
     /**
-     * @return Configured {@link ErrorReportConfiguration}, containing configured values for 
+     * @return Configured {@link ErrorReportConfiguration}, containing configured values for
      * handling error reporting.
      *
      * @since 2.16
@@ -247,11 +241,6 @@ public class IOContext implements AutoCloseable {
 
     public void setEncoding(JsonEncoding enc) {
         _encoding = enc;
-    }
-
-    public IOContext withEncoding(JsonEncoding enc) {
-        _encoding = enc;
-        return this;
     }
 
     public JsonEncoding getEncoding() {
@@ -283,20 +272,11 @@ public class IOContext implements AutoCloseable {
         return _sourceRef;
     }
 
-    // @since 2.17
-    public BufferRecycler bufferRecycler() {
-        return _bufferRecycler;
-    }
-
     /*
     /**********************************************************************
     /* Public API, buffer management
     /**********************************************************************
      */
-
-    public TextBuffer constructTextBuffer() {
-        return new TextBuffer(_bufferRecycler);
-    }
 
     public TextBuffer constructReadConstrainedTextBuffer() {
         return new ReadConstrainedTextBuffer(_streamReadConstraints, _bufferRecycler);
@@ -316,21 +296,6 @@ public class IOContext implements AutoCloseable {
     }
 
     /**
-     * Variant of {@link #allocReadIOBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocReadIOBuffer(int minSize) {
-        _verifyAlloc(_readIOBuffer);
-        return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, minSize));
-    }
-
-    /**
      * Method for recycling or allocation byte buffer of "write encoding" type.
      *<p>
      * Note: the method can only be called once during its life cycle.
@@ -341,50 +306,6 @@ public class IOContext implements AutoCloseable {
     public byte[] allocWriteEncodingBuffer() {
         _verifyAlloc(_writeEncodingBuffer);
         return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER));
-    }
-
-    /**
-     * Variant of {@link #allocWriteEncodingBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocWriteEncodingBuffer(int minSize) {
-        _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer
-            = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
-    }
-
-    /**
-     * Method for recycling or allocation byte buffer of "base 64 encode/decode" type.
-     *<p>
-     * Note: the method can only be called once during its life cycle.
-     * This is to protect against accidental sharing.
-     *
-     * @return Allocated or recycled byte buffer
-     */
-    public byte[] allocBase64Buffer() {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
-    }
-
-    /**
-     * Variant of {@link #allocBase64Buffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.9
-     */
-    public byte[] allocBase64Buffer(int minSize) {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, minSize));
     }
 
     public char[] allocTokenBuffer() {
@@ -431,14 +352,6 @@ public class IOContext implements AutoCloseable {
             _verifyRelease(buf, _writeEncodingBuffer);
             _writeEncodingBuffer = null;
             _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
-        }
-    }
-
-    public void releaseBase64Buffer(byte[] buf) {
-        if (buf != null) { // sanity checks, release once-and-only-once, must be one owned
-            _verifyRelease(buf, _base64Buffer);
-            _base64Buffer = null;
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
         }
     }
 

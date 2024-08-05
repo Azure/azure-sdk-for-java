@@ -139,27 +139,11 @@ public enum StreamWriteFeature implements JacksonFeature // since 2.12
      */
     final private JsonGenerator.Feature _mappedFeature;
 
-    private StreamWriteFeature(JsonGenerator.Feature mappedTo) {
+    StreamWriteFeature(JsonGenerator.Feature mappedTo) {
         // only for 2.x, let's map everything to legacy feature:
         _mappedFeature = mappedTo;
         _mask = mappedTo.getMask();
         _defaultState = mappedTo.enabledByDefault();
-    }
-
-    /**
-     * Method that calculates bit set (flags) of all features that
-     * are enabled by default.
-     *
-     * @return Bit mask of all features that are enabled by default
-     */
-    public static int collectDefaults() {
-        int flags = 0;
-        for (StreamWriteFeature f : values()) {
-            if (f.enabledByDefault()) {
-                flags |= f.getMask();
-            }
-        }
-        return flags;
     }
 
     @Override

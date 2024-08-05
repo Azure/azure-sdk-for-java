@@ -37,8 +37,6 @@ public final class ByteArrayBuilder extends OutputStream implements BufferRecycl
     // For 2.10, let's limit to using 128k chunks (was 256k up to 2.9)
     private final static int MAX_BLOCK_SIZE = (1 << 17);
 
-    final static int DEFAULT_BLOCK_ARRAY_SIZE = 40;
-
     // Optional buffer recycler instance that we can use for allocating the first block.
     private final BufferRecycler _bufferRecycler;
     private final LinkedList<byte[]> _pastBlocks = new LinkedList<>();
@@ -54,10 +52,6 @@ public final class ByteArrayBuilder extends OutputStream implements BufferRecycl
 
     public ByteArrayBuilder(BufferRecycler br) {
         this(br, INITIAL_BLOCK_SIZE);
-    }
-
-    public ByteArrayBuilder(int firstBlockSize) {
-        this(null, firstBlockSize);
     }
 
     public ByteArrayBuilder(BufferRecycler br, int firstBlockSize) {
@@ -141,21 +135,6 @@ public final class ByteArrayBuilder extends OutputStream implements BufferRecycl
         }
     }
 
-    // @since 2.9
-    public void appendFourBytes(int b32) {
-        if ((_currBlockPtr + 3) < _currBlock.length) {
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 24);
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 16);
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 8);
-            _currBlock[_currBlockPtr++] = (byte) b32;
-        } else {
-            append(b32 >> 24);
-            append(b32 >> 16);
-            append(b32 >> 8);
-            append(b32);
-        }
-    }
-
     /**
      * Method called when results are finalized and we can get the
      * full aggregated result buffer to return to the caller
@@ -189,25 +168,6 @@ public final class ByteArrayBuilder extends OutputStream implements BufferRecycl
         return result;
     }
 
-    /**
-     * Method functionally same as calling:
-     *<pre>
-     *  byte[] bytes = toByteArray();
-     *  release();
-     *  return bytes;
-     *</pre>
-     * that is; aggregates output contained in the builder (if any),
-     * clear state; returns buffer(s) to {@link BufferRecycler} configured,
-     * if any, and returns output to caller.
-     *
-     * @since 2.17
-     */
-    public byte[] getClearAndRelease() {
-        byte[] result = toByteArray();
-        release();
-        return result;
-    }
-
     /*
     /**********************************************************
     /* BufferRecycler.Gettable implementation
@@ -224,17 +184,6 @@ public final class ByteArrayBuilder extends OutputStream implements BufferRecycl
     /* Non-stream API (similar to TextBuffer)
     /**********************************************************
      */
-
-    /**
-     * Method called when starting "manual" output: will clear out
-     * current state and return the first segment buffer to fill
-     *
-     * @return Segment to use for writing
-     */
-    public byte[] resetAndGetFirstSegment() {
-        reset();
-        return _currBlock;
-    }
 
     /**
      * Method called when the current segment buffer is full; will

@@ -63,24 +63,6 @@ public class JsonParseException extends StreamReadException {
     }
 
     /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     *
-     * @param p Parser instance to assign to this exception
-     *
-     * @return This exception instance to allow call chaining
-     *
-     * @since 2.7
-     */
-    @Override
-    public JsonParseException withParser(JsonParser p) {
-        _processor = p;
-        return this;
-    }
-
-    /**
      * Fluent method that may be used to assign payload to this exception,
      * to let recipient access it for diagnostics purposes.
      *<p>

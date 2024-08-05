@@ -73,7 +73,6 @@ public class VersionUtil {
             }
         } catch (Exception e) {
             // ok to be missing (not good but acceptable)
-            ;
         }
         return (v == null) ? Version.unknownVersion() : v;
     }
@@ -140,7 +139,7 @@ public class VersionUtil {
      *    {@link Version#unknownVersion()} if parsing of components fail
      */
     public static Version parseVersion(String s, String groupId, String artifactId) {
-        if (s != null && (s = s.trim()).length() > 0) {
+        if (s != null && !(s = s.trim()).isEmpty()) {
             String[] parts = V_SEP.split(s);
             return new Version(parseVersionPart(parts[0]), (parts.length > 1) ? parseVersionPart(parts[1]) : 0,
                 (parts.length > 2) ? parseVersionPart(parts[2]) : 0, (parts.length > 3) ? parts[3] : null, groupId,
@@ -160,7 +159,7 @@ public class VersionUtil {
         return number;
     }
 
-    private final static void _close(Closeable c) {
+    private static void _close(Closeable c) {
         try {
             c.close();
         } catch (IOException e) {
@@ -173,11 +172,11 @@ public class VersionUtil {
     /**********************************************************************
      */
 
-    public final static void throwInternal() {
+    public static void throwInternal() {
         throw new RuntimeException("Internal error: this code path should never get executed");
     }
 
-    public final static <T> T throwInternalReturnAny() {
+    public static <T> T throwInternalReturnAny() {
         throw new RuntimeException("Internal error: this code path should never get executed");
     }
 }

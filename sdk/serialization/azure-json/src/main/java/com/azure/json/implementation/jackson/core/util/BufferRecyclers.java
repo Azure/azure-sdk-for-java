@@ -85,26 +85,6 @@ public class BufferRecyclers {
         return br;
     }
 
-    /**
-     * Specialized method that will release all recycled {@link BufferRecycler} if
-     * (and only if) recycler tracking has been enabled
-     * (see {@link #SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS}).
-     * This method is usually called on shutdown of the container like Application Server
-     * to ensure that no references are reachable via {@link ThreadLocal}s as this may cause
-     * unintentional retention of sizable amounts of memory. It may also be called regularly
-     * if GC for some reason does not clear up {@link SoftReference}s aggressively enough.
-     *
-     * @return Number of buffers released, if tracking enabled (zero or more); -1 if tracking not enabled.
-     *
-     * @since 2.9.6
-     */
-    public static int releaseBuffers() {
-        if (_bufferRecyclerTracker != null) {
-            return _bufferRecyclerTracker.releaseBuffers();
-        }
-        return -1;
-    }
-
     /*
     /**********************************************************************
     /* Obsolete things re-introduced in 2.12.5 after accidental direct
@@ -143,7 +123,7 @@ public class BufferRecyclers {
     }
 
     /**
-     * Not to be used any more: 
+     * Not to be used any more:
      *
      * @param rawText String to quote
      *

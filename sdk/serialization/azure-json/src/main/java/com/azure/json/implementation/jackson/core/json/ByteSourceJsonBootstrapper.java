@@ -4,8 +4,6 @@ package com.azure.json.implementation.jackson.core.json;
 import java.io.*;
 
 import com.azure.json.implementation.jackson.core.*;
-import com.azure.json.implementation.jackson.core.format.InputAccessor;
-import com.azure.json.implementation.jackson.core.format.MatchStrength;
 import com.azure.json.implementation.jackson.core.io.*;
 import com.azure.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
 import com.azure.json.implementation.jackson.core.sym.CharsToNameCanonicalizer;
@@ -19,9 +17,6 @@ import com.azure.json.implementation.jackson.core.util.VersionUtil;
  * streams.
  */
 public final class ByteSourceJsonBootstrapper {
-    public final static byte UTF8_BOM_1 = (byte) 0xEF;
-    public final static byte UTF8_BOM_2 = (byte) 0xBB;
-    public final static byte UTF8_BOM_3 = (byte) 0xBF;
 
     // [jackson-core#1081] Limit in bytes for input byte array length to use StringReader instead of InputStreamReader
     private static final int STRING_READER_BYTE_ARRAY_LENGTH_LIMIT = 8192;
@@ -258,7 +253,7 @@ public final class ByteSourceJsonBootstrapper {
         return VersionUtil.throwInternalReturnAny();
     }
 
-    public JsonParser constructParser(int parserFeatures, ObjectCodec codec, ByteQuadsCanonicalizer rootByteSymbols,
+    public JsonParser constructParser(int parserFeatures, ByteQuadsCanonicalizer rootByteSymbols,
         CharsToNameCanonicalizer rootCharSymbols, int factoryFeatures) throws IOException {
         int prevInputPtr = _inputPtr;
         JsonEncoding enc
@@ -270,12 +265,11 @@ public final class ByteSourceJsonBootstrapper {
             // (which is ok for larger input; not so hot for smaller; but this is not a common case)
             if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
                 ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
-                return new UTF8StreamJsonParser(_context, parserFeatures, _in, codec, can, _inputBuffer, _inputPtr,
+                return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr,
                     _inputEnd, bytesProcessed, _bufferRecyclable);
             }
         }
-        return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), codec,
-            rootCharSymbols.makeChild());
+        return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), rootCharSymbols.makeChild());
     }
 
     /*
@@ -283,139 +277,6 @@ public final class ByteSourceJsonBootstrapper {
     /*  Encoding detection for data format auto-detection
     /**********************************************************
      */
-
-    /**
-     * Current implementation is not as thorough as other functionality
-     * ({@link com.azure.json.implementation.jackson.core.json.ByteSourceJsonBootstrapper});
-     * supports UTF-8, for example. But it should work, for now, and can
-     * be improved as necessary.
-     *
-     * @param acc InputAccessor to use for accessing content to check
-     *
-     * @return Strength of match (never {@code null})
-     *
-     * @throws IOException if input access fails due to read problem
-     */
-    public static MatchStrength hasJSONFormat(InputAccessor acc) throws IOException {
-        // Ideally we should see "[" or "{"; but if not, we'll accept double-quote (String)
-        // in future could also consider accepting non-standard matches?
-
-        if (!acc.hasMoreBytes()) {
-            return MatchStrength.INCONCLUSIVE;
-        }
-        byte b = acc.nextByte();
-        // Very first thing, a UTF-8 BOM?
-        if (b == UTF8_BOM_1) { // yes, looks like UTF-8 BOM
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (acc.nextByte() != UTF8_BOM_2) {
-                return MatchStrength.NO_MATCH;
-            }
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (acc.nextByte() != UTF8_BOM_3) {
-                return MatchStrength.NO_MATCH;
-            }
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            b = acc.nextByte();
-        }
-        // Then possible leading space
-        int ch = skipSpace(acc, b);
-        if (ch < 0) {
-            return MatchStrength.INCONCLUSIVE;
-        }
-        // First, let's see if it looks like a structured type:
-        if (ch == '{') { // JSON object?
-            // Ideally we need to find either double-quote or closing bracket
-            ch = skipSpace(acc);
-            if (ch < 0) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (ch == '"' || ch == '}') {
-                return MatchStrength.SOLID_MATCH;
-            }
-            // ... should we allow non-standard? Let's not yet... can add if need be
-            return MatchStrength.NO_MATCH;
-        }
-        MatchStrength strength;
-
-        if (ch == '[') {
-            ch = skipSpace(acc);
-            if (ch < 0) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            // closing brackets is easy; but for now, let's also accept opening...
-            if (ch == ']' || ch == '[') {
-                return MatchStrength.SOLID_MATCH;
-            }
-            return MatchStrength.SOLID_MATCH;
-        } else {
-            // plain old value is not very convincing...
-            strength = MatchStrength.WEAK_MATCH;
-        }
-
-        if (ch == '"') { // string value
-            return strength;
-        }
-        if (ch <= '9' && ch >= '0') { // number
-            return strength;
-        }
-        if (ch == '-') { // negative number
-            ch = skipSpace(acc);
-            if (ch < 0) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            return (ch <= '9' && ch >= '0') ? strength : MatchStrength.NO_MATCH;
-        }
-        // or one of literals
-        if (ch == 'n') { // null
-            return tryMatch(acc, "ull", strength);
-        }
-        if (ch == 't') { // true
-            return tryMatch(acc, "rue", strength);
-        }
-        if (ch == 'f') { // false
-            return tryMatch(acc, "alse", strength);
-        }
-        return MatchStrength.NO_MATCH;
-    }
-
-    private static MatchStrength tryMatch(InputAccessor acc, String matchStr, MatchStrength fullMatchStrength)
-        throws IOException {
-        for (int i = 0, len = matchStr.length(); i < len; ++i) {
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (acc.nextByte() != matchStr.charAt(i)) {
-                return MatchStrength.NO_MATCH;
-            }
-        }
-        return fullMatchStrength;
-    }
-
-    private static int skipSpace(InputAccessor acc) throws IOException {
-        if (!acc.hasMoreBytes()) {
-            return -1;
-        }
-        return skipSpace(acc, acc.nextByte());
-    }
-
-    private static int skipSpace(InputAccessor acc, byte b) throws IOException {
-        while (true) {
-            int ch = b & 0xFF;
-            if (!(ch == ' ' || ch == '\r' || ch == '\n' || ch == '\t')) {
-                return ch;
-            }
-            if (!acc.hasMoreBytes()) {
-                return -1;
-            }
-            b = acc.nextByte();
-        }
-    }
 
     /*
     /**********************************************************
@@ -530,7 +391,7 @@ public final class ByteSourceJsonBootstrapper {
     /**********************************************************
      */
 
-    protected boolean ensureLoaded(int minimum) throws IOException {
+    private boolean ensureLoaded(int minimum) throws IOException {
         // Let's assume here buffer has enough room -- this will always
         // be true for the limited used this method gets
         int gotten = (_inputEnd - _inputPtr);

@@ -31,16 +31,6 @@ public abstract class StreamWriteException extends JsonProcessingException {
         _processor = g;
     }
 
-    /**
-     * Fluent method that may be used to assign originating {@link JsonGenerator},
-     * to be accessed using {@link #getProcessor()}.
-     *
-     * @param g Generator to assign
-     *
-     * @return This exception instance (to allow call chaining)
-     */
-    public abstract StreamWriteException withGenerator(JsonGenerator g);
-
     @Override
     public JsonGenerator getProcessor() {
         return _processor;

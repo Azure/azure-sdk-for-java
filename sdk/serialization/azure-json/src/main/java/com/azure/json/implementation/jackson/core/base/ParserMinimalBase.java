@@ -31,10 +31,7 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static int INT_CR = '\r';
     protected final static int INT_SPACE = 0x0020;
 
-    // Markup
-    protected final static int INT_LBRACKET = '[';
     protected final static int INT_RBRACKET = ']';
-    protected final static int INT_LCURLY = '{';
     protected final static int INT_RCURLY = '}';
     protected final static int INT_QUOTE = '"';
     protected final static int INT_APOS = '\'';
@@ -53,7 +50,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     protected final static int INT_PERIOD = '.';
     protected final static int INT_e = 'e';
-    protected final static int INT_E = 'E';
 
     protected final static char CHAR_NULL = '\0';
 
@@ -61,11 +57,6 @@ public abstract class ParserMinimalBase extends JsonParser {
      * @since 2.9
      */
     protected final static byte[] NO_BYTES = new byte[0];
-
-    /**
-     * @since 2.9
-     */
-    protected final static int[] NO_INTS = new int[0];
 
     /*
     /**********************************************************
@@ -159,10 +150,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     /**********************************************************
      */
 
-    protected ParserMinimalBase() {
-        super();
-    }
-
     protected ParserMinimalBase(int features) {
         super(features);
     }
@@ -198,12 +185,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     @Override
-    public int currentTokenId() {
-        final JsonToken t = _currToken;
-        return (t == null) ? JsonTokenId.ID_NO_TOKEN : t.id();
-    }
-
-    @Override
     public JsonToken getCurrentToken() {
         return _currToken;
     }
@@ -213,51 +194,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     public int getCurrentTokenId() {
         final JsonToken t = _currToken;
         return (t == null) ? JsonTokenId.ID_NO_TOKEN : t.id();
-    }
-
-    @Override
-    public boolean hasCurrentToken() {
-        return _currToken != null;
-    }
-
-    @Override
-    public boolean hasTokenId(int id) {
-        final JsonToken t = _currToken;
-        if (t == null) {
-            return (JsonTokenId.ID_NO_TOKEN == id);
-        }
-        return t.id() == id;
-    }
-
-    @Override
-    public boolean hasToken(JsonToken t) {
-        return (_currToken == t);
-    }
-
-    @Override
-    public boolean isExpectedStartArrayToken() {
-        return _currToken == JsonToken.START_ARRAY;
-    }
-
-    @Override
-    public boolean isExpectedStartObjectToken() {
-        return _currToken == JsonToken.START_OBJECT;
-    }
-
-    @Override
-    public boolean isExpectedNumberIntToken() {
-        return _currToken == JsonToken.VALUE_NUMBER_INT;
-    }
-
-    @Override
-    public JsonToken nextValue() throws IOException {
-        // Implementation should be as trivial as follows; only needs to change if
-        // we are to skip other tokens (for example, if comments were exposed as tokens)
-        JsonToken t = nextToken();
-        if (t == JsonToken.FIELD_NAME) {
-            t = nextToken();
-        }
-        return t;
     }
 
     @Override
@@ -338,14 +274,6 @@ public abstract class ParserMinimalBase extends JsonParser {
         }
     }
 
-    @Override
-    public JsonToken getLastClearedToken() {
-        return _lastClearedToken;
-    }
-
-    @Override
-    public abstract void overrideCurrentName(String name);
-
     /*
     /**********************************************************
     /* Public API, access to token information, text
@@ -383,56 +311,6 @@ public abstract class ParserMinimalBase extends JsonParser {
      */
 
     @Override
-    public boolean getValueAsBoolean(boolean defaultValue) throws IOException {
-        JsonToken t = _currToken;
-        if (t != null) {
-            switch (t.id()) {
-                case ID_STRING:
-                    String str = getText().trim();
-                    if ("true".equals(str)) {
-                        return true;
-                    }
-                    if ("false".equals(str)) {
-                        return false;
-                    }
-                    if (_hasTextualNull(str)) {
-                        return false;
-                    }
-                    break;
-
-                case ID_NUMBER_INT:
-                    return getIntValue() != 0;
-
-                case ID_TRUE:
-                    return true;
-
-                case ID_FALSE:
-                case ID_NULL:
-                    return false;
-
-                case ID_EMBEDDED_OBJECT:
-                    Object value = getEmbeddedObject();
-                    if (value instanceof Boolean) {
-                        return (Boolean) value;
-                    }
-                    break;
-
-                default:
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public int getValueAsInt() throws IOException {
-        JsonToken t = _currToken;
-        if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
-            return getIntValue();
-        }
-        return getValueAsInt(0);
-    }
-
-    @Override
     public int getValueAsInt(int defaultValue) throws IOException {
         JsonToken t = _currToken;
         if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
@@ -460,81 +338,6 @@ public abstract class ParserMinimalBase extends JsonParser {
                     Object value = getEmbeddedObject();
                     if (value instanceof Number) {
                         return ((Number) value).intValue();
-                    }
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public long getValueAsLong() throws IOException {
-        JsonToken t = _currToken;
-        if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
-            return getLongValue();
-        }
-        return getValueAsLong(0L);
-    }
-
-    @Override
-    public long getValueAsLong(long defaultValue) throws IOException {
-        JsonToken t = _currToken;
-        if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
-            return getLongValue();
-        }
-        if (t != null) {
-            switch (t.id()) {
-                case ID_STRING:
-                    final String str = getText();
-                    if (_hasTextualNull(str)) {
-                        return 0L;
-                    }
-                    return NumberInput.parseAsLong(str, defaultValue);
-
-                case ID_TRUE:
-                    return 1L;
-
-                case ID_FALSE:
-                case ID_NULL:
-                    return 0L;
-
-                case ID_EMBEDDED_OBJECT:
-                    Object value = getEmbeddedObject();
-                    if (value instanceof Number) {
-                        return ((Number) value).longValue();
-                    }
-            }
-        }
-        return defaultValue;
-    }
-
-    @Override
-    public double getValueAsDouble(double defaultValue) throws IOException {
-        JsonToken t = _currToken;
-        if (t != null) {
-            switch (t.id()) {
-                case ID_STRING:
-                    String str = getText();
-                    if (_hasTextualNull(str)) {
-                        return 0L;
-                    }
-                    streamReadConstraints().validateFPLength(str.length());
-                    return NumberInput.parseAsDouble(str, defaultValue);
-
-                case ID_NUMBER_INT:
-                case ID_NUMBER_FLOAT:
-                    return getDoubleValue();
-
-                case ID_TRUE:
-                    return 1.0;
-
-                case ID_FALSE:
-                case ID_NULL:
-                    return 0.0;
-
-                case ID_EMBEDDED_OBJECT:
-                    Object value = this.getEmbeddedObject();
-                    if (value instanceof Number) {
-                        return ((Number) value).doubleValue();
                     }
             }
         }
@@ -775,10 +578,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     /**********************************************************
      */
 
-    protected final JsonParseException _constructError(String msg, Throwable t) {
-        return _constructReadException(msg, t);
-    }
-
     /**
      * Factory method used to provide location for cases where we must read
      * and consume a single "wrong" character (to possibly allow error recovery),
@@ -796,7 +595,7 @@ public abstract class ParserMinimalBase extends JsonParser {
         return currentLocation();
     }
 
-    protected final static String _getCharDesc(int ch) {
+    protected static String _getCharDesc(int ch) {
         char c = (char) ch;
         if (Character.isISOControl(c)) {
             return "(CTRL-CHAR, code " + ch + ")";
@@ -823,11 +622,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     protected final void _throwInternal() {
         VersionUtil.throwInternal();
-    }
-
-    // @since 2.17
-    protected final <T> T _throwInternalReturnAny() {
-        return VersionUtil.throwInternalReturnAny();
     }
 
     protected final void _wrapError(String msg, Throwable t) throws JsonParseException {

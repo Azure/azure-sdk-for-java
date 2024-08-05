@@ -42,41 +42,10 @@ public class InputCoercionException extends StreamReadException {
         _targetType = targetType;
     }
 
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     */
-    @Override
-    public InputCoercionException withParser(JsonParser p) {
-        _processor = p;
-        return this;
-    }
-
     @Override
     public InputCoercionException withRequestPayload(RequestPayload p) {
         _requestPayload = p;
         return this;
     }
 
-    /**
-     * Accessor for getting information about input type (in form of token, giving "shape"
-     * of input) for which coercion failed.
-     *
-     * @return "Shape" of input for which coercion failed, as {@link JsonToken}
-     */
-    public JsonToken getInputType() {
-        return _inputType;
-    }
-
-    /**
-     * Accessor for getting information about target type (in form of Java {@link java.lang.Class})
-     * for which coercion failed.
-     *
-     * @return Target type of failed conversion
-     */
-    public Class<?> getTargetType() {
-        return _targetType;
-    }
 }

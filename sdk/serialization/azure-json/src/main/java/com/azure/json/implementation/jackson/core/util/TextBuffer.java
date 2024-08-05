@@ -187,49 +187,6 @@ public class TextBuffer {
     }
 
     /**
-     * Method called to clear out any content text buffer may have, and
-     * initializes buffer to use non-shared data.
-     */
-    public void resetWithEmpty() {
-        _inputStart = -1; // indicates shared buffer not used
-        _currentSize = 0;
-        _inputLen = 0;
-
-        _inputBuffer = null;
-        _resultString = null;
-        _resultArray = null;
-
-        // And then reset internal input buffers, if necessary:
-        if (_hasSegments) {
-            clearSegments();
-        }
-    }
-
-    /**
-     * Method for clearing out possibly existing content, and replacing them with
-     * a single-character content (so {@link #size()} would return {@code 1})
-     *
-     * @param ch Character to set as the buffer contents
-     *
-     * @since 2.9
-     */
-    public void resetWith(char ch) {
-        _inputStart = -1;
-        _inputLen = 0;
-
-        _resultString = null;
-        _resultArray = null;
-
-        if (_hasSegments) {
-            clearSegments();
-        } else if (_currentSegment == null) {
-            _currentSegment = buf(1);
-        }
-        _currentSegment[0] = ch; // lgtm [java/dereferenced-value-may-be-null]
-        _currentSize = _segmentSize = 1;
-    }
-
-    /**
      * Method called to initialize the buffer with a shared copy of data;
      * this means that buffer will just have pointers to actual data. It
      * also means that if anything is to be appended to the buffer, it
@@ -280,30 +237,6 @@ public class TextBuffer {
     }
 
     /**
-     * @param text String that contains new contents
-     * @param start Offset of the first content character in {@code text}
-     * @param len Length of content in {@code text}
-     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
-     * @since 2.9
-     */
-    public void resetWithCopy(String text, int start, int len) throws IOException {
-        _inputBuffer = null;
-        _inputStart = -1;
-        _inputLen = 0;
-
-        _resultString = null;
-        _resultArray = null;
-
-        if (_hasSegments) {
-            clearSegments();
-        } else if (_currentSegment == null) {
-            _currentSegment = buf(len);
-        }
-        _currentSize = _segmentSize = 0;
-        append(text, start, len);
-    }
-
-    /**
      * @param value to replace existing buffer
      * @throws IOException if the value is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
      */
@@ -321,18 +254,6 @@ public class TextBuffer {
         }
         _currentSize = 0;
 
-    }
-
-    /**
-     * Method for accessing the currently active (last) content segment
-     * without changing state of the buffer
-     *
-     * @return Currently active (last) content segment
-     *
-     * @since 2.9
-     */
-    public char[] getBufferWithoutReset() {
-        return _currentSegment;
     }
 
     // Helper method used to find a buffer to use, ideally one
@@ -392,24 +313,7 @@ public class TextBuffer {
          * segments start at 0, and if we have to create a combo buffer,
          * that too will start from beginning of the buffer
          */
-        return (_inputStart >= 0) ? _inputStart : 0;
-    }
-
-    /**
-     * Method that can be used to check whether textual contents can
-     * be efficiently accessed using {@link #getTextBuffer}.
-     *
-     * @return {@code True} if access via {@link #getTextBuffer()} would be efficient
-     *   (that is, content already available as aggregated {@code char[]})
-     */
-    public boolean hasTextAsCharacters() {
-        // if we have array in some form, sure
-        if (_inputStart >= 0 || _resultArray != null)
-            return true;
-        // not if we have String as value
-        if (_resultString != null)
-            return false;
-        return true;
+        return Math.max(_inputStart, 0);
     }
 
     /**
@@ -487,8 +391,7 @@ public class TextBuffer {
 
                         // First stored segments
                         if (_segments != null) {
-                            for (int i = 0, len = _segments.size(); i < len; ++i) {
-                                char[] curr = _segments.get(i);
+                            for (char[] curr : _segments) {
                                 sb.append(curr, 0, curr.length);
                             }
                         }
@@ -689,8 +592,7 @@ public class TextBuffer {
         // nope, not shared
         int total = 0;
         if (_segments != null) {
-            for (int i = 0, end = _segments.size(); i < end; ++i) {
-                char[] curr = _segments.get(i);
+            for (char[] curr : _segments) {
                 int currLen = curr.length;
                 total += currLen;
                 w.write(curr, 0, currLen);
@@ -709,16 +611,6 @@ public class TextBuffer {
     /* Public mutators:
     /**********************************************************
      */
-
-    /**
-     * Method called to make sure that buffer is not using shared input
-     * buffer; if it is, it will copy such contents to private buffer.
-     */
-    public void ensureNotShared() {
-        if (_inputStart >= 0) {
-            unshare(16);
-        }
-    }
 
     /**
      * @param c char to append
@@ -950,51 +842,6 @@ public class TextBuffer {
     }
 
     /**
-     * @param lastSegmentEnd End offset in the currently active segment,
-     *    could be 0 in the case of first character is
-     *    delimiter or end-of-line
-     * @param trimTrailingSpaces Whether trailing spaces should be trimmed or not
-     * @return token as text
-     * @throws IOException If length constraints (of longest allowed Text value) are violated
-     *
-     * @since 2.15
-     */
-    public String finishAndReturn(int lastSegmentEnd, boolean trimTrailingSpaces) throws IOException {
-        if (trimTrailingSpaces) {
-            // First, see if it's enough to trim end of current segment:
-            int ptr = lastSegmentEnd - 1;
-            if (ptr < 0 || _currentSegment[ptr] <= 0x0020) {
-                return _doTrim(ptr);
-            }
-        }
-        _currentSize = lastSegmentEnd;
-        return contentsAsString();
-    }
-
-    // @since 2.15
-    private String _doTrim(int ptr) throws IOException {
-        while (true) {
-            final char[] curr = _currentSegment;
-            while (--ptr >= 0) {
-                if (curr[ptr] > 0x0020) { // found the ending non-space char, all done:
-                    _currentSize = ptr + 1;
-                    return contentsAsString();
-                }
-            }
-            // nope: need to handle previous segment; if there is one:
-            if (_segments == null || _segments.isEmpty()) {
-                break;
-            }
-            _currentSegment = _segments.remove(_segments.size() - 1);
-            ptr = _currentSegment.length;
-        }
-        // we get here if everything was trimmed, so:
-        _currentSize = 0;
-        _hasSegments = false;
-        return contentsAsString();
-    }
-
-    /**
      * Method called to expand size of the current segment, to
      * accommodate for more contiguous content. Usually only
      * used when parsing tokens like names if even then.
@@ -1012,25 +859,6 @@ public class TextBuffer {
             newLen = len + (len >> 2);
         }
         return (_currentSegment = Arrays.copyOf(curr, newLen));
-    }
-
-    /**
-     * Method called to expand size of the current segment, to
-     * accommodate for more contiguous content. Usually only
-     * used when parsing tokens like names if even then.
-     *
-     * @param minSize Required minimum strength of the current segment
-     *
-     * @return Expanded current segment
-     *
-     * @since 2.4
-     */
-    public char[] expandCurrentSegment(int minSize) {
-        char[] curr = _currentSegment;
-        if (curr.length >= minSize)
-            return curr;
-        _currentSegment = curr = Arrays.copyOf(curr, minSize);
-        return curr;
     }
 
     /*
@@ -1138,8 +966,7 @@ public class TextBuffer {
         int offset = 0;
         final char[] result = carr(size);
         if (_segments != null) {
-            for (int i = 0, len = _segments.size(); i < len; ++i) {
-                char[] curr = _segments.get(i);
+            for (char[] curr : _segments) {
                 int currLen = curr.length;
                 System.arraycopy(curr, 0, result, offset, currLen);
                 offset += currLen;

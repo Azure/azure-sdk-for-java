@@ -160,30 +160,6 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
 
     // // // Accessors
 
-    public int factoryFeaturesMask() {
-        return _factoryFeatures;
-    }
-
-    public int streamReadFeatures() {
-        return _streamReadFeatures;
-    }
-
-    public int streamWriteFeatures() {
-        return _streamWriteFeatures;
-    }
-
-    public RecyclerPool<BufferRecycler> recyclerPool() {
-        return _recyclerPool;
-    }
-
-    public InputDecorator inputDecorator() {
-        return _inputDecorator;
-    }
-
-    public OutputDecorator outputDecorator() {
-        return _outputDecorator;
-    }
-
     // // // Factory features
 
     public B enable(JsonFactory.Feature f) {
@@ -294,7 +270,7 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     }
 
     private B _failNonJSON(Object feature) {
-        throw new IllegalArgumentException("Feature " + feature.getClass().getName() + "#" + feature.toString()
+        throw new IllegalArgumentException("Feature " + feature.getClass().getName() + "#" + feature
             + " not supported for non-JSON backend");
     }
 
@@ -322,18 +298,6 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
 
     // // // Other configuration, helper objects
 
-    /**
-     * @param p RecyclerPool to use for buffer allocation
-     *
-     * @return this builder (for call chaining)
-     *
-     * @since 2.16
-     */
-    public B recyclerPool(RecyclerPool<BufferRecycler> p) {
-        _recyclerPool = Objects.requireNonNull(p);
-        return _this();
-    }
-
     // // // Other configuration, decorators
 
     public B inputDecorator(InputDecorator dec) {
@@ -343,14 +307,6 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
 
     public B outputDecorator(OutputDecorator dec) {
         _outputDecorator = dec;
-        return _this();
-    }
-
-    public B addDecorator(JsonGeneratorDecorator decorator) {
-        if (_generatorDecorators == null) {
-            _generatorDecorators = new ArrayList<>();
-        }
-        _generatorDecorators.add(decorator);
         return _this();
     }
 
@@ -383,7 +339,7 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     /**
      * Sets the configuration for error reporting.
      *
-     * @param errorReportConfiguration configuration values used for handling erroneous token inputs. 
+     * @param errorReportConfiguration configuration values used for handling erroneous token inputs.
      * @return this builder (for call chaining)
      * @since 2.16
      */

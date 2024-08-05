@@ -127,23 +127,7 @@ public enum JsonWriteFeature implements FormatFeature {
      */
     final private JsonGenerator.Feature _mappedFeature;
 
-    /**
-     * Method that calculates bit set (flags) of all features that
-     * are enabled by default.
-     *
-     * @return Bit mask of all features that are enabled by default
-     */
-    public static int collectDefaults() {
-        int flags = 0;
-        for (JsonWriteFeature f : values()) {
-            if (f.enabledByDefault()) {
-                flags |= f.getMask();
-            }
-        }
-        return flags;
-    }
-
-    private JsonWriteFeature(boolean defaultState, JsonGenerator.Feature mapTo) {
+    JsonWriteFeature(boolean defaultState, JsonGenerator.Feature mapTo) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
         _mappedFeature = mapTo;

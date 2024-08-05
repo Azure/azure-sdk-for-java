@@ -6,10 +6,6 @@
 
 package com.azure.json.implementation.jackson.core;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
-
 /**
  * Interface that defines how Jackson package can interact with efficient
  * pre-serialized or lazily-serialized and reused String representations.
@@ -30,17 +26,6 @@ public interface SerializableString {
      * @return Unquoted String
      */
     String getValue();
-
-    /**
-     * Returns length of the (unquoted) String as characters.
-     * Functionally equivalent to:
-     *<pre>
-     *   getValue().length();
-     *</pre>
-     *
-     * @return Length of the String in characters
-     */
-    int charLength();
 
     /*
     /**********************************************************
@@ -155,51 +140,4 @@ public interface SerializableString {
     /**********************************************************
      */
 
-    /**
-     * Method for writing JSON-escaped UTF-8 encoded String value using given
-     * {@link java.io.OutputStream}.
-     *
-     * @param out {@link java.io.OutputStream} to write String into
-     *
-     * @return Number of bytes written
-     *
-     * @throws IOException if underlying stream write fails
-     */
-    int writeQuotedUTF8(OutputStream out) throws IOException;
-
-    /**
-     * Method for writing unescaped UTF-8 encoded String value using given
-     * {@link java.io.OutputStream}.
-     *
-     * @param out {@link java.io.OutputStream} to write String into
-     *
-     * @return Number of bytes written
-     *
-     * @throws IOException if underlying stream write fails
-     */
-    int writeUnquotedUTF8(OutputStream out) throws IOException;
-
-    /**
-     * Method for appending JSON-escaped UTF-8 encoded String value into given
-     * {@link java.nio.ByteBuffer}, if it fits.
-     *
-     * @param buffer {@link java.nio.ByteBuffer} to append String into
-     *
-     * @return Number of bytes put, if contents fit, otherwise -1
-     *
-     * @throws IOException if underlying buffer append operation fails
-     */
-    int putQuotedUTF8(ByteBuffer buffer) throws IOException;
-
-    /**
-     * Method for appending unquoted ('raw') UTF-8 encoded String value into given
-     * {@link java.nio.ByteBuffer}, if it fits.
-     *
-     * @param buffer {@link java.nio.ByteBuffer} to append String into
-     *
-     * @return Number of bytes put, if contents fit, otherwise -1
-     *
-     * @throws IOException if underlying buffer append operation fails
-     */
-    int putUnquotedUTF8(ByteBuffer buffer) throws IOException;
 }

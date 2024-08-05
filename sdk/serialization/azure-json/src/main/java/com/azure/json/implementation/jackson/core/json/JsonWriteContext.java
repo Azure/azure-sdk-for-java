@@ -182,16 +182,6 @@ public class JsonWriteContext extends JsonStreamContext {
         return ctxt.reset(TYPE_ARRAY);
     }
 
-    /* @since 2.10 */
-    public JsonWriteContext createChildArrayContext(Object currValue) {
-        JsonWriteContext ctxt = _child;
-        if (ctxt == null) {
-            _child = ctxt = new JsonWriteContext(TYPE_ARRAY, this, (_dups == null) ? null : _dups.child(), currValue);
-            return ctxt;
-        }
-        return ctxt.reset(TYPE_ARRAY, currValue);
-    }
-
     public JsonWriteContext createChildObjectContext() {
         JsonWriteContext ctxt = _child;
         if (ctxt == null) {
@@ -270,7 +260,7 @@ public class JsonWriteContext extends JsonStreamContext {
         return (_index < 0) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_COMMA;
     }
 
-    private final void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
+    private void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
         if (dd.isDup(name)) {
             Object src = dd.getSource();
             throw new JsonGenerationException("Duplicate field '" + name + "'",

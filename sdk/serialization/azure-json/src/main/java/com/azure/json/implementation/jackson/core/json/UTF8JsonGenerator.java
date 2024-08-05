@@ -2,8 +2,6 @@
 package com.azure.json.implementation.jackson.core.json;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import com.azure.json.implementation.jackson.core.*;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
@@ -96,12 +94,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     protected final int _charBufferLength;
 
     /**
-     * 6 character temporary buffer allocated if needed, for constructing
-     * escape sequences
-     */
-    protected byte[] _entityBuffer;
-
-    /**
      * Flag that indicates whether the output buffer is recycable (and
      * needs to be returned to recycler once we are done) or not.
      */
@@ -115,8 +107,8 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
 
     // @since 2.10
     @SuppressWarnings("deprecation")
-    public UTF8JsonGenerator(IOContext ctxt, int features, ObjectCodec codec, OutputStream out, char quoteChar) {
-        super(ctxt, features, codec);
+    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out, char quoteChar) {
+        super(ctxt, features);
         _outputStream = out;
         _quoteChar = (byte) quoteChar;
 
@@ -143,10 +135,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     }
 
     // @since 2.10
-    public UTF8JsonGenerator(IOContext ctxt, int features, ObjectCodec codec, OutputStream out, char quoteChar,
+    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out, char quoteChar,
         byte[] outputBuffer, int outputOffset, boolean bufferRecyclable) {
 
-        super(ctxt, features, codec);
+        super(ctxt, features);
         _outputStream = out;
         _quoteChar = (byte) quoteChar;
         boolean escapeSlash = isEnabled(JsonWriteFeature.ESCAPE_FORWARD_SLASHES.mappedFeature());
@@ -165,14 +157,14 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     }
 
     @Deprecated // since 2.10
-    public UTF8JsonGenerator(IOContext ctxt, int features, ObjectCodec codec, OutputStream out) {
-        this(ctxt, features, codec, out, JsonFactory.DEFAULT_QUOTE_CHAR);
+    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out) {
+        this(ctxt, features, out, JsonFactory.DEFAULT_QUOTE_CHAR);
     }
 
     @Deprecated // since 2.10
-    public UTF8JsonGenerator(IOContext ctxt, int features, ObjectCodec codec, OutputStream out, byte[] outputBuffer,
+    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out, byte[] outputBuffer,
         int outputOffset, boolean bufferRecyclable) {
-        this(ctxt, features, codec, out, JsonFactory.DEFAULT_QUOTE_CHAR, outputBuffer, outputOffset, bufferRecyclable);
+        this(ctxt, features, out, JsonFactory.DEFAULT_QUOTE_CHAR, outputBuffer, outputOffset, bufferRecyclable);
     }
 
     /*
@@ -180,17 +172,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     /* Overridden configuration methods
     /**********************************************************
      */
-
-    @Override
-    public Object getOutputTarget() {
-        return _outputStream;
-    }
-
-    @Override
-    public int getOutputBuffered() {
-        // Assuming tail is always valid, set to 0 on close
-        return _outputTail;
-    }
 
     /*
     /**********************************************************
@@ -200,10 +181,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
 
     @Override
     public void writeFieldName(String name) throws IOException {
-        if (_cfgPrettyPrinter != null) {
-            _writePPFieldName(name);
-            return;
-        }
+
         final int status = _writeContext.writeFieldName(name);
         if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
             _reportError("Can not write a field name, expecting a value");
@@ -249,10 +227,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
 
     @Override
     public void writeFieldName(SerializableString name) throws IOException {
-        if (_cfgPrettyPrinter != null) {
-            _writePPFieldName(name);
-            return;
-        }
         final int status = _writeContext.writeFieldName(name.getValue());
         if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
             _reportError("Can not write a field name, expecting a value");
@@ -283,7 +257,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputBuffer[_outputTail++] = _quoteChar;
     }
 
-    private final void _writeUnq(SerializableString name) throws IOException {
+    private void _writeUnq(SerializableString name) throws IOException {
         int len = name.appendQuotedUTF8(_outputBuffer, _outputTail);
         if (len < 0) {
             _writeBytes(name.asQuotedUTF8());
@@ -303,44 +277,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _verifyValueWrite("start an array");
         _writeContext = _writeContext.createChildArrayContext();
         streamWriteConstraints().validateNestingDepth(_writeContext.getNestingDepth());
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeStartArray(this);
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = BYTE_LBRACKET;
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
-    }
-
-    @Override // since 2.12
-    public final void writeStartArray(Object currentValue) throws IOException {
-        _verifyValueWrite("start an array");
-        _writeContext = _writeContext.createChildArrayContext(currentValue);
-        streamWriteConstraints().validateNestingDepth(_writeContext.getNestingDepth());
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeStartArray(this);
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = BYTE_LBRACKET;
-        }
-    }
-
-    @Override // since 2.12
-    public void writeStartArray(Object currentValue, int size) throws IOException {
-        _verifyValueWrite("start an array");
-        _writeContext = _writeContext.createChildArrayContext(currentValue);
-        streamWriteConstraints().validateNestingDepth(_writeContext.getNestingDepth());
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeStartArray(this);
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = BYTE_LBRACKET;
-        }
+        _outputBuffer[_outputTail++] = BYTE_LBRACKET;
     }
 
     @Override
@@ -348,14 +288,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         if (!_writeContext.inArray()) {
             _reportError("Current context not Array but " + _writeContext.typeDesc());
         }
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeEndArray(this, _writeContext.getEntryCount());
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = BYTE_RBRACKET;
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
+        _outputBuffer[_outputTail++] = BYTE_RBRACKET;
         _writeContext = _writeContext.clearAndGetParent();
     }
 
@@ -364,14 +300,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _verifyValueWrite("start an object");
         _writeContext = _writeContext.createChildObjectContext();
         streamWriteConstraints().validateNestingDepth(_writeContext.getNestingDepth());
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeStartObject(this);
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = BYTE_LCURLY;
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
+        _outputBuffer[_outputTail++] = BYTE_LCURLY;
     }
 
     @Override // since 2.8
@@ -380,14 +312,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         JsonWriteContext ctxt = _writeContext.createChildObjectContext(forValue);
         streamWriteConstraints().validateNestingDepth(ctxt.getNestingDepth());
         _writeContext = ctxt;
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeStartObject(this);
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = '{';
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
+        _outputBuffer[_outputTail++] = '{';
     }
 
     @Override // since 2.14
@@ -400,88 +328,11 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         if (!_writeContext.inObject()) {
             _reportError("Current context not Object but " + _writeContext.typeDesc());
         }
-        if (_cfgPrettyPrinter != null) {
-            _cfgPrettyPrinter.writeEndObject(this, _writeContext.getEntryCount());
-        } else {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = BYTE_RCURLY;
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
+        _outputBuffer[_outputTail++] = BYTE_RCURLY;
         _writeContext = _writeContext.clearAndGetParent();
-    }
-
-    // Specialized version of <code>_writeFieldName</code>, off-lined
-    // to keep the "fast path" as simple (and hopefully fast) as possible.
-    protected final void _writePPFieldName(String name) throws IOException {
-        int status = _writeContext.writeFieldName(name);
-        if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
-            _reportError("Can not write a field name, expecting a value");
-        }
-        if ((status == JsonWriteContext.STATUS_OK_AFTER_COMMA)) {
-            _cfgPrettyPrinter.writeObjectEntrySeparator(this);
-        } else {
-            _cfgPrettyPrinter.beforeObjectEntries(this);
-        }
-        if (_cfgUnqNames) {
-            _writeStringSegments(name, false);
-            return;
-        }
-        final int len = name.length();
-        if (len > _charBufferLength) {
-            _writeStringSegments(name, true);
-            return;
-        }
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        name.getChars(0, len, _charBuffer, 0);
-        // But as one segment, or multiple?
-        if (len <= _outputMaxContiguous) {
-            if ((_outputTail + len) > _outputEnd) { // caller must ensure enough space
-                _flushBuffer();
-            }
-            _writeStringSegment(_charBuffer, 0, len);
-        } else {
-            _writeStringSegments(_charBuffer, 0, len);
-        }
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    protected final void _writePPFieldName(SerializableString name) throws IOException {
-        final int status = _writeContext.writeFieldName(name.getValue());
-        if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
-            _reportError("Can not write a field name, expecting a value");
-        }
-        if (status == JsonWriteContext.STATUS_OK_AFTER_COMMA) {
-            _cfgPrettyPrinter.writeObjectEntrySeparator(this);
-        } else {
-            _cfgPrettyPrinter.beforeObjectEntries(this);
-        }
-
-        final boolean addQuotes = !_cfgUnqNames; // standard
-        if (addQuotes) {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = _quoteChar;
-        }
-        int len = name.appendQuotedUTF8(_outputBuffer, _outputTail);
-        if (len < 0) {
-            _writeBytes(name.asQuotedUTF8());
-        } else {
-            _outputTail += len;
-        }
-        if (addQuotes) {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = _quoteChar;
-        }
     }
 
     /*
@@ -599,41 +450,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputBuffer[_outputTail++] = _quoteChar;
     }
 
-    @Override
-    public void writeRawUTF8String(byte[] text, int offset, int len) throws IOException {
-        _checkRangeBoundsForByteArray(text, offset, len);
-        _verifyValueWrite(WRITE_STRING);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        _writeBytes(text, offset, len);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    @Override
-    public void writeUTF8String(byte[] text, int offset, int len) throws IOException {
-        _checkRangeBoundsForByteArray(text, offset, len);
-        _verifyValueWrite(WRITE_STRING);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        // One or multiple segments?
-        if (len <= _outputMaxContiguous) {
-            _writeUTF8Segment(text, offset, len);
-        } else {
-            _writeUTF8Segments(text, offset, len);
-        }
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
     /*
     /**********************************************************
     /* Output method implementations, unprocessed ("raw")
@@ -739,10 +555,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
 
         // Note: here we know there is enough room, hence no output boundary checks
         main_loop: while (offset < len) {
-            inner_loop: while (true) {
+            while (true) {
                 int ch = cbuf[offset];
                 if (ch > 0x7F) {
-                    break inner_loop;
+                    break;
                 }
                 _outputBuffer[_outputTail++] = (byte) ch;
                 if (++offset >= len) {
@@ -759,39 +575,22 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         }
     }
 
-    @Override
-    public void writeRaw(char ch) throws IOException {
-        if ((_outputTail + 3) >= _outputEnd) {
-            _flushBuffer();
-        }
-        final byte[] bbuf = _outputBuffer;
-        if (ch <= 0x7F) {
-            bbuf[_outputTail++] = (byte) ch;
-        } else if (ch < 0x800) { // 2-byte?
-            bbuf[_outputTail++] = (byte) (0xc0 | (ch >> 6));
-            bbuf[_outputTail++] = (byte) (0x80 | (ch & 0x3f));
-        } else {
-            /*offset =*/ _outputRawMultiByteChar(ch, null, 0, 0);
-        }
-    }
-
     /**
      * Helper method called when it is possible that output of raw section
      * to output may cross buffer boundary
      */
-    private final void _writeSegmentedRaw(char[] cbuf, int offset, int len) throws IOException {
-        final int end = _outputEnd;
+    private void _writeSegmentedRaw(char[] cbuf, int offset, int len) throws IOException {
         final byte[] bbuf = _outputBuffer;
         final int inputEnd = offset + len;
 
         main_loop: while (offset < inputEnd) {
-            inner_loop: while (true) {
+            while (true) {
                 int ch = cbuf[offset];
                 if (ch > 0x7F) {
-                    break inner_loop;
+                    break;
                 }
                 // !!! TODO: fast(er) writes (roll input, output checks in one)
-                if (_outputTail >= end) {
+                if (_outputTail >= _outputEnd) {
                     _flushBuffer();
                 }
                 bbuf[_outputTail++] = (byte) ch;
@@ -823,10 +622,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      */
     private void _writeRawSegment(char[] cbuf, int offset, int end) throws IOException {
         main_loop: while (offset < end) {
-            inner_loop: while (true) {
+            while (true) {
                 int ch = cbuf[offset];
                 if (ch > 0x7F) {
-                    break inner_loop;
+                    break;
                 }
                 _outputBuffer[_outputTail++] = (byte) ch;
                 if (++offset >= end) {
@@ -851,7 +650,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
 
     @Override
     public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len)
-        throws IOException, JsonGenerationException {
+        throws IOException {
         _checkRangeBoundsForByteArray(data, offset, len);
 
         _verifyValueWrite(WRITE_BINARY);
@@ -868,66 +667,11 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputBuffer[_outputTail++] = _quoteChar;
     }
 
-    @Override
-    public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength)
-        throws IOException, JsonGenerationException {
-        _verifyValueWrite(WRITE_BINARY);
-        // Starting quotes
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        byte[] encodingBuffer = _ioContext.allocBase64Buffer();
-        int bytes;
-        try {
-            if (dataLength < 0) { // length unknown
-                bytes = _writeBinary(b64variant, data, encodingBuffer);
-            } else {
-                int missing = _writeBinary(b64variant, data, encodingBuffer, dataLength);
-                if (missing > 0) {
-                    _reportError("Too few bytes available: missing " + missing + " bytes (out of " + dataLength + ")");
-                }
-                bytes = dataLength;
-            }
-        } finally {
-            _ioContext.releaseBase64Buffer(encodingBuffer);
-        }
-        // and closing quotes
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        return bytes;
-    }
-
     /*
     /**********************************************************
     /* Output method implementations, primitive
     /**********************************************************
      */
-
-    @Override
-    public void writeNumber(short s) throws IOException {
-        _verifyValueWrite(WRITE_NUMBER);
-        // up to 5 digits and possible minus sign
-        if ((_outputTail + 6) >= _outputEnd) {
-            _flushBuffer();
-        }
-        if (_cfgNumbersAsStrings) {
-            _writeQuotedShort(s);
-            return;
-        }
-        _outputTail = NumberOutput.outputInt(s, _outputBuffer, _outputTail);
-    }
-
-    private final void _writeQuotedShort(short s) throws IOException {
-        if ((_outputTail + 8) >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        _outputTail = NumberOutput.outputInt(s, _outputBuffer, _outputTail);
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
 
     @Override
     public void writeNumber(int i) throws IOException {
@@ -943,7 +687,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = NumberOutput.outputInt(i, _outputBuffer, _outputTail);
     }
 
-    private final void _writeQuotedInt(int i) throws IOException {
+    private void _writeQuotedInt(int i) throws IOException {
         if ((_outputTail + 13) >= _outputEnd) {
             _flushBuffer();
         }
@@ -966,25 +710,13 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = NumberOutput.outputLong(l, _outputBuffer, _outputTail);
     }
 
-    private final void _writeQuotedLong(long l) throws IOException {
+    private void _writeQuotedLong(long l) throws IOException {
         if ((_outputTail + 23) >= _outputEnd) {
             _flushBuffer();
         }
         _outputBuffer[_outputTail++] = _quoteChar;
         _outputTail = NumberOutput.outputLong(l, _outputBuffer, _outputTail);
         _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    @Override
-    public void writeNumber(BigInteger value) throws IOException {
-        _verifyValueWrite(WRITE_NUMBER);
-        if (value == null) {
-            _writeNull();
-        } else if (_cfgNumbersAsStrings) {
-            _writeQuotedRaw(value.toString());
-        } else {
-            writeRaw(value.toString());
-        }
     }
 
     @SuppressWarnings("deprecation")
@@ -1014,65 +746,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     }
 
     @Override
-    public void writeNumber(BigDecimal value) throws IOException {
-        // Don't really know max length for big decimal, no point checking
-        _verifyValueWrite(WRITE_NUMBER);
-        if (value == null) {
-            _writeNull();
-        } else if (_cfgNumbersAsStrings) {
-            _writeQuotedRaw(_asString(value));
-        } else {
-            writeRaw(_asString(value));
-        }
-    }
-
-    @Override
-    public void writeNumber(String encodedValue) throws IOException {
-        _verifyValueWrite(WRITE_NUMBER);
-        if (encodedValue == null) {
-            _writeNull();
-        } else if (_cfgNumbersAsStrings) {
-            _writeQuotedRaw(encodedValue);
-        } else {
-            writeRaw(encodedValue);
-        }
-    }
-
-    @Override
-    public void writeNumber(char[] encodedValueBuffer, int offset, int length) throws IOException {
-        _verifyValueWrite(WRITE_NUMBER);
-        if (_cfgNumbersAsStrings) {
-            _writeQuotedRaw(encodedValueBuffer, offset, length);
-        } else {
-            writeRaw(encodedValueBuffer, offset, length);
-        }
-    }
-
-    private final void _writeQuotedRaw(String value) throws IOException {
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        writeRaw(value);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    private void _writeQuotedRaw(char[] text, int offset, int length) throws IOException {
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        writeRaw(text, offset, length);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    @Override
     public void writeBoolean(boolean state) throws IOException {
         _verifyValueWrite(WRITE_BOOLEAN);
         if ((_outputTail + 5) >= _outputEnd) {
@@ -1099,11 +772,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     @Override
     protected final void _verifyValueWrite(String typeMsg) throws IOException {
         final int status = _writeContext.writeValue();
-        if (_cfgPrettyPrinter != null) {
-            // Otherwise, pretty printer knows what to do...
-            _verifyPrettyValueWrite(typeMsg, status);
-            return;
-        }
         byte b;
         switch (status) {
             case JsonWriteContext.STATUS_OK_AS_IS:
@@ -1119,12 +787,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
                 break;
 
             case JsonWriteContext.STATUS_OK_AFTER_SPACE: // root-value separator
-                if (_rootValueSeparator != null) {
-                    byte[] raw = _rootValueSeparator.asUnquotedUTF8();
-                    if (raw.length > 0) {
-                        _writeBytes(raw);
-                    }
-                }
                 return;
 
             case JsonWriteContext.STATUS_EXPECT_NAME:
@@ -1231,7 +893,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     /**********************************************************
      */
 
-    private final void _writeBytes(byte[] bytes) throws IOException {
+    private void _writeBytes(byte[] bytes) throws IOException {
         final int len = bytes.length;
         if ((_outputTail + len) > _outputEnd) {
             _flushBuffer();
@@ -1242,19 +904,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
             }
         }
         System.arraycopy(bytes, 0, _outputBuffer, _outputTail, len);
-        _outputTail += len;
-    }
-
-    private final void _writeBytes(byte[] bytes, int offset, int len) throws IOException {
-        if ((_outputTail + len) > _outputEnd) {
-            _flushBuffer();
-            // still not enough?
-            if (len > MAX_BYTES_TO_BUFFER) {
-                _outputStream.write(bytes, offset, len);
-                return;
-            }
-        }
-        System.arraycopy(bytes, offset, _outputBuffer, _outputTail, len);
         _outputTail += len;
     }
 
@@ -1271,7 +920,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * to single-segment writes (instead of maximum slices that
      * would fit in copy buffer)
      */
-    private final void _writeStringSegments(String text, boolean addQuotes) throws IOException {
+    private void _writeStringSegments(String text, boolean addQuotes) throws IOException {
         if (addQuotes) {
             if (_outputTail >= _outputEnd) {
                 _flushBuffer();
@@ -1306,7 +955,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * the output buffer. If so, we will need to choose smaller output
      * chunks to write at a time.
      */
-    private final void _writeStringSegments(char[] cbuf, int offset, int totalLen) throws IOException {
+    private void _writeStringSegments(char[] cbuf, int offset, int totalLen) throws IOException {
         do {
             int len = Math.min(_outputMaxContiguous, totalLen);
             if ((_outputTail + len) > _outputEnd) { // caller must ensure enough space
@@ -1318,7 +967,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         } while (totalLen > 0);
     }
 
-    private final void _writeStringSegments(String text, int offset, int totalLen) throws IOException {
+    private void _writeStringSegments(String text, int offset, int totalLen) throws IOException {
         do {
             int len = Math.min(_outputMaxContiguous, totalLen);
             if ((_outputTail + len) > _outputEnd) { // caller must ensure enough space
@@ -1344,7 +993,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * assuming case of all non-escaped ASCII characters, as well as
      * potentially enough space for other cases (but not necessarily flushed)
      */
-    private final void _writeStringSegment(char[] cbuf, int offset, int len) throws IOException {
+    private void _writeStringSegment(char[] cbuf, int offset, int len) throws IOException {
         // note: caller MUST ensure (via flushing) there's room for ASCII only
 
         // Fast+tight loop for ASCII-only, no-escaping-needed output
@@ -1376,7 +1025,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         }
     }
 
-    private final void _writeStringSegment(String text, int offset, int len) throws IOException {
+    private void _writeStringSegment(String text, int offset, int len) throws IOException {
         // note: caller MUST ensure (via flushing) there's room for ASCII only
         // Fast+tight loop for ASCII-only, no-escaping-needed output
         len += offset; // becomes end marker, then
@@ -1410,7 +1059,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * Secondary method called when content contains characters to escape,
      * and/or multi-byte UTF-8 characters.
      */
-    private final void _writeStringSegment2(final char[] cbuf, int offset, final int end) throws IOException {
+    private void _writeStringSegment2(final char[] cbuf, int offset, final int end) throws IOException {
         // Ok: caller guarantees buffer can have room; but that may require flushing:
         if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
             _flushBuffer();
@@ -1448,7 +1097,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = outputPtr;
     }
 
-    private final void _writeStringSegment2(final String text, int offset, final int end) throws IOException {
+    private void _writeStringSegment2(final String text, int offset, final int end) throws IOException {
         if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
             _flushBuffer();
         }
@@ -1496,7 +1145,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * Same as <code>_writeStringSegment2(char[], ...)</code., but with
      * additional escaping for high-range code points
      */
-    private final void _writeStringSegmentASCII2(final char[] cbuf, int offset, final int end) throws IOException {
+    private void _writeStringSegmentASCII2(final char[] cbuf, int offset, final int end) throws IOException {
         // Ok: caller guarantees buffer can have room; but that may require flushing:
         if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
             _flushBuffer();
@@ -1538,7 +1187,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = outputPtr;
     }
 
-    private final void _writeStringSegmentASCII2(final String text, int offset, final int end) throws IOException {
+    private void _writeStringSegmentASCII2(final String text, int offset, final int end) throws IOException {
         // Ok: caller guarantees buffer can have room; but that may require flushing:
         if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
             _flushBuffer();
@@ -1592,7 +1241,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * Same as <code>_writeStringSegmentASCII2(char[], ...)</code., but with
      * additional checking for completely custom escapes
      */
-    private final void _writeCustomStringSegment2(final char[] cbuf, int offset, final int end) throws IOException {
+    private void _writeCustomStringSegment2(final char[] cbuf, int offset, final int end) throws IOException {
         // Ok: caller guarantees buffer can have room; but that may require flushing:
         if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
             _flushBuffer();
@@ -1648,7 +1297,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = outputPtr;
     }
 
-    private final void _writeCustomStringSegment2(final String text, int offset, final int end) throws IOException {
+    private void _writeCustomStringSegment2(final String text, int offset, final int end) throws IOException {
         // Ok: caller guarantees buffer can have room; but that may require flushing:
         if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
             _flushBuffer();
@@ -1704,8 +1353,8 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = outputPtr;
     }
 
-    private final int _writeCustomEscape(byte[] outputBuffer, int outputPtr, SerializableString esc, int remainingChars)
-        throws IOException, JsonGenerationException {
+    private int _writeCustomEscape(byte[] outputBuffer, int outputPtr, SerializableString esc, int remainingChars)
+        throws IOException {
         byte[] raw = esc.asUnquotedUTF8(); // must be escaped at this point, shouldn't double-quote
         int len = raw.length;
         if (len > 6) { // may violate constraints we have, do offline
@@ -1716,8 +1365,8 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         return (outputPtr + len);
     }
 
-    private final int _handleLongCustomEscape(byte[] outputBuffer, int outputPtr, int outputEnd, byte[] raw,
-        int remainingChars) throws IOException, JsonGenerationException {
+    private int _handleLongCustomEscape(byte[] outputBuffer, int outputPtr, int outputEnd, byte[] raw,
+        int remainingChars) throws IOException {
         final int len = raw.length;
         if ((outputPtr + len) > outputEnd) {
             _outputTail = outputPtr;
@@ -1745,76 +1394,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     /**********************************************************
      */
 
-    /**
-     * Method called when UTF-8 encoded (but NOT yet escaped!) content is not guaranteed
-     * to fit in the output buffer after escaping; as such, we just need to
-     * chunk writes.
-     */
-    private final void _writeUTF8Segments(byte[] utf8, int offset, int totalLen)
-        throws IOException, JsonGenerationException {
-        do {
-            int len = Math.min(_outputMaxContiguous, totalLen);
-            _writeUTF8Segment(utf8, offset, len);
-            offset += len;
-            totalLen -= len;
-        } while (totalLen > 0);
-    }
-
-    private final void _writeUTF8Segment(byte[] utf8, final int offset, final int len)
-        throws IOException, JsonGenerationException {
-        // fast loop to see if escaping is needed; don't copy, just look
-        final int[] escCodes = _outputEscapes;
-
-        for (int ptr = offset, end = offset + len; ptr < end;) {
-            // 28-Feb-2011, tatu: escape codes just cover 7-bit range, so:
-            int ch = utf8[ptr++];
-            if ((ch >= 0) && escCodes[ch] != 0) {
-                _writeUTF8Segment2(utf8, offset, len);
-                return;
-            }
-        }
-
-        // yes, fine, just copy the sucker
-        if ((_outputTail + len) > _outputEnd) { // enough room or need to flush?
-            _flushBuffer(); // but yes once we flush (caller guarantees length restriction)
-        }
-        System.arraycopy(utf8, offset, _outputBuffer, _outputTail, len);
-        _outputTail += len;
-    }
-
-    private final void _writeUTF8Segment2(final byte[] utf8, int offset, int len)
-        throws IOException, JsonGenerationException {
-        int outputPtr = _outputTail;
-
-        // Ok: caller guarantees buffer can have room; but that may require flushing:
-        if ((outputPtr + (len * 6)) > _outputEnd) {
-            _flushBuffer();
-            outputPtr = _outputTail;
-        }
-
-        final byte[] outputBuffer = _outputBuffer;
-        final int[] escCodes = _outputEscapes;
-        len += offset; // so 'len' becomes 'end'
-
-        while (offset < len) {
-            byte b = utf8[offset++];
-            int ch = b;
-            if (ch < 0 || escCodes[ch] == 0) {
-                outputBuffer[outputPtr++] = b;
-                continue;
-            }
-            int escape = escCodes[ch];
-            if (escape > 0) { // 2-char escape, fine
-                outputBuffer[outputPtr++] = BYTE_BACKSLASH;
-                outputBuffer[outputPtr++] = (byte) escape;
-            } else {
-                // ctrl-char, 6-byte escape...
-                outputPtr = _writeGenericEscape(ch, outputPtr);
-            }
-        }
-        _outputTail = outputPtr;
-    }
-
     /*
     /**********************************************************
     /* Internal methods, low-level writing, base64 encoded
@@ -1822,7 +1401,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      */
 
     protected final void _writeBinary(Base64Variant b64variant, byte[] input, int inputPtr, final int inputEnd)
-        throws IOException, JsonGenerationException {
+        throws IOException {
         // Encoding is by chunks of 3 input, 4 output chars, so:
         int safeInputEnd = inputEnd - 3;
         // Let's also reserve room for possible (and quoted) lf char each round
@@ -1861,144 +1440,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         }
     }
 
-    // write-method called when length is definitely known
-    protected final int _writeBinary(Base64Variant b64variant, InputStream data, byte[] readBuffer, int bytesLeft)
-        throws IOException, JsonGenerationException {
-        int inputPtr = 0;
-        int inputEnd = 0;
-        int lastFullOffset = -3;
-
-        // Let's also reserve room for possible (and quoted) LF char each round
-        int safeOutputEnd = _outputEnd - 6;
-        int chunksBeforeLF = b64variant.getMaxLineLength() >> 2;
-
-        while (bytesLeft > 2) { // main loop for full triplets
-            if (inputPtr > lastFullOffset) {
-                inputEnd = _readMore(data, readBuffer, inputPtr, inputEnd, bytesLeft);
-                inputPtr = 0;
-                if (inputEnd < 3) { // required to try to read to have at least 3 bytes
-                    break;
-                }
-                lastFullOffset = inputEnd - 3;
-            }
-            if (_outputTail > safeOutputEnd) { // need to flush
-                _flushBuffer();
-            }
-            int b24 = (readBuffer[inputPtr++]) << 8;
-            b24 |= (readBuffer[inputPtr++]) & 0xFF;
-            b24 = (b24 << 8) | ((readBuffer[inputPtr++]) & 0xFF);
-            bytesLeft -= 3;
-            _outputTail = b64variant.encodeBase64Chunk(b24, _outputBuffer, _outputTail);
-            if (--chunksBeforeLF <= 0) {
-                _outputBuffer[_outputTail++] = '\\';
-                _outputBuffer[_outputTail++] = 'n';
-                chunksBeforeLF = b64variant.getMaxLineLength() >> 2;
-            }
-        }
-
-        // And then we may have 1 or 2 leftover bytes to encode
-        if (bytesLeft > 0) {
-            inputEnd = _readMore(data, readBuffer, inputPtr, inputEnd, bytesLeft);
-            inputPtr = 0;
-            if (inputEnd > 0) { // yes, but do we have room for output?
-                if (_outputTail > safeOutputEnd) { // don't really need 6 bytes but...
-                    _flushBuffer();
-                }
-                int b24 = (readBuffer[inputPtr++]) << 16;
-                int amount;
-                if (inputPtr < inputEnd) {
-                    b24 |= ((readBuffer[inputPtr]) & 0xFF) << 8;
-                    amount = 2;
-                } else {
-                    amount = 1;
-                }
-                _outputTail = b64variant.encodeBase64Partial(b24, amount, _outputBuffer, _outputTail);
-                bytesLeft -= amount;
-            }
-        }
-        return bytesLeft;
-    }
-
-    // write method when length is unknown
-    protected final int _writeBinary(Base64Variant b64variant, InputStream data, byte[] readBuffer)
-        throws IOException, JsonGenerationException {
-        int inputPtr = 0;
-        int inputEnd = 0;
-        int lastFullOffset = -3;
-        int bytesDone = 0;
-
-        // Let's also reserve room for possible (and quoted) LF char each round
-        int safeOutputEnd = _outputEnd - 6;
-        int chunksBeforeLF = b64variant.getMaxLineLength() >> 2;
-
-        // Ok, first we loop through all full triplets of data:
-        while (true) {
-            if (inputPtr > lastFullOffset) { // need to load more
-                inputEnd = _readMore(data, readBuffer, inputPtr, inputEnd, readBuffer.length);
-                inputPtr = 0;
-                if (inputEnd < 3) { // required to try to read to have at least 3 bytes
-                    break;
-                }
-                lastFullOffset = inputEnd - 3;
-            }
-            if (_outputTail > safeOutputEnd) { // need to flush
-                _flushBuffer();
-            }
-            // First, mash 3 bytes into lsb of 32-bit int
-            int b24 = (readBuffer[inputPtr++]) << 8;
-            b24 |= (readBuffer[inputPtr++]) & 0xFF;
-            b24 = (b24 << 8) | ((readBuffer[inputPtr++]) & 0xFF);
-            bytesDone += 3;
-            _outputTail = b64variant.encodeBase64Chunk(b24, _outputBuffer, _outputTail);
-            if (--chunksBeforeLF <= 0) {
-                _outputBuffer[_outputTail++] = '\\';
-                _outputBuffer[_outputTail++] = 'n';
-                chunksBeforeLF = b64variant.getMaxLineLength() >> 2;
-            }
-        }
-
-        // And then we may have 1 or 2 leftover bytes to encode
-        if (inputPtr < inputEnd) { // yes, but do we have room for output?
-            if (_outputTail > safeOutputEnd) { // don't really need 6 bytes but...
-                _flushBuffer();
-            }
-            int b24 = (readBuffer[inputPtr++]) << 16;
-            int amount = 1;
-            if (inputPtr < inputEnd) {
-                b24 |= ((readBuffer[inputPtr]) & 0xFF) << 8;
-                amount = 2;
-            }
-            bytesDone += amount;
-            _outputTail = b64variant.encodeBase64Partial(b24, amount, _outputBuffer, _outputTail);
-        }
-        return bytesDone;
-    }
-
-    private final int _readMore(InputStream in, byte[] readBuffer, int inputPtr, int inputEnd, int maxRead)
-        throws IOException {
-        // anything to shift to front?
-        int i = 0;
-        while (inputPtr < inputEnd) {
-            readBuffer[i++] = readBuffer[inputPtr++];
-        }
-        inputPtr = 0;
-        inputEnd = i;
-        maxRead = Math.min(maxRead, readBuffer.length);
-
-        do {
-            int length = maxRead - inputEnd;
-            if (length == 0) {
-                break;
-            }
-            int count = in.read(readBuffer, inputEnd, length);
-            if (count < 0) {
-                return inputEnd;
-            }
-            inputEnd += count;
-        } while (inputEnd < 3);
-        return inputEnd;
-    }
-
     /*
     /**********************************************************
     /* Internal methods, character escapes/encoding
@@ -2010,7 +1451,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * 1- and 2-byte UTF-8 encodings, when outputting "raw"
      * text (meaning it is not to be escaped or quoted)
      */
-    private final int _outputRawMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputEnd) throws IOException {
+    private int _outputRawMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputEnd) throws IOException {
         // Let's handle surrogates gracefully (as 4 byte output):
         if (ch >= SURR1_FIRST) {
             if (ch <= SURR2_LAST) { // yes, outside of BMP
@@ -2050,9 +1491,8 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      *
      * @return New output position after appending
      *
-     * @throws IOException
      */
-    private final int _outputMultiByteChar(int ch, int outputPtr) throws IOException {
+    private int _outputMultiByteChar(int ch, int outputPtr) {
         byte[] HEX_CHARS = getHexBytes();
         byte[] bbuf = _outputBuffer;
         if (ch >= SURR1_FIRST && ch <= SURR2_LAST) { // yes, outside of BMP; add an escape
@@ -2076,7 +1516,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         return outputPtr;
     }
 
-    private final void _writeNull() throws IOException {
+    private void _writeNull() throws IOException {
         if ((_outputTail + 4) >= _outputEnd) {
             _flushBuffer();
         }
@@ -2089,7 +1529,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      *
      * @param charToEscape Character to escape using escape sequence (\\uXXXX)
      */
-    private int _writeGenericEscape(int charToEscape, int outputPtr) throws IOException {
+    private int _writeGenericEscape(int charToEscape, int outputPtr) {
         final byte[] bbuf = _outputBuffer;
         byte[] HEX_CHARS = getHexBytes();
         bbuf[outputPtr++] = BYTE_BACKSLASH;

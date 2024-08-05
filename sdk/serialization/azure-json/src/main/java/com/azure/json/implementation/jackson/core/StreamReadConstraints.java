@@ -78,97 +78,15 @@ public class StreamReadConstraints implements java.io.Serializable {
     protected final int _maxStringLen;
     protected final int _maxNameLen;
 
-    private static StreamReadConstraints DEFAULT = new StreamReadConstraints(DEFAULT_MAX_DEPTH, DEFAULT_MAX_DOC_LEN,
+    private static final StreamReadConstraints DEFAULT = new StreamReadConstraints(DEFAULT_MAX_DEPTH, DEFAULT_MAX_DOC_LEN,
         DEFAULT_MAX_NUM_LEN, DEFAULT_MAX_STRING_LEN, DEFAULT_MAX_NAME_LEN);
 
-    /**
-     * Override the default StreamReadConstraints. These defaults are only used when {@link JsonFactory}
-     * instances are not configured with their own StreamReadConstraints.
-     * <p>
-     * Library maintainers should not set this as it will affect other code that uses Jackson.
-     * Library maintainers who want to configure StreamReadConstraints for the Jackson usage within their
-     * lib should create <code>ObjectMapper</code> instances that have a {@link JsonFactory} instance with
-     * the required StreamReadConstraints.
-     * <p>
-     * This method is meant for users delivering applications. If they use this, they set it when they start
-     * their application to avoid having other code initialize their mappers before the defaults are overridden.
-     *
-     * @param streamReadConstraints new default for StreamReadConstraints (a null value will reset to built-in default)
-     * @see #defaults()
-     * @see #builder()
-     * @since v2.15.2
-     */
-    public static void overrideDefaultStreamReadConstraints(final StreamReadConstraints streamReadConstraints) {
-        if (streamReadConstraints == null) {
-            DEFAULT = new StreamReadConstraints(DEFAULT_MAX_DEPTH, DEFAULT_MAX_DOC_LEN, DEFAULT_MAX_NUM_LEN,
-                DEFAULT_MAX_STRING_LEN);
-        } else {
-            DEFAULT = streamReadConstraints;
-        }
-    }
-
     public static final class Builder {
-        private long maxDocLen;
-        private int maxNestingDepth;
-        private int maxNumLen;
+        private final long maxDocLen;
+        private final int maxNestingDepth;
+        private final int maxNumLen;
         private int maxStringLen;
-        private int maxNameLen;
-
-        /**
-         * Sets the maximum nesting depth. The depth is a count of objects and arrays that have not
-         * been closed, `{` and `[` respectively.
-         *
-         * @param maxNestingDepth the maximum depth
-         *
-         * @return this builder
-         * @throws IllegalArgumentException if the maxNestingDepth is set to a negative value
-         */
-        public Builder maxNestingDepth(final int maxNestingDepth) {
-            if (maxNestingDepth < 0) {
-                throw new IllegalArgumentException("Cannot set maxNestingDepth to a negative value");
-            }
-            this.maxNestingDepth = maxNestingDepth;
-            return this;
-        }
-
-        /**
-         * Sets the maximum allowed document length (for positive values over 0) or
-         * indicate that any length is acceptable ({@code 0} or negative number).
-         * The length is in input units of the input source, that is, in
-         * {@code byte}s or {@code char}s.
-         *
-         * @param maxDocLen the maximum allowed document if positive number above 0; otherwise
-         *   ({@code 0} or negative number) means "unlimited".
-         *
-         * @return this builder
-         *
-         * @since 2.16
-         */
-        public Builder maxDocumentLength(long maxDocLen) {
-            // Negative values and 0 mean "unlimited", mark with -1L
-            if (maxDocLen <= 0L) {
-                maxDocLen = -1L;
-            }
-            this.maxDocLen = maxDocLen;
-            return this;
-        }
-
-        /**
-         * Sets the maximum number length (in chars or bytes, depending on input context).
-         * The default is 1000.
-         *
-         * @param maxNumLen the maximum number length (in chars or bytes, depending on input context)
-         *
-         * @return this builder
-         * @throws IllegalArgumentException if the maxNumLen is set to a negative value
-         */
-        public Builder maxNumberLength(final int maxNumLen) {
-            if (maxNumLen < 0) {
-                throw new IllegalArgumentException("Cannot set maxNumberLength to a negative value");
-            }
-            this.maxNumLen = maxNumLen;
-            return this;
-        }
+        private final int maxNameLen;
 
         /**
          * Sets the maximum string length (in chars or bytes, depending on input context).
@@ -195,27 +113,6 @@ public class StreamReadConstraints implements java.io.Serializable {
             return this;
         }
 
-        /**
-         * Sets the maximum name length (in chars or bytes, depending on input context).
-         * The default is 50,000. This limit is not exact, the limit is applied when we increase
-         * internal buffer sizes and an exception will happen at sizes greater than this limit. Some
-         * text values that are a little bigger than the limit may be treated as valid but no text
-         * values with sizes less than or equal to this limit will be treated as invalid.
-         *
-         * @param maxNameLen the maximum string length (in chars or bytes, depending on input context)
-         *
-         * @return this builder
-         * @throws IllegalArgumentException if the maxStringLen is set to a negative value
-         * @since 2.16.0
-         */
-        public Builder maxNameLength(final int maxNameLen) {
-            if (maxNameLen < 0) {
-                throw new IllegalArgumentException("Cannot set maxNameLen to a negative value");
-            }
-            this.maxNameLen = maxNameLen;
-            return this;
-        }
-
         Builder() {
             this(DEFAULT_MAX_DEPTH, DEFAULT_MAX_DOC_LEN, DEFAULT_MAX_NUM_LEN, DEFAULT_MAX_STRING_LEN,
                 DEFAULT_MAX_NAME_LEN);
@@ -228,14 +125,6 @@ public class StreamReadConstraints implements java.io.Serializable {
             this.maxNumLen = maxNumLen;
             this.maxStringLen = maxStringLen;
             this.maxNameLen = maxNameLen;
-        }
-
-        Builder(StreamReadConstraints src) {
-            maxNestingDepth = src._maxNestingDepth;
-            maxDocLen = src._maxDocLen;
-            maxNumLen = src._maxNumLen;
-            maxStringLen = src._maxStringLen;
-            maxNameLen = src._maxNameLen;
         }
 
         public StreamReadConstraints build() {
@@ -285,72 +174,11 @@ public class StreamReadConstraints implements java.io.Serializable {
         return DEFAULT;
     }
 
-    /**
-     * @return New {@link Builder} initialized with settings of this constraints
-     *   instance
-     */
-    public Builder rebuild() {
-        return new Builder(this);
-    }
-
     /*
     /**********************************************************************
     /* Accessors
     /**********************************************************************
      */
-
-    /**
-     * Accessor for maximum depth.
-     * see {@link Builder#maxNestingDepth(int)} for details.
-     *
-     * @return Maximum allowed depth
-     */
-    public int getMaxNestingDepth() {
-        return _maxNestingDepth;
-    }
-
-    /**
-     * Accessor for maximum document length.
-     * see {@link Builder#maxDocumentLength(long)} for details.
-     *
-     * @return Maximum allowed depth
-     */
-    public long getMaxDocumentLength() {
-        return _maxDocLen;
-    }
-
-    /**
-     * Convenience method, basically same as:
-     *<pre>
-     *  getMaxDocumentLength() &gt; 0L
-     *</pre>
-     *
-     * @return {@code True} if this constraints instance has a limit for maximum
-     *    document length to enforce; {@code false} otherwise.
-     */
-    public boolean hasMaxDocumentLength() {
-        return _maxDocLen > 0L;
-    }
-
-    /**
-     * Accessor for maximum length of numbers to decode.
-     * see {@link Builder#maxNumberLength(int)} for details.
-     *
-     * @return Maximum allowed number length
-     */
-    public int getMaxNumberLength() {
-        return _maxNumLen;
-    }
-
-    /**
-     * Accessor for maximum length of strings to decode.
-     * see {@link Builder#maxStringLength(int)} for details.
-     *
-     * @return Maximum allowed string length
-     */
-    public int getMaxStringLength() {
-        return _maxStringLen;
-    }
 
     /**
      * Accessor for maximum length of names to decode.

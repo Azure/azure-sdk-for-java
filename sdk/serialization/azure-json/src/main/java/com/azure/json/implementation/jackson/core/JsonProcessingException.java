@@ -67,20 +67,6 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /**
-     * Method that allows accessing the original "message" argument,
-     * without additional decorations (like location information)
-     * that overridden {@link #getMessage} adds.
-     *
-     * @return Original message passed in constructor
-     *
-     * @since 2.1
-     */
-    @Override
-    public String getOriginalMessage() {
-        return super.getMessage();
-    }
-
-    /**
      * Method that allows accessing underlying processor that triggered
      * this exception; typically either {@link JsonParser} or {@link JsonGenerator}
      * for exceptions that originate from streaming API.

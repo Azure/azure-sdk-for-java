@@ -87,101 +87,10 @@ public final class JsonStringEncoder {
         char[] qbuf = null;
 
         outer: while (inPtr < inputLen) {
-            tight_loop: while (true) {
+            while (true) {
                 char c = input.charAt(inPtr);
                 if (c < escCodeCount && escCodes[c] != 0) {
-                    break tight_loop;
-                }
-                if (outPtr >= outputBuffer.length) {
-                    if (textBuffer == null) {
-                        textBuffer = TextBuffer.fromInitial(outputBuffer);
-                    }
-                    try {
-                        outputBuffer = textBuffer.finishCurrentSegment();
-                    } catch (IOException e) {
-                        // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
-                        throw new IllegalStateException(e);
-                    }
-                    outPtr = 0;
-                }
-                outputBuffer[outPtr++] = c;
-                if (++inPtr >= inputLen) {
-                    break outer;
-                }
-            }
-            // something to escape; 2 or 6-char variant?
-            if (qbuf == null) {
-                qbuf = _qbuf();
-            }
-            char d = input.charAt(inPtr++);
-            int escCode = escCodes[d];
-            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);
-
-            if ((outPtr + length) > outputBuffer.length) {
-                int first = outputBuffer.length - outPtr;
-                if (first > 0) {
-                    System.arraycopy(qbuf, 0, outputBuffer, outPtr, first);
-                }
-                if (textBuffer == null) {
-                    textBuffer = TextBuffer.fromInitial(outputBuffer);
-                }
-                try {
-                    outputBuffer = textBuffer.finishCurrentSegment();
-                } catch (IOException e) {
-                    // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
-                    throw new IllegalStateException(e);
-                }
-                int second = length - first;
-                System.arraycopy(qbuf, first, outputBuffer, 0, second);
-                outPtr = second;
-            } else {
-                System.arraycopy(qbuf, 0, outputBuffer, outPtr, length);
-                outPtr += length;
-            }
-        }
-
-        if (textBuffer == null) {
-            return Arrays.copyOfRange(outputBuffer, 0, outPtr);
-        }
-        textBuffer.setCurrentLength(outPtr);
-        try {
-            return textBuffer.contentsAsArray();
-        } catch (IOException e) {
-            // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     * Overloaded variant of {@link #quoteAsString(String)}.
-     *
-     * @param input Value {@link CharSequence} to process
-     *
-     * @return JSON-escaped String matching {@code input}
-     *
-     * @since 2.10
-     */
-    public char[] quoteAsString(CharSequence input) {
-        // 15-Aug-2019, tatu: Optimize common case as JIT can't get rid of overhead otherwise
-        if (input instanceof String) {
-            return quoteAsString((String) input);
-        }
-
-        TextBuffer textBuffer = null;
-
-        final int inputLen = input.length();
-        char[] outputBuffer = new char[_initialCharBufSize(inputLen)];
-        final int[] escCodes = CharTypes.get7BitOutputEscapes();
-        final int escCodeCount = escCodes.length;
-        int inPtr = 0;
-        int outPtr = 0;
-        char[] qbuf = null;
-
-        outer: while (inPtr < inputLen) {
-            tight_loop: while (true) {
-                char c = input.charAt(inPtr);
-                if (c < escCodeCount && escCodes[c] != 0) {
-                    break tight_loop;
+                    break;
                 }
                 if (outPtr >= outputBuffer.length) {
                     if (textBuffer == null) {
@@ -261,10 +170,10 @@ public final class JsonStringEncoder {
         char[] qbuf = null;
 
         outer: while (inPtr < inputLen) {
-            tight_loop: while (true) {
+            while (true) {
                 char c = input.charAt(inPtr);
                 if (c < escCodeCount && escCodes[c] != 0) {
-                    break tight_loop;
+                    break;
                 }
                 output.append(c);
                 if (++inPtr >= inputLen) {
@@ -302,11 +211,11 @@ public final class JsonStringEncoder {
         main: while (inputPtr < inputEnd) {
             final int[] escCodes = CharTypes.get7BitOutputEscapes();
 
-            inner_loop: // ASCII and escapes
+            // ASCII and escapes
             while (true) {
                 int ch = text.charAt(inputPtr);
                 if (ch > 0x7F || escCodes[ch] != 0) {
-                    break inner_loop;
+                    break;
                 }
                 if (outputPtr >= outputBuffer.length) {
                     if (bb == null) {
@@ -334,7 +243,7 @@ public final class JsonStringEncoder {
                 // ctrl-char, 6-byte escape...
                 outputPtr = _appendByte(ch, escape, bb, outputPtr);
                 outputBuffer = bb.getCurrentSegment();
-                continue main;
+                continue;
             }
             if (ch <= 0x7FF) { // fine, just needs 2 byte output
                 outputBuffer[outputPtr++] = (byte) (0xc0 | (ch >> 6));
@@ -397,105 +306,6 @@ public final class JsonStringEncoder {
      */
     @SuppressWarnings("resource")
     public byte[] encodeAsUTF8(String text) {
-        int inputPtr = 0;
-        int inputEnd = text.length();
-        int outputPtr = 0;
-        byte[] outputBuffer = new byte[_initialByteBufSize(inputEnd)];
-        int outputEnd = outputBuffer.length;
-        ByteArrayBuilder bb = null;
-
-        main_loop: while (inputPtr < inputEnd) {
-            int c = text.charAt(inputPtr++);
-
-            // first tight loop for ascii
-            while (c <= 0x7F) {
-                if (outputPtr >= outputEnd) {
-                    if (bb == null) {
-                        bb = ByteArrayBuilder.fromInitial(outputBuffer, outputPtr);
-                    }
-                    outputBuffer = bb.finishCurrentSegment();
-                    outputEnd = outputBuffer.length;
-                    outputPtr = 0;
-                }
-                outputBuffer[outputPtr++] = (byte) c;
-                if (inputPtr >= inputEnd) {
-                    break main_loop;
-                }
-                c = text.charAt(inputPtr++);
-            }
-
-            // then multi-byte...
-            if (bb == null) {
-                bb = ByteArrayBuilder.fromInitial(outputBuffer, outputPtr);
-            }
-            if (outputPtr >= outputEnd) {
-                outputBuffer = bb.finishCurrentSegment();
-                outputEnd = outputBuffer.length;
-                outputPtr = 0;
-            }
-            if (c < 0x800) { // 2-byte
-                outputBuffer[outputPtr++] = (byte) (0xc0 | (c >> 6));
-            } else { // 3 or 4 bytes
-                // Surrogates?
-                if (c < SURR1_FIRST || c > SURR2_LAST) { // nope
-                    outputBuffer[outputPtr++] = (byte) (0xe0 | (c >> 12));
-                    if (outputPtr >= outputEnd) {
-                        outputBuffer = bb.finishCurrentSegment();
-                        outputEnd = outputBuffer.length;
-                        outputPtr = 0;
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0x80 | ((c >> 6) & 0x3f));
-                } else { // yes, surrogate pair
-                    if (c > SURR1_LAST) { // must be from first range
-                        _illegal(c);
-                    }
-                    // and if so, followed by another from next range
-                    if (inputPtr >= inputEnd) {
-                        _illegal(c);
-                    }
-                    c = _convert(c, text.charAt(inputPtr++));
-                    if (c > 0x10FFFF) { // illegal, as per RFC 4627
-                        _illegal(c);
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0xf0 | (c >> 18));
-                    if (outputPtr >= outputEnd) {
-                        outputBuffer = bb.finishCurrentSegment();
-                        outputEnd = outputBuffer.length;
-                        outputPtr = 0;
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0x80 | ((c >> 12) & 0x3f));
-                    if (outputPtr >= outputEnd) {
-                        outputBuffer = bb.finishCurrentSegment();
-                        outputEnd = outputBuffer.length;
-                        outputPtr = 0;
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0x80 | ((c >> 6) & 0x3f));
-                }
-            }
-            if (outputPtr >= outputEnd) {
-                outputBuffer = bb.finishCurrentSegment();
-                outputEnd = outputBuffer.length;
-                outputPtr = 0;
-            }
-            outputBuffer[outputPtr++] = (byte) (0x80 | (c & 0x3f));
-        }
-        if (bb == null) {
-            return Arrays.copyOfRange(outputBuffer, 0, outputPtr);
-        }
-        return bb.completeAndCoalesce(outputPtr);
-    }
-
-    /**
-     * Overloaded variant of {@link #encodeAsUTF8(String)}.
-     *
-     * @param text Value {@link CharSequence} to process
-     *
-     * @return UTF-8 encoded bytes of {@code text} (without any escaping)
-     *
-     * @since 2.11
-     */
-    @SuppressWarnings("resource")
-    public byte[] encodeAsUTF8(CharSequence text) {
         int inputPtr = 0;
         int inputEnd = text.length();
         int outputPtr = 0;

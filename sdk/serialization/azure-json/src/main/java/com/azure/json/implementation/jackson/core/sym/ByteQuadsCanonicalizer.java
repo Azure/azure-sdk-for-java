@@ -56,7 +56,7 @@ public final class ByteQuadsCanonicalizer {
      * names for almost any case, while preventing ballooning for cases where names
      * are unique (or close thereof).
      */
-    protected final static int MAX_ENTRIES_FOR_REUSE = 6000;
+    private final static int MAX_ENTRIES_FOR_REUSE = 6000;
 
     /*
     /**********************************************************
@@ -68,7 +68,7 @@ public final class ByteQuadsCanonicalizer {
      * Reference to the root symbol table, for child tables, so
      * that they can merge table information back as necessary.
      */
-    protected final ByteQuadsCanonicalizer _parent;
+    private final ByteQuadsCanonicalizer _parent;
 
     /**
      * Member that is only used by the root table instance: root
@@ -76,7 +76,7 @@ public final class ByteQuadsCanonicalizer {
      * may return new state if they add entries to the table.
      * Child tables do NOT use the reference.
      */
-    protected final AtomicReference<TableInfo> _tableInfo;
+    private final AtomicReference<TableInfo> _tableInfo;
 
     /**
      * Seed value we use as the base to make hash codes non-static between
@@ -85,7 +85,7 @@ public final class ByteQuadsCanonicalizer {
      * This is done for security reasons, to avoid potential DoS attack via
      * hash collisions.
      */
-    protected final int _seed;
+    private final int _seed;
 
     /*
     /**********************************************************
@@ -99,7 +99,7 @@ public final class ByteQuadsCanonicalizer {
      *
      * @since 2.16
      */
-    protected final InternCache _interner;
+    private final InternCache _interner;
 
     /**
      * Flag that indicates whether we should throw an exception if enough
@@ -107,7 +107,7 @@ public final class ByteQuadsCanonicalizer {
      *
      * @since 2.4
      */
-    protected final boolean _failOnDoS;
+    private final boolean _failOnDoS;
 
     /*
     /**********************************************************
@@ -121,7 +121,7 @@ public final class ByteQuadsCanonicalizer {
      * structure (details of which may be tweaked depending on expected rates
      * of collisions).
      */
-    protected int[] _hashArea;
+    private int[] _hashArea;
 
     /**
      * Number of slots for primary entries within {@link #_hashArea}; which is
@@ -129,17 +129,17 @@ public final class ByteQuadsCanonicalizer {
      * primary covers only half of the area; plus, additional area for longer
      * symbols after hash area).
      */
-    protected int _hashSize;
+    private int _hashSize;
 
     /**
      * Offset within {@link #_hashArea} where secondary entries start
      */
-    protected int _secondaryStart;
+    private int _secondaryStart;
 
     /**
      * Offset within {@link #_hashArea} where tertiary entries start
      */
-    protected int _tertiaryStart;
+    private int _tertiaryStart;
 
     /**
      * Constant that determines size of buckets for tertiary entries:
@@ -150,12 +150,12 @@ public final class ByteQuadsCanonicalizer {
      * Default value is 2, for buckets of 4 slots; grows bigger with
      * bigger table sizes.
      */
-    protected int _tertiaryShift;
+    private int _tertiaryShift;
 
     /**
      * Total number of Strings in the symbol table; only used for child tables.
      */
-    protected int _count;
+    private int _count;
 
     /**
      * Array that contains <code>String</code> instances matching
@@ -163,7 +163,7 @@ public final class ByteQuadsCanonicalizer {
      * Contains nulls for unused entries. Note that this size is twice
      * that of {@link #_hashArea}
      */
-    protected String[] _names;
+    private String[] _names;
 
     /*
     /**********************************************************
@@ -176,7 +176,7 @@ public final class ByteQuadsCanonicalizer {
      * for more spilled over entries (if any).
      * Spill over area is within fixed-size portion of {@link #_hashArea}.
      */
-    protected int _spilloverEnd;
+    private int _spilloverEnd;
 
     /**
      * Offset within {@link #_hashArea} that follows main slots and contains
@@ -186,7 +186,7 @@ public final class ByteQuadsCanonicalizer {
      * Note that long name area follows immediately after the fixed-size
      * main hash area ({@link #_hashArea}).
      */
-    protected int _longNameOffset;
+    private int _longNameOffset;
 
     /*
     /**********************************************************
@@ -207,7 +207,7 @@ public final class ByteQuadsCanonicalizer {
      * and when adding new collision list queues (i.e. creating a new
      * collision list head entry)
      */
-    protected boolean _hashShared;
+    private boolean _hashShared;
 
     /*
     /**********************************************************
@@ -342,7 +342,7 @@ public final class ByteQuadsCanonicalizer {
 
     // Factory method that should only be called from unit tests, where seed
     // value should remain the same.
-    protected static ByteQuadsCanonicalizer createRoot(int seed) {
+    private static ByteQuadsCanonicalizer createRoot(int seed) {
         return new ByteQuadsCanonicalizer(DEFAULT_T_SIZE, seed);
     }
 
@@ -438,13 +438,6 @@ public final class ByteQuadsCanonicalizer {
     }
 
     /**
-     * @return number of primary slots table has currently
-     */
-    public int bucketCount() {
-        return _hashSize;
-    }
-
-    /**
      * Method called to check to quickly see if a child symbol table
      * may have gotten additional entries. Used for checking to see
      * if a child table should be merged into shared table.
@@ -453,10 +446,6 @@ public final class ByteQuadsCanonicalizer {
      */
     public boolean maybeDirty() {
         return !_hashShared;
-    }
-
-    public int hashSeed() {
-        return _seed;
     }
 
     /**
@@ -694,7 +683,7 @@ public final class ByteQuadsCanonicalizer {
         return _findSecondary(offset, hash, q, qlen);
     }
 
-    private final int _calcOffset(int hash) {
+    private int _calcOffset(int hash) {
         // NOTE: simple for initial impl, but we may want to interleave it a bit
         // in near future
         // So: first, hash into primary hash index
@@ -862,75 +851,6 @@ public final class ByteQuadsCanonicalizer {
     /* API, mutators
     /**********************************************************
      */
-
-    /**
-     * @param name Name to add
-     * @param q1 Quad representation of the name
-     * @return name (possibly interned)
-     * @throws StreamConstraintsException if the constraint exceptions
-     */
-    public String addName(String name, int q1) throws StreamConstraintsException {
-        _verifySharing();
-        if (_interner != null) {
-            name = _interner.intern(name);
-        }
-        int offset = _findOffsetForAdd(calcHash(q1));
-        _hashArea[offset] = q1;
-        _hashArea[offset + 3] = 1;
-        _names[offset >> 2] = name;
-        ++_count;
-        return name;
-    }
-
-    /**
-     * @param name Name to add
-     * @param q1 First quad of name representation
-     * @param q2 Second quad of name representation
-     * @return name (possibly interned)
-     * @throws StreamConstraintsException if the constraint exceptions
-     */
-    public String addName(String name, int q1, int q2) throws StreamConstraintsException {
-        _verifySharing();
-        if (_interner != null) {
-            name = _interner.intern(name);
-        }
-
-        // 20-Mar-2021, tatu: For some reason, pre-2.13 there was logic
-        //    to support "only one quad" case. Not sure why, does not make sense;
-        //    removed from 2.13.0.
-        //        int hash = (q2 == 0) ? calcHash(q1) : calcHash(q1, q2);
-        final int hash = calcHash(q1, q2);
-        final int offset = _findOffsetForAdd(hash);
-        _hashArea[offset] = q1;
-        _hashArea[offset + 1] = q2;
-        _hashArea[offset + 3] = 2;
-        _names[offset >> 2] = name;
-        ++_count;
-        return name;
-    }
-
-    /**
-     * @param name Name to add
-     * @param q1 First quad of name representation
-     * @param q2 Second quad of name representation
-     * @param q3 Third quad of name representation
-     * @return name (possibly interned)
-     * @throws StreamConstraintsException if the constraint exceptions
-     */
-    public String addName(String name, int q1, int q2, int q3) throws StreamConstraintsException {
-        _verifySharing();
-        if (_interner != null) {
-            name = _interner.intern(name);
-        }
-        int offset = _findOffsetForAdd(calcHash(q1, q2, q3));
-        _hashArea[offset] = q1;
-        _hashArea[offset + 1] = q2;
-        _hashArea[offset + 2] = q3;
-        _hashArea[offset + 3] = 3;
-        _names[offset >> 2] = name;
-        ++_count;
-        return name;
-    }
 
     /**
      * @param name Name to add
@@ -1344,14 +1264,14 @@ public final class ByteQuadsCanonicalizer {
     /**
      * Helper method that calculates start of the spillover area
      */
-    private final int _spilloverStart() {
+    private int _spilloverStart() {
         // we'll need slot at 1.75x of hashSize, but with 4-ints per slot.
         // So basically multiply by 7
         int offset = _hashSize;
         return (offset << 3) - offset;
     }
 
-    protected void _reportTooManyCollisions() throws StreamConstraintsException {
+    private void _reportTooManyCollisions() throws StreamConstraintsException {
         // First: do not fuzz about small symbol tables; may get balanced by doubling up
         if (_hashSize <= 1024) { // would have spill-over area of 128 entries
             return;

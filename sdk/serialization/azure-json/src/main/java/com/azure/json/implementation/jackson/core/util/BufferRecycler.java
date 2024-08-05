@@ -30,7 +30,7 @@ public class BufferRecycler implements RecyclerPool.WithPool<BufferRecycler> {
          * @return Buffer recycler instance object is configured with, if any;
          *    whether this can be {@code null} depends on type of object
          */
-        public BufferRecycler bufferRecycler();
+        BufferRecycler bufferRecycler();
     }
 
     /**
@@ -49,14 +49,6 @@ public class BufferRecycler implements RecyclerPool.WithPool<BufferRecycler> {
      * example when requesting output as byte array.
      */
     public final static int BYTE_WRITE_CONCAT_BUFFER = 2;
-
-    /**
-     * Buffer used for concatenating binary data that is either being
-     * encoded as base64 output, or decoded from base64 input.
-     *
-     * @since 2.1
-     */
-    public final static int BYTE_BASE64_CODEC_BUFFER = 3;
 
     /**
      * Buffer used as input buffer for tokenization for character-based parsers.
@@ -128,16 +120,6 @@ public class BufferRecycler implements RecyclerPool.WithPool<BufferRecycler> {
     protected BufferRecycler(int bbCount, int cbCount) {
         _byteBuffers = new AtomicReferenceArray<>(bbCount);
         _charBuffers = new AtomicReferenceArray<>(cbCount);
-    }
-
-    /**
-     * @return True if this recycler is linked to pool and may be released
-     *   with {@link #releaseToPool()}; false if no linkage exists.
-     *
-     * @since 2.17
-     */
-    public boolean isLinkedWithPool() {
-        return _pool != null;
     }
 
     /*

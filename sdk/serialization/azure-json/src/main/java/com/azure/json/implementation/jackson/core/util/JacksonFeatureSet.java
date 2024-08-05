@@ -13,7 +13,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> implements java.i
 {
     private static final long serialVersionUID = 1L;
 
-    protected int _enabled;
+    private final int _enabled;
 
     /**
      * Constructor for creating instance with specific bitmask, wherein
@@ -22,7 +22,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> implements java.i
      *
      * @param bitmask Bitmask for features that are enabled
      */
-    protected JacksonFeatureSet(int bitmask) {
+    private JacksonFeatureSet(int bitmask) {
         _enabled = bitmask;
     }
 
@@ -52,10 +52,6 @@ public final class JacksonFeatureSet<F extends JacksonFeature> implements java.i
             }
         }
         return new JacksonFeatureSet<>(flags);
-    }
-
-    public static <F extends JacksonFeature> JacksonFeatureSet<F> fromBitmask(int bitmask) {
-        return new JacksonFeatureSet<>(bitmask);
     }
 
     /**
@@ -97,12 +93,4 @@ public final class JacksonFeatureSet<F extends JacksonFeature> implements java.i
         return (feature.getMask() & _enabled) != 0;
     }
 
-    /**
-     * Accessor for underlying bitmask
-     *
-     * @return Bitmask of enabled features
-     */
-    public int asBitmask() {
-        return _enabled;
-    }
 }

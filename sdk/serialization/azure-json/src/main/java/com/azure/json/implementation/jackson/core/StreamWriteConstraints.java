@@ -58,33 +58,12 @@ public class StreamWriteConstraints implements java.io.Serializable {
     public static final class Builder {
         private int maxNestingDepth;
 
-        /**
-         * Sets the maximum nesting depth. The depth is a count of objects and arrays that have not
-         * been closed, `{` and `[` respectively.
-         *
-         * @param maxNestingDepth the maximum depth
-         *
-         * @return this builder
-         * @throws IllegalArgumentException if the maxNestingDepth is set to a negative value
-         */
-        public Builder maxNestingDepth(final int maxNestingDepth) {
-            if (maxNestingDepth < 0) {
-                throw new IllegalArgumentException("Cannot set maxNestingDepth to a negative value");
-            }
-            this.maxNestingDepth = maxNestingDepth;
-            return this;
-        }
-
         Builder() {
             this(DEFAULT_MAX_DEPTH);
         }
 
         Builder(final int maxNestingDepth) {
             this.maxNestingDepth = maxNestingDepth;
-        }
-
-        Builder(StreamWriteConstraints src) {
-            maxNestingDepth = src._maxNestingDepth;
         }
 
         public StreamWriteConstraints build() {
@@ -114,29 +93,11 @@ public class StreamWriteConstraints implements java.io.Serializable {
         return DEFAULT;
     }
 
-    /**
-     * @return New {@link Builder} initialized with settings of this constraints
-     *   instance
-     */
-    public Builder rebuild() {
-        return new Builder(this);
-    }
-
     /*
     /**********************************************************************
     /* Accessors
     /**********************************************************************
      */
-
-    /**
-     * Accessor for maximum depth.
-     * see {@link Builder#maxNestingDepth(int)} for details.
-     *
-     * @return Maximum allowed depth
-     */
-    public int getMaxNestingDepth() {
-        return _maxNestingDepth;
-    }
 
     /*
     /**********************************************************************

@@ -106,7 +106,7 @@ public final class CharsToNameCanonicalizer {
      * defined, and child instance is released (call to <code>release</code>),
      * parent's shared tables may be updated from the child instance.
      */
-    protected final CharsToNameCanonicalizer _parent;
+    private final CharsToNameCanonicalizer _parent;
 
     /**
      * Member that is only used by the root table instance: root
@@ -114,7 +114,7 @@ public final class CharsToNameCanonicalizer {
      * may return new state if they add entries to the table.
      * Child tables do NOT use the reference.
      */
-    protected final AtomicReference<TableInfo> _tableInfo;
+    private final AtomicReference<TableInfo> _tableInfo;
 
     /**
      * Constraints used by {@link TokenStreamFactory} that uses
@@ -122,7 +122,7 @@ public final class CharsToNameCanonicalizer {
      *
      * @since 2.16
      */
-    protected final StreamReadConstraints _streamReadConstraints;
+    private final StreamReadConstraints _streamReadConstraints;
 
     /**
      * Seed value we use as the base to make hash codes non-static between
@@ -133,13 +133,13 @@ public final class CharsToNameCanonicalizer {
      *
      * @since 2.1
      */
-    protected final int _seed;
+    private final int _seed;
 
     /**
      * Feature flags of {@link TokenStreamFactory} that uses
      * this canonicalizer.
      */
-    protected final int _factoryFeatures;
+    private final int _factoryFeatures;
 
     /**
      * Whether any canonicalization should be attempted (whether using
@@ -147,7 +147,7 @@ public final class CharsToNameCanonicalizer {
      *<p>
      * NOTE: non-final since we may need to disable this with overflow.
      */
-    protected boolean _canonicalize;
+    private boolean _canonicalize;
 
     /*
     /**********************************************************
@@ -159,7 +159,7 @@ public final class CharsToNameCanonicalizer {
      * Primary matching symbols; it's expected most match occur from
      * here.
      */
-    protected String[] _symbols;
+    private String[] _symbols;
 
     /**
      * Overflow buckets; if primary doesn't match, lookup is done
@@ -168,27 +168,27 @@ public final class CharsToNameCanonicalizer {
      * Note: Number of buckets is half of number of symbol entries, on
      * assumption there's less need for buckets.
      */
-    protected Bucket[] _buckets;
+    private Bucket[] _buckets;
 
     /**
      * Current size (number of entries); needed to know if and when
      * rehash.
      */
-    protected int _size;
+    private int _size;
 
     /**
      * Limit that indicates maximum size this instance can hold before
      * it needs to be expanded and rehashed. Calculated using fill
      * factor passed in to constructor.
      */
-    protected int _sizeThreshold;
+    private int _sizeThreshold;
 
     /**
      * Mask used to get index from hash values; equal to
      * <code>_buckets.length - 1</code>, when _buckets.length is
      * a power of two.
      */
-    protected int _indexMask;
+    private int _indexMask;
 
     /**
      * We need to keep track of the longest collision list; this is needed
@@ -197,7 +197,7 @@ public final class CharsToNameCanonicalizer {
      *
      * @since 2.1
      */
-    protected int _longestCollisionList;
+    private int _longestCollisionList;
 
     /*
     /**********************************************************
@@ -216,7 +216,7 @@ public final class CharsToNameCanonicalizer {
      * and when adding new collision list queues (i.e. creating a new
      * collision list head entry)
      */
-    protected boolean _hashShared;
+    private boolean _hashShared;
 
     /*
     /**********************************************************
@@ -232,7 +232,7 @@ public final class CharsToNameCanonicalizer {
      *
      * @since 2.4
      */
-    protected BitSet _overflows;
+    private BitSet _overflows;
 
     /*
     /**********************************************************
@@ -451,55 +451,12 @@ public final class CharsToNameCanonicalizer {
         return _size;
     }
 
-    /**
-     * Method for checking number of primary hash buckets this symbol
-     * table uses.
-     *
-     * @return number of primary slots table has currently
-     */
-    public int bucketCount() {
-        return _symbols.length;
-    }
-
     public boolean maybeDirty() {
         return !_hashShared;
     }
 
     public int hashSeed() {
         return _seed;
-    }
-
-    /**
-     * Method mostly needed by unit tests; calculates number of
-     * entries that are in collision list. Value can be at most
-     * ({@link #size} - 1), but should usually be much lower, ideally 0.
-     *
-     * @since 2.1
-     *
-     * @return Number of collisions in the primary hash area
-     */
-    public int collisionCount() {
-        int count = 0;
-
-        for (Bucket bucket : _buckets) {
-            if (bucket != null) {
-                count += bucket.length;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Method mostly needed by unit tests; calculates length of the
-     * longest collision chain. This should typically be a low number,
-     * but may be up to {@link #size} - 1 in the pathological case
-     *
-     * @return Length of the collision chain
-     *
-     * @since 2.1
-     */
-    public int maxCollisionLength() {
-        return _longestCollisionList;
     }
 
     /*
@@ -614,7 +571,7 @@ public final class CharsToNameCanonicalizer {
             if (_overflows.get(bucketIndex)) {
                 // Has happened once already for this bucket index, so probably not coincidental...
                 if (JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(_factoryFeatures)) {
-                    _reportTooManyCollisions(MAX_COLL_CHAIN_LENGTH);
+                    _reportTooManyCollisions();
                 }
                 // but even if we don't fail, we will stop canonicalizing as safety measure
                 // (so as not to cause problems with PermGen)
@@ -705,7 +662,7 @@ public final class CharsToNameCanonicalizer {
      * is really redistributing old entries into new String/Bucket
      * entries.
      */
-    private void rehash() throws IOException {
+    private void rehash() {
         final int size = _symbols.length;
         int newSize = size + size;
 
@@ -783,44 +740,15 @@ public final class CharsToNameCanonicalizer {
     }
 
     /**
-     * @param maxLen Maximum allowed length of collision chain
      * @throws StreamConstraintsException if there are too many collisions (was an IllegalStateException before v2.15)
      * @since 2.1
      */
-    protected void _reportTooManyCollisions(int maxLen) throws StreamConstraintsException {
+    private void _reportTooManyCollisions() throws StreamConstraintsException {
         throw new StreamConstraintsException("Longest collision chain in symbol table (of size " + _size
-            + ") now exceeds maximum, " + maxLen + " -- suspect a DoS attack based on hash collisions");
+            + ") now exceeds maximum, " + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH + " -- suspect a DoS attack based on hash collisions");
     }
 
     // since 2.10, for tests only
-    /**
-     * Diagnostics method that will verify that internal data structures are consistent;
-     * not meant as user-facing method but only for test suites and possible troubleshooting.
-     *
-     * @since 2.10
-     */
-    protected void verifyInternalConsistency() {
-        int count = 0;
-        final int size = _symbols.length;
-
-        for (int i = 0; i < size; ++i) {
-            String symbol = _symbols[i];
-            if (symbol != null) {
-                ++count;
-            }
-        }
-
-        final int bucketSize = (size >> 1);
-        for (int i = 0; i < bucketSize; ++i) {
-            for (Bucket b = _buckets[i]; b != null; b = b.next) {
-                ++count;
-            }
-        }
-        if (count != _size) {
-            throw new IllegalStateException(
-                String.format("Internal error: expected internal size %d vs calculated count %d", _size, count));
-        }
-    }
 
     // For debugging, comment out
     /*
@@ -832,7 +760,7 @@ public final class CharsToNameCanonicalizer {
         for (String s : _symbols) {
             if (s != null) ++primaryCount;
         }
-    
+
         sb.append("[BytesToNameCanonicalizer, size: ");
         sb.append(_size);
         sb.append('/');
@@ -842,7 +770,7 @@ public final class CharsToNameCanonicalizer {
         sb.append('/');
         sb.append(_size - primaryCount);
         sb.append(" coll; avg length: ");
-    
+
         // Average length: minimum of 1 for all (1 == primary hit);
         // and then 1 per each traversal for collisions/buckets
         //int maxDist = 1;
@@ -856,7 +784,7 @@ public final class CharsToNameCanonicalizer {
             }
         }
         double avgLength;
-    
+
         if (_size == 0) {
             avgLength = 0.0;
         } else {
@@ -864,7 +792,7 @@ public final class CharsToNameCanonicalizer {
         }
         // let's round up a bit (two 2 decimal places)
         //avgLength -= (avgLength % 0.01);
-    
+
         sb.append(avgLength);
         sb.append(']');
         return sb.toString();

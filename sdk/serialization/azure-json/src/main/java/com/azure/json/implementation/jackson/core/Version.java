@@ -96,30 +96,6 @@ public class Version implements Comparable<Version>, java.io.Serializable {
         return isUnknownVersion();
     }
 
-    public int getMajorVersion() {
-        return _majorVersion;
-    }
-
-    public int getMinorVersion() {
-        return _minorVersion;
-    }
-
-    public int getPatchLevel() {
-        return _patchLevel;
-    }
-
-    public String getGroupId() {
-        return _groupId;
-    }
-
-    public String getArtifactId() {
-        return _artifactId;
-    }
-
-    public String toFullString() {
-        return _groupId + '/' + _artifactId + '/' + toString();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

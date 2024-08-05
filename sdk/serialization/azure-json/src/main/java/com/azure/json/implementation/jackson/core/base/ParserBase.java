@@ -15,7 +15,6 @@ import com.azure.json.implementation.jackson.core.json.DupDetector;
 import com.azure.json.implementation.jackson.core.json.JsonReadContext;
 import com.azure.json.implementation.jackson.core.json.PackageVersion;
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 import com.azure.json.implementation.jackson.core.util.TextBuffer;
 
 /**
@@ -24,9 +23,6 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  * of actual underlying input source.
  */
 public abstract class ParserBase extends ParserMinimalBase {
-    // JSON capabilities are the same as defaults
-    // @since 2.12
-    protected final static JacksonFeatureSet<StreamReadCapability> JSON_READ_CAPABILITIES = DEFAULT_READ_CAPABILITIES;
 
     /*
     /**********************************************************
@@ -329,18 +325,6 @@ public abstract class ParserBase extends ParserMinimalBase {
         return this;
     }
 
-    @Override // since 2.7
-    public JsonParser overrideStdFeatures(int values, int mask) {
-        int oldState = _features;
-        int newState = (oldState & ~mask) | (values & mask);
-        int changed = oldState ^ newState;
-        if (changed != 0) {
-            _features = newState;
-            _checkStdFeatureChanges(newState, changed);
-        }
-        return this;
-    }
-
     /**
      * Helper method called to verify changes to standard features.
      *
@@ -385,22 +369,6 @@ public abstract class ParserBase extends ParserMinimalBase {
             }
         }
         return _parsingContext.getCurrentName();
-    }
-
-    @Override
-    public void overrideCurrentName(String name) {
-        // Simple, but need to look for START_OBJECT/ARRAY's "off-by-one" thing:
-        JsonReadContext ctxt = _parsingContext;
-        if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
-            ctxt = ctxt.getParent();
-        }
-        // 24-Sep-2013, tatu: Unfortunate, but since we did not expose exceptions,
-        //   need to wrap this here
-        try {
-            ctxt.setCurrentName(name);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
     }
 
     @Override
@@ -626,12 +594,6 @@ public abstract class ParserBase extends ParserMinimalBase {
         return JsonToken.VALUE_NUMBER_FLOAT;
     }
 
-    @Override
-    public boolean isNaN() throws IOException {
-        // 01-Dec-2023, tatu: [core#1137] Only return explicit NaN
-        return (_currToken == JsonToken.VALUE_NUMBER_FLOAT) && _numberIsNaN;
-    }
-
     /*
     /**********************************************************
     /* Numeric accessors of public API
@@ -703,49 +665,6 @@ public abstract class ParserBase extends ParserMinimalBase {
             _throwInternal();
         }
         return _getNumberDouble();
-    }
-
-    @Override // since 2.15
-    public Object getNumberValueDeferred() throws IOException {
-        if (_currToken == JsonToken.VALUE_NUMBER_INT) {
-            if (_numTypesValid == NR_UNKNOWN) {
-                _parseNumericValue(NR_UNKNOWN);
-            }
-            if ((_numTypesValid & NR_INT) != 0) {
-                return _numberInt;
-            }
-            if ((_numTypesValid & NR_LONG) != 0) {
-                return _numberLong;
-            }
-            if ((_numTypesValid & NR_BIGINT) != 0) {
-                // from _getBigInteger()
-                if (_numberBigInt != null) {
-                    return _numberBigInt;
-                } else if (_numberString != null) {
-                    return _numberString;
-                }
-                return _getBigInteger(); // will fail
-            }
-            _throwInternal();
-        }
-        if (_currToken == JsonToken.VALUE_NUMBER_FLOAT) {
-            // Ok this gets tricky since flags are not set quite as with
-            // integers
-            if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-                return _getBigDecimal();
-            }
-            if ((_numTypesValid & NR_DOUBLE) != 0) { // sanity check
-                return _getNumberDouble();
-            }
-            if ((_numTypesValid & NR_FLOAT) != 0) {
-                return _getNumberFloat();
-            }
-            // Should be able to rely on this; might want to set _numberString
-            // but state keeping looks complicated so don't do that yet
-            return _textBuffer.contentsAsString();
-        }
-        // We'll just force exception by:
-        return getNumberValue();
     }
 
     @Override
@@ -1383,11 +1302,9 @@ public abstract class ParserBase extends ParserMinimalBase {
      *    invalid (unrecognized) JSON token: called when parser finds something that
      *    looks like unquoted textual token
      *
-     * @throws IOException Not thrown by base implementation but allowed by sub-classes
-     *
      * @since 2.10
      */
-    protected String _validJsonTokenList() throws IOException {
+    protected String _validJsonTokenList() {
         return _validJsonValueList();
     }
 
@@ -1396,12 +1313,10 @@ public abstract class ParserBase extends ParserMinimalBase {
      *    invalid (unrecognized) JSON value: called when parser finds something that
      *    does not look like a value or separator.
      *
-     * @throws IOException Not thrown by base implementation but allowed by sub-classes
-     *
      * @since 2.10
      */
     @SuppressWarnings("deprecation")
-    protected String _validJsonValueList() throws IOException {
+    protected String _validJsonValueList() {
         if (isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
             return "(JSON String, Number (or 'NaN'/'+INF'/'-INF'), Array, Object or token 'null', 'true' or 'false')";
         }
@@ -1573,7 +1488,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /* Helper method to call to expand "quad" buffer for name decoding
-     * 
+     *
      * @since 2.16
      */
     protected int[] _growNameDecodeBuffer(int[] arr, int more) throws StreamConstraintsException {
@@ -1597,7 +1512,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     @Deprecated // since 2.8
-    protected boolean loadMore() throws IOException {
+    protected boolean loadMore() {
         return false;
     }
 

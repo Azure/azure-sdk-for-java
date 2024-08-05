@@ -4,7 +4,7 @@ package com.azure.json.implementation.jackson.core;
 import java.io.Serializable;
 
 /**
- * Container for configuration values used when handling errorneous token inputs. 
+ * Container for configuration values used when handling errorneous token inputs.
  * For example, unquoted text segments.
  * <p>
  * Currently default settings are
@@ -38,38 +38,13 @@ public class ErrorReportConfiguration implements Serializable {
 
     /**
      * Maximum length of raw content to include in error messages
-     * 
-     * @see Builder#maxRawContentLength(int) 
+     *
+     * @see Builder#maxRawContentLength(int)
      */
     protected final int _maxRawContentLength;
 
-    private static ErrorReportConfiguration DEFAULT
+    private static final ErrorReportConfiguration DEFAULT
         = new ErrorReportConfiguration(DEFAULT_MAX_ERROR_TOKEN_LENGTH, DEFAULT_MAX_RAW_CONTENT_LENGTH);
-
-    /**
-     * Override the default ErrorReportConfiguration. These defaults are only used when {@link JsonFactory}
-     * instances are not configured with their own ErrorReportConfiguration.
-     * <p>
-     * Library maintainers should not set this as it will affect other code that uses Jackson.
-     * Library maintainers who want to configure ErrorReportConfiguration for the Jackson usage within their
-     * lib should create <code>ObjectMapper</code> instances that have a {@link JsonFactory} instance with
-     * the required ErrorReportConfiguration.
-     * <p>
-     * This method is meant for users delivering applications. If they use this, they set it when they start
-     * their application to avoid having other code initialize their mappers before the defaults are overridden.
-     *
-     * @param errorReportConfiguration new default for ErrorReportConfiguration (a null value will reset to built-in default)
-     * @see #defaults()
-     * @see #builder()
-     */
-    public static void
-        overrideDefaultErrorReportConfiguration(final ErrorReportConfiguration errorReportConfiguration) {
-        if (errorReportConfiguration == null) {
-            DEFAULT = new ErrorReportConfiguration(DEFAULT_MAX_ERROR_TOKEN_LENGTH, DEFAULT_MAX_RAW_CONTENT_LENGTH);
-        } else {
-            DEFAULT = errorReportConfiguration;
-        }
-    }
 
     /*
     /**********************************************************************
@@ -78,34 +53,8 @@ public class ErrorReportConfiguration implements Serializable {
      */
 
     public static final class Builder {
-        private int maxErrorTokenLength;
-        private int maxRawContentLength;
-
-        /**
-         * @param maxErrorTokenLength Maximum error token length setting to use
-         *
-         * @return This factory instance (to allow call chaining)
-         *
-         * @throws IllegalArgumentException if {@code maxErrorTokenLength} is less than 0
-         */
-        public Builder maxErrorTokenLength(final int maxErrorTokenLength) {
-            validateMaxErrorTokenLength(maxErrorTokenLength);
-            this.maxErrorTokenLength = maxErrorTokenLength;
-            return this;
-        }
-
-        /**
-         * @param maxRawContentLength Maximum raw content setting to use
-         * 
-         * @see ErrorReportConfiguration#_maxRawContentLength
-         *
-         * @return This builder instance (to allow call chaining)
-         */
-        public Builder maxRawContentLength(final int maxRawContentLength) {
-            validateMaxRawContentLength(maxRawContentLength);
-            this.maxRawContentLength = maxRawContentLength;
-            return this;
-        }
+        private final int maxErrorTokenLength;
+        private final int maxRawContentLength;
 
         Builder() {
             this(DEFAULT_MAX_ERROR_TOKEN_LENGTH, DEFAULT_MAX_RAW_CONTENT_LENGTH);
@@ -149,13 +98,6 @@ public class ErrorReportConfiguration implements Serializable {
         return DEFAULT;
     }
 
-    /**
-     * @return New {@link Builder} initialized with settings of configuration instance
-     */
-    public Builder rebuild() {
-        return new Builder(this);
-    }
-
     /*
     /**********************************************************************
     /* Accessors
@@ -187,25 +129,5 @@ public class ErrorReportConfiguration implements Serializable {
     /* Convenience methods for validation
     /**********************************************************************
      */
-
-    /**
-     * Convenience method that can be used verify valid {@link #_maxErrorTokenLength}.
-     * If invalid value is passed in, {@link IllegalArgumentException} is thrown.
-     *
-     * @param maxErrorTokenLength Maximum length of token to include in error messages
-     */
-    static void validateMaxErrorTokenLength(int maxErrorTokenLength) throws IllegalArgumentException {
-        if (maxErrorTokenLength < 0) {
-            throw new IllegalArgumentException(
-                String.format("Value of maxErrorTokenLength (%d) cannot be negative", maxErrorTokenLength));
-        }
-    }
-
-    static void validateMaxRawContentLength(int maxRawContentLength) {
-        if (maxRawContentLength < 0) {
-            throw new IllegalArgumentException(
-                String.format("Value of maxRawContentLength (%d) cannot be negative", maxRawContentLength));
-        }
-    }
 
 }

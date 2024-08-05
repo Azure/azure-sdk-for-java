@@ -1,17 +1,17 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.base;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.JsonGenerator;
+import com.azure.json.implementation.jackson.core.JsonStreamContext;
+import com.azure.json.implementation.jackson.core.SerializableString;
+import com.azure.json.implementation.jackson.core.Version;
 import com.azure.json.implementation.jackson.core.io.IOContext;
 import com.azure.json.implementation.jackson.core.io.UTF8Writer;
 import com.azure.json.implementation.jackson.core.json.DupDetector;
 import com.azure.json.implementation.jackson.core.json.JsonWriteContext;
 import com.azure.json.implementation.jackson.core.json.PackageVersion;
-import com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter;
+
+import java.io.IOException;
 
 /**
  * This base class implements part of API that a JSON generator exposes
@@ -43,23 +43,11 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected final static String WRITE_RAW = "write a raw (unencoded) value";
     protected final static String WRITE_STRING = "write a string";
 
-    /**
-     * This value is the limit of scale allowed for serializing {@link BigDecimal}
-     * in "plain" (non-engineering) notation; intent is to prevent asymmetric
-     * attack whereupon simple eng-notation with big scale is used to generate
-     * huge "plain" serialization. See [core#315] for details.
-     *
-     * @since 2.7.7
-     */
-    protected final static int MAX_BIG_DECIMAL_SCALE = 9999;
-
     /*
     /**********************************************************
     /* Configuration
     /**********************************************************
      */
-
-    protected ObjectCodec _objectCodec;
 
     /**
      * Bit flag composed of bits that indicate which
@@ -104,16 +92,15 @@ public abstract class GeneratorBase extends JsonGenerator {
      */
 
     @Deprecated // since 2.16
-    protected GeneratorBase(int features, ObjectCodec codec) {
-        this(features, codec, (IOContext) null);
+    protected GeneratorBase(int features) {
+        this(features, (IOContext) null);
     }
 
     // @since 2.16
     @SuppressWarnings("deprecation")
-    protected GeneratorBase(int features, ObjectCodec codec, IOContext ioContext) {
+    protected GeneratorBase(int features, IOContext ioContext) {
         super();
         _features = features;
-        _objectCodec = codec;
         _ioContext = ioContext;
         DupDetector dups
             = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
@@ -123,16 +110,15 @@ public abstract class GeneratorBase extends JsonGenerator {
 
     // @since 2.5
     @Deprecated // since 2.16
-    protected GeneratorBase(int features, ObjectCodec codec, JsonWriteContext ctxt) {
-        this(features, codec, null, ctxt);
+    protected GeneratorBase(int features, JsonWriteContext ctxt) {
+        this(features, null, ctxt);
     }
 
     // @since 2.16
     @SuppressWarnings("deprecation")
-    protected GeneratorBase(int features, ObjectCodec codec, IOContext ioContext, JsonWriteContext jsonWriteContext) {
+    protected GeneratorBase(int features, IOContext ioContext, JsonWriteContext jsonWriteContext) {
         super();
         _features = features;
-        _objectCodec = codec;
         _ioContext = ioContext;
         _writeContext = jsonWriteContext;
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
@@ -174,11 +160,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     @Override
     public final boolean isEnabled(Feature f) {
         return (_features & f.getMask()) != 0;
-    }
-
-    @Override
-    public int getFeatureMask() {
-        return _features;
     }
 
     //public JsonGenerator configure(Feature f, boolean state) { }
@@ -231,18 +212,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         return this;
     }
 
-    @Override // since 2.7
-    public JsonGenerator overrideStdFeatures(int values, int mask) {
-        int oldState = _features;
-        int newState = (oldState & ~mask) | (values & mask);
-        int changed = oldState ^ newState;
-        if (changed != 0) {
-            _features = newState;
-            _checkStdFeatureChanges(newState, changed);
-        }
-        return this;
-    }
-
     /**
      * Helper method called to verify changes to standard features.
      *
@@ -276,26 +245,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         }
     }
 
-    @Override
-    public JsonGenerator useDefaultPrettyPrinter() {
-        // Should not override a pretty printer if one already assigned.
-        if (getPrettyPrinter() != null) {
-            return this;
-        }
-        return setPrettyPrinter(_constructDefaultPrettyPrinter());
-    }
-
-    @Override
-    public JsonGenerator setCodec(ObjectCodec oc) {
-        _objectCodec = oc;
-        return this;
-    }
-
-    @Override
-    public ObjectCodec getCodec() {
-        return _objectCodec;
-    }
-
     /*
     /**********************************************************
     /* Public API, accessors
@@ -310,17 +259,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     @Override
     public JsonStreamContext getOutputContext() {
         return _writeContext;
-    }
-
-    /**
-     * Accessor for use by {@code jackson-core} itself (tests in particular).
-     *
-     * @return {@link IOContext} in use by this generator
-     *
-     * @since 2.17
-     */
-    public IOContext ioContext() {
-        return _ioContext;
     }
 
     /*
@@ -392,13 +330,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         writeRaw(text);
     }
 
-    @Override
-    public int writeBinary(Base64Variant b64variant, InputStream data, int dataLength) throws IOException {
-        // Let's implement this as "unsupported" to make it easier to add new parser impls
-        _reportUnsupportedOperation();
-        return 0;
-    }
-
     /*
     /**********************************************************
     /* Public API, write methods, primitive
@@ -422,38 +353,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     /* Public API, write methods, POJOs, trees
     /**********************************************************
      */
-
-    @Override
-    public void writeObject(Object value) throws IOException {
-        if (value == null) {
-            // important: call method that does check value write:
-            writeNull();
-        } else {
-            /* 02-Mar-2009, tatu: we are NOT to call _verifyValueWrite here,
-             *   because that will be done when codec actually serializes
-             *   contained POJO. If we did call it it would advance state
-             *   causing exception later on
-             */
-            if (_objectCodec != null) {
-                _objectCodec.writeValue(this, value);
-                return;
-            }
-            _writeSimpleObject(value);
-        }
-    }
-
-    @Override
-    public void writeTree(TreeNode rootNode) throws IOException {
-        // As with 'writeObject()', we are not check if write would work
-        if (rootNode == null) {
-            writeNull();
-        } else {
-            if (_objectCodec == null) {
-                throw new IllegalStateException("No ObjectCodec defined");
-            }
-            _objectCodec.writeValue(this, rootNode);
-        }
-    }
 
     /*
     /**********************************************************
@@ -503,44 +402,6 @@ public abstract class GeneratorBase extends JsonGenerator {
      *    issue at format layer
      */
     protected abstract void _verifyValueWrite(String typeMsg) throws IOException;
-
-    /**
-     * Overridable factory method called to instantiate an appropriate {@link PrettyPrinter}
-     * for case of "just use the default one", when {@link #useDefaultPrettyPrinter()} is called.
-     *
-     * @return Instance of "default" pretty printer to use
-     *
-     * @since 2.6
-     */
-    protected PrettyPrinter _constructDefaultPrettyPrinter() {
-        return new DefaultPrettyPrinter();
-    }
-
-    /**
-     * Helper method used to serialize a {@link java.math.BigDecimal} as a String,
-     * for serialization, taking into account configuration settings
-     *
-     * @param value BigDecimal value to convert to String
-     *
-     * @return String representation of {@code value}
-     *
-     * @throws IOException if there is a problem serializing value as String
-     *
-     * @since 2.7.7
-     */
-    protected String _asString(BigDecimal value) throws IOException {
-        if (Feature.WRITE_BIGDECIMAL_AS_PLAIN.enabledIn(_features)) {
-            // 24-Aug-2016, tatu: [core#315] prevent possible DoS vector
-            int scale = value.scale();
-            if ((scale < -MAX_BIG_DECIMAL_SCALE) || (scale > MAX_BIG_DECIMAL_SCALE)) {
-                _reportError(String.format(
-                    "Attempt to write plain `java.math.BigDecimal` (see JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN) with illegal scale (%d): needs to be between [-%d, %d]",
-                    scale, MAX_BIG_DECIMAL_SCALE, MAX_BIG_DECIMAL_SCALE));
-            }
-            return value.toPlainString();
-        }
-        return value.toString();
-    }
 
     /*
     /**********************************************************

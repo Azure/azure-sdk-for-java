@@ -220,36 +220,6 @@ public final class NumberInput {
         return true;
     }
 
-    /**
-     * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
-     * with String argument
-     *
-     * @param s String that contains {@code long} value to check
-     * @param negative Whether original number had a minus sign (which is
-     *    NOT passed to this method) or not
-     *
-     * @return {@code True} if specified String representation is within Java
-     *   {@code long} range; {@code false} if not.
-     */
-    public static boolean inLongRange(String s, boolean negative) {
-        String cmp = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
-        int cmpLen = cmp.length();
-        int alen = s.length();
-        if (alen < cmpLen)
-            return true;
-        if (alen > cmpLen)
-            return false;
-
-        // could perhaps just use String.compareTo()?
-        for (int i = 0; i < cmpLen; ++i) {
-            int diff = s.charAt(i) - cmp.charAt(i);
-            if (diff != 0) {
-                return (diff < 0);
-            }
-        }
-        return true;
-    }
-
     public static int parseAsInt(String s, int def) {
         if (s == null) {
             return def;
@@ -284,78 +254,7 @@ public final class NumberInput {
         }
         try {
             return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    public static long parseAsLong(String s, long def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        // One more thing: use long parsing for 'simple'
-        int i = 0;
-        // skip leading sign, if any
-        final char sign = s.charAt(0);
-        if (sign == '+') { // for plus, actually physically remove
-            s = s.substring(1);
-            len = s.length();
-        } else if (sign == '-') { // minus, just skip for checks, must retain
-            i = 1;
-        }
-        for (; i < len; ++i) {
-            char c = s.charAt(i);
-            // if other symbols, parse as Double, coerce
-            if (c > '9' || c < '0') {
-                try {
-                    //useFastParser=true is used because there is a lot less risk that small changes in result will have an affect
-                    //and performance benefit is useful
-                    return (long) parseDouble(s, true);
-                } catch (NumberFormatException e) {
-                    return def;
-                }
-            }
-        }
-        try {
-            return Long.parseLong(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    /**
-     * @param s a string representing a number to parse
-     * @param def the default to return if `s` is not a parseable number
-     * @return closest matching double (or `def` if there is an issue with `s`) where useFastParser=false
-     * @see #parseAsDouble(String, double, boolean)
-     */
-    public static double parseAsDouble(final String s, final double def) {
-        return parseAsDouble(s, def, false);
-    }
-
-    /**
-     * @param s a string representing a number to parse
-     * @param def the default to return if `s` is not a parseable number
-     * @param useFastParser whether to use {@code FastDoubleParser}
-     * @return closest matching double (or `def` if there is an issue with `s`)
-     * @since 2.14
-     */
-    public static double parseAsDouble(String s, final double def, final boolean useFastParser) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        if (s.isEmpty()) {
-            return def;
-        }
-        try {
-            return parseDouble(s, useFastParser);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
         }
         return def;
     }
@@ -439,7 +338,7 @@ public final class NumberInput {
      * @return a BigDecimal
      * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
      *
-     * @deprecated Since 2.17 use {@link #parseBigDecimal(char[], int, int, boolean)} instead
+     * @deprecated Since 2.17 use {@code #parseBigDecimal(char[], int, int, boolean)} instead
      */
     @Deprecated // since 2.17
     public static BigDecimal parseBigDecimal(final char[] ch, final int off, final int len)
@@ -447,41 +346,16 @@ public final class NumberInput {
         return BigDecimalParser.parse(ch, off, len);
     }
 
-    /**
-     * @param ch a char array with text that makes up a number
-     * @param off the offset to apply when parsing the number in the char array
-     * @param len the length of the number in the char array
-     * @param useFastParser whether to use custom fast parser (true) or JDK default (false) parser
-     * @return a BigDecimal
-     * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
-     * @since v2.15
-     */
-    public static BigDecimal parseBigDecimal(final char[] ch, final int off, final int len, final boolean useFastParser)
-        throws NumberFormatException {
-        return BigDecimalParser.parse(ch, off, len);
-    }
 
     /**
      * @param ch a char array with text that makes up a number
      * @return a BigDecimal
      * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
      *
-     * @deprecated Since 2.17 use {@link #parseBigDecimal(char[], boolean)} instead
+     * @deprecated Since 2.17 use {@code #parseBigDecimal(char[], boolean)} instead
      */
     @Deprecated // since 2.17
     public static BigDecimal parseBigDecimal(final char[] ch) throws NumberFormatException {
-        return BigDecimalParser.parse(ch);
-    }
-
-    /**
-     * @param ch a char array with text that makes up a number
-     * @param useFastParser whether to use custom fast parser (true) or JDK default (false) parser
-     * @return a BigDecimal
-     * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
-     * @since v2.15
-     */
-    public static BigDecimal parseBigDecimal(final char[] ch, final boolean useFastParser)
-        throws NumberFormatException {
         return BigDecimalParser.parse(ch);
     }
 

@@ -19,11 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2.9.6
  */
 class ThreadLocalBufferManager {
-    /**
-     * A lock to make sure releaseBuffers is only executed by one thread at a time
-     * since it iterates over and modifies the allSoftBufRecyclers.
-     */
-    private final Object RELEASE_LOCK = new Object();
 
     /**
      * A set of all SoftReferences to all BufferRecyclers to be able to release them on shutdown.
@@ -54,26 +49,6 @@ class ThreadLocalBufferManager {
      */
     public static ThreadLocalBufferManager instance() {
         return ThreadLocalBufferManagerHolder.manager;
-    }
-
-    /**
-     * Releases the buffers retained in ThreadLocals. To be called for instance on shutdown event of applications which make use of
-     * an environment like an appserver which stays alive and uses a thread pool that causes ThreadLocals created by the
-     * application to survive much longer than the application itself.
-     * It will clear all bufRecyclers from the SoftRefs and release all SoftRefs itself from our set.
-     */
-    public int releaseBuffers() {
-        synchronized (RELEASE_LOCK) {
-            int count = 0;
-            // does this need to be in sync block too? Looping over Map definitely has to but...
-            removeSoftRefsClearedByGc(); // make sure the refQueue is empty
-            for (SoftReference<BufferRecycler> ref : _trackedRecyclers.keySet()) {
-                ref.clear(); // possibly already cleared by gc, nothing happens in that case
-                ++count;
-            }
-            _trackedRecyclers.clear(); //release cleared SoftRefs
-            return count;
-        }
     }
 
     public SoftReference<BufferRecycler> wrapAndTrack(BufferRecycler br) {
