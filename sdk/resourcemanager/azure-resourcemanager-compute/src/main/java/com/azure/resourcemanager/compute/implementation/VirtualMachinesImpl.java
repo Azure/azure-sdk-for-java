@@ -160,15 +160,7 @@ public class VirtualMachinesImpl
         return this
             .inner()
             .captureAsync(groupName, name, parameters)
-            .map(
-                captureResultInner -> {
-                    try {
-                        return SerializerFactory.createDefaultManagementSerializerAdapter()
-                            .serialize(captureResultInner, SerializerEncoding.JSON);
-                    } catch (IOException ex) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(ex));
-                    }
-                });
+            .map(captureResult -> VirtualMachineImpl.serializeCaptureResult(captureResult, logger));
     }
 
     @Override
