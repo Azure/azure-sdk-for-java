@@ -1198,7 +1198,7 @@ public class ShareFileClient {
             : options.getRetryOptions();
         Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
 
-//        Callable<ShareFileDownloadResponse> operation = () -> {
+        Callable<ShareFileDownloadResponse> operation = () -> {
             String initialETag = null;
             String currentETag = null;
             int retryCount = 0;
@@ -1229,26 +1229,23 @@ public class ShareFileClient {
                         response.getStatusCode(), response.getHeaders(), null, headers));
                 } catch (Exception e) {
                     Throwable t = Exceptions.unwrap(e);
-                    System.out.println(e.getClass().getName());
                     if (t instanceof IOException) {
-                        System.out.println("inside the IOException");
+                        retryCount++;
+                        if (retryCount > retryOptions.getMaxRetryRequests()) {
+                            throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
+                        }
+                        LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
+                    } else if (t instanceof ConcurrentModificationException) {
+                        throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+                        + initialETag + ", Received eTag: " + currentETag);
+                    } else {
+                        throw e;
                     }
-                    System.out.println("inside the catch clause");
-                    retryCount++;
-                    if (retryCount >= retryOptions.getMaxRetryRequests()) {
-                        throw new RuntimeException("Failed to download file after retries: " + e.getMessage(), e);
-                    }
-                    LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
                 }
-//                catch (ConcurrentModificationException e) {
-//                    throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-//                        + initialETag + ", Received eTag: " + currentETag);
-//                }
             }
             throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
-//        };
-//
-//        return sendRequest(operation, timeout, ShareStorageException.class);
+        };
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     private ResponseBase<FilesDownloadHeaders, InputStream> downloadRange(ShareFileRange range,

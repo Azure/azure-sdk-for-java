@@ -43,12 +43,7 @@ public class MockFailureResponsePolicy implements HttpPipelinePolicy {
             return response;
         } else {
             this.tries -= 1;
-            return new MockDownloadHttpResponse(response, 206,
-                //BinaryData.fromFlux(Flux.error(new IOException())).block()
-                //BinaryData.fromObject(new IOException())
-                //BinaryData.fromFlux(new IOException()).block()
-                new IOException()
-            );
+            return new MockDownloadHttpResponse(response, 206, Flux.error(new IOException()));
         }
     }
 }

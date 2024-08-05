@@ -25,24 +25,12 @@ public class MockDownloadHttpResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
     private final Flux<ByteBuffer> body;
-    //private final BinaryData binaryData;
-    IOException e;
 
     public MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
         super(response.getRequest());
         this.statusCode = statusCode;
         this.headers = response.getHeaders();
         this.body = body;
-        this.e = e;
-    }
-
-    public MockDownloadHttpResponse(HttpResponse response, int statusCode, IOException e) {
-        super(response.getRequest());
-        this.statusCode = statusCode;
-        this.headers = response.getHeaders();
-        this.body = null;
-        //this.binaryData = binaryData;
-        this.e = e;
     }
 
     @Override
@@ -92,10 +80,6 @@ public class MockDownloadHttpResponse extends HttpResponse {
 
     @Override
     public Mono<InputStream> getBodyAsInputStream() {
-        //throw new UncheckedIOException(new IOException("Simulated IOException"));
-        //return Mono.error(new UncheckedIOExceptionWrapper(new IOException("Simulated IOException")));
-        //return Mono.just(new IOException("Simulated IOException")).map(UncheckedIOException::new);
-        //return Mono.just(getBodyAsBinaryData().toStream());
         return Mono.error(new IOException());
     }
 }
