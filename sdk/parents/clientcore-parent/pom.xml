@@ -1280,7 +1280,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <release>21</release>
+                  <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
 
@@ -1294,7 +1294,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <release>21</release>
+                  <release>11</release>
                   <includes>
                     <include>module-info.java</include>
                   </includes>
@@ -1311,7 +1311,7 @@
                   <compilerArgs combine.children="append">
                     <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
                   </compilerArgs>
-                  <release>21</release>
+                  <release>8</release>
                   <excludes>
                     <exclude>module-info.java</exclude>
                   </excludes>
@@ -1386,18 +1386,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <!-- Setup for Java 21+ -->
-    <profile>
-      <id>java21</id>
-      <activation>
-        <jdk>[21,)</jdk>
-      </activation>
-      <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-      </properties>
     </profile>
 
     <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
@@ -1765,6 +1753,31 @@
       <properties>
         <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
       </properties>
+    </profile>
+
+    <profile>
+      <id>java-21-support</id>
+      <activation>
+        <jdk>[21,)</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+            <configuration>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

@@ -124,8 +124,6 @@
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
           </compilerArgs>
-          <source>21</source>
-          <target>21</target>
         </configuration>
       </plugin>
 
