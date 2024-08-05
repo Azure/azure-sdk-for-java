@@ -275,6 +275,12 @@
     "databind",
     "databricks",
     "DAZURE",
+    "deidentification",
+    "deidentificationclient",
+    "deidentified",
+    "deid",
+    "deidservices",
+    "deidentify",
     "ddos",
     "dcis",
     "deallocate",
@@ -301,6 +307,7 @@
     "Entra",
     "Esto",
     "etag",
+    "euap",
     "eventhub",
     "eventhubs",
     "failondeprecatedstatus",
@@ -316,10 +323,12 @@
     "hanaonazure",
     "hdfs",
     "hdinsight",
+    "healthdataaiservices",
     "hudha",
     "hvac",
     "hybridkubernetes",
     "hyunwoongko",
+    "idnum",
     "insights",
     "intellij",
     "Intellij",
@@ -1227,6 +1236,22 @@
       "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
       "words": [
         "Djava"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-testcontainers/src/main/java/com/azure/spring/testcontainers/service/connection/storage/StorageBlobContainerConnectionDetailsFactory.java",
+      "words": [
+        "CDXJ",
+        "SZFPT",
+        "Bekso"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-testcontainers/src/main/java/com/azure/spring/testcontainers/service/connection/storage/StorageQueueContainerConnectionDetailsFactory.java",
+      "words": [
+        "CDXJ",
+        "SZFPT",
+        "Bekso"
       ]
     },
     {

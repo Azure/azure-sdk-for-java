@@ -8,6 +8,6 @@ module com.azure.resourcemanager.appcontainers {
     exports com.azure.resourcemanager.appcontainers.fluent;
     exports com.azure.resourcemanager.appcontainers.fluent.models;
     exports com.azure.resourcemanager.appcontainers.models;
-    opens com.azure.resourcemanager.appcontainers.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.appcontainers.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.appcontainers.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.appcontainers.models to com.azure.core;
 }

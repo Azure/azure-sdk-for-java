@@ -2,6 +2,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -47,7 +50,7 @@ steps:
       displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -165,7 +168,7 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }}
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -196,7 +199,7 @@ steps:
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
 
-          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) -T ${{ parameters.TestParallelization }}
+          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
           exit $LASTEXITCODE
       env:
         # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'

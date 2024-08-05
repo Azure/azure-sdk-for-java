@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.CapacityReservationUpdate;
 import com.azure.resourcemanager.compute.models.Sku;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public final class CapacityReservationsUpdateSamples {
      */
     /**
      * Sample code: CapacityReservation_Update_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void capacityReservationUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -40,7 +39,7 @@ public final class CapacityReservationsUpdateSamples {
      */
     /**
      * Sample code: CapacityReservation_Update_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void capacityReservationUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {

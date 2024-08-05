@@ -6,57 +6,39 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponent;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponentType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DotNetComponentsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Canceled\",\"configurations\":[{\"propertyName\":\"ixyqhfnkvy\",\"value\":\"qqdseipnquwzxhrp\"},{\"propertyName\":\"odlhkfktl\",\"value\":\"dsobjopnouhbq\"},{\"propertyName\":\"kqxs\",\"value\":\"uzyigfcvcewbwqhd\"}],\"serviceBinds\":[{\"name\":\"atm\",\"serviceId\":\"c\"},{\"name\":\"zdfsqxhyqmr\",\"serviceId\":\"parn\"}]},\"id\":\"grszrbwtdrcwg\",\"name\":\"w\",\"type\":\"l\"}]}";
+            = "{\"value\":[{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"ypffmnoiicsudyh\",\"value\":\"jjtalxrdsj\"}],\"serviceBinds\":[{\"name\":\"uqwg\",\"serviceId\":\"xxhdodpjwybl\"},{\"name\":\"bdmvsby\",\"serviceId\":\"aelqpvekmkwjf\"},{\"name\":\"tlo\",\"serviceId\":\"dusxurs\"},{\"name\":\"v\",\"serviceId\":\"cjkcoqwczsyiqri\"}]},\"id\":\"wihvaangqtnh\",\"name\":\"rfdmfdvbbaexx\",\"type\":\"fwtgdfkkauigvmua\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DotNetComponent> response
-            = manager.dotNetComponents().list("ceov", "gzwhsxyrujmtik", com.azure.core.util.Context.NONE);
+            = manager.dotNetComponents().list("glskakddi", "ahzllrqmtlpb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, response.iterator().next().componentType());
-        Assertions.assertEquals("ixyqhfnkvy", response.iterator().next().configurations().get(0).propertyName());
-        Assertions.assertEquals("qqdseipnquwzxhrp", response.iterator().next().configurations().get(0).value());
-        Assertions.assertEquals("atm", response.iterator().next().serviceBinds().get(0).name());
-        Assertions.assertEquals("c", response.iterator().next().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("ypffmnoiicsudyh", response.iterator().next().configurations().get(0).propertyName());
+        Assertions.assertEquals("jjtalxrdsj", response.iterator().next().configurations().get(0).value());
+        Assertions.assertEquals("uqwg", response.iterator().next().serviceBinds().get(0).name());
+        Assertions.assertEquals("xxhdodpjwybl", response.iterator().next().serviceBinds().get(0).serviceId());
     }
 }

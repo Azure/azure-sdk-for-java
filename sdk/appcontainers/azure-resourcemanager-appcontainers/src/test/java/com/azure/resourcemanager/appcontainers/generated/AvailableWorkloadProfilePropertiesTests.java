@@ -26,8 +26,11 @@ public final class AvailableWorkloadProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AvailableWorkloadProfileProperties model = new AvailableWorkloadProfileProperties().withCategory("f")
-            .withApplicability(Applicability.LOCATION_DEFAULT).withCores(1825333220).withMemoryGiB(500448783)
-            .withGpus(608072417).withDisplayName("xxbczwtr");
+            .withApplicability(Applicability.LOCATION_DEFAULT)
+            .withCores(1825333220)
+            .withMemoryGiB(500448783)
+            .withGpus(608072417)
+            .withDisplayName("xxbczwtr");
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileProperties.class);
         Assertions.assertEquals("f", model.category());
         Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());

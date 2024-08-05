@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * KeyPolicy assigned to the storage account.
  */
 @Fluent
-public final class KeyPolicy {
+public final class KeyPolicy implements JsonSerializable<KeyPolicy> {
     /*
      * The key expiration period in days.
      */
-    @JsonProperty(value = "keyExpirationPeriodInDays", required = true)
     private int keyExpirationPeriodInDays;
 
     /**
@@ -50,5 +53,42 @@ public final class KeyPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("keyExpirationPeriodInDays", this.keyExpirationPeriodInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyPolicy if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyPolicy.
+     */
+    public static KeyPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyPolicy deserializedKeyPolicy = new KeyPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyExpirationPeriodInDays".equals(fieldName)) {
+                    deserializedKeyPolicy.keyExpirationPeriodInDays = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyPolicy;
+        });
     }
 }

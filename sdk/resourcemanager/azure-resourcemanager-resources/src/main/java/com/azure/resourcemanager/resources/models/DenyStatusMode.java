@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class DenyStatusMode extends ExpandableStringEnum<DenyStatusMode> {
      * @param name a name to look for.
      * @return the corresponding DenyStatusMode.
      */
-    @JsonCreator
     public static DenyStatusMode fromString(String name) {
         return fromString(name, DenyStatusMode.class);
     }

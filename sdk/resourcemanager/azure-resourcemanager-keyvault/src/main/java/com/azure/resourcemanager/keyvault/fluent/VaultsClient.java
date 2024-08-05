@@ -28,27 +28,29 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VaultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultsClient.
+ */
 public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
+        VaultCreateOrUpdateParameters parameters);
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
@@ -58,12 +60,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters);
+    PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(String resourceGroupName, String vaultName,
+        VaultCreateOrUpdateParameters parameters);
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
@@ -73,12 +75,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters);
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(String resourceGroupName, String vaultName,
+        VaultCreateOrUpdateParameters parameters);
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
@@ -89,12 +91,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context);
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(String resourceGroupName, String vaultName,
+        VaultCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
@@ -104,12 +106,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VaultInner> createOrUpdateAsync(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters);
+    Mono<VaultInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
+        VaultCreateOrUpdateParameters parameters);
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
@@ -123,7 +125,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to create or update the vault.
@@ -134,28 +136,28 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultInner createOrUpdate(
-        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context);
+    VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters,
+        Context context);
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to patch the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VaultInner>> updateWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultPatchParameters parameters);
+    Mono<Response<VaultInner>> updateWithResponseAsync(String resourceGroupName, String vaultName,
+        VaultPatchParameters parameters);
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to patch the vault.
@@ -169,7 +171,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to patch the vault.
@@ -180,12 +182,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return resource information with extended details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultInner> updateWithResponse(
-        String resourceGroupName, String vaultName, VaultPatchParameters parameters, Context context);
+    Response<VaultInner> updateWithResponse(String resourceGroupName, String vaultName, VaultPatchParameters parameters,
+        Context context);
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters to patch the vault.
@@ -199,7 +201,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,7 +214,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +227,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @param context The context to associate with this operation.
@@ -239,7 +241,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,7 +253,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +266,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +279,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @param context The context to associate with this operation.
@@ -291,7 +293,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +306,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -313,18 +315,15 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return parameters for updating the access policy in a vault along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VaultAccessPolicyParametersInner>> updateAccessPolicyWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyParametersInner parameters);
+    Mono<Response<VaultAccessPolicyParametersInner>> updateAccessPolicyWithResponseAsync(String resourceGroupName,
+        String vaultName, AccessPolicyUpdateKind operationKind, VaultAccessPolicyParametersInner parameters);
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -335,15 +334,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return parameters for updating the access policy in a vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VaultAccessPolicyParametersInner> updateAccessPolicyAsync(
-        String resourceGroupName,
-        String vaultName,
-        AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyParametersInner parameters);
+    Mono<VaultAccessPolicyParametersInner> updateAccessPolicyAsync(String resourceGroupName, String vaultName,
+        AccessPolicyUpdateKind operationKind, VaultAccessPolicyParametersInner parameters);
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -355,16 +351,13 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return parameters for updating the access policy in a vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultAccessPolicyParametersInner> updateAccessPolicyWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyParametersInner parameters,
+    Response<VaultAccessPolicyParametersInner> updateAccessPolicyWithResponse(String resourceGroupName,
+        String vaultName, AccessPolicyUpdateKind operationKind, VaultAccessPolicyParametersInner parameters,
         Context context);
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -375,16 +368,13 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return parameters for updating the access policy in a vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultAccessPolicyParametersInner updateAccessPolicy(
-        String resourceGroupName,
-        String vaultName,
-        AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyParametersInner parameters);
+    VaultAccessPolicyParametersInner updateAccessPolicy(String resourceGroupName, String vaultName,
+        AccessPolicyUpdateKind operationKind, VaultAccessPolicyParametersInner parameters);
 
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified
      * resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -398,7 +388,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified
      * resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -411,7 +401,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified
      * resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -424,7 +414,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified
      * resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -438,7 +428,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -450,7 +440,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of vaults as paginated response with {@link PagedFlux}.
@@ -460,7 +450,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of vaults as paginated response with {@link PagedIterable}.
@@ -470,7 +460,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +473,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets information about the deleted vaults in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the deleted vaults in a subscription as paginated response with {@link PagedFlux}.
@@ -493,7 +483,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets information about the deleted vaults in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the deleted vaults in a subscription as paginated response with {@link PagedIterable}.
@@ -503,7 +493,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets information about the deleted vaults in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -515,7 +505,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -528,7 +518,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,7 +531,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @param context The context to associate with this operation.
@@ -555,7 +545,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,7 +558,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,7 +571,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +584,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,7 +597,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @param context The context to associate with this operation.
@@ -621,7 +611,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,7 +624,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,7 +636,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @param context The context to associate with this operation.
@@ -659,7 +649,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -671,7 +661,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of vault resources as paginated response with {@link PagedFlux}.
@@ -681,7 +671,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of vault resources as paginated response with {@link PagedIterable}.
@@ -691,7 +681,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -704,21 +694,21 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        VaultCheckNameAvailabilityParameters vaultName);
+    Mono<Response<CheckNameAvailabilityResultInner>>
+        checkNameAvailabilityWithResponseAsync(VaultCheckNameAvailabilityParameters vaultName);
 
     /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -730,7 +720,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
 
     /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -739,12 +729,12 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return the CheckNameAvailability operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        VaultCheckNameAvailabilityParameters vaultName, Context context);
+    Response<CheckNameAvailabilityResultInner>
+        checkNameAvailabilityWithResponse(VaultCheckNameAvailabilityParameters vaultName, Context context);
 
     /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

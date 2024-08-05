@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The capabilities to add or drop from a container. */
+/**
+ * The capabilities to add or drop from a container.
+ */
 @Fluent
-public final class SecurityContextCapabilitiesDefinition {
+public final class SecurityContextCapabilitiesDefinition
+    implements JsonSerializable<SecurityContextCapabilitiesDefinition> {
     /*
      * The capabilities to add to the container.
      */
-    @JsonProperty(value = "add")
     private List<String> add;
 
     /*
      * The capabilities to drop from the container.
      */
-    @JsonProperty(value = "drop")
     private List<String> drop;
 
-    /** Creates an instance of SecurityContextCapabilitiesDefinition class. */
+    /**
+     * Creates an instance of SecurityContextCapabilitiesDefinition class.
+     */
     public SecurityContextCapabilitiesDefinition() {
     }
 
     /**
      * Get the add property: The capabilities to add to the container.
-     *
+     * 
      * @return the add value.
      */
     public List<String> add() {
@@ -38,7 +45,7 @@ public final class SecurityContextCapabilitiesDefinition {
 
     /**
      * Set the add property: The capabilities to add to the container.
-     *
+     * 
      * @param add the add value to set.
      * @return the SecurityContextCapabilitiesDefinition object itself.
      */
@@ -49,7 +56,7 @@ public final class SecurityContextCapabilitiesDefinition {
 
     /**
      * Get the drop property: The capabilities to drop from the container.
-     *
+     * 
      * @return the drop value.
      */
     public List<String> drop() {
@@ -58,7 +65,7 @@ public final class SecurityContextCapabilitiesDefinition {
 
     /**
      * Set the drop property: The capabilities to drop from the container.
-     *
+     * 
      * @param drop the drop value to set.
      * @return the SecurityContextCapabilitiesDefinition object itself.
      */
@@ -69,9 +76,51 @@ public final class SecurityContextCapabilitiesDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("add", this.add, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("drop", this.drop, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityContextCapabilitiesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityContextCapabilitiesDefinition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityContextCapabilitiesDefinition.
+     */
+    public static SecurityContextCapabilitiesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityContextCapabilitiesDefinition deserializedSecurityContextCapabilitiesDefinition
+                = new SecurityContextCapabilitiesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("add".equals(fieldName)) {
+                    List<String> add = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityContextCapabilitiesDefinition.add = add;
+                } else if ("drop".equals(fieldName)) {
+                    List<String> drop = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityContextCapabilitiesDefinition.drop = drop;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityContextCapabilitiesDefinition;
+        });
     }
 }

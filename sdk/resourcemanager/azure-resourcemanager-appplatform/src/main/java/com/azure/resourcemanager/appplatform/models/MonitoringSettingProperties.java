@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Monitoring Setting properties payload.
  */
 @Fluent
-public final class MonitoringSettingProperties {
+public final class MonitoringSettingProperties implements JsonSerializable<MonitoringSettingProperties> {
     /*
      * State of the Monitoring Setting.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private MonitoringSettingState provisioningState;
 
     /*
      * Error when apply Monitoring Setting changes.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /*
      * Indicates whether enable the trace functionality, which will be deprecated since api version 2020-11-01-preview.
      * Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings enabled or not
      */
-    @JsonProperty(value = "traceEnabled")
     private Boolean traceEnabled;
 
     /*
      * Target application insight instrumentation key, null or whitespace include empty will disable monitoringSettings
      */
-    @JsonProperty(value = "appInsightsInstrumentationKey")
     private String appInsightsInstrumentationKey;
 
     /*
      * Indicates the sampling rate of application insight agent, should be in range [0.0, 100.0]
      */
-    @JsonProperty(value = "appInsightsSamplingRate")
     private Double appInsightsSamplingRate;
 
     /*
      * Indicates the versions of application insight agent
      */
-    @JsonProperty(value = "appInsightsAgentVersions")
     private ApplicationInsightsAgentVersions appInsightsAgentVersions;
 
     /**
@@ -185,5 +183,58 @@ public final class MonitoringSettingProperties {
         if (appInsightsAgentVersions() != null) {
             appInsightsAgentVersions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeBooleanField("traceEnabled", this.traceEnabled);
+        jsonWriter.writeStringField("appInsightsInstrumentationKey", this.appInsightsInstrumentationKey);
+        jsonWriter.writeNumberField("appInsightsSamplingRate", this.appInsightsSamplingRate);
+        jsonWriter.writeJsonField("appInsightsAgentVersions", this.appInsightsAgentVersions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoringSettingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoringSettingProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoringSettingProperties.
+     */
+    public static MonitoringSettingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoringSettingProperties deserializedMonitoringSettingProperties = new MonitoringSettingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedMonitoringSettingProperties.provisioningState
+                        = MonitoringSettingState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedMonitoringSettingProperties.error = Error.fromJson(reader);
+                } else if ("traceEnabled".equals(fieldName)) {
+                    deserializedMonitoringSettingProperties.traceEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appInsightsInstrumentationKey".equals(fieldName)) {
+                    deserializedMonitoringSettingProperties.appInsightsInstrumentationKey = reader.getString();
+                } else if ("appInsightsSamplingRate".equals(fieldName)) {
+                    deserializedMonitoringSettingProperties.appInsightsSamplingRate
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("appInsightsAgentVersions".equals(fieldName)) {
+                    deserializedMonitoringSettingProperties.appInsightsAgentVersions
+                        = ApplicationInsightsAgentVersions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoringSettingProperties;
+        });
     }
 }

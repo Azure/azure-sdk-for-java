@@ -36,6 +36,7 @@ import java.util.List;
 public class SettingSelector {
     private String keyFilter;
     private String labelFilter;
+    private List<String> tagsFilter;
     private SettingFields[] fields;
     private String acceptDatetime;
 
@@ -147,6 +148,34 @@ public class SettingSelector {
      */
     public SettingSelector setFields(SettingFields... fields) {
         this.fields = fields;
+        return this;
+    }
+
+    /**
+     * Gets the tags used to filter settings based on their {@link ConfigurationSetting#getTags() tags} in the
+     * service.
+     *
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
+     * for more information about these supported filters.</p>
+     *
+     * @return tagsFilter The tags used to filter GET requests from the service.
+     */
+    public List<String> getTagsFilter() {
+        return tagsFilter;
+    }
+
+    /**
+     * Sets the expression to filter {@link ConfigurationSetting#getTags() tags} on for the request.
+     *
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
+     * for more information about these supported filters.</p>
+     *
+     * @param tagsFilter The expressions to filter ConfigurationSetting tags on.
+     *
+     * @return SettingSelector The updated SettingSelector object.
+     */
+    public SettingSelector setTagsFilter(List<String> tagsFilter) {
+        this.tagsFilter = tagsFilter;
         return this;
     }
 

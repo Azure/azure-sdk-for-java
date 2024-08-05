@@ -7,7 +7,7 @@ license-header: MICROSOFT_MIT_SMALL
 title: Azure Communication Email Service
 java: true
 use-extension:
-    "@autorest/java": "4.1.14"
+    "@autorest/java": "4.1.33"
 artifact-id: azure-communication-email
 namespace: com.azure.communication.email
 models-subpackage: implementation.models

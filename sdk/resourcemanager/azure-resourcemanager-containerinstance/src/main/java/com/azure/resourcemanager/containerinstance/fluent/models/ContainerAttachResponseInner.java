@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The information for the output stream from container attach. */
+/**
+ * The information for the output stream from container attach.
+ */
 @Fluent
-public final class ContainerAttachResponseInner {
+public final class ContainerAttachResponseInner implements JsonSerializable<ContainerAttachResponseInner> {
     /*
      * The uri for the output stream from the attach.
      */
-    @JsonProperty(value = "webSocketUri")
     private String webSocketUri;
 
     /*
      * The password to the output stream from the attach. Send as an Authorization header value when connecting to the
      * websocketUri.
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of ContainerAttachResponseInner class. */
+    /**
+     * Creates an instance of ContainerAttachResponseInner class.
+     */
     public ContainerAttachResponseInner() {
     }
 
     /**
      * Get the webSocketUri property: The uri for the output stream from the attach.
-     *
+     * 
      * @return the webSocketUri value.
      */
     public String webSocketUri() {
@@ -38,7 +44,7 @@ public final class ContainerAttachResponseInner {
 
     /**
      * Set the webSocketUri property: The uri for the output stream from the attach.
-     *
+     * 
      * @param webSocketUri the webSocketUri value to set.
      * @return the ContainerAttachResponseInner object itself.
      */
@@ -50,7 +56,7 @@ public final class ContainerAttachResponseInner {
     /**
      * Get the password property: The password to the output stream from the attach. Send as an Authorization header
      * value when connecting to the websocketUri.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -60,7 +66,7 @@ public final class ContainerAttachResponseInner {
     /**
      * Set the password property: The password to the output stream from the attach. Send as an Authorization header
      * value when connecting to the websocketUri.
-     *
+     * 
      * @param password the password value to set.
      * @return the ContainerAttachResponseInner object itself.
      */
@@ -71,9 +77,48 @@ public final class ContainerAttachResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("webSocketUri", this.webSocketUri);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAttachResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAttachResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerAttachResponseInner.
+     */
+    public static ContainerAttachResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAttachResponseInner deserializedContainerAttachResponseInner = new ContainerAttachResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("webSocketUri".equals(fieldName)) {
+                    deserializedContainerAttachResponseInner.webSocketUri = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedContainerAttachResponseInner.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAttachResponseInner;
+        });
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityReque
  */
 public final class ConnectedEnvironmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ConnectedEnvironmentsCertificates_CheckNameAvailability.json
      */
     /**
@@ -22,8 +22,9 @@ public final class ConnectedEnvironmentsCheckNameAvailabilitySamples {
     public static void
         certificatesCheckNameAvailability(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.connectedEnvironments()
-            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv", new CheckNameAvailabilityRequest()
-                .withName("testcertificatename").withType("Microsoft.App/connectedEnvironments/certificates"),
+            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv",
+                new CheckNameAvailabilityRequest().withName("testcertificatename")
+                    .withType("Microsoft.App/connectedEnvironments/certificates"),
                 com.azure.core.util.Context.NONE);
     }
 }

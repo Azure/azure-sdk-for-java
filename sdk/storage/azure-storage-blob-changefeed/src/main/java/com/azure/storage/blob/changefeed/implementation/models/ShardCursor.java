@@ -4,8 +4,12 @@
 package com.azure.storage.blob.changefeed.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -13,15 +17,9 @@ import java.util.Objects;
  * Represents a cursor for a shard in BlobChangefeed.
  */
 @Fluent
-public class ShardCursor {
-
-    @JsonProperty("CurrentChunkPath")
+public class ShardCursor implements JsonSerializable<ShardCursor> {
     private String currentChunkPath;
-
-    @JsonProperty("BlockOffset")
     private long blockOffset;
-
-    @JsonProperty("EventIndex")
     private long eventIndex;
 
     /**
@@ -85,6 +83,45 @@ public class ShardCursor {
     public ShardCursor setEventIndex(long eventIndex) {
         this.eventIndex = eventIndex;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("CurrentChunkPath", currentChunkPath)
+            .writeLongField("BlockOffset", blockOffset)
+            .writeLongField("EventIndex", eventIndex)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserialize a ShardCursor from JSON.
+     *
+     * @param jsonReader The JSON reader to deserialize from.
+     * @return The deserialized ShardCursor.
+     * @throws IOException If the JSON object cannot be properly deserialized.
+     */
+    public static ShardCursor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShardCursor shardCursor = new ShardCursor();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("CurrentChunkPath".equals(fieldName)) {
+                    shardCursor.currentChunkPath = reader.getString();
+                } else if ("BlockOffset".equals(fieldName)) {
+                    shardCursor.blockOffset = reader.getLong();
+                } else if ("EventIndex".equals(fieldName)) {
+                    shardCursor.eventIndex = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return shardCursor;
+        });
     }
 
     @Override

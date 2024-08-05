@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class EvaluationState extends ExpandableStringEnum<EvaluationState>
      * @param name a name to look for.
      * @return the corresponding EvaluationState.
      */
-    @JsonCreator
     public static EvaluationState fromString(String name) {
         return fromString(name, EvaluationState.class);
     }

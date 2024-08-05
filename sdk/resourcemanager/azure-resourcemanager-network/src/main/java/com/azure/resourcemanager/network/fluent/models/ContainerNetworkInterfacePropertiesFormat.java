@@ -5,40 +5,41 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Container;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of container network interface.
  */
 @Fluent
-public final class ContainerNetworkInterfacePropertiesFormat {
+public final class ContainerNetworkInterfacePropertiesFormat
+    implements JsonSerializable<ContainerNetworkInterfacePropertiesFormat> {
     /*
      * Container network interface configuration from which this container network interface is created.
      */
-    @JsonProperty(value = "containerNetworkInterfaceConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration;
 
     /*
      * Reference to the container to which this container network interface is attached.
      */
-    @JsonProperty(value = "container")
     private Container container;
 
     /*
      * Reference to the ip configuration on this container nic.
      */
-    @JsonProperty(value = "ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations;
 
     /*
      * The provisioning state of the container network interface resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -110,5 +111,52 @@ public final class ContainerNetworkInterfacePropertiesFormat {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("container", this.container);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerNetworkInterfacePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerNetworkInterfacePropertiesFormat if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerNetworkInterfacePropertiesFormat.
+     */
+    public static ContainerNetworkInterfacePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerNetworkInterfacePropertiesFormat deserializedContainerNetworkInterfacePropertiesFormat
+                = new ContainerNetworkInterfacePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerNetworkInterfaceConfiguration".equals(fieldName)) {
+                    deserializedContainerNetworkInterfacePropertiesFormat.containerNetworkInterfaceConfiguration
+                        = ContainerNetworkInterfaceConfiguration.fromJson(reader);
+                } else if ("container".equals(fieldName)) {
+                    deserializedContainerNetworkInterfacePropertiesFormat.container = Container.fromJson(reader);
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> ContainerNetworkInterfaceIpConfiguration.fromJson(reader1));
+                    deserializedContainerNetworkInterfacePropertiesFormat.ipConfigurations = ipConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedContainerNetworkInterfacePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerNetworkInterfacePropertiesFormat;
+        });
     }
 }

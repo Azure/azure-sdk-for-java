@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the Traffic Manager profile. */
+/**
+ * The status of the Traffic Manager profile.
+ */
 public final class ProfileStatus extends ExpandableStringEnum<ProfileStatus> {
-    /** Static value Enabled for ProfileStatus. */
+    /**
+     * Static value Enabled for ProfileStatus.
+     */
     public static final ProfileStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ProfileStatus. */
+    /**
+     * Static value Disabled for ProfileStatus.
+     */
     public static final ProfileStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ProfileStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ProfileStatus extends ExpandableStringEnum<ProfileStatus> {
 
     /**
      * Creates or finds a ProfileStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProfileStatus.
      */
-    @JsonCreator
     public static ProfileStatus fromString(String name) {
         return fromString(name, ProfileStatus.class);
     }
 
     /**
      * Gets known ProfileStatus values.
-     *
+     * 
      * @return known ProfileStatus values.
      */
     public static Collection<ProfileStatus> values() {

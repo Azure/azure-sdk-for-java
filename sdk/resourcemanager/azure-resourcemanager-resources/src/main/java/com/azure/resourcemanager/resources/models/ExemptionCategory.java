@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ExemptionCategory extends ExpandableStringEnum<ExemptionCateg
      * @param name a name to look for.
      * @return the corresponding ExemptionCategory.
      */
-    @JsonCreator
     public static ExemptionCategory fromString(String name) {
         return fromString(name, ExemptionCategory.class);
     }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** wellknownListName. */
+/**
+ * wellknownListName.
+ */
 public final class MicrosoftGraphWellknownListName extends ExpandableStringEnum<MicrosoftGraphWellknownListName> {
-    /** Static value none for MicrosoftGraphWellknownListName. */
+    /**
+     * Static value none for MicrosoftGraphWellknownListName.
+     */
     public static final MicrosoftGraphWellknownListName NONE = fromString("none");
 
-    /** Static value defaultList for MicrosoftGraphWellknownListName. */
+    /**
+     * Static value defaultList for MicrosoftGraphWellknownListName.
+     */
     public static final MicrosoftGraphWellknownListName DEFAULT_LIST = fromString("defaultList");
 
-    /** Static value flaggedEmails for MicrosoftGraphWellknownListName. */
+    /**
+     * Static value flaggedEmails for MicrosoftGraphWellknownListName.
+     */
     public static final MicrosoftGraphWellknownListName FLAGGED_EMAILS = fromString("flaggedEmails");
 
-    /** Static value unknownFutureValue for MicrosoftGraphWellknownListName. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphWellknownListName.
+     */
     public static final MicrosoftGraphWellknownListName UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphWellknownListName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphWellknownListName extends ExpandableStringEnum<
 
     /**
      * Creates or finds a MicrosoftGraphWellknownListName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphWellknownListName.
      */
-    @JsonCreator
     public static MicrosoftGraphWellknownListName fromString(String name) {
         return fromString(name, MicrosoftGraphWellknownListName.class);
     }
 
     /**
      * Gets known MicrosoftGraphWellknownListName values.
-     *
+     * 
      * @return known MicrosoftGraphWellknownListName values.
      */
     public static Collection<MicrosoftGraphWellknownListName> values() {

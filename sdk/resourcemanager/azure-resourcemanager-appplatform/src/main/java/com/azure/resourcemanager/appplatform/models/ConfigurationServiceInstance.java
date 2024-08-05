@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Collection of instances belong to the Application Configuration Service.
  */
 @Immutable
-public final class ConfigurationServiceInstance {
+public final class ConfigurationServiceInstance implements JsonSerializable<ConfigurationServiceInstance> {
     /*
      * Name of the Application Configuration Service instance
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Status of the Application Configuration Service instance
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /**
@@ -54,5 +56,42 @@ public final class ConfigurationServiceInstance {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationServiceInstance from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationServiceInstance if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationServiceInstance.
+     */
+    public static ConfigurationServiceInstance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationServiceInstance deserializedConfigurationServiceInstance = new ConfigurationServiceInstance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConfigurationServiceInstance.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedConfigurationServiceInstance.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationServiceInstance;
+        });
     }
 }

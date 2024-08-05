@@ -25,15 +25,18 @@ public final class BuildpackBindingCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildpackBindingCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildpackBindings().createOrUpdate("myResourceGroup",
-            "myservice", "default", "default", "myBuildpackBinding",
-            new BuildpackBindingResourceInner().withProperties(new BuildpackBindingProperties()
-                .withBindingType(BindingType.APPLICATION_INSIGHTS)
-                .withLaunchProperties(new BuildpackBindingLaunchProperties()
-                    .withProperties(mapOf("abc", "def", "any-string", "any-string", "sampling-rate", "12.0"))
-                    .withSecrets(mapOf("connection-string",
-                        "XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXX;XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXXXXXXXX")))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildpackBindings()
+            .createOrUpdate("myResourceGroup", "myservice", "default", "default", "myBuildpackBinding",
+                new BuildpackBindingResourceInner().withProperties(new BuildpackBindingProperties()
+                    .withBindingType(BindingType.APPLICATION_INSIGHTS)
+                    .withLaunchProperties(new BuildpackBindingLaunchProperties()
+                        .withProperties(mapOf("abc", "def", "any-string", "any-string", "sampling-rate", "12.0"))
+                        .withSecrets(mapOf("connection-string",
+                            "XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXX;XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXXXXXXXX")))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

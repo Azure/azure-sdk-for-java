@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ServiceTagInformationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for Get ServiceTagInformation API service call. Retrieves the list of service tag information resources.
  */
 @Fluent
-public final class ServiceTagInformationListResult {
+public final class ServiceTagInformationListResult implements JsonSerializable<ServiceTagInformationListResult> {
     /*
      * The list of service tag information resources.
      */
-    @JsonProperty(value = "value")
     private List<ServiceTagInformationInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,46 @@ public final class ServiceTagInformationListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceTagInformationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceTagInformationListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceTagInformationListResult.
+     */
+    public static ServiceTagInformationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceTagInformationListResult deserializedServiceTagInformationListResult
+                = new ServiceTagInformationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServiceTagInformationInner> value
+                        = reader.readArray(reader1 -> ServiceTagInformationInner.fromJson(reader1));
+                    deserializedServiceTagInformationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServiceTagInformationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceTagInformationListResult;
+        });
     }
 }

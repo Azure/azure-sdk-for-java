@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Object that includes an array of Service resources and a possible link for next set.
  */
 @Fluent
-public final class ServiceResourceList {
+public final class ServiceResourceList implements JsonSerializable<ServiceResourceList> {
     /*
      * Collection of Service resources
      */
-    @JsonProperty(value = "value")
     private List<ServiceResourceInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -84,5 +86,46 @@ public final class ServiceResourceList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourceList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceResourceList.
+     */
+    public static ServiceResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourceList deserializedServiceResourceList = new ServiceResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServiceResourceInner> value
+                        = reader.readArray(reader1 -> ServiceResourceInner.fromJson(reader1));
+                    deserializedServiceResourceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServiceResourceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceResourceList;
+        });
     }
 }

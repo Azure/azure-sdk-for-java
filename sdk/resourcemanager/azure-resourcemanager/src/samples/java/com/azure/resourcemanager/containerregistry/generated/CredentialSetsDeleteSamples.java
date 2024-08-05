@@ -19,7 +19,10 @@ public final class CredentialSetsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void credentialSetDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getCredentialSets().delete("myResourceGroup",
-            "myRegistry", "myCredentialSet", com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getCredentialSets()
+            .delete("myResourceGroup", "myRegistry", "myCredentialSet", com.azure.core.util.Context.NONE);
     }
 }

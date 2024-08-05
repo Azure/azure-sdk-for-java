@@ -26,13 +26,19 @@ public final class WebhooksCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void webhookCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getWebhooks().create("myResourceGroup", "myRegistry",
-            "myWebhook",
-            new WebhookCreateParameters().withTags(mapOf("key", "fakeTokenPlaceholder")).withLocation("westus")
-                .withServiceUri("http://myservice.com")
-                .withCustomHeaders(mapOf("Authorization", "fakeTokenPlaceholder")).withStatus(WebhookStatus.ENABLED)
-                .withScope("myRepository").withActions(Arrays.asList(WebhookAction.PUSH)),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getWebhooks()
+            .create("myResourceGroup", "myRegistry", "myWebhook",
+                new WebhookCreateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withLocation("westus")
+                    .withServiceUri("http://myservice.com")
+                    .withCustomHeaders(mapOf("Authorization", "fakeTokenPlaceholder"))
+                    .withStatus(WebhookStatus.ENABLED)
+                    .withScope("myRepository")
+                    .withActions(Arrays.asList(WebhookAction.PUSH)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

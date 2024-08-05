@@ -5,49 +5,51 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** schedulingGroup. */
+/**
+ * schedulingGroup.
+ */
 @Fluent
 public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTrackedEntity {
     /*
      * The display name for the schedulingGroup. Required.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Indicates whether the schedulingGroup can be used when creating new entities or updating existing ones.
-     * Required.
+     * Indicates whether the schedulingGroup can be used when creating new entities or updating existing ones. Required.
      */
-    @JsonProperty(value = "isActive")
     private Boolean isActive;
 
     /*
      * The list of user IDs that are a member of the schedulingGroup. Required.
      */
-    @JsonProperty(value = "userIds")
     private List<String> userIds;
 
     /*
      * schedulingGroup
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSchedulingGroup class. */
+    /**
+     * Creates an instance of MicrosoftGraphSchedulingGroup class.
+     */
     public MicrosoftGraphSchedulingGroup() {
     }
 
     /**
      * Get the displayName property: The display name for the schedulingGroup. Required.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -56,7 +58,7 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
 
     /**
      * Set the displayName property: The display name for the schedulingGroup. Required.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphSchedulingGroup object itself.
      */
@@ -68,7 +70,7 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
     /**
      * Get the isActive property: Indicates whether the schedulingGroup can be used when creating new entities or
      * updating existing ones. Required.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -78,7 +80,7 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
     /**
      * Set the isActive property: Indicates whether the schedulingGroup can be used when creating new entities or
      * updating existing ones. Required.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the MicrosoftGraphSchedulingGroup object itself.
      */
@@ -89,7 +91,7 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
 
     /**
      * Get the userIds property: The list of user IDs that are a member of the schedulingGroup. Required.
-     *
+     * 
      * @return the userIds value.
      */
     public List<String> userIds() {
@@ -98,7 +100,7 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
 
     /**
      * Set the userIds property: The list of user IDs that are a member of the schedulingGroup. Required.
-     *
+     * 
      * @param userIds the userIds value to set.
      * @return the MicrosoftGraphSchedulingGroup object itself.
      */
@@ -109,17 +111,16 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
 
     /**
      * Get the additionalProperties property: schedulingGroup.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: schedulingGroup.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSchedulingGroup object itself.
      */
@@ -128,36 +129,36 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSchedulingGroup withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSchedulingGroup withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSchedulingGroup withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSchedulingGroup withId(String id) {
         super.withId(id);
@@ -166,11 +167,85 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isActive", this.isActive);
+        jsonWriter.writeArrayField("userIds", this.userIds, (writer, element) -> writer.writeString(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSchedulingGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSchedulingGroup if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSchedulingGroup.
+     */
+    public static MicrosoftGraphSchedulingGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSchedulingGroup deserializedMicrosoftGraphSchedulingGroup
+                = new MicrosoftGraphSchedulingGroup();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedulingGroup.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedulingGroup.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedulingGroup
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedulingGroup.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedulingGroup.displayName = reader.getString();
+                } else if ("isActive".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedulingGroup.isActive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("userIds".equals(fieldName)) {
+                    List<String> userIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphSchedulingGroup.userIds = userIds;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSchedulingGroup.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSchedulingGroup;
+        });
     }
 }

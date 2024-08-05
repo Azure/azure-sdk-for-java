@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for upgrading an agentpool.
  */
 @Fluent
-public final class AgentPoolUpgradeSettings {
+public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoolUpgradeSettings> {
     /*
      * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
      * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
      */
-    @JsonProperty(value = "maxSurge")
     private String maxSurge;
 
     /*
@@ -26,14 +29,12 @@ public final class AgentPoolUpgradeSettings {
      * time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the
      * default is 30 minutes.
      */
-    @JsonProperty(value = "drainTimeoutInMinutes")
     private Integer drainTimeoutInMinutes;
 
     /*
      * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node.
      * If not specified, the default is 0 minutes.
      */
-    @JsonProperty(value = "nodeSoakDurationInMinutes")
     private Integer nodeSoakDurationInMinutes;
 
     /**
@@ -120,5 +121,48 @@ public final class AgentPoolUpgradeSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("maxSurge", this.maxSurge);
+        jsonWriter.writeNumberField("drainTimeoutInMinutes", this.drainTimeoutInMinutes);
+        jsonWriter.writeNumberField("nodeSoakDurationInMinutes", this.nodeSoakDurationInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolUpgradeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolUpgradeSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolUpgradeSettings.
+     */
+    public static AgentPoolUpgradeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolUpgradeSettings deserializedAgentPoolUpgradeSettings = new AgentPoolUpgradeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxSurge".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.maxSurge = reader.getString();
+                } else if ("drainTimeoutInMinutes".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.drainTimeoutInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeSoakDurationInMinutes".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.nodeSoakDurationInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolUpgradeSettings;
+        });
     }
 }

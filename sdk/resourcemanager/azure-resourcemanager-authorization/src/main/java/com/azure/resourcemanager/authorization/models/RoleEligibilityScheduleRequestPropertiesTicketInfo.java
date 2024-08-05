@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Ticket Info of the role eligibility. */
+/**
+ * Ticket Info of the role eligibility.
+ */
 @Fluent
-public final class RoleEligibilityScheduleRequestPropertiesTicketInfo {
+public final class RoleEligibilityScheduleRequestPropertiesTicketInfo
+    implements JsonSerializable<RoleEligibilityScheduleRequestPropertiesTicketInfo> {
     /*
      * Ticket number for the role eligibility
      */
-    @JsonProperty(value = "ticketNumber")
     private String ticketNumber;
 
     /*
      * Ticket system name for the role eligibility
      */
-    @JsonProperty(value = "ticketSystem")
     private String ticketSystem;
 
-    /** Creates an instance of RoleEligibilityScheduleRequestPropertiesTicketInfo class. */
+    /**
+     * Creates an instance of RoleEligibilityScheduleRequestPropertiesTicketInfo class.
+     */
     public RoleEligibilityScheduleRequestPropertiesTicketInfo() {
     }
 
     /**
      * Get the ticketNumber property: Ticket number for the role eligibility.
-     *
+     * 
      * @return the ticketNumber value.
      */
     public String ticketNumber() {
@@ -37,7 +44,7 @@ public final class RoleEligibilityScheduleRequestPropertiesTicketInfo {
 
     /**
      * Set the ticketNumber property: Ticket number for the role eligibility.
-     *
+     * 
      * @param ticketNumber the ticketNumber value to set.
      * @return the RoleEligibilityScheduleRequestPropertiesTicketInfo object itself.
      */
@@ -48,7 +55,7 @@ public final class RoleEligibilityScheduleRequestPropertiesTicketInfo {
 
     /**
      * Get the ticketSystem property: Ticket system name for the role eligibility.
-     *
+     * 
      * @return the ticketSystem value.
      */
     public String ticketSystem() {
@@ -57,7 +64,7 @@ public final class RoleEligibilityScheduleRequestPropertiesTicketInfo {
 
     /**
      * Set the ticketSystem property: Ticket system name for the role eligibility.
-     *
+     * 
      * @param ticketSystem the ticketSystem value to set.
      * @return the RoleEligibilityScheduleRequestPropertiesTicketInfo object itself.
      */
@@ -68,9 +75,50 @@ public final class RoleEligibilityScheduleRequestPropertiesTicketInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ticketNumber", this.ticketNumber);
+        jsonWriter.writeStringField("ticketSystem", this.ticketSystem);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleEligibilityScheduleRequestPropertiesTicketInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleEligibilityScheduleRequestPropertiesTicketInfo if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleEligibilityScheduleRequestPropertiesTicketInfo.
+     */
+    public static RoleEligibilityScheduleRequestPropertiesTicketInfo fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleEligibilityScheduleRequestPropertiesTicketInfo deserializedRoleEligibilityScheduleRequestPropertiesTicketInfo
+                = new RoleEligibilityScheduleRequestPropertiesTicketInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ticketNumber".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleRequestPropertiesTicketInfo.ticketNumber = reader.getString();
+                } else if ("ticketSystem".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleRequestPropertiesTicketInfo.ticketSystem = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleEligibilityScheduleRequestPropertiesTicketInfo;
+        });
     }
 }

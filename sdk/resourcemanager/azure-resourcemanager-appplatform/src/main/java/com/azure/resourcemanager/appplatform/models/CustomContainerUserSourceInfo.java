@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Custom container user source info.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Container")
 @Fluent
 public final class CustomContainerUserSourceInfo extends UserSourceInfo {
     /*
+     * Type of the source uploaded
+     */
+    private String type = "Container";
+
+    /*
      * Custom container payload
      */
-    @JsonProperty(value = "customContainer")
     private CustomContainer customContainer;
 
     /**
      * Creates an instance of CustomContainerUserSourceInfo class.
      */
     public CustomContainerUserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -68,5 +81,48 @@ public final class CustomContainerUserSourceInfo extends UserSourceInfo {
         if (customContainer() != null) {
             customContainer().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("customContainer", this.customContainer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomContainerUserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomContainerUserSourceInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomContainerUserSourceInfo.
+     */
+    public static CustomContainerUserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomContainerUserSourceInfo deserializedCustomContainerUserSourceInfo
+                = new CustomContainerUserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedCustomContainerUserSourceInfo.withVersion(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomContainerUserSourceInfo.type = reader.getString();
+                } else if ("customContainer".equals(fieldName)) {
+                    deserializedCustomContainerUserSourceInfo.customContainer = CustomContainer.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomContainerUserSourceInfo;
+        });
     }
 }
