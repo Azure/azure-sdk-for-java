@@ -5,7 +5,16 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmos.models.MetricName;
+import com.azure.resourcemanager.cosmos.models.MetricValue;
+import com.azure.resourcemanager.cosmos.models.UnitType;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The metric values for a single partition.
@@ -15,14 +24,42 @@ public final class PartitionMetricInner extends MetricInner {
     /*
      * The partition id (GUID identifier) of the metric values.
      */
-    @JsonProperty(value = "partitionId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionId;
 
     /*
      * The partition key range id (integer identifier) of the metric values.
      */
-    @JsonProperty(value = "partitionKeyRangeId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionKeyRangeId;
+
+    /*
+     * The start time for the metric (ISO-8601 format).
+     */
+    private OffsetDateTime startTime;
+
+    /*
+     * The end time for the metric (ISO-8601 format).
+     */
+    private OffsetDateTime endTime;
+
+    /*
+     * The time grain to be used to summarize the metric values.
+     */
+    private String timeGrain;
+
+    /*
+     * The unit of the metric.
+     */
+    private UnitType unit;
+
+    /*
+     * The name information for the metric.
+     */
+    private MetricName name;
+
+    /*
+     * The metric values for the specified time window and timestep.
+     */
+    private List<MetricValue> metricValues;
 
     /**
      * Creates an instance of PartitionMetricInner class.
@@ -49,6 +86,66 @@ public final class PartitionMetricInner extends MetricInner {
     }
 
     /**
+     * Get the startTime property: The start time for the metric (ISO-8601 format).
+     * 
+     * @return the startTime value.
+     */
+    @Override
+    public OffsetDateTime startTime() {
+        return this.startTime;
+    }
+
+    /**
+     * Get the endTime property: The end time for the metric (ISO-8601 format).
+     * 
+     * @return the endTime value.
+     */
+    @Override
+    public OffsetDateTime endTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Get the timeGrain property: The time grain to be used to summarize the metric values.
+     * 
+     * @return the timeGrain value.
+     */
+    @Override
+    public String timeGrain() {
+        return this.timeGrain;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
+     * 
+     * @return the unit value.
+     */
+    @Override
+    public UnitType unit() {
+        return this.unit;
+    }
+
+    /**
+     * Get the name property: The name information for the metric.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public MetricName name() {
+        return this.name;
+    }
+
+    /**
+     * Get the metricValues property: The metric values for the specified time window and timestep.
+     * 
+     * @return the metricValues value.
+     */
+    @Override
+    public List<MetricValue> metricValues() {
+        return this.metricValues;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,5 +153,57 @@ public final class PartitionMetricInner extends MetricInner {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartitionMetricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartitionMetricInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartitionMetricInner.
+     */
+    public static PartitionMetricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartitionMetricInner deserializedPartitionMetricInner = new PartitionMetricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedPartitionMetricInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPartitionMetricInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedPartitionMetricInner.timeGrain = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedPartitionMetricInner.unit = UnitType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedPartitionMetricInner.name = MetricName.fromJson(reader);
+                } else if ("metricValues".equals(fieldName)) {
+                    List<MetricValue> metricValues = reader.readArray(reader1 -> MetricValue.fromJson(reader1));
+                    deserializedPartitionMetricInner.metricValues = metricValues;
+                } else if ("partitionId".equals(fieldName)) {
+                    deserializedPartitionMetricInner.partitionId = reader.getString();
+                } else if ("partitionKeyRangeId".equals(fieldName)) {
+                    deserializedPartitionMetricInner.partitionKeyRangeId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartitionMetricInner;
+        });
     }
 }
