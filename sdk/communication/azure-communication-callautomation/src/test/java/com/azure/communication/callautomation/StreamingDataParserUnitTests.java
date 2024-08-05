@@ -251,17 +251,17 @@ public class StreamingDataParserUnitTests {
         assertEquals(TextFormat.DISPLAY, transcription.getFormat());
         assertEquals(0.98d, transcription.getConfidence());
         assertEquals(1, transcription.getOffset());
-        assertEquals(2 * 100, transcription.getDuration());
+        assertEquals(2 * 100, transcription.getDuration().toNanos());
 
         // validate individual words
         List<WordData> words = transcription.getWords();
         assertEquals(2, words.size());
         assertEquals("Hello", words.get(0).getText());
         assertEquals(1, words.get(0).getOffset());
-        assertEquals(1 * 100, words.get(0).getDuration());
+        assertEquals(1 * 100, words.get(0).getDuration().toNanos());
         assertEquals("World", words.get(1).getText());
         assertEquals(6, words.get(1).getOffset());
-        assertEquals(1 * 100, words.get(0).getDuration());
+        assertEquals(1 * 100, words.get(0).getDuration().toNanos());
 
         assertNotNull(transcription.getParticipant());
         assertEquals("abc12345", transcription.getParticipant().getRawId());

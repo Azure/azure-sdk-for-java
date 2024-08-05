@@ -197,37 +197,40 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // parse the message
         assert !body.isEmpty();
 
-        final AcsIncomingCallEventData eventGridEventData;
-        try (JsonReader jsonReader = JsonProviders.createReader(body)) {
-            eventGridEventData = jsonReader.readObject(reader -> {
-                AcsIncomingCallEventData event = new AcsIncomingCallEventData();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("to".equals(fieldName)) {
-                        event.to = CommunicationIdentifierModel.fromJson(reader);
-                    } else if ("from".equals(fieldName)) {
-                        event.from = CommunicationIdentifierModel.fromJson(reader);
-                    } else if ("incomingCallContext".equals(fieldName)) {
-                        event.incomingCallContext = reader.getString();
-                    } else {
-                        reader.skipChildren();
+        if(body.contains("incomingCallContext")){
+            final AcsIncomingCallEventData eventGridEventData;
+            try (JsonReader jsonReader = JsonProviders.createReader(body)) {
+                eventGridEventData = jsonReader.readObject(reader -> {
+                    AcsIncomingCallEventData event = new AcsIncomingCallEventData();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("to".equals(fieldName)) {
+                            event.to = CommunicationIdentifierModel.fromJson(reader);
+                        } else if ("from".equals(fieldName)) {
+                            event.from = CommunicationIdentifierModel.fromJson(reader);
+                        } else if ("incomingCallContext".equals(fieldName)) {
+                            event.incomingCallContext = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                }
-                return event;
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                    return event;
+                });
+            } catch (IOException e) {
+                System.out.println("event exception");
+                throw new RuntimeException(e);
+            }
+            if (eventGridEventData.incomingCallContext != null) {
+                String incomingCallContext = eventGridEventData.incomingCallContext;
+                CommunicationIdentifierModel from = eventGridEventData.from;
+                CommunicationIdentifierModel to = eventGridEventData.to;
+                String uniqueId = removeAllNonChar(from.getRawId() + to.getRawId());
+                incomingCallContextStore.put(uniqueId, incomingCallContext);
+            }
         }
-
         // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
-        if (eventGridEventData.incomingCallContext != null) {
-            String incomingCallContext = eventGridEventData.incomingCallContext;
-            CommunicationIdentifierModel from = eventGridEventData.from;
-            CommunicationIdentifierModel to = eventGridEventData.to;
-            String uniqueId = removeAllNonChar(from.getRawId() + to.getRawId());
-            incomingCallContextStore.put(uniqueId, incomingCallContext);
-        } else {
+         else {
             CallAutomationEventBase event = CallAutomationEventParser.parseEvents(body).get(0);
             assert event != null : "Event cannot be null";
             String callConnectionId = event.getCallConnectionId();
