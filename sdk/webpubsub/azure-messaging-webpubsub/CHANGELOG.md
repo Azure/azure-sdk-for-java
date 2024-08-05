@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2024-08-05)
 
 ### Features Added
 
@@ -12,10 +12,6 @@
 ### Breaking Changes
 
 - Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.2.17 (2024-07-26)
 
