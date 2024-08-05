@@ -18,6 +18,7 @@ import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
+import com.azure.ai.documentintelligence.models.DocumentTypeDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -262,36 +263,31 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginCreateComposedModel(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 =
-                client.beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
-                    .setPollInterval(durationTestMode);
-            syncPoller1.waitForCompletion();
-            DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
+        String composedModelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "composedModelId" + UUID.randomUUID();
+        String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
+        Map<String, DocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
+        documentTypeDetailsMap.put("IRS-1040-A",
+            new DocumentTypeDetails(null));
+        documentTypeDetailsMap.put("IRS-1040-B",
+            new DocumentTypeDetails(null));
+        documentTypeDetailsMap.put("IRS-1040-C",
+            new DocumentTypeDetails(null));
 
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller2 =
-                client.beginBuildDocumentModel(new BuildDocumentModelRequest("sync_component_model_2" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
-                    .setPollInterval(durationTestMode);
-            syncPoller2.waitForCompletion();
-            DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
+        documentTypeDetailsMap.put("IRS-1040-D",
+            new DocumentTypeDetails(null));
 
-            final List<ComponentDocumentModelDetails> modelIDList = Arrays.asList(new ComponentDocumentModelDetails(createdModel1.getModelId()), new ComponentDocumentModelDetails(createdModel2.getModelId()));
+        documentTypeDetailsMap.put("IRS-1040-E",
+            new DocumentTypeDetails(null));
 
-            DocumentModelDetails composedModel =
-                client.beginComposeModel(new ComposeDocumentModelRequest("sync_java_composed_model" + UUID.randomUUID(), modelIDList).setDescription("test desc"))
-                    .setPollInterval(durationTestMode)
-                    .getFinalResult();
+        DocumentModelDetails composedModel = client.beginComposeModel(new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap).setDescription("test desc"))
+            .setPollInterval(durationTestMode).getFinalResult();
 
-            assertNotNull(composedModel.getModelId());
-            assertEquals("test desc", composedModel.getDescription());
-            assertEquals(2, composedModel.getDocTypes().size());
-            validateDocumentModelData(composedModel);
+        assertNotNull(composedModel.getModelId());
+        assertEquals("test desc", composedModel.getDescription());
+        assertEquals(2, composedModel.getDocTypes().size());
+        validateDocumentModelData(composedModel);
 
-            client.deleteModel(createdModel1.getModelId());
-            client.deleteModel(createdModel2.getModelId());
-            client.deleteModel(composedModel.getModelId());
-        });
+        client.deleteModel(composedModel.getModelId());
     }
 
     /**

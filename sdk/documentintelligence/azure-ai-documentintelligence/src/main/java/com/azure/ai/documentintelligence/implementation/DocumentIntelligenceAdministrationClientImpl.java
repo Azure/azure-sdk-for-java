@@ -846,18 +846,40 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             docType: String (Optional)
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Required): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
      *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     classifierId: String (Optional)
-     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -885,18 +907,40 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             docType: String (Optional)
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Required): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
      *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     classifierId: String (Optional)
-     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -923,18 +967,40 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             docType: String (Optional)
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Required): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
      *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     classifierId: String (Optional)
-     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -970,18 +1036,40 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             docType: String (Optional)
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Required): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
      *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     classifierId: String (Optional)
-     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -1017,18 +1105,40 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             docType: String (Optional)
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Required): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
      *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     classifierId: String (Optional)
-     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -1065,18 +1175,40 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             docType: String (Optional)
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Required): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
      *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     classifierId: String (Optional)
-     *     split: String(auto/none/perPage) (Optional)
      * }
      * }</pre>
      * 
@@ -1444,6 +1576,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -1462,6 +1596,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -1513,6 +1656,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -1531,6 +1676,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -1582,6 +1736,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -1600,6 +1756,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -1654,6 +1819,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -1672,6 +1839,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -1724,6 +1900,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -1742,6 +1920,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -1794,6 +1981,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -1812,6 +2001,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -3195,6 +3393,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -3213,6 +3413,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -3269,6 +3478,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
@@ -3287,6 +3498,15 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [

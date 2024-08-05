@@ -78,6 +78,18 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
     /*
+     * For composed models, the custom classifier to split and classify the input file.
+     */
+    @Generated
+    private String classifierId;
+
+    /*
+     * For composed models, the file splitting behavior.
+     */
+    @Generated
+    private SplitMode split;
+
+    /*
      * Supported document types.
      */
     @Generated
@@ -195,6 +207,26 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
+     * Get the classifierId property: For composed models, the custom classifier to split and classify the input file.
+     * 
+     * @return the classifierId value.
+     */
+    @Generated
+    public String getClassifierId() {
+        return this.classifierId;
+    }
+
+    /**
+     * Get the split property: For composed models, the file splitting behavior.
+     * 
+     * @return the split value.
+     */
+    @Generated
+    public SplitMode getSplit() {
+        return this.split;
+    }
+
+    /**
      * Get the docTypes property: Supported document types.
      * 
      * @return the docTypes value.
@@ -233,6 +265,8 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("classifierId", this.classifierId);
+        jsonWriter.writeStringField("split", this.split == null ? null : this.split.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -275,6 +309,10 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                 } else if ("azureBlobFileListSource".equals(fieldName)) {
                     deserializedDocumentModelDetails.azureBlobFileListSource
                         = AzureBlobFileListContentSource.fromJson(reader);
+                } else if ("classifierId".equals(fieldName)) {
+                    deserializedDocumentModelDetails.classifierId = reader.getString();
+                } else if ("split".equals(fieldName)) {
+                    deserializedDocumentModelDetails.split = SplitMode.fromString(reader.getString());
                 } else if ("docTypes".equals(fieldName)) {
                     Map<String, DocumentTypeDetails> docTypes
                         = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));

@@ -104,7 +104,6 @@
     "com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization": "DocumentIntelligence.ClassifierCopyAuthorization",
     "com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails": "DocumentIntelligence.ClassifierDocumentTypeDetails",
     "com.azure.ai.documentintelligence.models.ClassifyDocumentRequest": "DocumentIntelligence.ClassifyDocumentRequest",
-    "com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails": "DocumentIntelligence.ComponentDocumentModelDetails",
     "com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest": "DocumentIntelligence.ComposeDocumentModelRequest",
     "com.azure.ai.documentintelligence.models.ContentFormat": "DocumentIntelligence.ContentFormat",
     "com.azure.ai.documentintelligence.models.ContentSourceKind": "DocumentIntelligence.ContentSourceKind",
