@@ -223,7 +223,6 @@ public final class CallMedia {
     /**
      * Holds participant in call.
      * @param targetParticipant the target.
-     * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void hold(CommunicationIdentifier targetParticipant) {
