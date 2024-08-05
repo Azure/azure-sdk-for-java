@@ -1058,7 +1058,6 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
-     *     parallel_tool_calls: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -1313,7 +1312,6 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
-     *     parallel_tool_calls: Boolean (Optional)
      * }
      * }</pre>
      * 
