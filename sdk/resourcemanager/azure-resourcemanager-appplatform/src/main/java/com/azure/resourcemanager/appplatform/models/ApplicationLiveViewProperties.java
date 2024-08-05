@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Application Live View properties payload.
  */
 @Immutable
-public final class ApplicationLiveViewProperties {
+public final class ApplicationLiveViewProperties implements JsonSerializable<ApplicationLiveViewProperties> {
     /*
      * State of the Application Live View.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationLiveViewProvisioningState provisioningState;
 
     /*
      * Component details of Application Live View
      */
-    @JsonProperty(value = "components", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationLiveViewComponent> components;
 
     /**
@@ -58,5 +60,46 @@ public final class ApplicationLiveViewProperties {
         if (components() != null) {
             components().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationLiveViewProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationLiveViewProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationLiveViewProperties.
+     */
+    public static ApplicationLiveViewProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationLiveViewProperties deserializedApplicationLiveViewProperties
+                = new ApplicationLiveViewProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationLiveViewProperties.provisioningState
+                        = ApplicationLiveViewProvisioningState.fromString(reader.getString());
+                } else if ("components".equals(fieldName)) {
+                    List<ApplicationLiveViewComponent> components
+                        = reader.readArray(reader1 -> ApplicationLiveViewComponent.fromJson(reader1));
+                    deserializedApplicationLiveViewProperties.components = components;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationLiveViewProperties;
+        });
     }
 }

@@ -7,6 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
 import com.azure.resourcemanager.network.models.ExplicitProxy;
@@ -15,8 +18,7 @@ import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection
 import com.azure.resourcemanager.network.models.FirewallPolicySnat;
 import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -27,14 +29,22 @@ public final class FirewallPolicyDraftInner extends Resource {
     /*
      * Properties of the firewall policy.
      */
-    @JsonProperty(value = "properties")
     private FirewallPolicyDraftProperties innerProperties;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of FirewallPolicyDraftInner class.
@@ -44,7 +54,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the firewall policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallPolicyDraftProperties innerProperties() {
@@ -53,7 +63,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,13 +72,33 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
     public FirewallPolicyDraftInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -91,7 +121,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the basePolicy property: The parent firewall policy from which rules are inherited.
-     *
+     * 
      * @return the basePolicy value.
      */
     public SubResource basePolicy() {
@@ -100,7 +130,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the basePolicy property: The parent firewall policy from which rules are inherited.
-     *
+     * 
      * @param basePolicy the basePolicy value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -114,7 +144,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @return the threatIntelMode value.
      */
     public AzureFirewallThreatIntelMode threatIntelMode() {
@@ -123,7 +153,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @param threatIntelMode the threatIntelMode value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -137,7 +167,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     *
+     * 
      * @return the threatIntelWhitelist value.
      */
     public FirewallPolicyThreatIntelWhitelist threatIntelWhitelist() {
@@ -146,7 +176,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     *
+     * 
      * @param threatIntelWhitelist the threatIntelWhitelist value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -160,7 +190,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the insights property: Insights on Firewall Policy.
-     *
+     * 
      * @return the insights value.
      */
     public FirewallPolicyInsights insights() {
@@ -169,7 +199,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the insights property: Insights on Firewall Policy.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -183,7 +213,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     *
+     * 
      * @return the snat value.
      */
     public FirewallPolicySnat snat() {
@@ -192,7 +222,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     *
+     * 
      * @param snat the snat value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -206,7 +236,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the sql property: SQL Settings definition.
-     *
+     * 
      * @return the sql value.
      */
     public FirewallPolicySql sql() {
@@ -215,7 +245,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the sql property: SQL Settings definition.
-     *
+     * 
      * @param sql the sql value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -229,7 +259,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public DnsSettings dnsSettings() {
@@ -238,7 +268,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the dnsSettings property: DNS Proxy Settings definition.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -252,7 +282,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the explicitProxy property: Explicit Proxy Settings definition.
-     *
+     * 
      * @return the explicitProxy value.
      */
     public ExplicitProxy explicitProxy() {
@@ -261,7 +291,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the explicitProxy property: Explicit Proxy Settings definition.
-     *
+     * 
      * @param explicitProxy the explicitProxy value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -275,7 +305,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the intrusionDetection property: The configuration for Intrusion detection.
-     *
+     * 
      * @return the intrusionDetection value.
      */
     public FirewallPolicyIntrusionDetection intrusionDetection() {
@@ -284,7 +314,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the intrusionDetection property: The configuration for Intrusion detection.
-     *
+     * 
      * @param intrusionDetection the intrusionDetection value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -298,12 +328,64 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyDraftInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyDraftInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FirewallPolicyDraftInner.
+     */
+    public static FirewallPolicyDraftInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyDraftInner deserializedFirewallPolicyDraftInner = new FirewallPolicyDraftInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFirewallPolicyDraftInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftInner.innerProperties
+                        = FirewallPolicyDraftProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyDraftInner;
+        });
     }
 }

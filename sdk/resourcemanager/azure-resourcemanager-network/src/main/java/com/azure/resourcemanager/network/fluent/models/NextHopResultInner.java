@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NextHopType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The information about next hop from the specified VM.
  */
 @Fluent
-public final class NextHopResultInner {
+public final class NextHopResultInner implements JsonSerializable<NextHopResultInner> {
     /*
      * Next hop type.
      */
-    @JsonProperty(value = "nextHopType")
     private NextHopType nextHopType;
 
     /*
      * Next hop IP Address.
      */
-    @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
 
     /*
-     * The resource identifier for the route table associated with the route being returned. If the route being returned does not correspond to any user created routes then this field will be the string 'System Route'.
+     * The resource identifier for the route table associated with the route being returned. If the route being returned
+     * does not correspond to any user created routes then this field will be the string 'System Route'.
      */
-    @JsonProperty(value = "routeTableId")
     private String routeTableId;
 
     /**
@@ -107,5 +109,47 @@ public final class NextHopResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextHopType", this.nextHopType == null ? null : this.nextHopType.toString());
+        jsonWriter.writeStringField("nextHopIpAddress", this.nextHopIpAddress);
+        jsonWriter.writeStringField("routeTableId", this.routeTableId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NextHopResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NextHopResultInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NextHopResultInner.
+     */
+    public static NextHopResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NextHopResultInner deserializedNextHopResultInner = new NextHopResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextHopType".equals(fieldName)) {
+                    deserializedNextHopResultInner.nextHopType = NextHopType.fromString(reader.getString());
+                } else if ("nextHopIpAddress".equals(fieldName)) {
+                    deserializedNextHopResultInner.nextHopIpAddress = reader.getString();
+                } else if ("routeTableId".equals(fieldName)) {
+                    deserializedNextHopResultInner.routeTableId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNextHopResultInner;
+        });
     }
 }

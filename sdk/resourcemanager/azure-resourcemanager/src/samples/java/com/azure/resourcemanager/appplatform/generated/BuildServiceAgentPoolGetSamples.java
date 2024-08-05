@@ -18,7 +18,10 @@ public final class BuildServiceAgentPoolGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceAgentPoolGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServiceAgentPools().getWithResponse("myResourceGroup",
-            "myservice", "default", "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServiceAgentPools()
+            .getWithResponse("myResourceGroup", "myservice", "default", "default", com.azure.core.util.Context.NONE);
     }
 }

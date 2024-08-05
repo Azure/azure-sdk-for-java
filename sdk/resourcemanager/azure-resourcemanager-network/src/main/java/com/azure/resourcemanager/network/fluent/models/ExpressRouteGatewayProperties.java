@@ -6,46 +6,44 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteGatewayPropertiesAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubId;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExpressRoute gateway resource properties.
  */
 @Fluent
-public final class ExpressRouteGatewayProperties {
+public final class ExpressRouteGatewayProperties implements JsonSerializable<ExpressRouteGatewayProperties> {
     /*
      * Configuration for auto scaling.
      */
-    @JsonProperty(value = "autoScaleConfiguration")
     private ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration;
 
     /*
      * List of ExpressRoute connections to the ExpressRoute gateway.
      */
-    @JsonProperty(value = "expressRouteConnections")
     private List<ExpressRouteConnectionInner> expressRouteConnections;
 
     /*
      * The provisioning state of the express route gateway resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The Virtual Hub where the ExpressRoute gateway is or will be deployed.
      */
-    @JsonProperty(value = "virtualHub", required = true)
     private VirtualHubId virtualHub;
 
     /*
      * Configures this gateway to accept traffic from non Virtual WAN networks.
      */
-    @JsonProperty(value = "allowNonVirtualWanTraffic")
     private Boolean allowNonVirtualWanTraffic;
 
     /**
@@ -56,7 +54,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Get the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @return the autoScaleConfiguration value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
@@ -65,7 +63,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Set the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @param autoScaleConfiguration the autoScaleConfiguration value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
@@ -77,7 +75,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @return the expressRouteConnections value.
      */
     public List<ExpressRouteConnectionInner> expressRouteConnections() {
@@ -86,7 +84,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @param expressRouteConnections the expressRouteConnections value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
@@ -98,7 +96,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -107,7 +105,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @return the virtualHub value.
      */
     public VirtualHubId virtualHub() {
@@ -116,7 +114,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
@@ -128,7 +126,7 @@ public final class ExpressRouteGatewayProperties {
     /**
      * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @return the allowNonVirtualWanTraffic value.
      */
     public Boolean allowNonVirtualWanTraffic() {
@@ -138,7 +136,7 @@ public final class ExpressRouteGatewayProperties {
     /**
      * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
@@ -149,7 +147,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -169,4 +167,59 @@ public final class ExpressRouteGatewayProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteGatewayProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualHub", this.virtualHub);
+        jsonWriter.writeJsonField("autoScaleConfiguration", this.autoScaleConfiguration);
+        jsonWriter.writeArrayField("expressRouteConnections", this.expressRouteConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("allowNonVirtualWanTraffic", this.allowNonVirtualWanTraffic);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteGatewayProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteGatewayProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteGatewayProperties.
+     */
+    public static ExpressRouteGatewayProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteGatewayProperties deserializedExpressRouteGatewayProperties
+                = new ExpressRouteGatewayProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualHub".equals(fieldName)) {
+                    deserializedExpressRouteGatewayProperties.virtualHub = VirtualHubId.fromJson(reader);
+                } else if ("autoScaleConfiguration".equals(fieldName)) {
+                    deserializedExpressRouteGatewayProperties.autoScaleConfiguration
+                        = ExpressRouteGatewayPropertiesAutoScaleConfiguration.fromJson(reader);
+                } else if ("expressRouteConnections".equals(fieldName)) {
+                    List<ExpressRouteConnectionInner> expressRouteConnections
+                        = reader.readArray(reader1 -> ExpressRouteConnectionInner.fromJson(reader1));
+                    deserializedExpressRouteGatewayProperties.expressRouteConnections = expressRouteConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteGatewayProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("allowNonVirtualWanTraffic".equals(fieldName)) {
+                    deserializedExpressRouteGatewayProperties.allowNonVirtualWanTraffic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteGatewayProperties;
+        });
+    }
 }

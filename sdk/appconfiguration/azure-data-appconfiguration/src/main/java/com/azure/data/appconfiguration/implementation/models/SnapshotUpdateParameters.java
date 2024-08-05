@@ -11,9 +11,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** Parameters used to update a snapshot. */
+/**
+ * Parameters used to update a snapshot.
+ */
 @Fluent
 public final class SnapshotUpdateParameters implements JsonSerializable<SnapshotUpdateParameters> {
     /*
@@ -21,12 +22,15 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      */
     private ConfigurationSnapshotStatus status;
 
-    /** Creates an instance of SnapshotUpdateParameters class. */
-    public SnapshotUpdateParameters() {}
+    /**
+     * Creates an instance of SnapshotUpdateParameters class.
+     */
+    public SnapshotUpdateParameters() {
+    }
 
     /**
      * Get the status property: The desired status of the snapshot.
-     *
+     * 
      * @return the status value.
      */
     public ConfigurationSnapshotStatus getStatus() {
@@ -35,7 +39,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
 
     /**
      * Set the status property: The desired status of the snapshot.
-     *
+     * 
      * @param status the status value to set.
      * @return the SnapshotUpdateParameters object itself.
      */
@@ -44,38 +48,40 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of SnapshotUpdateParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SnapshotUpdateParameters if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SnapshotUpdateParameters.
      */
     public static SnapshotUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SnapshotUpdateParameters deserializedSnapshotUpdateParameters = new SnapshotUpdateParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SnapshotUpdateParameters deserializedSnapshotUpdateParameters = new SnapshotUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("status".equals(fieldName)) {
-                            deserializedSnapshotUpdateParameters.status =
-                                    ConfigurationSnapshotStatus.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("status".equals(fieldName)) {
+                    deserializedSnapshotUpdateParameters.status
+                        = ConfigurationSnapshotStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSnapshotUpdateParameters;
-                });
+            return deserializedSnapshotUpdateParameters;
+        });
     }
 }

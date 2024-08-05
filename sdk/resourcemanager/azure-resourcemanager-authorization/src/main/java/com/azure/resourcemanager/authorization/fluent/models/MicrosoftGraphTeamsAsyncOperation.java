@@ -5,79 +5,77 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** teamsAsyncOperation. */
+/**
+ * teamsAsyncOperation.
+ */
 @Fluent
 public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntity {
     /*
      * Number of times the operation was attempted before being marked successful or failed.
      */
-    @JsonProperty(value = "attemptsCount")
     private Integer attemptsCount;
 
     /*
      * Time when the operation was created.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * operationError
      */
-    @JsonProperty(value = "error")
     private MicrosoftGraphOperationError error;
 
     /*
      * Time when the async operation was last updated.
      */
-    @JsonProperty(value = "lastActionDateTime")
     private OffsetDateTime lastActionDateTime;
 
     /*
      * teamsAsyncOperationType
      */
-    @JsonProperty(value = "operationType")
     private MicrosoftGraphTeamsAsyncOperationType operationType;
 
     /*
      * teamsAsyncOperationStatus
      */
-    @JsonProperty(value = "status")
     private MicrosoftGraphTeamsAsyncOperationStatus status;
 
     /*
      * The ID of the object that's created or modified as result of this async operation, typically a team.
      */
-    @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
     /*
      * The location of the object that's created or modified as result of this async operation. This URL should be
      * treated as an opaque value and not parsed into its component paths.
      */
-    @JsonProperty(value = "targetResourceLocation")
     private String targetResourceLocation;
 
     /*
      * teamsAsyncOperation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamsAsyncOperation class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamsAsyncOperation class.
+     */
     public MicrosoftGraphTeamsAsyncOperation() {
     }
 
     /**
      * Get the attemptsCount property: Number of times the operation was attempted before being marked successful or
      * failed.
-     *
+     * 
      * @return the attemptsCount value.
      */
     public Integer attemptsCount() {
@@ -87,7 +85,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     /**
      * Set the attemptsCount property: Number of times the operation was attempted before being marked successful or
      * failed.
-     *
+     * 
      * @param attemptsCount the attemptsCount value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -98,7 +96,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Get the createdDateTime property: Time when the operation was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -107,7 +105,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Set the createdDateTime property: Time when the operation was created.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -118,7 +116,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Get the error property: operationError.
-     *
+     * 
      * @return the error value.
      */
     public MicrosoftGraphOperationError error() {
@@ -127,7 +125,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Set the error property: operationError.
-     *
+     * 
      * @param error the error value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -138,7 +136,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Get the lastActionDateTime property: Time when the async operation was last updated.
-     *
+     * 
      * @return the lastActionDateTime value.
      */
     public OffsetDateTime lastActionDateTime() {
@@ -147,7 +145,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Set the lastActionDateTime property: Time when the async operation was last updated.
-     *
+     * 
      * @param lastActionDateTime the lastActionDateTime value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -158,7 +156,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Get the operationType property: teamsAsyncOperationType.
-     *
+     * 
      * @return the operationType value.
      */
     public MicrosoftGraphTeamsAsyncOperationType operationType() {
@@ -167,7 +165,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Set the operationType property: teamsAsyncOperationType.
-     *
+     * 
      * @param operationType the operationType value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -178,7 +176,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Get the status property: teamsAsyncOperationStatus.
-     *
+     * 
      * @return the status value.
      */
     public MicrosoftGraphTeamsAsyncOperationStatus status() {
@@ -187,7 +185,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Set the status property: teamsAsyncOperationStatus.
-     *
+     * 
      * @param status the status value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -199,7 +197,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     /**
      * Get the targetResourceId property: The ID of the object that's created or modified as result of this async
      * operation, typically a team.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -209,7 +207,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     /**
      * Set the targetResourceId property: The ID of the object that's created or modified as result of this async
      * operation, typically a team.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -221,7 +219,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     /**
      * Get the targetResourceLocation property: The location of the object that's created or modified as result of this
      * async operation. This URL should be treated as an opaque value and not parsed into its component paths.
-     *
+     * 
      * @return the targetResourceLocation value.
      */
     public String targetResourceLocation() {
@@ -231,7 +229,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     /**
      * Set the targetResourceLocation property: The location of the object that's created or modified as result of this
      * async operation. This URL should be treated as an opaque value and not parsed into its component paths.
-     *
+     * 
      * @param targetResourceLocation the targetResourceLocation value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -242,17 +240,16 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Get the additionalProperties property: teamsAsyncOperation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamsAsyncOperation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
      */
@@ -261,15 +258,9 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTeamsAsyncOperation withId(String id) {
         super.withId(id);
@@ -278,7 +269,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -287,5 +278,86 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeNumberField("attemptsCount", this.attemptsCount);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("lastActionDateTime",
+            this.lastActionDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActionDateTime));
+        jsonWriter.writeStringField("operationType", this.operationType == null ? null : this.operationType.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("targetResourceLocation", this.targetResourceLocation);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamsAsyncOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamsAsyncOperation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamsAsyncOperation.
+     */
+    public static MicrosoftGraphTeamsAsyncOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamsAsyncOperation deserializedMicrosoftGraphTeamsAsyncOperation
+                = new MicrosoftGraphTeamsAsyncOperation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.withId(reader.getString());
+                } else if ("attemptsCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.attemptsCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.error = MicrosoftGraphOperationError.fromJson(reader);
+                } else if ("lastActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.lastActionDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.operationType
+                        = MicrosoftGraphTeamsAsyncOperationType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.status
+                        = MicrosoftGraphTeamsAsyncOperationStatus.fromString(reader.getString());
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.targetResourceId = reader.getString();
+                } else if ("targetResourceLocation".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsAsyncOperation.targetResourceLocation = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamsAsyncOperation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamsAsyncOperation;
+        });
     }
 }

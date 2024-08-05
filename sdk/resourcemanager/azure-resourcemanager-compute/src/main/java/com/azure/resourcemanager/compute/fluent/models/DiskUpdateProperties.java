@@ -43,8 +43,8 @@ public final class DiskUpdateProperties {
     private EncryptionSettingsCollection encryptionSettingsCollection;
 
     /*
-     * The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between
-     * 4k and 256k bytes.
+     * The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k
+     * and 256k bytes.
      */
     @JsonProperty(value = "diskIOPSReadWrite")
     private Long diskIopsReadWrite;
@@ -146,8 +146,8 @@ public final class DiskUpdateProperties {
     private DataAccessAuthMode dataAccessAuthMode;
 
     /*
-     * Setting this property to true improves reliability and performance of data disks that are frequently (more than
-     * 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for
+     * Setting this property to true improves reliability and performance of data disks that are frequently (more than 5
+     * times a day) by detached from one virtual machine and attached to another. This property should not be set for
      * disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of
      * the virtual machine.
      */
@@ -320,8 +320,8 @@ public final class DiskUpdateProperties {
     }
 
     /**
-     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @return the maxShares value.
      */
@@ -330,8 +330,8 @@ public final class DiskUpdateProperties {
     }
 
     /**
-     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @param maxShares the maxShares value to set.
      * @return the DiskUpdateProperties object itself.
@@ -426,8 +426,8 @@ public final class DiskUpdateProperties {
     }
 
     /**
-     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @return the burstingEnabled value.
      */
@@ -436,8 +436,8 @@ public final class DiskUpdateProperties {
     }
 
     /**
-     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @param burstingEnabled the burstingEnabled value to set.
      * @return the DiskUpdateProperties object itself.
@@ -537,8 +537,8 @@ public final class DiskUpdateProperties {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @return the dataAccessAuthMode value.
      */
@@ -547,8 +547,8 @@ public final class DiskUpdateProperties {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the DiskUpdateProperties object itself.
@@ -561,8 +561,8 @@ public final class DiskUpdateProperties {
     /**
      * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @return the optimizedForFrequentAttach value.
      */
@@ -573,8 +573,8 @@ public final class DiskUpdateProperties {
     /**
      * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
      * @return the DiskUpdateProperties object itself.

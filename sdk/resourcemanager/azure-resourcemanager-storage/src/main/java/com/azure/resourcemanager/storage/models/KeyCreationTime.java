@@ -5,24 +5,28 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Storage account keys creation time.
  */
 @Fluent
-public final class KeyCreationTime {
+public final class KeyCreationTime implements JsonSerializable<KeyCreationTime> {
     /*
      * The key1 property.
      */
-    @JsonProperty(value = "key1")
     private OffsetDateTime key1;
 
     /*
      * The key2 property.
      */
-    @JsonProperty(value = "key2")
     private OffsetDateTime key2;
 
     /**
@@ -77,5 +81,48 @@ public final class KeyCreationTime {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key1",
+            this.key1 == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.key1));
+        jsonWriter.writeStringField("key2",
+            this.key2 == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.key2));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyCreationTime from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyCreationTime if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyCreationTime.
+     */
+    public static KeyCreationTime fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyCreationTime deserializedKeyCreationTime = new KeyCreationTime();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key1".equals(fieldName)) {
+                    deserializedKeyCreationTime.key1 = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("key2".equals(fieldName)) {
+                    deserializedKeyCreationTime.key2 = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyCreationTime;
+        });
     }
 }

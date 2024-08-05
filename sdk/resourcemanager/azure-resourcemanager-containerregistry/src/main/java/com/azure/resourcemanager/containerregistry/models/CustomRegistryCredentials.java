@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the credentials that will be used to access a custom registry during a run.
  */
 @Fluent
-public final class CustomRegistryCredentials {
+public final class CustomRegistryCredentials implements JsonSerializable<CustomRegistryCredentials> {
     /*
      * The username for logging into the custom registry.
      */
-    @JsonProperty(value = "userName")
     private SecretObject username;
 
     /*
      * The password for logging into the custom registry. The password is a secret
      * object that allows multiple ways of providing the value for it.
      */
-    @JsonProperty(value = "password")
     private SecretObject password;
 
     /*
@@ -32,7 +34,6 @@ public final class CustomRegistryCredentials {
      * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
      * source of authentication used for accessing the registry.
      */
-    @JsonProperty(value = "identity")
     private String identity;
 
     /**
@@ -125,5 +126,47 @@ public final class CustomRegistryCredentials {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomRegistryCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomRegistryCredentials if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomRegistryCredentials.
+     */
+    public static CustomRegistryCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomRegistryCredentials deserializedCustomRegistryCredentials = new CustomRegistryCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedCustomRegistryCredentials.username = SecretObject.fromJson(reader);
+                } else if ("password".equals(fieldName)) {
+                    deserializedCustomRegistryCredentials.password = SecretObject.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCustomRegistryCredentials.identity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomRegistryCredentials;
+        });
     }
 }

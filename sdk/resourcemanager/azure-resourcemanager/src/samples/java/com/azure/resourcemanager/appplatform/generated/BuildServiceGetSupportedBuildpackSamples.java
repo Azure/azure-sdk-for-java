@@ -18,7 +18,11 @@ public final class BuildServiceGetSupportedBuildpackSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceGetSupportedBuildpack(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServices().getSupportedBuildpackWithResponse(
-            "myResourceGroup", "myservice", "default", "tanzu-buildpacks-java-azure", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServices()
+            .getSupportedBuildpackWithResponse("myResourceGroup", "myservice", "default", "tanzu-buildpacks-java-azure",
+                com.azure.core.util.Context.NONE);
     }
 }

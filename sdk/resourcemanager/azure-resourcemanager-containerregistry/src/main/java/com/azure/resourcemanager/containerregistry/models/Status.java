@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The status of an Azure resource at the time the operation was called.
  */
 @Immutable
-public final class Status {
+public final class Status implements JsonSerializable<Status> {
     /*
      * The short label for the status.
      */
-    @JsonProperty(value = "displayStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String displayStatus;
 
     /*
      * The detailed message for the status, including alerts and error messages.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * The timestamp when the status was changed to the current value.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /**
@@ -70,5 +72,45 @@ public final class Status {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Status from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Status if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Status.
+     */
+    public static Status fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Status deserializedStatus = new Status();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayStatus".equals(fieldName)) {
+                    deserializedStatus.displayStatus = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedStatus.message = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedStatus.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatus;
+        });
     }
 }

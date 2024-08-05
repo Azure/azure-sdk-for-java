@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -63,7 +62,6 @@ public final class SubscriptionFeatureRegistrationState
      * @param name a name to look for.
      * @return the corresponding SubscriptionFeatureRegistrationState.
      */
-    @JsonCreator
     public static SubscriptionFeatureRegistrationState fromString(String name) {
         return fromString(name, SubscriptionFeatureRegistrationState.class);
     }

@@ -6,23 +6,25 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * File path availability request content - availability is based on the name and the subnetId.
  */
 @Fluent
-public final class FilePathAvailabilityRequest {
+public final class FilePathAvailabilityRequest implements JsonSerializable<FilePathAvailabilityRequest> {
     /*
      * File path to verify.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /**
@@ -92,4 +94,44 @@ public final class FilePathAvailabilityRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FilePathAvailabilityRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FilePathAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FilePathAvailabilityRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FilePathAvailabilityRequest.
+     */
+    public static FilePathAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FilePathAvailabilityRequest deserializedFilePathAvailabilityRequest = new FilePathAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFilePathAvailabilityRequest.name = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedFilePathAvailabilityRequest.subnetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFilePathAvailabilityRequest;
+        });
+    }
 }

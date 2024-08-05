@@ -9,7 +9,8 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesPopulateAvailabilityZoneSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Volumes_PopulateAvailabilityZones.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/
+     * Volumes_PopulateAvailabilityZones.json
      */
     /**
      * Sample code: Volumes_PopulateAvailabilityZones.

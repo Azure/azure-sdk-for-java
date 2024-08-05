@@ -18,7 +18,11 @@ public final class BuildServiceGetResourceUploadUrlSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceGetResourceUploadUrl(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServices().getResourceUploadUrlWithResponse(
-            "myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServices()
+            .getResourceUploadUrlWithResponse("myResourceGroup", "myservice", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

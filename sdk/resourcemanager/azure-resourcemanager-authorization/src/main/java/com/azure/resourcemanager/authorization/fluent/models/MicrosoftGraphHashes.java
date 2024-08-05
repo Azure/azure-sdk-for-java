@@ -5,53 +5,54 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** hashes. */
+/**
+ * hashes.
+ */
 @Fluent
-public final class MicrosoftGraphHashes {
+public final class MicrosoftGraphHashes implements JsonSerializable<MicrosoftGraphHashes> {
     /*
      * The CRC32 value of the file in little endian (if available). Read-only.
      */
-    @JsonProperty(value = "crc32Hash")
     private String crc32Hash;
 
     /*
      * A proprietary hash of the file that can be used to determine if the contents of the file have changed (if
      * available). Read-only.
      */
-    @JsonProperty(value = "quickXorHash")
     private String quickXorHash;
 
     /*
      * SHA1 hash for the contents of the file (if available). Read-only.
      */
-    @JsonProperty(value = "sha1Hash")
     private String sha1Hash;
 
     /*
      * SHA256 hash for the contents of the file (if available). Read-only.
      */
-    @JsonProperty(value = "sha256Hash")
     private String sha256Hash;
 
     /*
      * hashes
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphHashes class. */
+    /**
+     * Creates an instance of MicrosoftGraphHashes class.
+     */
     public MicrosoftGraphHashes() {
     }
 
     /**
      * Get the crc32Hash property: The CRC32 value of the file in little endian (if available). Read-only.
-     *
+     * 
      * @return the crc32Hash value.
      */
     public String crc32Hash() {
@@ -60,7 +61,7 @@ public final class MicrosoftGraphHashes {
 
     /**
      * Set the crc32Hash property: The CRC32 value of the file in little endian (if available). Read-only.
-     *
+     * 
      * @param crc32Hash the crc32Hash value to set.
      * @return the MicrosoftGraphHashes object itself.
      */
@@ -72,7 +73,7 @@ public final class MicrosoftGraphHashes {
     /**
      * Get the quickXorHash property: A proprietary hash of the file that can be used to determine if the contents of
      * the file have changed (if available). Read-only.
-     *
+     * 
      * @return the quickXorHash value.
      */
     public String quickXorHash() {
@@ -82,7 +83,7 @@ public final class MicrosoftGraphHashes {
     /**
      * Set the quickXorHash property: A proprietary hash of the file that can be used to determine if the contents of
      * the file have changed (if available). Read-only.
-     *
+     * 
      * @param quickXorHash the quickXorHash value to set.
      * @return the MicrosoftGraphHashes object itself.
      */
@@ -93,7 +94,7 @@ public final class MicrosoftGraphHashes {
 
     /**
      * Get the sha1Hash property: SHA1 hash for the contents of the file (if available). Read-only.
-     *
+     * 
      * @return the sha1Hash value.
      */
     public String sha1Hash() {
@@ -102,7 +103,7 @@ public final class MicrosoftGraphHashes {
 
     /**
      * Set the sha1Hash property: SHA1 hash for the contents of the file (if available). Read-only.
-     *
+     * 
      * @param sha1Hash the sha1Hash value to set.
      * @return the MicrosoftGraphHashes object itself.
      */
@@ -113,7 +114,7 @@ public final class MicrosoftGraphHashes {
 
     /**
      * Get the sha256Hash property: SHA256 hash for the contents of the file (if available). Read-only.
-     *
+     * 
      * @return the sha256Hash value.
      */
     public String sha256Hash() {
@@ -122,7 +123,7 @@ public final class MicrosoftGraphHashes {
 
     /**
      * Set the sha256Hash property: SHA256 hash for the contents of the file (if available). Read-only.
-     *
+     * 
      * @param sha256Hash the sha256Hash value to set.
      * @return the MicrosoftGraphHashes object itself.
      */
@@ -133,17 +134,16 @@ public final class MicrosoftGraphHashes {
 
     /**
      * Get the additionalProperties property: hashes.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: hashes.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphHashes object itself.
      */
@@ -152,19 +152,67 @@ public final class MicrosoftGraphHashes {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("crc32Hash", this.crc32Hash);
+        jsonWriter.writeStringField("quickXorHash", this.quickXorHash);
+        jsonWriter.writeStringField("sha1Hash", this.sha1Hash);
+        jsonWriter.writeStringField("sha256Hash", this.sha256Hash);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphHashes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphHashes if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphHashes.
+     */
+    public static MicrosoftGraphHashes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphHashes deserializedMicrosoftGraphHashes = new MicrosoftGraphHashes();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("crc32Hash".equals(fieldName)) {
+                    deserializedMicrosoftGraphHashes.crc32Hash = reader.getString();
+                } else if ("quickXorHash".equals(fieldName)) {
+                    deserializedMicrosoftGraphHashes.quickXorHash = reader.getString();
+                } else if ("sha1Hash".equals(fieldName)) {
+                    deserializedMicrosoftGraphHashes.sha1Hash = reader.getString();
+                } else if ("sha256Hash".equals(fieldName)) {
+                    deserializedMicrosoftGraphHashes.sha256Hash = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphHashes.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphHashes;
+        });
     }
 }

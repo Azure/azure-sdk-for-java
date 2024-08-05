@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Identity for the resource.
  */
 @Fluent
-public final class ManagedServiceIdentity {
+public final class ManagedServiceIdentity implements JsonSerializable<ManagedServiceIdentity> {
     /*
-     * The principal id of the system assigned identity. This property will only be provided for a system assigned identity.
+     * The principal id of the system assigned identity. This property will only be provided for a system assigned
+     * identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id of the system assigned identity. This property will only be provided for a system assigned identity.
+     * The tenant id of the system assigned identity. This property will only be provided for a system assigned
+     * identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine.
+     * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+     * created identity and a set of user assigned identities. The type 'None' will remove any identities from the
+     * virtual machine.
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The list of user identities associated with resource. The user identity dictionary key references will be ARM
+     * resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
@@ -127,5 +132,51 @@ public final class ManagedServiceIdentity {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedServiceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedServiceIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedServiceIdentity.
+     */
+    public static ManagedServiceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedServiceIdentity deserializedManagedServiceIdentity = new ManagedServiceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedManagedServiceIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedManagedServiceIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedServiceIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities
+                        = reader.readMap(reader1 -> ManagedServiceIdentityUserAssignedIdentities.fromJson(reader1));
+                    deserializedManagedServiceIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedServiceIdentity;
+        });
     }
 }

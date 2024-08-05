@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Constraints that determine the list of available Internet service providers.
  */
 @Fluent
-public final class AvailableProvidersListParameters {
+public final class AvailableProvidersListParameters implements JsonSerializable<AvailableProvidersListParameters> {
     /*
      * A list of Azure regions.
      */
-    @JsonProperty(value = "azureLocations")
     private List<String> azureLocations;
 
     /*
      * The country for available providers list.
      */
-    @JsonProperty(value = "country")
     private String country;
 
     /*
      * The state for available providers list.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The city or town for available providers list.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /**
@@ -129,5 +129,53 @@ public final class AvailableProvidersListParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("azureLocations", this.azureLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("city", this.city);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableProvidersListParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableProvidersListParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableProvidersListParameters.
+     */
+    public static AvailableProvidersListParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableProvidersListParameters deserializedAvailableProvidersListParameters
+                = new AvailableProvidersListParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureLocations".equals(fieldName)) {
+                    List<String> azureLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvailableProvidersListParameters.azureLocations = azureLocations;
+                } else if ("country".equals(fieldName)) {
+                    deserializedAvailableProvidersListParameters.country = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAvailableProvidersListParameters.state = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedAvailableProvidersListParameters.city = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableProvidersListParameters;
+        });
     }
 }

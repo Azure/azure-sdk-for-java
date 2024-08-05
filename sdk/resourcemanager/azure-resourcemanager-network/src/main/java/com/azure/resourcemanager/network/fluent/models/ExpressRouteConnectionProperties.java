@@ -6,62 +6,59 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the ExpressRouteConnection subresource.
  */
 @Fluent
-public final class ExpressRouteConnectionProperties {
+public final class ExpressRouteConnectionProperties implements JsonSerializable<ExpressRouteConnectionProperties> {
     /*
      * The provisioning state of the express route connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The ExpressRoute circuit peering.
      */
-    @JsonProperty(value = "expressRouteCircuitPeering", required = true)
     private ExpressRouteCircuitPeeringId expressRouteCircuitPeering;
 
     /*
      * Authorization key to establish the connection.
      */
-    @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
     /*
      * The routing weight associated to the connection.
      */
-    @JsonProperty(value = "routingWeight")
     private Integer routingWeight;
 
     /*
      * Enable internet security.
      */
-    @JsonProperty(value = "enableInternetSecurity")
     private Boolean enableInternetSecurity;
 
     /*
      * Enable FastPath to vWan Firewall hub.
      */
-    @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
 
     /*
-     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
      */
-    @JsonProperty(value = "enablePrivateLinkFastPath")
     private Boolean enablePrivateLinkFastPath;
 
     /*
      * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
-    @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
 
     /**
@@ -243,4 +240,68 @@ public final class ExpressRouteConnectionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expressRouteCircuitPeering", this.expressRouteCircuitPeering);
+        jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
+        jsonWriter.writeNumberField("routingWeight", this.routingWeight);
+        jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
+        jsonWriter.writeBooleanField("expressRouteGatewayBypass", this.expressRouteGatewayBypass);
+        jsonWriter.writeBooleanField("enablePrivateLinkFastPath", this.enablePrivateLinkFastPath);
+        jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteConnectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteConnectionProperties.
+     */
+    public static ExpressRouteConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteConnectionProperties deserializedExpressRouteConnectionProperties
+                = new ExpressRouteConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.expressRouteCircuitPeering
+                        = ExpressRouteCircuitPeeringId.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("authorizationKey".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.authorizationKey = reader.getString();
+                } else if ("routingWeight".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.routingWeight = reader.getNullable(JsonReader::getInt);
+                } else if ("enableInternetSecurity".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.enableInternetSecurity
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("expressRouteGatewayBypass".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.expressRouteGatewayBypass
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePrivateLinkFastPath".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.enablePrivateLinkFastPath
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("routingConfiguration".equals(fieldName)) {
+                    deserializedExpressRouteConnectionProperties.routingConfiguration
+                        = RoutingConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteConnectionProperties;
+        });
+    }
 }

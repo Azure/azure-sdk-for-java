@@ -39,10 +39,9 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorQueryRes
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitorListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ConnectionMonitorsClient.
@@ -60,7 +59,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Initializes an instance of ConnectionMonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConnectionMonitorsClientImpl(NetworkManagementClientImpl client) {
@@ -167,7 +166,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -207,7 +206,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -218,7 +217,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -260,7 +259,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -269,7 +268,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -293,7 +292,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -317,7 +316,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -343,7 +342,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -365,7 +364,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -389,7 +388,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -409,7 +408,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -429,7 +428,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -450,7 +449,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -470,7 +469,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -491,7 +490,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -523,7 +522,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -533,7 +532,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -566,7 +565,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
@@ -575,7 +574,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -593,7 +592,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -611,7 +610,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -628,7 +627,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -660,7 +659,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -670,7 +669,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -703,7 +702,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
@@ -712,7 +711,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -732,7 +731,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -754,7 +753,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -771,7 +770,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -790,7 +789,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -807,7 +806,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -826,7 +825,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -841,7 +840,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -858,7 +857,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -897,7 +896,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -907,7 +906,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -947,7 +946,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -956,7 +955,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -975,7 +974,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -995,7 +994,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1014,7 +1013,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1046,7 +1045,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1056,7 +1055,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1089,7 +1088,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
@@ -1098,7 +1097,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1118,7 +1117,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1140,7 +1139,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1157,7 +1156,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1176,7 +1175,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1193,7 +1192,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1212,7 +1211,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1227,7 +1226,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1244,7 +1243,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1276,7 +1275,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1286,7 +1285,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1319,7 +1318,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
@@ -1328,7 +1327,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1348,7 +1347,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1370,7 +1369,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1387,7 +1386,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1406,7 +1405,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1423,7 +1422,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1442,7 +1441,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1457,7 +1456,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1474,7 +1473,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1506,7 +1505,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.query(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1516,7 +1515,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1549,7 +1548,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.query(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
@@ -1558,7 +1557,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1579,7 +1578,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1603,7 +1602,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1620,7 +1619,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1639,7 +1638,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1657,7 +1656,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1676,7 +1675,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1693,7 +1692,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1711,7 +1710,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1738,7 +1737,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1750,7 +1749,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -1778,7 +1777,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1790,7 +1789,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1805,7 +1804,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -1822,7 +1821,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1837,7 +1836,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.

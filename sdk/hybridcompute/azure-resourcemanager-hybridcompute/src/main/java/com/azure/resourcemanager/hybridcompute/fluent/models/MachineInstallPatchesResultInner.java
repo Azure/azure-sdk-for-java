@@ -6,107 +6,99 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.OsType;
 import com.azure.resourcemanager.hybridcompute.models.PatchOperationStartedBy;
 import com.azure.resourcemanager.hybridcompute.models.PatchOperationStatus;
 import com.azure.resourcemanager.hybridcompute.models.PatchServiceUsed;
 import com.azure.resourcemanager.hybridcompute.models.VMGuestPatchRebootStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The result summary of an installation operation.
  */
 @Immutable
-public final class MachineInstallPatchesResultInner {
+public final class MachineInstallPatchesResultInner implements JsonSerializable<MachineInstallPatchesResultInner> {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
      * The activity ID of the operation that produced this result.
      */
-    @JsonProperty(value = "installationActivityId", access = JsonProperty.Access.WRITE_ONLY)
     private String installationActivityId;
 
     /*
      * The reboot state of the VM following completion of the operation.
      */
-    @JsonProperty(value = "rebootStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VMGuestPatchRebootStatus rebootStatus;
 
     /*
      * Whether the operation ran out of time before it completed all its intended actions.
      */
-    @JsonProperty(value = "maintenanceWindowExceeded", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean maintenanceWindowExceeded;
 
     /*
      * The number of patches that were not installed due to the user blocking their installation.
      */
-    @JsonProperty(value = "excludedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer excludedPatchCount;
 
     /*
      * The number of patches that were detected as available for install, but did not meet the operation's criteria.
      */
-    @JsonProperty(value = "notSelectedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer notSelectedPatchCount;
 
     /*
-     * The number of patches that were identified as meeting the installation criteria, but were not able to be installed. Typically this happens when maintenanceWindowExceeded == true.
+     * The number of patches that were identified as meeting the installation criteria, but were not able to be
+     * installed. Typically this happens when maintenanceWindowExceeded == true.
      */
-    @JsonProperty(value = "pendingPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingPatchCount;
 
     /*
      * The number of patches successfully installed.
      */
-    @JsonProperty(value = "installedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer installedPatchCount;
 
     /*
      * The number of patches that could not be installed due to some issue. See errors for details.
      */
-    @JsonProperty(value = "failedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedPatchCount;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTime;
 
     /*
      * The UTC timestamp when the operation finished.
      */
-    @JsonProperty(value = "lastModifiedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Indicates if operation was triggered by user or by platform.
      */
-    @JsonProperty(value = "startedBy", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStartedBy startedBy;
 
     /*
      * Specifies the patch service used for the operation.
      */
-    @JsonProperty(value = "patchServiceUsed", access = JsonProperty.Access.WRITE_ONLY)
     private PatchServiceUsed patchServiceUsed;
 
     /*
      * The operating system type of the machine.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
      * The errors that were encountered during execution of the operation. The details array contains the list of them.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError errorDetails;
 
     /**
@@ -264,5 +256,81 @@ public final class MachineInstallPatchesResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineInstallPatchesResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineInstallPatchesResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineInstallPatchesResultInner.
+     */
+    public static MachineInstallPatchesResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineInstallPatchesResultInner deserializedMachineInstallPatchesResultInner
+                = new MachineInstallPatchesResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.status
+                        = PatchOperationStatus.fromString(reader.getString());
+                } else if ("installationActivityId".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.installationActivityId = reader.getString();
+                } else if ("rebootStatus".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.rebootStatus
+                        = VMGuestPatchRebootStatus.fromString(reader.getString());
+                } else if ("maintenanceWindowExceeded".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.maintenanceWindowExceeded
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("excludedPatchCount".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.excludedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("notSelectedPatchCount".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.notSelectedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("pendingPatchCount".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.pendingPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("installedPatchCount".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.installedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedPatchCount".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.failedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startedBy".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.startedBy
+                        = PatchOperationStartedBy.fromString(reader.getString());
+                } else if ("patchServiceUsed".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.patchServiceUsed
+                        = PatchServiceUsed.fromString(reader.getString());
+                } else if ("osType".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.osType = OsType.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedMachineInstallPatchesResultInner.errorDetails = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineInstallPatchesResultInner;
+        });
     }
 }

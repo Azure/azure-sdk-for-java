@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,17 +18,15 @@ import java.util.List;
  * of results.
  */
 @Fluent
-public final class ListVpnSiteLinksResult {
+public final class ListVpnSiteLinksResult implements JsonSerializable<ListVpnSiteLinksResult> {
     /*
      * List of VpnSitesLinks.
      */
-    @JsonProperty(value = "value")
     private List<VpnSiteLinkInner> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -36,7 +37,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Get the value property: List of VpnSitesLinks.
-     *
+     * 
      * @return the value value.
      */
     public List<VpnSiteLinkInner> value() {
@@ -45,7 +46,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Set the value property: List of VpnSitesLinks.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVpnSiteLinksResult object itself.
      */
@@ -56,7 +57,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +66,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVpnSiteLinksResult object itself.
      */
@@ -76,12 +77,52 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListVpnSiteLinksResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListVpnSiteLinksResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListVpnSiteLinksResult.
+     */
+    public static ListVpnSiteLinksResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListVpnSiteLinksResult deserializedListVpnSiteLinksResult = new ListVpnSiteLinksResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VpnSiteLinkInner> value = reader.readArray(reader1 -> VpnSiteLinkInner.fromJson(reader1));
+                    deserializedListVpnSiteLinksResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListVpnSiteLinksResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListVpnSiteLinksResult;
+        });
     }
 }

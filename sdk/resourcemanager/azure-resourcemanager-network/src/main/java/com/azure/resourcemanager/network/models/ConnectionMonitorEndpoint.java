@@ -6,65 +6,65 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the connection monitor endpoint.
  */
 @Fluent
-public final class ConnectionMonitorEndpoint {
+public final class ConnectionMonitorEndpoint implements JsonSerializable<ConnectionMonitorEndpoint> {
     /*
      * The name of the connection monitor endpoint.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The endpoint type.
      */
-    @JsonProperty(value = "type")
     private EndpointType type;
 
     /*
-     * Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS, AzureVNet, AzureSubnet, MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
+     * Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS, AzureVNet, AzureSubnet,
+     * MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress, ArcMachine, MMAWorkspaceMachine endpoint type.
+     * Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress, ArcMachine,
+     * MMAWorkspaceMachine endpoint type.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * Filter field is getting deprecated and should not be used. Instead use Include/Exclude scope fields for it.
      */
-    @JsonProperty(value = "filter")
     private ConnectionMonitorEndpointFilter filter;
 
     /*
-     * Endpoint scope defines which target resource to monitor in case of compound resource endpoints like VMSS, AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
+     * Endpoint scope defines which target resource to monitor in case of compound resource endpoints like VMSS,
+     * AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
      */
-    @JsonProperty(value = "scope")
     private ConnectionMonitorEndpointScope scope;
 
     /*
      * Test coverage for the endpoint.
      */
-    @JsonProperty(value = "coverageLevel")
     private CoverageLevel coverageLevel;
 
     /*
-     * Location details is optional and only being used for 'AzureArcNetwork' type endpoints, which contains region details.
+     * Location details is optional and only being used for 'AzureArcNetwork' type endpoints, which contains region
+     * details.
      */
-    @JsonProperty(value = "locationDetails")
     private ConnectionMonitorEndpointLocationDetails locationDetails;
 
     /*
-     * Subscription ID for connection monitor endpoint. It's an optional parameter which is being used for 'AzureArcNetwork' type endpoint.
+     * Subscription ID for connection monitor endpoint. It's an optional parameter which is being used for
+     * 'AzureArcNetwork' type endpoint.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /**
@@ -287,4 +287,66 @@ public final class ConnectionMonitorEndpoint {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorEndpoint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeJsonField("filter", this.filter);
+        jsonWriter.writeJsonField("scope", this.scope);
+        jsonWriter.writeStringField("coverageLevel", this.coverageLevel == null ? null : this.coverageLevel.toString());
+        jsonWriter.writeJsonField("locationDetails", this.locationDetails);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorEndpoint if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorEndpoint.
+     */
+    public static ConnectionMonitorEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorEndpoint deserializedConnectionMonitorEndpoint = new ConnectionMonitorEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.type = EndpointType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.resourceId = reader.getString();
+                } else if ("address".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.address = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.filter = ConnectionMonitorEndpointFilter.fromJson(reader);
+                } else if ("scope".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.scope = ConnectionMonitorEndpointScope.fromJson(reader);
+                } else if ("coverageLevel".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.coverageLevel = CoverageLevel.fromString(reader.getString());
+                } else if ("locationDetails".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.locationDetails
+                        = ConnectionMonitorEndpointLocationDetails.fromJson(reader);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedConnectionMonitorEndpoint.subscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorEndpoint;
+        });
+    }
 }

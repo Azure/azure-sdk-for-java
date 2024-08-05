@@ -88,9 +88,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     private String rgName = "";
     private String rgName2 = "";
-    private final Region region = Region.US_EAST;
-    private final Region regionProxPlacementGroup = Region.US_WEST;
-    private final Region regionProxPlacementGroup2 = Region.US_EAST;
+    private final Region region = Region.US_WEST2;
+    private final Region regionProxPlacementGroup = Region.US_WEST2;
+    private final Region regionProxPlacementGroup2 = Region.US_WEST3;
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
     private final String proxGroupName2 = "testproxgroup2";
@@ -1258,7 +1258,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+            .withSize("Standard_D2as_v5")
             .enableHibernation()
             .create();
 
@@ -1537,7 +1537,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .defineAccessPolicy()
-            .forServicePrincipal(clientIdFromFile())
+            .forUser(azureCliSignedInUser().userPrincipalName())
             .allowKeyPermissions(KeyPermissions.CREATE)
             .attach()
             .create();
@@ -1681,7 +1681,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D8S_V3)
             .withNewSecondaryNetworkInterface(this
                 .networkManager
                 .networkInterfaces()

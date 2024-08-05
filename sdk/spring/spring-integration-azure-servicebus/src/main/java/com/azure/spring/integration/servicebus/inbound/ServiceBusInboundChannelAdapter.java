@@ -13,7 +13,7 @@ import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
+import com.azure.spring.messaging.implementation.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;

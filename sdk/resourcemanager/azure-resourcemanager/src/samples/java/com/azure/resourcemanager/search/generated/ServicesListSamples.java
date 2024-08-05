@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.search.generated;
 
-/** Samples for Services List. */
+/**
+ * Samples for Services List.
+ */
 public final class ServicesListSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchListServicesBySubscription.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * SearchListServicesBySubscription.json
      */
     /**
      * Sample code: SearchListServicesBySubscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchListServicesBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {

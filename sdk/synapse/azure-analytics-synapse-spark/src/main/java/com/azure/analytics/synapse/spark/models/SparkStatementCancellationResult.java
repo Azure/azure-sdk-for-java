@@ -5,20 +5,31 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SparkStatementCancellationResult model. */
+/**
+ * The SparkStatementCancellationResult model.
+ */
 @Fluent
-public final class SparkStatementCancellationResult {
+public final class SparkStatementCancellationResult implements JsonSerializable<SparkStatementCancellationResult> {
     /*
      * The msg property from the Livy API. The value is always "canceled".
      */
-    @JsonProperty(value = "msg")
     private String message;
 
     /**
+     * Creates an instance of SparkStatementCancellationResult class.
+     */
+    public SparkStatementCancellationResult() {
+    }
+
+    /**
      * Get the message property: The msg property from the Livy API. The value is always "canceled".
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -27,12 +38,49 @@ public final class SparkStatementCancellationResult {
 
     /**
      * Set the message property: The msg property from the Livy API. The value is always "canceled".
-     *
+     * 
      * @param message the message value to set.
      * @return the SparkStatementCancellationResult object itself.
      */
     public SparkStatementCancellationResult setMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("msg", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkStatementCancellationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkStatementCancellationResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkStatementCancellationResult.
+     */
+    public static SparkStatementCancellationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkStatementCancellationResult deserializedSparkStatementCancellationResult
+                = new SparkStatementCancellationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("msg".equals(fieldName)) {
+                    deserializedSparkStatementCancellationResult.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkStatementCancellationResult;
+        });
     }
 }

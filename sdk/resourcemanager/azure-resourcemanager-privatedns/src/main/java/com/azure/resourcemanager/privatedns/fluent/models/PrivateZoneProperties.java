@@ -5,75 +5,75 @@
 package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents the properties of the Private DNS zone. */
+/**
+ * Represents the properties of the Private DNS zone.
+ */
 @Immutable
-public final class PrivateZoneProperties {
+public final class PrivateZoneProperties implements JsonSerializable<PrivateZoneProperties> {
     /*
      * The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property and
      * any attempt to set this value will be ignored.
      */
-    @JsonProperty(value = "maxNumberOfRecordSets", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxNumberOfRecordSets;
 
     /*
      * The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to set
      * this value will be ignored.
      */
-    @JsonProperty(value = "numberOfRecordSets", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfRecordSets;
 
     /*
      * The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property
      * and any attempt to set this value will be ignored.
      */
-    @JsonProperty(value = "maxNumberOfVirtualNetworkLinks", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxNumberOfVirtualNetworkLinks;
 
     /*
-     * The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property
-     * and any attempt to set this value will be ignored.
+     * The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property and
+     * any attempt to set this value will be ignored.
      */
-    @JsonProperty(value = "numberOfVirtualNetworkLinks", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfVirtualNetworkLinks;
 
     /*
      * The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled.
      * This is a read-only property and any attempt to set this value will be ignored.
      */
-    @JsonProperty(value = "maxNumberOfVirtualNetworkLinksWithRegistration", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxNumberOfVirtualNetworkLinksWithRegistration;
 
     /*
      * The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This
      * is a read-only property and any attempt to set this value will be ignored.
      */
-    @JsonProperty(value = "numberOfVirtualNetworkLinksWithRegistration", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfVirtualNetworkLinksWithRegistration;
 
     /*
      * The provisioning state of the resource. This is a read-only property and any attempt to set this value will be
      * ignored.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Private zone internal Id
      */
-    @JsonProperty(value = "internalId", access = JsonProperty.Access.WRITE_ONLY)
     private String internalId;
 
-    /** Creates an instance of PrivateZoneProperties class. */
+    /**
+     * Creates an instance of PrivateZoneProperties class.
+     */
     public PrivateZoneProperties() {
     }
 
     /**
      * Get the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this Private DNS
      * zone. This is a read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the maxNumberOfRecordSets value.
      */
     public Long maxNumberOfRecordSets() {
@@ -83,7 +83,7 @@ public final class PrivateZoneProperties {
     /**
      * Get the numberOfRecordSets property: The current number of record sets in this Private DNS zone. This is a
      * read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the numberOfRecordSets value.
      */
     public Long numberOfRecordSets() {
@@ -93,7 +93,7 @@ public final class PrivateZoneProperties {
     /**
      * Get the maxNumberOfVirtualNetworkLinks property: The maximum number of virtual networks that can be linked to
      * this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the maxNumberOfVirtualNetworkLinks value.
      */
     public Long maxNumberOfVirtualNetworkLinks() {
@@ -103,7 +103,7 @@ public final class PrivateZoneProperties {
     /**
      * Get the numberOfVirtualNetworkLinks property: The current number of virtual networks that are linked to this
      * Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the numberOfVirtualNetworkLinks value.
      */
     public Long numberOfVirtualNetworkLinks() {
@@ -114,7 +114,7 @@ public final class PrivateZoneProperties {
      * Get the maxNumberOfVirtualNetworkLinksWithRegistration property: The maximum number of virtual networks that can
      * be linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set
      * this value will be ignored.
-     *
+     * 
      * @return the maxNumberOfVirtualNetworkLinksWithRegistration value.
      */
     public Long maxNumberOfVirtualNetworkLinksWithRegistration() {
@@ -125,7 +125,7 @@ public final class PrivateZoneProperties {
      * Get the numberOfVirtualNetworkLinksWithRegistration property: The current number of virtual networks that are
      * linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set
      * this value will be ignored.
-     *
+     * 
      * @return the numberOfVirtualNetworkLinksWithRegistration value.
      */
     public Long numberOfVirtualNetworkLinksWithRegistration() {
@@ -135,7 +135,7 @@ public final class PrivateZoneProperties {
     /**
      * Get the provisioningState property: The provisioning state of the resource. This is a read-only property and any
      * attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -144,7 +144,7 @@ public final class PrivateZoneProperties {
 
     /**
      * Get the internalId property: Private zone internal Id.
-     *
+     * 
      * @return the internalId value.
      */
     public String internalId() {
@@ -153,9 +153,63 @@ public final class PrivateZoneProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateZoneProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateZoneProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateZoneProperties.
+     */
+    public static PrivateZoneProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateZoneProperties deserializedPrivateZoneProperties = new PrivateZoneProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxNumberOfRecordSets".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.maxNumberOfRecordSets = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfRecordSets".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.numberOfRecordSets = reader.getNullable(JsonReader::getLong);
+                } else if ("maxNumberOfVirtualNetworkLinks".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.maxNumberOfVirtualNetworkLinks
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfVirtualNetworkLinks".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.numberOfVirtualNetworkLinks
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("maxNumberOfVirtualNetworkLinksWithRegistration".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.maxNumberOfVirtualNetworkLinksWithRegistration
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfVirtualNetworkLinksWithRegistration".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.numberOfVirtualNetworkLinksWithRegistration
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("internalId".equals(fieldName)) {
+                    deserializedPrivateZoneProperties.internalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateZoneProperties;
+        });
     }
 }

@@ -5,20 +5,22 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response body for find similar face operation.
  */
 @Immutable
-public final class FaceFindSimilarResult {
+public final class FaceFindSimilarResult implements JsonSerializable<FaceFindSimilarResult> {
 
     /*
      * Confidence value of the candidate. The higher confidence, the more similar. Range between [0,1].
      */
     @Generated
-    @JsonProperty(value = "confidence")
     private final double confidence;
 
     /*
@@ -26,7 +28,6 @@ public final class FaceFindSimilarResult {
      * detection call.
      */
     @Generated
-    @JsonProperty(value = "faceId")
     private String faceId;
 
     /*
@@ -34,7 +35,6 @@ public final class FaceFindSimilarResult {
      * face list is persisted and will not expire.
      */
     @Generated
-    @JsonProperty(value = "persistedFaceId")
     private String persistedFaceId;
 
     /**
@@ -43,8 +43,7 @@ public final class FaceFindSimilarResult {
      * @param confidence the confidence value to set.
      */
     @Generated
-    @JsonCreator
-    private FaceFindSimilarResult(@JsonProperty(value = "confidence") double confidence) {
+    private FaceFindSimilarResult(double confidence) {
         this.confidence = confidence;
     }
 
@@ -79,5 +78,53 @@ public final class FaceFindSimilarResult {
     @Generated
     public String getPersistedFaceId() {
         return this.persistedFaceId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        jsonWriter.writeStringField("faceId", this.faceId);
+        jsonWriter.writeStringField("persistedFaceId", this.persistedFaceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceFindSimilarResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceFindSimilarResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FaceFindSimilarResult.
+     */
+    @Generated
+    public static FaceFindSimilarResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            double confidence = 0.0;
+            String faceId = null;
+            String persistedFaceId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else if ("faceId".equals(fieldName)) {
+                    faceId = reader.getString();
+                } else if ("persistedFaceId".equals(fieldName)) {
+                    persistedFaceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FaceFindSimilarResult deserializedFaceFindSimilarResult = new FaceFindSimilarResult(confidence);
+            deserializedFaceFindSimilarResult.faceId = faceId;
+            deserializedFaceFindSimilarResult.persistedFaceId = persistedFaceId;
+            return deserializedFaceFindSimilarResult;
+        });
     }
 }

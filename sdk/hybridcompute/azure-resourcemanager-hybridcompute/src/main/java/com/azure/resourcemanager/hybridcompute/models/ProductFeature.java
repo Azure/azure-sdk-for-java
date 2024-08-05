@@ -5,43 +5,54 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Product Feature.
  */
 @Fluent
-public final class ProductFeature {
+public final class ProductFeature implements JsonSerializable<ProductFeature> {
     /*
      * Product feature name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Indicates the current status of the product features.
      */
-    @JsonProperty(value = "subscriptionStatus")
     private LicenseProfileSubscriptionStatus subscriptionStatus;
-
-    /*
-     * The timestamp in UTC when the billing starts.
-     */
-    @JsonProperty(value = "billingStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime billingStartDate;
 
     /*
      * The timestamp in UTC when the user enrolls the feature.
      */
-    @JsonProperty(value = "enrollmentDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime enrollmentDate;
+
+    /*
+     * The timestamp in UTC when the billing starts.
+     */
+    private OffsetDateTime billingStartDate;
 
     /*
      * The timestamp in UTC when the user disenrolled the feature.
      */
-    @JsonProperty(value = "disenrollmentDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime disenrollmentDate;
+
+    /*
+     * The timestamp in UTC when the billing ends.
+     */
+    private OffsetDateTime billingEndDate;
+
+    /*
+     * The errors that were encountered during the feature enrollment or disenrollment.
+     */
+    private ManagementError error;
 
     /**
      * Creates an instance of ProductFeature class.
@@ -90,21 +101,21 @@ public final class ProductFeature {
     }
 
     /**
-     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
-     * 
-     * @return the billingStartDate value.
-     */
-    public OffsetDateTime billingStartDate() {
-        return this.billingStartDate;
-    }
-
-    /**
      * Get the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
      * 
      * @return the enrollmentDate value.
      */
     public OffsetDateTime enrollmentDate() {
         return this.enrollmentDate;
+    }
+
+    /**
+     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    public OffsetDateTime billingStartDate() {
+        return this.billingStartDate;
     }
 
     /**
@@ -117,10 +128,83 @@ public final class ProductFeature {
     }
 
     /**
+     * Get the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    public OffsetDateTime billingEndDate() {
+        return this.billingEndDate;
+    }
+
+    /**
+     * Get the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.error;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("subscriptionStatus",
+            this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductFeature from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductFeature if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductFeature.
+     */
+    public static ProductFeature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductFeature deserializedProductFeature = new ProductFeature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedProductFeature.name = reader.getString();
+                } else if ("subscriptionStatus".equals(fieldName)) {
+                    deserializedProductFeature.subscriptionStatus
+                        = LicenseProfileSubscriptionStatus.fromString(reader.getString());
+                } else if ("enrollmentDate".equals(fieldName)) {
+                    deserializedProductFeature.enrollmentDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("billingStartDate".equals(fieldName)) {
+                    deserializedProductFeature.billingStartDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("disenrollmentDate".equals(fieldName)) {
+                    deserializedProductFeature.disenrollmentDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("billingEndDate".equals(fieldName)) {
+                    deserializedProductFeature.billingEndDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedProductFeature.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductFeature;
+        });
     }
 }

@@ -179,7 +179,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
+                .forUser(azureCliSignedInUser().userPrincipalName())
                 .allowSecretAllPermissions()
                 .allowCertificateAllPermissions()
                 .attach()

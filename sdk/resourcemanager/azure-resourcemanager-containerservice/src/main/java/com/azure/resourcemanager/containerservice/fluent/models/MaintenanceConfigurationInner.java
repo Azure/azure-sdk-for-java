@@ -7,10 +7,13 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.MaintenanceWindow;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,25 +27,21 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Properties of a default maintenance configuration.
      */
-    @JsonProperty(value = "properties")
     private MaintenanceConfigurationProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -98,10 +97,8 @@ public final class MaintenanceConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
-     * 
-     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
-     * entries.
+     * Get the timeInWeek property: If two array entries specify the same day of the week, the applied configuration is
+     * the union of times in both entries.
      * 
      * @return the timeInWeek value.
      */
@@ -110,10 +107,8 @@ public final class MaintenanceConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
-     * 
-     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
-     * entries.
+     * Set the timeInWeek property: If two array entries specify the same day of the week, the applied configuration is
+     * the union of times in both entries.
      * 
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationInner object itself.
@@ -181,5 +176,52 @@ public final class MaintenanceConfigurationInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceConfigurationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceConfigurationInner.
+     */
+    public static MaintenanceConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceConfigurationInner deserializedMaintenanceConfigurationInner
+                = new MaintenanceConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.withId(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.innerProperties
+                        = MaintenanceConfigurationProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceConfigurationInner;
+        });
     }
 }

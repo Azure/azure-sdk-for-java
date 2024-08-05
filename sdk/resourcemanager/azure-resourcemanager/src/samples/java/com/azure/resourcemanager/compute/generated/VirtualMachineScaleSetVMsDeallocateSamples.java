@@ -20,8 +20,11 @@ public final class VirtualMachineScaleSetVMsDeallocateSamples {
      */
     public static void
         virtualMachineScaleSetVMDeallocateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().deallocate("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,11 @@ public final class VirtualMachineScaleSetVMsDeallocateSamples {
      */
     public static void
         virtualMachineScaleSetVMDeallocateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().deallocate("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

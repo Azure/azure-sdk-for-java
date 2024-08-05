@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
@@ -59,9 +60,13 @@ public class ReadManySplitTest {
         PartitionKeyRange partitionKey = new PartitionKeyRange("0", "00", "FF");
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
         rangeQueryMap.put(partitionKey, querySpec);
+
+        DocumentCollection documentCollection = new DocumentCollection();
+        documentCollection.setResourceId("testCollectionRid");
+
         parallelDocumentQueryExecutionContextBase.initializeReadMany(
             rangeQueryMap,
-            new CosmosQueryRequestOptions(), "testCollectionRid");
+            new CosmosQueryRequestOptions(), documentCollection);
         //Parent document producer created
         DocumentProducer<Document> documentProducer = parallelDocumentQueryExecutionContextBase.documentProducers.get(0);
 
@@ -116,7 +121,8 @@ public class ReadManySplitTest {
                                                              Function<RxDocumentServiceRequest,
                                                              Mono<FeedResponse<T>>> executeFunc,
                                                              Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
-                                                             FeedRangeEpkImpl feedRange) {
+                                                             FeedRangeEpkImpl feedRange,
+                                                             String collectionLink) {
             return new DocumentProducer<T>(
                 client,
                 collectionRid,

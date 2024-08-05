@@ -6,30 +6,36 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The GPU resource. */
+/**
+ * The GPU resource.
+ */
 @Fluent
-public final class GpuResource {
+public final class GpuResource implements JsonSerializable<GpuResource> {
     /*
      * The count of the GPU resource.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * The SKU of the GPU resource.
      */
-    @JsonProperty(value = "sku", required = true)
     private GpuSku sku;
 
-    /** Creates an instance of GpuResource class. */
+    /**
+     * Creates an instance of GpuResource class.
+     */
     public GpuResource() {
     }
 
     /**
      * Get the count property: The count of the GPU resource.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -38,7 +44,7 @@ public final class GpuResource {
 
     /**
      * Set the count property: The count of the GPU resource.
-     *
+     * 
      * @param count the count value to set.
      * @return the GpuResource object itself.
      */
@@ -49,7 +55,7 @@ public final class GpuResource {
 
     /**
      * Get the sku property: The SKU of the GPU resource.
-     *
+     * 
      * @return the sku value.
      */
     public GpuSku sku() {
@@ -58,7 +64,7 @@ public final class GpuResource {
 
     /**
      * Set the sku property: The SKU of the GPU resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the GpuResource object itself.
      */
@@ -69,16 +75,55 @@ public final class GpuResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model GpuResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model GpuResource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GpuResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GpuResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GpuResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GpuResource.
+     */
+    public static GpuResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GpuResource deserializedGpuResource = new GpuResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedGpuResource.count = reader.getInt();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGpuResource.sku = GpuSku.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGpuResource;
+        });
+    }
 }

@@ -5,46 +5,50 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A set of rules governing the network accessibility of a managed hsm pool. */
+/**
+ * A set of rules governing the network accessibility of a managed hsm pool.
+ */
 @Fluent
-public final class MhsmNetworkRuleSet {
+public final class MhsmNetworkRuleSet implements JsonSerializable<MhsmNetworkRuleSet> {
     /*
-     * Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'.  If not specified the
-     * default is 'AzureServices'.
+     * Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If not specified the default
+     * is 'AzureServices'.
      */
-    @JsonProperty(value = "bypass")
     private NetworkRuleBypassOptions bypass;
 
     /*
      * The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the
      * bypass property has been evaluated.
      */
-    @JsonProperty(value = "defaultAction")
     private NetworkRuleAction defaultAction;
 
     /*
      * The list of IP address rules.
      */
-    @JsonProperty(value = "ipRules")
     private List<MhsmipRule> ipRules;
 
     /*
      * The list of virtual network rules.
      */
-    @JsonProperty(value = "virtualNetworkRules")
     private List<MhsmVirtualNetworkRule> virtualNetworkRules;
 
-    /** Creates an instance of MhsmNetworkRuleSet class. */
+    /**
+     * Creates an instance of MhsmNetworkRuleSet class.
+     */
     public MhsmNetworkRuleSet() {
     }
 
     /**
      * Get the bypass property: Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If
      * not specified the default is 'AzureServices'.
-     *
+     * 
      * @return the bypass value.
      */
     public NetworkRuleBypassOptions bypass() {
@@ -54,7 +58,7 @@ public final class MhsmNetworkRuleSet {
     /**
      * Set the bypass property: Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If
      * not specified the default is 'AzureServices'.
-     *
+     * 
      * @param bypass the bypass value to set.
      * @return the MhsmNetworkRuleSet object itself.
      */
@@ -66,7 +70,7 @@ public final class MhsmNetworkRuleSet {
     /**
      * Get the defaultAction property: The default action when no rule from ipRules and from virtualNetworkRules match.
      * This is only used after the bypass property has been evaluated.
-     *
+     * 
      * @return the defaultAction value.
      */
     public NetworkRuleAction defaultAction() {
@@ -76,7 +80,7 @@ public final class MhsmNetworkRuleSet {
     /**
      * Set the defaultAction property: The default action when no rule from ipRules and from virtualNetworkRules match.
      * This is only used after the bypass property has been evaluated.
-     *
+     * 
      * @param defaultAction the defaultAction value to set.
      * @return the MhsmNetworkRuleSet object itself.
      */
@@ -87,7 +91,7 @@ public final class MhsmNetworkRuleSet {
 
     /**
      * Get the ipRules property: The list of IP address rules.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<MhsmipRule> ipRules() {
@@ -96,7 +100,7 @@ public final class MhsmNetworkRuleSet {
 
     /**
      * Set the ipRules property: The list of IP address rules.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the MhsmNetworkRuleSet object itself.
      */
@@ -107,7 +111,7 @@ public final class MhsmNetworkRuleSet {
 
     /**
      * Get the virtualNetworkRules property: The list of virtual network rules.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<MhsmVirtualNetworkRule> virtualNetworkRules() {
@@ -116,7 +120,7 @@ public final class MhsmNetworkRuleSet {
 
     /**
      * Set the virtualNetworkRules property: The list of virtual network rules.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the MhsmNetworkRuleSet object itself.
      */
@@ -127,7 +131,7 @@ public final class MhsmNetworkRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -137,5 +141,54 @@ public final class MhsmNetworkRuleSet {
         if (virtualNetworkRules() != null) {
             virtualNetworkRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("bypass", this.bypass == null ? null : this.bypass.toString());
+        jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("virtualNetworkRules", this.virtualNetworkRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MhsmNetworkRuleSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MhsmNetworkRuleSet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MhsmNetworkRuleSet.
+     */
+    public static MhsmNetworkRuleSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MhsmNetworkRuleSet deserializedMhsmNetworkRuleSet = new MhsmNetworkRuleSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bypass".equals(fieldName)) {
+                    deserializedMhsmNetworkRuleSet.bypass = NetworkRuleBypassOptions.fromString(reader.getString());
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedMhsmNetworkRuleSet.defaultAction = NetworkRuleAction.fromString(reader.getString());
+                } else if ("ipRules".equals(fieldName)) {
+                    List<MhsmipRule> ipRules = reader.readArray(reader1 -> MhsmipRule.fromJson(reader1));
+                    deserializedMhsmNetworkRuleSet.ipRules = ipRules;
+                } else if ("virtualNetworkRules".equals(fieldName)) {
+                    List<MhsmVirtualNetworkRule> virtualNetworkRules
+                        = reader.readArray(reader1 -> MhsmVirtualNetworkRule.fromJson(reader1));
+                    deserializedMhsmNetworkRuleSet.virtualNetworkRules = virtualNetworkRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMhsmNetworkRuleSet;
+        });
     }
 }

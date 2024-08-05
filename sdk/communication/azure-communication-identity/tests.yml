@@ -5,18 +5,13 @@ extends:
   parameters:
     PackageName: azure-communication-identity
     SafeName: azurecommunicationidentity
-    Clouds: 'Public,PPE,Int'
+    Clouds: 'Public'
+    UseFederatedAuth: true
     CloudConfig:
       Public:
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
         SubscriptionConfigurations:
-          - $(sub-config-azure-cloud-test-resources)
           - $(sub-config-communication-services-cloud-test-resources-common)
           - $(sub-config-communication-services-cloud-test-resources-java)
-      Int:
-        SubscriptionConfigurations:
-          - $(sub-config-communication-int-test-resources-common)
-          - $(sub-config-communication-int-test-resources-java)
-      PPE:
-        SubscriptionConfigurations:
-          - $(sub-config-communication-ppe-test-resources-common)
-          - $(sub-config-communication-ppe-test-resources-java)

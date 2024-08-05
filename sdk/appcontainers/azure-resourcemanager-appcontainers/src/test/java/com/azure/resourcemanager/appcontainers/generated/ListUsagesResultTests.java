@@ -15,26 +15,27 @@ public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"currentValue\":1.2442172,\"limit\":34.942795,\"name\":{\"value\":\"j\",\"localizedValue\":\"cmyfqipgxhnpo\"}}],\"nextLink\":\"qwcabvnui\"}")
+            "{\"value\":[{\"currentValue\":38.06893,\"limit\":13.099998,\"name\":{\"value\":\"kvhd\",\"localizedValue\":\"wyojbfqzdkfnjyi\"}}],\"nextLink\":\"afr\"}")
             .toObject(ListUsagesResult.class);
-        Assertions.assertEquals(1.2442172f, model.value().get(0).currentValue());
-        Assertions.assertEquals(34.942795f, model.value().get(0).limit());
-        Assertions.assertEquals("j", model.value().get(0).name().value());
-        Assertions.assertEquals("cmyfqipgxhnpo", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("qwcabvnui", model.nextLink());
+        Assertions.assertEquals(38.06893f, model.value().get(0).currentValue());
+        Assertions.assertEquals(13.099998f, model.value().get(0).limit());
+        Assertions.assertEquals("kvhd", model.value().get(0).name().value());
+        Assertions.assertEquals("wyojbfqzdkfnjyi", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("afr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListUsagesResult model = new ListUsagesResult()
-            .withValue(Arrays.asList(new UsageInner().withCurrentValue(1.2442172f).withLimit(34.942795f)
-                .withName(new UsageName().withValue("j").withLocalizedValue("cmyfqipgxhnpo"))))
-            .withNextLink("qwcabvnui");
+            .withValue(Arrays.asList(new UsageInner().withCurrentValue(38.06893f)
+                .withLimit(13.099998f)
+                .withName(new UsageName().withValue("kvhd").withLocalizedValue("wyojbfqzdkfnjyi"))))
+            .withNextLink("afr");
         model = BinaryData.fromObject(model).toObject(ListUsagesResult.class);
-        Assertions.assertEquals(1.2442172f, model.value().get(0).currentValue());
-        Assertions.assertEquals(34.942795f, model.value().get(0).limit());
-        Assertions.assertEquals("j", model.value().get(0).name().value());
-        Assertions.assertEquals("cmyfqipgxhnpo", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("qwcabvnui", model.nextLink());
+        Assertions.assertEquals(38.06893f, model.value().get(0).currentValue());
+        Assertions.assertEquals(13.099998f, model.value().get(0).limit());
+        Assertions.assertEquals("kvhd", model.value().get(0).name().value());
+        Assertions.assertEquals("wyojbfqzdkfnjyi", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("afr", model.nextLink());
     }
 }

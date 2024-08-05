@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class FirewallPolicyRuleNetworkProtocol extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding FirewallPolicyRuleNetworkProtocol.
      */
-    @JsonCreator
     public static FirewallPolicyRuleNetworkProtocol fromString(String name) {
         return fromString(name, FirewallPolicyRuleNetworkProtocol.class);
     }

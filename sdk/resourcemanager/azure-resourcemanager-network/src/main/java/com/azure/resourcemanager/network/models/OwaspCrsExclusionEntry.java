@@ -6,36 +6,38 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Allow to exclude some variable satisfy the condition for the WAF check.
  */
 @Fluent
-public final class OwaspCrsExclusionEntry {
+public final class OwaspCrsExclusionEntry implements JsonSerializable<OwaspCrsExclusionEntry> {
     /*
      * The variable to be excluded.
      */
-    @JsonProperty(value = "matchVariable", required = true)
     private OwaspCrsExclusionEntryMatchVariable matchVariable;
 
     /*
-     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+     * exclusion applies to.
      */
-    @JsonProperty(value = "selectorMatchOperator", required = true)
     private OwaspCrsExclusionEntrySelectorMatchOperator selectorMatchOperator;
 
     /*
-     * When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operator used to specify which elements in the collection this exclusion
+     * applies to.
      */
-    @JsonProperty(value = "selector", required = true)
     private String selector;
 
     /*
      * The managed rule sets that are associated with the exclusion.
      */
-    @JsonProperty(value = "exclusionManagedRuleSets")
     private List<ExclusionManagedRuleSet> exclusionManagedRuleSets;
 
     /**
@@ -156,4 +158,56 @@ public final class OwaspCrsExclusionEntry {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OwaspCrsExclusionEntry.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("matchVariable", this.matchVariable == null ? null : this.matchVariable.toString());
+        jsonWriter.writeStringField("selectorMatchOperator",
+            this.selectorMatchOperator == null ? null : this.selectorMatchOperator.toString());
+        jsonWriter.writeStringField("selector", this.selector);
+        jsonWriter.writeArrayField("exclusionManagedRuleSets", this.exclusionManagedRuleSets,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OwaspCrsExclusionEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OwaspCrsExclusionEntry if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OwaspCrsExclusionEntry.
+     */
+    public static OwaspCrsExclusionEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OwaspCrsExclusionEntry deserializedOwaspCrsExclusionEntry = new OwaspCrsExclusionEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("matchVariable".equals(fieldName)) {
+                    deserializedOwaspCrsExclusionEntry.matchVariable
+                        = OwaspCrsExclusionEntryMatchVariable.fromString(reader.getString());
+                } else if ("selectorMatchOperator".equals(fieldName)) {
+                    deserializedOwaspCrsExclusionEntry.selectorMatchOperator
+                        = OwaspCrsExclusionEntrySelectorMatchOperator.fromString(reader.getString());
+                } else if ("selector".equals(fieldName)) {
+                    deserializedOwaspCrsExclusionEntry.selector = reader.getString();
+                } else if ("exclusionManagedRuleSets".equals(fieldName)) {
+                    List<ExclusionManagedRuleSet> exclusionManagedRuleSets
+                        = reader.readArray(reader1 -> ExclusionManagedRuleSet.fromJson(reader1));
+                    deserializedOwaspCrsExclusionEntry.exclusionManagedRuleSets = exclusionManagedRuleSets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOwaspCrsExclusionEntry;
+        });
+    }
 }

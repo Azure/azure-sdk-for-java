@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The service endpoint properties.
  */
 @Fluent
-public final class ServiceEndpointPropertiesFormat {
+public final class ServiceEndpointPropertiesFormat implements JsonSerializable<ServiceEndpointPropertiesFormat> {
     /*
      * The type of the endpoint service.
      */
-    @JsonProperty(value = "service")
     private String service;
+
+    /*
+     * SubResource as network identifier.
+     */
+    private SubResource networkIdentifier;
 
     /*
      * A list of locations.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * The provisioning state of the service endpoint resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -54,6 +61,26 @@ public final class ServiceEndpointPropertiesFormat {
      */
     public ServiceEndpointPropertiesFormat withService(String service) {
         this.service = service;
+        return this;
+    }
+
+    /**
+     * Get the networkIdentifier property: SubResource as network identifier.
+     * 
+     * @return the networkIdentifier value.
+     */
+    public SubResource networkIdentifier() {
+        return this.networkIdentifier;
+    }
+
+    /**
+     * Set the networkIdentifier property: SubResource as network identifier.
+     * 
+     * @param networkIdentifier the networkIdentifier value to set.
+     * @return the ServiceEndpointPropertiesFormat object itself.
+     */
+    public ServiceEndpointPropertiesFormat withNetworkIdentifier(SubResource networkIdentifier) {
+        this.networkIdentifier = networkIdentifier;
         return this;
     }
 
@@ -92,5 +119,52 @@ public final class ServiceEndpointPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("service", this.service);
+        jsonWriter.writeJsonField("networkIdentifier", this.networkIdentifier);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceEndpointPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceEndpointPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceEndpointPropertiesFormat.
+     */
+    public static ServiceEndpointPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceEndpointPropertiesFormat deserializedServiceEndpointPropertiesFormat
+                = new ServiceEndpointPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("service".equals(fieldName)) {
+                    deserializedServiceEndpointPropertiesFormat.service = reader.getString();
+                } else if ("networkIdentifier".equals(fieldName)) {
+                    deserializedServiceEndpointPropertiesFormat.networkIdentifier = SubResource.fromJson(reader);
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceEndpointPropertiesFormat.locations = locations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServiceEndpointPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceEndpointPropertiesFormat;
+        });
     }
 }

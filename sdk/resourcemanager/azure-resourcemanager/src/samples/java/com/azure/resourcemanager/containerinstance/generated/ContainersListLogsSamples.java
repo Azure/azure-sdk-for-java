@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-/** Samples for Containers ListLogs. */
+/**
+ * Samples for Containers ListLogs.
+ */
 public final class ContainersListLogsSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerListLogs.json
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/
+     * ContainerListLogs.json
      */
     /**
      * Sample code: ContainerListLogs.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerListLogs(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerGroups()
+        azure.containerGroups()
             .manager()
             .serviceClient()
             .getContainers()

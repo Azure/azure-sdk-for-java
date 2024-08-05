@@ -5,48 +5,46 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Audit entry for a request in the session.
  */
 @Immutable
-public final class AuditRequestInfo {
+public final class AuditRequestInfo implements JsonSerializable<AuditRequestInfo> {
 
     /*
      * The relative URL and query of the liveness request.
      */
     @Generated
-    @JsonProperty(value = "url")
     private final String url;
 
     /*
      * The HTTP method of the request (i.e., GET, POST, DELETE).
      */
     @Generated
-    @JsonProperty(value = "method")
     private final String method;
 
     /*
      * The length of the request body in bytes.
      */
     @Generated
-    @JsonProperty(value = "contentLength")
     private Long contentLength;
 
     /*
      * The content type of the request.
      */
     @Generated
-    @JsonProperty(value = "contentType")
     private final String contentType;
 
     /*
      * The user agent used to submit the request.
      */
     @Generated
-    @JsonProperty(value = "userAgent")
     private String userAgent;
 
     /**
@@ -57,9 +55,7 @@ public final class AuditRequestInfo {
      * @param contentType the contentType value to set.
      */
     @Generated
-    @JsonCreator
-    private AuditRequestInfo(@JsonProperty(value = "url") String url, @JsonProperty(value = "method") String method,
-        @JsonProperty(value = "contentType") String contentType) {
+    private AuditRequestInfo(String url, String method, String contentType) {
         this.url = url;
         this.method = method;
         this.contentType = contentType;
@@ -113,5 +109,61 @@ public final class AuditRequestInfo {
     @Generated
     public String getUserAgent() {
         return this.userAgent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("method", this.method);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeNumberField("contentLength", this.contentLength);
+        jsonWriter.writeStringField("userAgent", this.userAgent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuditRequestInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuditRequestInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuditRequestInfo.
+     */
+    @Generated
+    public static AuditRequestInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String url = null;
+            String method = null;
+            String contentType = null;
+            Long contentLength = null;
+            String userAgent = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    method = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    contentType = reader.getString();
+                } else if ("contentLength".equals(fieldName)) {
+                    contentLength = reader.getNullable(JsonReader::getLong);
+                } else if ("userAgent".equals(fieldName)) {
+                    userAgent = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AuditRequestInfo deserializedAuditRequestInfo = new AuditRequestInfo(url, method, contentType);
+            deserializedAuditRequestInfo.contentLength = contentLength;
+            deserializedAuditRequestInfo.userAgent = userAgent;
+            return deserializedAuditRequestInfo;
+        });
     }
 }

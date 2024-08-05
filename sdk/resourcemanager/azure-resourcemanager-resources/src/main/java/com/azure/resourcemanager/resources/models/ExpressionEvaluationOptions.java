@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
  */
 @Fluent
-public final class ExpressionEvaluationOptions {
+public final class ExpressionEvaluationOptions implements JsonSerializable<ExpressionEvaluationOptions> {
     /*
      * The scope to be used for evaluation of parameters, variables and functions in a nested template.
      */
-    @JsonProperty(value = "scope")
     private ExpressionEvaluationOptionsScopeType scope;
 
     /**
@@ -52,5 +55,42 @@ public final class ExpressionEvaluationOptions {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressionEvaluationOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressionEvaluationOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressionEvaluationOptions.
+     */
+    public static ExpressionEvaluationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressionEvaluationOptions deserializedExpressionEvaluationOptions = new ExpressionEvaluationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedExpressionEvaluationOptions.scope
+                        = ExpressionEvaluationOptionsScopeType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressionEvaluationOptions;
+        });
     }
 }

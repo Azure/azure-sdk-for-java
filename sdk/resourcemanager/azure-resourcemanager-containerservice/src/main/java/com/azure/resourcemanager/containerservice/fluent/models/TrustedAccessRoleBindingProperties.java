@@ -6,32 +6,33 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleBindingProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties for trusted access role binding.
  */
 @Fluent
-public final class TrustedAccessRoleBindingProperties {
+public final class TrustedAccessRoleBindingProperties implements JsonSerializable<TrustedAccessRoleBindingProperties> {
     /*
      * The current provisioning state of trusted access role binding.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private TrustedAccessRoleBindingProvisioningState provisioningState;
 
     /*
      * The ARM resource ID of source resource that trusted access is configured for.
      */
-    @JsonProperty(value = "sourceResourceId", required = true)
     private String sourceResourceId;
 
     /*
      * A list of roles to bind, each item is a resource type qualified role name. For example:
      * 'Microsoft.MachineLearningServices/workspaces/reader'.
      */
-    @JsonProperty(value = "roles", required = true)
     private List<String> roles;
 
     /**
@@ -98,14 +99,61 @@ public final class TrustedAccessRoleBindingProperties {
      */
     public void validate() {
         if (sourceResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
         }
         if (roles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property roles in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roles in model TrustedAccessRoleBindingProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrustedAccessRoleBindingProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrustedAccessRoleBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrustedAccessRoleBindingProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrustedAccessRoleBindingProperties.
+     */
+    public static TrustedAccessRoleBindingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrustedAccessRoleBindingProperties deserializedTrustedAccessRoleBindingProperties
+                = new TrustedAccessRoleBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceResourceId".equals(fieldName)) {
+                    deserializedTrustedAccessRoleBindingProperties.sourceResourceId = reader.getString();
+                } else if ("roles".equals(fieldName)) {
+                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTrustedAccessRoleBindingProperties.roles = roles;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTrustedAccessRoleBindingProperties.provisioningState
+                        = TrustedAccessRoleBindingProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrustedAccessRoleBindingProperties;
+        });
+    }
 }

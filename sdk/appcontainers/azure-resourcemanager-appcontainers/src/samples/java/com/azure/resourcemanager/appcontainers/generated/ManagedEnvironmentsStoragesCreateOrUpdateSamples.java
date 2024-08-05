@@ -14,7 +14,7 @@ import com.azure.resourcemanager.appcontainers.models.NfsAzureFileProperties;
  */
 public final class ManagedEnvironmentsStoragesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ManagedEnvironmentsStorages_CreateOrUpdate_NfsAzureFile.json
      */
     /**
@@ -24,15 +24,18 @@ public final class ManagedEnvironmentsStoragesCreateOrUpdateSamples {
      */
     public static void createOrUpdateEnvironmentsStorageForNFSAzureFile(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentsStorages().define("jlaw-demo1")
+        manager.managedEnvironmentsStorages()
+            .define("jlaw-demo1")
             .withExistingManagedEnvironment("examplerg", "managedEnv")
-            .withProperties(new ManagedEnvironmentStorageProperties().withNfsAzureFile(new NfsAzureFileProperties()
-                .withServer("server1").withAccessMode(AccessMode.READ_ONLY).withShareName("share1")))
+            .withProperties(new ManagedEnvironmentStorageProperties()
+                .withNfsAzureFile(new NfsAzureFileProperties().withServer("server1")
+                    .withAccessMode(AccessMode.READ_ONLY)
+                    .withShareName("share1")))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ManagedEnvironmentsStorages_CreateOrUpdate.json
      */
     /**
@@ -42,11 +45,14 @@ public final class ManagedEnvironmentsStoragesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateEnvironmentsStorage(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentsStorages().define("jlaw-demo1")
+        manager.managedEnvironmentsStorages()
+            .define("jlaw-demo1")
             .withExistingManagedEnvironment("examplerg", "managedEnv")
-            .withProperties(new ManagedEnvironmentStorageProperties().withAzureFile(
-                new AzureFileProperties().withAccountName("account1").withAccountKey("fakeTokenPlaceholder")
-                    .withAccessMode(AccessMode.READ_ONLY).withShareName("share1")))
+            .withProperties(new ManagedEnvironmentStorageProperties()
+                .withAzureFile(new AzureFileProperties().withAccountName("account1")
+                    .withAccountKey("fakeTokenPlaceholder")
+                    .withAccessMode(AccessMode.READ_ONLY)
+                    .withShareName("share1")))
             .create();
     }
 }

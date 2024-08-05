@@ -6,42 +6,46 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the Azure File volume. Azure File shares are mounted as volumes. */
+/**
+ * The properties of the Azure File volume. Azure File shares are mounted as volumes.
+ */
 @Fluent
-public final class AzureFileVolume {
+public final class AzureFileVolume implements JsonSerializable<AzureFileVolume> {
     /*
      * The name of the Azure File share to be mounted as a volume.
      */
-    @JsonProperty(value = "shareName", required = true)
     private String shareName;
 
     /*
      * The flag indicating whether the Azure File shared mounted as a volume is read-only.
      */
-    @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /*
      * The name of the storage account that contains the Azure File share.
      */
-    @JsonProperty(value = "storageAccountName", required = true)
     private String storageAccountName;
 
     /*
      * The storage account access key used to access the Azure File share.
      */
-    @JsonProperty(value = "storageAccountKey")
     private String storageAccountKey;
 
-    /** Creates an instance of AzureFileVolume class. */
+    /**
+     * Creates an instance of AzureFileVolume class.
+     */
     public AzureFileVolume() {
     }
 
     /**
      * Get the shareName property: The name of the Azure File share to be mounted as a volume.
-     *
+     * 
      * @return the shareName value.
      */
     public String shareName() {
@@ -50,7 +54,7 @@ public final class AzureFileVolume {
 
     /**
      * Set the shareName property: The name of the Azure File share to be mounted as a volume.
-     *
+     * 
      * @param shareName the shareName value to set.
      * @return the AzureFileVolume object itself.
      */
@@ -61,7 +65,7 @@ public final class AzureFileVolume {
 
     /**
      * Get the readOnly property: The flag indicating whether the Azure File shared mounted as a volume is read-only.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -70,7 +74,7 @@ public final class AzureFileVolume {
 
     /**
      * Set the readOnly property: The flag indicating whether the Azure File shared mounted as a volume is read-only.
-     *
+     * 
      * @param readOnly the readOnly value to set.
      * @return the AzureFileVolume object itself.
      */
@@ -81,7 +85,7 @@ public final class AzureFileVolume {
 
     /**
      * Get the storageAccountName property: The name of the storage account that contains the Azure File share.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -90,7 +94,7 @@ public final class AzureFileVolume {
 
     /**
      * Set the storageAccountName property: The name of the storage account that contains the Azure File share.
-     *
+     * 
      * @param storageAccountName the storageAccountName value to set.
      * @return the AzureFileVolume object itself.
      */
@@ -101,7 +105,7 @@ public final class AzureFileVolume {
 
     /**
      * Get the storageAccountKey property: The storage account access key used to access the Azure File share.
-     *
+     * 
      * @return the storageAccountKey value.
      */
     public String storageAccountKey() {
@@ -110,7 +114,7 @@ public final class AzureFileVolume {
 
     /**
      * Set the storageAccountKey property: The storage account access key used to access the Azure File share.
-     *
+     * 
      * @param storageAccountKey the storageAccountKey value to set.
      * @return the AzureFileVolume object itself.
      */
@@ -121,22 +125,66 @@ public final class AzureFileVolume {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (shareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareName in model AzureFileVolume"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property shareName in model AzureFileVolume"));
         }
         if (storageAccountName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountName in model AzureFileVolume"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountName in model AzureFileVolume"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureFileVolume.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("shareName", this.shareName);
+        jsonWriter.writeStringField("storageAccountName", this.storageAccountName);
+        jsonWriter.writeBooleanField("readOnly", this.readOnly);
+        jsonWriter.writeStringField("storageAccountKey", this.storageAccountKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileVolume from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileVolume if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFileVolume.
+     */
+    public static AzureFileVolume fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileVolume deserializedAzureFileVolume = new AzureFileVolume();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shareName".equals(fieldName)) {
+                    deserializedAzureFileVolume.shareName = reader.getString();
+                } else if ("storageAccountName".equals(fieldName)) {
+                    deserializedAzureFileVolume.storageAccountName = reader.getString();
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedAzureFileVolume.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storageAccountKey".equals(fieldName)) {
+                    deserializedAzureFileVolume.storageAccountKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileVolume;
+        });
+    }
 }

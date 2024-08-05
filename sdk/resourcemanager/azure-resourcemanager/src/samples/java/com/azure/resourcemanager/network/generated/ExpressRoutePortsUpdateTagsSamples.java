@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.TagsObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +13,13 @@ import java.util.Map;
  */
 public final class ExpressRoutePortsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRoutePortUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortUpdateTags.
+     * json
      */
     /**
      * Sample code: ExpressRoutePortUpdateTags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortUpdateTags(com.azure.resourcemanager.AzureResourceManager azure) {

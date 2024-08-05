@@ -5,52 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** linkedResource. */
+/**
+ * linkedResource.
+ */
 @Fluent
 public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
     /*
      * Field indicating the app name of the source that is sending the linkedResource.
      */
-    @JsonProperty(value = "applicationName")
     private String applicationName;
 
     /*
      * Field indicating the title of the linkedResource.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Id of the object that is associated with this task on the third-party/partner system.
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
     /*
      * Deep link to the linkedResource.
      */
-    @JsonProperty(value = "webUrl")
     private String webUrl;
 
     /*
      * linkedResource
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphLinkedResource class. */
+    /**
+     * Creates an instance of MicrosoftGraphLinkedResource class.
+     */
     public MicrosoftGraphLinkedResource() {
     }
 
     /**
      * Get the applicationName property: Field indicating the app name of the source that is sending the linkedResource.
-     *
+     * 
      * @return the applicationName value.
      */
     public String applicationName() {
@@ -59,7 +59,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Set the applicationName property: Field indicating the app name of the source that is sending the linkedResource.
-     *
+     * 
      * @param applicationName the applicationName value to set.
      * @return the MicrosoftGraphLinkedResource object itself.
      */
@@ -70,7 +70,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: Field indicating the title of the linkedResource.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -79,7 +79,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: Field indicating the title of the linkedResource.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphLinkedResource object itself.
      */
@@ -91,7 +91,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
     /**
      * Get the externalId property: Id of the object that is associated with this task on the third-party/partner
      * system.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -101,7 +101,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
     /**
      * Set the externalId property: Id of the object that is associated with this task on the third-party/partner
      * system.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the MicrosoftGraphLinkedResource object itself.
      */
@@ -112,7 +112,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Get the webUrl property: Deep link to the linkedResource.
-     *
+     * 
      * @return the webUrl value.
      */
     public String webUrl() {
@@ -121,7 +121,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Set the webUrl property: Deep link to the linkedResource.
-     *
+     * 
      * @param webUrl the webUrl value to set.
      * @return the MicrosoftGraphLinkedResource object itself.
      */
@@ -132,17 +132,16 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: linkedResource.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: linkedResource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphLinkedResource object itself.
      */
@@ -151,15 +150,9 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphLinkedResource withId(String id) {
         super.withId(id);
@@ -168,11 +161,70 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("applicationName", this.applicationName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeStringField("webUrl", this.webUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphLinkedResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphLinkedResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphLinkedResource.
+     */
+    public static MicrosoftGraphLinkedResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphLinkedResource deserializedMicrosoftGraphLinkedResource = new MicrosoftGraphLinkedResource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphLinkedResource.withId(reader.getString());
+                } else if ("applicationName".equals(fieldName)) {
+                    deserializedMicrosoftGraphLinkedResource.applicationName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphLinkedResource.displayName = reader.getString();
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedMicrosoftGraphLinkedResource.externalId = reader.getString();
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphLinkedResource.webUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphLinkedResource.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphLinkedResource;
+        });
     }
 }
