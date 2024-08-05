@@ -5,26 +5,29 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The storage account blob inventory policy properties.
  */
 @Fluent
-public final class BlobInventoryPolicyProperties {
+public final class BlobInventoryPolicyProperties implements JsonSerializable<BlobInventoryPolicyProperties> {
     /*
      * Returns the last modified date and time of the blob inventory policy.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The storage account blob inventory policy object. It is composed of policy rules.
      */
-    @JsonProperty(value = "policy", required = true)
     private BlobInventoryPolicySchema policy;
 
     /**
@@ -78,4 +81,45 @@ public final class BlobInventoryPolicyProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("policy", this.policy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobInventoryPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobInventoryPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobInventoryPolicyProperties.
+     */
+    public static BlobInventoryPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobInventoryPolicyProperties deserializedBlobInventoryPolicyProperties
+                = new BlobInventoryPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policy".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyProperties.policy = BlobInventoryPolicySchema.fromJson(reader);
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobInventoryPolicyProperties;
+        });
+    }
 }

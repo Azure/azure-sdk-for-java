@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ExtendedLocation;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -21,20 +25,32 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     /*
      * The created time of the resource. This is only present if requested via the $expand query parameter.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * The changed time of the resource. This is only present if requested via the $expand query parameter.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The provisioning state of the resource. This is only present if requested via the $expand query parameter.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of GenericResourceExpandedInner class.
@@ -70,6 +86,36 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -161,5 +207,81 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("plan", plan());
+        jsonWriter.writeUntypedField("properties", properties());
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeStringField("managedBy", managedBy());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeJsonField("extendedLocation", extendedLocation());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericResourceExpandedInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericResourceExpandedInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GenericResourceExpandedInner.
+     */
+    public static GenericResourceExpandedInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenericResourceExpandedInner deserializedGenericResourceExpandedInner = new GenericResourceExpandedInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGenericResourceExpandedInner.withTags(tags);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withPlan(Plan.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withProperties(reader.readUntyped());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withKind(reader.getString());
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withManagedBy(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withSku(Sku.fromJson(reader));
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withIdentity(Identity.fromJson(reader));
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.withExtendedLocation(ExtendedLocation.fromJson(reader));
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGenericResourceExpandedInner.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenericResourceExpandedInner;
+        });
     }
 }

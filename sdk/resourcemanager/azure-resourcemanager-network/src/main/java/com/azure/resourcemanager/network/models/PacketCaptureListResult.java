@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of packet capture sessions.
  */
 @Fluent
-public final class PacketCaptureListResult {
+public final class PacketCaptureListResult implements JsonSerializable<PacketCaptureListResult> {
     /*
      * Information about packet capture sessions.
      */
-    @JsonProperty(value = "value")
     private List<PacketCaptureResultInner> value;
 
     /**
@@ -55,5 +58,43 @@ public final class PacketCaptureListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureListResult.
+     */
+    public static PacketCaptureListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureListResult deserializedPacketCaptureListResult = new PacketCaptureListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PacketCaptureResultInner> value
+                        = reader.readArray(reader1 -> PacketCaptureResultInner.fromJson(reader1));
+                    deserializedPacketCaptureListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureListResult;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class GatewayProvisioningState extends ExpandableStringEnum<Gateway
      * @param name a name to look for.
      * @return the corresponding GatewayProvisioningState.
      */
-    @JsonCreator
     public static GatewayProvisioningState fromString(String name) {
         return fromString(name, GatewayProvisioningState.class);
     }

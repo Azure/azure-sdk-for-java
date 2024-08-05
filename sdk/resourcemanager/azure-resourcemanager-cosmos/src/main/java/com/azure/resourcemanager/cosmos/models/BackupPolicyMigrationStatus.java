@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
      * @param name a name to look for.
      * @return the corresponding BackupPolicyMigrationStatus.
      */
-    @JsonCreator
     public static BackupPolicyMigrationStatus fromString(String name) {
         return fromString(name, BackupPolicyMigrationStatus.class);
     }

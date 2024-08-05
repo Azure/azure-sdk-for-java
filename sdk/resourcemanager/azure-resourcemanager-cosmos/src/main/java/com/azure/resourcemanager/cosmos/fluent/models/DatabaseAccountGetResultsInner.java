@@ -6,6 +6,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
@@ -28,8 +31,7 @@ import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,26 +43,37 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /*
      * Indicates the type of database account. This can only be set at database account creation.
      */
-    @JsonProperty(value = "kind")
     private DatabaseAccountKind kind;
 
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Properties for the database account.
      */
-    @JsonProperty(value = "properties")
     private DatabaseAccountGetProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of DatabaseAccountGetResultsInner class.
@@ -70,7 +83,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
-     *
+     * 
      * @return the kind value.
      */
     public DatabaseAccountKind kind() {
@@ -79,7 +92,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the kind property: Indicates the type of database account. This can only be set at database account creation.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -90,7 +103,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -99,7 +112,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -110,7 +123,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the innerProperties property: Properties for the database account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseAccountGetProperties innerProperties() {
@@ -119,11 +132,41 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -151,7 +194,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
      * 'DeletionFailed' – the Cosmos DB account deletion failed.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -160,7 +203,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the documentEndpoint property: The connection endpoint for the Cosmos DB database account.
-     *
+     * 
      * @return the documentEndpoint value.
      */
     public String documentEndpoint() {
@@ -170,7 +213,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the databaseAccountOfferType property: The offer type for the Cosmos DB database account. Default value:
      * Standard.
-     *
+     * 
      * @return the databaseAccountOfferType value.
      */
     public DatabaseAccountOfferType databaseAccountOfferType() {
@@ -179,7 +222,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the ipRules property: List of IpRules.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<IpAddressOrRange> ipRules() {
@@ -188,7 +231,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the ipRules property: List of IpRules.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -203,7 +246,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
      * rules.
-     *
+     * 
      * @return the isVirtualNetworkFilterEnabled value.
      */
     public Boolean isVirtualNetworkFilterEnabled() {
@@ -213,7 +256,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
      * rules.
-     *
+     * 
      * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -229,7 +272,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * Get the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
      * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
      * and is chosen based on the failover priorities configured for the account.
-     *
+     * 
      * @return the enableAutomaticFailover value.
      */
     public Boolean enableAutomaticFailover() {
@@ -240,7 +283,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * Set the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
      * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
      * and is chosen based on the failover priorities configured for the account.
-     *
+     * 
      * @param enableAutomaticFailover the enableAutomaticFailover value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -254,7 +297,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the consistencyPolicy property: The consistency policy for the Cosmos DB database account.
-     *
+     * 
      * @return the consistencyPolicy value.
      */
     public ConsistencyPolicy consistencyPolicy() {
@@ -263,7 +306,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the consistencyPolicy property: The consistency policy for the Cosmos DB database account.
-     *
+     * 
      * @param consistencyPolicy the consistencyPolicy value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -277,7 +320,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the capabilities property: List of Cosmos DB capabilities for the account.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<Capability> capabilities() {
@@ -286,7 +329,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the capabilities property: List of Cosmos DB capabilities for the account.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -300,7 +343,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the writeLocations property: An array that contains the write location for the Cosmos DB account.
-     *
+     * 
      * @return the writeLocations value.
      */
     public List<Location> writeLocations() {
@@ -309,7 +352,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the readLocations property: An array that contains of the read locations enabled for the Cosmos DB account.
-     *
+     * 
      * @return the readLocations value.
      */
     public List<Location> readLocations() {
@@ -318,7 +361,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the locations property: An array that contains all of the locations enabled for the Cosmos DB account.
-     *
+     * 
      * @return the locations value.
      */
     public List<Location> locations() {
@@ -327,7 +370,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the failoverPolicies property: An array that contains the regions ordered by their failover priorities.
-     *
+     * 
      * @return the failoverPolicies value.
      */
     public List<FailoverPolicy> failoverPolicies() {
@@ -336,7 +379,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -345,7 +388,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -360,7 +403,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the Cosmos DB
      * account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -369,7 +412,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     *
+     * 
      * @return the enableMultipleWriteLocations value.
      */
     public Boolean enableMultipleWriteLocations() {
@@ -378,7 +421,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     *
+     * 
      * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -392,7 +435,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     *
+     * 
      * @return the enableCassandraConnector value.
      */
     public Boolean enableCassandraConnector() {
@@ -401,7 +444,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     *
+     * 
      * @param enableCassandraConnector the enableCassandraConnector value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -415,7 +458,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     *
+     * 
      * @return the connectorOffer value.
      */
     public ConnectorOffer connectorOffer() {
@@ -424,7 +467,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     *
+     * 
      * @param connectorOffer the connectorOffer value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -439,7 +482,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
      * containers, throughput) via account keys.
-     *
+     * 
      * @return the disableKeyBasedMetadataWriteAccess value.
      */
     public Boolean disableKeyBasedMetadataWriteAccess() {
@@ -449,7 +492,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
      * containers, throughput) via account keys.
-     *
+     * 
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -464,7 +507,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the keyVaultKeyUri property: The URI of the key vault.
-     *
+     * 
      * @return the keyVaultKeyUri value.
      */
     public String keyVaultKeyUri() {
@@ -473,7 +516,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the keyVaultKeyUri property: The URI of the key vault.
-     *
+     * 
      * @param keyVaultKeyUri the keyVaultKeyUri value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -489,7 +532,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
      * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
      * "SystemAssignedIdentity" and more.
-     *
+     * 
      * @return the defaultIdentity value.
      */
     public String defaultIdentity() {
@@ -500,7 +543,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
      * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
      * "SystemAssignedIdentity" and more.
-     *
+     * 
      * @param defaultIdentity the defaultIdentity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -514,7 +557,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -523,7 +566,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -537,7 +580,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     *
+     * 
      * @return the enableFreeTier value.
      */
     public Boolean enableFreeTier() {
@@ -546,7 +589,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     *
+     * 
      * @param enableFreeTier the enableFreeTier value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -560,7 +603,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the apiProperties property: API specific properties.
-     *
+     * 
      * @return the apiProperties value.
      */
     public ApiProperties apiProperties() {
@@ -569,7 +612,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the apiProperties property: API specific properties.
-     *
+     * 
      * @param apiProperties the apiProperties value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -583,7 +626,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     *
+     * 
      * @return the enableAnalyticalStorage value.
      */
     public Boolean enableAnalyticalStorage() {
@@ -592,7 +635,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     *
+     * 
      * @param enableAnalyticalStorage the enableAnalyticalStorage value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -606,7 +649,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
-     *
+     * 
      * @return the analyticalStorageConfiguration value.
      */
     public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
@@ -615,7 +658,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
-     *
+     * 
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -630,7 +673,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the instanceId property: A unique identifier assigned to the database account.
-     *
+     * 
      * @return the instanceId value.
      */
     public String instanceId() {
@@ -639,7 +682,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the createMode property: Enum to indicate the mode of account creation.
-     *
+     * 
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -648,7 +691,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the createMode property: Enum to indicate the mode of account creation.
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -662,7 +705,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the restoreParameters property: Parameters to indicate the information about the restore.
-     *
+     * 
      * @return the restoreParameters value.
      */
     public RestoreParameters restoreParameters() {
@@ -671,7 +714,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the restoreParameters property: Parameters to indicate the information about the restore.
-     *
+     * 
      * @param restoreParameters the restoreParameters value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -685,7 +728,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
-     *
+     * 
      * @return the backupPolicy value.
      */
     public BackupPolicy backupPolicy() {
@@ -694,7 +737,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the backupPolicy property: The object representing the policy for taking backups on an account.
-     *
+     * 
      * @param backupPolicy the backupPolicy value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -708,7 +751,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the cors property: The CORS policy for the Cosmos DB database account.
-     *
+     * 
      * @return the cors value.
      */
     public List<CorsPolicy> cors() {
@@ -717,7 +760,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the cors property: The CORS policy for the Cosmos DB database account.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -731,7 +774,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     *
+     * 
      * @return the networkAclBypass value.
      */
     public NetworkAclBypass networkAclBypass() {
@@ -740,7 +783,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     *
+     * 
      * @param networkAclBypass the networkAclBypass value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -755,7 +798,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
      * the Cosmos DB account.
-     *
+     * 
      * @return the networkAclBypassResourceIds value.
      */
     public List<String> networkAclBypassResourceIds() {
@@ -765,7 +808,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
      * the Cosmos DB account.
-     *
+     * 
      * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -780,7 +823,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -790,7 +833,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -805,7 +848,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the capacity property: The object that represents all properties related to capacity enforcement on an
      * account.
-     *
+     * 
      * @return the capacity value.
      */
     public Capacity capacity() {
@@ -815,7 +858,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the capacity property: The object that represents all properties related to capacity enforcement on an
      * account.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -830,7 +873,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the keysMetadata property: The object that represents the metadata for the Account Keys of the Cosmos DB
      * account.
-     *
+     * 
      * @return the keysMetadata value.
      */
     public DatabaseAccountKeysMetadata keysMetadata() {
@@ -840,7 +883,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
      * account.
-     *
+     * 
      * @return the enablePartitionMerge value.
      */
     public Boolean enablePartitionMerge() {
@@ -850,7 +893,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
      * account.
-     *
+     * 
      * @param enablePartitionMerge the enablePartitionMerge value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -865,7 +908,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
      * Cassandra and Mongo APIs only work with Tls 1.2.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersion minimalTlsVersion() {
@@ -875,7 +918,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
      * Cassandra and Mongo APIs only work with Tls 1.2.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -890,7 +933,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
-     *
+     * 
      * @return the enableBurstCapacity value.
      */
     public Boolean enableBurstCapacity() {
@@ -900,7 +943,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
-     *
+     * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -915,7 +958,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
-     *
+     * 
      * @return the customerManagedKeyStatus value.
      */
     public String customerManagedKeyStatus() {
@@ -925,7 +968,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     /**
      * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
-     *
+     * 
      * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
@@ -939,7 +982,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -951,5 +994,66 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseAccountGetResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseAccountGetResultsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseAccountGetResultsInner.
+     */
+    public static DatabaseAccountGetResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseAccountGetResultsInner deserializedDatabaseAccountGetResultsInner
+                = new DatabaseAccountGetResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDatabaseAccountGetResultsInner.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.kind
+                        = DatabaseAccountKind.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.innerProperties
+                        = DatabaseAccountGetProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseAccountGetResultsInner;
+        });
     }
 }

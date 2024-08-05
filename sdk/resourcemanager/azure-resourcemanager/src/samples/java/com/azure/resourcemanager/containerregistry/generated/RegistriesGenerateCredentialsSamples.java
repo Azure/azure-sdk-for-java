@@ -22,9 +22,12 @@ public final class RegistriesGenerateCredentialsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryGenerateCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries()
-            .generateCredentials(
-                "myResourceGroup", "myRegistry", new GenerateCredentialsParameters().withTokenId("fakeTokenPlaceholder")
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .generateCredentials("myResourceGroup", "myRegistry",
+                new GenerateCredentialsParameters().withTokenId("fakeTokenPlaceholder")
                     .withExpiry(OffsetDateTime.parse("2020-12-31T15:59:59.0707808Z")),
                 com.azure.core.util.Context.NONE);
     }

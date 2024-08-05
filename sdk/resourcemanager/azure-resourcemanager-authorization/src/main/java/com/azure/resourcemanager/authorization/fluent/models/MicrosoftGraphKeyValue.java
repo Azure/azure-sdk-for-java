@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** keyValue. */
+/**
+ * keyValue.
+ */
 @Fluent
-public final class MicrosoftGraphKeyValue {
+public final class MicrosoftGraphKeyValue implements JsonSerializable<MicrosoftGraphKeyValue> {
     /*
      * Key for the key-value pair.
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * Value for the key-value pair.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * keyValue
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphKeyValue class. */
+    /**
+     * Creates an instance of MicrosoftGraphKeyValue class.
+     */
     public MicrosoftGraphKeyValue() {
     }
 
     /**
      * Get the key property: Key for the key-value pair.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphKeyValue {
 
     /**
      * Set the key property: Key for the key-value pair.
-     *
+     * 
      * @param key the key value to set.
      * @return the MicrosoftGraphKeyValue object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphKeyValue {
 
     /**
      * Get the value property: Value for the key-value pair.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphKeyValue {
 
     /**
      * Set the value property: Value for the key-value pair.
-     *
+     * 
      * @param value the value value to set.
      * @return the MicrosoftGraphKeyValue object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphKeyValue {
 
     /**
      * Get the additionalProperties property: keyValue.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: keyValue.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphKeyValue object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphKeyValue {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("value", this.value);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphKeyValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphKeyValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphKeyValue.
+     */
+    public static MicrosoftGraphKeyValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphKeyValue deserializedMicrosoftGraphKeyValue = new MicrosoftGraphKeyValue();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyValue.key = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyValue.value = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphKeyValue.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphKeyValue;
+        });
     }
 }

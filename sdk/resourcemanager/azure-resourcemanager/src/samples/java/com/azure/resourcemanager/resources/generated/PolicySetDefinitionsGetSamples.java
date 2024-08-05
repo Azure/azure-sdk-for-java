@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicySetDefinition.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * getPolicySetDefinition.json
      */
     /**
      * Sample code: Retrieve a policy set definition.

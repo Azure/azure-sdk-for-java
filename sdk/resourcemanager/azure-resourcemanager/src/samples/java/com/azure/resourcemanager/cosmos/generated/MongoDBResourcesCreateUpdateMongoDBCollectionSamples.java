@@ -10,7 +10,6 @@ import com.azure.resourcemanager.cosmos.models.MongoDBCollectionResource;
 import com.azure.resourcemanager.cosmos.models.MongoIndex;
 import com.azure.resourcemanager.cosmos.models.MongoIndexKeys;
 import com.azure.resourcemanager.cosmos.models.MongoIndexOptions;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +19,12 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMongoDBCollectionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBMongoDBCollectionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBCollectionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

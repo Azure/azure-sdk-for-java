@@ -9,13 +9,13 @@
     "dir": "azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2023-12 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider"
+    "args": "--tag=package-2023-12 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --stream-style-serialization=false"
   },
   "appservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider --stream-style-serialization=false",
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
@@ -28,25 +28,25 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=profile-hybrid-2020-09-01"
+    "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false"
   },
   "cdn": {
     "dir": "azure-resourcemanager-cdn",
     "source": "specification/cdn/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cdn",
-    "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource"
+    "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --stream-style-serialization=false"
   },
   "compute": {
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=package-2024-03-02 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --remove-inner=StorageProfile"
+    "args": "--tag=package-2024-03-02 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --remove-inner=StorageProfile --stream-style-serialization=false"
   },
   "compute-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=profile-hybrid-2020-09-01 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+    "args": "--tag=profile-hybrid-2020-09-01 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --stream-style-serialization=false"
   },
   "containerinstance": {
     "dir": "azure-resourcemanager-containerinstance",
@@ -64,7 +64,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--tag=package-2019-05"
+    "args": "--tag=package-2019-05 --stream-style-serialization=false"
   },
   "containerservice": {
     "dir": "azure-resourcemanager-containerservice",
@@ -76,7 +76,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=profile-hybrid-2020-09-01 --preserve-model=ContainerServiceVMSizeTypes"
+    "args": "--tag=profile-hybrid-2020-09-01 --preserve-model=ContainerServiceVMSizeTypes --stream-style-serialization=false"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
@@ -100,7 +100,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
-    "args": "--tag=package-2016-04"
+    "args": "--tag=package-2016-04 --stream-style-serialization=false"
   },
   "eventhubs": {
     "dir": "azure-resourcemanager-eventhubs",
@@ -112,7 +112,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
-    "args": "--tag=profile-hybrid-2020-09-01"
+    "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false"
   },
   "features": {
     "dir": "azure-resourcemanager-resources",
@@ -137,7 +137,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
     "source": "specification/graphrbac/data-plane/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=1.6"
+    "args": "--tag=1.6 --stream-style-serialization=false"
   },
   "keyvault": {
     "dir": "azure-resourcemanager-keyvault",
@@ -150,7 +150,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
-    "args": "--tag=package-2019-09"
+    "args": "--tag=package-2019-09 --stream-style-serialization=false"
   },
   "locks": {
     "dir": "azure-resourcemanager-resources",
@@ -162,20 +162,20 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-locks-2016-09"
+    "args": "--tag=package-locks-2016-09 --stream-style-serialization=false"
   },
   "monitor": {
     "dir": "azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit",
+    "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit --stream-style-serialization=false",
     "note": "Use commit c0f92082a788895368a738a9200e24971157d7ca, and remove Swagger from Microsoft.Monitor"
   },
   "monitor-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
+    "args": "--tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit --stream-style-serialization=false"
   },
   "network": {
     "dir": "azure-resourcemanager-network",
@@ -188,7 +188,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig"
+    "args": "--tag=profile-hybrid-2020-09-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture --remove-inner=Ipv6ExpressRouteCircuitPeeringConfig --stream-style-serialization=false"
   },
   "policy": {
     "dir": "azure-resourcemanager-resources",
@@ -201,7 +201,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2016-12"
+    "args": "--tag=package-policy-2016-12 --stream-style-serialization=false"
   },
   "privatedns": {
     "dir": "azure-resourcemanager-privatedns",
@@ -213,14 +213,14 @@
     "dir": "azure-resourcemanager-redis",
     "source": "specification/redis/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.redis",
-    "args": "--tag=package-2024-03 --rename-model=ErrorDetailAutoGenerated:ErrorDetail,RedisCommonPropertiesRedisConfiguration:RedisConfiguration --remove-inner=OperationStatusResult",
+    "args": "--tag=package-2024-03 --rename-model=ErrorDetailAutoGenerated:ErrorDetail,RedisCommonPropertiesRedisConfiguration:RedisConfiguration --remove-inner=OperationStatusResult --stream-style-serialization=false",
     "note": "run RedisConfigurationTests.generateConfigurationUtils and copy output code snippet to ConfigurationUtils"
   },
   "relay": {
     "dir": "azure-resourcemanager-relay",
     "source": "specification/relay/resource-manager/readme.md",
     "package": "com.microsoft.azure.resourcemanager.relay",
-    "args": "--tag=package-2017-04"
+    "args": "--tag=package-2017-04 --stream-style-serialization=false"
   },
   "resources": {
     "dir": "azure-resourcemanager-resources",
@@ -232,7 +232,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2019-10 --add-inner=Deployment"
+    "args": "--tag=package-resources-2019-10 --add-inner=Deployment --stream-style-serialization=false"
   },
   "search": {
     "dir": "azure-resourcemanager-search",
@@ -244,14 +244,14 @@
     "dir": "azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
-    "args": "--tag=package-2021-11",
+    "args": "--tag=package-2021-11 --stream-style-serialization=false",
     "note": "1. Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInnerProperties', 'SBTopicInnerProperties', 'SBTopicInnerProperties'; 2. Change parent class of class 'SBTopicInner', 'SBQueueInner' and 'SBSubscriptionInner' to 'Resource', not 'ProxyResource'"
   },
   "sql": {
     "dir": "azure-resourcemanager-sql",
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
-    "args": "--tag=package-2021-11 --modelerfour.lenient-model-deduplication=true --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState",
+    "args": "--tag=package-2021-11 --modelerfour.lenient-model-deduplication=true --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState --stream-style-serialization=false",
     "note": "Add '\"x-ms-long-running-operation\": true' to TransparentDataEncryptions_CreateOrUpdate in specs file TransparentDataEncryptions.json"
   },
   "storage": {
@@ -264,7 +264,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=profile-hybrid-2020-09-01"
+    "args": "--tag=profile-hybrid-2020-09-01 --stream-style-serialization=false"
   },
   "subscriptions": {
     "dir": "azure-resourcemanager-resources",
@@ -276,7 +276,7 @@
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2016-06 --name-for-ungrouped-operations=ResourceName"
+    "args": "--tag=package-subscriptions-2016-06 --name-for-ungrouped-operations=ResourceName --stream-style-serialization=false"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",

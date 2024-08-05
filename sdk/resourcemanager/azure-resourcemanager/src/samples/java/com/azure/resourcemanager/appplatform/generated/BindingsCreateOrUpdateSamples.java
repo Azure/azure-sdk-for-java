@@ -23,12 +23,16 @@ public final class BindingsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void bindingsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBindings().createOrUpdate("myResourceGroup", "myservice",
-            "myapp", "mybinding",
-            new BindingResourceInner().withProperties(new BindingResourceProperties().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/my-cosmosdb-1")
-                .withKey("fakeTokenPlaceholder").withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBindings()
+            .createOrUpdate("myResourceGroup", "myservice", "myapp", "mybinding",
+                new BindingResourceInner().withProperties(new BindingResourceProperties().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/my-cosmosdb-1")
+                    .withKey("fakeTokenPlaceholder")
+                    .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cosmos.generated;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseResource;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +15,12 @@ import java.util.Map;
  */
 public final class GremlinResourcesCreateUpdateGremlinDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGremlinDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBGremlinDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinDatabaseCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

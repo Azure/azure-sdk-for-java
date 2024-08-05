@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource of an Azure Cosmos DB Gremlin graph event.
  */
 @Immutable
-public final class RestorableGremlinGraphPropertiesResource {
+public final class RestorableGremlinGraphPropertiesResource
+    implements JsonSerializable<RestorableGremlinGraphPropertiesResource> {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * The operation type of this graph event.
      */
-    @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private OperationType operationType;
 
     /*
      * A state of this graph to identify if this graph is restorable in same account.
      */
-    @JsonProperty(value = "canUndelete", access = JsonProperty.Access.WRITE_ONLY)
     private String canUndelete;
 
     /*
      * The reason why this graph can not be restored in same account.
      */
-    @JsonProperty(value = "canUndeleteReason", access = JsonProperty.Access.WRITE_ONLY)
     private String canUndeleteReason;
 
     /*
      * The time when this graph event happened.
      */
-    @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String eventTimestamp;
 
     /*
      * The name of this Gremlin graph.
      */
-    @JsonProperty(value = "ownerId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerId;
 
     /*
      * The resource ID of this Gremlin graph.
      */
-    @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
     /**
@@ -129,5 +127,54 @@ public final class RestorableGremlinGraphPropertiesResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableGremlinGraphPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableGremlinGraphPropertiesResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableGremlinGraphPropertiesResource.
+     */
+    public static RestorableGremlinGraphPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableGremlinGraphPropertiesResource deserializedRestorableGremlinGraphPropertiesResource
+                = new RestorableGremlinGraphPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_rid".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.rid = reader.getString();
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.operationType
+                        = OperationType.fromString(reader.getString());
+                } else if ("canUndelete".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.canUndelete = reader.getString();
+                } else if ("canUndeleteReason".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.canUndeleteReason = reader.getString();
+                } else if ("eventTimestamp".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.eventTimestamp = reader.getString();
+                } else if ("ownerId".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.ownerId = reader.getString();
+                } else if ("ownerResourceId".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphPropertiesResource.ownerResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableGremlinGraphPropertiesResource;
+        });
     }
 }

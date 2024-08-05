@@ -1,5 +1,22 @@
 # Release History
 
+## 1.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added a new service API support: `2023-11-01`.
+- Added a new method `listLabels` to support listing labels capabilities.
+- Added new class `SettingLabel` and `SettingLabelSelector`, and a new enum `SettingLabelFields`.
+- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
+- Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+
 ## 1.6.3 (2024-07-26)
 
 ### Bugs Fixed

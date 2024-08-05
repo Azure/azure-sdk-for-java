@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A value that indicates whether capture description is enabled.
  */
 @Fluent
-public final class CaptureIdentity {
+public final class CaptureIdentity implements JsonSerializable<CaptureIdentity> {
     /*
      * Type of Azure Active Directory Managed Identity.
      */
-    @JsonProperty(value = "type")
     private CaptureIdentityType type;
 
     /*
      * ARM ID of Managed User Identity. This property is required is the type is UserAssignedIdentity. If type is
      * SystemAssigned, then the System Assigned Identity Associated with the namespace will be used.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
     /**
@@ -81,5 +83,44 @@ public final class CaptureIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CaptureIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CaptureIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CaptureIdentity.
+     */
+    public static CaptureIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CaptureIdentity deserializedCaptureIdentity = new CaptureIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCaptureIdentity.type = CaptureIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedCaptureIdentity.userAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCaptureIdentity;
+        });
     }
 }

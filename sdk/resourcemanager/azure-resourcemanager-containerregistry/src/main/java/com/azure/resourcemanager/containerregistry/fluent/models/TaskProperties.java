@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
@@ -12,84 +17,72 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The properties of a task.
  */
 @Fluent
-public final class TaskProperties {
+public final class TaskProperties implements JsonSerializable<TaskProperties> {
     /*
      * The provisioning state of the task.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The creation date of task.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The current status of task.
      */
-    @JsonProperty(value = "status")
     private TaskStatus status;
 
     /*
      * The platform properties against which the run has to happen.
      */
-    @JsonProperty(value = "platform")
     private PlatformProperties platform;
 
     /*
      * The machine configuration of the run agent.
      */
-    @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
 
     /*
      * The dedicated agent pool for the task.
      */
-    @JsonProperty(value = "agentPoolName")
     private String agentPoolName;
 
     /*
      * Run timeout in seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * The properties of a task step.
      */
-    @JsonProperty(value = "step")
     private TaskStepProperties step;
 
     /*
      * The properties that describe all triggers for the task.
      */
-    @JsonProperty(value = "trigger")
     private TriggerProperties trigger;
 
     /*
      * The properties that describes a set of credentials that will be used when this run is invoked.
      */
-    @JsonProperty(value = "credentials")
     private Credentials credentials;
 
     /*
      * The template that describes the repository and tag information for run log artifact.
      */
-    @JsonProperty(value = "logTemplate")
     private String logTemplate;
 
     /*
      * The value of this property indicates whether the task resource is system task or not.
      */
-    @JsonProperty(value = "isSystemTask")
     private Boolean isSystemTask;
 
     /**
@@ -343,5 +336,73 @@ public final class TaskProperties {
         if (credentials() != null) {
             credentials().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeJsonField("agentConfiguration", this.agentConfiguration);
+        jsonWriter.writeStringField("agentPoolName", this.agentPoolName);
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeJsonField("step", this.step);
+        jsonWriter.writeJsonField("trigger", this.trigger);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        jsonWriter.writeStringField("logTemplate", this.logTemplate);
+        jsonWriter.writeBooleanField("isSystemTask", this.isSystemTask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskProperties.
+     */
+    public static TaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskProperties deserializedTaskProperties = new TaskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedTaskProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedTaskProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedTaskProperties.status = TaskStatus.fromString(reader.getString());
+                } else if ("platform".equals(fieldName)) {
+                    deserializedTaskProperties.platform = PlatformProperties.fromJson(reader);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedTaskProperties.agentConfiguration = AgentProperties.fromJson(reader);
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedTaskProperties.agentPoolName = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedTaskProperties.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("step".equals(fieldName)) {
+                    deserializedTaskProperties.step = TaskStepProperties.fromJson(reader);
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedTaskProperties.trigger = TriggerProperties.fromJson(reader);
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedTaskProperties.credentials = Credentials.fromJson(reader);
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedTaskProperties.logTemplate = reader.getString();
+                } else if ("isSystemTask".equals(fieldName)) {
+                    deserializedTaskProperties.isSystemTask = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskProperties;
+        });
     }
 }

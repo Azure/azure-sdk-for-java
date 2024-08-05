@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
 import com.azure.resourcemanager.storage.models.LeaseState;
@@ -12,8 +17,7 @@ import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.RootSquashType;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
 import com.azure.resourcemanager.storage.models.SignedIdentifier;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -22,117 +26,98 @@ import java.util.Map;
  * The properties of the file share.
  */
 @Fluent
-public final class FileShareProperties {
+public final class FileShareProperties implements JsonSerializable<FileShareProperties> {
     /*
      * Returns the date and time the share was last modified.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * A name-value pair to associate with the share as metadata.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For
      * Large File Shares, the maximum size is 102400.
      */
-    @JsonProperty(value = "shareQuota")
     private Integer shareQuota;
 
     /*
      * The authentication protocol that is used for the file share. Can only be specified when creating a share.
      */
-    @JsonProperty(value = "enabledProtocols")
     private EnabledProtocols enabledProtocols;
 
     /*
      * The property is for NFS share only. The default is NoRootSquash.
      */
-    @JsonProperty(value = "rootSquash")
     private RootSquashType rootSquash;
 
     /*
      * The version of the share.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Indicates whether the share was deleted.
      */
-    @JsonProperty(value = "deleted", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean deleted;
 
     /*
      * The deleted time if the share was deleted.
      */
-    @JsonProperty(value = "deletedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletedTime;
 
     /*
      * Remaining retention days for share that was soft deleted.
      */
-    @JsonProperty(value = "remainingRetentionDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer remainingRetentionDays;
 
     /*
      * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool.
      * FileStorage account can choose Premium.
      */
-    @JsonProperty(value = "accessTier")
     private ShareAccessTier accessTier;
 
     /*
      * Indicates the last modification time for share access tier.
      */
-    @JsonProperty(value = "accessTierChangeTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime accessTierChangeTime;
 
     /*
      * Indicates if there is a pending transition for access tier.
      */
-    @JsonProperty(value = "accessTierStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String accessTierStatus;
 
     /*
      * The approximate size of the data stored on the share. Note that this value may not include all recently created
      * or recently resized files.
      */
-    @JsonProperty(value = "shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareUsageBytes;
 
     /*
      * The lease status of the share.
      */
-    @JsonProperty(value = "leaseStatus", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseStatus leaseStatus;
 
     /*
      * Lease state of the share.
      */
-    @JsonProperty(value = "leaseState", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseState leaseState;
 
     /*
      * Specifies whether the lease on a share is of infinite or fixed duration, only when the share is leased.
      */
-    @JsonProperty(value = "leaseDuration", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseDuration leaseDuration;
 
     /*
      * List of stored access policies specified on the share.
      */
-    @JsonProperty(value = "signedIdentifiers")
     private List<SignedIdentifier> signedIdentifiers;
 
     /*
      * Creation time of share snapshot returned in the response of list shares with expand param "snapshots".
      */
-    @JsonProperty(value = "snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime snapshotTime;
 
     /**
@@ -387,5 +372,89 @@ public final class FileShareProperties {
         if (signedIdentifiers() != null) {
             signedIdentifiers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("shareQuota", this.shareQuota);
+        jsonWriter.writeStringField("enabledProtocols",
+            this.enabledProtocols == null ? null : this.enabledProtocols.toString());
+        jsonWriter.writeStringField("rootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
+        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeArrayField("signedIdentifiers", this.signedIdentifiers,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileShareProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileShareProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileShareProperties.
+     */
+    public static FileShareProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileShareProperties deserializedFileShareProperties = new FileShareProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedFileShareProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFileShareProperties.metadata = metadata;
+                } else if ("shareQuota".equals(fieldName)) {
+                    deserializedFileShareProperties.shareQuota = reader.getNullable(JsonReader::getInt);
+                } else if ("enabledProtocols".equals(fieldName)) {
+                    deserializedFileShareProperties.enabledProtocols = EnabledProtocols.fromString(reader.getString());
+                } else if ("rootSquash".equals(fieldName)) {
+                    deserializedFileShareProperties.rootSquash = RootSquashType.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedFileShareProperties.version = reader.getString();
+                } else if ("deleted".equals(fieldName)) {
+                    deserializedFileShareProperties.deleted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deletedTime".equals(fieldName)) {
+                    deserializedFileShareProperties.deletedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("remainingRetentionDays".equals(fieldName)) {
+                    deserializedFileShareProperties.remainingRetentionDays = reader.getNullable(JsonReader::getInt);
+                } else if ("accessTier".equals(fieldName)) {
+                    deserializedFileShareProperties.accessTier = ShareAccessTier.fromString(reader.getString());
+                } else if ("accessTierChangeTime".equals(fieldName)) {
+                    deserializedFileShareProperties.accessTierChangeTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("accessTierStatus".equals(fieldName)) {
+                    deserializedFileShareProperties.accessTierStatus = reader.getString();
+                } else if ("shareUsageBytes".equals(fieldName)) {
+                    deserializedFileShareProperties.shareUsageBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("leaseStatus".equals(fieldName)) {
+                    deserializedFileShareProperties.leaseStatus = LeaseStatus.fromString(reader.getString());
+                } else if ("leaseState".equals(fieldName)) {
+                    deserializedFileShareProperties.leaseState = LeaseState.fromString(reader.getString());
+                } else if ("leaseDuration".equals(fieldName)) {
+                    deserializedFileShareProperties.leaseDuration = LeaseDuration.fromString(reader.getString());
+                } else if ("signedIdentifiers".equals(fieldName)) {
+                    List<SignedIdentifier> signedIdentifiers
+                        = reader.readArray(reader1 -> SignedIdentifier.fromJson(reader1));
+                    deserializedFileShareProperties.signedIdentifiers = signedIdentifiers;
+                } else if ("snapshotTime".equals(fieldName)) {
+                    deserializedFileShareProperties.snapshotTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileShareProperties;
+        });
     }
 }

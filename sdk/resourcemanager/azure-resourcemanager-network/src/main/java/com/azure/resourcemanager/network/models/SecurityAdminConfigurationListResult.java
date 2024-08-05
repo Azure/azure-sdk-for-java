@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.SecurityAdminConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of network manager security admin configurations.
  */
 @Fluent
-public final class SecurityAdminConfigurationListResult {
+public final class SecurityAdminConfigurationListResult
+    implements JsonSerializable<SecurityAdminConfigurationListResult> {
     /*
      * Gets a page of security admin configurations
      */
-    @JsonProperty(value = "value")
     private List<SecurityAdminConfigurationInner> value;
 
     /*
      * Gets the URL to get the next page of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +84,47 @@ public final class SecurityAdminConfigurationListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAdminConfigurationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAdminConfigurationListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityAdminConfigurationListResult.
+     */
+    public static SecurityAdminConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAdminConfigurationListResult deserializedSecurityAdminConfigurationListResult
+                = new SecurityAdminConfigurationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SecurityAdminConfigurationInner> value
+                        = reader.readArray(reader1 -> SecurityAdminConfigurationInner.fromJson(reader1));
+                    deserializedSecurityAdminConfigurationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSecurityAdminConfigurationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAdminConfigurationListResult;
+        });
     }
 }

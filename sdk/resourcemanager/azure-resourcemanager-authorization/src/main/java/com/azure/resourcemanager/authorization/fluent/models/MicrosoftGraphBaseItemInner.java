@@ -5,99 +5,90 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** baseItem. */
+/**
+ * baseItem.
+ */
 @Fluent
 public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     /*
      * identitySet
      */
-    @JsonProperty(value = "createdBy")
     private MicrosoftGraphIdentitySet createdBy;
 
     /*
      * Date and time of item creation. Read-only.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * Provides a user-visible description of the item. Optional.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * ETag for the item. Read-only.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "lastModifiedBy")
     private MicrosoftGraphIdentitySet lastModifiedBy;
 
     /*
      * Date and time the item was last modified. Read-only.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * The name of the item. Read-write.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * itemReference
      */
-    @JsonProperty(value = "parentReference")
     private MicrosoftGraphItemReference parentReference;
 
     /*
      * URL that displays the resource in the browser. Read-only.
      */
-    @JsonProperty(value = "webUrl")
     private String webUrl;
 
     /*
-     * user
-     *
      * Represents an Azure Active Directory user object.
      */
-    @JsonProperty(value = "createdByUser")
     private MicrosoftGraphUserInner createdByUser;
 
     /*
-     * user
-     *
      * Represents an Azure Active Directory user object.
      */
-    @JsonProperty(value = "lastModifiedByUser")
     private MicrosoftGraphUserInner lastModifiedByUser;
 
     /*
      * baseItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphBaseItemInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphBaseItemInner class.
+     */
     public MicrosoftGraphBaseItemInner() {
     }
 
     /**
      * Get the createdBy property: identitySet.
-     *
+     * 
      * @return the createdBy value.
      */
     public MicrosoftGraphIdentitySet createdBy() {
@@ -106,7 +97,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the createdBy property: identitySet.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -117,7 +108,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the createdDateTime property: Date and time of item creation. Read-only.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -126,7 +117,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the createdDateTime property: Date and time of item creation. Read-only.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -137,7 +128,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the description property: Provides a user-visible description of the item. Optional.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -146,7 +137,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the description property: Provides a user-visible description of the item. Optional.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -157,7 +148,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the etag property: ETag for the item. Read-only.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -166,7 +157,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the etag property: ETag for the item. Read-only.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -177,7 +168,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the lastModifiedBy property: identitySet.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public MicrosoftGraphIdentitySet lastModifiedBy() {
@@ -186,7 +177,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedBy property: identitySet.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -197,7 +188,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the lastModifiedDateTime property: Date and time the item was last modified. Read-only.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -206,7 +197,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedDateTime property: Date and time the item was last modified. Read-only.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -217,7 +208,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: The name of the item. Read-write.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -226,7 +217,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: The name of the item. Read-write.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -237,7 +228,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the parentReference property: itemReference.
-     *
+     * 
      * @return the parentReference value.
      */
     public MicrosoftGraphItemReference parentReference() {
@@ -246,7 +237,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the parentReference property: itemReference.
-     *
+     * 
      * @param parentReference the parentReference value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -257,7 +248,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the webUrl property: URL that displays the resource in the browser. Read-only.
-     *
+     * 
      * @return the webUrl value.
      */
     public String webUrl() {
@@ -266,7 +257,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Set the webUrl property: URL that displays the resource in the browser. Read-only.
-     *
+     * 
      * @param webUrl the webUrl value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -276,10 +267,8 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the createdByUser property: user
-     *
-     * <p>Represents an Azure Active Directory user object.
-     *
+     * Get the createdByUser property: Represents an Azure Active Directory user object.
+     * 
      * @return the createdByUser value.
      */
     public MicrosoftGraphUserInner createdByUser() {
@@ -287,10 +276,8 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the createdByUser property: user
-     *
-     * <p>Represents an Azure Active Directory user object.
-     *
+     * Set the createdByUser property: Represents an Azure Active Directory user object.
+     * 
      * @param createdByUser the createdByUser value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -300,10 +287,8 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the lastModifiedByUser property: user
-     *
-     * <p>Represents an Azure Active Directory user object.
-     *
+     * Get the lastModifiedByUser property: Represents an Azure Active Directory user object.
+     * 
      * @return the lastModifiedByUser value.
      */
     public MicrosoftGraphUserInner lastModifiedByUser() {
@@ -311,10 +296,8 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the lastModifiedByUser property: user
-     *
-     * <p>Represents an Azure Active Directory user object.
-     *
+     * Set the lastModifiedByUser property: Represents an Azure Active Directory user object.
+     * 
      * @param lastModifiedByUser the lastModifiedByUser value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -325,17 +308,16 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: baseItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: baseItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
      */
@@ -344,15 +326,9 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphBaseItemInner withId(String id) {
         super.withId(id);
@@ -361,7 +337,7 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -382,5 +358,93 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
         if (lastModifiedByUser() != null) {
             lastModifiedByUser().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("eTag", this.etag);
+        jsonWriter.writeJsonField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("parentReference", this.parentReference);
+        jsonWriter.writeStringField("webUrl", this.webUrl);
+        jsonWriter.writeJsonField("createdByUser", this.createdByUser);
+        jsonWriter.writeJsonField("lastModifiedByUser", this.lastModifiedByUser);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphBaseItemInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphBaseItemInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphBaseItemInner.
+     */
+    public static MicrosoftGraphBaseItemInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphBaseItemInner deserializedMicrosoftGraphBaseItemInner = new MicrosoftGraphBaseItemInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.withId(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.createdBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.description = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.etag = reader.getString();
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.lastModifiedBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.name = reader.getString();
+                } else if ("parentReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.parentReference
+                        = MicrosoftGraphItemReference.fromJson(reader);
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.webUrl = reader.getString();
+                } else if ("createdByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.createdByUser = MicrosoftGraphUserInner.fromJson(reader);
+                } else if ("lastModifiedByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemInner.lastModifiedByUser
+                        = MicrosoftGraphUserInner.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphBaseItemInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphBaseItemInner;
+        });
     }
 }

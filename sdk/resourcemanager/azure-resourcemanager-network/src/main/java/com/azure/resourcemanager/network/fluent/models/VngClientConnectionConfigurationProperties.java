@@ -7,32 +7,34 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of VngClientConnectionConfiguration.
  */
 @Fluent
-public final class VngClientConnectionConfigurationProperties {
+public final class VngClientConnectionConfigurationProperties
+    implements JsonSerializable<VngClientConnectionConfigurationProperties> {
     /*
      * The reference to the address space resource which represents Address space for P2S VpnClient.
      */
-    @JsonProperty(value = "vpnClientAddressPool", required = true)
     private AddressSpace vpnClientAddressPool;
 
     /*
      * List of references to virtualNetworkGatewayPolicyGroups
      */
-    @JsonProperty(value = "virtualNetworkGatewayPolicyGroups", required = true)
     private List<SubResource> virtualNetworkGatewayPolicyGroups;
 
     /*
      * The provisioning state of the VngClientConnectionConfiguration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -114,4 +116,53 @@ public final class VngClientConnectionConfigurationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VngClientConnectionConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vpnClientAddressPool", this.vpnClientAddressPool);
+        jsonWriter.writeArrayField("virtualNetworkGatewayPolicyGroups", this.virtualNetworkGatewayPolicyGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VngClientConnectionConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VngClientConnectionConfigurationProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VngClientConnectionConfigurationProperties.
+     */
+    public static VngClientConnectionConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VngClientConnectionConfigurationProperties deserializedVngClientConnectionConfigurationProperties
+                = new VngClientConnectionConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vpnClientAddressPool".equals(fieldName)) {
+                    deserializedVngClientConnectionConfigurationProperties.vpnClientAddressPool
+                        = AddressSpace.fromJson(reader);
+                } else if ("virtualNetworkGatewayPolicyGroups".equals(fieldName)) {
+                    List<SubResource> virtualNetworkGatewayPolicyGroups
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVngClientConnectionConfigurationProperties.virtualNetworkGatewayPolicyGroups
+                        = virtualNetworkGatewayPolicyGroups;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVngClientConnectionConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVngClientConnectionConfigurationProperties;
+        });
+    }
 }

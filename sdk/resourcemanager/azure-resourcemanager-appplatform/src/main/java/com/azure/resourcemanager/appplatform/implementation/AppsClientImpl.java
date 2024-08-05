@@ -1517,8 +1517,10 @@ public final class AppsClientImpl implements AppsClient {
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(
         String resourceGroupName, String serviceName, String appName,
         ActiveDeploymentCollection activeDeploymentCollection, Context context) {
-        return this.beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection,
-            context).getSyncPoller();
+        return this
+            .beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1538,7 +1540,8 @@ public final class AppsClientImpl implements AppsClient {
     public Mono<AppResourceInner> setActiveDeploymentsAsync(String resourceGroupName, String serviceName,
         String appName, ActiveDeploymentCollection activeDeploymentCollection) {
         return beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1761,9 +1764,7 @@ public final class AppsClientImpl implements AppsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1789,9 +1790,7 @@ public final class AppsClientImpl implements AppsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

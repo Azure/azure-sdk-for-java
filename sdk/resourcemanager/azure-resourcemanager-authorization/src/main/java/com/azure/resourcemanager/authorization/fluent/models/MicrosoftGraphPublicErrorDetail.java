@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** publicErrorDetail. */
+/**
+ * publicErrorDetail.
+ */
 @Fluent
-public final class MicrosoftGraphPublicErrorDetail {
+public final class MicrosoftGraphPublicErrorDetail implements JsonSerializable<MicrosoftGraphPublicErrorDetail> {
     /*
      * The code property.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The target property.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * publicErrorDetail
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPublicErrorDetail class. */
+    /**
+     * Creates an instance of MicrosoftGraphPublicErrorDetail class.
+     */
     public MicrosoftGraphPublicErrorDetail() {
     }
 
     /**
      * Get the code property: The code property.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -53,7 +55,7 @@ public final class MicrosoftGraphPublicErrorDetail {
 
     /**
      * Set the code property: The code property.
-     *
+     * 
      * @param code the code value to set.
      * @return the MicrosoftGraphPublicErrorDetail object itself.
      */
@@ -64,7 +66,7 @@ public final class MicrosoftGraphPublicErrorDetail {
 
     /**
      * Get the message property: The message property.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -73,7 +75,7 @@ public final class MicrosoftGraphPublicErrorDetail {
 
     /**
      * Set the message property: The message property.
-     *
+     * 
      * @param message the message value to set.
      * @return the MicrosoftGraphPublicErrorDetail object itself.
      */
@@ -84,7 +86,7 @@ public final class MicrosoftGraphPublicErrorDetail {
 
     /**
      * Get the target property: The target property.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -93,7 +95,7 @@ public final class MicrosoftGraphPublicErrorDetail {
 
     /**
      * Set the target property: The target property.
-     *
+     * 
      * @param target the target value to set.
      * @return the MicrosoftGraphPublicErrorDetail object itself.
      */
@@ -104,17 +106,16 @@ public final class MicrosoftGraphPublicErrorDetail {
 
     /**
      * Get the additionalProperties property: publicErrorDetail.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: publicErrorDetail.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPublicErrorDetail object itself.
      */
@@ -123,19 +124,65 @@ public final class MicrosoftGraphPublicErrorDetail {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPublicErrorDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPublicErrorDetail if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPublicErrorDetail.
+     */
+    public static MicrosoftGraphPublicErrorDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPublicErrorDetail deserializedMicrosoftGraphPublicErrorDetail
+                = new MicrosoftGraphPublicErrorDetail();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicErrorDetail.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicErrorDetail.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicErrorDetail.target = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPublicErrorDetail.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPublicErrorDetail;
+        });
     }
 }

@@ -48,26 +48,29 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedHsmsClient. */
-public final class ManagedHsmsClientImpl
-    implements InnerSupportsGet<ManagedHsmInner>,
-        InnerSupportsListing<ManagedHsmInner>,
-        InnerSupportsDelete<Void>,
-        ManagedHsmsClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedHsmsClient.
+ */
+public final class ManagedHsmsClientImpl implements InnerSupportsGet<ManagedHsmInner>,
+    InnerSupportsListing<ManagedHsmInner>, InnerSupportsDelete<Void>, ManagedHsmsClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedHsmsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KeyVaultManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedHsmsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedHsmsClientImpl(KeyVaultManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ManagedHsmsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ManagedHsmsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -78,192 +81,140 @@ public final class ManagedHsmsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "KeyVaultManagementCl")
     public interface ManagedHsmsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ManagedHsmInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ManagedHsmInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ManagedHsmInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ManagedHsmInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ManagedHsmInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagedHsmInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ManagedHsmListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagedHsmListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/managedHSMs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ManagedHsmListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagedHsmListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedManagedHSMs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<DeletedManagedHsmListResult>> listDeleted(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedManagedHsmListResult>> listDeleted(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<DeletedManagedHsmInner>> getDeleted(
-            @HostParam("$host") String endpoint,
-            @PathParam("name") String name,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedManagedHsmInner>> getDeleted(@HostParam("$host") String endpoint,
+            @PathParam("name") String name, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}/purge")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}/purge")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> purgeDeleted(
-            @HostParam("$host") String endpoint,
-            @PathParam("name") String name,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> purgeDeleted(@HostParam("$host") String endpoint,
+            @PathParam("name") String name, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/checkMhsmNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckMhsmNameAvailabilityResultInner>> checkMhsmNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CheckMhsmNameAvailabilityParameters mhsmName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<ManagedHsmListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<ManagedHsmListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<DeletedManagedHsmListResult>> listDeletedNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -273,10 +224,8 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -285,24 +234,14 @@ public final class ManagedHsmsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -310,17 +249,15 @@ public final class ManagedHsmsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -330,10 +267,8 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -342,21 +277,13 @@ public final class ManagedHsmsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -366,22 +293,16 @@ public final class ManagedHsmsClientImpl
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
+    public PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String name, ManagedHsmInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<ManagedHsmInner, ManagedHsmInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedHsmInner.class,
-                ManagedHsmInner.class,
-                this.client.getContext());
+        return this.client.<ManagedHsmInner, ManagedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedHsmInner.class, ManagedHsmInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -392,20 +313,18 @@ public final class ManagedHsmsClientImpl
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    private PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String name, ManagedHsmInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<ManagedHsmInner, ManagedHsmInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ManagedHsmInner.class, ManagedHsmInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, name, parameters, context);
+        return this.client.<ManagedHsmInner, ManagedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedHsmInner.class, ManagedHsmInner.class, context);
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -415,14 +334,14 @@ public final class ManagedHsmsClientImpl
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
+    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(String resourceGroupName,
+        String name, ManagedHsmInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -433,14 +352,14 @@ public final class ManagedHsmsClientImpl
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(String resourceGroupName,
+        String name, ManagedHsmInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -450,16 +369,15 @@ public final class ManagedHsmsClientImpl
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedHsmInner> createOrUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters)
-            .last()
+    public Mono<ManagedHsmInner> createOrUpdateAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -470,16 +388,15 @@ public final class ManagedHsmsClientImpl
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedHsmInner> createOrUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context)
-            .last()
+    private Mono<ManagedHsmInner> createOrUpdateAsync(String resourceGroupName, String name, ManagedHsmInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -495,7 +412,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -506,31 +423,29 @@ public final class ManagedHsmsClientImpl
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedHsmInner createOrUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    public ManagedHsmInner createOrUpdate(String resourceGroupName, String name, ManagedHsmInner parameters,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, name, parameters, context).block();
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -540,10 +455,8 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -552,24 +465,14 @@ public final class ManagedHsmsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -577,17 +480,15 @@ public final class ManagedHsmsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -597,10 +498,8 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -609,21 +508,13 @@ public final class ManagedHsmsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, name, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -633,22 +524,16 @@ public final class ManagedHsmsClientImpl
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
+    public PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(String resourceGroupName,
+        String name, ManagedHsmInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<ManagedHsmInner, ManagedHsmInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedHsmInner.class,
-                ManagedHsmInner.class,
-                this.client.getContext());
+        return this.client.<ManagedHsmInner, ManagedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedHsmInner.class, ManagedHsmInner.class, this.client.getContext());
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -659,19 +544,17 @@ public final class ManagedHsmsClientImpl
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    private PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(String resourceGroupName,
+        String name, ManagedHsmInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<ManagedHsmInner, ManagedHsmInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ManagedHsmInner.class, ManagedHsmInner.class, context);
+        return this.client.<ManagedHsmInner, ManagedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ManagedHsmInner.class, ManagedHsmInner.class, context);
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -681,14 +564,14 @@ public final class ManagedHsmsClientImpl
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters) {
+    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(String resourceGroupName, String name,
+        ManagedHsmInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -699,14 +582,14 @@ public final class ManagedHsmsClientImpl
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
+    public SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(String resourceGroupName, String name,
+        ManagedHsmInner parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -717,14 +600,13 @@ public final class ManagedHsmsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedHsmInner> updateAsync(String resourceGroupName, String name, ManagedHsmInner parameters) {
-        return beginUpdateAsync(resourceGroupName, name, parameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, name, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -735,16 +617,15 @@ public final class ManagedHsmsClientImpl
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedHsmInner> updateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, name, parameters, context)
-            .last()
+    private Mono<ManagedHsmInner> updateAsync(String resourceGroupName, String name, ManagedHsmInner parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, name, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -760,7 +641,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -777,7 +658,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -788,10 +669,8 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -801,30 +680,19 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -834,13 +702,11 @@ public final class ManagedHsmsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -850,27 +716,18 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -881,15 +738,13 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -899,18 +754,17 @@ public final class ManagedHsmsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -925,7 +779,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -941,7 +795,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -956,7 +810,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -972,7 +826,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,7 +840,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -1001,7 +855,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1012,10 +866,8 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedHsmInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1025,30 +877,19 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @param context The context to associate with this operation.
@@ -1058,13 +899,11 @@ public final class ManagedHsmsClientImpl
      * @return the specified managed HSM Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedHsmInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<ManagedHsmInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1074,27 +913,18 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1110,7 +940,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @param context The context to associate with this operation.
@@ -1120,14 +950,14 @@ public final class ManagedHsmsClientImpl
      * @return the specified managed HSM Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedHsmInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<ManagedHsmInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1143,7 +973,7 @@ public final class ManagedHsmsClientImpl
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1152,53 +982,33 @@ public final class ManagedHsmsClientImpl
      * @return list of managed HSM Pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedHsmInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top) {
+    private Mono<PagedResponse<ManagedHsmInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            top,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ManagedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -1208,50 +1018,33 @@ public final class ManagedHsmsClientImpl
      * @return list of managed HSM Pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedHsmInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top, Context context) {
+    private Mono<PagedResponse<ManagedHsmInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1261,15 +1054,14 @@ public final class ManagedHsmsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listByResourceGroupAsync(String resourceGroupName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1279,15 +1071,14 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -1297,17 +1088,16 @@ public final class ManagedHsmsClientImpl
      * @return list of managed HSM Pools as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedHsmInner> listByResourceGroupAsync(
-        String resourceGroupName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
+    private PagedFlux<ManagedHsmInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1323,7 +1113,7 @@ public final class ManagedHsmsClientImpl
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -1339,7 +1129,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1349,44 +1139,25 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedHsmInner>> listSinglePageAsync(Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            top,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), top, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ManagedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1397,41 +1168,25 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedHsmInner>> listSinglePageAsync(Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1440,13 +1195,13 @@ public final class ManagedHsmsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listAsync(Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed HSM Pools as paginated response with {@link PagedFlux}.
@@ -1454,13 +1209,13 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedHsmInner> listAsync() {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1470,14 +1225,13 @@ public final class ManagedHsmsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagedHsmInner> listAsync(Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed HSM Pools as paginated response with {@link PagedIterable}.
@@ -1490,7 +1244,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1505,109 +1259,76 @@ public final class ManagedHsmsClientImpl
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedManagedHsmInner>> listDeletedSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listDeleted(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DeletedManagedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DeletedManagedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedManagedHsmInner>> listDeletedSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listDeleted(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listDeleted(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deleted managed HSM Pools as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedManagedHsmInner> listDeletedAsync() {
-        return new PagedFlux<>(
-            () -> listDeletedSinglePageAsync(), nextLink -> listDeletedNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listDeletedSinglePageAsync(),
+            nextLink -> listDeletedNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1616,13 +1337,13 @@ public final class ManagedHsmsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedManagedHsmInner> listDeletedAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedSinglePageAsync(context), nextLink -> listDeletedNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listDeletedSinglePageAsync(context),
+            nextLink -> listDeletedNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deleted managed HSM Pools as paginated response with {@link PagedIterable}.
@@ -1634,7 +1355,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1648,7 +1369,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1659,10 +1380,8 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String name, String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
@@ -1671,30 +1390,19 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeleted(
-                            this.client.getEndpoint(),
-                            name,
-                            location,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDeleted(this.client.getEndpoint(), name, location,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -1704,13 +1412,11 @@ public final class ManagedHsmsClientImpl
      * @return the specified deleted managed HSM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(
-        String name, String location, Context context) {
+    private Mono<Response<DeletedManagedHsmInner>> getDeletedWithResponseAsync(String name, String location,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
@@ -1719,27 +1425,18 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDeleted(
-                this.client.getEndpoint(),
-                name,
-                location,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getDeleted(this.client.getEndpoint(), name, location, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1754,7 +1451,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -1770,7 +1467,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1785,7 +1482,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1796,10 +1493,8 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String name, String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
@@ -1808,30 +1503,19 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .purgeDeleted(
-                            this.client.getEndpoint(),
-                            name,
-                            location,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.purgeDeleted(this.client.getEndpoint(), name, location,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -1841,13 +1525,11 @@ public final class ManagedHsmsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(
-        String name, String location, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String name, String location,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
@@ -1856,27 +1538,18 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .purgeDeleted(
-                this.client.getEndpoint(),
-                name,
-                location,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.purgeDeleted(this.client.getEndpoint(), name, location, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1887,15 +1560,13 @@ public final class ManagedHsmsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String name, String location) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(name, location);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -1908,14 +1579,13 @@ public final class ManagedHsmsClientImpl
     private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String name, String location, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(name, location, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1930,7 +1600,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -1946,7 +1616,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1961,7 +1631,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -1977,7 +1647,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1991,7 +1661,7 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -2006,28 +1676,24 @@ public final class ManagedHsmsClientImpl
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckMhsmNameAvailability operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckMhsmNameAvailabilityResultInner>> checkMhsmNameAvailabilityWithResponseAsync(
-        CheckMhsmNameAvailabilityParameters mhsmName) {
+    public Mono<Response<CheckMhsmNameAvailabilityResultInner>>
+        checkMhsmNameAvailabilityWithResponseAsync(CheckMhsmNameAvailabilityParameters mhsmName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (mhsmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mhsmName is required and cannot be null."));
@@ -2036,44 +1702,32 @@ public final class ManagedHsmsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkMhsmNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            mhsmName,
-                            accept,
-                            context))
+            .withContext(context -> service.checkMhsmNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), mhsmName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckMhsmNameAvailability operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckMhsmNameAvailabilityResultInner>> checkMhsmNameAvailabilityWithResponseAsync(
-        CheckMhsmNameAvailabilityParameters mhsmName, Context context) {
+    private Mono<Response<CheckMhsmNameAvailabilityResultInner>>
+        checkMhsmNameAvailabilityWithResponseAsync(CheckMhsmNameAvailabilityParameters mhsmName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (mhsmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mhsmName is required and cannot be null."));
@@ -2082,19 +1736,13 @@ public final class ManagedHsmsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkMhsmNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                mhsmName,
-                accept,
-                context);
+        return service.checkMhsmNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), mhsmName, accept, context);
     }
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2102,14 +1750,14 @@ public final class ManagedHsmsClientImpl
      * @return the CheckMhsmNameAvailability operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckMhsmNameAvailabilityResultInner> checkMhsmNameAvailabilityAsync(
-        CheckMhsmNameAvailabilityParameters mhsmName) {
+    public Mono<CheckMhsmNameAvailabilityResultInner>
+        checkMhsmNameAvailabilityAsync(CheckMhsmNameAvailabilityParameters mhsmName) {
         return checkMhsmNameAvailabilityWithResponseAsync(mhsmName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2118,14 +1766,14 @@ public final class ManagedHsmsClientImpl
      * @return the CheckMhsmNameAvailability operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckMhsmNameAvailabilityResultInner> checkMhsmNameAvailabilityWithResponse(
-        CheckMhsmNameAvailabilityParameters mhsmName, Context context) {
+    public Response<CheckMhsmNameAvailabilityResultInner>
+        checkMhsmNameAvailabilityWithResponse(CheckMhsmNameAvailabilityParameters mhsmName, Context context) {
         return checkMhsmNameAvailabilityWithResponseAsync(mhsmName, context).block();
     }
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2133,16 +1781,15 @@ public final class ManagedHsmsClientImpl
      * @return the CheckMhsmNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckMhsmNameAvailabilityResultInner checkMhsmNameAvailability(
-        CheckMhsmNameAvailabilityParameters mhsmName) {
+    public CheckMhsmNameAvailabilityResultInner
+        checkMhsmNameAvailability(CheckMhsmNameAvailabilityParameters mhsmName) {
         return checkMhsmNameAvailabilityWithResponse(mhsmName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2154,32 +1801,22 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2187,37 +1824,26 @@ public final class ManagedHsmsClientImpl
      * @return list of managed HSM Pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedHsmInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedHsmInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2229,32 +1855,22 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2262,42 +1878,31 @@ public final class ManagedHsmsClientImpl
      * @return list of managed HSM Pools along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedHsmInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedHsmInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedManagedHsmInner>> listDeletedNextSinglePageAsync(String nextLink) {
@@ -2305,62 +1910,42 @@ public final class ManagedHsmsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDeletedNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeletedManagedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DeletedManagedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of deleted managed HSM Pools along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeletedManagedHsmInner>> listDeletedNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeletedManagedHsmInner>> listDeletedNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listDeletedNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listDeletedNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

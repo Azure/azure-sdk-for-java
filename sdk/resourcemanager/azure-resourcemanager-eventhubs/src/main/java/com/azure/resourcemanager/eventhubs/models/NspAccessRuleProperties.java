@@ -5,43 +5,41 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of Access Rule.
  */
 @Fluent
-public final class NspAccessRuleProperties {
+public final class NspAccessRuleProperties implements JsonSerializable<NspAccessRuleProperties> {
     /*
      * Direction of Access Rule
      */
-    @JsonProperty(value = "direction")
     private NspAccessRuleDirection direction;
 
     /*
      * Address prefixes in the CIDR format for inbound rules
      */
-    @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
     /*
      * Subscriptions for inbound rules
      */
-    @JsonProperty(value = "subscriptions")
     private List<NspAccessRulePropertiesSubscriptionsItem> subscriptions;
 
     /*
      * NetworkSecurityPerimeters for inbound rules
      */
-    @JsonProperty(value = "networkSecurityPerimeters", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkSecurityPerimeter> networkSecurityPerimeters;
 
     /*
      * FQDN for outbound rules
      */
-    @JsonProperty(value = "fullyQualifiedDomainNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> fullyQualifiedDomainNames;
 
     /**
@@ -52,7 +50,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Get the direction property: Direction of Access Rule.
-     *
+     * 
      * @return the direction value.
      */
     public NspAccessRuleDirection direction() {
@@ -61,7 +59,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Set the direction property: Direction of Access Rule.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the NspAccessRuleProperties object itself.
      */
@@ -72,7 +70,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Get the addressPrefixes property: Address prefixes in the CIDR format for inbound rules.
-     *
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -81,7 +79,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Set the addressPrefixes property: Address prefixes in the CIDR format for inbound rules.
-     *
+     * 
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the NspAccessRuleProperties object itself.
      */
@@ -92,7 +90,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Get the subscriptions property: Subscriptions for inbound rules.
-     *
+     * 
      * @return the subscriptions value.
      */
     public List<NspAccessRulePropertiesSubscriptionsItem> subscriptions() {
@@ -101,7 +99,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Set the subscriptions property: Subscriptions for inbound rules.
-     *
+     * 
      * @param subscriptions the subscriptions value to set.
      * @return the NspAccessRuleProperties object itself.
      */
@@ -112,7 +110,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Get the networkSecurityPerimeters property: NetworkSecurityPerimeters for inbound rules.
-     *
+     * 
      * @return the networkSecurityPerimeters value.
      */
     public List<NetworkSecurityPerimeter> networkSecurityPerimeters() {
@@ -121,7 +119,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Get the fullyQualifiedDomainNames property: FQDN for outbound rules.
-     *
+     * 
      * @return the fullyQualifiedDomainNames value.
      */
     public List<String> fullyQualifiedDomainNames() {
@@ -130,7 +128,7 @@ public final class NspAccessRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -140,5 +138,59 @@ public final class NspAccessRuleProperties {
         if (networkSecurityPerimeters() != null) {
             networkSecurityPerimeters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subscriptions", this.subscriptions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NspAccessRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NspAccessRuleProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NspAccessRuleProperties.
+     */
+    public static NspAccessRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NspAccessRuleProperties deserializedNspAccessRuleProperties = new NspAccessRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("direction".equals(fieldName)) {
+                    deserializedNspAccessRuleProperties.direction
+                        = NspAccessRuleDirection.fromString(reader.getString());
+                } else if ("addressPrefixes".equals(fieldName)) {
+                    List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNspAccessRuleProperties.addressPrefixes = addressPrefixes;
+                } else if ("subscriptions".equals(fieldName)) {
+                    List<NspAccessRulePropertiesSubscriptionsItem> subscriptions
+                        = reader.readArray(reader1 -> NspAccessRulePropertiesSubscriptionsItem.fromJson(reader1));
+                    deserializedNspAccessRuleProperties.subscriptions = subscriptions;
+                } else if ("networkSecurityPerimeters".equals(fieldName)) {
+                    List<NetworkSecurityPerimeter> networkSecurityPerimeters
+                        = reader.readArray(reader1 -> NetworkSecurityPerimeter.fromJson(reader1));
+                    deserializedNspAccessRuleProperties.networkSecurityPerimeters = networkSecurityPerimeters;
+                } else if ("fullyQualifiedDomainNames".equals(fieldName)) {
+                    List<String> fullyQualifiedDomainNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNspAccessRuleProperties.fullyQualifiedDomainNames = fullyQualifiedDomainNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNspAccessRuleProperties;
+        });
     }
 }

@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Desired managed outbound IPs for the cluster load balancer.
  */
 @Fluent
-public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
+public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs
+    implements JsonSerializable<ManagedClusterLoadBalancerProfileManagedOutboundIPs> {
     /*
      * The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load balancer. Allowed values
      * must be in the range of 1 to 100 (inclusive). The default value is 1.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load balancer. Allowed values
      * must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack and 1 for dual-stack.
      */
-    @JsonProperty(value = "countIPv6")
     private Integer countIPv6;
 
     /**
@@ -84,5 +87,48 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("countIPv6", this.countIPv6);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterLoadBalancerProfileManagedOutboundIPs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterLoadBalancerProfileManagedOutboundIPs if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterLoadBalancerProfileManagedOutboundIPs.
+     */
+    public static ManagedClusterLoadBalancerProfileManagedOutboundIPs fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterLoadBalancerProfileManagedOutboundIPs deserializedManagedClusterLoadBalancerProfileManagedOutboundIPs
+                = new ManagedClusterLoadBalancerProfileManagedOutboundIPs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfileManagedOutboundIPs.count
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("countIPv6".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfileManagedOutboundIPs.countIPv6
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterLoadBalancerProfileManagedOutboundIPs;
+        });
     }
 }

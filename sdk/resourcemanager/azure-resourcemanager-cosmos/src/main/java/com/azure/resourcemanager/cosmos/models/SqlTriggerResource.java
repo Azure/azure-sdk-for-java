@@ -6,35 +6,35 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB SQL trigger resource object.
  */
 @Fluent
-public class SqlTriggerResource {
+public class SqlTriggerResource implements JsonSerializable<SqlTriggerResource> {
     /*
      * Name of the Cosmos DB SQL trigger
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Body of the Trigger
      */
-    @JsonProperty(value = "body")
     private String body;
 
     /*
      * Type of the Trigger
      */
-    @JsonProperty(value = "triggerType")
     private TriggerType triggerType;
 
     /*
      * The operation the trigger is associated with
      */
-    @JsonProperty(value = "triggerOperation")
     private TriggerOperation triggerOperation;
 
     /**
@@ -136,4 +136,51 @@ public class SqlTriggerResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlTriggerResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeStringField("triggerType", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeStringField("triggerOperation",
+            this.triggerOperation == null ? null : this.triggerOperation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlTriggerResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlTriggerResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlTriggerResource.
+     */
+    public static SqlTriggerResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlTriggerResource deserializedSqlTriggerResource = new SqlTriggerResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlTriggerResource.id = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedSqlTriggerResource.body = reader.getString();
+                } else if ("triggerType".equals(fieldName)) {
+                    deserializedSqlTriggerResource.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("triggerOperation".equals(fieldName)) {
+                    deserializedSqlTriggerResource.triggerOperation = TriggerOperation.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlTriggerResource;
+        });
+    }
 }

@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The security context for the container. */
+/**
+ * The security context for the container.
+ */
 @Fluent
-public final class SecurityContextDefinition {
+public final class SecurityContextDefinition implements JsonSerializable<SecurityContextDefinition> {
     /*
      * The flag to determine if the container permissions is elevated to Privileged.
      */
-    @JsonProperty(value = "privileged")
     private Boolean privileged;
 
     /*
      * A boolean value indicating whether the init process can elevate its privileges
      */
-    @JsonProperty(value = "allowPrivilegeEscalation")
     private Boolean allowPrivilegeEscalation;
 
     /*
      * The capabilities to add or drop from a container.
      */
-    @JsonProperty(value = "capabilities")
     private SecurityContextCapabilitiesDefinition capabilities;
 
     /*
      * Sets the User GID for the container.
      */
-    @JsonProperty(value = "runAsGroup")
     private Integer runAsGroup;
 
     /*
      * Sets the User UID for the container.
      */
-    @JsonProperty(value = "runAsUser")
     private Integer runAsUser;
 
     /*
      * a base64 encoded string containing the contents of the JSON in the seccomp profile
      */
-    @JsonProperty(value = "seccompProfile")
     private String seccompProfile;
 
-    /** Creates an instance of SecurityContextDefinition class. */
+    /**
+     * Creates an instance of SecurityContextDefinition class.
+     */
     public SecurityContextDefinition() {
     }
 
     /**
      * Get the privileged property: The flag to determine if the container permissions is elevated to Privileged.
-     *
+     * 
      * @return the privileged value.
      */
     public Boolean privileged() {
@@ -61,7 +63,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Set the privileged property: The flag to determine if the container permissions is elevated to Privileged.
-     *
+     * 
      * @param privileged the privileged value to set.
      * @return the SecurityContextDefinition object itself.
      */
@@ -73,7 +75,7 @@ public final class SecurityContextDefinition {
     /**
      * Get the allowPrivilegeEscalation property: A boolean value indicating whether the init process can elevate its
      * privileges.
-     *
+     * 
      * @return the allowPrivilegeEscalation value.
      */
     public Boolean allowPrivilegeEscalation() {
@@ -83,7 +85,7 @@ public final class SecurityContextDefinition {
     /**
      * Set the allowPrivilegeEscalation property: A boolean value indicating whether the init process can elevate its
      * privileges.
-     *
+     * 
      * @param allowPrivilegeEscalation the allowPrivilegeEscalation value to set.
      * @return the SecurityContextDefinition object itself.
      */
@@ -94,7 +96,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Get the capabilities property: The capabilities to add or drop from a container.
-     *
+     * 
      * @return the capabilities value.
      */
     public SecurityContextCapabilitiesDefinition capabilities() {
@@ -103,7 +105,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Set the capabilities property: The capabilities to add or drop from a container.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the SecurityContextDefinition object itself.
      */
@@ -114,7 +116,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Get the runAsGroup property: Sets the User GID for the container.
-     *
+     * 
      * @return the runAsGroup value.
      */
     public Integer runAsGroup() {
@@ -123,7 +125,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Set the runAsGroup property: Sets the User GID for the container.
-     *
+     * 
      * @param runAsGroup the runAsGroup value to set.
      * @return the SecurityContextDefinition object itself.
      */
@@ -134,7 +136,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Get the runAsUser property: Sets the User UID for the container.
-     *
+     * 
      * @return the runAsUser value.
      */
     public Integer runAsUser() {
@@ -143,7 +145,7 @@ public final class SecurityContextDefinition {
 
     /**
      * Set the runAsUser property: Sets the User UID for the container.
-     *
+     * 
      * @param runAsUser the runAsUser value to set.
      * @return the SecurityContextDefinition object itself.
      */
@@ -155,7 +157,7 @@ public final class SecurityContextDefinition {
     /**
      * Get the seccompProfile property: a base64 encoded string containing the contents of the JSON in the seccomp
      * profile.
-     *
+     * 
      * @return the seccompProfile value.
      */
     public String seccompProfile() {
@@ -165,7 +167,7 @@ public final class SecurityContextDefinition {
     /**
      * Set the seccompProfile property: a base64 encoded string containing the contents of the JSON in the seccomp
      * profile.
-     *
+     * 
      * @param seccompProfile the seccompProfile value to set.
      * @return the SecurityContextDefinition object itself.
      */
@@ -176,12 +178,65 @@ public final class SecurityContextDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (capabilities() != null) {
             capabilities().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("privileged", this.privileged);
+        jsonWriter.writeBooleanField("allowPrivilegeEscalation", this.allowPrivilegeEscalation);
+        jsonWriter.writeJsonField("capabilities", this.capabilities);
+        jsonWriter.writeNumberField("runAsGroup", this.runAsGroup);
+        jsonWriter.writeNumberField("runAsUser", this.runAsUser);
+        jsonWriter.writeStringField("seccompProfile", this.seccompProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityContextDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityContextDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityContextDefinition.
+     */
+    public static SecurityContextDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityContextDefinition deserializedSecurityContextDefinition = new SecurityContextDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privileged".equals(fieldName)) {
+                    deserializedSecurityContextDefinition.privileged = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowPrivilegeEscalation".equals(fieldName)) {
+                    deserializedSecurityContextDefinition.allowPrivilegeEscalation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capabilities".equals(fieldName)) {
+                    deserializedSecurityContextDefinition.capabilities
+                        = SecurityContextCapabilitiesDefinition.fromJson(reader);
+                } else if ("runAsGroup".equals(fieldName)) {
+                    deserializedSecurityContextDefinition.runAsGroup = reader.getNullable(JsonReader::getInt);
+                } else if ("runAsUser".equals(fieldName)) {
+                    deserializedSecurityContextDefinition.runAsUser = reader.getNullable(JsonReader::getInt);
+                } else if ("seccompProfile".equals(fieldName)) {
+                    deserializedSecurityContextDefinition.seccompProfile = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityContextDefinition;
+        });
     }
 }

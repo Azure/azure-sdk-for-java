@@ -6,42 +6,41 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Define match conditions.
  */
 @Fluent
-public final class MatchCondition {
+public final class MatchCondition implements JsonSerializable<MatchCondition> {
     /*
      * List of match variables.
      */
-    @JsonProperty(value = "matchVariables", required = true)
     private List<MatchVariable> matchVariables;
 
     /*
      * The operator to be matched.
      */
-    @JsonProperty(value = "operator", required = true)
     private WebApplicationFirewallOperator operator;
 
     /*
      * Whether this is negate condition or not.
      */
-    @JsonProperty(value = "negationConditon")
     private Boolean negationConditon;
 
     /*
      * Match value.
      */
-    @JsonProperty(value = "matchValues", required = true)
     private List<String> matchValues;
 
     /*
      * List of transforms.
      */
-    @JsonProperty(value = "transforms")
     private List<WebApplicationFirewallTransform> transforms;
 
     /**
@@ -173,4 +172,59 @@ public final class MatchCondition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MatchCondition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("matchVariables", this.matchVariables,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("matchValues", this.matchValues, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("negationConditon", this.negationConditon);
+        jsonWriter.writeArrayField("transforms", this.transforms,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MatchCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MatchCondition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MatchCondition.
+     */
+    public static MatchCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MatchCondition deserializedMatchCondition = new MatchCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("matchVariables".equals(fieldName)) {
+                    List<MatchVariable> matchVariables = reader.readArray(reader1 -> MatchVariable.fromJson(reader1));
+                    deserializedMatchCondition.matchVariables = matchVariables;
+                } else if ("operator".equals(fieldName)) {
+                    deserializedMatchCondition.operator = WebApplicationFirewallOperator.fromString(reader.getString());
+                } else if ("matchValues".equals(fieldName)) {
+                    List<String> matchValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMatchCondition.matchValues = matchValues;
+                } else if ("negationConditon".equals(fieldName)) {
+                    deserializedMatchCondition.negationConditon = reader.getNullable(JsonReader::getBoolean);
+                } else if ("transforms".equals(fieldName)) {
+                    List<WebApplicationFirewallTransform> transforms
+                        = reader.readArray(reader1 -> WebApplicationFirewallTransform.fromString(reader1.getString()));
+                    deserializedMatchCondition.transforms = transforms;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMatchCondition;
+        });
+    }
 }

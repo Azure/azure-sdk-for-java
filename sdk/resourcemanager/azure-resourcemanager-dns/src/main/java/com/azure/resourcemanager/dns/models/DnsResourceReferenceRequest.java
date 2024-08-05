@@ -6,26 +6,33 @@ package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dns.fluent.models.DnsResourceReferenceRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents the properties of the Dns Resource Reference Request. */
+/**
+ * Represents the properties of the Dns Resource Reference Request.
+ */
 @Fluent
-public final class DnsResourceReferenceRequest {
+public final class DnsResourceReferenceRequest implements JsonSerializable<DnsResourceReferenceRequest> {
     /*
      * The properties of the Resource Reference Request.
      */
-    @JsonProperty(value = "properties")
     private DnsResourceReferenceRequestProperties innerProperties;
 
-    /** Creates an instance of DnsResourceReferenceRequest class. */
+    /**
+     * Creates an instance of DnsResourceReferenceRequest class.
+     */
     public DnsResourceReferenceRequest() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Resource Reference Request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DnsResourceReferenceRequestProperties innerProperties() {
@@ -35,7 +42,7 @@ public final class DnsResourceReferenceRequest {
     /**
      * Get the targetResources property: A list of references to azure resources for which referencing dns records need
      * to be queried.
-     *
+     * 
      * @return the targetResources value.
      */
     public List<SubResource> targetResources() {
@@ -45,7 +52,7 @@ public final class DnsResourceReferenceRequest {
     /**
      * Set the targetResources property: A list of references to azure resources for which referencing dns records need
      * to be queried.
-     *
+     * 
      * @param targetResources the targetResources value to set.
      * @return the DnsResourceReferenceRequest object itself.
      */
@@ -59,12 +66,49 @@ public final class DnsResourceReferenceRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsResourceReferenceRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsResourceReferenceRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsResourceReferenceRequest.
+     */
+    public static DnsResourceReferenceRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsResourceReferenceRequest deserializedDnsResourceReferenceRequest = new DnsResourceReferenceRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDnsResourceReferenceRequest.innerProperties
+                        = DnsResourceReferenceRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsResourceReferenceRequest;
+        });
     }
 }

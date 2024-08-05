@@ -19,7 +19,10 @@ public final class DevToolPortalsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void devToolPortalsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDevToolPortals().delete("myResourceGroup", "myservice",
-            "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDevToolPortals()
+            .delete("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

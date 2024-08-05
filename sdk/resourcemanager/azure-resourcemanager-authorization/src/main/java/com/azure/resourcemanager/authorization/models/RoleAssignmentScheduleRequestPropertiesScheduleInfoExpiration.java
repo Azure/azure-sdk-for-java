@@ -5,37 +5,45 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Expiration of the role assignment schedule. */
+/**
+ * Expiration of the role assignment schedule.
+ */
 @Fluent
-public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration {
+public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
+    implements JsonSerializable<RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration> {
     /*
      * Type of the role assignment schedule expiration
      */
-    @JsonProperty(value = "type")
     private Type type;
 
     /*
      * End DateTime of the role assignment schedule.
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * Duration of the role assignment schedule in TimeSpan.
      */
-    @JsonProperty(value = "duration")
     private String duration;
 
-    /** Creates an instance of RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration class. */
+    /**
+     * Creates an instance of RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration class.
+     */
     public RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration() {
     }
 
     /**
      * Get the type property: Type of the role assignment schedule expiration.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -44,7 +52,7 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
     /**
      * Set the type property: Type of the role assignment schedule expiration.
-     *
+     * 
      * @param type the type value to set.
      * @return the RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration object itself.
      */
@@ -55,7 +63,7 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
     /**
      * Get the endDateTime property: End DateTime of the role assignment schedule.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -64,7 +72,7 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
     /**
      * Set the endDateTime property: End DateTime of the role assignment schedule.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration object itself.
      */
@@ -75,7 +83,7 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
     /**
      * Get the duration property: Duration of the role assignment schedule in TimeSpan.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -84,7 +92,7 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
     /**
      * Set the duration property: Duration of the role assignment schedule in TimeSpan.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration object itself.
      */
@@ -95,9 +103,58 @@ public final class RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("duration", this.duration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration.
+     */
+    public static RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration deserializedRoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
+                = new RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration.type
+                        = Type.fromString(reader.getString());
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("duration".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration.duration
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration;
+        });
     }
 }

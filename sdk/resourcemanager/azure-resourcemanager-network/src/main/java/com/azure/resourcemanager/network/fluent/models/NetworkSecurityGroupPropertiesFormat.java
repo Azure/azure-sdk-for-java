@@ -5,62 +5,59 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Security Group resource.
  */
 @Fluent
-public final class NetworkSecurityGroupPropertiesFormat {
+public final class NetworkSecurityGroupPropertiesFormat
+    implements JsonSerializable<NetworkSecurityGroupPropertiesFormat> {
     /*
      * When enabled, flows created from Network Security Group connections will be re-evaluated when rules are updates.
      * Initial enablement will trigger re-evaluation.
      */
-    @JsonProperty(value = "flushConnection")
     private Boolean flushConnection;
 
     /*
      * A collection of security rules of the network security group.
      */
-    @JsonProperty(value = "securityRules")
     private List<SecurityRuleInner> securityRules;
 
     /*
      * The default security rules of network security group.
      */
-    @JsonProperty(value = "defaultSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SecurityRuleInner> defaultSecurityRules;
 
     /*
      * A collection of references to network interfaces.
      */
-    @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /*
      * A collection of references to subnets.
      */
-    @JsonProperty(value = "subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubnetInner> subnets;
 
     /*
      * A collection of references to flow log resources.
      */
-    @JsonProperty(value = "flowLogs", access = JsonProperty.Access.WRITE_ONLY)
     private List<FlowLogInner> flowLogs;
 
     /*
      * The resource GUID property of the network security group resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the network security group resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -186,5 +183,67 @@ public final class NetworkSecurityGroupPropertiesFormat {
         if (flowLogs() != null) {
             flowLogs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("flushConnection", this.flushConnection);
+        jsonWriter.writeArrayField("securityRules", this.securityRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityGroupPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityGroupPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityGroupPropertiesFormat.
+     */
+    public static NetworkSecurityGroupPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityGroupPropertiesFormat deserializedNetworkSecurityGroupPropertiesFormat
+                = new NetworkSecurityGroupPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("flushConnection".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupPropertiesFormat.flushConnection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("securityRules".equals(fieldName)) {
+                    List<SecurityRuleInner> securityRules
+                        = reader.readArray(reader1 -> SecurityRuleInner.fromJson(reader1));
+                    deserializedNetworkSecurityGroupPropertiesFormat.securityRules = securityRules;
+                } else if ("defaultSecurityRules".equals(fieldName)) {
+                    List<SecurityRuleInner> defaultSecurityRules
+                        = reader.readArray(reader1 -> SecurityRuleInner.fromJson(reader1));
+                    deserializedNetworkSecurityGroupPropertiesFormat.defaultSecurityRules = defaultSecurityRules;
+                } else if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterfaceInner> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterfaceInner.fromJson(reader1));
+                    deserializedNetworkSecurityGroupPropertiesFormat.networkInterfaces = networkInterfaces;
+                } else if ("subnets".equals(fieldName)) {
+                    List<SubnetInner> subnets = reader.readArray(reader1 -> SubnetInner.fromJson(reader1));
+                    deserializedNetworkSecurityGroupPropertiesFormat.subnets = subnets;
+                } else if ("flowLogs".equals(fieldName)) {
+                    List<FlowLogInner> flowLogs = reader.readArray(reader1 -> FlowLogInner.fromJson(reader1));
+                    deserializedNetworkSecurityGroupPropertiesFormat.flowLogs = flowLogs;
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityGroupPropertiesFormat;
+        });
     }
 }

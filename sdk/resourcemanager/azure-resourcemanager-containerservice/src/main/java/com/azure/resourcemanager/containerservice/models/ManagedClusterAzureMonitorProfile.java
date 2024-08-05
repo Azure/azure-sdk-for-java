@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Monitor addon profiles for monitoring the managed cluster.
  */
 @Fluent
-public final class ManagedClusterAzureMonitorProfile {
+public final class ManagedClusterAzureMonitorProfile implements JsonSerializable<ManagedClusterAzureMonitorProfile> {
     /*
      * Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes
      * infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom
      * targets. See aka.ms/AzureManagedPrometheus for an overview.
      */
-    @JsonProperty(value = "metrics")
     private ManagedClusterAzureMonitorProfileMetrics metrics;
 
     /**
@@ -59,5 +62,43 @@ public final class ManagedClusterAzureMonitorProfile {
         if (metrics() != null) {
             metrics().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metrics", this.metrics);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterAzureMonitorProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterAzureMonitorProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterAzureMonitorProfile.
+     */
+    public static ManagedClusterAzureMonitorProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterAzureMonitorProfile deserializedManagedClusterAzureMonitorProfile
+                = new ManagedClusterAzureMonitorProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metrics".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfile.metrics
+                        = ManagedClusterAzureMonitorProfileMetrics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterAzureMonitorProfile;
+        });
     }
 }
