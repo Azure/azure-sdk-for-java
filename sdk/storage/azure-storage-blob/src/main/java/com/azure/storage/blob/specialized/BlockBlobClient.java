@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -14,6 +15,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -72,25 +75,25 @@ public final class BlockBlobClient extends BlobClientBase {
      * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}.
      */
     @Deprecated
-    public static final int MAX_UPLOAD_BLOB_BYTES = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES;
+    public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG;
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = 5000L * Constants.MB;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
      */
     @Deprecated
-    public static final int MAX_STAGE_BLOCK_BYTES = BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES;
+    public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES_LONG;
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = 4000L * Constants.MB;
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
      */
-    public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
+    public static final int MAX_BLOCKS = 50000;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -98,7 +101,32 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param client the async block blob client
      */
     BlockBlobClient(BlockBlobAsyncClient client) {
-        super(client);
+        this(client, client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(), client.getAccountName(),
+            client.getContainerName(), client.getBlobName(), client.getSnapshotId(), client.getCustomerProvidedKey(),
+            new EncryptionScope().setEncryptionScope(client.getEncryptionScope()), client.getVersionId());
+    }
+
+    /**
+     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     */
+    BlockBlobClient(BlockBlobAsyncClient client, HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId) {
+        super(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
+            customerProvidedKey, encryptionScope, versionId);
         this.client = client;
     }
 
@@ -110,7 +138,13 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -122,7 +156,16 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**

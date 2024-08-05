@@ -56,7 +56,6 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -315,6 +314,19 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
+     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
+        if (blobContainerEncryptionScope == null) {
+            return null;
+        }
+        return blobContainerEncryptionScope;
+    }
+
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
@@ -564,7 +576,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> deleteWithResponse(BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (!validateNoETag(requestConditions)) {
+        if (!ModelHelper.validateNoETag(requestConditions)) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(
@@ -790,7 +802,7 @@ public final class BlobContainerAsyncClient {
         BlobRequestConditions requestConditions, Context context) {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        if (!validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
+        if (!ModelHelper.validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
@@ -960,36 +972,19 @@ public final class BlobContainerAsyncClient {
         List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (!validateNoETag(requestConditions)) {
+        if (!ModelHelper.validateNoETag(requestConditions)) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
-        /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
-         */
-        if (identifiers != null) {
-            for (BlobSignedIdentifier identifier : identifiers) {
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStartsOn() != null) {
-                    identifier.getAccessPolicy().setStartsOn(
-                        identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiresOn() != null) {
-                    identifier.getAccessPolicy().setExpiresOn(
-                        identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-            }
-        }
+        List<BlobSignedIdentifier> finalIdentifiers = ModelHelper.truncateTimeForBlobSignedIdentifier(identifiers);
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getContainers().setAccessPolicyNoCustomHeadersWithResponseAsync(containerName,
             null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers, context);
+            requestConditions.getIfUnmodifiedSince(), null, finalIdentifiers, context);
     }
 
     /**
@@ -1683,13 +1678,6 @@ public final class BlobContainerAsyncClient {
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
-    }
-
-    private static boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
-        if (modifiedRequestConditions == null) {
-            return true;
-        }
-        return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
     }
 
 //    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {

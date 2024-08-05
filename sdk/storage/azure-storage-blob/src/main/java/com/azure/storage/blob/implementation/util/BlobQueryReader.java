@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ArrowConfiguration;
 import com.azure.storage.blob.implementation.models.ArrowField;
@@ -19,6 +20,7 @@ import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryParquetSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
@@ -28,6 +30,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +75,29 @@ public class BlobQueryReader {
         return new AvroReaderFactory().getAvroReader(avro).read()
             .map(AvroObject::getObject)
             .concatMap(this::parseRecord);
+    }
+
+    /**
+     * Avro parses a query reactive stream.
+     *
+     * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
+     * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
+     * either be a result data record, an end record, a progress record or an error record.
+     *
+     * @param inputStream The input stream to read from.
+     * @return The parsed query reactive stream.
+     * @throws IOException If an I/O error occurs.
+     */
+    public InputStream readInputStream(InputStream inputStream) throws IOException {
+        // Convert InputStream to Flux<ByteBuffer>
+        Flux<ByteBuffer> avroFlux = FluxUtil.toFluxByteBuffer(inputStream);
+
+        // Use existing read method to process the data
+        Flux<ByteBuffer> processedData = new AvroReaderFactory().getAvroReader(avroFlux).read()
+            .map(AvroObject::getObject)
+            .concatMap(this::parseRecord);
+
+        return new FluxInputStream(processedData);
     }
 
     /**

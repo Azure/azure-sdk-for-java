@@ -121,7 +121,26 @@ public final class BlobContainerClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobContainerClient buildClient() {
-        return new BlobContainerClient(buildAsyncClient());
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
+
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+                + "scope cannot both be set"));
+        }
+
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        String blobContainerName = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerClient.ROOT_CONTAINER_NAME
+            : containerName;
+
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
+
+        HttpPipeline pipeline = constructPipeline();
+
+        return new BlobContainerClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
+            customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
     /**
@@ -160,13 +179,17 @@ public final class BlobContainerClientBuilder implements
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        HttpPipeline pipeline = constructPipeline();
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
