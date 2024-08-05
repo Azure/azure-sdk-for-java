@@ -6,35 +6,35 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * .
  */
 @Fluent
-public final class ClientEncryptionIncludedPath {
+public final class ClientEncryptionIncludedPath implements JsonSerializable<ClientEncryptionIncludedPath> {
     /*
      * Path that needs to be encrypted.
      */
-    @JsonProperty(value = "path", required = true)
     private String path;
 
     /*
      * The identifier of the Client Encryption Key to be used to encrypt the path.
      */
-    @JsonProperty(value = "clientEncryptionKeyId", required = true)
     private String clientEncryptionKeyId;
 
     /*
      * The type of encryption to be performed. Eg - Deterministic, Randomized.
      */
-    @JsonProperty(value = "encryptionType", required = true)
     private String encryptionType;
 
     /*
      * The encryption algorithm which will be used. Eg - AEAD_AES_256_CBC_HMAC_SHA256.
      */
-    @JsonProperty(value = "encryptionAlgorithm", required = true)
     private String encryptionAlgorithm;
 
     /**
@@ -156,4 +156,50 @@ public final class ClientEncryptionIncludedPath {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientEncryptionIncludedPath.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("clientEncryptionKeyId", this.clientEncryptionKeyId);
+        jsonWriter.writeStringField("encryptionType", this.encryptionType);
+        jsonWriter.writeStringField("encryptionAlgorithm", this.encryptionAlgorithm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientEncryptionIncludedPath from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientEncryptionIncludedPath if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClientEncryptionIncludedPath.
+     */
+    public static ClientEncryptionIncludedPath fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientEncryptionIncludedPath deserializedClientEncryptionIncludedPath = new ClientEncryptionIncludedPath();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedClientEncryptionIncludedPath.path = reader.getString();
+                } else if ("clientEncryptionKeyId".equals(fieldName)) {
+                    deserializedClientEncryptionIncludedPath.clientEncryptionKeyId = reader.getString();
+                } else if ("encryptionType".equals(fieldName)) {
+                    deserializedClientEncryptionIncludedPath.encryptionType = reader.getString();
+                } else if ("encryptionAlgorithm".equals(fieldName)) {
+                    deserializedClientEncryptionIncludedPath.encryptionAlgorithm = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientEncryptionIncludedPath;
+        });
+    }
 }

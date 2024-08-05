@@ -12,7 +12,8 @@ import java.util.Arrays;
  */
 public final class SubscriptionsCheckZonePeersSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/PostCheckZonePeers.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/PostCheckZonePeers.json
      */
     /**
      * Sample code: GetLogicalZoneMapping.

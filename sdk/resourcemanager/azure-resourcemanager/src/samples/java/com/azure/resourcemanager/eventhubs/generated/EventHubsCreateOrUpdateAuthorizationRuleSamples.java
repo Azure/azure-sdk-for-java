@@ -6,7 +6,6 @@ package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
-
 import java.util.Arrays;
 
 /**
@@ -20,7 +19,7 @@ public final class EventHubsCreateOrUpdateAuthorizationRuleSamples {
      */
     /**
      * Sample code: EventHubAuthorizationRuleCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void eventHubAuthorizationRuleCreate(com.azure.resourcemanager.AzureResourceManager azure) {

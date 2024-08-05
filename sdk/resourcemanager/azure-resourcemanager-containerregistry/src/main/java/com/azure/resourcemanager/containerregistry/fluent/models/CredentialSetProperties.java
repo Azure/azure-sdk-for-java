@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.AuthCredential;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,30 +20,26 @@ import java.util.List;
  * The properties of a credential set resource.
  */
 @Fluent
-public final class CredentialSetProperties {
+public final class CredentialSetProperties implements JsonSerializable<CredentialSetProperties> {
     /*
      * The credentials are stored for this upstream or login server.
      */
-    @JsonProperty(value = "loginServer")
     private String loginServer;
 
     /*
      * List of authentication credentials stored for an upstream.
      * Usually consists of a primary and an optional secondary credential.
      */
-    @JsonProperty(value = "authCredentials")
     private List<AuthCredential> authCredentials;
 
     /*
      * The creation date of credential store resource.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -116,5 +117,53 @@ public final class CredentialSetProperties {
         if (authCredentials() != null) {
             authCredentials().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loginServer", this.loginServer);
+        jsonWriter.writeArrayField("authCredentials", this.authCredentials,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialSetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialSetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialSetProperties.
+     */
+    public static CredentialSetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialSetProperties deserializedCredentialSetProperties = new CredentialSetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loginServer".equals(fieldName)) {
+                    deserializedCredentialSetProperties.loginServer = reader.getString();
+                } else if ("authCredentials".equals(fieldName)) {
+                    List<AuthCredential> authCredentials
+                        = reader.readArray(reader1 -> AuthCredential.fromJson(reader1));
+                    deserializedCredentialSetProperties.authCredentials = authCredentials;
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedCredentialSetProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCredentialSetProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialSetProperties;
+        });
     }
 }

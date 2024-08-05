@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DeploymentStacksGetAtSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackSubscriptionGet.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * DeploymentStackSubscriptionGet.json
      */
     /**
      * Sample code: DeploymentStacksSubscriptionGet.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class BindingType extends ExpandableStringEnum<BindingType> {
      * @param name a name to look for.
      * @return the corresponding BindingType.
      */
-    @JsonCreator
     public static BindingType fromString(String name) {
         return fromString(name, BindingType.class);
     }

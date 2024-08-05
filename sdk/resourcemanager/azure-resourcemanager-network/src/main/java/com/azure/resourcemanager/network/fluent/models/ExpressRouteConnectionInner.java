@@ -7,10 +7,13 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * ExpressRouteConnection resource.
@@ -20,13 +23,11 @@ public final class ExpressRouteConnectionInner extends SubResource {
     /*
      * Properties of the express route connection.
      */
-    @JsonProperty(value = "properties")
     private ExpressRouteConnectionProperties innerProperties;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
@@ -265,4 +266,48 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteConnectionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteConnectionInner.
+     */
+    public static ExpressRouteConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteConnectionInner deserializedExpressRouteConnectionInner = new ExpressRouteConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInner.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInner.innerProperties
+                        = ExpressRouteConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteConnectionInner;
+        });
+    }
 }

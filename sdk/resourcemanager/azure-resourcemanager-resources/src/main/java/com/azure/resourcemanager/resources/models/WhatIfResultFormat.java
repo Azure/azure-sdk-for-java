@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The format of the What-If results.
  */
@@ -36,7 +33,6 @@ public enum WhatIfResultFormat {
      * @param value the serialized value to parse.
      * @return the parsed WhatIfResultFormat object, or null if unable to parse.
      */
-    @JsonCreator
     public static WhatIfResultFormat fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum WhatIfResultFormat {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

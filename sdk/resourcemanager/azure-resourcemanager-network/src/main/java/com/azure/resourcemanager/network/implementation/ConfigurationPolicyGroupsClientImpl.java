@@ -34,10 +34,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ConfigurationPolicyGroupsClient;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationPolicyGroupInner;
 import com.azure.resourcemanager.network.models.ListVpnServerConfigurationPolicyGroupsResult;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ConfigurationPolicyGroupsClient.
@@ -55,7 +54,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Initializes an instance of ConfigurationPolicyGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConfigurationPolicyGroupsClientImpl(NetworkManagementClientImpl client) {
@@ -127,7 +126,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -180,7 +179,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -233,7 +232,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -258,7 +257,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -286,7 +285,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -310,7 +309,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -335,7 +334,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -356,7 +355,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -378,7 +377,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -399,7 +398,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -421,7 +420,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -464,7 +463,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -506,7 +505,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -526,7 +525,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -548,7 +547,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -566,7 +565,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -586,7 +585,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -604,7 +603,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -624,7 +623,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -640,7 +639,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Deletes a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the ConfigurationPolicyGroup.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup.
@@ -657,7 +656,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Retrieves the details of a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
@@ -701,7 +700,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Retrieves the details of a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
@@ -744,7 +743,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Retrieves the details of a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
@@ -762,7 +761,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Retrieves the details of a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
@@ -781,7 +780,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Retrieves the details of a ConfigurationPolicyGroup.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param configurationPolicyGroupName The name of the ConfigurationPolicyGroup being retrieved.
@@ -799,7 +798,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -840,7 +839,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
@@ -881,7 +880,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -900,7 +899,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
@@ -920,7 +919,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -937,7 +936,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
@@ -956,7 +955,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -984,7 +983,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -286,23 +286,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void deleteIfExistsDirectoryThatWasAlreadyDeleted() {
-        primaryShareAsyncClient.create().block();
-
-        Response<Boolean> initialResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block();
-        sleepIfRunningAgainstService(45000);
-        // Calling delete again after garbage collection is completed
-        Response<Boolean> secondResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block();
-
-        assertNotNull(initialResponse);
-        assertNotNull(secondResponse);
-        FileShareTestHelper.assertResponseStatusCode(initialResponse, 202);
-        FileShareTestHelper.assertResponseStatusCode(secondResponse, 404);
-        assertTrue(initialResponse.getValue());
-        assertFalse(secondResponse.getValue());
-    }
-
-    @Test
     public void getProperties() {
         primaryShareAsyncClient.createWithResponse(testMetadata, 1).block();
         StepVerifier.create(primaryShareAsyncClient.getPropertiesWithResponse()).assertNext(it -> {

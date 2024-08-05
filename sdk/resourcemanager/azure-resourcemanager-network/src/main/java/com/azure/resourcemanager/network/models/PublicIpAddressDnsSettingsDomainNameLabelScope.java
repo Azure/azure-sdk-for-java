@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is
  * created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN.
@@ -47,7 +44,6 @@ public enum PublicIpAddressDnsSettingsDomainNameLabelScope {
      * @param value the serialized value to parse.
      * @return the parsed PublicIpAddressDnsSettingsDomainNameLabelScope object, or null if unable to parse.
      */
-    @JsonCreator
     public static PublicIpAddressDnsSettingsDomainNameLabelScope fromString(String value) {
         if (value == null) {
             return null;
@@ -65,7 +61,6 @@ public enum PublicIpAddressDnsSettingsDomainNameLabelScope {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

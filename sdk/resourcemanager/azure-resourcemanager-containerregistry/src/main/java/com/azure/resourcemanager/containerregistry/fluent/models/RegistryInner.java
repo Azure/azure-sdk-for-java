@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
@@ -18,7 +21,7 @@ import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -31,26 +34,37 @@ public final class RegistryInner extends Resource {
     /*
      * The SKU of the container registry.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * The identity of the container registry.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The properties of the container registry.
      */
-    @JsonProperty(value = "properties")
     private RegistryProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of RegistryInner class.
@@ -114,6 +128,36 @@ public final class RegistryInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -287,8 +331,7 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is
-     * true.
+     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is true.
      * 
      * @return the dataEndpointHostNames value.
      */
@@ -306,8 +349,7 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
-     * registry.
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -316,8 +358,7 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
-     * registry.
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryInner object itself.
@@ -331,8 +372,8 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
-     * restricted registry.
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
      * 
      * @return the networkRuleBypassOptions value.
      */
@@ -341,8 +382,8 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
-     * restricted registry.
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
      * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryInner object itself.
@@ -385,8 +426,8 @@ public final class RegistryInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model RegistryInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model RegistryInner"));
         } else {
             sku().validate();
         }
@@ -399,4 +440,62 @@ public final class RegistryInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RegistryInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegistryInner.
+     */
+    public static RegistryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryInner deserializedRegistryInner = new RegistryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRegistryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRegistryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRegistryInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRegistryInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRegistryInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRegistryInner.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRegistryInner.identity = IdentityProperties.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRegistryInner.innerProperties = RegistryProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRegistryInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryInner;
+        });
+    }
 }

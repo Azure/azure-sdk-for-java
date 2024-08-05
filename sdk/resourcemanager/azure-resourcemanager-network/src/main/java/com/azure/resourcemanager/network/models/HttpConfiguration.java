@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * HTTP configuration of the connectivity check.
  */
 @Fluent
-public final class HttpConfiguration {
+public final class HttpConfiguration implements JsonSerializable<HttpConfiguration> {
     /*
      * HTTP method.
      */
-    @JsonProperty(value = "method")
     private HttpMethod method;
 
     /*
      * List of HTTP headers.
      */
-    @JsonProperty(value = "headers")
     private List<HttpHeader> headers;
 
     /*
      * Valid status codes.
      */
-    @JsonProperty(value = "validStatusCodes")
     private List<Integer> validStatusCodes;
 
     /**
@@ -106,5 +107,50 @@ public final class HttpConfiguration {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("validStatusCodes", this.validStatusCodes,
+            (writer, element) -> writer.writeInt(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpConfiguration.
+     */
+    public static HttpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpConfiguration deserializedHttpConfiguration = new HttpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("method".equals(fieldName)) {
+                    deserializedHttpConfiguration.method = HttpMethod.fromString(reader.getString());
+                } else if ("headers".equals(fieldName)) {
+                    List<HttpHeader> headers = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                    deserializedHttpConfiguration.headers = headers;
+                } else if ("validStatusCodes".equals(fieldName)) {
+                    List<Integer> validStatusCodes = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedHttpConfiguration.validStatusCodes = validStatusCodes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpConfiguration;
+        });
     }
 }

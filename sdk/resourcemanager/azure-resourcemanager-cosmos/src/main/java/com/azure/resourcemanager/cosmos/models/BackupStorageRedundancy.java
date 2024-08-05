@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupSt
      * @param name a name to look for.
      * @return the corresponding BackupStorageRedundancy.
      */
-    @JsonCreator
     public static BackupStorageRedundancy fromString(String name) {
         return fromString(name, BackupStorageRedundancy.class);
     }

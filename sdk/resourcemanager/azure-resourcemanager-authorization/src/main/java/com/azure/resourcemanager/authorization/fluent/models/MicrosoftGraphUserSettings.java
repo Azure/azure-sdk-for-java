@@ -5,47 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** userSettings. */
+/**
+ * userSettings.
+ */
 @Fluent
 public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
     /*
      * The contributionToContentDiscoveryAsOrganizationDisabled property.
      */
-    @JsonProperty(value = "contributionToContentDiscoveryAsOrganizationDisabled")
     private Boolean contributionToContentDiscoveryAsOrganizationDisabled;
 
     /*
      * The contributionToContentDiscoveryDisabled property.
      */
-    @JsonProperty(value = "contributionToContentDiscoveryDisabled")
     private Boolean contributionToContentDiscoveryDisabled;
 
     /*
      * shiftPreferences
      */
-    @JsonProperty(value = "shiftPreferences")
     private MicrosoftGraphShiftPreferences shiftPreferences;
 
     /*
      * userSettings
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphUserSettings class. */
+    /**
+     * Creates an instance of MicrosoftGraphUserSettings class.
+     */
     public MicrosoftGraphUserSettings() {
     }
 
     /**
      * Get the contributionToContentDiscoveryAsOrganizationDisabled property: The
      * contributionToContentDiscoveryAsOrganizationDisabled property.
-     *
+     * 
      * @return the contributionToContentDiscoveryAsOrganizationDisabled value.
      */
     public Boolean contributionToContentDiscoveryAsOrganizationDisabled() {
@@ -55,21 +56,21 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
     /**
      * Set the contributionToContentDiscoveryAsOrganizationDisabled property: The
      * contributionToContentDiscoveryAsOrganizationDisabled property.
-     *
+     * 
      * @param contributionToContentDiscoveryAsOrganizationDisabled the
-     *     contributionToContentDiscoveryAsOrganizationDisabled value to set.
+     * contributionToContentDiscoveryAsOrganizationDisabled value to set.
      * @return the MicrosoftGraphUserSettings object itself.
      */
     public MicrosoftGraphUserSettings withContributionToContentDiscoveryAsOrganizationDisabled(
         Boolean contributionToContentDiscoveryAsOrganizationDisabled) {
-        this.contributionToContentDiscoveryAsOrganizationDisabled =
-            contributionToContentDiscoveryAsOrganizationDisabled;
+        this.contributionToContentDiscoveryAsOrganizationDisabled
+            = contributionToContentDiscoveryAsOrganizationDisabled;
         return this;
     }
 
     /**
      * Get the contributionToContentDiscoveryDisabled property: The contributionToContentDiscoveryDisabled property.
-     *
+     * 
      * @return the contributionToContentDiscoveryDisabled value.
      */
     public Boolean contributionToContentDiscoveryDisabled() {
@@ -78,19 +79,19 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
 
     /**
      * Set the contributionToContentDiscoveryDisabled property: The contributionToContentDiscoveryDisabled property.
-     *
+     * 
      * @param contributionToContentDiscoveryDisabled the contributionToContentDiscoveryDisabled value to set.
      * @return the MicrosoftGraphUserSettings object itself.
      */
-    public MicrosoftGraphUserSettings withContributionToContentDiscoveryDisabled(
-        Boolean contributionToContentDiscoveryDisabled) {
+    public MicrosoftGraphUserSettings
+        withContributionToContentDiscoveryDisabled(Boolean contributionToContentDiscoveryDisabled) {
         this.contributionToContentDiscoveryDisabled = contributionToContentDiscoveryDisabled;
         return this;
     }
 
     /**
      * Get the shiftPreferences property: shiftPreferences.
-     *
+     * 
      * @return the shiftPreferences value.
      */
     public MicrosoftGraphShiftPreferences shiftPreferences() {
@@ -99,7 +100,7 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
 
     /**
      * Set the shiftPreferences property: shiftPreferences.
-     *
+     * 
      * @param shiftPreferences the shiftPreferences value to set.
      * @return the MicrosoftGraphUserSettings object itself.
      */
@@ -110,17 +111,16 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: userSettings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: userSettings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphUserSettings object itself.
      */
@@ -129,15 +129,9 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphUserSettings withId(String id) {
         super.withId(id);
@@ -146,7 +140,7 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -155,5 +149,66 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
         if (shiftPreferences() != null) {
             shiftPreferences().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeBooleanField("contributionToContentDiscoveryAsOrganizationDisabled",
+            this.contributionToContentDiscoveryAsOrganizationDisabled);
+        jsonWriter.writeBooleanField("contributionToContentDiscoveryDisabled",
+            this.contributionToContentDiscoveryDisabled);
+        jsonWriter.writeJsonField("shiftPreferences", this.shiftPreferences);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphUserSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphUserSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphUserSettings.
+     */
+    public static MicrosoftGraphUserSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphUserSettings deserializedMicrosoftGraphUserSettings = new MicrosoftGraphUserSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserSettings.withId(reader.getString());
+                } else if ("contributionToContentDiscoveryAsOrganizationDisabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserSettings.contributionToContentDiscoveryAsOrganizationDisabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("contributionToContentDiscoveryDisabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserSettings.contributionToContentDiscoveryDisabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("shiftPreferences".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserSettings.shiftPreferences
+                        = MicrosoftGraphShiftPreferences.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphUserSettings.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphUserSettings;
+        });
     }
 }

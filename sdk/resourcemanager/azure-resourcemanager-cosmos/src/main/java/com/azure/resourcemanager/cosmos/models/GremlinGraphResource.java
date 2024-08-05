@@ -6,65 +6,62 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB Gremlin graph resource object.
  */
 @Fluent
-public class GremlinGraphResource {
+public class GremlinGraphResource implements JsonSerializable<GremlinGraphResource> {
     /*
      * Name of the Cosmos DB Gremlin graph
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the graph
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the
+     * graph
      */
-    @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
 
     /*
      * The configuration of the partition key to be used for partitioning data into multiple partitions
      */
-    @JsonProperty(value = "partitionKey")
     private ContainerPartitionKey partitionKey;
 
     /*
      * Default time to live
      */
-    @JsonProperty(value = "defaultTtl")
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
+     * Azure Cosmos DB service.
      */
-    @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
 
     /*
      * The conflict resolution policy for the graph.
      */
-    @JsonProperty(value = "conflictResolutionPolicy")
     private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /*
      * Analytical TTL.
      */
-    @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
     /*
      * Parameters to indicate the information about the restore
      */
-    @JsonProperty(value = "restoreParameters")
     private ResourceRestoreParameters restoreParameters;
 
     /*
      * Enum to indicate the mode of resource creation.
      */
-    @JsonProperty(value = "createMode")
     private CreateMode createMode;
 
     /**
@@ -287,4 +284,66 @@ public class GremlinGraphResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GremlinGraphResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("indexingPolicy", this.indexingPolicy);
+        jsonWriter.writeJsonField("partitionKey", this.partitionKey);
+        jsonWriter.writeNumberField("defaultTtl", this.defaultTtl);
+        jsonWriter.writeJsonField("uniqueKeyPolicy", this.uniqueKeyPolicy);
+        jsonWriter.writeJsonField("conflictResolutionPolicy", this.conflictResolutionPolicy);
+        jsonWriter.writeNumberField("analyticalStorageTtl", this.analyticalStorageTtl);
+        jsonWriter.writeJsonField("restoreParameters", this.restoreParameters);
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GremlinGraphResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GremlinGraphResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GremlinGraphResource.
+     */
+    public static GremlinGraphResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GremlinGraphResource deserializedGremlinGraphResource = new GremlinGraphResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGremlinGraphResource.id = reader.getString();
+                } else if ("indexingPolicy".equals(fieldName)) {
+                    deserializedGremlinGraphResource.indexingPolicy = IndexingPolicy.fromJson(reader);
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedGremlinGraphResource.partitionKey = ContainerPartitionKey.fromJson(reader);
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedGremlinGraphResource.defaultTtl = reader.getNullable(JsonReader::getInt);
+                } else if ("uniqueKeyPolicy".equals(fieldName)) {
+                    deserializedGremlinGraphResource.uniqueKeyPolicy = UniqueKeyPolicy.fromJson(reader);
+                } else if ("conflictResolutionPolicy".equals(fieldName)) {
+                    deserializedGremlinGraphResource.conflictResolutionPolicy
+                        = ConflictResolutionPolicy.fromJson(reader);
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedGremlinGraphResource.analyticalStorageTtl = reader.getNullable(JsonReader::getLong);
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedGremlinGraphResource.restoreParameters = ResourceRestoreParameters.fromJson(reader);
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedGremlinGraphResource.createMode = CreateMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGremlinGraphResource;
+        });
+    }
 }

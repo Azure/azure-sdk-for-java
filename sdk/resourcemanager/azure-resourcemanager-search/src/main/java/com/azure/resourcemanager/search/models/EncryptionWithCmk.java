@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a policy that determines how resources within the search service are to be encrypted with customer=managed
  * keys.
  */
 @Fluent
-public final class EncryptionWithCmk {
+public final class EncryptionWithCmk implements JsonSerializable<EncryptionWithCmk> {
     /*
      * Describes how a search service should enforce having one or more non-customer-encrypted resources.
      */
-    @JsonProperty(value = "enforcement")
     private SearchEncryptionWithCmk enforcement;
 
     /*
-     * Describes whether the search service is compliant or not with respect to having non-customer-encrypted
-     * resources. If a service has more than one non-customer-encrypted resource and 'Enforcement' is 'enabled' then
-     * the service will be marked as 'nonCompliant'.
+     * Describes whether the search service is compliant or not with respect to having non-customer-encrypted resources.
+     * If a service has more than one non-customer-encrypted resource and 'Enforcement' is 'enabled' then the service
+     * will be marked as 'nonCompliant'.
      */
-    @JsonProperty(value = "encryptionComplianceStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SearchEncryptionComplianceStatus encryptionComplianceStatus;
 
-    /** Creates an instance of EncryptionWithCmk class. */
+    /**
+     * Creates an instance of EncryptionWithCmk class.
+     */
     public EncryptionWithCmk() {
     }
 
     /**
      * Get the enforcement property: Describes how a search service should enforce having one or more
      * non-customer-encrypted resources.
-     *
+     * 
      * @return the enforcement value.
      */
     public SearchEncryptionWithCmk enforcement() {
@@ -44,7 +48,7 @@ public final class EncryptionWithCmk {
     /**
      * Set the enforcement property: Describes how a search service should enforce having one or more
      * non-customer-encrypted resources.
-     *
+     * 
      * @param enforcement the enforcement value to set.
      * @return the EncryptionWithCmk object itself.
      */
@@ -57,7 +61,7 @@ public final class EncryptionWithCmk {
      * Get the encryptionComplianceStatus property: Describes whether the search service is compliant or not with
      * respect to having non-customer-encrypted resources. If a service has more than one non-customer-encrypted
      * resource and 'Enforcement' is 'enabled' then the service will be marked as 'nonCompliant'.
-     *
+     * 
      * @return the encryptionComplianceStatus value.
      */
     public SearchEncryptionComplianceStatus encryptionComplianceStatus() {
@@ -66,9 +70,48 @@ public final class EncryptionWithCmk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enforcement", this.enforcement == null ? null : this.enforcement.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionWithCmk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionWithCmk if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionWithCmk.
+     */
+    public static EncryptionWithCmk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionWithCmk deserializedEncryptionWithCmk = new EncryptionWithCmk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enforcement".equals(fieldName)) {
+                    deserializedEncryptionWithCmk.enforcement = SearchEncryptionWithCmk.fromString(reader.getString());
+                } else if ("encryptionComplianceStatus".equals(fieldName)) {
+                    deserializedEncryptionWithCmk.encryptionComplianceStatus
+                        = SearchEncryptionComplianceStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionWithCmk;
+        });
     }
 }

@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network configuration diagnostic result corresponded to provided traffic query.
  */
 @Fluent
-public final class NetworkConfigurationDiagnosticResult {
+public final class NetworkConfigurationDiagnosticResult
+    implements JsonSerializable<NetworkConfigurationDiagnosticResult> {
     /*
      * Network configuration diagnostic profile.
      */
-    @JsonProperty(value = "profile")
     private NetworkConfigurationDiagnosticProfile profile;
 
     /*
      * Network security group result.
      */
-    @JsonProperty(value = "networkSecurityGroupResult")
     private NetworkSecurityGroupResult networkSecurityGroupResult;
 
     /**
@@ -83,5 +86,47 @@ public final class NetworkConfigurationDiagnosticResult {
         if (networkSecurityGroupResult() != null) {
             networkSecurityGroupResult().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("profile", this.profile);
+        jsonWriter.writeJsonField("networkSecurityGroupResult", this.networkSecurityGroupResult);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConfigurationDiagnosticResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConfigurationDiagnosticResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkConfigurationDiagnosticResult.
+     */
+    public static NetworkConfigurationDiagnosticResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConfigurationDiagnosticResult deserializedNetworkConfigurationDiagnosticResult
+                = new NetworkConfigurationDiagnosticResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profile".equals(fieldName)) {
+                    deserializedNetworkConfigurationDiagnosticResult.profile
+                        = NetworkConfigurationDiagnosticProfile.fromJson(reader);
+                } else if ("networkSecurityGroupResult".equals(fieldName)) {
+                    deserializedNetworkConfigurationDiagnosticResult.networkSecurityGroupResult
+                        = NetworkSecurityGroupResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConfigurationDiagnosticResult;
+        });
     }
 }

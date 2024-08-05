@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +33,7 @@ public final class BastionHostSkuName extends ExpandableStringEnum<BastionHostSk
 
     /**
      * Creates a new instance of BastionHostSkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,18 +42,17 @@ public final class BastionHostSkuName extends ExpandableStringEnum<BastionHostSk
 
     /**
      * Creates or finds a BastionHostSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BastionHostSkuName.
      */
-    @JsonCreator
     public static BastionHostSkuName fromString(String name) {
         return fromString(name, BastionHostSkuName.class);
     }
 
     /**
      * Gets known BastionHostSkuName values.
-     *
+     * 
      * @return known BastionHostSkuName values.
      */
     public static Collection<BastionHostSkuName> values() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -51,7 +50,6 @@ public final class Expander extends ExpandableStringEnum<Expander> {
      * @param name a name to look for.
      * @return the corresponding Expander.
      */
-    @JsonCreator
     public static Expander fromString(String name) {
         return fromString(name, Expander.class);
     }

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of an Azure Cosmos DB StoredProcedure.
  */
 @Fluent
-public final class SqlStoredProcedureGetProperties {
+public final class SqlStoredProcedureGetProperties implements JsonSerializable<SqlStoredProcedureGetProperties> {
     /*
      * The resource property.
      */
-    @JsonProperty(value = "resource")
     private SqlStoredProcedureGetPropertiesResource resource;
 
     /**
@@ -54,5 +57,43 @@ public final class SqlStoredProcedureGetProperties {
         if (resource() != null) {
             resource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlStoredProcedureGetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlStoredProcedureGetProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlStoredProcedureGetProperties.
+     */
+    public static SqlStoredProcedureGetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlStoredProcedureGetProperties deserializedSqlStoredProcedureGetProperties
+                = new SqlStoredProcedureGetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedSqlStoredProcedureGetProperties.resource
+                        = SqlStoredProcedureGetPropertiesResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlStoredProcedureGetProperties;
+        });
     }
 }

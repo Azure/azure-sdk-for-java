@@ -5,49 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** groupLifecyclePolicy. */
+/**
+ * groupLifecyclePolicy.
+ */
 @Fluent
 public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEntity {
     /*
      * List of email address to send notifications for groups without owners. Multiple email address can be defined by
      * separating email address with a semicolon.
      */
-    @JsonProperty(value = "alternateNotificationEmails")
     private String alternateNotificationEmails;
 
     /*
      * Number of days before a group expires and needs to be renewed. Once renewed, the group expiration is extended by
      * the number of days defined.
      */
-    @JsonProperty(value = "groupLifetimeInDays")
     private Integer groupLifetimeInDays;
 
     /*
      * The group type for which the expiration policy applies. Possible values are All, Selected or None.
      */
-    @JsonProperty(value = "managedGroupTypes")
     private String managedGroupTypes;
 
     /*
      * groupLifecyclePolicy
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphGroupLifecyclePolicy class. */
+    /**
+     * Creates an instance of MicrosoftGraphGroupLifecyclePolicy class.
+     */
     public MicrosoftGraphGroupLifecyclePolicy() {
     }
 
     /**
      * Get the alternateNotificationEmails property: List of email address to send notifications for groups without
      * owners. Multiple email address can be defined by separating email address with a semicolon.
-     *
+     * 
      * @return the alternateNotificationEmails value.
      */
     public String alternateNotificationEmails() {
@@ -57,7 +58,7 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
     /**
      * Set the alternateNotificationEmails property: List of email address to send notifications for groups without
      * owners. Multiple email address can be defined by separating email address with a semicolon.
-     *
+     * 
      * @param alternateNotificationEmails the alternateNotificationEmails value to set.
      * @return the MicrosoftGraphGroupLifecyclePolicy object itself.
      */
@@ -69,7 +70,7 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
     /**
      * Get the groupLifetimeInDays property: Number of days before a group expires and needs to be renewed. Once
      * renewed, the group expiration is extended by the number of days defined.
-     *
+     * 
      * @return the groupLifetimeInDays value.
      */
     public Integer groupLifetimeInDays() {
@@ -79,7 +80,7 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
     /**
      * Set the groupLifetimeInDays property: Number of days before a group expires and needs to be renewed. Once
      * renewed, the group expiration is extended by the number of days defined.
-     *
+     * 
      * @param groupLifetimeInDays the groupLifetimeInDays value to set.
      * @return the MicrosoftGraphGroupLifecyclePolicy object itself.
      */
@@ -91,7 +92,7 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
     /**
      * Get the managedGroupTypes property: The group type for which the expiration policy applies. Possible values are
      * All, Selected or None.
-     *
+     * 
      * @return the managedGroupTypes value.
      */
     public String managedGroupTypes() {
@@ -101,7 +102,7 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
     /**
      * Set the managedGroupTypes property: The group type for which the expiration policy applies. Possible values are
      * All, Selected or None.
-     *
+     * 
      * @param managedGroupTypes the managedGroupTypes value to set.
      * @return the MicrosoftGraphGroupLifecyclePolicy object itself.
      */
@@ -112,17 +113,16 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
 
     /**
      * Get the additionalProperties property: groupLifecyclePolicy.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: groupLifecyclePolicy.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphGroupLifecyclePolicy object itself.
      */
@@ -131,15 +131,9 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphGroupLifecyclePolicy withId(String id) {
         super.withId(id);
@@ -148,11 +142,69 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("alternateNotificationEmails", this.alternateNotificationEmails);
+        jsonWriter.writeNumberField("groupLifetimeInDays", this.groupLifetimeInDays);
+        jsonWriter.writeStringField("managedGroupTypes", this.managedGroupTypes);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphGroupLifecyclePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphGroupLifecyclePolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphGroupLifecyclePolicy.
+     */
+    public static MicrosoftGraphGroupLifecyclePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphGroupLifecyclePolicy deserializedMicrosoftGraphGroupLifecyclePolicy
+                = new MicrosoftGraphGroupLifecyclePolicy();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupLifecyclePolicy.withId(reader.getString());
+                } else if ("alternateNotificationEmails".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupLifecyclePolicy.alternateNotificationEmails = reader.getString();
+                } else if ("groupLifetimeInDays".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupLifecyclePolicy.groupLifetimeInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("managedGroupTypes".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupLifecyclePolicy.managedGroupTypes = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphGroupLifecyclePolicy.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphGroupLifecyclePolicy;
+        });
     }
 }

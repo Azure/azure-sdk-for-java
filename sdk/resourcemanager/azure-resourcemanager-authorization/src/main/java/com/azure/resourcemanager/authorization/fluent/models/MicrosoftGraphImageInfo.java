@@ -5,54 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** imageInfo. */
+/**
+ * imageInfo.
+ */
 @Fluent
-public final class MicrosoftGraphImageInfo {
+public final class MicrosoftGraphImageInfo implements JsonSerializable<MicrosoftGraphImageInfo> {
     /*
      * Optional; parameter used to indicate the server is able to render image dynamically in response to
      * parameterization. For example – a high contrast image
      */
-    @JsonProperty(value = "addImageQuery")
     private Boolean addImageQuery;
 
     /*
      * Optional; alt-text accessible content for the image
      */
-    @JsonProperty(value = "alternateText")
     private String alternateText;
 
     /*
      * The alternativeText property.
      */
-    @JsonProperty(value = "alternativeText")
     private String alternativeText;
 
     /*
      * Optional; URI that points to an icon which represents the application used to generate the activity
      */
-    @JsonProperty(value = "iconUrl")
     private String iconUrl;
 
     /*
      * imageInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphImageInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphImageInfo class.
+     */
     public MicrosoftGraphImageInfo() {
     }
 
     /**
      * Get the addImageQuery property: Optional; parameter used to indicate the server is able to render image
      * dynamically in response to parameterization. For example – a high contrast image.
-     *
+     * 
      * @return the addImageQuery value.
      */
     public Boolean addImageQuery() {
@@ -62,7 +63,7 @@ public final class MicrosoftGraphImageInfo {
     /**
      * Set the addImageQuery property: Optional; parameter used to indicate the server is able to render image
      * dynamically in response to parameterization. For example – a high contrast image.
-     *
+     * 
      * @param addImageQuery the addImageQuery value to set.
      * @return the MicrosoftGraphImageInfo object itself.
      */
@@ -73,7 +74,7 @@ public final class MicrosoftGraphImageInfo {
 
     /**
      * Get the alternateText property: Optional; alt-text accessible content for the image.
-     *
+     * 
      * @return the alternateText value.
      */
     public String alternateText() {
@@ -82,7 +83,7 @@ public final class MicrosoftGraphImageInfo {
 
     /**
      * Set the alternateText property: Optional; alt-text accessible content for the image.
-     *
+     * 
      * @param alternateText the alternateText value to set.
      * @return the MicrosoftGraphImageInfo object itself.
      */
@@ -93,7 +94,7 @@ public final class MicrosoftGraphImageInfo {
 
     /**
      * Get the alternativeText property: The alternativeText property.
-     *
+     * 
      * @return the alternativeText value.
      */
     public String alternativeText() {
@@ -102,7 +103,7 @@ public final class MicrosoftGraphImageInfo {
 
     /**
      * Set the alternativeText property: The alternativeText property.
-     *
+     * 
      * @param alternativeText the alternativeText value to set.
      * @return the MicrosoftGraphImageInfo object itself.
      */
@@ -114,7 +115,7 @@ public final class MicrosoftGraphImageInfo {
     /**
      * Get the iconUrl property: Optional; URI that points to an icon which represents the application used to generate
      * the activity.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -124,7 +125,7 @@ public final class MicrosoftGraphImageInfo {
     /**
      * Set the iconUrl property: Optional; URI that points to an icon which represents the application used to generate
      * the activity.
-     *
+     * 
      * @param iconUrl the iconUrl value to set.
      * @return the MicrosoftGraphImageInfo object itself.
      */
@@ -135,17 +136,16 @@ public final class MicrosoftGraphImageInfo {
 
     /**
      * Get the additionalProperties property: imageInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: imageInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphImageInfo object itself.
      */
@@ -154,19 +154,67 @@ public final class MicrosoftGraphImageInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("addImageQuery", this.addImageQuery);
+        jsonWriter.writeStringField("alternateText", this.alternateText);
+        jsonWriter.writeStringField("alternativeText", this.alternativeText);
+        jsonWriter.writeStringField("iconUrl", this.iconUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphImageInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphImageInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphImageInfo.
+     */
+    public static MicrosoftGraphImageInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphImageInfo deserializedMicrosoftGraphImageInfo = new MicrosoftGraphImageInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addImageQuery".equals(fieldName)) {
+                    deserializedMicrosoftGraphImageInfo.addImageQuery = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alternateText".equals(fieldName)) {
+                    deserializedMicrosoftGraphImageInfo.alternateText = reader.getString();
+                } else if ("alternativeText".equals(fieldName)) {
+                    deserializedMicrosoftGraphImageInfo.alternativeText = reader.getString();
+                } else if ("iconUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphImageInfo.iconUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphImageInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphImageInfo;
+        });
     }
 }

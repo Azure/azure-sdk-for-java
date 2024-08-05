@@ -13,10 +13,10 @@ import java.io.IOException;
  * Interface defining methods that all JSON types must implement.
  */
 public abstract class JsonElement implements JsonSerializable<JsonElement> {
-    JsonElement() {
-        // Dummy package-private constructor to prevent external implementations of types that shouldn't be extended.
-        // Right now, the only extension points we want are JsonArray and JsonObject, everything else should be agnostic
-        // to the JSON implementation.
+    /**
+     * Default constructor.
+     */
+    public JsonElement() {
     }
 
     /**
@@ -69,7 +69,7 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
 
             default:
                 throw new IllegalStateException(
-                    "JsonReader is pointing to an invalid token for deserialization." + "Token was: " + token + ".");
+                    "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + ".");
         }
     }
 
@@ -126,12 +126,4 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
     public boolean isString() {
         return false;
     }
-
-    /**
-     * Creates a JSON string representation of this element.
-     *
-     * @return JSON String representation of this element.
-     * @throws IOException If an error occurs while creating the JSON string.
-     */
-    public abstract String toJsonString() throws IOException;
 }

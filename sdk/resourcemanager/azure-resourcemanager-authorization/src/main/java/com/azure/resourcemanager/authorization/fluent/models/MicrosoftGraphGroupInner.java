@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * group
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -26,21 +28,18 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * The list of sensitivity label pairs (label ID, label name) associated with an Microsoft 365 group. Returned only
      * on $select. Read-only.
      */
-    @JsonProperty(value = "assignedLabels")
     private List<MicrosoftGraphAssignedLabel> assignedLabels;
 
     /*
      * The licenses that are assigned to the group. Returned only on $select. Read-only.
      */
-    @JsonProperty(value = "assignedLicenses")
     private List<MicrosoftGraphAssignedLicense> assignedLicenses;
 
     /*
      * Describes a classification for the group (such as low, medium or high business impact). Valid values for this
-     * property are defined by creating a ClassificationList setting value, based on the template definition.Returned
-     * by default.
+     * property are defined by creating a ClassificationList setting value, based on the template definition.Returned by
+     * default.
      */
-    @JsonProperty(value = "classification")
     private String classification;
 
     /*
@@ -49,38 +48,33 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Returned by
      * default. Read-only.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * An optional description for the group. Returned by default.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name for the group. This property is required when a group is created and cannot be cleared during
      * updates. Returned by default. Supports $filter and $orderby.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Timestamp of when the group is set to expire. The value cannot be modified and is automatically populated when
-     * the group is created. The Timestamp type represents date and time information using ISO 8601 format and is
-     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     * Returned by default. Read-only.
+     * the group is created. The Timestamp type represents date and time information using ISO 8601 format and is always
+     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Returned by
+     * default. Read-only.
      */
-    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
-     * Specifies the group type and its membership.  If the collection contains Unified, the group is a Microsoft 365
+     * Specifies the group type and its membership. If the collection contains Unified, the group is a Microsoft 365
      * group; otherwise, it's either a security group or distribution group. For details, see groups overview.If the
      * collection includes DynamicMembership, the group has dynamic membership; otherwise, membership is static.
      * Returned by default. Supports $filter.
      */
-    @JsonProperty(value = "groupTypes")
     private List<String> groupTypes;
 
     /*
@@ -88,32 +82,27 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * assignment. This property is never returned on a GET operation. You can use it as a $filter argument to get
      * groups that have members with license errors (that is, filter for this property being true). See an example.
      */
-    @JsonProperty(value = "hasMembersWithLicenseErrors")
     private Boolean hasMembersWithLicenseErrors;
 
     /*
      * licenseProcessingState
      */
-    @JsonProperty(value = "licenseProcessingState")
     private MicrosoftGraphLicenseProcessingState licenseProcessingState;
 
     /*
      * The SMTP address for the group, for example, 'serviceadmins@contoso.onmicrosoft.com'. Returned by default.
      * Read-only. Supports $filter.
      */
-    @JsonProperty(value = "mail")
     private String mail;
 
     /*
      * Specifies whether the group is mail-enabled. Returned by default.
      */
-    @JsonProperty(value = "mailEnabled")
     private Boolean mailEnabled;
 
     /*
      * The mailNickname property.
      */
-    @JsonProperty(value = "mailNickname")
     private String mailNickname;
 
     /*
@@ -121,38 +110,32 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * DynamicMembership). For more information about the syntax of the membership rule, see Membership Rules syntax.
      * Returned by default.
      */
-    @JsonProperty(value = "membershipRule")
     private String membershipRule;
 
     /*
      * Indicates whether the dynamic membership processing is on or paused. Possible values are 'On' or 'Paused'.
      * Returned by default.
      */
-    @JsonProperty(value = "membershipRuleProcessingState")
     private String membershipRuleProcessingState;
 
     /*
      * The onPremisesDomainName property.
      */
-    @JsonProperty(value = "onPremisesDomainName")
     private String onPremisesDomainName;
 
     /*
      * The onPremisesLastSyncDateTime property.
      */
-    @JsonProperty(value = "onPremisesLastSyncDateTime")
     private OffsetDateTime onPremisesLastSyncDateTime;
 
     /*
      * The onPremisesNetBiosName property.
      */
-    @JsonProperty(value = "onPremisesNetBiosName")
     private String onPremisesNetBiosName;
 
     /*
      * The onPremisesProvisioningErrors property.
      */
-    @JsonProperty(value = "onPremisesProvisioningErrors")
     private List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors;
 
     /*
@@ -160,14 +143,12 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * populated for customers who are synchronizing their on-premises directory to Azure Active Directory via Azure AD
      * Connect.Returned by default. Read-only.
      */
-    @JsonProperty(value = "onPremisesSamAccountName")
     private String onPremisesSamAccountName;
 
     /*
      * Contains the on-premises security identifier (SID) for the group that was synchronized from on-premises to the
      * cloud. Returned by default. Read-only.
      */
-    @JsonProperty(value = "onPremisesSecurityIdentifier")
     private String onPremisesSecurityIdentifier;
 
     /*
@@ -175,27 +156,23 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * on-premises directory but is no longer synced; null if this object has never been synced from an on-premises
      * directory (default). Returned by default. Read-only. Supports $filter.
      */
-    @JsonProperty(value = "onPremisesSyncEnabled")
     private Boolean onPremisesSyncEnabled;
 
     /*
-     * The preferred data location for the group. For more information, see  OneDrive Online Multi-Geo. Returned by
+     * The preferred data location for the group. For more information, see OneDrive Online Multi-Geo. Returned by
      * default.
      */
-    @JsonProperty(value = "preferredDataLocation")
     private String preferredDataLocation;
 
     /*
-     * The preferred language for an Microsoft 365 group. Should follow ISO 639-1 Code; for example 'en-US'. Returned
-     * by default.
+     * The preferred language for an Microsoft 365 group. Should follow ISO 639-1 Code; for example 'en-US'. Returned by
+     * default.
      */
-    @JsonProperty(value = "preferredLanguage")
     private String preferredLanguage;
 
     /*
      * The proxyAddresses property.
      */
-    @JsonProperty(value = "proxyAddresses")
     private List<String> proxyAddresses;
 
     /*
@@ -204,50 +181,43 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Returned by
      * default. Read-only.
      */
-    @JsonProperty(value = "renewedDateTime")
     private OffsetDateTime renewedDateTime;
 
     /*
      * Specifies whether the group is a security group. Returned by default. Supports $filter.
      */
-    @JsonProperty(value = "securityEnabled")
     private Boolean securityEnabled;
 
     /*
      * Security identifier of the group, used in Windows scenarios. Returned by default.
      */
-    @JsonProperty(value = "securityIdentifier")
     private String securityIdentifier;
 
     /*
      * Specifies an Microsoft 365 group's color theme. Possible values are Teal, Purple, Green, Blue, Pink, Orange or
      * Red. Returned by default.
      */
-    @JsonProperty(value = "theme")
     private String theme;
 
     /*
      * Specifies the visibility of a Microsoft 365 group. Possible values are: Private, Public, or Hiddenmembership;
-     * blank values are treated as public.  See group visibility options to learn more.Visibility can be set only when
-     * a group is created; it is not editable.Visibility is supported only for unified groups; it is not supported for
+     * blank values are treated as public. See group visibility options to learn more.Visibility can be set only when a
+     * group is created; it is not editable.Visibility is supported only for unified groups; it is not supported for
      * security groups. Returned by default.
      */
-    @JsonProperty(value = "visibility")
     private String visibility;
 
     /*
-     * Indicates if people external to the organization can send messages to the group. Default value is false.
-     * Returned only on $select.
+     * Indicates if people external to the organization can send messages to the group. Default value is false. Returned
+     * only on $select.
      */
-    @JsonProperty(value = "allowExternalSenders")
     private Boolean allowExternalSenders;
 
     /*
      * Indicates if new members added to the group will be auto-subscribed to receive email notifications. You can set
-     * this property in a PATCH request for the group; do not set it in the initial POST request that creates the
-     * group. Default value is false. Returned only on $select.
+     * this property in a PATCH request for the group; do not set it in the initial POST request that creates the group.
+     * Default value is false. Returned only on $select.
      */
-    @JsonProperty(value = "autoSubscribeNewMembers")
     private Boolean autoSubscribeNewMembers;
 
     /*
@@ -255,55 +225,45 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * selecting message recipients, and the Browse Groups dialog for searching groups; otherwise, false. Default value
      * is false. Returned only on $select.
      */
-    @JsonProperty(value = "hideFromAddressLists")
     private Boolean hideFromAddressLists;
 
     /*
      * True if the group is not displayed in Outlook clients, such as Outlook for Windows and Outlook on the web;
      * otherwise, false. Default value is false. Returned only on $select.
      */
-    @JsonProperty(value = "hideFromOutlookClients")
     private Boolean hideFromOutlookClients;
 
     /*
      * Indicates whether the signed-in user is subscribed to receive email conversations. Default value is true.
      * Returned only on $select.
      */
-    @JsonProperty(value = "isSubscribedByMail")
     private Boolean isSubscribedByMail;
 
     /*
      * Count of conversations that have received new posts since the signed-in user last visited the group. Returned
      * only on $select.
      */
-    @JsonProperty(value = "unseenCount")
     private Integer unseenCount;
 
     /*
      * The isArchived property.
      */
-    @JsonProperty(value = "isArchived")
     private Boolean isArchived;
 
     /*
      * The appRoleAssignments property.
      */
-    @JsonProperty(value = "appRoleAssignments")
     private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
 
     /*
-     * directoryObject
-     *
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonProperty(value = "createdOnBehalfOf")
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
 
     /*
      * Groups that this group is a member of. HTTP Methods: GET (supported for all groups). Read-only. Nullable.
      */
-    @JsonProperty(value = "memberOf")
     private List<MicrosoftGraphDirectoryObjectInner> memberOf;
 
     /*
@@ -311,13 +271,11 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * for Microsoft 365 groups, security groups and mail-enabled security groups), DELETE (supported for Microsoft 365
      * groups and security groups) Nullable.
      */
-    @JsonProperty(value = "members")
     private List<MicrosoftGraphDirectoryObjectInner> members;
 
     /*
      * A list of group members with license errors from this group-based license assignment. Read-only.
      */
-    @JsonProperty(value = "membersWithLicenseErrors")
     private List<MicrosoftGraphDirectoryObjectInner> membersWithLicenseErrors;
 
     /*
@@ -326,150 +284,130 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * groups and mail-enabled security groups), DELETE (supported for Microsoft 365 groups and security groups).
      * Nullable.
      */
-    @JsonProperty(value = "owners")
     private List<MicrosoftGraphDirectoryObjectInner> owners;
 
     /*
      * The permissionGrants property.
      */
-    @JsonProperty(value = "permissionGrants")
     private List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants;
 
     /*
      * Read-only. Nullable.
      */
-    @JsonProperty(value = "settings")
     private List<MicrosoftGraphGroupSetting> settings;
 
     /*
      * The transitiveMemberOf property.
      */
-    @JsonProperty(value = "transitiveMemberOf")
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf;
 
     /*
      * The transitiveMembers property.
      */
-    @JsonProperty(value = "transitiveMembers")
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMembers;
 
     /*
      * The list of users or groups that are allowed to create post's or calendar events in this group. If this list is
      * non-empty then only users or groups listed here are allowed to post.
      */
-    @JsonProperty(value = "acceptedSenders")
     private List<MicrosoftGraphDirectoryObjectInner> acceptedSenders;
 
     /*
      * calendar
      */
-    @JsonProperty(value = "calendar")
     private MicrosoftGraphCalendar calendar;
 
     /*
      * The calendar view for the calendar. Read-only.
      */
-    @JsonProperty(value = "calendarView")
     private List<MicrosoftGraphEvent> calendarView;
 
     /*
      * The group's conversations.
      */
-    @JsonProperty(value = "conversations")
     private List<MicrosoftGraphConversation> conversations;
 
     /*
      * The group's calendar events.
      */
-    @JsonProperty(value = "events")
     private List<MicrosoftGraphEvent> events;
 
     /*
      * profilePhoto
      */
-    @JsonProperty(value = "photo")
     private MicrosoftGraphProfilePhoto photo;
 
     /*
      * The profile photos owned by the group. Read-only. Nullable.
      */
-    @JsonProperty(value = "photos")
     private List<MicrosoftGraphProfilePhoto> photos;
 
     /*
      * The list of users or groups that are not allowed to create posts or calendar events in this group. Nullable
      */
-    @JsonProperty(value = "rejectedSenders")
     private List<MicrosoftGraphDirectoryObjectInner> rejectedSenders;
 
     /*
      * The group's conversation threads. Nullable.
      */
-    @JsonProperty(value = "threads")
     private List<MicrosoftGraphConversationThread> threads;
 
     /*
      * drive
      */
-    @JsonProperty(value = "drive")
     private MicrosoftGraphDrive drive;
 
     /*
      * The group's drives. Read-only.
      */
-    @JsonProperty(value = "drives")
     private List<MicrosoftGraphDrive> drives;
 
     /*
      * The list of SharePoint sites in this group. Access the default site with /sites/root.
      */
-    @JsonProperty(value = "sites")
     private List<MicrosoftGraphSite> sites;
 
     /*
      * The collection of open extensions defined for the group. Read-only. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The collection of lifecycle policies for this group. Read-only. Nullable.
      */
-    @JsonProperty(value = "groupLifecyclePolicies")
     private List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies;
 
     /*
      * plannerGroup
      */
-    @JsonProperty(value = "planner")
     private MicrosoftGraphPlannerGroup planner;
 
     /*
      * onenote
      */
-    @JsonProperty(value = "onenote")
     private MicrosoftGraphOnenote onenote;
 
     /*
      * team
      */
-    @JsonProperty(value = "team")
     private MicrosoftGraphTeamInner team;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphGroupInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphGroupInner class.
+     */
     public MicrosoftGraphGroupInner() {
     }
 
     /**
      * Get the assignedLabels property: The list of sensitivity label pairs (label ID, label name) associated with an
      * Microsoft 365 group. Returned only on $select. Read-only.
-     *
+     * 
      * @return the assignedLabels value.
      */
     public List<MicrosoftGraphAssignedLabel> assignedLabels() {
@@ -479,7 +417,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the assignedLabels property: The list of sensitivity label pairs (label ID, label name) associated with an
      * Microsoft 365 group. Returned only on $select. Read-only.
-     *
+     * 
      * @param assignedLabels the assignedLabels value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -491,7 +429,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the assignedLicenses property: The licenses that are assigned to the group. Returned only on $select.
      * Read-only.
-     *
+     * 
      * @return the assignedLicenses value.
      */
     public List<MicrosoftGraphAssignedLicense> assignedLicenses() {
@@ -501,7 +439,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the assignedLicenses property: The licenses that are assigned to the group. Returned only on $select.
      * Read-only.
-     *
+     * 
      * @param assignedLicenses the assignedLicenses value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -514,7 +452,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the classification property: Describes a classification for the group (such as low, medium or high business
      * impact). Valid values for this property are defined by creating a ClassificationList setting value, based on the
      * template definition.Returned by default.
-     *
+     * 
      * @return the classification value.
      */
     public String classification() {
@@ -525,7 +463,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the classification property: Describes a classification for the group (such as low, medium or high business
      * impact). Valid values for this property are defined by creating a ClassificationList setting value, based on the
      * template definition.Returned by default.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -539,7 +477,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * automatically populated when the group is created. The Timestamp type represents date and time information using
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Returned by default. Read-only.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -551,7 +489,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * automatically populated when the group is created. The Timestamp type represents date and time information using
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Returned by default. Read-only.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -562,7 +500,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the description property: An optional description for the group. Returned by default.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -571,7 +509,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the description property: An optional description for the group. Returned by default.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -583,7 +521,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the displayName property: The display name for the group. This property is required when a group is created
      * and cannot be cleared during updates. Returned by default. Supports $filter and $orderby.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -593,7 +531,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the displayName property: The display name for the group. This property is required when a group is created
      * and cannot be cleared during updates. Returned by default. Supports $filter and $orderby.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -607,7 +545,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * and is automatically populated when the group is created. The Timestamp type represents date and time information
      * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Returned by default. Read-only.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     public OffsetDateTime expirationDateTime() {
@@ -619,7 +557,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * and is automatically populated when the group is created. The Timestamp type represents date and time information
      * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Returned by default. Read-only.
-     *
+     * 
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -633,7 +571,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * group is a Microsoft 365 group; otherwise, it's either a security group or distribution group. For details, see
      * groups overview.If the collection includes DynamicMembership, the group has dynamic membership; otherwise,
      * membership is static. Returned by default. Supports $filter.
-     *
+     * 
      * @return the groupTypes value.
      */
     public List<String> groupTypes() {
@@ -645,7 +583,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * group is a Microsoft 365 group; otherwise, it's either a security group or distribution group. For details, see
      * groups overview.If the collection includes DynamicMembership, the group has dynamic membership; otherwise,
      * membership is static. Returned by default. Supports $filter.
-     *
+     * 
      * @param groupTypes the groupTypes value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -659,7 +597,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * errors from its group-based license assignment. This property is never returned on a GET operation. You can use
      * it as a $filter argument to get groups that have members with license errors (that is, filter for this property
      * being true). See an example.
-     *
+     * 
      * @return the hasMembersWithLicenseErrors value.
      */
     public Boolean hasMembersWithLicenseErrors() {
@@ -671,7 +609,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * errors from its group-based license assignment. This property is never returned on a GET operation. You can use
      * it as a $filter argument to get groups that have members with license errors (that is, filter for this property
      * being true). See an example.
-     *
+     * 
      * @param hasMembersWithLicenseErrors the hasMembersWithLicenseErrors value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -682,7 +620,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the licenseProcessingState property: licenseProcessingState.
-     *
+     * 
      * @return the licenseProcessingState value.
      */
     public MicrosoftGraphLicenseProcessingState licenseProcessingState() {
@@ -691,20 +629,20 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the licenseProcessingState property: licenseProcessingState.
-     *
+     * 
      * @param licenseProcessingState the licenseProcessingState value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withLicenseProcessingState(
-        MicrosoftGraphLicenseProcessingState licenseProcessingState) {
+    public MicrosoftGraphGroupInner
+        withLicenseProcessingState(MicrosoftGraphLicenseProcessingState licenseProcessingState) {
         this.licenseProcessingState = licenseProcessingState;
         return this;
     }
 
     /**
-     * Get the mail property: The SMTP address for the group, for example, 'serviceadmins@contoso.onmicrosoft.com'.
+     * Get the mail property: The SMTP address for the group, for example, 'serviceadmins&#064;contoso.onmicrosoft.com'.
      * Returned by default. Read-only. Supports $filter.
-     *
+     * 
      * @return the mail value.
      */
     public String mail() {
@@ -712,9 +650,9 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the mail property: The SMTP address for the group, for example, 'serviceadmins@contoso.onmicrosoft.com'.
+     * Set the mail property: The SMTP address for the group, for example, 'serviceadmins&#064;contoso.onmicrosoft.com'.
      * Returned by default. Read-only. Supports $filter.
-     *
+     * 
      * @param mail the mail value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -725,7 +663,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the mailEnabled property: Specifies whether the group is mail-enabled. Returned by default.
-     *
+     * 
      * @return the mailEnabled value.
      */
     public Boolean mailEnabled() {
@@ -734,7 +672,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the mailEnabled property: Specifies whether the group is mail-enabled. Returned by default.
-     *
+     * 
      * @param mailEnabled the mailEnabled value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -745,7 +683,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the mailNickname property: The mailNickname property.
-     *
+     * 
      * @return the mailNickname value.
      */
     public String mailNickname() {
@@ -754,7 +692,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the mailNickname property: The mailNickname property.
-     *
+     * 
      * @param mailNickname the mailNickname value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -767,7 +705,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the membershipRule property: The rule that determines members for this group if the group is a dynamic group
      * (groupTypes contains DynamicMembership). For more information about the syntax of the membership rule, see
      * Membership Rules syntax. Returned by default.
-     *
+     * 
      * @return the membershipRule value.
      */
     public String membershipRule() {
@@ -778,7 +716,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the membershipRule property: The rule that determines members for this group if the group is a dynamic group
      * (groupTypes contains DynamicMembership). For more information about the syntax of the membership rule, see
      * Membership Rules syntax. Returned by default.
-     *
+     * 
      * @param membershipRule the membershipRule value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -790,7 +728,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the membershipRuleProcessingState property: Indicates whether the dynamic membership processing is on or
      * paused. Possible values are 'On' or 'Paused'. Returned by default.
-     *
+     * 
      * @return the membershipRuleProcessingState value.
      */
     public String membershipRuleProcessingState() {
@@ -800,7 +738,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the membershipRuleProcessingState property: Indicates whether the dynamic membership processing is on or
      * paused. Possible values are 'On' or 'Paused'. Returned by default.
-     *
+     * 
      * @param membershipRuleProcessingState the membershipRuleProcessingState value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -811,7 +749,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the onPremisesDomainName property: The onPremisesDomainName property.
-     *
+     * 
      * @return the onPremisesDomainName value.
      */
     public String onPremisesDomainName() {
@@ -820,7 +758,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the onPremisesDomainName property: The onPremisesDomainName property.
-     *
+     * 
      * @param onPremisesDomainName the onPremisesDomainName value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -831,7 +769,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the onPremisesLastSyncDateTime property: The onPremisesLastSyncDateTime property.
-     *
+     * 
      * @return the onPremisesLastSyncDateTime value.
      */
     public OffsetDateTime onPremisesLastSyncDateTime() {
@@ -840,7 +778,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the onPremisesLastSyncDateTime property: The onPremisesLastSyncDateTime property.
-     *
+     * 
      * @param onPremisesLastSyncDateTime the onPremisesLastSyncDateTime value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -851,7 +789,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the onPremisesNetBiosName property: The onPremisesNetBiosName property.
-     *
+     * 
      * @return the onPremisesNetBiosName value.
      */
     public String onPremisesNetBiosName() {
@@ -860,7 +798,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the onPremisesNetBiosName property: The onPremisesNetBiosName property.
-     *
+     * 
      * @param onPremisesNetBiosName the onPremisesNetBiosName value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -871,7 +809,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the onPremisesProvisioningErrors property: The onPremisesProvisioningErrors property.
-     *
+     * 
      * @return the onPremisesProvisioningErrors value.
      */
     public List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors() {
@@ -880,12 +818,12 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the onPremisesProvisioningErrors property: The onPremisesProvisioningErrors property.
-     *
+     * 
      * @param onPremisesProvisioningErrors the onPremisesProvisioningErrors value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withOnPremisesProvisioningErrors(
-        List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors) {
+    public MicrosoftGraphGroupInner
+        withOnPremisesProvisioningErrors(List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors) {
         this.onPremisesProvisioningErrors = onPremisesProvisioningErrors;
         return this;
     }
@@ -894,7 +832,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the onPremisesSamAccountName property: Contains the on-premises SAM account name synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
      * directory to Azure Active Directory via Azure AD Connect.Returned by default. Read-only.
-     *
+     * 
      * @return the onPremisesSamAccountName value.
      */
     public String onPremisesSamAccountName() {
@@ -905,7 +843,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the onPremisesSamAccountName property: Contains the on-premises SAM account name synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
      * directory to Azure Active Directory via Azure AD Connect.Returned by default. Read-only.
-     *
+     * 
      * @param onPremisesSamAccountName the onPremisesSamAccountName value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -917,7 +855,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the onPremisesSecurityIdentifier property: Contains the on-premises security identifier (SID) for the group
      * that was synchronized from on-premises to the cloud. Returned by default. Read-only.
-     *
+     * 
      * @return the onPremisesSecurityIdentifier value.
      */
     public String onPremisesSecurityIdentifier() {
@@ -927,7 +865,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the onPremisesSecurityIdentifier property: Contains the on-premises security identifier (SID) for the group
      * that was synchronized from on-premises to the cloud. Returned by default. Read-only.
-     *
+     * 
      * @param onPremisesSecurityIdentifier the onPremisesSecurityIdentifier value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -940,7 +878,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the onPremisesSyncEnabled property: true if this group is synced from an on-premises directory; false if this
      * group was originally synced from an on-premises directory but is no longer synced; null if this object has never
      * been synced from an on-premises directory (default). Returned by default. Read-only. Supports $filter.
-     *
+     * 
      * @return the onPremisesSyncEnabled value.
      */
     public Boolean onPremisesSyncEnabled() {
@@ -951,7 +889,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the onPremisesSyncEnabled property: true if this group is synced from an on-premises directory; false if this
      * group was originally synced from an on-premises directory but is no longer synced; null if this object has never
      * been synced from an on-premises directory (default). Returned by default. Read-only. Supports $filter.
-     *
+     * 
      * @param onPremisesSyncEnabled the onPremisesSyncEnabled value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -963,7 +901,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the preferredDataLocation property: The preferred data location for the group. For more information, see
      * OneDrive Online Multi-Geo. Returned by default.
-     *
+     * 
      * @return the preferredDataLocation value.
      */
     public String preferredDataLocation() {
@@ -973,7 +911,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the preferredDataLocation property: The preferred data location for the group. For more information, see
      * OneDrive Online Multi-Geo. Returned by default.
-     *
+     * 
      * @param preferredDataLocation the preferredDataLocation value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -985,7 +923,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the preferredLanguage property: The preferred language for an Microsoft 365 group. Should follow ISO 639-1
      * Code; for example 'en-US'. Returned by default.
-     *
+     * 
      * @return the preferredLanguage value.
      */
     public String preferredLanguage() {
@@ -995,7 +933,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the preferredLanguage property: The preferred language for an Microsoft 365 group. Should follow ISO 639-1
      * Code; for example 'en-US'. Returned by default.
-     *
+     * 
      * @param preferredLanguage the preferredLanguage value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1006,7 +944,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the proxyAddresses property: The proxyAddresses property.
-     *
+     * 
      * @return the proxyAddresses value.
      */
     public List<String> proxyAddresses() {
@@ -1015,7 +953,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the proxyAddresses property: The proxyAddresses property.
-     *
+     * 
      * @param proxyAddresses the proxyAddresses value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1029,7 +967,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * and is only updated via the renew service action. The Timestamp type represents date and time information using
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Returned by default. Read-only.
-     *
+     * 
      * @return the renewedDateTime value.
      */
     public OffsetDateTime renewedDateTime() {
@@ -1041,7 +979,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * and is only updated via the renew service action. The Timestamp type represents date and time information using
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Returned by default. Read-only.
-     *
+     * 
      * @param renewedDateTime the renewedDateTime value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1053,7 +991,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the securityEnabled property: Specifies whether the group is a security group. Returned by default. Supports
      * $filter.
-     *
+     * 
      * @return the securityEnabled value.
      */
     public Boolean securityEnabled() {
@@ -1063,7 +1001,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the securityEnabled property: Specifies whether the group is a security group. Returned by default. Supports
      * $filter.
-     *
+     * 
      * @param securityEnabled the securityEnabled value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1075,7 +1013,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the securityIdentifier property: Security identifier of the group, used in Windows scenarios. Returned by
      * default.
-     *
+     * 
      * @return the securityIdentifier value.
      */
     public String securityIdentifier() {
@@ -1085,7 +1023,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the securityIdentifier property: Security identifier of the group, used in Windows scenarios. Returned by
      * default.
-     *
+     * 
      * @param securityIdentifier the securityIdentifier value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1097,7 +1035,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the theme property: Specifies an Microsoft 365 group's color theme. Possible values are Teal, Purple, Green,
      * Blue, Pink, Orange or Red. Returned by default.
-     *
+     * 
      * @return the theme value.
      */
     public String theme() {
@@ -1107,7 +1045,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the theme property: Specifies an Microsoft 365 group's color theme. Possible values are Teal, Purple, Green,
      * Blue, Pink, Orange or Red. Returned by default.
-     *
+     * 
      * @param theme the theme value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1121,7 +1059,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Public, or Hiddenmembership; blank values are treated as public. See group visibility options to learn
      * more.Visibility can be set only when a group is created; it is not editable.Visibility is supported only for
      * unified groups; it is not supported for security groups. Returned by default.
-     *
+     * 
      * @return the visibility value.
      */
     public String visibility() {
@@ -1133,7 +1071,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Public, or Hiddenmembership; blank values are treated as public. See group visibility options to learn
      * more.Visibility can be set only when a group is created; it is not editable.Visibility is supported only for
      * unified groups; it is not supported for security groups. Returned by default.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1145,7 +1083,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the allowExternalSenders property: Indicates if people external to the organization can send messages to the
      * group. Default value is false. Returned only on $select.
-     *
+     * 
      * @return the allowExternalSenders value.
      */
     public Boolean allowExternalSenders() {
@@ -1155,7 +1093,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the allowExternalSenders property: Indicates if people external to the organization can send messages to the
      * group. Default value is false. Returned only on $select.
-     *
+     * 
      * @param allowExternalSenders the allowExternalSenders value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1168,7 +1106,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the autoSubscribeNewMembers property: Indicates if new members added to the group will be auto-subscribed to
      * receive email notifications. You can set this property in a PATCH request for the group; do not set it in the
      * initial POST request that creates the group. Default value is false. Returned only on $select.
-     *
+     * 
      * @return the autoSubscribeNewMembers value.
      */
     public Boolean autoSubscribeNewMembers() {
@@ -1179,7 +1117,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the autoSubscribeNewMembers property: Indicates if new members added to the group will be auto-subscribed to
      * receive email notifications. You can set this property in a PATCH request for the group; do not set it in the
      * initial POST request that creates the group. Default value is false. Returned only on $select.
-     *
+     * 
      * @param autoSubscribeNewMembers the autoSubscribeNewMembers value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1192,7 +1130,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the hideFromAddressLists property: True if the group is not displayed in certain parts of the Outlook UI: the
      * Address Book, address lists for selecting message recipients, and the Browse Groups dialog for searching groups;
      * otherwise, false. Default value is false. Returned only on $select.
-     *
+     * 
      * @return the hideFromAddressLists value.
      */
     public Boolean hideFromAddressLists() {
@@ -1203,7 +1141,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the hideFromAddressLists property: True if the group is not displayed in certain parts of the Outlook UI: the
      * Address Book, address lists for selecting message recipients, and the Browse Groups dialog for searching groups;
      * otherwise, false. Default value is false. Returned only on $select.
-     *
+     * 
      * @param hideFromAddressLists the hideFromAddressLists value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1215,7 +1153,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the hideFromOutlookClients property: True if the group is not displayed in Outlook clients, such as Outlook
      * for Windows and Outlook on the web; otherwise, false. Default value is false. Returned only on $select.
-     *
+     * 
      * @return the hideFromOutlookClients value.
      */
     public Boolean hideFromOutlookClients() {
@@ -1225,7 +1163,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the hideFromOutlookClients property: True if the group is not displayed in Outlook clients, such as Outlook
      * for Windows and Outlook on the web; otherwise, false. Default value is false. Returned only on $select.
-     *
+     * 
      * @param hideFromOutlookClients the hideFromOutlookClients value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1237,7 +1175,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the isSubscribedByMail property: Indicates whether the signed-in user is subscribed to receive email
      * conversations. Default value is true. Returned only on $select.
-     *
+     * 
      * @return the isSubscribedByMail value.
      */
     public Boolean isSubscribedByMail() {
@@ -1247,7 +1185,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the isSubscribedByMail property: Indicates whether the signed-in user is subscribed to receive email
      * conversations. Default value is true. Returned only on $select.
-     *
+     * 
      * @param isSubscribedByMail the isSubscribedByMail value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1259,7 +1197,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the unseenCount property: Count of conversations that have received new posts since the signed-in user last
      * visited the group. Returned only on $select.
-     *
+     * 
      * @return the unseenCount value.
      */
     public Integer unseenCount() {
@@ -1269,7 +1207,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the unseenCount property: Count of conversations that have received new posts since the signed-in user last
      * visited the group. Returned only on $select.
-     *
+     * 
      * @param unseenCount the unseenCount value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1280,7 +1218,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the isArchived property: The isArchived property.
-     *
+     * 
      * @return the isArchived value.
      */
     public Boolean isArchived() {
@@ -1289,7 +1227,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the isArchived property: The isArchived property.
-     *
+     * 
      * @param isArchived the isArchived value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1300,7 +1238,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the appRoleAssignments property: The appRoleAssignments property.
-     *
+     * 
      * @return the appRoleAssignments value.
      */
     public List<MicrosoftGraphAppRoleAssignment> appRoleAssignments() {
@@ -1309,7 +1247,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the appRoleAssignments property: The appRoleAssignments property.
-     *
+     * 
      * @param appRoleAssignments the appRoleAssignments value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1319,11 +1257,9 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Get the createdOnBehalfOf property: directoryObject
-     *
-     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
-     * directory entity types.
-     *
+     * Get the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * base type for many other directory entity types.
+     * 
      * @return the createdOnBehalfOf value.
      */
     public MicrosoftGraphDirectoryObjectInner createdOnBehalfOf() {
@@ -1331,11 +1267,9 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the createdOnBehalfOf property: directoryObject
-     *
-     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
-     * directory entity types.
-     *
+     * Set the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * base type for many other directory entity types.
+     * 
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1347,7 +1281,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the memberOf property: Groups that this group is a member of. HTTP Methods: GET (supported for all groups).
      * Read-only. Nullable.
-     *
+     * 
      * @return the memberOf value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> memberOf() {
@@ -1357,7 +1291,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the memberOf property: Groups that this group is a member of. HTTP Methods: GET (supported for all groups).
      * Read-only. Nullable.
-     *
+     * 
      * @param memberOf the memberOf value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1370,7 +1304,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Get the members property: Users and groups that are members of this group. HTTP Methods: GET (supported for all
      * groups), POST (supported for Microsoft 365 groups, security groups and mail-enabled security groups), DELETE
      * (supported for Microsoft 365 groups and security groups) Nullable.
-     *
+     * 
      * @return the members value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> members() {
@@ -1381,7 +1315,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Set the members property: Users and groups that are members of this group. HTTP Methods: GET (supported for all
      * groups), POST (supported for Microsoft 365 groups, security groups and mail-enabled security groups), DELETE
      * (supported for Microsoft 365 groups and security groups) Nullable.
-     *
+     * 
      * @param members the members value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1393,7 +1327,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the membersWithLicenseErrors property: A list of group members with license errors from this group-based
      * license assignment. Read-only.
-     *
+     * 
      * @return the membersWithLicenseErrors value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> membersWithLicenseErrors() {
@@ -1403,12 +1337,12 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the membersWithLicenseErrors property: A list of group members with license errors from this group-based
      * license assignment. Read-only.
-     *
+     * 
      * @param membersWithLicenseErrors the membersWithLicenseErrors value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withMembersWithLicenseErrors(
-        List<MicrosoftGraphDirectoryObjectInner> membersWithLicenseErrors) {
+    public MicrosoftGraphGroupInner
+        withMembersWithLicenseErrors(List<MicrosoftGraphDirectoryObjectInner> membersWithLicenseErrors) {
         this.membersWithLicenseErrors = membersWithLicenseErrors;
         return this;
     }
@@ -1418,7 +1352,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * modify this object. Limited to 100 owners. HTTP Methods: GET (supported for all groups), POST (supported for
      * Microsoft 365 groups, security groups and mail-enabled security groups), DELETE (supported for Microsoft 365
      * groups and security groups). Nullable.
-     *
+     * 
      * @return the owners value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> owners() {
@@ -1430,7 +1364,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * modify this object. Limited to 100 owners. HTTP Methods: GET (supported for all groups), POST (supported for
      * Microsoft 365 groups, security groups and mail-enabled security groups), DELETE (supported for Microsoft 365
      * groups and security groups). Nullable.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1441,7 +1375,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the permissionGrants property: The permissionGrants property.
-     *
+     * 
      * @return the permissionGrants value.
      */
     public List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants() {
@@ -1450,19 +1384,19 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the permissionGrants property: The permissionGrants property.
-     *
+     * 
      * @param permissionGrants the permissionGrants value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withPermissionGrants(
-        List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants) {
+    public MicrosoftGraphGroupInner
+        withPermissionGrants(List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants) {
         this.permissionGrants = permissionGrants;
         return this;
     }
 
     /**
      * Get the settings property: Read-only. Nullable.
-     *
+     * 
      * @return the settings value.
      */
     public List<MicrosoftGraphGroupSetting> settings() {
@@ -1471,7 +1405,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the settings property: Read-only. Nullable.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1482,7 +1416,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the transitiveMemberOf property: The transitiveMemberOf property.
-     *
+     * 
      * @return the transitiveMemberOf value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf() {
@@ -1491,19 +1425,19 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the transitiveMemberOf property: The transitiveMemberOf property.
-     *
+     * 
      * @param transitiveMemberOf the transitiveMemberOf value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withTransitiveMemberOf(
-        List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf) {
+    public MicrosoftGraphGroupInner
+        withTransitiveMemberOf(List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf) {
         this.transitiveMemberOf = transitiveMemberOf;
         return this;
     }
 
     /**
      * Get the transitiveMembers property: The transitiveMembers property.
-     *
+     * 
      * @return the transitiveMembers value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> transitiveMembers() {
@@ -1512,7 +1446,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the transitiveMembers property: The transitiveMembers property.
-     *
+     * 
      * @param transitiveMembers the transitiveMembers value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1524,7 +1458,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the acceptedSenders property: The list of users or groups that are allowed to create post's or calendar
      * events in this group. If this list is non-empty then only users or groups listed here are allowed to post.
-     *
+     * 
      * @return the acceptedSenders value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> acceptedSenders() {
@@ -1534,7 +1468,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the acceptedSenders property: The list of users or groups that are allowed to create post's or calendar
      * events in this group. If this list is non-empty then only users or groups listed here are allowed to post.
-     *
+     * 
      * @param acceptedSenders the acceptedSenders value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1545,7 +1479,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the calendar property: calendar.
-     *
+     * 
      * @return the calendar value.
      */
     public MicrosoftGraphCalendar calendar() {
@@ -1554,7 +1488,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the calendar property: calendar.
-     *
+     * 
      * @param calendar the calendar value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1565,7 +1499,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the calendarView property: The calendar view for the calendar. Read-only.
-     *
+     * 
      * @return the calendarView value.
      */
     public List<MicrosoftGraphEvent> calendarView() {
@@ -1574,7 +1508,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the calendarView property: The calendar view for the calendar. Read-only.
-     *
+     * 
      * @param calendarView the calendarView value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1585,7 +1519,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the conversations property: The group's conversations.
-     *
+     * 
      * @return the conversations value.
      */
     public List<MicrosoftGraphConversation> conversations() {
@@ -1594,7 +1528,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the conversations property: The group's conversations.
-     *
+     * 
      * @param conversations the conversations value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1605,7 +1539,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the events property: The group's calendar events.
-     *
+     * 
      * @return the events value.
      */
     public List<MicrosoftGraphEvent> events() {
@@ -1614,7 +1548,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the events property: The group's calendar events.
-     *
+     * 
      * @param events the events value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1625,7 +1559,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the photo property: profilePhoto.
-     *
+     * 
      * @return the photo value.
      */
     public MicrosoftGraphProfilePhoto photo() {
@@ -1634,7 +1568,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the photo property: profilePhoto.
-     *
+     * 
      * @param photo the photo value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1645,7 +1579,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the photos property: The profile photos owned by the group. Read-only. Nullable.
-     *
+     * 
      * @return the photos value.
      */
     public List<MicrosoftGraphProfilePhoto> photos() {
@@ -1654,7 +1588,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the photos property: The profile photos owned by the group. Read-only. Nullable.
-     *
+     * 
      * @param photos the photos value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1666,7 +1600,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the rejectedSenders property: The list of users or groups that are not allowed to create posts or calendar
      * events in this group. Nullable.
-     *
+     * 
      * @return the rejectedSenders value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> rejectedSenders() {
@@ -1676,7 +1610,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the rejectedSenders property: The list of users or groups that are not allowed to create posts or calendar
      * events in this group. Nullable.
-     *
+     * 
      * @param rejectedSenders the rejectedSenders value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1687,7 +1621,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the threads property: The group's conversation threads. Nullable.
-     *
+     * 
      * @return the threads value.
      */
     public List<MicrosoftGraphConversationThread> threads() {
@@ -1696,7 +1630,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the threads property: The group's conversation threads. Nullable.
-     *
+     * 
      * @param threads the threads value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1707,7 +1641,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the drive property: drive.
-     *
+     * 
      * @return the drive value.
      */
     public MicrosoftGraphDrive drive() {
@@ -1716,7 +1650,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the drive property: drive.
-     *
+     * 
      * @param drive the drive value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1727,7 +1661,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the drives property: The group's drives. Read-only.
-     *
+     * 
      * @return the drives value.
      */
     public List<MicrosoftGraphDrive> drives() {
@@ -1736,7 +1670,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the drives property: The group's drives. Read-only.
-     *
+     * 
      * @param drives the drives value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1747,7 +1681,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the sites property: The list of SharePoint sites in this group. Access the default site with /sites/root.
-     *
+     * 
      * @return the sites value.
      */
     public List<MicrosoftGraphSite> sites() {
@@ -1756,7 +1690,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the sites property: The list of SharePoint sites in this group. Access the default site with /sites/root.
-     *
+     * 
      * @param sites the sites value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1767,7 +1701,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the extensions property: The collection of open extensions defined for the group. Read-only. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -1776,7 +1710,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the extensions property: The collection of open extensions defined for the group. Read-only. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1788,7 +1722,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the groupLifecyclePolicies property: The collection of lifecycle policies for this group. Read-only.
      * Nullable.
-     *
+     * 
      * @return the groupLifecyclePolicies value.
      */
     public List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies() {
@@ -1798,19 +1732,19 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the groupLifecyclePolicies property: The collection of lifecycle policies for this group. Read-only.
      * Nullable.
-     *
+     * 
      * @param groupLifecyclePolicies the groupLifecyclePolicies value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withGroupLifecyclePolicies(
-        List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies) {
+    public MicrosoftGraphGroupInner
+        withGroupLifecyclePolicies(List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies) {
         this.groupLifecyclePolicies = groupLifecyclePolicies;
         return this;
     }
 
     /**
      * Get the planner property: plannerGroup.
-     *
+     * 
      * @return the planner value.
      */
     public MicrosoftGraphPlannerGroup planner() {
@@ -1819,7 +1753,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the planner property: plannerGroup.
-     *
+     * 
      * @param planner the planner value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1830,7 +1764,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the onenote property: onenote.
-     *
+     * 
      * @return the onenote value.
      */
     public MicrosoftGraphOnenote onenote() {
@@ -1839,7 +1773,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the onenote property: onenote.
-     *
+     * 
      * @param onenote the onenote value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1850,7 +1784,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Get the team property: team.
-     *
+     * 
      * @return the team value.
      */
     public MicrosoftGraphTeamInner team() {
@@ -1859,7 +1793,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Set the team property: team.
-     *
+     * 
      * @param team the team value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1871,10 +1805,9 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -1882,7 +1815,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
@@ -1891,22 +1824,18 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphGroupInner withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphGroupInner withId(String id) {
         super.withId(id);
@@ -1915,7 +1844,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -2014,5 +1943,329 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
         if (team() != null) {
             team().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeArrayField("assignedLabels", this.assignedLabels,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("assignedLicenses", this.assignedLicenses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("classification", this.classification);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeArrayField("groupTypes", this.groupTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("hasMembersWithLicenseErrors", this.hasMembersWithLicenseErrors);
+        jsonWriter.writeJsonField("licenseProcessingState", this.licenseProcessingState);
+        jsonWriter.writeStringField("mail", this.mail);
+        jsonWriter.writeBooleanField("mailEnabled", this.mailEnabled);
+        jsonWriter.writeStringField("mailNickname", this.mailNickname);
+        jsonWriter.writeStringField("membershipRule", this.membershipRule);
+        jsonWriter.writeStringField("membershipRuleProcessingState", this.membershipRuleProcessingState);
+        jsonWriter.writeStringField("onPremisesDomainName", this.onPremisesDomainName);
+        jsonWriter.writeStringField("onPremisesLastSyncDateTime",
+            this.onPremisesLastSyncDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.onPremisesLastSyncDateTime));
+        jsonWriter.writeStringField("onPremisesNetBiosName", this.onPremisesNetBiosName);
+        jsonWriter.writeArrayField("onPremisesProvisioningErrors", this.onPremisesProvisioningErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("onPremisesSamAccountName", this.onPremisesSamAccountName);
+        jsonWriter.writeStringField("onPremisesSecurityIdentifier", this.onPremisesSecurityIdentifier);
+        jsonWriter.writeBooleanField("onPremisesSyncEnabled", this.onPremisesSyncEnabled);
+        jsonWriter.writeStringField("preferredDataLocation", this.preferredDataLocation);
+        jsonWriter.writeStringField("preferredLanguage", this.preferredLanguage);
+        jsonWriter.writeArrayField("proxyAddresses", this.proxyAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("renewedDateTime",
+            this.renewedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.renewedDateTime));
+        jsonWriter.writeBooleanField("securityEnabled", this.securityEnabled);
+        jsonWriter.writeStringField("securityIdentifier", this.securityIdentifier);
+        jsonWriter.writeStringField("theme", this.theme);
+        jsonWriter.writeStringField("visibility", this.visibility);
+        jsonWriter.writeBooleanField("allowExternalSenders", this.allowExternalSenders);
+        jsonWriter.writeBooleanField("autoSubscribeNewMembers", this.autoSubscribeNewMembers);
+        jsonWriter.writeBooleanField("hideFromAddressLists", this.hideFromAddressLists);
+        jsonWriter.writeBooleanField("hideFromOutlookClients", this.hideFromOutlookClients);
+        jsonWriter.writeBooleanField("isSubscribedByMail", this.isSubscribedByMail);
+        jsonWriter.writeNumberField("unseenCount", this.unseenCount);
+        jsonWriter.writeBooleanField("isArchived", this.isArchived);
+        jsonWriter.writeArrayField("appRoleAssignments", this.appRoleAssignments,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("createdOnBehalfOf", this.createdOnBehalfOf);
+        jsonWriter.writeArrayField("memberOf", this.memberOf, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("members", this.members, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("membersWithLicenseErrors", this.membersWithLicenseErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("permissionGrants", this.permissionGrants,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("settings", this.settings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("transitiveMemberOf", this.transitiveMemberOf,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("transitiveMembers", this.transitiveMembers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("acceptedSenders", this.acceptedSenders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("calendar", this.calendar);
+        jsonWriter.writeArrayField("calendarView", this.calendarView, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("conversations", this.conversations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("photo", this.photo);
+        jsonWriter.writeArrayField("photos", this.photos, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rejectedSenders", this.rejectedSenders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("threads", this.threads, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("drive", this.drive);
+        jsonWriter.writeArrayField("drives", this.drives, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sites", this.sites, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("groupLifecyclePolicies", this.groupLifecyclePolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("planner", this.planner);
+        jsonWriter.writeJsonField("onenote", this.onenote);
+        jsonWriter.writeJsonField("team", this.team);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphGroupInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphGroupInner.
+     */
+    public static MicrosoftGraphGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphGroupInner deserializedMicrosoftGraphGroupInner = new MicrosoftGraphGroupInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("assignedLabels".equals(fieldName)) {
+                    List<MicrosoftGraphAssignedLabel> assignedLabels
+                        = reader.readArray(reader1 -> MicrosoftGraphAssignedLabel.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.assignedLabels = assignedLabels;
+                } else if ("assignedLicenses".equals(fieldName)) {
+                    List<MicrosoftGraphAssignedLicense> assignedLicenses
+                        = reader.readArray(reader1 -> MicrosoftGraphAssignedLicense.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.assignedLicenses = assignedLicenses;
+                } else if ("classification".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.classification = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.displayName = reader.getString();
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("groupTypes".equals(fieldName)) {
+                    List<String> groupTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphGroupInner.groupTypes = groupTypes;
+                } else if ("hasMembersWithLicenseErrors".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.hasMembersWithLicenseErrors
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("licenseProcessingState".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.licenseProcessingState
+                        = MicrosoftGraphLicenseProcessingState.fromJson(reader);
+                } else if ("mail".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.mail = reader.getString();
+                } else if ("mailEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.mailEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("mailNickname".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.mailNickname = reader.getString();
+                } else if ("membershipRule".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.membershipRule = reader.getString();
+                } else if ("membershipRuleProcessingState".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.membershipRuleProcessingState = reader.getString();
+                } else if ("onPremisesDomainName".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onPremisesDomainName = reader.getString();
+                } else if ("onPremisesLastSyncDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onPremisesLastSyncDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("onPremisesNetBiosName".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onPremisesNetBiosName = reader.getString();
+                } else if ("onPremisesProvisioningErrors".equals(fieldName)) {
+                    List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors
+                        = reader.readArray(reader1 -> MicrosoftGraphOnPremisesProvisioningError.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.onPremisesProvisioningErrors = onPremisesProvisioningErrors;
+                } else if ("onPremisesSamAccountName".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onPremisesSamAccountName = reader.getString();
+                } else if ("onPremisesSecurityIdentifier".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onPremisesSecurityIdentifier = reader.getString();
+                } else if ("onPremisesSyncEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onPremisesSyncEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("preferredDataLocation".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.preferredDataLocation = reader.getString();
+                } else if ("preferredLanguage".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.preferredLanguage = reader.getString();
+                } else if ("proxyAddresses".equals(fieldName)) {
+                    List<String> proxyAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphGroupInner.proxyAddresses = proxyAddresses;
+                } else if ("renewedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.renewedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("securityEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.securityEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("securityIdentifier".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.securityIdentifier = reader.getString();
+                } else if ("theme".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.theme = reader.getString();
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.visibility = reader.getString();
+                } else if ("allowExternalSenders".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.allowExternalSenders
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoSubscribeNewMembers".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.autoSubscribeNewMembers
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hideFromAddressLists".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.hideFromAddressLists
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hideFromOutlookClients".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.hideFromOutlookClients
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSubscribedByMail".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.isSubscribedByMail
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("unseenCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.unseenCount = reader.getNullable(JsonReader::getInt);
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.isArchived = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appRoleAssignments".equals(fieldName)) {
+                    List<MicrosoftGraphAppRoleAssignment> appRoleAssignments
+                        = reader.readArray(reader1 -> MicrosoftGraphAppRoleAssignment.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.appRoleAssignments = appRoleAssignments;
+                } else if ("createdOnBehalfOf".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.createdOnBehalfOf
+                        = MicrosoftGraphDirectoryObjectInner.fromJson(reader);
+                } else if ("memberOf".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> memberOf
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.memberOf = memberOf;
+                } else if ("members".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> members
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.members = members;
+                } else if ("membersWithLicenseErrors".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> membersWithLicenseErrors
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.membersWithLicenseErrors = membersWithLicenseErrors;
+                } else if ("owners".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> owners
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.owners = owners;
+                } else if ("permissionGrants".equals(fieldName)) {
+                    List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants
+                        = reader.readArray(reader1 -> MicrosoftGraphResourceSpecificPermissionGrant.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.permissionGrants = permissionGrants;
+                } else if ("settings".equals(fieldName)) {
+                    List<MicrosoftGraphGroupSetting> settings
+                        = reader.readArray(reader1 -> MicrosoftGraphGroupSetting.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.settings = settings;
+                } else if ("transitiveMemberOf".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.transitiveMemberOf = transitiveMemberOf;
+                } else if ("transitiveMembers".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> transitiveMembers
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.transitiveMembers = transitiveMembers;
+                } else if ("acceptedSenders".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> acceptedSenders
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.acceptedSenders = acceptedSenders;
+                } else if ("calendar".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.calendar = MicrosoftGraphCalendar.fromJson(reader);
+                } else if ("calendarView".equals(fieldName)) {
+                    List<MicrosoftGraphEvent> calendarView
+                        = reader.readArray(reader1 -> MicrosoftGraphEvent.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.calendarView = calendarView;
+                } else if ("conversations".equals(fieldName)) {
+                    List<MicrosoftGraphConversation> conversations
+                        = reader.readArray(reader1 -> MicrosoftGraphConversation.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.conversations = conversations;
+                } else if ("events".equals(fieldName)) {
+                    List<MicrosoftGraphEvent> events
+                        = reader.readArray(reader1 -> MicrosoftGraphEvent.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.events = events;
+                } else if ("photo".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.photo = MicrosoftGraphProfilePhoto.fromJson(reader);
+                } else if ("photos".equals(fieldName)) {
+                    List<MicrosoftGraphProfilePhoto> photos
+                        = reader.readArray(reader1 -> MicrosoftGraphProfilePhoto.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.photos = photos;
+                } else if ("rejectedSenders".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> rejectedSenders
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.rejectedSenders = rejectedSenders;
+                } else if ("threads".equals(fieldName)) {
+                    List<MicrosoftGraphConversationThread> threads
+                        = reader.readArray(reader1 -> MicrosoftGraphConversationThread.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.threads = threads;
+                } else if ("drive".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.drive = MicrosoftGraphDrive.fromJson(reader);
+                } else if ("drives".equals(fieldName)) {
+                    List<MicrosoftGraphDrive> drives
+                        = reader.readArray(reader1 -> MicrosoftGraphDrive.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.drives = drives;
+                } else if ("sites".equals(fieldName)) {
+                    List<MicrosoftGraphSite> sites = reader.readArray(reader1 -> MicrosoftGraphSite.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.sites = sites;
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.extensions = extensions;
+                } else if ("groupLifecyclePolicies".equals(fieldName)) {
+                    List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies
+                        = reader.readArray(reader1 -> MicrosoftGraphGroupLifecyclePolicy.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupInner.groupLifecyclePolicies = groupLifecyclePolicies;
+                } else if ("planner".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.planner = MicrosoftGraphPlannerGroup.fromJson(reader);
+                } else if ("onenote".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.onenote = MicrosoftGraphOnenote.fromJson(reader);
+                } else if ("team".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupInner.team = MicrosoftGraphTeamInner.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphGroupInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphGroupInner;
+        });
     }
 }

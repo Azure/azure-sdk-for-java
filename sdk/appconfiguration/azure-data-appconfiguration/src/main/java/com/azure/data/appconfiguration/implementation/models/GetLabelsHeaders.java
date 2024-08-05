@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The GetLabelsHeaders model. */
+/**
+ * The GetLabelsHeaders model.
+ */
 @Fluent
 public final class GetLabelsHeaders {
     /*
@@ -21,7 +23,7 @@ public final class GetLabelsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of GetLabelsHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GetLabelsHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class GetLabelsHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -39,7 +41,7 @@ public final class GetLabelsHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the GetLabelsHeaders object itself.
      */

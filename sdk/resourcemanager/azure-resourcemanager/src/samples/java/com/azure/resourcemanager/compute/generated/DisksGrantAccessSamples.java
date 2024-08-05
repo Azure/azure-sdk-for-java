@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
 public final class DisksGrantAccessSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_BeginGetAccess.json
      */
     /**
@@ -36,7 +36,7 @@ public final class DisksGrantAccessSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_BeginGetAccess_WithVMGuestState.json
      */
     /**
