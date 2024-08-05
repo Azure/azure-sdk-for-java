@@ -207,6 +207,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
   type: boolean
   default: true
+- name: release_springcloudazuretestcontainers
+  displayName: 'spring-cloud-azure-testcontainers'
+  type: boolean
+  default: true
 - name: release_springcloudazureappconfigurationconfig
   displayName: 'spring-cloud-azure-appconfiguration-config'
   type: boolean
@@ -555,6 +559,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
+      - name: spring-cloud-azure-testcontainers
+        groupId: com.azure.spring
+        safeName: springcloudazuretestcontainers
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazuretestcontainers }}
       - name: spring-cloud-azure-appconfiguration-config
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfig
