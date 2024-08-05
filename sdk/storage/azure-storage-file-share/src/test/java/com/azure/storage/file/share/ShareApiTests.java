@@ -11,6 +11,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareAccessTier;
@@ -20,6 +21,7 @@ import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
@@ -1240,6 +1242,23 @@ public class ShareApiTests extends FileShareTestBase {
         String permissionKey = shareClient.createPermission(FILE_PERMISSION);
         String permission = shareClient.getPermission(permissionKey);
         assertEquals(permission, FILE_PERMISSION);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void createAndGetPermissionFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        primaryShareClient.create();
+
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFilePermission filePermission = new ShareFilePermission().setPermission(permission)
+                .setPermissionFormat(filePermissionFormat);
+
+        String permissionKey = primaryShareClient.createPermission(filePermission);
+        String permissionResponse = primaryShareClient.getPermission(permissionKey, filePermissionFormat);
+
+        assertEquals(permissionResponse, permission);
     }
 
     @Test

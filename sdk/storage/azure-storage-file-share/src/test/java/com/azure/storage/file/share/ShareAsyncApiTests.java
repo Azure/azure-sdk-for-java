@@ -9,11 +9,13 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
@@ -785,6 +787,27 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         String filePermissionKey = primaryShareAsyncClient.createPermission(FILE_PERMISSION).block();
         StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse(filePermissionKey))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void createAndGetPermissionFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFilePermission filePermission = new ShareFilePermission().setPermission(permission)
+            .setPermissionFormat(filePermissionFormat);
+
+        Mono<String> response =  primaryShareAsyncClient.create()
+            .then(primaryShareAsyncClient.createPermission(filePermission))
+            .flatMap(r -> primaryShareAsyncClient.getPermission(r, filePermissionFormat));
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertEquals(r, permission);
+            })
+            .verifyComplete();
+
     }
 
     @Test

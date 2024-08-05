@@ -44,6 +44,7 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -565,6 +566,7 @@ public final class SharesImpl {
         Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermission(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -575,6 +577,7 @@ public final class SharesImpl {
         Mono<Response<SharePermission>> getPermissionNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -585,6 +588,7 @@ public final class SharesImpl {
         ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -595,6 +599,7 @@ public final class SharesImpl {
         Response<SharePermission> getPermissionNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -3488,6 +3493,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3498,13 +3508,14 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>>
-        getPermissionWithResponseAsync(String shareName, String filePermissionKey, Integer timeout) {
+    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
+        String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getPermission(this.client.getUrl(), shareName, restype, comp,
-            filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
+            filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3512,6 +3523,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3523,13 +3539,15 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>>
-        getPermissionWithResponseAsync(String shareName, String filePermissionKey, Integer timeout, Context context) {
+    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
+        String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout,
+        Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
-        return service.getPermission(this.client.getUrl(), shareName, restype, comp, filePermissionKey, timeout,
-            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+        return service.getPermission(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3537,6 +3555,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3546,8 +3569,9 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey, Integer timeout) {
-        return getPermissionWithResponseAsync(shareName, filePermissionKey, timeout)
+    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout) {
+        return getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, timeout)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3556,6 +3580,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3566,9 +3595,9 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey, Integer timeout,
-        Context context) {
-        return getPermissionWithResponseAsync(shareName, filePermissionKey, timeout, context)
+    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
+        return getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, timeout, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3577,6 +3606,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3588,13 +3622,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
-        String filePermissionKey, Integer timeout) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
-            accept, context));
+            restype, comp, filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3602,6 +3636,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3614,12 +3653,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
-            timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3627,6 +3667,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3638,12 +3683,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionWithResponse(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
-        return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey, timeout,
-            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+        return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3651,6 +3697,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3660,8 +3711,10 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharePermission getPermission(String shareName, String filePermissionKey, Integer timeout) {
-        return getPermissionWithResponse(shareName, filePermissionKey, timeout, Context.NONE).getValue();
+    public SharePermission getPermission(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout) {
+        return getPermissionWithResponse(shareName, filePermissionKey, filePermissionFormat, timeout, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3669,6 +3722,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3680,12 +3738,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharePermission> getPermissionNoCustomHeadersWithResponse(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return service.getPermissionNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp,
-            filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+            filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
