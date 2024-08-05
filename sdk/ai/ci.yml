@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/ai/ci.yml
+      - sdk/ai/azure-ai-inference/
+    exclude:
+      - sdk/ai/pom.xml
+      - sdk/ai/azure-ai-inference/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/ai/ci.yml
+      - sdk/ai/azure-ai-inference/
+    exclude:
+      - sdk/ai/pom.xml
+      - sdk/ai/azure-ai-inference/pom.xml
+
+parameters:
+  - name: release_azureaiinference
+    displayName: azure-ai-inference
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: ai
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-ai-inference
+        groupId: com.azure
+        safeName: azureaiinference
+        releaseInBatch: ${{ parameters.release_azureaiinference }}
