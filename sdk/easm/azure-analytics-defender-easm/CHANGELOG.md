@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Removed `subscriptionId`, `resourceGroupName`, `workspaceName` API from `EasmClientBuilder` client builder.
+  Please set all of these values into `endpoint` API, e.g. `builder.endpoint("https://<host>/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/workspaces/<workspaceName>/")`.
+
 ### Bugs Fixed
 
 ### Other Changes
