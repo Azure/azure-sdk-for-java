@@ -67,8 +67,6 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                     return FileSearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return FunctionToolDefinition.fromJson(readerToUse.reset());
-                } else if ("browser".equals(discriminatorValue)) {
-                    return BingSearchToolDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

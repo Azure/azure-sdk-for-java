@@ -189,8 +189,6 @@
     "com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOptionMode": "Azure.AI.OpenAI.Assistants.AssistantsApiToolChoiceOptionMode",
     "com.azure.ai.openai.assistants.models.AssistantsNamedToolChoice": "Azure.AI.OpenAI.Assistants.AssistantsNamedToolChoice",
     "com.azure.ai.openai.assistants.models.AssistantsNamedToolChoiceType": "Azure.AI.OpenAI.Assistants.AssistantsNamedToolChoiceType",
-    "com.azure.ai.openai.assistants.models.BingSearchToolDefinition": "Azure.AI.OpenAI.Assistants.BingSearchToolDefinition",
-    "com.azure.ai.openai.assistants.models.BingSearchToolDetails": "Azure.AI.OpenAI.Assistants.BingSearchToolDetails",
     "com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition": "Azure.AI.OpenAI.Assistants.CodeInterpreterToolDefinition",
     "com.azure.ai.openai.assistants.models.CodeInterpreterToolResource": "Azure.AI.OpenAI.Assistants.CodeInterpreterToolResource",
     "com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions": "Azure.AI.OpenAI.Assistants.CreateAndRunThreadOptions",
