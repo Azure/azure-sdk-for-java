@@ -60,7 +60,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
-        final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientAccess();
+        final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientProtocol();
         final String path = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT)
             ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
