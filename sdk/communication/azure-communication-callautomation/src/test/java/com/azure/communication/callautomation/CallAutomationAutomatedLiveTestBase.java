@@ -197,7 +197,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // parse the message
         assert !body.isEmpty();
 
-        if(body.contains("incomingCallContext")){
+        if (body.contains("incomingCallContext")) {
             final AcsIncomingCallEventData eventGridEventData;
             try (JsonReader jsonReader = JsonProviders.createReader(body)) {
                 eventGridEventData = jsonReader.readObject(reader -> {
@@ -228,9 +228,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 String uniqueId = removeAllNonChar(from.getRawId() + to.getRawId());
                 incomingCallContextStore.put(uniqueId, incomingCallContext);
             }
-        }
-        // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
-         else {
+        } else {
+            // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
             CallAutomationEventBase event = CallAutomationEventParser.parseEvents(body).get(0);
             assert event != null : "Event cannot be null";
             String callConnectionId = event.getCallConnectionId();

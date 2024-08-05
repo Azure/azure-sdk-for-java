@@ -46,8 +46,7 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
                 reader.nextToken();
                 if ("failedPlaySourceIndex".equals(fieldName)) {
                     event.failedPlaySourceIndex = reader.getInt();
-                }
-                else {
+                } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
