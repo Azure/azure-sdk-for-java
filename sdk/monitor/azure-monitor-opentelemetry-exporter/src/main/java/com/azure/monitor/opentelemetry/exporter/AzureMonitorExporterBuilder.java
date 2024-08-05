@@ -17,14 +17,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorSpanExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
-import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
+import com.azure.monitor.opentelemetry.exporter.implementation.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
@@ -32,6 +25,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.Heartbe
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulse;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorHelper;
@@ -42,13 +36,16 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourcePar
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
+import io.opentelemetry.sdk.extension.incubator.resources.ServiceInstanceIdResourceProvider;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.Aggregation;
 import io.opentelemetry.sdk.metrics.InstrumentSelector;
 import io.opentelemetry.sdk.metrics.View;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import io.opentelemetry.semconv.ServiceAttributes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static java.util.concurrent.TimeUnit.DAYS;
@@ -254,6 +252,32 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
+     * Creates an {@link LiveMetricsSpanProcessor} based on the options set in the builder. This
+     *  span processor is an implementation of OpenTelemetry {@link SpanExporter}.
+     * @param otelResource An OpenTelemetry resource.
+     * @return An instance of {@link AzureMonitorTraceExporter}.
+     */
+    public SpanProcessor buildLiveMetricsSpanProcessor(Resource otelResource) {
+        System.out.println("AzureMonitorExporterBuilder.buildLiveMetricsSpanProcessor");
+        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
+        internalBuildAndFreeze(defaultConfig);
+        // See https://github.com/microsoft/ApplicationInsights-Java/blob/16c0d2ec5cd0428756a280cfe9c5e17b4b7de93f/agent/agent-tooling/src/main/java/com/microsoft/applicationinsights/agent/internal/configuration/Configuration.java#L379
+        boolean useNormalizedValueForNonNormalizedCpuPercentage = false;
+        String roleName = otelResource.getAttribute(ServiceAttributes.SERVICE_NAME);
+        String roleInstance = otelResource.getAttribute(ServiceInstanceIdResourceProvider.SERVICE_INSTANCE_ID);
+        QuickPulse quickPulse = QuickPulse.create(
+            httpPipeline,
+            () -> connectionString.getLiveEndpoint(),
+            () -> connectionString.getInstrumentationKey(),
+            roleName,
+            roleInstance,
+            useNormalizedValueForNonNormalizedCpuPercentage,
+            VersionGenerator.getSdkVersion()); // We take take the version of the exporter. In case of a distro, the distro version could be used. It could be done at the same time as that it will be possible to differentiate the exporter from the distro with the sdk name (see https://github.com/aep-health-and-standards/Telemetry-Collection-Spec/pull/286)
+        SpanDataMapper spanDataMapper = createSpanDataMapper(defaultConfig);
+        return new LiveMetricsSpanProcessor(quickPulse, spanDataMapper);
+    }
+
+    /**
      * Creates an {@link AzureMonitorMetricExporter} based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
      *
@@ -330,6 +354,21 @@ public final class AzureMonitorExporterBuilder {
 //            return sdkTracerProviderBuilder.addSpanProcessor(
 //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
 //        });
+
+        final AtomicReference<Resource> otelResource = new AtomicReference<>();
+
+        sdkBuilder.addResourceCustomizer(
+            (resource, configProperties) -> {
+                otelResource.set(resource);
+                return resource;
+            });
+        sdkBuilder.addSpanProcessorCustomizer((spanProcessor, configProperties) -> {
+            if (spanProcessor instanceof LiveMetricsSpanProcessor) {
+                internalBuildAndFreeze(configProperties);
+                spanProcessor = buildLiveMetricsSpanProcessor(otelResource.get());
+            }
+            return spanProcessor;
+        });
         sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
             sdkMeterProviderBuilder.registerView(
                 InstrumentSelector.builder()
@@ -354,7 +393,7 @@ public final class AzureMonitorExporterBuilder {
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
-            HttpPipeline httpPipeline = createHttpPipeline();
+            this.httpPipeline = createHttpPipeline();
             statsbeatModule = initStatsbeatModule(configProperties);
             File tempDir =
                 TempDirs.getApplicationInsightsTempDir(
