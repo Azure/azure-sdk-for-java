@@ -920,7 +920,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 new AtomicBoolean(false),
                 false,
                 collectionLink,
-                new MetadataDiagnosticsContext(),
                 new SerializationDiagnosticsContext()));
 
         return request;

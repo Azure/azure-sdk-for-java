@@ -206,7 +206,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
                 return Mono.just(req)
                     .flatMap(request -> client.populateFeedRangeHeader(request))
-                    .flatMap(request -> client.addPartitionLevelUnavailableRegionsOnRequest(request, cosmosQueryRequestOptions))
+                    .flatMap(request -> client.addPartitionLevelUnavailableRegionsOnRequest(request, cosmosQueryRequestOptions, finalRetryPolicyInstance))
                     .flatMap(request -> {
                         finalRetryPolicyInstance.onBeforeSendRequest(request);
                         return executeRequestAsync(

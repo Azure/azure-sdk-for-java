@@ -63,6 +63,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -2773,6 +2774,90 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             default:
                 throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", faultInjectionOperationType));
         }
+    }
+
+    @Test(groups = {"multi-master"})
+    public void testCreate_404_1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries() {
+
+        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
+        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
+        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
+
+        CosmosAsyncClient asyncClient = buildCosmosClient(
+            ConsistencyLevel.SESSION,
+            Arrays.asList("West US 2", "South Central US", "East US"),
+            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+            ConnectionMode.GATEWAY,
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+                .build(),
+            new NonIdempotentWriteRetryOptions()
+                .setEnabled(true)
+                .setTrackingIdUsed(true));
+
+        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
+        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+            .build();
+
+        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+            .connectionType(FaultInjectionConnectionType.GATEWAY)
+//            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+            .region("West US 2")
+            .build();
+
+        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+            .condition(faultInjectionCondition)
+            .result(faultInjectionServerErrorResult)
+            .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
+
+        try {
+            CosmosItemResponse<TestObject> response = asyncContainer.createItem(TestObject.create(UUID.randomUUID().toString())).block();
+
+            System.out.println("Diagnostics : " + response.getDiagnostics());
+        } catch (CosmosException ex) {
+
+            System.out.println("Diagnostics : " + ex.getDiagnostics());
+        } finally {
+            asyncClient.close();
+
+            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
+            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
+        }
+    }
+
+    private static CosmosAsyncClient buildCosmosClient(
+        ConsistencyLevel consistencyLevel,
+        List<String> preferredRegions,
+        CosmosRegionSwitchHint regionSwitchHint,
+        ConnectionMode connectionMode,
+        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
+        NonIdempotentWriteRetryOptions nonIdempotentWriteRetryOptions) {
+
+        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .consistencyLevel(consistencyLevel)
+            .preferredRegions(preferredRegions)
+            .sessionRetryOptions(new SessionRetryOptionsBuilder()
+                .regionSwitchHint(regionSwitchHint)
+                .build())
+            .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
+            .nonIdempotentWriteRetryOptions(nonIdempotentWriteRetryOptions)
+            .multipleWriteRegionsEnabled(true);
+
+        if (connectionMode == ConnectionMode.DIRECT) {
+            clientBuilder.directMode();
+        } else {
+            clientBuilder.gatewayMode();
+        }
+
+        return clientBuilder.buildAsyncClient();
     }
 
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
