@@ -26,18 +26,18 @@ import java.io.*;
 public final class ByteWName extends WName {
     final byte[] _bytes;
 
-    protected ByteWName(String ln, byte[] bytes) {
+    ByteWName(String ln, byte[] bytes) {
         super(ln);
         _bytes = bytes;
     }
 
-    protected ByteWName(String prefix, String ln, byte[] bytes) {
+    ByteWName(String prefix, String ln, byte[] bytes) {
         super(prefix, ln);
         _bytes = bytes;
     }
 
     @Override
-    public final int serializedLength() {
+    public int serializedLength() {
         return _bytes.length;
     }
 
@@ -59,7 +59,7 @@ public final class ByteWName extends WName {
     }
 
     @Override
-    public void writeChars(Writer w) throws IOException {
+    public void writeChars(Writer w) {
         throw new RuntimeException("Internal error: writeChars() should never be called");
     }
 }

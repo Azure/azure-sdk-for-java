@@ -287,7 +287,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
 
     /**
      * Helper method used to isolate things that need to be (re)set in
-     * cases where 
+     * cases where
      */
     protected int _nextEntity() {
         // !!! Also, have to assume start location has been set or such
@@ -302,7 +302,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
     /**********************************************************************
      */
 
-    private final int handlePrologDeclStart(boolean isProlog) throws XMLStreamException {
+    private int handlePrologDeclStart(boolean isProlog) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -343,7 +343,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         return _currToken; // never gets here
     }
 
-    private final int handleDtdStart() throws XMLStreamException {
+    private int handleDtdStart() throws XMLStreamException {
         matchAsciiKeyword("DOCTYPE");
 
         // And then some white space and root  name
@@ -391,7 +391,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         return (_currToken = DTD);
     }
 
-    private final int handleCommentOrCdataStart() throws XMLStreamException {
+    private int handleCommentOrCdataStart() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -442,7 +442,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
      * Method called after leading '<?' has been parsed; needs to parse
      * target.
      */
-    private final int handlePIStart() throws XMLStreamException {
+    private int handlePIStart() throws XMLStreamException {
         _currToken = PROCESSING_INSTRUCTION;
 
         // Ok, first, need a name
@@ -453,7 +453,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         _tokenName = parsePName(b);
         { // but is it "xml" (case insensitive)?
             String ln = _tokenName.getLocalName();
-            if (ln.length() == 3 && ln.equalsIgnoreCase("xml") && _tokenName.getPrefix() == null) {
+            if (ln.equalsIgnoreCase("xml") && _tokenName.getPrefix() == null) {
                 reportInputProblem(ErrorConsts.ERR_WF_PI_XML_TARGET);
             }
         }
@@ -537,7 +537,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
                     break;
                 }
                 value = value << 4;
-                int c = (int) b;
+                int c = b;
                 if (c <= '9' && c >= '0') {
                     value += (c - '0');
                 } else if (c >= 'a' && c <= 'f') {
@@ -553,7 +553,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
             }
         } else { // numeric (decimal)
             while (b != BYTE_SEMICOLON) {
-                int c = (int) b;
+                int c = b;
                 if (c <= '9' && c >= '0') {
                     value = (value * 10) + (c - '0');
                     if (value > MAX_UNICODE_CHAR) { // Overflow?
@@ -660,7 +660,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         return END_ELEMENT;
     }
 
-    private final int handleEndElementSlow(int size) throws XMLStreamException {
+    private int handleEndElementSlow(int size) throws XMLStreamException {
         /* Nope, will likely cross the input boundary; need
          * to do proper checks
          */
@@ -1087,7 +1087,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
      * @param onlyQuad Word with 1 to 4 bytes that make up PName
      * @param lastByteCount Number of actual bytes contained in onlyQuad; 0 to 3.
      */
-    private final PName findPName(int onlyQuad, int lastByteCount) throws XMLStreamException {
+    private PName findPName(int onlyQuad, int lastByteCount) throws XMLStreamException {
         // First, need to push back the byte read but not used:
         --_inputPtr;
         int hash = ByteBasedPNameTable.calcHash(onlyQuad);
@@ -1111,7 +1111,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
      * @param secondQuad Word with last 1 to 4 bytes of the PName
      * @param lastByteCount Number of bytes contained in secondQuad; 0 to 3.
      */
-    private final PName findPName(int firstQuad, int secondQuad, int lastByteCount) throws XMLStreamException {
+    private PName findPName(int firstQuad, int secondQuad, int lastByteCount) throws XMLStreamException {
         // First, need to push back the byte read but not used:
         --_inputPtr;
         int hash = ByteBasedPNameTable.calcHash(firstQuad, secondQuad);
@@ -1141,7 +1141,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
      *    (in which case only firstQuad and lastQuad are used)
      * @param lastByteCount Number of bytes contained in lastQuad; 0 to 3.
      */
-    private final PName findPName(int lastQuad, int[] quads, int qlen, int lastByteCount) throws XMLStreamException {
+    private PName findPName(int lastQuad, int[] quads, int qlen, int lastByteCount) throws XMLStreamException {
         // First, need to push back the byte read but not used:
         --_inputPtr;
         /* Nope, long (3 quads or more). At this point, the last quad is
@@ -1170,14 +1170,14 @@ public abstract class StreamScanner extends ByteBasedScanner {
      *   in the quad array
      * @param lastByteCount Number of bytes contained in lastQuad; 0 to 3.
      * @param firstQuad First 1 to 4 bytes of the PName (4 if length
-     *    at least 4 bytes; less only if not). 
+     *    at least 4 bytes; less only if not).
      * @param qlen Number of quads in the array, except if less than 2
      *    (in which case only firstQuad and lastQuad are used)
      * @param quads Array that contains all the quads, except for the
      *    last one, for names with more than 8 bytes (i.e. more than
      *    2 quads)
      */
-    private final PName findPName(int lastQuad, int lastByteCount, int firstQuad, int qlen, int[] quads)
+    private PName findPName(int lastQuad, int lastByteCount, int firstQuad, int qlen, int[] quads)
         throws XMLStreamException {
         // Separate handling for short names:
         if (qlen <= 1) {
@@ -1239,7 +1239,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         return b;
     }
 
-    private final void matchAsciiKeyword(String keyw) throws XMLStreamException {
+    private void matchAsciiKeyword(String keyw) throws XMLStreamException {
         for (int i = 1, len = keyw.length(); i < len; ++i) {
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
@@ -1429,15 +1429,6 @@ public abstract class StreamScanner extends ByteBasedScanner {
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
         }
-    }
-
-    protected final byte nextByte(int tt) throws XMLStreamException {
-        if (_inputPtr >= _inputEnd) {
-            if (!loadMore()) {
-                reportInputProblem("Unexpected end-of-input when trying to parse " + ErrorConsts.tokenTypeDesc(tt));
-            }
-        }
-        return _inputBuffer[_inputPtr++];
     }
 
     protected final byte nextByte() throws XMLStreamException {

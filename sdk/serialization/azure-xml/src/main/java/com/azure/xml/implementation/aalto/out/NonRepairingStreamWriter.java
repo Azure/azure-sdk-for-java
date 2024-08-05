@@ -62,7 +62,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
             throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
         }
         WName name;
-        if (nsURI == null || nsURI.length() == 0) {
+        if (nsURI == null || nsURI.isEmpty()) {
             name = _symbols.findSymbol(localName);
         } else {
             String prefix = _currElem.getExplicitPrefix(nsURI, _rootNsContext);
@@ -79,7 +79,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
         if (!_stateStartElementOpen) {
             throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
         }
-        WName name = (prefix == null || prefix.length() == 0)
+        WName name = (prefix == null || prefix.isEmpty())
             ? _symbols.findSymbol(localName)
             : _symbols.findSymbol(prefix, localName);
         _writeAttribute(name, value);
@@ -108,7 +108,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
             throwOutputError("Unbound namespace URI '" + nsURI + "'");
         }
         WName name;
-        if (prefix.length() == 0) {
+        if (prefix.isEmpty()) {
             name = _symbols.findSymbol(localName);
             prefix = null;
         } else {
@@ -122,7 +122,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
     public void writeEmptyElement(String prefix, String localName, String nsURI) throws XMLStreamException {
         _verifyStartElement(prefix, localName);
         WName name;
-        if (prefix == null || prefix.length() == 0) {
+        if (prefix == null || prefix.isEmpty()) {
             name = _symbols.findSymbol(localName);
         } else {
             name = _symbols.findSymbol(prefix, localName);
@@ -132,7 +132,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
 
     @Override
     public void writeNamespace(String prefix, String nsURI) throws XMLStreamException {
-        if (prefix == null || prefix.length() == 0) {
+        if (prefix == null || prefix.isEmpty()) {
             writeDefaultNamespace(nsURI);
             return;
         }
@@ -154,7 +154,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
             throwOutputError("Unbound namespace URI '" + nsURI + "'");
         }
         WName name;
-        if (prefix.length() == 0) {
+        if (prefix.isEmpty()) {
             name = _symbols.findSymbol(localName);
             prefix = null;
         } else {
@@ -168,7 +168,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
     public void writeStartElement(String prefix, String localName, String nsURI) throws XMLStreamException {
         _verifyStartElement(prefix, localName);
         WName name;
-        if (prefix == null || prefix.length() == 0) {
+        if (prefix == null || prefix.isEmpty()) {
             name = _symbols.findSymbol(localName);
         } else {
             name = _symbols.findSymbol(prefix, localName);
@@ -188,7 +188,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
         if (!_stateStartElementOpen) {
             throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
         }
-        WName name = (prefix == null || prefix.length() == 0)
+        WName name = (prefix == null || prefix.isEmpty())
             ? _symbols.findSymbol(localName)
             : _symbols.findSymbol(prefix, localName);
         _writeAttribute(name, enc);
@@ -198,7 +198,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
     protected String _serializeQName(QName name) {
         String prefix = name.getPrefix();
         String local = name.getLocalPart();
-        if (prefix == null || prefix.length() == 0) {
+        if (prefix == null || prefix.isEmpty()) {
             return local;
         }
         // Not efficient... but should be ok

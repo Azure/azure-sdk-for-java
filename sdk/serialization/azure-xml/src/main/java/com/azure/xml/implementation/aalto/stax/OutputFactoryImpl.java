@@ -27,7 +27,6 @@ import com.azure.xml.implementation.stax2.XMLOutputFactory2;
 import com.azure.xml.implementation.stax2.XMLStreamWriter2;
 import com.azure.xml.implementation.stax2.io.Stax2Result;
 import com.azure.xml.implementation.stax2.ri.Stax2EventWriterImpl;
-import com.azure.xml.implementation.stax2.ri.Stax2WriterAdapter;
 
 import com.azure.xml.implementation.aalto.dom.DOMWriterImpl;
 import com.azure.xml.implementation.aalto.impl.IoStreamException;
@@ -49,7 +48,7 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
     /**********************************************************************
      */
 
-    protected final WriterConfig _config;
+    private final WriterConfig _config;
 
     /*
     /**********************************************************************
@@ -131,38 +130,7 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
 
     // // // StAX2 additional (encoding-aware) factory methods
 
-    @Override
-    public XMLEventWriter createXMLEventWriter(Writer w, String enc) throws XMLStreamException {
-        return new Stax2EventWriterImpl(createSW(null, w, enc, false));
-    }
-
-    @Override
-    public XMLEventWriter createXMLEventWriter(XMLStreamWriter sw) throws XMLStreamException {
-        XMLStreamWriter2 sw2 = Stax2WriterAdapter.wrapIfNecessary(sw);
-        return new Stax2EventWriterImpl(sw2);
-    }
-
-    @Override
-    public XMLStreamWriter2 createXMLStreamWriter(Writer w, String enc) throws XMLStreamException {
-        return createSW(null, w, enc, false);
-    }
-
     // // // StAX2 "Profile" mutators
-
-    @Override
-    public void configureForXmlConformance() {
-        _config.configureForXmlConformance();
-    }
-
-    @Override
-    public void configureForRobustness() {
-        _config.configureForRobustness();
-    }
-
-    @Override
-    public void configureForSpeed() {
-        _config.configureForSpeed();
-    }
 
     /*
     /**********************************************************************
@@ -193,9 +161,9 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
             } else {
                 // Canonical ones are interned, so we may have
                 // normalized encoding already...
-                if (enc != CharsetNames.CS_UTF8
-                    && enc != CharsetNames.CS_ISO_LATIN1
-                    && enc != CharsetNames.CS_US_ASCII) {
+                if (!enc.equals(CharsetNames.CS_UTF8)
+                    && !enc.equals(CharsetNames.CS_ISO_LATIN1)
+                    && !enc.equals(CharsetNames.CS_US_ASCII)) {
                     enc = CharsetNames.normalize(enc);
                 }
             }
@@ -203,7 +171,7 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
             cfg.setActualEncodingIfNotSet(enc);
 
             try {
-                if (enc == CharsetNames.CS_UTF8) {
+                if (enc.equals(CharsetNames.CS_UTF8)) {
                     // !!! TEST-only:
                     /*
                     w = new com.fasterxml.aalto.io.UTF8Writer(cfg, out, autoCloseOutput);
@@ -212,10 +180,10 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
 
                     xw = new Utf8XmlWriter(cfg, out);
                     symbols = _config.getUtf8Symbols(xw);
-                } else if (enc == CharsetNames.CS_ISO_LATIN1) {
+                } else if (enc.equals(CharsetNames.CS_ISO_LATIN1)) {
                     xw = new Latin1XmlWriter(cfg, out);
                     symbols = _config.getLatin1Symbols(xw);
-                } else if (enc == CharsetNames.CS_US_ASCII) {
+                } else if (enc.equals(CharsetNames.CS_US_ASCII)) {
                     xw = new AsciiXmlWriter(cfg, out);
                     symbols = _config.getAsciiSymbols(xw);
                 } else {
@@ -291,7 +259,7 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
         } else if (res instanceof SAXResult) {
             SAXResult sr = (SAXResult) res;
             sysId = sr.getSystemId();
-            if (sysId == null || sysId.length() == 0) {
+            if (sysId == null || sysId.isEmpty()) {
                 throw new StreamExceptionBase(
                     "Can not create a stream writer for a SAXResult that does not have System Id (support for using SAX input source not implemented)");
             }
@@ -309,7 +277,7 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
         if (w != null) {
             return createSW(null, w, encoding, autoclose);
         }
-        if (sysId != null && sysId.length() > 0) {
+        if (sysId != null && !sysId.isEmpty()) {
             /* 26-Dec-2008, tatu: If we must construct URL from system id,
              *   it means caller will not have access to resulting
              *   stream, thus we will force auto-closing.

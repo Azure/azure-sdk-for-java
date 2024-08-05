@@ -416,43 +416,39 @@ public final class XmlChars {
     private XmlChars() {
     }
 
-    public final static boolean is10NameStartChar(int c) {
+    public static boolean is10NameStartChar(int c) {
         // First, let's deal with outliers
         if (c > 0x312C) { // Most valid chars are below this..
             if (c < 0xAC00) {
                 return (c >= 0x4E00 && c <= 0x9FA5); // valid ideograms
             }
-            if (c <= 0xD7A3) { // 0xAC00 - 0xD7A3, valid base chars
-                return true;
-            }
+            // 0xAC00 - 0xD7A3, valid base chars
+            return c <= 0xD7A3;
             /* Surrogate chars should not be coming in here; but if they do,
              * they would be illegal... so remaining ones are all invalid
              */
-            return false;
         }
         // but then we'll just need to use the table...
         return (sXml10StartChars[c >> 5] & (1 << (c & 31))) != 0;
     }
 
-    public final static boolean is10NameChar(int c) {
+    public static boolean is10NameChar(int c) {
         // First, let's deal with outliers
         if (c > 0x312C) { // Most valid chars are below this..
             if (c < 0xAC00) {
                 return (c >= 0x4E00 && c <= 0x9FA5); // valid ideograms
             }
-            if (c <= 0xD7A3) { // 0xAC00 - 0xD7A3, valid base chars
-                return true;
-            }
+            // 0xAC00 - 0xD7A3, valid base chars
+            return c <= 0xD7A3;
             /* Surrogate chars should not be coming in here; but if they do,
              * they would be illegal... so remaining ones are all invalid
              */
-            return false;
         }
         // but then we'll just need to use the table...
         return (sXml10Chars[c >> 5] & (1 << (c & 31))) != 0;
     }
 
-    public final static boolean is11NameStartChar(int c) {
+    public static boolean is11NameStartChar(int c) {
         // Others are checked block-by-block:
         if (c <= 0x2FEF) {
             if (c < 0x300) {
@@ -502,7 +498,7 @@ public final class XmlChars {
         return false;
     }
 
-    public final static boolean is11NameChar(int c) {
+    public static boolean is11NameChar(int c) {
         // Others are checked block-by-block:
         if (c <= 0x2FEF) {
             if (c < 0x2000) { // only 8-bit ctrl chars and 0x37E to filter out

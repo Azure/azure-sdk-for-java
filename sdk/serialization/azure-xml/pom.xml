@@ -55,12 +55,14 @@
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
 
     <!-- Ignore shaded code -->
-    <checkstyle.excludes>**/aalto/xml/**/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/aalto/**/*.java,**/stax2/**/*.java</checkstyle.excludes>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <spotbugs.excludes>**/aalto/**/*.java,**/stax2/**/*.java</spotbugs.excludes>
+
     <spotless.skip>false</spotless.skip>
   </properties>
 
@@ -132,7 +134,9 @@
         <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <compilerArgs>
-            <arg>-Xlint:deprecation</arg>
+            <arg>-Xlint:-cast</arg>
+            <arg>-Xlint:-deprecation</arg>
+            <arg>-Xlint:-fallthrough</arg>
           </compilerArgs>
         </configuration>
       </plugin>
@@ -175,7 +179,7 @@
         <dependency>
           <groupId>org.codehaus.woodstox</groupId>
           <artifactId>stax2-api</artifactId>
-          <version>4.2.2</version>
+          <version>4.2.2</version> <!-- {x-version-update;org.codehaus.woodstox:stax2-api;external_dependency} -->
         </dependency>
 
         <dependency>

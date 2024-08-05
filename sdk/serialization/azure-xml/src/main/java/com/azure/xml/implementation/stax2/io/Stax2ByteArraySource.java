@@ -49,7 +49,7 @@ public class Stax2ByteArraySource extends Stax2BlockSource {
     }
 
     @Override
-    public InputStream constructInputStream() throws IOException {
+    public InputStream constructInputStream() {
         return new ByteArrayInputStream(mBuffer, mStart, mLength);
     }
 
@@ -71,11 +71,4 @@ public class Stax2ByteArraySource extends Stax2BlockSource {
         return mLength;
     }
 
-    public int getBufferEnd() {
-        int end = mStart;
-        if (mLength > 0) {
-            end += mLength;
-        }
-        return end;
-    }
 }

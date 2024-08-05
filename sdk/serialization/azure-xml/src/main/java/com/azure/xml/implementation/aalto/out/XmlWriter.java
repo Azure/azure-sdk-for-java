@@ -18,6 +18,7 @@ package com.azure.xml.implementation.aalto.out;
 
 import java.io.*;
 import java.text.MessageFormat;
+import java.util.Objects;
 
 import javax.xml.stream.*;
 
@@ -38,13 +39,8 @@ import com.azure.xml.implementation.aalto.util.XmlConsts;
  */
 public abstract class XmlWriter extends WNameFactory {
     protected final static int SURR1_FIRST = 0xD800;
-    protected final static int SURR1_LAST = 0xDBFF;
     protected final static int SURR2_FIRST = 0xDC00;
     protected final static int SURR2_LAST = 0xDFFF;
-
-    protected final static int MIN_ARRAYCOPY = 12;
-
-    protected final static int ATTR_MIN_ARRAYCOPY = 12;
 
     protected final static int DEFAULT_COPYBUFFER_LEN = 512;
 
@@ -188,7 +184,7 @@ public abstract class XmlWriter extends WNameFactory {
     /**
      * @param data Contents of the CDATA section to write out
     
-     * @return offset of the (first) illegal content segment ("]]&gt;") in 
+     * @return offset of the (first) illegal content segment ("]]&gt;") in
      *   passed content, if not in repairing mode; or -1 if none
      */
     public abstract int writeCData(String data) throws IOException, XMLStreamException;
@@ -313,27 +309,27 @@ public abstract class XmlWriter extends WNameFactory {
      * These just best guesses, but should work ok for the most common
      * encodings.
      */
-    public final static int guessEncodingBitSize(WriterConfig cfg) {
+    public static int guessEncodingBitSize(WriterConfig cfg) {
         String enc = cfg.getPreferredEncoding();
 
-        if (enc == null || enc.length() == 0) { // let's assume default is UTF-8...
+        if (enc == null || enc.isEmpty()) { // let's assume default is UTF-8...
             return 16;
         }
         // Let's see if we can find a normalized name, first:
         enc = CharsetNames.normalize(enc);
 
         // Ok, first, do we have known ones; starting with most common:
-        if (enc == CharsetNames.CS_UTF8) {
+        if (Objects.equals(enc, CharsetNames.CS_UTF8)) {
             return 16; // meaning up to 2^16 can be represented natively
-        } else if (enc == CharsetNames.CS_ISO_LATIN1) {
+        } else if (Objects.equals(enc, CharsetNames.CS_ISO_LATIN1)) {
             return 8;
-        } else if (enc == CharsetNames.CS_US_ASCII) {
+        } else if (Objects.equals(enc, CharsetNames.CS_US_ASCII)) {
             return 7;
-        } else if (enc == CharsetNames.CS_UTF16
-            || enc == CharsetNames.CS_UTF16BE
-            || enc == CharsetNames.CS_UTF16LE
-            || enc == CharsetNames.CS_UTF32BE
-            || enc == CharsetNames.CS_UTF32LE) {
+        } else if (Objects.equals(enc, CharsetNames.CS_UTF16)
+            || Objects.equals(enc, CharsetNames.CS_UTF16BE)
+            || Objects.equals(enc, CharsetNames.CS_UTF16LE)
+            || Objects.equals(enc, CharsetNames.CS_UTF32BE)
+            || Objects.equals(enc, CharsetNames.CS_UTF32LE)) {
             return 16;
         }
 
@@ -354,16 +350,12 @@ public abstract class XmlWriter extends WNameFactory {
         throwOutputError(msg);
     }
 
-    protected void reportNwfName(String msg, Object arg) throws XMLStreamException {
-        throwOutputError(msg, arg);
-    }
-
     protected void reportNwfContent(String msg) throws XMLStreamException {
         throwOutputError(msg);
     }
 
     protected void reportNwfContent(String format, Object arg1, Object arg2) throws XMLStreamException {
-        String msg = MessageFormat.format(format, new Object[] { arg1, arg2 });
+        String msg = MessageFormat.format(format, arg1, arg2);
         reportNwfContent(msg);
     }
 
@@ -378,12 +370,8 @@ public abstract class XmlWriter extends WNameFactory {
                 reportInvalidChar(ch);
             }
         }
-        String msg = MessageFormat.format(ErrorConsts.WERR_NO_ESCAPING, new Object[] { type, ch });
+        String msg = MessageFormat.format(ErrorConsts.WERR_NO_ESCAPING, type, ch);
         reportNwfContent(msg);
-    }
-
-    protected void reportInvalidEmptyName() throws XMLStreamException {
-        reportNwfContent("Empty String is not a valid name (local name, prefix or processing instruction target)");
     }
 
     protected void reportInvalidChar(int c) throws XMLStreamException {
@@ -430,8 +418,4 @@ public abstract class XmlWriter extends WNameFactory {
         throw new XMLStreamException(msg);
     }
 
-    protected void throwOutputError(String format, Object arg) throws XMLStreamException {
-        String msg = MessageFormat.format(format, new Object[] { arg });
-        throwOutputError(msg);
-    }
 }

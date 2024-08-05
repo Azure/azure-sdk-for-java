@@ -61,12 +61,7 @@ public class ValidationException extends XMLValidationException {
             return super.getMessage();
         }
         String msg = getValidationProblem().getMessage();
-        StringBuilder sb = new StringBuilder(msg.length() + locMsg.length() + 20);
-        sb.append(msg);
-        sb.append('\n');
-        sb.append(" at ");
-        sb.append(locMsg);
-        return sb.toString();
+        return msg + '\n' + " at " + locMsg;
     }
 
     @Override

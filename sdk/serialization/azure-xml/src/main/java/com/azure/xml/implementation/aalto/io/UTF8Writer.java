@@ -124,7 +124,7 @@ public final class UTF8Writer extends Writer {
         // All right; can just loop it nice and easy now:
         len += off; // len will now be the end of input buffer
 
-        output_loop: for (; off < len;) {
+        output_loop: while (off < len) {
             /* First, let's ensure we can output at least 4 bytes
              * (longest UTF-8 encoded codepoint):
              */
@@ -145,13 +145,13 @@ public final class UTF8Writer extends Writer {
                     maxInCount = maxOutCount;
                 }
                 maxInCount += off;
-                ascii_loop: while (true) {
+                while (true) {
                     if (off >= maxInCount) { // done with max. ascii seq
                         continue output_loop;
                     }
                     c = cbuf[off++];
                     if (c >= 0x80) {
-                        break ascii_loop;
+                        break;
                     }
                     outBuf[outPtr++] = (byte) c;
                 }
@@ -267,7 +267,7 @@ public final class UTF8Writer extends Writer {
         // All right; can just loop it nice and easy now:
         len += off; // len will now be the end of input buffer
 
-        output_loop: for (; off < len;) {
+        output_loop: while (off < len) {
             /* First, let's ensure we can output at least 4 bytes
              * (longest UTF-8 encoded codepoint):
              */
@@ -288,13 +288,13 @@ public final class UTF8Writer extends Writer {
                     maxInCount = maxOutCount;
                 }
                 maxInCount += off;
-                ascii_loop: while (true) {
+                while (true) {
                     if (off >= maxInCount) { // done with max. ascii seq
                         continue output_loop;
                     }
                     c = str.charAt(off++);
                     if (c >= 0x80) {
-                        break ascii_loop;
+                        break;
                     }
                     outBuf[outPtr++] = (byte) c;
                 }

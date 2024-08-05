@@ -33,6 +33,7 @@ import com.azure.xml.implementation.aalto.impl.ErrorConsts;
  * passes, by adding necessary namespace declarations and using
  * prefixes as required to obtain expected results.
  */
+@SuppressWarnings("fallthrough")
 public final class RepairingStreamWriter extends StreamWriterBase {
     /*
     /////////////////////////////////////////////////////
@@ -92,7 +93,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
      */
     @Override
     public void setDefaultNamespace(String uri) throws XMLStreamException {
-        _suggestedDefNs = (uri == null || uri.length() == 0) ? null : uri;
+        _suggestedDefNs = (uri == null || uri.isEmpty()) ? null : uri;
     }
 
     @Override
@@ -104,18 +105,13 @@ public final class RepairingStreamWriter extends StreamWriterBase {
          * for any URI (since there's no way to map a prefix to the default
          * namespace)
          */
-        if (uri == null || uri.length() == 0) {
+        if (uri == null || uri.isEmpty()) {
             if (_suggestedPrefixes != null) {
-                for (Iterator<Map.Entry<String, String>> it = _suggestedPrefixes.entrySet().iterator(); it.hasNext();) {
-                    Map.Entry<String, String> en = it.next();
-                    if (en.getValue().equals(prefix)) {
-                        it.remove();
-                    }
-                }
+                _suggestedPrefixes.entrySet().removeIf(en -> en.getValue().equals(prefix));
             }
         } else {
             if (_suggestedPrefixes == null) {
-                _suggestedPrefixes = new HashMap<String, String>(16);
+                _suggestedPrefixes = new HashMap<>(16);
             }
             _suggestedPrefixes.put(uri, prefix);
         }
@@ -129,7 +125,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
             throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
         }
         // no URI? No prefix. Otherwise, need to find or bind:
-        WName name = (nsURI == null || nsURI.length() == 0)
+        WName name = (nsURI == null || nsURI.isEmpty())
             ? _symbols.findSymbol(localName)
             : _generateAttrName(null, localName, nsURI);
         _writeAttribute(name, value);
@@ -141,7 +137,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
             throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
         }
         // no URI? No prefix. Otherwise, need to find or bind:
-        WName name = (nsURI == null || nsURI.length() == 0)
+        WName name = (nsURI == null || nsURI.isEmpty())
             ? _symbols.findSymbol(localName)
             : _generateAttrName(prefix, localName, nsURI);
         _writeAttribute(name, value);
@@ -183,7 +179,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
 
     @Override
     public void writeNamespace(String prefix, String nsURI) throws XMLStreamException {
-        if (prefix == null || prefix.length() == 0) {
+        if (prefix == null || prefix.isEmpty()) {
             writeDefaultNamespace(nsURI);
             return;
         }
@@ -227,7 +223,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
         if (!_stateStartElementOpen) {
             throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
         }
-        WName name = (prefix == null || prefix.length() == 0)
+        WName name = (prefix == null || prefix.isEmpty())
             ? _symbols.findSymbol(localName)
             : _symbols.findSymbol(prefix, localName);
         _writeAttribute(name, enc);
@@ -244,7 +240,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
 
         // Perhaps prefix is fine as is?
         if (_currElem.isPrefixBoundTo(prefix, uri, _rootNsContext)) {
-            if (prefix == null || prefix.length() == 0) {
+            if (prefix == null || prefix.isEmpty()) {
                 return local;
             }
             return prefix + ":" + local;
@@ -268,8 +264,8 @@ public final class RepairingStreamWriter extends StreamWriterBase {
      * @param uri Non-empty namespace URI that will be used for the
      *   attribute
      */
-    protected WName _generateAttrName(String suggPrefix, String localName, String uri) throws XMLStreamException {
-        if (suggPrefix != null && suggPrefix.length() > 0) { // prefer this prefix
+    private WName _generateAttrName(String suggPrefix, String localName, String uri) throws XMLStreamException {
+        if (suggPrefix != null && !suggPrefix.isEmpty()) { // prefer this prefix
             switch (_currElem.checkPrefixValidity(suggPrefix, uri, _rootNsContext)) {
                 case UNBOUND: // ok, need to bind
                     _writeNamespace(suggPrefix, uri);
@@ -303,7 +299,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
         // In repairing mode, better ensure validity.
 
         // First: do we want the "no namespace"? Separate, distinct handling
-        if (nsURI == null || nsURI.length() == 0) {
+        if (nsURI == null || nsURI.isEmpty()) {
             // either way, can not have non-empty prefix
             _verifyStartElement(null, localName);
             // must output the start-tag-start to add xmlns decl (if needed)
@@ -356,16 +352,15 @@ public final class RepairingStreamWriter extends StreamWriterBase {
         if (_validator != null) {
             _validator.validateElementStart(localName, "", ((prefix == null) ? "" : prefix));
         }
-        return;
     }
 
     /**
      * @return True, if prefix indicates default namespace (is null or empty);
      *   false otherwise
      */
-    private final boolean _writeStartAndVerify(String prefix, String localName, String nsURI, boolean isEmpty)
+    private boolean _writeStartAndVerify(String prefix, String localName, String nsURI, boolean isEmpty)
         throws XMLStreamException {
-        if (prefix == null || prefix.length() == 0) { // default ns
+        if (prefix == null || prefix.isEmpty()) { // default ns
             _verifyStartElement(null, localName);
             _writeStartTag(_symbols.findSymbol(localName), isEmpty, nsURI);
             return true;
@@ -381,7 +376,7 @@ public final class RepairingStreamWriter extends StreamWriterBase {
      * is given (or one given can't be used). If so, methods is
      * to create a not-yet-bound-prefix for the namespace.
      */
-    protected final String _generateElemPrefix(String uri) throws XMLStreamException {
+    private String _generateElemPrefix(String uri) {
         // First: is it the 'recommended' default ns?
         if (_suggestedDefNs != null && _suggestedDefNs.equals(uri)) {
             return null;

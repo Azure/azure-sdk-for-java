@@ -168,7 +168,7 @@ public abstract class ByteBasedScanner extends XmlScanner {
     }
 
     @Override
-    public long getEndingCharOffset() throws XMLStreamException {
+    public long getEndingCharOffset() {
         // N/A for this type
         return -1L;
     }

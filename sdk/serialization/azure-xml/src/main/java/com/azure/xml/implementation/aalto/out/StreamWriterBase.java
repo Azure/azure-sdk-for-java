@@ -49,7 +49,7 @@ import com.azure.xml.implementation.aalto.util.XmlConsts;
 public abstract class StreamWriterBase extends Stax2WriterImpl implements NamespaceContext, ValidationContext {
     protected enum State {
         PROLOG, TREE, EPILOG
-    };
+    }
 
     /*
     /**********************************************************************
@@ -277,7 +277,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             throw new NullPointerException();
         }
         // Are we actually trying to set the default namespace?
-        if (prefix.length() == 0) {
+        if (prefix.isEmpty()) {
             setDefaultNamespace(uri);
             return;
         }
@@ -304,7 +304,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
                 }
             }
             // Empty URI can only be bound to the default ns on xml 1.0:
-            if (uri.length() == 0) {
+            if (uri.isEmpty()) {
                 if (!_config.isXml11()) {
                     throwOutputError(ErrorConsts.ERR_NS_EMPTY);
                 }
@@ -349,7 +349,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         try {
             int ix = _xmlWriter.writeCData(data);
             if (ix >= 0) { // unfixable problems?
-                _reportNwfContent(ErrorConsts.WERR_CDATA_CONTENT, Integer.valueOf(ix));
+                _reportNwfContent(ErrorConsts.WERR_CDATA_CONTENT, ix);
             }
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
@@ -453,7 +453,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         try {
             int ix = _xmlWriter.writeComment(data);
             if (ix >= 0) {
-                _reportNwfContent(ErrorConsts.WERR_COMMENT_CONTENT, Integer.valueOf(ix));
+                _reportNwfContent(ErrorConsts.WERR_COMMENT_CONTENT, ix);
             }
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
@@ -525,17 +525,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             thisElem.addToPool(_outputElemPool);
             _outputElemPool = thisElem;
             ++_poolSize;
-        }
-
-        if (_cfgCheckStructure) {
-            /*
-            if (expName != null) { // let's just check local name?
-                String localName = thisElem.getLocalName();
-                if (!localName.equals(expName.getLocalPart())) {
-                    _reportNwfStructure("Mismatching close element local name, '"+localName+"'; expected '"+expName.getLocalPart()+"'.");
-                }
-            }
-            */
         }
 
         try {
@@ -613,7 +602,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         try {
             int ix = _xmlWriter.writePI(_symbols.findSymbol(target), data);
             if (ix >= 0) {
-                _reportNwfContent(ErrorConsts.WERR_PI_CONTENT, Integer.valueOf(ix));
+                _reportNwfContent(ErrorConsts.WERR_PI_CONTENT, ix);
             }
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
@@ -777,7 +766,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         writeTypedElement(valueEncoderFactory().getEncoder(v, value, from, length));
     }
 
-    private final void writeTypedElement(AsciiValueEncoder enc) throws XMLStreamException {
+    private void writeTypedElement(AsciiValueEncoder enc) throws XMLStreamException {
         _stateAnyOutput = true;
         if (_stateStartElementOpen) {
             _closeStartElement(_stateEmptyElement);
@@ -922,11 +911,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    @Override
-    public void closeCompletely() throws XMLStreamException {
-        _finishDocument(true);
-    }
-
     /*
     /**********************************************************************
     /* Stax2, config
@@ -1054,7 +1038,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             throw new IoStreamException(ioe);
         }
         if (ix >= 0) { // problems that could not to be fixed?
-            _reportNwfContent(ErrorConsts.WERR_CDATA_CONTENT, Integer.valueOf(ix));
+            _reportNwfContent(ErrorConsts.WERR_CDATA_CONTENT, ix);
         }
     }
 
@@ -1072,22 +1056,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
         }
-    }
-
-    /**
-     * Similar to {@link #writeEndElement}, but never allows implicit
-     * creation of empty elements.
-     */
-    @Override
-    public void writeFullEndElement() throws XMLStreamException {
-        if (_stateStartElementOpen && _stateEmptyElement) {
-            _stateEmptyElement = false;
-            /* The open element was an empty element (created via
-             * explicit call using writeEmptyElement); not affected
-             */
-            _closeStartElement(true);
-        }
-        writeEndElement();
     }
 
     @Override
@@ -1140,27 +1108,8 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    @Override
-    public String getXmlVersion() {
-        return _config.isXml11() ? "1.1" : "1.0";
-    }
-
-    @Override
-    public QName getCurrentElementName() {
-        return _currElem.getQName();
-    }
-
     // already part of NamespaceContext impl above...
     //public String getNamespaceURI(String prefix)
-
-    /**
-     * As of now, there is no way to specify the base URI. Could be improved
-     * in future, if xml:base is supported.
-     */
-    @Override
-    public String getBaseUri() {
-        return null;
-    }
 
     @Override
     public Location getValidationLocation() {
@@ -1181,72 +1130,9 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
     }
 
-    /**
-     * Adding default attribute values does not usually make sense on
-     * output side, so the implementation is a NOP for now.
-     */
-    @Override
-    public int addDefaultAttribute(String localName, String uri, String prefix, String value) {
-        // nothing to do, but to indicate we didn't add it...
-        return -1;
-    }
-
     // // // Notation/entity access: not (yet?) implemented
 
-    @Override
-    public boolean isNotationDeclared(String name) {
-        return false;
-    }
-
-    @Override
-    public boolean isUnparsedEntityDeclared(String name) {
-        return false;
-    }
-
     // // // Attribute access: not yet implemented:
-
-    /* !!! TODO: Implement attribute access (iff validate-attributes
-     *   enabled?
-     */
-    @Override
-    public int getAttributeCount() {
-        return 0;
-    }
-
-    @Override
-    public String getAttributeLocalName(int index) {
-        return null;
-    }
-
-    @Override
-    public String getAttributeNamespace(int index) {
-        return null;
-    }
-
-    @Override
-    public String getAttributePrefix(int index) {
-        return null;
-    }
-
-    @Override
-    public String getAttributeValue(int index) {
-        return null;
-    }
-
-    @Override
-    public String getAttributeValue(String nsURI, String localName) {
-        return null;
-    }
-
-    @Override
-    public String getAttributeType(int index) {
-        return "";
-    }
-
-    @Override
-    public int findAttributeIndex(String nsURI, String localName) {
-        return -1;
-    }
 
     /*
     /**********************************************************************
@@ -1254,11 +1140,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    /**
-     * Method called to close an open start element, when another
-     * main-level element (not namespace declaration or attribute)
-     * is being output; except for end element which is handled differently.
-     */
     /**
      * Method called to close an open start element, when another
      * main-level element (not namespace declaration or attribute)
@@ -1310,7 +1191,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     protected final void _writeAttribute(WName name, String value) throws XMLStreamException {
         if (_cfgCheckAttrs) { // still need to ensure no duplicate attrs?
-            _verifyWriteAttr(name);
+            _verifyWriteAttr();
         }
         try {
             _xmlWriter.writeAttribute(name, value);
@@ -1321,7 +1202,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     protected final void _writeAttribute(WName name, AsciiValueEncoder enc) throws XMLStreamException {
         if (_cfgCheckAttrs) { // still need to ensure no duplicate attrs?
-            _verifyWriteAttr(name);
+            _verifyWriteAttr();
         }
         try {
             _xmlWriter.writeAttribute(name, enc);
@@ -1363,7 +1244,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         if (_cfgCheckContent) {
             // !!! If and how to check encoding?
             // if (encoding != null) { }
-            if (version != null && version.length() > 0) {
+            if (version != null && !version.isEmpty()) {
                 if (!(version.equals(XmlConsts.XML_V_10_STR) || version.equals(XmlConsts.XML_V_11_STR))) {
                     _reportNwfContent("Illegal version argument ('" + version + "'); should only use '"
                         + XmlConsts.XML_V_10_STR + "' or '" + XmlConsts.XML_V_11_STR + "'");
@@ -1371,7 +1252,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             }
         }
 
-        if (version == null || version.length() == 0) {
+        if (version == null || version.isEmpty()) {
             version = XmlConsts.STAX_DEFAULT_OUTPUT_VERSION;
         }
         if (XmlConsts.XML_V_11_STR.equals(version)) {
@@ -1379,7 +1260,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             _xmlWriter.enableXml11();
         }
 
-        if (encoding != null && encoding.length() > 0) {
+        if (encoding != null && !encoding.isEmpty()) {
             /* What about conflicting encoding? Let's only update encoding,
              * if it wasn't set.
              */
@@ -1442,7 +1323,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    protected final void _verifyWriteAttr(WName name) {
+    protected final void _verifyWriteAttr() {
         // !!! TBI
     }
 
@@ -1459,7 +1340,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         if (_stateStartElementOpen) {
             _closeStartElement(_stateEmptyElement);
         } else if (_state == State.PROLOG) {
-            _verifyRootElement(prefix, localName);
+            _verifyRootElement();
         } else if (_state == State.EPILOG) {
             if (_cfgCheckStructure) {
                 String name = (prefix == null) ? localName : (prefix + ":" + localName);
@@ -1500,7 +1381,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
     }
 
-    protected void _verifyRootElement(String prefix, String localName) throws XMLValidationException {
+    protected void _verifyRootElement() {
         // !!! TBI: only relevant if we are actually validating?
 
         _state = State.TREE;
@@ -1517,15 +1398,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     }
 
     protected static void throwOutputError(String format, Object arg) throws XMLStreamException {
-        String msg = MessageFormat.format(format, new Object[] { arg });
-        throwOutputError(msg);
-    }
-
-    /**
-     * Method called when an illegal method (namespace-specific method
-     * on non-ns writer) is called by the application.
-     */
-    protected static void reportIllegalMethod(String msg) throws XMLStreamException {
+        String msg = MessageFormat.format(format, arg);
         throwOutputError(msg);
     }
 
@@ -1557,30 +1430,8 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         throwOutputError(msg, arg);
     }
 
-    /**
-     * This is the method called when an output method call violates
-     * attribute well-formedness checks (trying to output dup attrs)
-     * and name validaty checking
-     * is enabled.
-     */
-    protected static void _reportNwfAttr(String msg) throws XMLStreamException {
-        throwOutputError(msg);
-    }
-
-    protected static void _reportNwfAttr(String msg, Object arg) throws XMLStreamException {
-        throwOutputError(msg, arg);
-    }
-
-    protected static void _reportNwfName(String msg) throws XMLStreamException {
-        throwOutputError(msg);
-    }
-
     protected static void throwFromIOE(IOException ioe) throws XMLStreamException {
         throw new IoStreamException(ioe);
-    }
-
-    protected static void reportIllegalArg(String msg) throws IllegalArgumentException {
-        throw new IllegalArgumentException(msg);
     }
 
     /*
@@ -1632,7 +1483,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    private final void _finishDocument(boolean forceRealClose) throws XMLStreamException {
+    private void _finishDocument(boolean forceRealClose) throws XMLStreamException {
         // Is tree still open?
         if (_state != State.EPILOG) {
             if (_cfgCheckStructure && _state == State.PROLOG) {

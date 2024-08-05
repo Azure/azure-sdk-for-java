@@ -9,7 +9,7 @@ package com.azure.xml.implementation.aalto;
  * when parser's <code>nextToken</code> is called). Once application using
  * non-blocking parser has no more data to feed it should call
  * {@link #endOfInput} to indicate end of logical input stream.
- * 
+ *
  * @author tatu
  */
 public interface AsyncInputFeeder {
@@ -18,7 +18,7 @@ public interface AsyncInputFeeder {
      * if it has no more content to parse (and it is ok to feed more); otherwise false
      * (and no data should yet be fed).
      */
-    public boolean needMoreInput();
+    boolean needMoreInput();
 
     /**
      * Method that should be called after last chunk of data to parse has been fed.
@@ -26,5 +26,5 @@ public interface AsyncInputFeeder {
      * After calling this method, no more data can be fed; and parser assumes
      * no more data will be available.
      */
-    public void endOfInput();
+    void endOfInput();
 }

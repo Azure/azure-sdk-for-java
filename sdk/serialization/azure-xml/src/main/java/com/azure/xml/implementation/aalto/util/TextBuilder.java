@@ -405,9 +405,9 @@ public final class TextBuilder {
         // Nope, need to do full segmented output
         int rlen = 0;
         if (_segments != null) {
-            for (char[] ch : _segments) {
-                w.write(ch);
-                rlen += ch.length;
+            for (char[] segment : _segments) {
+                w.write(segment);
+                rlen += segment.length;
             }
         }
         if (_currentSize > 0) {
@@ -423,8 +423,8 @@ public final class TextBuilder {
         }
         // Need to do full segmented output, otherwise
         if (_segments != null) {
-            for (char[] buf : _segments) {
-                for (char c : buf) {
+            for (char[] segment : _segments) {
+                for (char c : segment) {
                     if (c > 0x0020) {
                         return false;
                     }
@@ -522,8 +522,8 @@ public final class TextBuilder {
             h.characters(_resultArray, 0, _resultLen);
         } else {
             if (_segments != null) {
-                for (char[] ch : _segments) {
-                    h.characters(ch, 0, ch.length);
+                for (char[] segment : _segments) {
+                    h.characters(segment, 0, segment.length);
                 }
             }
             if (_currentSize > 0) {
@@ -537,8 +537,8 @@ public final class TextBuilder {
             h.ignorableWhitespace(_resultArray, 0, _resultLen);
         } else {
             if (_segments != null) {
-                for (char[] ch : _segments) {
-                    h.ignorableWhitespace(ch, 0, ch.length);
+                for (char[] segment : _segments) {
+                    h.ignorableWhitespace(segment, 0, segment.length);
                 }
             }
             if (_currentSize > 0) {
@@ -723,9 +723,10 @@ public final class TextBuilder {
                 }
                 // Then let's figure out non-space char (token)
                 start = ptr;
-                do {
+                ++ptr;
+                while (ptr < end && buf[ptr] > INT_SPACE) {
                     ++ptr;
-                } while (ptr < end && buf[ptr] > INT_SPACE);
+                }
                 ++count;
                 int tokenEnd = ptr;
                 ++ptr; // to skip trailing space (or, beyond end)
@@ -806,8 +807,10 @@ public final class TextBuilder {
 
     private char[] allocBuffer(int minNeeded) {
         int size = Math.max(DEF_INITIAL_BUFFER_SIZE, minNeeded);
+        char[] buf;
         if (_config != null) {
-            return _config.allocMediumCBuffer(size);
+            buf = _config.allocMediumCBuffer(size);
+            return buf;
         }
         return new char[size];
     }

@@ -213,7 +213,7 @@ public class CharactersEventImpl extends BaseEventImpl implements Characters {
                     w.write("&lt;");
                 } else if (c == '&') {
                     w.write("&amp;");
-                } else if (c == '>') {
+                } else {
                     w.write("&gt;");
                 }
             }

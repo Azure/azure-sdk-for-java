@@ -118,11 +118,6 @@ public class Stax2FilteredEventReader implements XMLEventReader2, XMLStreamConst
      */
 
     @Override
-    public boolean hasNextEvent() throws XMLStreamException {
-        return (peek() != null);
-    }
-
-    @Override
     public boolean isPropertySupported(String name) {
         return mReader.isPropertySupported(name);
     }

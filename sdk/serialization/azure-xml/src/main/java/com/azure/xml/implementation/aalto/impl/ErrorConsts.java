@@ -1,9 +1,9 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.impl;
 
-import javax.xml.XMLConstants;
+import com.azure.xml.implementation.stax2.ri.Stax2Util;
 
-import static javax.xml.stream.XMLStreamConstants.*;
+import javax.xml.XMLConstants;
 
 /**
  * This class contains various String constants used for error reporting.
@@ -12,13 +12,12 @@ import static javax.xml.stream.XMLStreamConstants.*;
  * this is intentional, to avoid inlining (same String might get embedded
  * in multiple using class files). May not matter in the end, but for
  * now done to optimize class file sizes.
- * 
+ *
  * @author Tatu Saloranta
  */
 public final class ErrorConsts {
     // // // Generic input errors:
 
-    public static String ERR_INTERNAL = "Internal error";
     public static String ERR_NULL_ARG = "Illegal to pass null as argument";
 
     // // // Error, validation:
@@ -48,9 +47,6 @@ public final class ErrorConsts {
     public static String ERR_WF_DUP_ATTRS = "Duplicate attributes \"{0}\" (index {1}), \"{2}\" (index {3})";
 
     // // // Errors, namespace binding
-
-    public static String ERR_NS_UNDECLARED = "Undeclared namespace prefix \"{0}\"";
-    public static String ERR_NS_UNDECLARED_FOR_ATTR = "Undeclared namespace prefix \"{0}\" (for attribute \"{1}\")";
 
     public static String ERR_NS_REDECL_XML
         = "Trying to redeclare prefix 'xml' from its default URI '" + XMLConstants.XML_NS_URI + "' to \"{0}\"";
@@ -94,25 +90,11 @@ public final class ErrorConsts {
 
     public static String WERR_NAME_EMPTY = "Illegal to pass empty name";
 
-    public static String WERR_NAME_ILLEGAL_FIRST_CHAR = "Illegal first name character {0}";
-    public static String WERR_NAME_ILLEGAL_CHAR = "Illegal name character {0}";
-
     // // // Warning-related:
 
     // // Types of warnings we issue via XMLReporter
 
-    public static String WT_ENT_DECL = "entity declaration";
-    public static String WT_ELEM_DECL = "element declaration";
-    public static String WT_ATTR_DECL = "attribute declaration";
     public static String WT_XML_DECL = "xml declaration";
-    public static String WT_DT_DECL = "doctype declaration";
-    public static String WT_NS_DECL = "namespace declaration";
-
-    /**
-     * This is the generic type for warnings based on XMLValidationProblem
-     * objects.
-     */
-    public static String WT_VALIDATION = "schema validation";
 
     // // Warning messages:
 
@@ -126,41 +108,7 @@ public final class ErrorConsts {
      */
 
     public static String tokenTypeDesc(int type) {
-        switch (type) {
-            case START_ELEMENT:
-                return "START_ELEMENT";
-
-            case END_ELEMENT:
-                return "END_ELEMENT";
-
-            case START_DOCUMENT:
-                return "START_DOCUMENT";
-
-            case END_DOCUMENT:
-                return "END_DOCUMENT";
-
-            case CHARACTERS:
-                return "CHARACTERS";
-
-            case CDATA:
-                return "CDATA";
-
-            case SPACE:
-                return "SPACE";
-
-            case COMMENT:
-                return "COMMENT";
-
-            case PROCESSING_INSTRUCTION:
-                return "PROCESSING_INSTRUCTION";
-
-            case DTD:
-                return "DTD";
-
-            case ENTITY_REFERENCE:
-                return "ENTITY_REFERENCE";
-        }
-        return "[" + type + "]";
+        return Stax2Util.eventTypeDesc(type);
     }
 
     public static void throwInternalError() {

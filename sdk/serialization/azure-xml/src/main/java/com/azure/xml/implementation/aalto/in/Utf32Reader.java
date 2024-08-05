@@ -143,7 +143,7 @@ public class Utf32Reader extends Reader {
 
         byte[] buf = mBuffer;
 
-        main_loop: while (outPtr < len) {
+        while (outPtr < len) {
             int ptr = mPtr;
             int ch;
 
@@ -171,7 +171,7 @@ public class Utf32Reader extends Reader {
                     // Room for second part?
                     if (outPtr >= len) { // nope
                         mSurrogate = (char) ch;
-                        break main_loop;
+                        break;
                     }
                 } else { // in 16-bit range... just need validity checks
                     if (ch < 0xE000) {
@@ -183,7 +183,7 @@ public class Utf32Reader extends Reader {
             }
             cbuf[outPtr++] = (char) ch;
             if (mPtr >= mLength) {
-                break main_loop;
+                break;
             }
         }
 
@@ -282,7 +282,7 @@ public class Utf32Reader extends Reader {
             + " at char #" + charPos + ", byte #" + bytePos + ")");
     }
 
-    protected void reportBounds(char[] cbuf, int start, int len) throws IOException {
+    protected void reportBounds(char[] cbuf, int start, int len) {
         throw new ArrayIndexOutOfBoundsException("read(buf," + start + "," + len + "), cbuf[" + cbuf.length + "]");
     }
 

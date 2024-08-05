@@ -4,6 +4,7 @@ package com.azure.xml.implementation.aalto.in;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -57,34 +58,30 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     protected final static int MAX_UNICODE_CHAR = 0x10FFFF;
 
     protected final static int INT_NULL = 0;
-    protected final static int INT_CR = (int) '\r';
-    protected final static int INT_LF = (int) '\n';
-    protected final static int INT_TAB = (int) '\t';
+    protected final static int INT_CR = '\r';
+    protected final static int INT_LF = '\n';
+    protected final static int INT_TAB = '\t';
     protected final static int INT_SPACE = 0x0020;
 
-    protected final static int INT_HYPHEN = (int) '-';
-    protected final static int INT_QMARK = (int) '?';
-    protected final static int INT_AMP = (int) '&';
-    protected final static int INT_LT = (int) '<';
-    protected final static int INT_GT = (int) '>';
-    protected final static int INT_QUOTE = (int) '"';
-    protected final static int INT_APOS = (int) '\'';
-    protected final static int INT_EXCL = (int) '!';
-    protected final static int INT_COLON = (int) ':';
-    protected final static int INT_LBRACKET = (int) '[';
-    protected final static int INT_RBRACKET = (int) ']';
-    protected final static int INT_SLASH = (int) '/';
-    protected final static int INT_EQ = (int) '=';
+    protected final static int INT_QMARK = '?';
+    protected final static int INT_AMP = '&';
+    protected final static int INT_LT = '<';
+    protected final static int INT_GT = '>';
+    protected final static int INT_QUOTE = '"';
+    protected final static int INT_APOS = '\'';
+    protected final static int INT_COLON = ':';
+    protected final static int INT_SLASH = '/';
+    protected final static int INT_EQ = '=';
 
-    protected final static int INT_A = (int) 'A';
-    protected final static int INT_F = (int) 'F';
+    protected final static int INT_A = 'A';
+    protected final static int INT_F = 'F';
 
-    protected final static int INT_a = (int) 'a';
-    protected final static int INT_f = (int) 'f';
-    protected final static int INT_z = (int) 'z';
+    protected final static int INT_a = 'a';
+    protected final static int INT_f = 'f';
+    protected final static int INT_z = 'z';
 
-    protected final static int INT_0 = (int) '0';
-    protected final static int INT_9 = (int) '9';
+    protected final static int INT_0 = '0';
+    protected final static int INT_9 = '9';
 
     // // // Config for bound PName cache:
 
@@ -164,7 +161,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
      * for holding things like names (element, attribute), and
      * attribute values.
      */
-    protected char[] _nameBuffer = null;
+    protected char[] _nameBuffer;
 
     /**
      * Current name associated with the token, if any. Name of the
@@ -577,7 +574,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return _textBuilder.contentsToArray(srcStart, target, targetStart, len);
     }
 
-    public final int getText(Writer w, boolean preserveContents) throws XMLStreamException {
+    public final int getText(Writer w) throws XMLStreamException {
         if (_tokenIncomplete) {
             finishToken();
         }
@@ -744,11 +741,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return _attrCollector.getQName(index);
     }
 
-    public final String getAttrPrefixedName(int index) {
-        // Note: caller checks indices:
-        return _attrCollector.getName(index).getPrefixedName();
-    }
-
     public final String getAttrNsURI(int index) {
         // Note: caller checks indices:
         return _attrCollector.getName(index).getNsUri();
@@ -774,7 +766,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return _attrCollector.getValue(nsURI, localName);
     }
 
-    public final void decodeAttrValue(int index, TypedValueDecoder tvd) throws XMLStreamException {
+    public final void decodeAttrValue(int index, TypedValueDecoder tvd) {
         _attrCollector.decodeValue(index, tvd);
     }
 
@@ -803,13 +795,13 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return _attrCollector.findIndex(nsURI, localName);
     }
 
-    public final String getAttrType(int index) {
+    public final String getAttrType() {
         // Note: caller checks indices:
         // !!! TBI
         return "CDATA";
     }
 
-    public final boolean isAttrSpecified(int index) {
+    public final boolean isAttrSpecified() {
         // !!! TBI
         // (for now works ok as we don't handle DTD info, no attr value defaults)
         return true;
@@ -888,7 +880,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         if (prefix == null) {
             throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
         }
-        if (prefix.length() == 0) { // default namespace?
+        if (prefix.isEmpty()) { // default namespace?
             // Need to check if it's null, too, to convert
             String uri = _defaultNs.mURI;
             return (uri == null) ? "" : uri;
@@ -914,7 +906,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     @Override
     public String getPrefix(String nsURI) {
         /* As per JDK 1.5 JavaDocs, null is illegal; but no mention
-         * about empty String (""). But that should 
+         * about empty String (""). But that should
          */
         if (nsURI == null) {
             throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
@@ -965,7 +957,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
         // First, the default ns?
         if (nsURI.equals(_defaultNs.mURI)) {
-            l = new ArrayList<String>();
+            l = new ArrayList<>();
             l.add("");
         }
 
@@ -981,7 +973,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
                         }
                     }
                     if (l == null) {
-                        l = new ArrayList<String>();
+                        l = new ArrayList<>();
                     }
                     l.add(prefix);
                 }
@@ -1069,7 +1061,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         // If no cache, or not found there, need to first find binding
         for (int i = 0, len = _nsBindingCount; i < len; ++i) {
             NsBinding b = _nsBindings[i];
-            if (b.mPrefix != prefix) { // prefixes are canonicalized
+            if (!Objects.equals(b.mPrefix, prefix)) { // prefixes are canonicalized
                 continue;
             }
             // Ok, match!
@@ -1093,7 +1085,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         // If not even binding, need to create that first
 
         // No match; perhaps "xml"? But is "xmlns" legal to use too?
-        if (prefix == "xml") {
+        if (Objects.equals(prefix, "xml")) {
             return name.createBoundName(NsBinding.XML_BINDING);
         }
         /* Nope. Need to create a new binding. For such entries, let's
@@ -1116,7 +1108,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
      * binding object (essentially a per-prefix-per-document canonical
      * container object)
      */
-    protected final NsBinding findOrCreateBinding(String prefix) throws XMLStreamException {
+    protected final NsBinding findOrCreateBinding(String prefix) {
         // !!! TODO: switch to hash at size N?
 
         // TEST only (for ns-soap.xml):
@@ -1125,7 +1117,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
         for (int i = 0, len = _nsBindingCount; i < len; ++i) {
             NsBinding b = _nsBindings[i];
-            if (b.mPrefix == prefix) { // prefixes are interned
+            if (Objects.equals(b.mPrefix, prefix)) { // prefixes are interned
                 if (i > 0) { // let's do bubble it up a notch... can speed things up
                     _nsBindings[i] = _nsBindings[i - 1];
                     _nsBindings[i - 1] = b;
@@ -1134,10 +1126,10 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             }
         }
 
-        if (prefix == "xml") {
+        if (Objects.equals(prefix, "xml")) {
             return NsBinding.XML_BINDING;
         }
-        if (prefix == "xmlns") {
+        if (Objects.equals(prefix, "xmlns")) {
             return NsBinding.XMLNS_BINDING;
         }
         // Nope. Need to create a new binding
@@ -1175,9 +1167,9 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
          *   can just do identity comparison
          */
         if (!ns.isImmutable()) {
-            if (uri == XMLConstants.XML_NS_URI) {
+            if (Objects.equals(uri, XMLConstants.XML_NS_URI)) {
                 reportIllegalNsDecl("xml", XMLConstants.XML_NS_URI);
-            } else if (uri == XMLConstants.XMLNS_ATTRIBUTE_NS_URI) {
+            } else if (Objects.equals(uri, XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
                 reportIllegalNsDecl("xmlns", XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
             }
         }
@@ -1189,11 +1181,11 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     }
 
     /**
-     * Method called when an immutable ns prefix (xml, xmlns) is 
+     * Method called when an immutable ns prefix (xml, xmlns) is
      * encountered.
      */
     protected final void checkImmutableBinding(String prefix, String uri) throws XMLStreamException {
-        if (prefix != "xml" || !uri.equals(XMLConstants.XML_NS_URI)) {
+        if (!Objects.equals(prefix, "xml") || !uri.equals(XMLConstants.XML_NS_URI)) {
             reportIllegalNsDecl(prefix);
         }
     }

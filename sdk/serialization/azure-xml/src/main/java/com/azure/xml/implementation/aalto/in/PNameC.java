@@ -32,7 +32,7 @@ public final class PNameC extends PName {
      * String's hash will be (right now it is not), we better store
      * "our" hash here.
      */
-    protected final int mHash;
+    private final int mHash;
 
     public PNameC(String pname, String prefix, String ln, int hash) {
         super(pname, prefix, ln);
@@ -88,25 +88,8 @@ public final class PNameC extends PName {
         return mHash;
     }
 
-    /**
-     * Implementation of a hashing method for variable length
-     * Strings. Most of the time intention is that this calculation
-     * is done by caller during parsing, not here; however, sometimes
-     * it needs to be done for parsed "String" too.
-     *
-     * @param len Length of String; has to be at least 1 (caller guarantees
-     *   this pre-condition)
-     */
-    public static int calcHash(char[] buffer, int start, int len) {
-        int hash = (int) buffer[0];
-        for (int i = 1; i < len; ++i) {
-            hash = (hash * 31) + (int) buffer[i];
-        }
-        return hash;
-    }
-
     public static int calcHash(String key) {
-        int hash = (int) key.charAt(0);
+        int hash = key.charAt(0);
         for (int i = 1, len = key.length(); i < len; ++i) {
             hash = (hash * 31) + (int) key.charAt(i);
 
@@ -131,13 +114,7 @@ public final class PNameC extends PName {
     }
 
     @Override
-    public int getFirstQuad() {
-        ErrorConsts.throwInternalError();
-        return 0; // never gets here
-    }
-
-    @Override
-    public final int getLastQuad() {
+    public int getLastQuad() {
         ErrorConsts.throwInternalError();
         return 0; // never gets here
     }

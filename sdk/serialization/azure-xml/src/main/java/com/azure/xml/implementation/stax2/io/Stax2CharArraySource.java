@@ -32,12 +32,12 @@ public class Stax2CharArraySource extends Stax2BlockSource {
      */
 
     @Override
-    public Reader constructReader() throws IOException {
+    public Reader constructReader() {
         return new CharArrayReader(mBuffer, mStart, mLength);
     }
 
     @Override
-    public InputStream constructInputStream() throws IOException {
+    public InputStream constructInputStream() {
         /* No obvious/easy way; if caller really wants an InputStream, it
          * can get a Reader, add an encoders, and so on.
          */

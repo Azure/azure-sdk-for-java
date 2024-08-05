@@ -103,7 +103,7 @@ final class NsBinder {
 
         for (int ix = _scopeEnd - 2; ix >= 0; ix -= 2) {
             String thisP = strs[ix];
-            if (thisP == prefix || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+            if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                 return strs[ix + 1];
             }
         }
@@ -122,7 +122,7 @@ final class NsBinder {
 
         main_loop: for (int ix = _scopeEnd - 1; ix > 0; ix -= 2) {
             String thisU = strs[ix];
-            if (thisU == uri || (thisU.hashCode() == uhash && thisU.equals(uri))) {
+            if (Objects.equals(thisU, uri) || (thisU.hashCode() == uhash && thisU.equals(uri))) {
                 // match, but has it been masked?
                 String prefix = strs[ix - 1];
                 /* only need to check, if it wasn't within current scope
@@ -132,7 +132,7 @@ final class NsBinder {
                     int phash = prefix.hashCode();
                     for (int j = ix - 1, end = _scopeEnd; j < end; j += 2) {
                         String thisP = strs[ix];
-                        if (thisP == prefix || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+                        if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                             // Masking, can't use
                             continue main_loop;
                         }
@@ -153,20 +153,20 @@ final class NsBinder {
 
         main_loop: for (int ix = _scopeEnd - 1; ix > 0; ix -= 2) {
             String thisU = strs[ix];
-            if (thisU == uri || (thisU.hashCode() == uhash && thisU.equals(uri))) {
+            if (Objects.equals(thisU, uri) || (thisU.hashCode() == uhash && thisU.equals(uri))) {
                 String prefix = strs[ix - 1];
                 if (ix < _scopeStart) {
                     int phash = prefix.hashCode();
                     for (int j = ix - 1, end = _scopeEnd; j < end; j += 2) {
                         String thisP = strs[ix];
-                        if (thisP == prefix || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+                        if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                             // Masking... got to continue the main loop:
                             continue main_loop;
                         }
                     }
                 }
                 if (l == null) { // unmasked, ok
-                    l = new ArrayList<String>();
+                    l = new ArrayList<>();
                 }
                 l.add(prefix);
             }
@@ -205,7 +205,7 @@ final class NsBinder {
 
         for (int ix = _scopeStart, end = _scopeEnd; ix < end; ix += 2) {
             String thisP = strs[ix];
-            if (thisP == prefix || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+            if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                 // Overriding an existing mapping
                 String old = strs[ix + 1];
                 strs[ix + 1] = uri;
@@ -248,7 +248,7 @@ final class NsBinder {
 
             for (int ix = _scopeEnd - 2; ix >= 0; ix -= 2) {
                 String thisP = strs[ix];
-                if (thisP == prefix || (thisP.hashCode() == phash && thisP.equals(prefix))) {
+                if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                     continue main_loop;
                 }
             }
@@ -256,7 +256,7 @@ final class NsBinder {
              * in the root context, if we were given one?
              */
             if (ctxt != null && ctxt.getNamespaceURI(prefix) != null) {
-                continue main_loop;
+                continue;
             }
             seqArr[0] = seqNr;
             return prefix;
@@ -271,6 +271,6 @@ final class NsBinder {
 
     @Override
     public String toString() {
-        return "[" + getClass().toString() + "; " + size() + " entries; of which " + localSize() + " local]";
+        return "[" + getClass() + "; " + size() + " entries; of which " + localSize() + " local]";
     }
 }

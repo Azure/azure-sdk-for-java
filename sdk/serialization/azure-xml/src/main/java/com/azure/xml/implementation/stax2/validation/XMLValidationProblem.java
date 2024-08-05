@@ -11,7 +11,6 @@ import javax.xml.stream.Location;
 public class XMLValidationProblem {
     public final static int SEVERITY_WARNING = 1;
     public final static int SEVERITY_ERROR = 2;
-    public final static int SEVERITY_FATAL = 3;
 
     /**
      * Location within validated xml stream where the problem occured.
@@ -37,10 +36,6 @@ public class XMLValidationProblem {
      */
     protected XMLValidator mReporter;
 
-    public XMLValidationProblem(Location loc, String msg) {
-        this(loc, msg, SEVERITY_ERROR);
-    }
-
     public XMLValidationProblem(Location loc, String msg, int severity) {
         this(loc, msg, severity, null);
     }
@@ -50,20 +45,6 @@ public class XMLValidationProblem {
         mMessage = msg;
         mSeverity = severity;
         mType = type;
-    }
-
-    /**
-     * Convenience method for constructing a {@link XMLValidationException}
-     * to throw based on information contained in this object.
-     * Base implementation is equivalent to:
-     *<pre>
-     *  return XMLValidationException.createException(this);
-     *</pre>
-     *
-     * @since 3.0
-     */
-    public XMLValidationException toException() {
-        return XMLValidationException.createException(this);
     }
 
     /**
@@ -81,15 +62,6 @@ public class XMLValidationProblem {
     }
 
     /**
-     * Set the validator object that reported this problem, if known.
-     *
-     * @since 3.0
-     */
-    public void setReporter(XMLValidator v) {
-        mReporter = v;
-    }
-
-    /**
      * @return Reference to location where problem was encountered.
      */
     public Location getLocation() {
@@ -97,7 +69,7 @@ public class XMLValidationProblem {
     }
 
     /**
-     * @return Human-readable message describing the problem 
+     * @return Human-readable message describing the problem
      */
     public String getMessage() {
         return mMessage;

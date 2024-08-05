@@ -31,12 +31,12 @@ final class NsBinding {
     /**
      * Default binding for prefix "xml"
      */
-    public final static NsBinding XML_BINDING = new NsBinding("xml", XMLConstants.XML_NS_URI, null);
+    public final static NsBinding XML_BINDING = new NsBinding("xml", XMLConstants.XML_NS_URI);
 
     /**
      * Default binding for prefix "xmlns"
      */
-    public final static NsBinding XMLNS_BINDING = new NsBinding("xmlns", XMLConstants.XMLNS_ATTRIBUTE_NS_URI, null);
+    public final static NsBinding XMLNS_BINDING = new NsBinding("xmlns", XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
 
     public final String mPrefix;
     public String mURI;
@@ -57,7 +57,7 @@ final class NsBinding {
         return new NsBinding(null);
     }
 
-    private NsBinding(String prefix, String uri, Object DUMMY) {
+    private NsBinding(String prefix, String uri) {
         mPrefix = prefix;
         mURI = uri;
     }

@@ -33,13 +33,10 @@ import com.azure.xml.implementation.aalto.util.EmptyIterator;
  * and can be recycled by it, as necessary.
  */
 final class OutputElement {
-    final static byte BYTE_LT = (byte) '<';
-    final static byte BYTE_GT = (byte) '>';
-    final static byte BYTE_SLASH = (byte) '/';
 
     public enum PrefixState {
         UNBOUND, OK, MISBOUND
-    };
+    }
 
     /**
      * Reference to either the parent (enclosing element) of this
@@ -72,9 +69,9 @@ final class OutputElement {
      */
     //NamespaceContext _rootNsContext;
 
-    private String _defaultNsURI = "";
+    private String _defaultNsURI;
 
-    private NsBinder _nsBinder = null;
+    private NsBinder _nsBinder;
 
     /*
     /**********************************************************************
@@ -98,7 +95,7 @@ final class OutputElement {
         _defaultNsURI = parent._defaultNsURI;
     }
 
-    protected static OutputElement createRoot() {
+    static OutputElement createRoot() {
         return new OutputElement();
     }
 
@@ -107,7 +104,7 @@ final class OutputElement {
      * element output method is called. It is, then, assumed to
      * use the default namespce.
      */
-    protected OutputElement createChild(WName name) {
+    OutputElement createChild(WName name) {
         return new OutputElement(this, name, _defaultNsURI, _nsBinder);
     }
 
@@ -115,7 +112,7 @@ final class OutputElement {
      * Full factory method, used for 'normal' namespace qualified output
      * methods.
      */
-    protected OutputElement createChild(WName name, String uri) {
+    OutputElement createChild(WName name, String uri) {
         return new OutputElement(this, name, uri, _nsBinder);
     }
 
@@ -128,26 +125,16 @@ final class OutputElement {
     /**
      * @return New head of the recycle pool
      */
-    protected OutputElement reuseAsChild(OutputElement parent, WName name) {
+    OutputElement reuseAsChild(OutputElement parent, WName name) {
         OutputElement poolHead = _parent;
         relink(parent, name, _defaultNsURI);
         return poolHead;
     }
 
-    protected OutputElement reuseAsChild(OutputElement parent, WName name, String nsURI) {
+    OutputElement reuseAsChild(OutputElement parent, WName name, String nsURI) {
         OutputElement poolHead = _parent;
         relink(parent, name, nsURI);
         return poolHead;
-    }
-
-    /**
-     * Method called to reuse a recycled instance, as is, with same
-     * name.
-     */
-    public void relink(OutputElement parent) {
-        _parent = parent;
-        _nsBinder = parent._nsBinder;
-        _defaultNsURI = parent._defaultNsURI;
     }
 
     /**
@@ -166,7 +153,7 @@ final class OutputElement {
      * Method called to temporarily link this instance to a pool, to
      * allow reusing of instances with the same reader.
      */
-    protected void addToPool(OutputElement poolHead) {
+    void addToPool(OutputElement poolHead) {
         _parent = poolHead;
     }
 
@@ -211,20 +198,12 @@ final class OutputElement {
         return _name.toString();
     }
 
-    public String getNamespaceURI() {
-        return _uri;
-    }
-
     public String getNonNullNamespaceURI() {
         return (_uri == null) ? "" : _uri;
     }
 
-    public String getDefaultNsURI() {
-        return _defaultNsURI;
-    }
-
     public boolean hasEmptyDefaultNs() {
-        return (_defaultNsURI == null) || (_defaultNsURI.length() == 0);
+        return (_defaultNsURI == null) || (_defaultNsURI.isEmpty());
     }
 
     public QName getQName() {
@@ -270,14 +249,11 @@ final class OutputElement {
      */
 
     public String getNamespaceURI(String prefix) {
-        if (prefix.length() == 0) {
+        if (prefix.isEmpty()) {
             return _defaultNsURI;
         }
         if (_nsBinder != null) {
-            String uri = _nsBinder.findUriByPrefix(prefix);
-            if (uri != null) {
-                return uri;
-            }
+            return _nsBinder.findUriByPrefix(prefix);
         }
         return null;
     }
@@ -287,10 +263,7 @@ final class OutputElement {
             return "";
         }
         if (_nsBinder != null) {
-            String prefix = _nsBinder.findPrefixByUri(uri);
-            if (prefix != null) {
-                return prefix;
-            }
+            return _nsBinder.findPrefixByUri(uri);
         }
         return null;
     }
@@ -300,7 +273,7 @@ final class OutputElement {
         List<String> l = null;
 
         if (_defaultNsURI.equals(uri)) {
-            l = new ArrayList<String>();
+            l = new ArrayList<>();
             l.add("");
         }
         if (_nsBinder != null) {
@@ -311,15 +284,15 @@ final class OutputElement {
         // Note: it's quite difficult to properly resolve masking
 
         if (rootNsContext != null) {
-            Iterator<String> it = (Iterator<String>) rootNsContext.getPrefixes(uri);
+            Iterator<String> it = rootNsContext.getPrefixes(uri);
             while (it.hasNext()) {
                 String prefix = it.next();
-                if (prefix.length() == 0) { // default NS already checked
+                if (prefix.isEmpty()) { // default NS already checked
                     continue;
                 }
                 // slow check... but what the heck
                 if (l == null) {
-                    l = new ArrayList<String>();
+                    l = new ArrayList<>();
                 } else if (l.contains(prefix)) { // double-defined...
                     continue;
                 }
@@ -348,7 +321,7 @@ final class OutputElement {
             String prefix = rootNsContext.getPrefix(uri);
             if (prefix != null) {
                 // Hmmh... still can't use the default NS:
-                if (prefix.length() > 0) {
+                if (!prefix.isEmpty()) {
                     return prefix;
                 }
                 // ... should we try to find an explicit one?
@@ -363,7 +336,7 @@ final class OutputElement {
      * returns a status for caller.
      *
      * @return OK, if passed-in prefix matches matched-in namespace URI
-     *    in current scope; UNBOUND if it's not bound to anything, 
+     *    in current scope; UNBOUND if it's not bound to anything,
      *    and MISBOUND if it's bound to another URI.
      */
     public PrefixState checkPrefixValidity(String prefix, String nsURI, NamespaceContext rootNsContext) {
@@ -387,12 +360,12 @@ final class OutputElement {
         if (act == null) {
             return PrefixState.UNBOUND;
         }
-        return (act == nsURI || act.equals(nsURI)) ? PrefixState.OK : PrefixState.MISBOUND;
+        return (act.equals(nsURI)) ? PrefixState.OK : PrefixState.MISBOUND;
     }
 
     public boolean isPrefixBoundTo(String prefix, String nsURI, NamespaceContext rootNsContext) {
         // First: test default namespace
-        if (prefix == null || prefix.length() == 0) {
+        if (prefix == null || prefix.isEmpty()) {
             return _defaultNsURI.equals(nsURI);
         }
 
@@ -408,13 +381,13 @@ final class OutputElement {
             act = rootNsContext.getNamespaceURI(prefix);
         }
         // Not (yet) bound...
-        return (act != null) && (act == nsURI || act.equals(nsURI));
+        return (act != null) && (act.equals(nsURI));
     }
 
     public boolean isPrefixUnbound(String prefix, NamespaceContext rootNsContext) {
         // First: if an explict binding is found, can't be unbound
         String act = (_nsBinder == null) ? null : _nsBinder.findUriByPrefix(prefix);
-        if (act != null && act.length() != 0) {
+        if (act != null && !act.isEmpty()) {
             return false;
         }
         if (prefix.equals("xml")) { // "xml" is always bound as well
@@ -422,9 +395,7 @@ final class OutputElement {
         }
         if (rootNsContext != null) { // or maybe root context has a binding?
             act = rootNsContext.getNamespaceURI(prefix);
-            if (act != null && act.length() != 0) {
-                return false;
-            }
+            return act == null || act.isEmpty();
         }
         // Must be unbound
         return true;

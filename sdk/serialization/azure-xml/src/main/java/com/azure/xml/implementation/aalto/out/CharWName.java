@@ -47,7 +47,7 @@ final class CharWName extends WName {
     }
 
     @Override
-    public final int serializedLength() {
+    public int serializedLength() {
         return _chars.length;
     }
 
@@ -57,7 +57,7 @@ final class CharWName extends WName {
     }
 
     @Override
-    public void writeBytes(OutputStream out) throws IOException {
+    public void writeBytes(OutputStream out) {
         throw new RuntimeException("Internal error: writeBytes() should never be called");
     }
 

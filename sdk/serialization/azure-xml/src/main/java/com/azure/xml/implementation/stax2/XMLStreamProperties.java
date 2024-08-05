@@ -104,18 +104,4 @@ public interface XMLStreamProperties {
      */
     String XSP_V_XMLID_TYPING = "xmlidTyping";
 
-    /**
-     * Property value to use with property
-     * {@link #XSP_SUPPORT_XMLID}.
-     * Value indicates that both the attribute type assignment
-     * portion and the validation portion of xml:id should be supported.
-     * This validation is independent of the actual schema (DTD, RNG,
-     * W3C Schema) validation, in the sense that even if no such validation
-     * is enabled, xml:id value validation will still be done if this
-     * property value is used. Conversely, if schema-based validation
-     * is used, both xml:id and schema validation may be done (although
-     * schema validator instances may choose to ignore validity checks
-     * if they know that full xml:id support is enabled).
-     */
-    String XSP_V_XMLID_FULL = "xmlidFull";
 }

@@ -18,7 +18,7 @@ import com.azure.xml.implementation.aalto.util.BufferRecycler;
 public final class WriterConfig extends CommonConfig {
     // // // Constants for defaults
 
-    protected final static String DEFAULT_AUTOMATIC_NS_PREFIX = "ans";
+    private final static String DEFAULT_AUTOMATIC_NS_PREFIX = "ans";
 
     // Standard Stax flags:
     final static int F_NS_REPAIRING = 0x0001;
@@ -37,21 +37,21 @@ public final class WriterConfig extends CommonConfig {
 
     private final static HashMap<String, Integer> sProperties;
     static {
-        sProperties = new HashMap<String, Integer>();
-        sProperties.put(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Integer.valueOf(F_NS_REPAIRING));
+        sProperties = new HashMap<>();
+        sProperties.put(XMLOutputFactory.IS_REPAIRING_NAMESPACES, F_NS_REPAIRING);
 
         // Stax2:
 
         // not configurable, but are recognized
-        sProperties.put(XMLStreamProperties.XSP_NAMESPACE_AWARE, Integer.valueOf(F_NS_AWARE));
+        sProperties.put(XMLStreamProperties.XSP_NAMESPACE_AWARE, F_NS_AWARE);
         sProperties.put(XMLStreamProperties.XSP_PROBLEM_REPORTER, null);
 
         // and then writer-side properties, mostly unsupported but recognized
 
-        sProperties.put(XMLOutputFactory2.P_AUTO_CLOSE_OUTPUT, Integer.valueOf(F_AUTO_CLOSE_OUTPUT));
+        sProperties.put(XMLOutputFactory2.P_AUTO_CLOSE_OUTPUT, F_AUTO_CLOSE_OUTPUT);
 
-        sProperties.put(XMLOutputFactory2.P_AUTOMATIC_EMPTY_ELEMENTS, Integer.valueOf(F_AUTO_EMPTY_ELEMS));
-        sProperties.put(XMLOutputFactory2.P_AUTOMATIC_NS_PREFIX, Integer.valueOf(PROP_AUTO_NS_PREFIX));
+        sProperties.put(XMLOutputFactory2.P_AUTOMATIC_EMPTY_ELEMENTS, F_AUTO_EMPTY_ELEMS);
+        sProperties.put(XMLOutputFactory2.P_AUTOMATIC_NS_PREFIX, PROP_AUTO_NS_PREFIX);
         sProperties.put(XMLOutputFactory2.P_TEXT_ESCAPER, null);
         sProperties.put(XMLOutputFactory2.P_ATTR_VALUE_ESCAPER, null);
     }
@@ -94,8 +94,7 @@ public final class WriterConfig extends CommonConfig {
      * to a {@link BufferRecycler} used to provide a low-cost
      * buffer recycling between Reader instances.
      */
-    final static ThreadLocal<SoftReference<BufferRecycler>> mRecyclerRef
-        = new ThreadLocal<SoftReference<BufferRecycler>>();
+    final static ThreadLocal<SoftReference<BufferRecycler>> mRecyclerRef = new ThreadLocal<>();
 
     /**
      * This is the actually container of the recyclable buffers. It
@@ -136,7 +135,7 @@ public final class WriterConfig extends CommonConfig {
     }
 
     public void setActualEncodingIfNotSet(String enc) {
-        if (_encoding == null || _encoding.length() == 0) {
+        if (_encoding == null || _encoding.isEmpty()) {
             _encoding = enc;
         }
     }
@@ -200,14 +199,13 @@ public final class WriterConfig extends CommonConfig {
             }
             return super.getProperty(name, isMandatory);
         }
-        int f = I.intValue();
+        int f = I;
 
         if (f >= 0) {
             return hasFlag(f);
         }
-        switch (f) {
-            case PROP_AUTO_NS_PREFIX:
-                return _propAutoNsPrefix;
+        if (f == PROP_AUTO_NS_PREFIX) {
+            return _propAutoNsPrefix;
         }
 
         // Need to handle non numerics separately?
@@ -224,10 +222,10 @@ public final class WriterConfig extends CommonConfig {
             }
             return super.setProperty(name, value);
         }
-        int f = I.intValue();
+        int f = I;
 
         if (f >= 0) { // boolean values
-            boolean state = ((Boolean) value).booleanValue();
+            boolean state = (Boolean) value;
             // Some properties not supported:
             if (f == F_NS_AWARE) {
                 if (!state) {
@@ -239,10 +237,9 @@ public final class WriterConfig extends CommonConfig {
             return true;
         }
         // object values ones
-        switch (f) {
-            case PROP_AUTO_NS_PREFIX:
-                _propAutoNsPrefix = value.toString();
-                return true;
+        if (f == PROP_AUTO_NS_PREFIX) {
+            _propAutoNsPrefix = value.toString();
+            return true;
         }
 
         return false;
@@ -316,7 +313,7 @@ public final class WriterConfig extends CommonConfig {
     /**
      * For Woodstox, setting this profile disables most checks for validity;
      * specifically anything that can have measurable performance impact.
-     * 
+     *
      */
     public void configureForSpeed() {
         // !!! TBI
@@ -428,7 +425,7 @@ public final class WriterConfig extends CommonConfig {
     private BufferRecycler createRecycler() {
         BufferRecycler recycler = new BufferRecycler();
         // No way to reuse/reset SoftReference, have to create new always:
-        mRecyclerRef.set(new SoftReference<BufferRecycler>(recycler));
+        mRecyclerRef.set(new SoftReference<>(recycler));
         return recycler;
     }
 

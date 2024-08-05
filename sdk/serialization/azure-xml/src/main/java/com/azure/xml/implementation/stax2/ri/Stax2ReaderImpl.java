@@ -115,7 +115,7 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
     // // // StAX2, additional attribute access
 
     @Override
-    public AttributeInfo getAttributeInfo() throws XMLStreamException {
+    public AttributeInfo getAttributeInfo() {
         if (getEventType() != START_ELEMENT) {
             throwNotStartElem();
         }
@@ -125,7 +125,7 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
     // // // StAX2, Additional DTD access
 
     @Override
-    public DTDInfo getDTDInfo() throws XMLStreamException {
+    public DTDInfo getDTDInfo() {
         if (getEventType() != DTD) {
             return null;
         }
@@ -221,18 +221,6 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
         return -1;
     }
 
-    @Override
-    public int getIdAttributeIndex() {
-        // !!! TBI
-        return -1;
-    }
-
-    @Override
-    public int getNotationAttributeIndex() {
-        // !!! TBI
-        return -1;
-    }
-
     /*
     ////////////////////////////////////////////////////
     // DTDInfo implementation (StAX 2)
@@ -270,11 +258,6 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
 
     // // StAX2, v2.0
 
-    @Override
-    public DTDValidationSchema getProcessedDTDSchema() {
-        return null;
-    }
-
     /*
     ////////////////////////////////////////////////////
     // LocationInfo implementation (StAX 2)
@@ -283,26 +266,6 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
 
     // // // First, the "raw" offset accessors:
 
-    @Override
-    public long getStartingByteOffset() {
-        return -1L;
-    }
-
-    @Override
-    public long getStartingCharOffset() {
-        return 0;
-    }
-
-    @Override
-    public long getEndingByteOffset() throws XMLStreamException {
-        return -1;
-    }
-
-    @Override
-    public long getEndingCharOffset() throws XMLStreamException {
-        return -1;
-    }
-
     // // // and then the object-based access methods:
 
     @Override
@@ -310,9 +273,6 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
 
     @Override
     public abstract XMLStreamLocation2 getCurrentLocation();
-
-    @Override
-    public abstract XMLStreamLocation2 getEndLocation() throws XMLStreamException;
 
     /*
     ////////////////////////////////////////////////////

@@ -96,16 +96,6 @@ public abstract class Stax2WriterImpl implements XMLStreamWriter2 /* From Stax2 
     }
 
     @Override
-    public void writeFullEndElement() throws XMLStreamException {
-        /* This should work with base Stax 1.0 implementations.
-         * Sub-classes are, however, encouraged to implement it
-         * more directly, if possible.
-         */
-        writeCharacters("");
-        writeEndElement();
-    }
-
-    @Override
     public void writeSpace(String text) throws XMLStreamException {
         /* Hmmh. Two choices: either try to write as regular characters,
          * or output as is via raw calls. Latter would be safer, if we
@@ -152,7 +142,7 @@ public abstract class Stax2WriterImpl implements XMLStreamWriter2 /* From Stax2 
                  * source document
                  */
                 if (version == null || version.isEmpty()) {
-                    ; // no output if no real input
+                    // no output if no real input
                 } else {
                     if (sr.standaloneSet()) {
                         writeStartDocument(sr.getVersion(), sr.getCharacterEncodingScheme(), sr.isStandalone());

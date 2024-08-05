@@ -50,20 +50,8 @@ public abstract class SingleByteXmlWriter extends ByteXmlWriter {
      */
 
     @Override
-    final protected void output2ByteChar(int ch) throws IOException, XMLStreamException {
+    final protected void output2ByteChar(int ch) throws XMLStreamException {
         reportFailedEscaping("content", ch);
-    }
-
-    /**
-     * With single byte encodings, there's no way to express these
-     * characters without character entities. So, this always leads
-     * to an exception
-     */
-    @Override
-    final protected int outputStrictMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputLen)
-        throws IOException, XMLStreamException {
-        reportFailedEscaping("content", ch);
-        return 0; // never gets this far
     }
 
     /**

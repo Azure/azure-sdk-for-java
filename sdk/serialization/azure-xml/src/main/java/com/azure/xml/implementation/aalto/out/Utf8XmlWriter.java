@@ -16,12 +16,12 @@
 
 package com.azure.xml.implementation.aalto.out;
 
-import java.io.*;
-
-import javax.xml.stream.*;
-
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.util.XmlConsts;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This is the generic implementation of {@link XmlWriter}, used if
@@ -60,10 +60,10 @@ public final class Utf8XmlWriter extends ByteXmlWriter {
         // !!! TODO: combine input+output length checks into just one
 
         main_loop: while (offset < len) {
-            inner_loop: while (true) {
-                int ch = (int) cbuf[offset];
+            while (true) {
+                int ch = cbuf[offset];
                 if (ch >= 0x80) {
-                    break inner_loop;
+                    break;
                 }
                 // !!! TODO: fast writes
                 if (_outputPtr >= _outputBufferLen) {
@@ -84,25 +84,17 @@ public final class Utf8XmlWriter extends ByteXmlWriter {
     }
 
     @Override
-    protected WName doConstructName(String localName) throws XMLStreamException {
+    protected WName doConstructName(String localName) {
         // !!! TODO: optimize:
-        try {
-            byte[] b = localName.getBytes("UTF-8");
-            return new ByteWName(localName, b);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
+        byte[] b = localName.getBytes(StandardCharsets.UTF_8);
+        return new ByteWName(localName, b);
     }
 
     @Override
-    protected WName doConstructName(String prefix, String localName) throws XMLStreamException {
+    protected WName doConstructName(String prefix, String localName) {
         // !!! TODO: optimize:
-        try {
-            byte[] b = (prefix + ":" + localName).getBytes("UTF-8");
-            return new ByteWName(prefix, localName, b);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
+        byte[] b = (prefix + ":" + localName).getBytes(StandardCharsets.UTF_8);
+        return new ByteWName(prefix, localName, b);
     }
 
     /*
@@ -112,7 +104,7 @@ public final class Utf8XmlWriter extends ByteXmlWriter {
      */
 
     @Override
-    protected final void outputSurrogates(int surr1, int surr2) throws IOException, XMLStreamException {
+    protected void outputSurrogates(int surr1, int surr2) throws IOException, XMLStreamException {
         int c = calcSurrogate(surr1, surr2, " in content");
         if ((_outputPtr + 4) > _outputBufferLen) {
             flushBuffer();
@@ -124,7 +116,7 @@ public final class Utf8XmlWriter extends ByteXmlWriter {
     }
 
     @Override
-    final protected void output2ByteChar(int ch) throws IOException, XMLStreamException {
+    protected void output2ByteChar(int ch) throws IOException {
         if ((_outputPtr + 2) > _outputBufferLen) {
             flushBuffer();
         }
@@ -143,7 +135,7 @@ public final class Utf8XmlWriter extends ByteXmlWriter {
      *   was succesfully handled
      */
     @Override
-    final protected int outputMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputLen)
+    protected int outputMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputLen)
         throws IOException, XMLStreamException {
         if (ch >= SURR1_FIRST) {
             if (ch <= SURR2_LAST) { // yes, outside of BMP
@@ -171,32 +163,4 @@ public final class Utf8XmlWriter extends ByteXmlWriter {
         return inputOffset;
     }
 
-    @Override
-    final protected int outputStrictMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputLen)
-        throws IOException, XMLStreamException {
-        if (ch >= SURR1_FIRST) {
-            if (ch <= SURR2_LAST) { // yes, outside of BMP
-                // Do we have second part?
-                if (inputOffset >= inputLen) { // nope... have to note down
-                    _surrogate = ch;
-                } else {
-                    outputSurrogates(ch, cbuf[inputOffset]);
-                    ++inputOffset;
-                }
-                return inputOffset;
-            }
-            // Nope... but may be invalid
-            if (ch >= 0xFFFE) { // 0xFFFE, 0xFFFF are invalid
-                reportInvalidChar(ch);
-            }
-        }
-        if ((_outputPtr + 3) > _outputBufferLen) {
-            flushBuffer();
-        }
-        byte[] bbuf = _outputBuffer;
-        bbuf[_outputPtr++] = (byte) (0xe0 | (ch >> 12));
-        bbuf[_outputPtr++] = (byte) (0x80 | ((ch >> 6) & 0x3f));
-        bbuf[_outputPtr++] = (byte) (0x80 | (ch & 0x3f));
-        return inputOffset;
-    }
 }

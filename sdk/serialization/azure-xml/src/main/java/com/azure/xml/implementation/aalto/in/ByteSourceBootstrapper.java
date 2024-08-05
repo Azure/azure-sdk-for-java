@@ -69,7 +69,6 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
     private boolean mBigEndian = true;
     private int mBytesPerChar = 0; // 0 means "dunno yet"
 
-    private boolean mHadBOM = false;
     private boolean mByteSizeFound = false;
 
     /*
@@ -158,9 +157,6 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             // a Reader, and dispatch it to reader scanner?
 
             // let's augment with actual endianness info
-            if (normEnc.equals(CharsetNames.CS_UTF32)) {
-                normEnc = mBigEndian ? CharsetNames.CS_UTF32BE : CharsetNames.CS_UTF32LE;
-            }
             Reader r = new Utf32Reader(_config, _in, _inputBuffer, _inputPtr, _inputLen, mBigEndian);
             return new ReaderScanner(_config, r);
         }
@@ -197,7 +193,6 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
          * BOM or first char(s) of likely xml declaration:
          */
         if (ensureLoaded(4)) {
-            int origPtr = _inputPtr;
 
             bomblock: do { // BOM/auto-detection block
                 int quartet = (_inputBuffer[_inputPtr] << 24) | ((_inputBuffer[_inputPtr + 1] & 0xFF) << 16)
@@ -297,8 +292,6 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
                  * declaration, or corrupt input...
                  */
             } while (false); // BOM/auto-detection block
-
-            mHadBOM = (_inputPtr > origPtr);
 
             /* Let's update location markers to ignore BOM when calculating
              * column positions (but not from raw byte offsets)

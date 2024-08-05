@@ -37,7 +37,7 @@ public final class URLUtil {
              * Not sure if Mac might be a problem? (it uses ':' as file path
              * separator, alas, at least prior to MacOS X)
              */
-            int ix = sysId.indexOf(':', 0);
+            int ix = sysId.indexOf(':');
             /* Also, protocols are generally fairly short, usually 3 or 4
              * chars (http, ftp, urn); so let's put upper limit of 8 chars too
              */
@@ -49,31 +49,6 @@ public final class URLUtil {
             throwIoException(e, sysId);
             return null; // never gets here
         }
-    }
-
-    public static URL urlFromSystemId(String sysId, URL ctxt) throws IOException {
-        if (ctxt == null) {
-            return urlFromSystemId(sysId);
-        }
-        try {
-            return new URL(ctxt, sysId);
-        } catch (MalformedURLException e) {
-            throwIoException(e, sysId);
-            return null; // never gets here
-        }
-    }
-
-    /**
-     * Method that tries to create and return URL that denotes current
-     * working directory. Usually used to create a context, when one is
-     * not explicitly passed.
-     */
-    public static URL urlFromCurrentDir() throws IOException /* an IOException */
-    {
-        /* This seems to work; independent of whether there happens to
-         * be such/file dir or not.
-         */
-        return fileToURL(new File("a").getAbsoluteFile().getParentFile());
     }
 
     /**
@@ -89,7 +64,7 @@ public final class URLUtil {
              * files... not sure about NFS, but let's be conservative:
              */
             String host = url.getHost();
-            if (host == null || host.length() == 0) {
+            if (host == null || host.isEmpty()) {
                 return new FileInputStream(url.getPath());
             }
         }
@@ -107,7 +82,7 @@ public final class URLUtil {
         if ("file".equals(url.getProtocol())) {
             // as with inputStreamFromURL, avoid probs with Windows network mounts:
             String host = url.getHost();
-            if (host == null || host.length() == 0) {
+            if (host == null || host.isEmpty()) {
                 return new FileOutputStream(url.getPath());
             }
         }
@@ -134,7 +109,7 @@ public final class URLUtil {
                 absPath = absPath.replace(sep, '/');
             }
         }
-        if (absPath.length() > 0 && absPath.charAt(0) != '/') {
+        if (!absPath.isEmpty() && absPath.charAt(0) != '/') {
             absPath = "/" + absPath;
         }
         return new URL("file", "", absPath);
@@ -161,8 +136,6 @@ public final class URLUtil {
      * we are running on JDK1.4
      */
     private static void throwIoException(MalformedURLException mex, String sysId) throws IOException {
-        IOException ie = new IOException("[resolving systemId '" + sysId + "']: " + mex.toString());
-        ie.initCause(mex);
-        throw ie;
+        throw new IOException("[resolving systemId '" + sysId + "']: " + mex.toString(), mex);
     }
 }

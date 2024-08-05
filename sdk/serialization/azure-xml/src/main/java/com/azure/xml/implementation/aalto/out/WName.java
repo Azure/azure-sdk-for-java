@@ -19,6 +19,7 @@ package com.azure.xml.implementation.aalto.out;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Objects;
 
 /**
  * This class is similar to {@link com.azure.xml.implementation.aalto.in.PName}, in
@@ -156,7 +157,7 @@ public abstract class WName {
     }
 
     public final boolean hasName(String prefix, String localName) {
-        if (_localName == localName) { // very likely match
+        if (Objects.equals(_localName, localName)) { // very likely match
             if (prefix == null) {
                 return (_prefix == null);
             }

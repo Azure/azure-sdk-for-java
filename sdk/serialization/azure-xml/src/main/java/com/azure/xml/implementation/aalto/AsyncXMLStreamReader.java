@@ -20,16 +20,7 @@ public interface AsyncXMLStreamReader<F extends AsyncInputFeeder> extends XMLStr
      * event codes 0 through 256 (inclusive?) are reserved by the Stax
      * specs, so we'll use the next available code.
      */
-    public final static int EVENT_INCOMPLETE = 257;
+    int EVENT_INCOMPLETE = 257;
 
-    /**
-     * Method used to access {@link AsyncInputFeeder} which is used to
-     * provide XML content to parse in non-blocking manner (see
-     * {@link AsyncInputFeeder} for more details).
-     * 
-     * @return Input feeder to use for "pushing" content to parse.
-     */
-    public F getInputFeeder();
-
-    public ReaderConfig getConfig();
+    ReaderConfig getConfig();
 }

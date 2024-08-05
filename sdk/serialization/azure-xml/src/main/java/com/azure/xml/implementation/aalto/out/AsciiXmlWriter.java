@@ -71,12 +71,12 @@ public final class AsciiXmlWriter extends SingleByteXmlWriter {
     }
 
     @Override
-    protected WName doConstructName(String localName) throws XMLStreamException {
+    protected WName doConstructName(String localName) {
         return new ByteWName(localName, getAscii(localName));
     }
 
     @Override
-    protected WName doConstructName(String prefix, String localName) throws XMLStreamException {
+    protected WName doConstructName(String prefix, String localName) {
         int plen = prefix.length();
         byte[] pname = new byte[plen + 1 + localName.length()];
         getAscii(prefix, pname, 0);

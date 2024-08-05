@@ -48,12 +48,6 @@ public final class Base64Variants {
     }
 
     /**
-     * This variant is the one that predates {@link #MIME}: it is otherwise
-     * identical, except that it mandates shorter line length.
-     */
-    public final static Base64Variant PEM = new Base64Variant(MIME, "PEM", true, '=', 64);
-
-    /**
      * This non-standard variant is usually used when encoded data needs to be
      * passed via URLs (such as part of GET request). It differs from the
      * base {@link #MIME} variant in multiple ways.

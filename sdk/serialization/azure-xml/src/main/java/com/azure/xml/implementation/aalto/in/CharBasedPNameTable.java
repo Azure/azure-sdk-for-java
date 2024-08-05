@@ -26,8 +26,6 @@ import com.azure.xml.implementation.aalto.util.NameTable;
 public class CharBasedPNameTable extends NameTable {
     final static int MIN_HASH_SIZE = 16;
 
-    protected static final float DEFAULT_FILL_FACTOR = 0.75f;
-
     /*
     /**********************************************************************
     /* Actual symbol table data

@@ -46,7 +46,6 @@ import com.azure.xml.implementation.stax2.typed.Base64Variants;
 import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedValueDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-import com.azure.xml.implementation.stax2.validation.DTDValidationSchema;
 import com.azure.xml.implementation.stax2.validation.ValidationProblemHandler;
 import com.azure.xml.implementation.stax2.validation.XMLValidationSchema;
 import com.azure.xml.implementation.stax2.validation.XMLValidator;
@@ -75,6 +74,7 @@ import com.azure.xml.implementation.stax2.validation.XMLValidator;
  *   </li>
  *  </ul>
  */
+@SuppressWarnings({ "deprecation", "fallthrough" })
 public abstract class DOMWrappingReader
     implements XMLStreamReader2, AttributeInfo, DTDInfo, LocationInfo, NamespaceContext, XMLStreamConstants {
     protected final static int INT_SPACE = 0x0020;
@@ -829,7 +829,7 @@ public abstract class DOMWrappingReader
                         + Stax2Util.eventTypeDesc(_currEvent) + ")");
             }
             String n = getLocalName();
-            if (n != localName && !n.equals(localName)) {
+            if (!Objects.equals(n, localName)) {
                 throwStreamException("Required local name '" + localName + "'; current local name '" + n + "'.");
             }
         }
@@ -847,7 +847,7 @@ public abstract class DOMWrappingReader
                     throwStreamException("Required empty namespace, instead have '" + uri + "'.");
                 }
             } else {
-                if ((nsUri != uri) && !nsUri.equals(uri)) {
+                if ((!nsUri.equals(uri))) {
                     throwStreamException("Required namespace '" + nsUri + "'; have '" + uri + "'.");
                 }
             }
@@ -969,7 +969,7 @@ public abstract class DOMWrappingReader
         switch (_currNode.getNodeType()) {
             case Node.CDATA_SECTION_NODE:
                 if (_coalescing) {
-                    coalesceText(CDATA);
+                    coalesceText();
                 } else {
                     _currEvent = CDATA;
                 }
@@ -997,7 +997,7 @@ public abstract class DOMWrappingReader
 
             case Node.TEXT_NODE:
                 if (_coalescing) {
-                    coalesceText(CHARACTERS);
+                    coalesceText();
                 } else {
                     _currEvent = CHARACTERS;
                 }
@@ -1327,9 +1327,10 @@ public abstract class DOMWrappingReader
                 }
                 // Then let's figure out non-space char (token)
                 int start = ptr;
-                do {
+                ++ptr;
+                while (ptr < end && input.charAt(ptr) > INT_SPACE) {
                     ++ptr;
-                } while (ptr < end && input.charAt(ptr) > INT_SPACE);
+                }
                 ++count;
                 // And there we have it
                 value = input.substring(start, ptr);
@@ -1739,7 +1740,7 @@ public abstract class DOMWrappingReader
     // // // StAX2, additional attribute access
 
     @Override
-    public AttributeInfo getAttributeInfo() throws XMLStreamException {
+    public AttributeInfo getAttributeInfo() {
         if (_currEvent != START_ELEMENT) {
             reportWrongState(ERR_STATE_NOT_START_ELEM);
         }
@@ -1781,24 +1782,6 @@ public abstract class DOMWrappingReader
         return -1;
     }
 
-    @Override
-    public int getIdAttributeIndex() {
-        // !!! TBI
-
-        // Note: will need Dom3 level support (JDK 1.5)
-
-        return -1;
-    }
-
-    @Override
-    public int getNotationAttributeIndex() {
-        // !!! TBI
-
-        // Note: will need Dom3 level support (JDK 1.5)
-
-        return -1;
-    }
-
     // // // StAX2, Additional DTD access
 
     /**
@@ -1806,7 +1789,7 @@ public abstract class DOMWrappingReader
      * return <code>this</code>.
      */
     @Override
-    public DTDInfo getDTDInfo() throws XMLStreamException {
+    public DTDInfo getDTDInfo() {
         /* Let's not allow it to be accessed during other events -- that
          * way callers won't count on it being available afterwards.
          */
@@ -1873,7 +1856,7 @@ public abstract class DOMWrappingReader
      *    false otherwise.
      */
     @Override
-    public boolean isEmptyElement() throws XMLStreamException {
+    public boolean isEmptyElement() {
         // No way to really figure it out via DOM is there?
         return false;
     }
@@ -1972,11 +1955,6 @@ public abstract class DOMWrappingReader
 
     // // StAX2, v2.0
 
-    @Override
-    public DTDValidationSchema getProcessedDTDSchema() {
-        return null;
-    }
-
     /*
     /**********************************************************************
     /* LocationInfo implementation (StAX 2)
@@ -1984,30 +1962,6 @@ public abstract class DOMWrappingReader
      */
 
     // // // First, the "raw" offset accessors:
-
-    @Override
-    public long getStartingByteOffset() {
-        // !!! TBI
-        return -1L;
-    }
-
-    @Override
-    public long getStartingCharOffset() {
-        // !!! TBI
-        return 0;
-    }
-
-    @Override
-    public long getEndingByteOffset() throws XMLStreamException {
-        // !!! TBI
-        return -1;
-    }
-
-    @Override
-    public long getEndingCharOffset() throws XMLStreamException {
-        // !!! TBI
-        return -1;
-    }
 
     // // // and then the object-based access methods:
 
@@ -2018,11 +1972,6 @@ public abstract class DOMWrappingReader
 
     @Override
     public XMLStreamLocation2 getCurrentLocation() {
-        return XMLStreamLocation2.NOT_AVAILABLE;
-    }
-
-    @Override
-    public final XMLStreamLocation2 getEndLocation() throws XMLStreamException {
         return XMLStreamLocation2.NOT_AVAILABLE;
     }
 
@@ -2062,7 +2011,7 @@ public abstract class DOMWrappingReader
     /**********************************************************************
      */
 
-    protected void coalesceText(int initialType) {
+    protected void coalesceText() {
         _textBuffer.reset();
         _textBuffer.append(_currNode.getNodeValue());
 

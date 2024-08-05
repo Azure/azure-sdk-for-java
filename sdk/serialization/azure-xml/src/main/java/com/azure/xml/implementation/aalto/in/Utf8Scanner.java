@@ -17,6 +17,7 @@
 package com.azure.xml.implementation.aalto.in;
 
 import java.io.*;
+import java.util.Objects;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -30,6 +31,7 @@ import com.azure.xml.implementation.aalto.util.XmlChars;
  * UTF-8 encoding, or something suitably close it for decoding purposes
  * (including ISO-Latin1 and US-ASCII).
  */
+@SuppressWarnings("fallthrough")
 public final class Utf8Scanner extends StreamScanner {
     /*
     /**********************************************************************
@@ -48,7 +50,7 @@ public final class Utf8Scanner extends StreamScanner {
      */
 
     @Override
-    protected final void finishToken() throws XMLStreamException {
+    protected void finishToken() throws XMLStreamException {
         _tokenIncomplete = false;
         switch (_currToken) {
             case PROCESSING_INSTRUCTION:
@@ -165,10 +167,10 @@ public final class Utf8Scanner extends StreamScanner {
             boolean isNsDecl;
 
             if (prefix == null) { // can be default ns decl:
-                isNsDecl = (attrName.getLocalName() == "xmlns");
+                isNsDecl = (Objects.equals(attrName.getLocalName(), "xmlns"));
             } else {
                 // May be a namespace decl though?
-                if (prefix == "xmlns") {
+                if (prefix.equals("xmlns")) {
                     isNsDecl = true;
                 } else {
                     attrName = bindName(attrName, prefix);
@@ -285,10 +287,9 @@ public final class Utf8Scanner extends StreamScanner {
      * simplify main method, which makes code more maintainable
      * and possibly easier for JIT/HotSpot to optimize.
      */
-    private final int collectValue(int attrPtr, byte quoteByte, PName attrName) throws XMLStreamException {
+    private int collectValue(int attrPtr, byte quoteByte, PName attrName) throws XMLStreamException {
         char[] attrBuffer = _attrCollector.startNewValue(attrName, attrPtr);
         final int[] TYPES = _charTypes.ATTR_CHARS;
-        final int quoteChar = (int) quoteByte;
 
         value_loop: while (true) {
             int c;
@@ -322,7 +323,7 @@ public final class Utf8Scanner extends StreamScanner {
 
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -378,7 +379,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_ATTR_QUOTE:
-                    if (c == quoteChar) {
+                    if (c == (int) quoteByte) {
                         break value_loop;
                     }
 
@@ -424,7 +425,7 @@ public final class Utf8Scanner extends StreamScanner {
                     c = 0xDC00 | (c & 0x3FF);
                 }
             } else if (b == BYTE_LT) { // error
-                c = (int) b;
+                c = b;
                 throwUnexpectedChar(c, "'<' not allowed in attribute value");
             } else {
                 c = (int) b & 0xFF;
@@ -485,11 +486,11 @@ public final class Utf8Scanner extends StreamScanner {
      * @param inAttr True, if reference is from attribute value; false
      *   if from normal text content
      *
-     * @return 0 if a general parsed entity encountered; integer 
+     * @return 0 if a general parsed entity encountered; integer
      *    value of a (valid) XML content character otherwise
      */
     @Override
-    protected final int handleEntityInText(boolean inAttr) throws XMLStreamException {
+    protected int handleEntityInText(boolean inAttr) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -682,14 +683,14 @@ public final class Utf8Scanner extends StreamScanner {
         final int[] TYPES = XmlCharTypes.PUBID_CHARS;
         boolean addSpace = false;
 
-        main_loop: while (true) {
+        while (true) {
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
             }
             // Easier to check without char type table, first:
             byte b = _inputBuffer[_inputPtr++];
             if (b == quoteChar) {
-                break main_loop;
+                break;
             }
             int c = (int) b & 0xFF;
             if (TYPES[c] != XmlCharTypes.PUBID_OK) {
@@ -735,7 +736,7 @@ public final class Utf8Scanner extends StreamScanner {
             if (TYPES[c] != 0) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR:
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -798,7 +799,7 @@ public final class Utf8Scanner extends StreamScanner {
      */
 
     @Override
-    protected final boolean skipCharacters() throws XMLStreamException {
+    protected boolean skipCharacters() throws XMLStreamException {
         final int[] TYPES = _charTypes.TEXT_CHARS;
         final byte[] inputBuffer = _inputBuffer;
 
@@ -826,7 +827,7 @@ public final class Utf8Scanner extends StreamScanner {
 
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -842,7 +843,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_2:
-                    skipUtf8_2(c);
+                    skipUtf8_2();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_3:
@@ -850,7 +851,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_4:
-                    skipUtf8_4(c);
+                    skipUtf8_4();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_N:
@@ -896,7 +897,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void skipComment() throws XMLStreamException {
+    protected void skipComment() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
 
@@ -924,7 +925,7 @@ public final class Utf8Scanner extends StreamScanner {
 
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -940,7 +941,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_2:
-                    skipUtf8_2(c);
+                    skipUtf8_2();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_3:
@@ -948,7 +949,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_4:
-                    skipUtf8_4(c);
+                    skipUtf8_4();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_N:
@@ -976,7 +977,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void skipCData() throws XMLStreamException {
+    protected void skipCData() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
 
@@ -1004,7 +1005,7 @@ public final class Utf8Scanner extends StreamScanner {
 
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -1020,7 +1021,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_2:
-                    skipUtf8_2(c);
+                    skipUtf8_2();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_3:
@@ -1028,7 +1029,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_4:
-                    skipUtf8_4(c);
+                    skipUtf8_4();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_N:
@@ -1065,7 +1066,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void skipPI() throws XMLStreamException {
+    protected void skipPI() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
 
@@ -1093,7 +1094,7 @@ public final class Utf8Scanner extends StreamScanner {
 
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -1109,7 +1110,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_2:
-                    skipUtf8_2(c);
+                    skipUtf8_2();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_3:
@@ -1117,7 +1118,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_4:
-                    skipUtf8_4(c);
+                    skipUtf8_4();
                     break;
 
                 case XmlCharTypes.CT_MULTIBYTE_N:
@@ -1139,7 +1140,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void skipSpace() throws XMLStreamException {
+    protected void skipSpace() throws XMLStreamException {
         // mTmpChar has a space, but it's been checked, can ignore
         int ptr = _inputPtr;
 
@@ -1196,7 +1197,7 @@ public final class Utf8Scanner extends StreamScanner {
             reportInvalidInitial(c & 0xFF);
             needed = 1; // never gets here
         }
-        
+    
         if (ptr >= _inputEnd) {
             loadMoreGuaranteed();
             ptr = _inputPtr;
@@ -1206,7 +1207,7 @@ public final class Utf8Scanner extends StreamScanner {
         if ((c & 0xC0) != 0x080) {
             reportInvalidOther(c & 0xFF, ptr);
         }
-        
+    
         if (needed > 1) { // needed == 1 means 2 bytes total
             if (ptr >= _inputEnd) {
                 loadMoreGuaranteed();
@@ -1236,7 +1237,7 @@ public final class Utf8Scanner extends StreamScanner {
         throws XMLStreamException
     {
         type -= XmlCharTypes.CT_MULTIBYTE_N; // number of more bytes needed
-        
+    
         if (ptr >= _inputEnd) {
             loadMoreGuaranteed();
             ptr = _inputPtr;
@@ -1269,11 +1270,11 @@ public final class Utf8Scanner extends StreamScanner {
     }
     */
 
-    private final void skipUtf8_2(int c) throws XMLStreamException {
+    private void skipUtf8_2() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        c = (int) _inputBuffer[_inputPtr++];
+        int c = _inputBuffer[_inputPtr++];
         if ((c & 0xC0) != 0x080) {
             reportInvalidOther(c & 0xFF, _inputPtr);
         }
@@ -1282,14 +1283,14 @@ public final class Utf8Scanner extends StreamScanner {
     /* Alas, can't heavily optimize skipping, since we still have to
      * do validity checks...
      */
-    private final void skipUtf8_3(int c) throws XMLStreamException {
+    private void skipUtf8_3(int c) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
         c &= 0x0F;
         if (c >= 0xD) { // have to check
             c <<= 6;
-            int d = (int) _inputBuffer[_inputPtr++];
+            int d = _inputBuffer[_inputPtr++];
             if ((d & 0xC0) != 0x080) {
                 reportInvalidOther(d & 0xFF, _inputPtr);
             }
@@ -1297,70 +1298,70 @@ public final class Utf8Scanner extends StreamScanner {
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
             }
-            d = (int) _inputBuffer[_inputPtr++];
+            d = _inputBuffer[_inputPtr++];
             if ((d & 0xC0) != 0x080) {
                 reportInvalidOther(d & 0xFF, _inputPtr);
             }
             c = (c << 6) | (d & 0x3F);
             // 0xD800-0xDFFF, 0xFFFE-0xFFFF illegal
             if (c >= 0xD800) { // surrogates illegal, as well as 0xFFFE/0xFFFF
-                if (c < 0xE000 || (c >= 0xFFFE && c <= 0xFFFF)) {
-                    c = handleInvalidXmlChar(c);
+                if (c < 0xE000 || c >= 0xFFFE) {
+                    handleInvalidXmlChar(c);
                 }
             }
         } else { // no checks, can discard
-            c = (int) _inputBuffer[_inputPtr++];
+            c = _inputBuffer[_inputPtr++];
             if ((c & 0xC0) != 0x080) {
                 reportInvalidOther(c & 0xFF, _inputPtr);
             }
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
             }
-            c = (int) _inputBuffer[_inputPtr++];
+            c = _inputBuffer[_inputPtr++];
             if ((c & 0xC0) != 0x080) {
                 reportInvalidOther(c & 0xFF, _inputPtr);
             }
         }
     }
 
-    private final void skipUtf8_4(int c) throws XMLStreamException {
+    private void skipUtf8_4() throws XMLStreamException {
         if ((_inputPtr + 4) > _inputEnd) {
-            skipUtf8_4Slow(c);
+            skipUtf8_4Slow();
             return;
         }
-        int d = (int) _inputBuffer[_inputPtr++];
+        int d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
     }
 
-    private final void skipUtf8_4Slow(int c) throws XMLStreamException {
+    private void skipUtf8_4Slow() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        int d = (int) _inputBuffer[_inputPtr++];
+        int d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
@@ -1373,7 +1374,7 @@ public final class Utf8Scanner extends StreamScanner {
      */
 
     @Override
-    protected final void finishCData() throws XMLStreamException {
+    protected void finishCData() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1415,7 +1416,7 @@ public final class Utf8Scanner extends StreamScanner {
             // And then exceptions:
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -1507,7 +1508,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void finishCharacters() throws XMLStreamException {
+    protected void finishCharacters() throws XMLStreamException {
         int outPtr;
         int c;
         char[] outputBuffer;
@@ -1577,7 +1578,7 @@ public final class Utf8Scanner extends StreamScanner {
             // And then fallback for funny chars / UTF-8 multibytes:
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -1696,7 +1697,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void finishComment() throws XMLStreamException {
+    protected void finishComment() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1735,7 +1736,7 @@ public final class Utf8Scanner extends StreamScanner {
 
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -1803,7 +1804,7 @@ public final class Utf8Scanner extends StreamScanner {
      * and that the opening '[' has already been read.
      */
     @Override
-    protected final void finishDTD(boolean copyContents) throws XMLStreamException {
+    protected void finishDTD(boolean copyContents) throws XMLStreamException {
         char[] outputBuffer = copyContents ? _textBuilder.resetWithEmpty() : null;
         int outPtr = 0;
 
@@ -1854,7 +1855,7 @@ public final class Utf8Scanner extends StreamScanner {
                 // First, common types
 
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -1945,7 +1946,7 @@ public final class Utf8Scanner extends StreamScanner {
     }
 
     @Override
-    protected final void finishPI() throws XMLStreamException {
+    protected void finishPI() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1987,7 +1988,7 @@ public final class Utf8Scanner extends StreamScanner {
             // And then exceptions:
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -2049,7 +2050,7 @@ public final class Utf8Scanner extends StreamScanner {
      * is an error (WFC or VC). However, an end-of-input is ok.
      */
     @Override
-    protected final void finishSpace() throws XMLStreamException {
+    protected void finishSpace() throws XMLStreamException {
         /* Ok: so, mTmpChar contains first space char. If it looks
          * like indentation, we can probably optimize a bit...
          */
@@ -2135,7 +2136,7 @@ public final class Utf8Scanner extends StreamScanner {
      * be textual as well, and if so, read it (and any other following
      * textual segments).
      */
-    protected final void finishCoalescedText() throws XMLStreamException {
+    private void finishCoalescedText() throws XMLStreamException {
         while (true) {
             // no matter what, will need (and can get) one char
             if (_inputPtr >= _inputEnd) {
@@ -2182,7 +2183,7 @@ public final class Utf8Scanner extends StreamScanner {
 
     // note: code mostly copied from 'finishCharacters', just simplified
     // in some places
-    protected final void finishCoalescedCharacters() throws XMLStreamException {
+    private void finishCoalescedCharacters() throws XMLStreamException {
         // first char can't be from (char) entity (wrt finishCharacters)
 
         final int[] TYPES = _charTypes.TEXT_CHARS;
@@ -2225,7 +2226,7 @@ public final class Utf8Scanner extends StreamScanner {
             // And then fallback for funny chars / UTF-8 multibytes:
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -2338,7 +2339,7 @@ public final class Utf8Scanner extends StreamScanner {
 
     // note: code mostly copied from 'finishCharacters', just simplified
     // in some places
-    protected final void finishCoalescedCData() throws XMLStreamException {
+    private void finishCoalescedCData() throws XMLStreamException {
         final int[] TYPES = _charTypes.OTHER_CHARS;
         final byte[] inputBuffer = _inputBuffer;
 
@@ -2381,7 +2382,7 @@ public final class Utf8Scanner extends StreamScanner {
             // And then exceptions:
             switch (TYPES[c]) {
                 case XmlCharTypes.CT_INVALID:
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 case XmlCharTypes.CT_WS_CR:
                     if (_inputPtr >= _inputEnd) {
                         loadMoreGuaranteed();
@@ -2476,7 +2477,7 @@ public final class Utf8Scanner extends StreamScanner {
      * @return True if we encountered an unexpandable entity
      */
     @Override
-    protected final boolean skipCoalescedText() throws XMLStreamException {
+    protected boolean skipCoalescedText() throws XMLStreamException {
         while (true) {
             // no matter what, will need (and can get) one char
             if (_inputPtr >= _inputEnd) {
@@ -2529,7 +2530,7 @@ public final class Utf8Scanner extends StreamScanner {
      * @return Either decoded character (if positive int); or negated
      *    value of a high-order char (one that needs surrogate pair)
      */
-    private final int decodeMultiByteChar(int c, int ptr) throws XMLStreamException {
+    private int decodeMultiByteChar(int c, int ptr) throws XMLStreamException {
         int needed;
 
         if ((c & 0xE0) == 0xC0) { // 2 bytes (0x0080 - 0x07FF)
@@ -2551,7 +2552,7 @@ public final class Utf8Scanner extends StreamScanner {
             loadMoreGuaranteed();
             ptr = _inputPtr;
         }
-        int d = (int) _inputBuffer[ptr++];
+        int d = _inputBuffer[ptr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, ptr);
         }
@@ -2562,7 +2563,7 @@ public final class Utf8Scanner extends StreamScanner {
                 loadMoreGuaranteed();
                 ptr = _inputPtr;
             }
-            d = (int) _inputBuffer[ptr++];
+            d = _inputBuffer[ptr++];
             if ((d & 0xC0) != 0x080) {
                 reportInvalidOther(d & 0xFF, ptr);
             }
@@ -2572,7 +2573,7 @@ public final class Utf8Scanner extends StreamScanner {
                     loadMoreGuaranteed();
                     ptr = _inputPtr;
                 }
-                d = (int) _inputBuffer[ptr++];
+                d = _inputBuffer[ptr++];
                 if ((d & 0xC0) != 0x080) {
                     reportInvalidOther(d & 0xFF, ptr);
                 }
@@ -2587,23 +2588,23 @@ public final class Utf8Scanner extends StreamScanner {
         return c;
     }
 
-    private final int decodeUtf8_2(int c) throws XMLStreamException {
+    private int decodeUtf8_2(int c) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        int d = (int) _inputBuffer[_inputPtr++];
+        int d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
         return ((c & 0x1F) << 6) | (d & 0x3F);
     }
 
-    private final int decodeUtf8_3(int c1) throws XMLStreamException {
+    private int decodeUtf8_3(int c1) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
         c1 &= 0x0F;
-        int d = (int) _inputBuffer[_inputPtr++];
+        int d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
@@ -2611,14 +2612,14 @@ public final class Utf8Scanner extends StreamScanner {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
         c = (c << 6) | (d & 0x3F);
         if (c1 >= 0xD) { // 0xD800-0xDFFF, 0xFFFE-0xFFFF illegal
             if (c >= 0xD800) { // surrogates illegal, as well as 0xFFFE/0xFFFF
-                if (c < 0xE000 || (c >= 0xFFFE && c <= 0xFFFF)) {
+                if (c < 0xE000 || c >= 0xFFFE) {
                     c = handleInvalidXmlChar(c);
                 }
             }
@@ -2626,21 +2627,21 @@ public final class Utf8Scanner extends StreamScanner {
         return c;
     }
 
-    private final int decodeUtf8_3fast(int c1) throws XMLStreamException {
+    private int decodeUtf8_3fast(int c1) throws XMLStreamException {
         c1 &= 0x0F;
-        int d = (int) _inputBuffer[_inputPtr++];
+        int d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
         int c = (c1 << 6) | (d & 0x3F);
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
         c = (c << 6) | (d & 0x3F);
         if (c1 >= 0xD) { // 0xD800-0xDFFF, 0xFFFE-0xFFFF illegal
             if (c >= 0xD800) { // surrogates illegal, as well as 0xFFFE/0xFFFF
-                if (c < 0xE000 || (c >= 0xFFFE && c <= 0xFFFF)) {
+                if (c < 0xE000 || c >= 0xFFFE) {
                     c = handleInvalidXmlChar(c);
                 }
             }
@@ -2652,11 +2653,11 @@ public final class Utf8Scanner extends StreamScanner {
      * @return Character value <b>minus 0x10000</c>; this so that caller
      *    can readily expand it to actual surrogates
      */
-    private final int decodeUtf8_4(int c) throws XMLStreamException {
+    private int decodeUtf8_4(int c) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        int d = (int) _inputBuffer[_inputPtr++];
+        int d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
@@ -2665,7 +2666,7 @@ public final class Utf8Scanner extends StreamScanner {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
@@ -2673,7 +2674,7 @@ public final class Utf8Scanner extends StreamScanner {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
-        d = (int) _inputBuffer[_inputPtr++];
+        d = _inputBuffer[_inputPtr++];
         if ((d & 0xC0) != 0x080) {
             reportInvalidOther(d & 0xFF, _inputPtr);
         }
@@ -2698,7 +2699,7 @@ public final class Utf8Scanner extends StreamScanner {
      */
     @Override
     public int decodeCharForError(byte b) throws XMLStreamException {
-        int c = (int) b;
+        int c = b;
         if (c >= 0) { // ascii? fine as is...
             return c;
         }
@@ -2743,7 +2744,7 @@ public final class Utf8Scanner extends StreamScanner {
         return c;
     }
 
-    protected void reportInvalidOther(int mask, int ptr) throws XMLStreamException {
+    private void reportInvalidOther(int mask, int ptr) throws XMLStreamException {
         _inputPtr = ptr;
         reportInvalidOther(mask);
     }

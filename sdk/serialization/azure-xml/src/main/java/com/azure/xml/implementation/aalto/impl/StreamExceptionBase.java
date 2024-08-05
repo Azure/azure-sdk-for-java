@@ -49,15 +49,6 @@ public class StreamExceptionBase extends XMLStreamException {
         mMsg = msg;
     }
 
-    public StreamExceptionBase(String msg, Location loc, Throwable th) {
-        super(msg, loc, th);
-        mMsg = msg;
-
-        if (th != null && getCause() == null) {
-            initCause(th);
-        }
-    }
-
     /**
      * Method is overridden for two main reasons: first, default method
      * does not display public/system id information, even if it exists, and

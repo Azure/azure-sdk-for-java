@@ -18,7 +18,6 @@ package com.azure.xml.implementation.stax2.ri.dom;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.MessageFormat;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -241,17 +240,17 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     public abstract void writeEndDocument() throws XMLStreamException;
 
     @Override
-    public void writeEntityRef(String name) throws XMLStreamException {
+    public void writeEntityRef(String name) {
         appendLeaf(mDocument.createEntityReference(name));
     }
 
     @Override
-    public void writeProcessingInstruction(String target) throws XMLStreamException {
+    public void writeProcessingInstruction(String target) {
         writeProcessingInstruction(target, null);
     }
 
     @Override
-    public void writeProcessingInstruction(String target, String data) throws XMLStreamException {
+    public void writeProcessingInstruction(String target, String data) {
         appendLeaf(mDocument.createProcessingInstruction(target, data));
     }
 
@@ -312,12 +311,6 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
         throws XMLStreamException;
 
     //public void writeDTD(String rootName, String systemId, String publicId, String internalSubset)
-
-    @Override
-    public void writeFullEndElement() throws XMLStreamException {
-        // No difference with DOM
-        writeEndElement();
-    }
 
     @Override
     public void writeSpace(char[] text, int start, int len) throws XMLStreamException {
@@ -391,7 +384,7 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     }
 
     @Override
-    public void copyEventFromReader(XMLStreamReader2 r, boolean preserveEventData) throws XMLStreamException {
+    public void copyEventFromReader(XMLStreamReader2 r, boolean preserveEventData) {
         // !!! TBI
     }
 
@@ -400,11 +393,6 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     /* Stax2, output handling
     /**********************************************************************
      */
-
-    @Override
-    public void closeCompletely() {
-        // NOP
-    }
 
     /*
     /**********************************************************************
@@ -643,11 +631,6 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
 
     protected static void throwOutputError(String msg) throws XMLStreamException {
         throw new XMLStreamException(msg);
-    }
-
-    protected static void throwOutputError(String format, Object arg) throws XMLStreamException {
-        String msg = MessageFormat.format(format, arg);
-        throwOutputError(msg);
     }
 
     protected void reportUnsupported(String operName) {

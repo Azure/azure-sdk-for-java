@@ -3,6 +3,8 @@
 
 package com.azure.xml;
 
+import com.azure.xml.implementation.aalto.stax.OutputFactoryImpl;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -20,7 +22,16 @@ import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
  */
 @SuppressWarnings("resource")
 public final class XmlWriter implements AutoCloseable {
-    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
+    private static final XMLOutputFactory XML_OUTPUT_FACTORY;
+
+    static {
+        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+        if ("com.sun.xml.internal.stream.XMLOutputFactoryImpl".equals(xmlOutputFactory.getClass().getName())) {
+            xmlOutputFactory = OutputFactoryImpl.newInstance();
+        }
+
+        XML_OUTPUT_FACTORY = xmlOutputFactory;
+    }
 
     private final XMLStreamWriter writer;
 

@@ -141,15 +141,12 @@ public class EndElementEventImpl extends BaseEventImpl implements EndElement {
 
         EndElement other = (EndElement) o;
         // First of all, names must match obviously
-        if (getName().equals(other.getName())) {
-            /* But then, what about namespaces etc? For now,
-             * let's actually not consider namespaces: chances
-             * are corresponding START_ELEMENT must have matched
-             * well enough.
-             */
-            return true;
-        }
-        return false;
+        /* But then, what about namespaces etc? For now,
+         * let's actually not consider namespaces: chances
+         * are corresponding START_ELEMENT must have matched
+         * well enough.
+         */
+        return getName().equals(other.getName());
     }
 
     @Override

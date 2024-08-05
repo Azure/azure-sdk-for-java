@@ -9,7 +9,7 @@ public final class TextUtil {
 
     public static boolean isAllWhitespace(String str, boolean xml11) {
         for (int i = 0, len = str.length(); i < len; ++i) {
-            int c = (int) str.charAt(i);
+            int c = str.charAt(i);
             if (c > CHAR_SPACE && (!xml11 || c != 0x85)) {
                 return false;
             }
@@ -20,7 +20,7 @@ public final class TextUtil {
     public static boolean isAllWhitespace(char[] ch, int start, int len, boolean xml11) {
         len += start;
         for (; start < len; ++start) {
-            int c = (int) ch[start];
+            int c = ch[start];
             if (c > CHAR_SPACE && (!xml11 || c != 0x85)) {
                 return false;
             }

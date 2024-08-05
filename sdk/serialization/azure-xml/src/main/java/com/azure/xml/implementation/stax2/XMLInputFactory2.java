@@ -1,11 +1,7 @@
 // Original file from https://github.com/FasterXML/stax2-api under BSD 2-Clause "Simplified" License
 package com.azure.xml.implementation.stax2;
 
-import java.io.File;
-import java.net.URL;
-
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
@@ -110,7 +106,7 @@ public abstract class XMLInputFactory2 extends XMLInputFactory implements XMLStr
     public final static String P_INTERN_NAMES = "com.azure.xml.implementation.stax2.internNames";
 
     /**
-     * Whether namespace URIs 
+     * Whether namespace URIs
      * stream reader returns are guaranteed to have been String.intern()ed.
      * Interning can make access by fully-qualified name faster as well
      * as save memory, but it can also add
@@ -178,33 +174,7 @@ public abstract class XMLInputFactory2 extends XMLInputFactory implements XMLStr
 
     // // // New event reader creation methods:
 
-    /**
-     * Factory method that allows for parsing a document accessible via
-     * specified URL. Note that URL may refer to all normal URL accessible
-     * resources, from files to web- and ftp-accessible documents.
-     */
-    public abstract XMLEventReader2 createXMLEventReader(URL src) throws XMLStreamException;
-
-    /**
-     * Convenience factory method that allows for parsing a document
-     * stored in the specified file.
-     */
-    public abstract XMLEventReader2 createXMLEventReader(File f) throws XMLStreamException;
-
     // // // New stream reader creation methods:
-
-    /**
-     * Factory method that allows for parsing a document accessible via
-     * specified URL. Note that URL may refer to all normal URL accessible
-     * resources, from files to web- and ftp-accessible documents.
-     */
-    public abstract XMLStreamReader2 createXMLStreamReader(URL src) throws XMLStreamException;
-
-    /**
-     * Convenience factory method that allows for parsing a document
-     * stored in the specified file.
-     */
-    public abstract XMLStreamReader2 createXMLStreamReader(File f) throws XMLStreamException;
 
     /*
     /**********************************************************************
@@ -325,36 +295,4 @@ public abstract class XMLInputFactory2 extends XMLInputFactory implements XMLStr
      */
     public abstract void configureForLowMemUsage();
 
-    /**
-     * Method to call to make Reader try to preserve as much of input
-     * formatting as possible, so that round-tripping would be as lossless
-     * as possible. This means that the matching writer should be able to
-     * reproduce output as closely matching input format as possible
-     * (most implementations won't be able to provide 100% vis-a-vis; 
-     * white space between attributes is generally lost, as well as use
-     * of character entities).
-     *<p>
-     * Regarding the default StAX property settings,
-     * implementations are suggested to do following:
-     *<ul>
-     * <li>Disable <code>IS_COALESCING</code> (to prevent CDATA and Text
-     *   segments from getting combined)
-     *  <li>
-     * <li>Disable <code>IS_REPLACING_ENTITY_REFERENCES</code> to allow for
-     *    preserving explicitly declared general entity references (that is,
-     *    there is no way to preserve character entities, or pre-defined
-     *    entities like 'gt', 'lt', 'amp', 'apos' and 'quot').
-     *  <li>
-     * <li>Disable <code>P_REPORT_ALL_TEXT_AS_CHARACTERS</code> (StAX2)
-     *   (so that CDATA sections are not reported as 'normal' text)
-     *  <li>
-     * <li>Enable <code>P_REPORT_PROLOG_WHITESPACE</code> (StAX2)
-     *  </li>
-     *</ul>
-     * All the other standard settings should be left as is.
-     *<p>
-     * In addition, implementations should set implementation-dependant
-     * settings appropriately as well.
-     */
-    public abstract void configureForRoundTripping();
 }

@@ -1,8 +1,6 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.dom;
 
-import javax.xml.namespace.NamespaceContext;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -97,14 +95,6 @@ public class DOMOutputElement extends OutputElementBase {
         return poolHead;
     }
 
-    /**
-     * Method called to temporarily link this instance to a pool, to
-     * allow reusing of instances with the same reader.
-     */
-    protected void addToPool(DOMOutputElement poolHead) {
-        _parent = poolHead;
-    }
-
     /*
     ////////////////////////////////////////////
     // Public API, accessors
@@ -121,19 +111,6 @@ public class DOMOutputElement extends OutputElementBase {
         return (_parent == null);
     }
 
-    /**
-     * @return String presentation of the fully-qualified name, in
-     *   "prefix:localName" format (no URI). Useful for error and
-     *   debugging messages.
-     */
-    @Override
-    public String getNameDesc() {
-        if (_element != null) {
-            return _element.getLocalName();
-        }
-        return "#error"; // unexpected case
-    }
-
     /*
     ////////////////////////////////////////////
     // Public API, mutators
@@ -144,20 +121,6 @@ public class DOMOutputElement extends OutputElementBase {
     public void setDefaultNsUri(String uri) {
         _defaultNsURI = uri;
         _defaultNsSet = true;
-    }
-
-    @Override
-    protected void setRootNsContext(NamespaceContext ctxt) {
-        _rootNsContext = ctxt;
-        /* Let's also see if we have an active default ns mapping:
-         * (provided it hasn't yet explicitly been set for this element)
-         */
-        if (!_defaultNsSet) {
-            String defURI = ctxt.getNamespaceURI("");
-            if (defURI != null && !defURI.isEmpty()) {
-                _defaultNsURI = defURI;
-            }
-        }
     }
 
     /*
@@ -182,7 +145,4 @@ public class DOMOutputElement extends OutputElementBase {
         _element.setAttributeNS(uri, qname, value);
     }
 
-    public void appendChild(Node n) {
-        _element.appendChild(n);
-    }
 }

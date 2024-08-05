@@ -27,10 +27,10 @@ import javax.xml.namespace.QName;
 //import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
- * This interface provides a typed extension to
+ * This interface provides a typed extension to 
  * {@link javax.xml.stream.XMLStreamReader}. It defines methods for
  * reading XML data and converting it into Java types.
- *
+ * 
  * @author Santiago.PericasGeertsen@sun.com
  * @author Tatu Saloranta
  *
@@ -45,13 +45,13 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
 
     /**
      * <p>Read an element content as a boolean. The lexical
-     * representation of a boolean is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#boolean">XML Schema boolean</a> data type. Whitespace MUST be
+     * representation of a boolean is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#boolean">XML Schema boolean</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema boolean
      * data type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema boolean data type.
      * (note: allowed lexical values are canonicals "true" and
      * "false", as well as non-canonical "0" and "1")
@@ -59,99 +59,99 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * These are the pre- and post-conditions of calling this method:
      * <ul>
      * <li>Precondition: the current event is START_ELEMENT.</li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT.</li>
      * </ul>
-     *
+     * 
      * @throws XMLStreamException  If unable to access content
      * @throws TypedXMLStreamException  If unable to convert the resulting
      *         character sequence into an XML Schema boolean value.
      */
-    boolean getElementAsBoolean() throws XMLStreamException;
+    public boolean getElementAsBoolean() throws XMLStreamException;
 
     /**
      * <p>Read an element content as a 32-bit integer. The lexical
-     * representation of a integer is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#integer">XML Schema integer</a> data type. Whitespace MUST be
+     * representation of a integer is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#integer">XML Schema integer</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema integer data type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema integer data type.
      * <p>
      * These are the pre and post conditions of calling this method:
      * <ul>
      * <li>Precondition: the current event is START_ELEMENT.</li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT.</li>
      * </ul>
-     *
+     * 
      * @throws XMLStreamException  If unable to access content
      * @throws TypedXMLStreamException  If unable to convert the resulting
      *         character sequence into a Java (32-bit) integer.
      */
-    int getElementAsInt() throws XMLStreamException;
+    public int getElementAsInt() throws XMLStreamException;
 
     /**
      * <p>Read an element content as a 64-bit integer. The lexical
-     * representation of a integer is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#integer">XML Schema integer</a> data type. Whitespace MUST be
+     * representation of a integer is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#integer">XML Schema integer</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema integer data type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema integer data type.
      *<p>
      * These are the pre and post conditions of calling this method:
      * <ul>
      * <li>Precondition: the current event is START_ELEMENT.</li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT.</li>
      * </ul>
-     *
+     * 
      * @throws XMLStreamException  If unable to access content
      * @throws TypedXMLStreamException  If unable to convert the resulting
      *         character sequence into a Java (64-bit) integer.
      */
-    long getElementAsLong() throws XMLStreamException;
+    public long getElementAsLong() throws XMLStreamException;
 
     /**
      * <p>Read an element content as a 32-bit floating point value.
-     * The lexical representation is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#float">XML Schema float</a> data type. Whitespace MUST be
+     * The lexical representation is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#float">XML Schema float</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema float data type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema integer data type.
      *<br>
      * Note that valid representations include basic Java textual
      * representations, as well as 3 special tokens: "INF", "-INF"
      * and "NaN"
-     *
+     * 
      * <p>
      * These are the pre and post conditions of calling this method:
      * <ul>
      * <li>Precondition: the current event is START_ELEMENT.</li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT.</li>
      * </ul>
-     *
-     *
+     * 
+     * 
      * @throws XMLStreamException  If unable to access content
      * @throws TypedXMLStreamException  If unable to convert the resulting
      *         character sequence into a Java float
      */
-    float getElementAsFloat() throws XMLStreamException;
+    public float getElementAsFloat() throws XMLStreamException;
 
     /**
      * <p>Read an element content as a 64-bit floating point value.
-     * The lexical representation is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#double">XML Schema double</a> data type. Whitespace MUST be
+     * The lexical representation is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#double">XML Schema double</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema double data type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema integer data type.
      *<br>
      * Note that valid representations include basic Java textual
@@ -161,22 +161,22 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * These are the pre and post conditions of calling this method:
      * <ul>
      * <li>Precondition: the current event is START_ELEMENT.</li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT.</li>
      * </ul>
-     *
-     *
+     * 
+     * 
      * @throws XMLStreamException  If unable to access content
      * @throws TypedXMLStreamException  If unable to convert the resulting
      *         character sequence into a Java double
      */
-    double getElementAsDouble() throws XMLStreamException;
+    public double getElementAsDouble() throws XMLStreamException;
 
-    BigInteger getElementAsInteger() throws XMLStreamException;
+    public BigInteger getElementAsInteger() throws XMLStreamException;
 
-    BigDecimal getElementAsDecimal() throws XMLStreamException;
+    public BigDecimal getElementAsDecimal() throws XMLStreamException;
 
-    QName getElementAsQName() throws XMLStreamException;
+    public QName getElementAsQName() throws XMLStreamException;
 
     // !!! 30-Jan-2008, TSa: JDK 1.5 only, can't add yet
     //public XMLGregorianCalendar getElementAsCalendar() throws XMLStreamException;
@@ -191,7 +191,7 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *
      * @see #readElementAsBinary
      */
-    byte[] getElementAsBinary() throws XMLStreamException;
+    public byte[] getElementAsBinary() throws XMLStreamException;
 
     /**
      * Convenience method that can be used similar to read binary content
@@ -204,7 +204,7 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *
      * @see #readElementAsBinary
      */
-    byte[] getElementAsBinary(Base64Variant variant) throws XMLStreamException;
+    public byte[] getElementAsBinary(Base64Variant variant) throws XMLStreamException;
 
     /**
      * Generic decoding method that can be used for efficient
@@ -231,16 +231,16 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * These are the pre- and post-conditions of calling this method:
      * <ul>
      * <li>Precondition: the current event is START_ELEMENT.</li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT.</li>
      * </ul>
-     *
+     * 
      *<p>
      * Note that caller has to know more specific type of decoder,
      * since the base interface does not specify methods
      * for accessing actual decoded value.
      */
-    void getElementAs(TypedValueDecoder tvd) throws XMLStreamException;
+    public void getElementAs(TypedValueDecoder tvd) throws XMLStreamException;
 
     /*
     //////////////////////////////////////////////////////////
@@ -252,11 +252,11 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
     /**
      * Read element content as decoded byte sequence; possibly only
      * reading a fragment of all element content.
-     * The lexical representation of a byte array is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">XML Schema base64Binary</a> data type. Whitespace MUST be
+     * The lexical representation of a byte array is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">XML Schema base64Binary</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema base64Binary
-     * data type. An exception is thrown if content is not in
+     * data type. An exception is thrown if content is not in 
      * the lexical space defined by the XML Schema base64Binary data type.
      *<p>
      * Each call will read at least one decoded byte (and no more than
@@ -271,7 +271,7 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *   (END_ELEMENT is allowed for convenience; if so, no read
      *   operation is tried, and -1 is returned immediately
      *   </li>
-     * <li>Postcondition: the current event is the corresponding
+     * <li>Postcondition: the current event is the corresponding 
      *     END_ELEMENT, if all remaining binary content was read,
      *     or CHARACTERS if only a portion of the array was read
      *   </li>
@@ -308,10 +308,10 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * @throws IllegalArgumentException If <code>resultBuffer</code> is
      *    null or offset is less than 0.
      */
-    int readElementAsBinary(byte[] resultBuffer, int offset, int maxLength, Base64Variant variant)
+    public int readElementAsBinary(byte[] resultBuffer, int offset, int maxLength, Base64Variant variant)
         throws XMLStreamException;
 
-    int readElementAsBinary(byte[] resultBuffer, int offset, int maxLength) throws XMLStreamException;
+    public int readElementAsBinary(byte[] resultBuffer, int offset, int maxLength) throws XMLStreamException;
 
     /**
      * Read an element content as an int array. The lexical
@@ -320,14 +320,14 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * <pre>
      *    &lt;xs:simpleType name="intArray"&gt;
      *       &lt;xs:list itemType="xs:int"/&gt;
-     *    &lt;/xs:simpleType&gt;</pre>
+     *    &lt;/xs:simpleType&gt;</pre> 
      * whose lexical space is a list of space-separated ints.
-     * Whitespace MUST be
+     * Whitespace MUST be 
      * <a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the <code>intArray</code>
      * type shown above. An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
-     * the lexical space defined by the <code>intArray</code> data
+     * collapsed, the resulting sequence of characters is not in 
+     * the lexical space defined by the <code>intArray</code> data 
      * type.
      *
      *<p>
@@ -339,8 +339,8 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *   (END_ELEMENT is allowed for convenience; if so, no read
      *   operation is tried, and -1 is returned immediately
      *   </li>
-     * <li>Postcondition: the current event is the corresponding
-     *     END_ELEMENT or CHARACTERS if only a portion of the
+     * <li>Postcondition: the current event is the corresponding 
+     *     END_ELEMENT or CHARACTERS if only a portion of the 
      *     array has been copied thus far.</li>
      * </ul>
      * This method can be called multiple times until the cursor
@@ -348,7 +348,7 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * differently, after the method is called for the first time,
      * the cursor will move and remain in the CHARACTERS position while there
      * are more bytes available for reading.
-     *
+     * 
      *
      * @param resultBuffer The array in which to copy the ints.
      * @param offset The index in the array from which copying starts.
@@ -364,13 +364,13 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *   START_ELEMENT, END_ELEMENT, or CHARACTERS (which resulted from
      *   an earlier call)
      */
-    int readElementAsIntArray(int[] resultBuffer, int offset, int length) throws XMLStreamException;
+    public int readElementAsIntArray(int[] resultBuffer, int offset, int length) throws XMLStreamException;
 
-    int readElementAsLongArray(long[] resultBuffer, int offset, int length) throws XMLStreamException;
+    public int readElementAsLongArray(long[] resultBuffer, int offset, int length) throws XMLStreamException;
 
-    int readElementAsFloatArray(float[] resultBuffer, int offset, int length) throws XMLStreamException;
+    public int readElementAsFloatArray(float[] resultBuffer, int offset, int length) throws XMLStreamException;
 
-    int readElementAsDoubleArray(double[] resultBuffer, int offset, int length) throws XMLStreamException;
+    public int readElementAsDoubleArray(double[] resultBuffer, int offset, int length) throws XMLStreamException;
 
     /**
      * Read an element content as an array of tokens. This is done by
@@ -387,8 +387,8 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *   (END_ELEMENT is allowed for convenience; if so, no read
      *   operation is tried, and -1 is returned immediately
      *   </li>
-     * <li>Postcondition: the current event is the corresponding
-     *     END_ELEMENT or CHARACTERS if only a portion of the
+     * <li>Postcondition: the current event is the corresponding 
+     *     END_ELEMENT or CHARACTERS if only a portion of the 
      *     array has been copied thus far.</li>
      * </ul>
      * This method can be called multiple times until the cursor
@@ -396,11 +396,11 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * differently, after the method is called for the first time,
      * the cursor will move and remain in the CHARACTERS position while there
      * are more bytes available for reading.
-     *
+     * 
      *<p>
      * Note: passed decoder must accept at least one value, reader will
      * not verify capacity before calling it with the first token.
-     *
+     * 
      * @return Number of elements decoded, or -1 to indicate that there
      *    was no more element content tokens to decode.
      *
@@ -408,7 +408,7 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *   START_ELEMENT, END_ELEMENT, or CHARACTERS (which resulted from
      *   an earlier call)
      */
-    int readElementAsArray(TypedArrayDecoder tad) throws XMLStreamException;
+    public int readElementAsArray(TypedArrayDecoder tad) throws XMLStreamException;
 
     /*
     //////////////////////////////////////////////////////////
@@ -417,10 +417,10 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      */
 
     /**
-     * Returns the index of the attribute whose local name is
+     * Returns the index of the attribute whose local name is 
      * <code>localName</code> and URI is <code>namespaceURI</code>
      * or <code>-1</code> if no such attribute exists.
-     *
+     * 
      * @param namespaceURI  The attribute's namespace URI. Values of
      *   null and "" are considered the same, i.e. "no namespace"
      *   (or "empty" namespace)
@@ -430,55 +430,55 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * @throws java.lang.IllegalStateException  If this is not
      *          a START_ELEMENT event
      */
-    int getAttributeIndex(String namespaceURI, String localName);
+    public int getAttributeIndex(String namespaceURI, String localName);
 
     /**
      * <p>Read an attribute value as a boolean. The lexical
-     * representation of a boolean is defined by the
+     * representation of a boolean is defined by the 
      * <a href="http://www.w3.org/TR/xmlschema-2/#boolean">XML Schema boolean</a>
-     * data type. Whitespace MUST be
+     * data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema boolean
      * data type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema boolean data type.
-     *
+     * 
      * @param index  The attribute's index as returned by {@link #getAttributeIndex(String, String)}
      * @throws java.lang.IllegalStateException  If this is not
      *         a START_ELEMENT event.
      * @throws XMLStreamException  If unable to convert the resulting
      *         character sequence into an XML Schema boolean value.
      */
-    boolean getAttributeAsBoolean(int index) throws XMLStreamException;
+    public boolean getAttributeAsBoolean(int index) throws XMLStreamException;
 
     /**
      * <p>Read an attribute value as a boolean. The lexical
-     * representation of a boolean is defined by the
+     * representation of a boolean is defined by the 
      * <a href="http://www.w3.org/TR/xmlschema-2/#integer">XML Schema integer</a>
-     * data type. Whitespace MUST be
+     * data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema integer data type.
-     *
+     * 
      * @param index  The attribute's index as returned by {@link #getAttributeIndex(String, String)}
      * @throws java.lang.IllegalStateException If this is not a START_ELEMENT event.
      * @throws XMLStreamException  If unable to convert the resulting
      *         character sequence into an XML Schema boolean value.
      */
-    int getAttributeAsInt(int index) throws XMLStreamException;
+    public int getAttributeAsInt(int index) throws XMLStreamException;
 
     /**
      * <p>Read an attribute value as a boolean. The lexical
-     * representation of a boolean is defined by the
+     * representation of a boolean is defined by the 
      * <a href="http://www.w3.org/TR/xmlschema-2/#long">XML Schema long</a>
-     * data type. Whitespace MUST be
+     * data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/xmlschema-2/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the type.
      * An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema long data type.
      *
      * @param index  The attribute's index as returned by {@link #getAttributeIndex(String, String)}
@@ -486,17 +486,17 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * @throws XMLStreamException  If unable to convert the resulting
      *         character sequence into an XML Schema boolean value.
      */
-    long getAttributeAsLong(int index) throws XMLStreamException;
+    public long getAttributeAsLong(int index) throws XMLStreamException;
 
-    float getAttributeAsFloat(int index) throws XMLStreamException;
+    public float getAttributeAsFloat(int index) throws XMLStreamException;
 
-    double getAttributeAsDouble(int index) throws XMLStreamException;
+    public double getAttributeAsDouble(int index) throws XMLStreamException;
 
-    BigInteger getAttributeAsInteger(int index) throws XMLStreamException;
+    public BigInteger getAttributeAsInteger(int index) throws XMLStreamException;
 
-    BigDecimal getAttributeAsDecimal(int index) throws XMLStreamException;
+    public BigDecimal getAttributeAsDecimal(int index) throws XMLStreamException;
 
-    QName getAttributeAsQName(int index) throws XMLStreamException;
+    public QName getAttributeAsQName(int index) throws XMLStreamException;
 
     // !!! 30-Jan-2008, TSa: JDK 1.5 only -- is that ok?
     //XMLGregorianCalendar getAttributeAsCalendar(int index) throws XMLStreamException;
@@ -513,18 +513,18 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * As with {@link #getElementAs}, value passed to a decode
      * method will be trimmed of any leading or trailing white space.
      */
-    void getAttributeAs(int index, TypedValueDecoder tvd) throws XMLStreamException;
+    public void getAttributeAs(int index, TypedValueDecoder tvd) throws XMLStreamException;
 
     /**
      *Read an attribute value as a byte array. The lexical
-     * representation of a byte array is defined by the
-     * <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">XML Schema base64Binary</a> data type. Whitespace MUST be
+     * representation of a byte array is defined by the 
+     * <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">XML Schema base64Binary</a> data type. Whitespace MUST be 
      * <a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the XML Schema base64Binary
      * data type. An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
+     * collapsed, the resulting sequence of characters is not in 
      * the lexical space defined by the XML Schema base64Binary data type.
-     *
+     * 
      * @param index  The attribute's index as returned by {@link
      *        #getAttributeIndex(String, String)}.
      * @return An array of bytes with the content.
@@ -533,9 +533,9 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * @throws XMLStreamException  If unable to convert the resulting
      *         character sequence into an XML Schema boolean value.
      */
-    byte[] getAttributeAsBinary(int index) throws XMLStreamException;
+    public byte[] getAttributeAsBinary(int index) throws XMLStreamException;
 
-    byte[] getAttributeAsBinary(int index, Base64Variant v) throws XMLStreamException;
+    public byte[] getAttributeAsBinary(int index, Base64Variant v) throws XMLStreamException;
 
     /**
      * <p>Read an attribute content as an int array. The lexical
@@ -544,16 +544,16 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * <pre>
      *    &lt;xs:simpleType name="intArray"&gt;
      *       &lt;xs:list itemType="xs:int"/&gt;
-     *    &lt;/xs:simpleType&gt;</pre>
+     *    &lt;/xs:simpleType&gt;</pre> 
      * whose lexical space is a list of space-separated ints.
-     * Whitespace MUST be
+     * Whitespace MUST be 
      * <a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/datatypes.html#rf-whiteSpace">collapsed</a>
      * according to the whiteSpace facet for the <code>intArray</code>
      * type shown above. An exception is thrown if, after whitespace is
-     * collapsed, the resulting sequence of characters is not in
-     * the lexical space defined by the <code>intArray</code> data
+     * collapsed, the resulting sequence of characters is not in 
+     * the lexical space defined by the <code>intArray</code> data 
      * type.
-     *
+     * 
      * @param index  The attribute's index as returned by {@link
      *        #getAttributeIndex(String, String)}.
      * @return An array of ints with the content.
@@ -562,13 +562,13 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      * @throws XMLStreamException  If unable to convert the resulting
      *         character sequence into an XML Schema boolean value.
      */
-    int[] getAttributeAsIntArray(int index) throws XMLStreamException;
+    public int[] getAttributeAsIntArray(int index) throws XMLStreamException;
 
-    long[] getAttributeAsLongArray(int index) throws XMLStreamException;
+    public long[] getAttributeAsLongArray(int index) throws XMLStreamException;
 
-    float[] getAttributeAsFloatArray(int index) throws XMLStreamException;
+    public float[] getAttributeAsFloatArray(int index) throws XMLStreamException;
 
-    double[] getAttributeAsDoubleArray(int index) throws XMLStreamException;
+    public double[] getAttributeAsDoubleArray(int index) throws XMLStreamException;
 
     /**
      * Method that allows reading contents of an attribute as an array
@@ -576,5 +576,5 @@ public interface TypedXMLStreamReader extends XMLStreamReader {
      *
      * @return Number of tokens decoded, 0 if none found
      */
-    int getAttributeAsArray(int index, TypedArrayDecoder tad) throws XMLStreamException;
+    public int getAttributeAsArray(int index, TypedArrayDecoder tad) throws XMLStreamException;
 }

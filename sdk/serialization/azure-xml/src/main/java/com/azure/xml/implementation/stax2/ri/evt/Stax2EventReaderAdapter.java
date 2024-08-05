@@ -114,14 +114,9 @@ public class Stax2EventReaderAdapter implements XMLEventReader2 {
      */
 
     @Override
-    public boolean hasNextEvent() throws XMLStreamException {
-        return (peek() != null);
-    }
-
-    @Override
     public boolean isPropertySupported(String name) {
         /* No way to support properly via Stax1 interface... but
-         * let's approximate: we can be sure it is supported, if 
+         * let's approximate: we can be sure it is supported, if
          * we can access value without IllegalArgumentException
          */
         try {

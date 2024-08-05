@@ -78,7 +78,7 @@ public final class DOMWriterImpl extends DOMWrappingWriter {
      */
     private int[] _autoNsSeq;
     private String _suggestedDefNs = null;
-    private String _automaticNsPrefix;
+    private final String _automaticNsPrefix;
 
     /**
      * Map that contains URI-to-prefix entries that point out suggested
@@ -536,7 +536,7 @@ public final class DOMWriterImpl extends DOMWrappingWriter {
      *
      * @param nsURI URI of namespace for which we need a prefix
      */
-    private String findElemPrefix(String nsURI, DOMOutputElement elem) throws XMLStreamException {
+    private String findElemPrefix(String nsURI, DOMOutputElement elem) {
         /* Special case: empty NS URI can only be bound to the empty
          * prefix...
          */
@@ -555,8 +555,7 @@ public final class DOMWriterImpl extends DOMWrappingWriter {
      * Method called after {@link #findElemPrefix} has returned null,
      * to create and bind a namespace mapping for specified namespace.
      */
-    private String generateElemPrefix(String suggPrefix, String nsURI, DOMOutputElement elem)
-        throws XMLStreamException {
+    private String generateElemPrefix(String suggPrefix, String nsURI, DOMOutputElement elem) {
         /* Ok... now, since we do not have an existing mapping, let's
          * see if we have a preferred prefix to use.
          */

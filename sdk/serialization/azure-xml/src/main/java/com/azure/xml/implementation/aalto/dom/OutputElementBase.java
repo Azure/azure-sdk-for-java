@@ -86,8 +86,6 @@ public abstract class OutputElementBase implements NamespaceContext {
         _rootNsContext = parent._rootNsContext;
     }
 
-    protected abstract void setRootNsContext(NamespaceContext ctxt);
-
     /*
     /**********************************************************************
     /* Public API, accessors
@@ -95,13 +93,6 @@ public abstract class OutputElementBase implements NamespaceContext {
      */
 
     public abstract boolean isRoot();
-
-    /**
-     * @return String presentation of the fully-qualified name, in
-     *   "prefix:localName" format (no URI). Useful for error and
-     *   debugging messages.
-     */
-    public abstract String getNameDesc();
 
     public final String getDefaultNsUri() {
         return _defaultNsURI;
@@ -169,7 +160,7 @@ public abstract class OutputElementBase implements NamespaceContext {
         if (prefix == null || prefix.isEmpty()) {
             if (isElement) {
                 // It's fine for elements only if the URI actually matches:
-                if (nsURI == _defaultNsURI || nsURI.equals(_defaultNsURI)) {
+                if (nsURI.equals(_defaultNsURI)) {
                     return PREFIX_OK;
                 }
             } else {
@@ -214,7 +205,7 @@ public abstract class OutputElementBase implements NamespaceContext {
             return PREFIX_UNBOUND;
         }
 
-        return (act == nsURI || act.equals(nsURI)) ? PREFIX_OK : PREFIX_MISBOUND;
+        return (act.equals(nsURI)) ? PREFIX_OK : PREFIX_MISBOUND;
     }
 
     /*

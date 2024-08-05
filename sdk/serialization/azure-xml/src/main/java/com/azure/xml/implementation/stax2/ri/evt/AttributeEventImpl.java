@@ -180,7 +180,7 @@ public class AttributeEventImpl extends BaseEventImpl implements Attribute {
                     w.write("&lt;");
                 } else if (c == '&') {
                     w.write("&amp;");
-                } else if (c == '"') {
+                } else {
                     w.write("&quot;");
 
                 }

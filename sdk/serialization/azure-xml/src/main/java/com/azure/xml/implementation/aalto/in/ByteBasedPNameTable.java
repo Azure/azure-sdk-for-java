@@ -220,15 +220,6 @@ public final class ByteBasedPNameTable extends NameTable {
         mCollListShared = true;
     }
 
-    /**
-     * Method used by test code, to reset state of the name table.
-     */
-    public void nuke() {
-        mMainHash = null;
-        mMainNames = null;
-        mCollList = null;
-    }
-
     /*
     /**********************************************************************
     /* API, accessors
@@ -354,13 +345,6 @@ public final class ByteBasedPNameTable extends NameTable {
     /**********************************************************************
      */
 
-    public ByteBasedPName addSymbol(int hash, String symbolStr, int colonIx, int firstQuad, int secondQuad) {
-        ByteBasedPName symbol
-            = ByteBasedPNameFactory.getInstance().constructPName(hash, symbolStr, colonIx, firstQuad, secondQuad);
-        doAddSymbol(hash, symbol);
-        return symbol;
-    }
-
     public ByteBasedPName addSymbol(int hash, String symbolStr, int colonIx, int[] quads, int qlen) {
         ByteBasedPName symbol
             = ByteBasedPNameFactory.getInstance().constructPName(hash, symbolStr, colonIx, quads, qlen);
@@ -396,26 +380,6 @@ public final class ByteBasedPNameTable extends NameTable {
         hash ^= (hash >>> 16); // to xor hi- and low- 16-bits
         hash ^= (hash >>> 8); // as well as lowest 2 bytes
         return hash;
-    }
-
-    public static int[] calcQuads(byte[] wordBytes) {
-        int blen = wordBytes.length;
-        int[] result = new int[(blen + 3) / 4];
-        for (int i = 0; i < blen; ++i) {
-            int x = wordBytes[i] & 0xFF;
-
-            if (++i < blen) {
-                x = (x << 8) | (wordBytes[i] & 0xFF);
-                if (++i < blen) {
-                    x = (x << 8) | (wordBytes[i] & 0xFF);
-                    if (++i < blen) {
-                        x = (x << 8) | (wordBytes[i] & 0xFF);
-                    }
-                }
-            }
-            result[i >> 2] = x;
-        }
-        return result;
     }
 
     /*

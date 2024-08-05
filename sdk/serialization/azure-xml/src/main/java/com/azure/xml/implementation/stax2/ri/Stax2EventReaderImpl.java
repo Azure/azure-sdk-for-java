@@ -385,7 +385,7 @@ public abstract class Stax2EventReaderImpl implements XMLEventReader2, XMLStream
      *
      * @since 4.2
      */
-    protected void updateStateEndDocument() throws XMLStreamException {
+    protected void updateStateEndDocument() {
         mState = STATE_END_OF_INPUT;
     }
 
@@ -394,19 +394,6 @@ public abstract class Stax2EventReaderImpl implements XMLEventReader2, XMLStream
     /* XMLEventReader2 API
     /**********************************************************************
      */
-
-    /**
-     *<p>
-     * Note: although the interface allows implementations to
-     * throw an {@link XMLStreamException}, the reference implementation
-     * doesn't currently need to.
-     * It's still declared, in case in future there is need to throw
-     * such an exception.
-     */
-    @Override
-    public boolean hasNextEvent() throws XMLStreamException {
-        return (mState != STATE_END_OF_INPUT);
-    }
 
     /*
     /**********************************************************************
@@ -448,8 +435,7 @@ public abstract class Stax2EventReaderImpl implements XMLEventReader2, XMLStream
      * Method called to create the very first event (START_DOCUMENT).
      */
     protected XMLEvent createStartDocumentEvent() throws XMLStreamException {
-        XMLEvent start = mAllocator.allocate(mReader);
-        return start;
+        return mAllocator.allocate(mReader);
     }
 
     /*

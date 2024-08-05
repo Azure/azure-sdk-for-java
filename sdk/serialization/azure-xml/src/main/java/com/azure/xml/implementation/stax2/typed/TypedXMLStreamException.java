@@ -30,8 +30,8 @@ public class TypedXMLStreamException extends XMLStreamException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Lexical representation of the content that could not be 
-     * converted to the requested type. May be <code>null</code> 
+     * Lexical representation of the content that could not be
+     * converted to the requested type. May be <code>null</code>
      * if a processor is unable to provide it. Lexical representation
      * should preferably be as close to the original input String
      * as possible (as opposed to being normalized which often
@@ -50,17 +50,6 @@ public class TypedXMLStreamException extends XMLStreamException {
     }
 
     /**
-     * Constructor used to wrap an underlying data conversion
-     * error message.
-     *
-     * @param rootCause Underlying conversion problem
-     */
-    public TypedXMLStreamException(String lexical, IllegalArgumentException rootCause) {
-        super(rootCause);
-        mLexical = lexical;
-    }
-
-    /**
      * Construct an exception with the associated message and exception
      *
      * @param msg  The message to report.
@@ -72,7 +61,7 @@ public class TypedXMLStreamException extends XMLStreamException {
     }
 
     /**
-     * Construct an exception with the associated message, exception and 
+     * Construct an exception with the associated message, exception and
      * location.
      *
      * @param msg  The message to report.
@@ -85,7 +74,7 @@ public class TypedXMLStreamException extends XMLStreamException {
     }
 
     /**
-     * Construct an exception with the associated message, exception and 
+     * Construct an exception with the associated message, exception and
      * location.
      *
      * @param msg  The message to report.
@@ -96,9 +85,9 @@ public class TypedXMLStreamException extends XMLStreamException {
         mLexical = lexical;
     }
 
-    /** 
+    /**
      * Return the lexical representation of the attribute or element
-     * content that could not be converted as requested. 
+     * content that could not be converted as requested.
      *
      * @return  Lexical representation of unconverted content or
      *          <code>null</code> if unavailable.

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
-import java.nio.ByteBuffer;
 
 import javax.xml.stream.*;
 import javax.xml.stream.util.XMLEventAllocator;
@@ -42,9 +41,6 @@ import com.azure.xml.implementation.stax2.ri.evt.Stax2FilteredEventReader;
 import org.xml.sax.InputSource;
 
 import com.azure.xml.implementation.aalto.*;
-import com.azure.xml.implementation.aalto.async.AsyncByteArrayScanner;
-import com.azure.xml.implementation.aalto.async.AsyncByteBufferScanner;
-import com.azure.xml.implementation.aalto.async.AsyncStreamReaderImpl;
 import com.azure.xml.implementation.aalto.dom.DOMReaderImpl;
 import com.azure.xml.implementation.aalto.evt.EventAllocatorImpl;
 import com.azure.xml.implementation.aalto.evt.EventReaderImpl;
@@ -69,7 +65,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
 
     // // // StAX - mandated objects:
 
-    protected XMLEventAllocator _allocator = null;
+    private XMLEventAllocator _allocator = null;
 
     /*
     /**********************************************************************
@@ -148,7 +144,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
     }
 
     @Override
-    public XMLEventReader createXMLEventReader(XMLStreamReader sr) throws XMLStreamException {
+    public XMLEventReader createXMLEventReader(XMLStreamReader sr) {
         return constructER(Stax2ReaderAdapter.wrapIfNecessary(sr));
     }
 
@@ -246,30 +242,6 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
     /**********************************************************************
      */
 
-    @Override
-    public XMLEventReader2 createXMLEventReader(URL src) throws XMLStreamException {
-        return constructER(constructSR(src, true));
-    }
-
-    @Override
-    public XMLEventReader2 createXMLEventReader(File f) throws XMLStreamException {
-        return constructER(constructSR(f, true));
-    }
-
-    @Override
-    public XMLStreamReader2 createXMLStreamReader(URL src) throws XMLStreamException {
-        return constructSR(src, false);
-    }
-
-    /**
-     * Convenience factory method that allows for parsing a document
-     * stored in the specified file.
-     */
-    @Override
-    public XMLStreamReader2 createXMLStreamReader(File f) throws XMLStreamException {
-        return constructSR(f, false);
-    }
-
     // // // StAX2 "Profile" mutators
 
     @Override
@@ -292,55 +264,11 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
         _config.configureForLowMemUsage();
     }
 
-    @Override
-    public void configureForRoundTripping() {
-        _config.configureForRoundTripping();
-    }
-
     /*
     /**********************************************************************
     /* Non-blocking reader factories (AsyncXMLInputFactory)
     /**********************************************************************
      */
-
-    @Override
-    public AsyncXMLStreamReader<AsyncByteArrayFeeder> createAsyncForByteArray() {
-        // TODO: pass system and/or public ids?
-        ReaderConfig cfg = getNonSharedConfig(null, null, null, false, false);
-        cfg.setActualEncoding("UTF-8");
-        return new AsyncStreamReaderImpl<AsyncByteArrayFeeder>(new AsyncByteArrayScanner(cfg));
-    }
-
-    @Override
-    public AsyncXMLStreamReader<AsyncByteArrayFeeder> createAsyncFor(byte[] input) throws XMLStreamException {
-        return createAsyncFor(input, 0, input.length);
-    }
-
-    @Override
-    public AsyncXMLStreamReader<AsyncByteArrayFeeder> createAsyncFor(byte[] input, int offset, int length)
-        throws XMLStreamException {
-        ReaderConfig cfg = getNonSharedConfig(null, null, null, false, false);
-        cfg.setActualEncoding("UTF-8");
-        AsyncByteArrayScanner scanner = new AsyncByteArrayScanner(cfg);
-        scanner.feedInput(input, offset, length);
-        return new AsyncStreamReaderImpl<AsyncByteArrayFeeder>(scanner);
-    }
-
-    @Override
-    public AsyncXMLStreamReader<AsyncByteBufferFeeder> createAsyncForByteBuffer() {
-        ReaderConfig cfg = getNonSharedConfig(null, null, null, false, false);
-        cfg.setActualEncoding("UTF-8");
-        return new AsyncStreamReaderImpl<AsyncByteBufferFeeder>(new AsyncByteBufferScanner(cfg));
-    }
-
-    @Override
-    public AsyncXMLStreamReader<AsyncByteBufferFeeder> createAsyncFor(ByteBuffer input) throws XMLStreamException {
-        ReaderConfig cfg = getNonSharedConfig(null, null, null, false, false);
-        cfg.setActualEncoding("UTF-8");
-        AsyncByteBufferScanner scanner = new AsyncByteBufferScanner(cfg);
-        scanner.feedInput(input);
-        return new AsyncStreamReaderImpl<AsyncByteBufferFeeder>(scanner);
-    }
 
     /*
     /**********************************************************************
@@ -368,26 +296,24 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
         return cfg;
     }
 
-    protected XMLStreamReader2 constructSR(InputStream in, String enc, boolean forEventReader)
-        throws XMLStreamException {
+    private XMLStreamReader2 constructSR(InputStream in, String enc, boolean forEventReader) throws XMLStreamException {
         ReaderConfig cfg = getNonSharedConfig(null, null, enc, forEventReader, false);
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
-    protected XMLStreamReader2 constructSR(String systemId, Reader r, boolean forEventReader)
-        throws XMLStreamException {
+    private XMLStreamReader2 constructSR(String systemId, Reader r, boolean forEventReader) throws XMLStreamException {
         ReaderConfig cfg = getNonSharedConfig(null, systemId, null, forEventReader, false);
         return StreamReaderImpl.construct(CharSourceBootstrapper.construct(cfg, r));
     }
 
-    protected XMLStreamReader2 constructSR(String systemId, InputStream in, boolean forEventReader)
+    private XMLStreamReader2 constructSR(String systemId, InputStream in, boolean forEventReader)
         throws XMLStreamException {
         ReaderConfig cfg = getNonSharedConfig(null, systemId, null, forEventReader, false);
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
     @SuppressWarnings("resource")
-    protected XMLStreamReader2 constructSR(javax.xml.transform.Source src, boolean forEventReader)
+    private XMLStreamReader2 constructSR(javax.xml.transform.Source src, boolean forEventReader)
         throws XMLStreamException {
         if (src instanceof Stax2Source) {
             return constructSR2((Stax2Source) src, forEventReader);
@@ -446,7 +372,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
             ReaderConfig cfg = getNonSharedConfig(pubId, sysId, encoding, forEventReader, autoCloseInput);
             return StreamReaderImpl.construct(CharSourceBootstrapper.construct(cfg, r));
         }
-        if (sysId != null && sysId.length() > 0) {
+        if (sysId != null && !sysId.isEmpty()) {
             /* If we must construct URL from system id, caller will not have
              * access to resulting stream, need to force auto-closing.
              */
@@ -464,7 +390,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
             "Can not create Stax reader for the Source passed -- neither reader, input stream nor system id was accessible; can not use other types of sources (like embedded SAX streams)");
     }
 
-    protected XMLStreamReader2 constructSR2(Stax2Source ss, boolean forEventReader) throws XMLStreamException {
+    private XMLStreamReader2 constructSR2(Stax2Source ss, boolean forEventReader) throws XMLStreamException {
         /* Caller has no access to these input sources, so we must force
          * auto-close ('true' after 'forEventReader')
          */
@@ -503,7 +429,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
             "Can not create stream reader for given Stax2Source: neither InputStream nor Reader available");
     }
 
-    protected XMLStreamReader2 constructSR(URL src, boolean forEventReader) throws XMLStreamException {
+    private XMLStreamReader2 constructSR(URL src, boolean forEventReader) throws XMLStreamException {
         InputStream in;
         try {
             in = URLUtil.inputStreamFromURL(src);
@@ -515,7 +441,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
-    protected XMLStreamReader2 constructSR(File f, boolean forEventReader) throws XMLStreamException {
+    private XMLStreamReader2 constructSR(File f, boolean forEventReader) throws XMLStreamException {
         try {
             InputStream in = new FileInputStream(f);
             String systemId = URLUtil.fileToSystemId(f);
@@ -531,7 +457,7 @@ public final class InputFactoryImpl extends AsyncXMLInputFactory {
         return new EventReaderImpl(createEventAllocator(), sr);
     }
 
-    protected XMLEventAllocator createEventAllocator() {
+    private XMLEventAllocator createEventAllocator() {
         // Explicitly set allocate?
         if (_allocator != null) {
             return _allocator.newInstance();

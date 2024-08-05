@@ -320,16 +320,6 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
     }
 
     @Override
-    public void writeFullEndElement() throws XMLStreamException {
-        /* It may be possible to fake it, by pretending to write
-         * character output, which in turn should prevent writing of
-         * an empty element...
-         */
-        mDelegate.writeCharacters("");
-        mDelegate.writeEndElement();
-    }
-
-    @Override
     public void writeSpace(String text) throws XMLStreamException {
         /* Hmmh. Two choices: either try to write as regular characters,
          * or output as is via raw calls. Latter would be safer, if we
@@ -383,7 +373,7 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
                  * source document
                  */
                 if (version == null || version.isEmpty()) {
-                    ; // no output if no real input
+                    // no output if no real input
                 } else {
                     if (sr.standaloneSet()) {
                         writeStartDocument(sr.getVersion(), sr.getCharacterEncodingScheme(), sr.isStandalone());
@@ -463,15 +453,6 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
     // Stax2, output handling
     ///////////////////////////////////////////////////////////////////////
     */
-
-    @Override
-    public void closeCompletely() throws XMLStreamException {
-        /* 06-Nov-2008, TSa: alas, there is no way to properly implement
-         *   this. Should we throw an exception? For now, let's just call
-         *   regular close; not quite the same, but better than nothing
-         */
-        close();
-    }
 
     /*
     ///////////////////////////////////////////////////////////////////////

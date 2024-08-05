@@ -59,11 +59,6 @@ public final class PName3 extends ByteBasedPName {
     }
 
     @Override
-    public int getFirstQuad() {
-        return mQuad1;
-    }
-
-    @Override
     public int getLastQuad() {
         return mQuad3;
     }

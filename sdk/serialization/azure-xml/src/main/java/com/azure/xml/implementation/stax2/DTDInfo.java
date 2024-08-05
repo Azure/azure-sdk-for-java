@@ -1,8 +1,6 @@
 // Original file from https://github.com/FasterXML/stax2-api under BSD 2-Clause "Simplified" License
 package com.azure.xml.implementation.stax2;
 
-import com.azure.xml.implementation.stax2.validation.DTDValidationSchema;
-
 /**
  * Interface that specifies additional access functionality to parsed DTD
  * information (if any); these methods are encapsulated on a separate
@@ -49,10 +47,4 @@ public interface DTDInfo {
 
     // // // Stax2, v2.0
 
-    /**
-     * Method similar to {@link #getProcessedDTD}, but type-safe. Will
-     * return the DTD schema instance that was read, if we are in mode
-     * where it does get read (at least dtd-aware).
-     */
-    DTDValidationSchema getProcessedDTDSchema();
 }

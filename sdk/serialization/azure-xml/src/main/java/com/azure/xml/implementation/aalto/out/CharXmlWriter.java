@@ -32,6 +32,7 @@ import static com.azure.xml.implementation.aalto.out.OutputCharTypes.*;
  * This is the generic implementation of {@link XmlWriter}, used if
  * the destination is a character based, like a {@link java.io.Writer}.
  */
+@SuppressWarnings("fallthrough")
 public final class CharXmlWriter extends XmlWriter {
     /**
      * This value determines a threshold to choose how much data do
@@ -60,20 +61,20 @@ public final class CharXmlWriter extends XmlWriter {
      * write; small writes will be buffered until resulting size will
      * be above the threshold.
      */
-    protected final int mSmallWriteSize;
+    private final int mSmallWriteSize;
 
     /**
      * Actual Writer to use for outputting buffered data as appropriate.
      * During active usage, remains as the writer initially set; set to
      * null when this writer is closed.
      */
-    protected Writer _out;
+    private Writer _out;
 
-    protected char[] _outputBuffer;
+    private char[] _outputBuffer;
 
-    protected int _outputPtr;
+    private int _outputPtr;
 
-    protected final int _outputBufferLen;
+    private final int _outputBufferLen;
 
     /*
     ////////////////////////////////////////////////
@@ -193,7 +194,7 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     @Override
-    public final void flush() throws IOException {
+    public void flush() throws IOException {
         if (_out != null) {
             flushBuffer();
             _out.flush();
@@ -292,19 +293,19 @@ public final class CharXmlWriter extends XmlWriter {
     ////////////////////////////////////////////////
      */
 
-    public final void writeCDataStart() throws IOException {
+    public void writeCDataStart() throws IOException {
         fastWriteRaw("<![CDATA[");
     }
 
-    public final void writeCDataEnd() throws IOException {
+    public void writeCDataEnd() throws IOException {
         fastWriteRaw("]]>");
     }
 
-    public final void writeCommentStart() throws IOException {
+    public void writeCommentStart() throws IOException {
         fastWriteRaw("<!--");
     }
 
-    public final void writeCommentEnd() throws IOException {
+    public void writeCommentEnd() throws IOException {
         fastWriteRaw("-->");
     }
 
@@ -332,7 +333,7 @@ public final class CharXmlWriter extends XmlWriter {
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             data.getChars(offset, offset + len2, buf, 0);
             int cix = writeCDataContents(buf, 0, len2);
             if (cix >= 0) {
@@ -364,10 +365,10 @@ public final class CharXmlWriter extends XmlWriter {
             final int[] charTypes = mCharTypes.OTHER_CHARS;
             final int limit = mTableCheckEnd;
 
-            inner_loop: while (true) {
+            while (true) {
                 char ch = cbuf[offset];
                 if (ch >= limit) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -382,7 +383,7 @@ public final class CharXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < limit) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -429,7 +430,7 @@ public final class CharXmlWriter extends XmlWriter {
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             text.getChars(offset, offset + len2, buf, 0);
             writeCharacters(buf, 0, len2);
             offset += len2;
@@ -449,10 +450,10 @@ public final class CharXmlWriter extends XmlWriter {
             final int[] charTypes = mCharTypes.TEXT_CHARS;
             final int limit = mTableCheckEnd;
 
-            inner_loop: while (true) {
+            while (true) {
                 char ch = cbuf[offset];
                 if (ch >= limit) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -467,7 +468,7 @@ public final class CharXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < limit) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -482,14 +483,14 @@ public final class CharXmlWriter extends XmlWriter {
                     case CT_LT:
                     case CT_AMP:
                         writeAsEntity(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_WS_CR:
                         // !!! TBI: line count
                         // Also, CR to be quoted?
                         if (_config.willEscapeCR()) {
                             writeAsEntity(ch);
-                            continue main_loop;
+                            continue;
                         }
                         break;
 
@@ -500,7 +501,7 @@ public final class CharXmlWriter extends XmlWriter {
                 }
             } else if (ch >= mEncHighChar) {
                 writeAsEntity(ch);
-                continue main_loop;
+                continue;
             }
             if (_outputPtr >= _outputBufferLen) {
                 flushBuffer();
@@ -523,7 +524,7 @@ public final class CharXmlWriter extends XmlWriter {
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             data.getChars(offset, offset + len2, buf, 0);
             writeSpace(buf, 0, len2);
             offset += len2;
@@ -585,7 +586,7 @@ public final class CharXmlWriter extends XmlWriter {
             }
             // Nope, can only do part
             data.getChars(offset, offset + blen, buf, 0);
-            cix = writeCommentContents(buf, 0, blen, false);
+            cix = writeCommentContents(buf, 0, blen);
             if (cix >= 0) {
                 break;
             }
@@ -603,18 +604,17 @@ public final class CharXmlWriter extends XmlWriter {
      * Note: the only way to fix comment contents is to inject a space
      * to split up consequtive '--' (or '-' that ends a comment).
      */
-    private int writeCommentContents(char[] cbuf, int offset, int len, boolean last)
-        throws IOException, XMLStreamException {
+    private int writeCommentContents(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
         len += offset;
 
         main_loop: while (offset < len) {
             final int[] charTypes = mCharTypes.OTHER_CHARS;
             final int limit = mTableCheckEnd;
 
-            inner_loop: while (true) {
+            while (true) {
                 char ch = cbuf[offset];
                 if (ch >= limit) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -629,7 +629,7 @@ public final class CharXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < limit) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -698,7 +698,7 @@ public final class CharXmlWriter extends XmlWriter {
             fastWriteRaw('"');
         }
         // Hmmh. Should we output empty internal subset?
-        if (internalSubset != null && internalSubset.length() > 0) {
+        if (internalSubset != null && !internalSubset.isEmpty()) {
             fastWriteRaw(' ', '[');
             // !!! TBI: verify validity
             fastWriteRaw(internalSubset);
@@ -708,21 +708,20 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeEntityReference(WName name) throws IOException, XMLStreamException {
+    public void writeEntityReference(WName name) throws IOException {
         fastWriteRaw('&');
         writeName(name);
         fastWriteRaw(';');
     }
 
     @Override
-    public void writeXmlDeclaration(String version, String encoding, String standalone)
-        throws IOException, XMLStreamException {
+    public void writeXmlDeclaration(String version, String encoding, String standalone) throws IOException {
         fastWriteRaw("<?xml version='");
         // !!! TBI: check validity
         fastWriteRaw(version);
         fastWriteRaw('\'');
 
-        if (encoding != null && encoding.length() > 0) {
+        if (encoding != null && !encoding.isEmpty()) {
             fastWriteRaw(" encoding='");
             // !!! TBI: check validity
             fastWriteRaw(encoding);
@@ -742,7 +741,7 @@ public final class CharXmlWriter extends XmlWriter {
         fastWriteRaw('<', '?');
         writeName(target);
 
-        if (data != null && data.length() > 0) {
+        if (data != null && !data.isEmpty()) {
             int len = data.length();
             int offset = 0;
             int cix = -1;
@@ -781,10 +780,10 @@ public final class CharXmlWriter extends XmlWriter {
             final int[] charTypes = mCharTypes.OTHER_CHARS;
             final int limit = mTableCheckEnd;
 
-            inner_loop: while (true) {
+            while (true) {
                 char ch = cbuf[offset];
                 if (ch >= limit) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -799,7 +798,7 @@ public final class CharXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < limit) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -837,7 +836,7 @@ public final class CharXmlWriter extends XmlWriter {
      */
 
     @Override
-    public void writeStartTagStart(WName name) throws IOException, XMLStreamException {
+    public void writeStartTagStart(WName name) throws IOException {
         int ptr = _outputPtr;
         int len = name.serializedLength();
         if ((ptr + len + 1) > _outputBufferLen) {
@@ -860,7 +859,7 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeStartTagEnd() throws IOException, XMLStreamException {
+    public void writeStartTagEnd() throws IOException {
         fastWriteRaw('>');
     }
 
@@ -881,7 +880,7 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeEndTag(WName name) throws IOException, XMLStreamException {
+    public void writeEndTag(WName name) throws IOException {
         int ptr = _outputPtr;
         int len = name.serializedLength();
         if ((ptr + len + 3) > _outputBufferLen) {
@@ -941,13 +940,13 @@ public final class CharXmlWriter extends XmlWriter {
         fastWriteRaw('"');
     }
 
-    private final void writeAttrValue(String value, int len) throws IOException, XMLStreamException {
+    private void writeAttrValue(String value, int len) throws IOException, XMLStreamException {
         int offset = 0;
 
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             value.getChars(offset, offset + len2, buf, 0);
             writeAttrValue(buf, 0, len2);
             offset += len2;
@@ -955,7 +954,7 @@ public final class CharXmlWriter extends XmlWriter {
         }
     }
 
-    private final void writeAttrValue(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
+    private void writeAttrValue(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
         if (_out == null) {
             return;
         }
@@ -972,10 +971,10 @@ public final class CharXmlWriter extends XmlWriter {
             final int[] charTypes = mCharTypes.ATTR_CHARS;
             final int limit = mTableCheckEnd;
 
-            inner_loop: while (true) {
+            while (true) {
                 char ch = cbuf[offset];
                 if (ch >= limit) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -1008,11 +1007,11 @@ public final class CharXmlWriter extends XmlWriter {
 
                     default:
                         _outputBuffer[_outputPtr++] = ch;
-                        continue main_loop;
+                        continue;
                 }
             } else if (ch < mEncHighChar) {
                 _outputBuffer[_outputPtr++] = ch;
-                continue main_loop;
+                continue;
             }
             writeAsEntity(ch);
 
@@ -1025,17 +1024,17 @@ public final class CharXmlWriter extends XmlWriter {
         }
     }
 
-    private final void writeSplitAttrValue(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
+    private void writeSplitAttrValue(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
         len += offset; // will now mark the end, not length
 
         main_loop: while (offset < len) {
             final int[] charTypes = mCharTypes.ATTR_CHARS;
             final int limit = mTableCheckEnd;
 
-            inner_loop: while (true) {
+            while (true) {
                 char ch = cbuf[offset];
                 if (ch >= limit) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -1050,7 +1049,7 @@ public final class CharXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < limit) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -1060,7 +1059,7 @@ public final class CharXmlWriter extends XmlWriter {
                     case CT_LT:
                     case CT_AMP:
                         writeAsEntity(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_WS_CR:
                     case CT_WS_LF:
@@ -1069,14 +1068,14 @@ public final class CharXmlWriter extends XmlWriter {
                          * attribute value; no point in disabling that.
                          */
                         writeAsEntity(ch);
-                        continue main_loop;
+                        continue;
 
                     default:
                         break;
                 }
             } else if (ch >= mEncHighChar) {
                 writeAsEntity(ch);
-                continue main_loop;
+                continue;
             }
             if (_outputPtr >= _outputBufferLen) {
                 flushBuffer();
@@ -1092,7 +1091,7 @@ public final class CharXmlWriter extends XmlWriter {
      */
 
     @Override
-    public void writeTypedValue(AsciiValueEncoder enc) throws IOException, XMLStreamException {
+    public void writeTypedValue(AsciiValueEncoder enc) throws IOException {
         int free = _outputBufferLen - _outputPtr;
         if (enc.bufferNeedsFlush(free)) {
             flush();
@@ -1113,7 +1112,7 @@ public final class CharXmlWriter extends XmlWriter {
      */
 
     @Override
-    public final void writeAttribute(WName name, AsciiValueEncoder enc) throws IOException, XMLStreamException {
+    public void writeAttribute(WName name, AsciiValueEncoder enc) throws IOException, XMLStreamException {
         if (_out == null) {
             return;
         }
@@ -1130,7 +1129,7 @@ public final class CharXmlWriter extends XmlWriter {
     ////////////////////////////////////////////////////
      */
 
-    private final void flushBuffer() throws IOException {
+    private void flushBuffer() throws IOException {
         if (_outputPtr > 0 && _out != null) {
             int ptr = _outputPtr;
             // Need to update location info, to keep it in sync
@@ -1147,7 +1146,7 @@ public final class CharXmlWriter extends XmlWriter {
     ////////////////////////////////////////////////////
      */
 
-    protected final void writeName(WName name) throws IOException {
+    private void writeName(WName name) throws IOException {
         int ptr = _outputPtr;
         int len = name.serializedLength();
         if ((ptr + len) > _outputBufferLen) {
@@ -1163,7 +1162,7 @@ public final class CharXmlWriter extends XmlWriter {
         _outputPtr += len;
     }
 
-    private final void fastWriteRaw(char c) throws IOException {
+    private void fastWriteRaw(char c) throws IOException {
         if (_outputPtr >= _outputBufferLen) {
             if (_out == null) {
                 return;
@@ -1173,7 +1172,7 @@ public final class CharXmlWriter extends XmlWriter {
         _outputBuffer[_outputPtr++] = c;
     }
 
-    private final void fastWriteRaw(char c1, char c2) throws IOException {
+    private void fastWriteRaw(char c1, char c2) throws IOException {
         if ((_outputPtr + 1) >= _outputBufferLen) {
             if (_out == null) {
                 return;
@@ -1184,7 +1183,7 @@ public final class CharXmlWriter extends XmlWriter {
         _outputBuffer[_outputPtr++] = c2;
     }
 
-    private final void fastWriteRaw(String str) throws IOException {
+    private void fastWriteRaw(String str) throws IOException {
         int len = str.length();
         int ptr = _outputPtr;
         if ((ptr + len) >= _outputBufferLen) {
@@ -1212,132 +1211,8 @@ public final class CharXmlWriter extends XmlWriter {
     ////////////////////////////////////////////////////
      */
 
-    /**
-     * @return Index at which a problem was found, if any; -1 if there's
-     *   no problem.
-     */
-    protected int verifyCDataContent(String content) {
-        if (content != null && content.length() >= 3) {
-            int ix = content.indexOf(']');
-            if (ix >= 0) {
-                return content.indexOf("]]>", ix);
-            }
-        }
-        return -1;
-    }
-
-    protected int verifyCDataContent(char[] c, int start, int end) {
-        if (c != null) {
-            start += 2;
-            /* Let's do simple optimization for search...
-             * (bayer-moore search algorithm)
-             */
-            while (start < end) {
-                char ch = c[start];
-                if (ch == ']') {
-                    ++start; // let's just move by one in this case
-                    continue;
-                }
-                if (ch == '>') { // match?
-                    if (c[start - 1] == ']' && c[start - 2] == ']') {
-                        return start - 2;
-                    }
-                }
-                start += 2;
-            }
-        }
-        return -1;
-    }
-
-    protected int verifyCommentContent(String content) {
-        int ix = content.indexOf('-');
-        if (ix >= 0) {
-            /* actually, it's illegal to just end with '-' too, since 
-             * that would cause invalid end marker '--->'
-             */
-            if (ix < (content.length() - 1)) {
-                ix = content.indexOf("--", ix);
-            }
-        }
-        return ix;
-    }
-
-    protected void writeSegmentedCData(String content, int index) throws IOException {
-        /* It's actually fairly easy, just split "]]>" into 2 pieces;
-         * for each ']]>'; first one containing "]]", second one ">"
-         * (as long as necessary)
-         */
-        int start = 0;
-        while (index >= 0) {
-            fastWriteRaw("<![CDATA[");
-            writeRaw(content, start, (index + 2) - start);
-            fastWriteRaw("]]>");
-            start = index + 2;
-            index = content.indexOf("]]>", start);
-        }
-        // Ok, then the last segment
-        fastWriteRaw("<![CDATA[");
-        writeRaw(content, start, content.length() - start);
-        fastWriteRaw("]]>");
-    }
-
-    protected void writeSegmentedCData(char[] c, int start, int len, int index) throws IOException {
-        int end = start + len;
-        while (index >= 0) {
-            fastWriteRaw("<![CDATA[");
-            writeRaw(c, start, (index + 2) - start);
-            fastWriteRaw("]]>");
-            start = index + 2;
-            index = verifyCDataContent(c, start, end);
-        }
-        // Ok, then the last segment
-        fastWriteRaw("<![CDATA[");
-        writeRaw(c, start, end - start);
-        fastWriteRaw("]]>");
-    }
-
-    protected void writeSegmentedComment(String content, int index) throws IOException {
-        int len = content.length();
-        // First the special case (last char is hyphen):
-        if (index == (len - 1)) {
-            fastWriteRaw("<!--");
-            writeRaw(content, 0, content.length());
-            // we just need to inject one space in there
-            fastWriteRaw(" -->");
-            return;
-        }
-
-        /* Fixing comments is more difficult than that of CDATA segments';
-         * this because CDATA can still contain embedded ']]'s, but
-         * comment neither allows '--' nor ending with '-->'; which means
-         * that it's impossible to just split segments. Instead we'll do
-         * something more intrusive, and embed single spaces between all
-         * '--' character pairs... it's intrusive, but comments are not
-         * supposed to contain any data, so that should be fine (plus
-         * at least result is valid, unlike contents as is)
-         */
-        fastWriteRaw("<!--");
-        int start = 0;
-        while (index >= 0) {
-            // first, content prior to '--' and the first hyphen
-            writeRaw(content, start, (index + 1) - start);
-            // and an obligatory trailing space to split double-hyphen
-            fastWriteRaw(' ');
-            // still need to handle rest of consequtive double'-'s if any
-            start = index + 1;
-            index = content.indexOf("--", start);
-        }
-        // Ok, then the last segment
-        writeRaw(content, start, len - start);
-        // ends with a hyphen? that needs to be fixed, too
-        if (content.charAt(len - 1) == '-') {
-            fastWriteRaw(' ');
-        }
-        fastWriteRaw("-->");
-    }
-
-    protected final void writeAsEntity(int c) throws IOException {
-        // Quickie check to avoid 
+    private void writeAsEntity(int c) throws IOException {
+        // Quickie check to avoid
 
         char[] buf = _outputBuffer;
         int ptr = _outputPtr;
@@ -1373,8 +1248,8 @@ public final class CharXmlWriter extends XmlWriter {
                 buf[ptr++] = 'o';
                 buf[ptr++] = 't';
             } else {
-                buf[ptr++] = '#';;
-                buf[ptr++] = 'x';;
+                buf[ptr++] = '#';
+                buf[ptr++] = 'x';
                 // Can use shortest quoting for tab, cr, lf:
                 if (c >= 16) {
                     int digit = (c >> 4);

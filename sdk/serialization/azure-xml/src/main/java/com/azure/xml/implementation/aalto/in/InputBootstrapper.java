@@ -36,9 +36,6 @@ public abstract class InputBootstrapper implements XmlConsts {
      */
 
     public final static String ERR_XMLDECL_KW_VERSION = "; expected keyword '" + XmlConsts.XML_DECL_KW_VERSION + "'";
-    public final static String ERR_XMLDECL_KW_ENCODING = "; expected keyword '" + XmlConsts.XML_DECL_KW_ENCODING + "'";
-    public final static String ERR_XMLDECL_KW_STANDALONE
-        = "; expected keyword '" + XmlConsts.XML_DECL_KW_STANDALONE + "'";
 
     public final static String ERR_XMLDECL_END_MARKER = "; expected \"?>\" end marker";
 
@@ -155,19 +152,19 @@ public abstract class InputBootstrapper implements XmlConsts {
             reportUnexpectedChar(c, ERR_XMLDECL_KW_VERSION);
         } else { // ok, should be version
             mDeclaredXmlVersion = readXmlVersion();
-            c = getWsOrChar('?');
+            c = getWsOrChar();
         }
 
         // Then, 'encoding'
         if (c == 'e') {
             mFoundEncoding = readXmlEncoding();
-            c = getWsOrChar('?');
+            c = getWsOrChar();
         }
 
         // Then, 'standalone' (for main doc)
         if (c == 's') {
             mStandalone = readXmlStandalone();
-            c = getWsOrChar('?');
+            c = getWsOrChar();
         }
 
         // And finally, need to have closing markers
@@ -291,13 +288,13 @@ public abstract class InputBootstrapper implements XmlConsts {
      * character (usually end marker), OR, any character as long as there'
      * at least one space character before it.
      */
-    private int getWsOrChar(int ok) throws IOException, XMLStreamException {
+    private int getWsOrChar() throws IOException, XMLStreamException {
         int c = getNext();
-        if (c == ok) {
+        if (c == (int) '?') {
             return c;
         }
         if (c > XmlConsts.CHAR_SPACE) {
-            reportUnexpectedChar(c, "; expected either '" + ((char) ok) + "' or white space");
+            reportUnexpectedChar(c, "; expected either '" + ((char) (int) '?') + "' or white space");
         }
         if (c == XmlConsts.CHAR_LF || c == XmlConsts.CHAR_CR) {
             // Need to push it back to be processed properly

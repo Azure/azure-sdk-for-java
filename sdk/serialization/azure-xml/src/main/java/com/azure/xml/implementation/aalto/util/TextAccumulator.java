@@ -13,10 +13,6 @@ public final class TextAccumulator {
     public TextAccumulator() {
     }
 
-    public boolean hasText() {
-        return (mBuilder != null) || (mText != null);
-    }
-
     public void addText(String text) {
         int len = text.length();
         if (len > 0) {
@@ -31,25 +27,6 @@ public final class TextAccumulator {
             } else {
                 mText = text;
             }
-        }
-    }
-
-    public void addText(char[] buf, int start, int end) {
-        int len = end - start;
-        if (len > 0) {
-            // Any prior text?
-            if (mText != null) {
-                mBuilder = new StringBuilder(mText.length() + len);
-                mBuilder.append(mText);
-                mText = null;
-            } else if (mBuilder == null) {
-                /* more efficient to use a builder than a string; and although
-                 * could use a char array, StringBuilder has the benefit of
-                 * being able to share the array, eventually.
-                 */
-                mBuilder = new StringBuilder(len);
-            }
-            mBuilder.append(buf, start, end - start);
         }
     }
 

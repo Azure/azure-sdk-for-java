@@ -33,12 +33,12 @@ public class IncompleteEvent extends BaseEventImpl {
 
     @Override
     public void writeAsEncodedUnicode(Writer w) throws XMLStreamException {
-        ; // nothing to write
+        // nothing to write
     }
 
     @Override
     public void writeUsing(XMLStreamWriter2 w) throws XMLStreamException {
-        ; // nothing to write
+        // nothing to write
     }
 
     @Override

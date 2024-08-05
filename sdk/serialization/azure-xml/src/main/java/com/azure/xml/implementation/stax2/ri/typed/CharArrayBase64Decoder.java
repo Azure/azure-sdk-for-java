@@ -24,6 +24,7 @@ import com.azure.xml.implementation.stax2.typed.Base64Variant;
  * Base64 decoder that can be used to decode base64 encoded content that
  * is passed as char arrays.
  */
+@SuppressWarnings("fallthrough")
 public class CharArrayBase64Decoder extends Base64DecoderBase {
     // // // Input buffer information
 
@@ -156,7 +157,7 @@ public class CharArrayBase64Decoder extends Base64DecoderBase {
                         }
                         // Padding is off the "fast path", so:
                         _state = STATE_VALID_2_AND_PADDING;
-                        continue main_loop;
+                        continue;
                     }
                     _decodedData = (_decodedData << 6) | bits;
                 }
@@ -185,7 +186,7 @@ public class CharArrayBase64Decoder extends Base64DecoderBase {
                          */
                         _decodedData >>= 2;
                         _state = STATE_OUTPUT_2;
-                        continue main_loop;
+                        continue;
                     }
                     // otherwise, our triple is now complete
                     _decodedData = (_decodedData << 6) | bits;
@@ -215,7 +216,7 @@ public class CharArrayBase64Decoder extends Base64DecoderBase {
                     }
                     resultBuffer[resultOffset++] = (byte) _decodedData;
                     _state = STATE_INITIAL;
-                    continue main_loop;
+                    continue;
 
                 case STATE_VALID_2_AND_PADDING: {
                     if (_currSegmentPtr >= _currSegmentEnd) {
@@ -233,7 +234,7 @@ public class CharArrayBase64Decoder extends Base64DecoderBase {
                     _state = STATE_OUTPUT_1;
                     _decodedData >>= 4;
                 }
-                    continue main_loop;
+                    continue;
 
                 default:
                     // sanity check: should never happen

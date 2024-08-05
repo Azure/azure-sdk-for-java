@@ -502,14 +502,12 @@ public final class ValueEncoderFactory {
      */
 
     final static class Base64Encoder extends AsciiValueEncoder {
-        final static char PAD_CHAR = '=';
-        final static byte PAD_BYTE = (byte) PAD_CHAR;
 
         /* Hmmh. Base64 specs suggest \r\n... but for xml, \n is the
          * canonical one. Let's take xml's choice here, more compact too.
          */
         final static byte LF_CHAR = '\n';
-        final static byte LF_BYTE = (byte) LF_CHAR;
+        final static byte LF_BYTE = LF_CHAR;
 
         final Base64Variant _variant;
 

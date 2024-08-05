@@ -196,10 +196,6 @@ public final class Base64Variant {
         return _paddingChar;
     }
 
-    public byte getPaddingByte() {
-        return (byte) _paddingChar;
-    }
-
     public int getMaxLineLength() {
         return _maxLineLength;
     }
@@ -217,22 +213,11 @@ public final class Base64Variant {
         return ((int) c <= 127) ? _asciiToBase64[c] : BASE64_VALUE_INVALID;
     }
 
-    public int decodeBase64Byte(byte b) {
-        return ((int) b <= 127) ? _asciiToBase64[b] : BASE64_VALUE_INVALID;
-    }
-
     /*
     ////////////////////////////////////////////////////
     // Encoding support
     ////////////////////////////////////////////////////
      */
-
-    public char encodeBase64BitsAsChar(int value) {
-        /* Let's assume caller has done necessary checks; this
-         * method must be fast and inlinable
-         */
-        return _base64ToAsciiC[value];
-    }
 
     /**
      * Method that encodes given right-aligned (LSB) 24-bit value
@@ -266,11 +251,6 @@ public final class Base64Variant {
             }
         }
         return outPtr;
-    }
-
-    public byte encodeBase64BitsAsByte(int value) {
-        // As with above, assuming it is 6-bit value
-        return _base64ToAsciiB[value];
     }
 
     /**

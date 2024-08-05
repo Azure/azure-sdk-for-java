@@ -172,10 +172,6 @@ public final class BijectiveNsMap {
         return (_scopeEnd >> 1);
     }
 
-    public int localSize() {
-        return ((_scopeEnd - _scopeStart) >> 1);
-    }
-
     /*
     ///////////////////////////////////////////////
     // Public API, mutators

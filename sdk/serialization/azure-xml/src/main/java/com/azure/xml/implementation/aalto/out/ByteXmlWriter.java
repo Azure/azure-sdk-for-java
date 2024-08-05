@@ -39,19 +39,13 @@ import static com.azure.xml.implementation.aalto.out.OutputCharTypes.*;
  * of actual encoding. This would not hold if support for encodings
  * like EBCDIC were supported using this class.
  */
+@SuppressWarnings("fallthrough")
 public abstract class ByteXmlWriter extends XmlWriter {
     /**
      * And this value determines size of the intermediate copy buffer
      * to use.
      */
     final static int DEFAULT_FULL_BUFFER_SIZE = 4000;
-
-    /**
-     * Default intermediate copy buffer size, to be used for efficient
-     * access to String content. Smaller, since it's in characters, plus
-     * will not be used for actual write operations
-     */
-    final static int DEFAULT_COPY_BUFFER_SIZE = 1000;
 
     /**
      * Let's try avoid short writes, since some output streams have
@@ -62,7 +56,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
     final static byte BYTE_SPACE = (byte) ' ';
     final static byte BYTE_COLON = (byte) ':';
     final static byte BYTE_SEMICOLON = (byte) ';';
-    final static byte BYTE_LBRACKET = (byte) '[';
     final static byte BYTE_RBRACKET = (byte) ']';
     final static byte BYTE_QMARK = (byte) '?';
     final static byte BYTE_EQ = (byte) '=';
@@ -186,10 +179,10 @@ public abstract class ByteXmlWriter extends XmlWriter {
      *  non-name-first) character.
      */
     protected void verifyNameComponent(String part) throws XMLStreamException {
-        if (part == null || part.length() == 0) {
+        if (part == null || part.isEmpty()) {
             reportNwfName(ErrorConsts.WERR_NAME_EMPTY);
         }
-        int ch = (int) part.charAt(0);
+        int ch = part.charAt(0);
         int len = part.length();
         int i;
 
@@ -263,14 +256,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
 
     /**
      * Method called to output a character beyond basic 1- or 2-byte
-     * encoding (code 0x0800 and above), without being able to use
-     * character entities
-     */
-    abstract protected int outputStrictMultiByteChar(int ch, char[] cbuf, int inputOffset, int inputLen)
-        throws IOException, XMLStreamException;
-
-    /**
-     * Method called to output a character beyond basic 1- or 2-byte
      * encoding (code 0x0800 and above); possibly using character
      * entities, if necessary
      */
@@ -325,7 +310,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            final int len2 = (len < blen) ? len : blen;
+            final int len2 = Math.min(len, blen);
             text.getChars(offset, offset + len2, buf, 0);
             writeRaw(buf, 0, len2);
             offset += len2;
@@ -347,7 +332,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
      */
 
     @Override
-    public final void writeStartTagStart(WName name) throws IOException, XMLStreamException {
+    public final void writeStartTagStart(WName name) throws IOException {
         if (_surrogate != 0) {
             throwUnpairedSurrogate();
         }
@@ -363,7 +348,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public final void writeStartTagEnd() throws IOException, XMLStreamException {
+    public final void writeStartTagEnd() throws IOException {
         // inlined writeRaw(), gets called so often
         if (_surrogate != 0) {
             throwUnpairedSurrogate();
@@ -388,7 +373,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public final void writeEndTag(WName name) throws IOException, XMLStreamException {
+    public final void writeEndTag(WName name) throws IOException {
         if (_surrogate != 0) {
             throwUnpairedSurrogate();
         }
@@ -489,10 +474,10 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.ATTR_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) vbuf[offset];
+            while (true) {
+                int ch = vbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     // Here we do want to quote linefeed, too
@@ -506,7 +491,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
 
             _outputPtr = ptr;
             // Ok, so what did we hit? Invalid, or quotable?
-            int ch = (int) vbuf[offset++];
+            int ch = vbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -554,10 +539,10 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.ATTR_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) vbuf[offset];
+            while (true) {
+                int ch = vbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     break;
@@ -572,7 +557,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) vbuf[offset++];
+            int ch = vbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -587,7 +572,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
                 }
             } else {
                 offset = outputMultiByteChar(ch, vbuf, offset, len);
-                continue main_loop;
             }
         }
     }
@@ -610,7 +594,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         while (vlen > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (vlen < blen) ? vlen : blen;
+            int len2 = Math.min(vlen, blen);
             value.getChars(offset, offset + len2, buf, 0);
             writeAttrValue(buf, 0, len2);
             offset += len2;
@@ -657,22 +641,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         _outputPtr = ptr;
     }
 
-    protected final void writeName(WName name, byte postChar) throws IOException {
-        flushBuffer();
-        // name longer than the buffer? Need to write it straight out
-        if (name.serializedLength() >= _outputBufferLen) {
-            name.writeBytes(_out);
-            _out.write(postChar);
-            return;
-        }
-        int ptr = _outputPtr;
-        byte[] buf = _outputBuffer;
-        ptr += name.appendBytes(buf, ptr);
-        buf[ptr++] = postChar;
-        _outputPtr = ptr;
-    }
-
-    private final void writeAttrNameEqQ(WName name) throws IOException, XMLStreamException {
+    private void writeAttrNameEqQ(WName name) throws IOException {
         if (_surrogate != 0) {
             throwUnpairedSurrogate();
         }
@@ -763,13 +732,13 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.OTHER_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) cbuf[offset];
+            while (true) {
+                int ch = cbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
-                    break inner_loop;
+                    break;
                 }
                 if (_outputPtr >= _outputBufferLen) {
                     flushBuffer();
@@ -781,7 +750,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -796,7 +765,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                     case CT_MULTIBYTE_2:
                         // To off-line or not?
                         output2ByteChar(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_RBRACKET:
                         /* !!! TBI: Need to split CData? Can do, but what about
@@ -812,7 +781,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                                 writeCDataStart();
                                 writeRaw(BYTE_GT);
                             }
-                            continue main_loop;
+                            continue;
                         }
                         break;
 
@@ -846,14 +815,14 @@ public abstract class ByteXmlWriter extends XmlWriter {
         }
     }
 
-    private final void longWriteCharacters(String text) throws IOException, XMLStreamException {
+    private void longWriteCharacters(String text) throws IOException, XMLStreamException {
         int offset = 0;
         int len = text.length();
         char[] buf = _copyBuffer;
 
         do {
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             text.getChars(offset, offset + len2, buf, 0);
             writeCharacters(buf, 0, len2);
             offset += len2;
@@ -883,17 +852,17 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.TEXT_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) cbuf[offset];
+            while (true) {
+                int ch = cbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     // This may look weird, but profiling showed that handling of LFs
                     // for indentation has measurable effect; plus, that checking it
                     // here will not slow down inner loop either
                     if (ch != '\n') {
-                        break inner_loop;
+                        break;
                     }
                     ++_locRowNr;
                 }
@@ -903,7 +872,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                 }
             }
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -918,7 +887,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                         }
                         _outputBuffer[ptr++] = (byte) ch;
                         ++_locRowNr;
-                        continue main_loop;
+                        continue;
 
                     case CT_WS_LF: // never occurs (handled in loop), but don't want to leave gaps
                         break;
@@ -946,7 +915,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                         //  fall through
                     default:
                         _outputBuffer[ptr++] = (byte) ch;
-                        continue main_loop;
+                        continue;
                 }
             } else { // beyond 2-byte encodables; 3-byte, surrogates?
                 _outputPtr = ptr;
@@ -971,7 +940,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
      * may cross the output buffer boundary. Because of this, code
      * has to add more boundary checks.
      */
-    private final void writeSplitCharacters(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
+    private void writeSplitCharacters(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
         // Note: caller handled surrogate already
 
         len += offset; // now marks the end
@@ -979,14 +948,14 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.TEXT_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) cbuf[offset];
+            while (true) {
+                int ch = cbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
                     if (ch != '\n') {
-                        break inner_loop;
+                        break;
                     }
                     ++_locRowNr;
                 }
@@ -1000,7 +969,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -1010,7 +979,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                         // Also, CR to be quoted?
                         if (_config.willEscapeCR()) {
                             writeAsEntity(ch);
-                            continue main_loop;
+                            continue;
                         }
                         ++_locRowNr;
                         break;
@@ -1022,18 +991,18 @@ public abstract class ByteXmlWriter extends XmlWriter {
                     case CT_LT:
                     case CT_AMP:
                         writeAsEntity(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_MULTIBYTE_2: // 3, 4 and N can never occur
                         // To off-line or not?
                         output2ByteChar(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_RBRACKET: // may need to quote as well...
                         // Let's not quote if known not to be followed by '>'
                         if (offset >= len || cbuf[offset] == '>') {
                             writeAsEntity(ch);
-                            continue main_loop;
+                            continue;
                         }
                         break;
 
@@ -1059,7 +1028,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
      */
 
     @Override
-    public void writeTypedValue(AsciiValueEncoder enc) throws IOException, XMLStreamException {
+    public void writeTypedValue(AsciiValueEncoder enc) throws IOException {
         if (_surrogate != 0) {
             throwUnpairedSurrogate();
         }
@@ -1124,7 +1093,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             // Nope, can only do part
             data.getChars(offset, offset + len2, buf, 0);
             int cix = writeCommentContents(buf, 0, len2);
@@ -1160,13 +1129,13 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.OTHER_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) cbuf[offset];
+            while (true) {
+                int ch = cbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
-                    break inner_loop;
+                    break;
                 }
                 if (_outputPtr >= _outputBufferLen) {
                     flushBuffer();
@@ -1178,7 +1147,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -1193,7 +1162,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                     case CT_MULTIBYTE_2:
                         // To off-line or not?
                         output2ByteChar(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_HYPHEN:
                         // No need if followed by non hyphen
@@ -1202,7 +1171,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                         }
                         // Two hyphens, or hyphen at end; must append a space
                         writeRaw(BYTE_HYPHEN, BYTE_SPACE);
-                        continue main_loop;
+                        continue;
 
                     default: // Everything else should be outputtable as is
                         break;
@@ -1249,13 +1218,13 @@ public abstract class ByteXmlWriter extends XmlWriter {
         main_loop: while (offset < len) {
             final int[] charTypes = _charTypes.OTHER_CHARS;
 
-            inner_loop: while (true) {
-                int ch = (int) cbuf[offset];
+            while (true) {
+                int ch = cbuf[offset];
                 if (ch >= OutputCharTypes.MAIN_TABLE_SIZE) {
-                    break inner_loop;
+                    break;
                 }
                 if (charTypes[ch] != XmlCharTypes.CT_OK) {
-                    break inner_loop;
+                    break;
                 }
                 if (_outputPtr >= _outputBufferLen) {
                     flushBuffer();
@@ -1267,7 +1236,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
             }
 
             // Ok, so what did we hit?
-            int ch = (int) cbuf[offset++];
+            int ch = cbuf[offset++];
             if (ch < OutputCharTypes.MAIN_TABLE_SIZE) {
                 switch (charTypes[ch]) {
                     case CT_INVALID:
@@ -1282,7 +1251,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
                     case CT_MULTIBYTE_2:
                         // To off-line or not?
                         output2ByteChar(ch);
-                        continue main_loop;
+                        continue;
 
                     case CT_QMARK:
                         // Problem, if we have '?>'
@@ -1306,7 +1275,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeEntityReference(WName name) throws IOException, XMLStreamException {
+    public void writeEntityReference(WName name) throws IOException {
         writeRaw(BYTE_AMP); // will check surrogates
         writeName(name);
         writeRaw(BYTE_SEMICOLON);
@@ -1352,7 +1321,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         while (len > 0) {
             char[] buf = _copyBuffer;
             final int blen = buf.length;
-            int len2 = (len < blen) ? len : blen;
+            int len2 = Math.min(len, blen);
             data.getChars(offset, offset + len2, buf, 0);
             writeSpace(buf, 0, len2);
             offset += len2;
@@ -1366,7 +1335,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
             return;
         }
         if (_surrogate != 0) { // can this actually happen?
-            reportNwfContent(ErrorConsts.WERR_SPACE_CONTENT, (int) _surrogate, offset - 1);
+            reportNwfContent(ErrorConsts.WERR_SPACE_CONTENT, _surrogate, offset - 1);
         }
 
         len += offset; // now marks the end
@@ -1393,7 +1362,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         writeRaw(version, 0, version.length());
         writeRaw(BYTE_APOS);
 
-        if (encoding != null && encoding.length() > 0) {
+        if (encoding != null && !encoding.isEmpty()) {
             writeRaw(BYTES_XMLDECL_ENCODING);
             // !!! TBI: check validity
             writeRaw(encoding, 0, encoding.length());
@@ -1611,21 +1580,14 @@ public abstract class ByteXmlWriter extends XmlWriter {
     /**********************************************************************
      */
 
-    protected final static byte[] getAscii(String str) {
+    protected static byte[] getAscii(String str) {
         int len = str.length();
         byte[] result = new byte[len];
         getAscii(str, result, 0);
         return result;
     }
 
-    protected final static void getAscii(String str, byte[] result) {
-        int len = str.length();
-        for (int i = 0; i < len; ++i) {
-            result[i] = (byte) str.charAt(i);
-        }
-    }
-
-    protected final static void getAscii(String str, byte[] result, int offset) {
+    protected static void getAscii(String str, byte[] result, int offset) {
         int len = str.length();
         for (int i = 0; i < len; ++i) {
             result[offset + i] = (byte) str.charAt(i);

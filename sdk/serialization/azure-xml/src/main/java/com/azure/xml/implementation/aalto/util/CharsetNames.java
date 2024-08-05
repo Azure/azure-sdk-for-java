@@ -81,7 +81,7 @@ public final class CharsetNames implements XmlConsts {
         switch (c) {
             case 'a':
             case 'A':
-                if (csName == "ASCII" || equalEncodings(csName, "ASCII")) {
+                if (csName.equals("ASCII") || equalEncodings(csName, "ASCII")) {
                     return CS_US_ASCII;
                 }
                 break;
@@ -89,9 +89,7 @@ public final class CharsetNames implements XmlConsts {
             case 'c':
             case 'C':
                 // Hmmh. There are boatloads of these... but what to do with them?
-                if (encodingStartsWith(csName, "cs")) {
-                    // !!! TBI
-                }
+                encodingStartsWith(csName, "cs");// !!! TBI
                 break;
 
             case 'e':
@@ -103,7 +101,7 @@ public final class CharsetNames implements XmlConsts {
 
             case 'i':
             case 'I':
-                if (csName == CS_ISO_LATIN1
+                if (csName.equals(CS_ISO_LATIN1)
                     || equalEncodings(csName, CS_ISO_LATIN1)
                     || equalEncodings(csName, "ISO-Latin1")) {
                     return CS_ISO_LATIN1;
@@ -172,7 +170,7 @@ public final class CharsetNames implements XmlConsts {
                         }
                         break;
 
-                    case 'n': // csUnicodeXxx, 
+                    case 'n': // csUnicodeXxx,
                     case 'N':
                         if (gotCsPrefix) {
                             if (equalEncodings(csName, "Unicode")) {
@@ -196,7 +194,7 @@ public final class CharsetNames implements XmlConsts {
 
                     case 't':
                     case 'T':
-                        if (csName == CS_UTF8 || equalEncodings(csName, CS_UTF8)) {
+                        if (csName.equals(CS_UTF8) || equalEncodings(csName, CS_UTF8)) {
                             return CS_UTF8;
                         }
                         if (equalEncodings(csName, "UTF-16BE")) {

@@ -95,15 +95,6 @@ public interface XMLStreamWriter2 extends TypedXMLStreamWriter, Validatable {
 
     void writeDTD(String rootName, String systemId, String publicId, String internalSubset) throws XMLStreamException;
 
-    /**
-     * Method similar to {@link #writeEndElement}, but that will always
-     * write the full end element, instead of empty element. This only
-     * matters for cases where the element itself has no content, and
-     * if writer is allowed to write empty elements when it encounters
-     * such start/end element write pairs.
-     */
-    void writeFullEndElement() throws XMLStreamException;
-
     void writeStartDocument(String version, String encoding, boolean standAlone) throws XMLStreamException;
 
     /**
@@ -213,16 +204,4 @@ public interface XMLStreamWriter2 extends TypedXMLStreamWriter, Validatable {
     /**********************************************************************
      */
 
-    /**
-     * Method similar to
-     * {@link javax.xml.stream.XMLStreamWriter#close()},
-     * except that this method also does close the underlying output
-     * destination (stream) if it has not yet been closed.
-     * It is specifically necessary to call this method if the parsing ends
-     * in an exception to ensure that the output destination does get
-     * properly closed, even if the stream writer would otherwise close
-     * it (as is the case for destinations it manages where calling
-     * application has no access)
-     */
-    void closeCompletely() throws XMLStreamException;
 }

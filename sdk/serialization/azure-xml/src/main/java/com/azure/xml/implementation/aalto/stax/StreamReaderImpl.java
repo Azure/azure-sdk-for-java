@@ -21,6 +21,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collections;
+import java.util.Objects;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -34,7 +35,6 @@ import com.azure.xml.implementation.stax2.typed.Base64Variants;
 import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedValueDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-import com.azure.xml.implementation.stax2.validation.DTDValidationSchema;
 import com.azure.xml.implementation.stax2.validation.XMLValidator;
 import com.azure.xml.implementation.stax2.validation.XMLValidationSchema;
 import com.azure.xml.implementation.stax2.validation.ValidationProblemHandler;
@@ -341,7 +341,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         if (index >= _attrCount || index < 0) {
             reportInvalidAttrIndex(index);
         }
-        return _scanner.getAttrType(index);
+        return _scanner.getAttrType();
     }
 
     @Override
@@ -371,7 +371,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      * Regardless of value of javax.xml.stream.isCoalescing this method always
      * returns coalesced content.
      *<br>Precondition: the current event is START_ELEMENT.
-     *<br>Postcondition: the current event is the corresponding END_ELEMENT. 
+     *<br>Postcondition: the current event is the corresponding END_ELEMENT.
      *</blockquote>
      */
     @Override
@@ -458,7 +458,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
          * for all events.
          * Note that the context is "live", ie. remains active (but not
          * static) even through calls to next(). StAX compliant apps
-         * should not count on this behaviour, however.         
+         * should not count on this behaviour, however.
          */
         return _scanner;
     }
@@ -542,7 +542,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final String getText() {
         if (((1 << _currToken) & MASK_GET_TEXT) == 0) {
-            throwNotTextual(_currToken);
+            throwNotTextual();
         }
         try {
             return _scanner.getText();
@@ -554,7 +554,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final char[] getTextCharacters() {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
-            throwNotTextXxx(_currToken);
+            throwNotTextXxx();
         }
         try {
             return _scanner.getTextCharacters();
@@ -566,7 +566,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final int getTextCharacters(int srcStart, char[] target, int targetStart, int len) {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
-            throwNotTextXxx(_currToken);
+            throwNotTextXxx();
         }
         try {
             return _scanner.getTextCharacters(srcStart, target, targetStart, len);
@@ -578,7 +578,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final int getTextLength() {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
-            throwNotTextXxx(_currToken);
+            throwNotTextXxx();
         }
         try {
             return _scanner.getTextLength();
@@ -590,7 +590,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final int getTextStart() {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
-            throwNotTextXxx(_currToken);
+            throwNotTextXxx();
         }
         /* Scanner always stores text from the beginning of its
          * buffers...
@@ -619,7 +619,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
-        return _scanner.isAttrSpecified(index);
+        return _scanner.isAttrSpecified();
     }
 
     @Override
@@ -662,10 +662,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
                 if (_cfgCoalesceText || _cfgReportTextAsChars) {
                     curr = CHARACTERS;
                 }
-            } else if (curr == SPACE) {
-                // Hmmh. Should we require it to be empty or something?
-                //curr = CHARACTERS;
-                // For now, let's not change the check
             }
         }
 
@@ -681,7 +677,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
                         + ErrorConsts.tokenTypeDesc(_currToken) + ")");
             }
             String n = getLocalName();
-            if (n != localName && !n.equals(localName)) {
+            if (!Objects.equals(n, localName) && !n.equals(localName)) {
                 throwWfe("Expected local name '" + localName + "'; current local name '" + n + "'.");
             }
         }
@@ -692,12 +688,12 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
             }
             String uri = getNamespaceURI();
             // No namespace?
-            if (nsUri.length() == 0) {
-                if (uri != null && uri.length() > 0) {
+            if (nsUri.isEmpty()) {
+                if (!uri.isEmpty()) {
                     throwWfe("Expected empty namespace, instead have '" + uri + "'.");
                 }
             } else {
-                if ((nsUri != uri) && !nsUri.equals(uri)) {
+                if (!nsUri.equals(uri)) {
                     throwWfe("Expected namespace '" + nsUri + "'; have '" + uri + "'.");
                 }
             }
@@ -763,7 +759,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
             throw new java.util.NoSuchElementException();
         }
         if (type < 0) { // end-of-input
-            // Need to mark 
+            // Need to mark
             return handlePrologEoi(_parseState == STATE_PROLOG);
         }
         _currName = _scanner.getName();
@@ -887,7 +883,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         // !!! TODO: optimize
         String value = getElementText();
         value = value.trim();
-        if (value.length() == 0) {
+        if (value.isEmpty()) {
             _handleEmptyValue(tvd);
             return;
         }
@@ -995,7 +991,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
                     break;
                 }
             } else if (type == COMMENT || type == PROCESSING_INSTRUCTION) {
-                ;
             } else {
                 throw _constructUnexpectedInTyped(type);
             }
@@ -1267,7 +1262,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         int ix = XmlNames.findIllegalNameChar(ln, false);
         if (ix >= 0) {
             String prefix = n.getPrefix();
-            String pname = (prefix != null && prefix.length() > 0) ? (prefix + ":" + ln) : ln;
+            String pname = (prefix != null && !prefix.isEmpty()) ? (prefix + ":" + ln) : ln;
             throw _constructTypeException("Invalid local name \"" + ln + "\" (character at #" + ix + " is invalid)",
                 pname);
         }
@@ -1342,7 +1337,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     // // // StAX2, additional attribute access
 
     @Override
-    public final AttributeInfo getAttributeInfo() throws XMLStreamException {
+    public final AttributeInfo getAttributeInfo() {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -1356,7 +1351,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      * return <code>this</code>.
      */
     @Override
-    public final DTDInfo getDTDInfo() throws XMLStreamException {
+    public final DTDInfo getDTDInfo() {
         /* Let's not allow it to be accessed during other events -- that
          * way callers won't count on it being available afterwards.
          */
@@ -1388,7 +1383,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      * TODO: try to optimize to allow completely streaming pass-through:
      * currently will still read all data in memory buffers before
      * outputting
-     * 
+     *
      * @param w Writer to use for writing textual contents
      * @param preserveContents If true, reader has to preserve contents
      *   so that further calls to <code>getText</code> will return
@@ -1402,9 +1397,9 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final int getText(Writer w, boolean preserveContents) throws XMLStreamException {
         if (((1 << _currToken) & MASK_GET_TEXT_WITH_WRITER) == 0) {
-            throwNotTextual(_currToken);
+            throwNotTextual();
         }
-        return _scanner.getText(w, preserveContents);
+        return _scanner.getText(w);
     }
 
     // // // StAX 2, Other accessors
@@ -1431,8 +1426,8 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      *    false otherwise.
      */
     @Override
-    public final boolean isEmptyElement() throws XMLStreamException {
-        return (_currToken == START_ELEMENT) ? _scanner.isEmptyTag() : false;
+    public final boolean isEmptyElement() {
+        return _currToken == START_ELEMENT && _scanner.isEmptyTag();
     }
 
     @Override
@@ -1518,15 +1513,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
 
     // // StAX2, v2.0
 
-    /**
-     * Sub-class will override this method
-     */
-    @Override
-    public final DTDValidationSchema getProcessedDTDSchema() {
-        // !!! TBI
-        return null;
-    }
-
     /*
     /**********************************************************************
     /* LocationInfo implementation (StAX 2)
@@ -1535,36 +1521,11 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
 
     // // // First, the "raw" offset accessors:
 
-    @Override
-    public final long getStartingByteOffset() {
-        return _scanner.getStartingByteOffset();
-    }
-
-    @Override
-    public final long getStartingCharOffset() {
-        return _scanner.getStartingCharOffset();
-    }
-
-    @Override
-    public final long getEndingByteOffset() throws XMLStreamException {
-        return _scanner.getEndingByteOffset();
-    }
-
-    @Override
-    public final long getEndingCharOffset() throws XMLStreamException {
-        return _scanner.getEndingCharOffset();
-    }
-
     // // // and then the object-based access methods:
 
     @Override
     public final XMLStreamLocation2 getStartLocation() {
         return _scanner.getStartLocation();
-    }
-
-    @Override
-    public final XMLStreamLocation2 getEndLocation() throws XMLStreamException {
-        return _scanner.getEndLocation();
     }
 
     @Override
@@ -1583,18 +1544,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     @Override
     public final int findAttributeIndex(String nsURI, String localName) {
         return _scanner.findAttrIndex(nsURI, localName);
-    }
-
-    @Override
-    public final int getIdAttributeIndex() {
-        // !!! TBI: Need dtd handling for it to work
-        return -1;
-    }
-
-    @Override
-    public final int getNotationAttributeIndex() {
-        // !!! TBI: Need dtd handling for it to work
-        return -1;
     }
 
     /*
@@ -1675,11 +1624,11 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         throw new WFCException(msg, getLastCharLocation());
     }
 
-    private void throwNotTextual(int type) {
+    private void throwNotTextual() {
         throw new IllegalStateException("Not a textual event (" + ErrorConsts.tokenTypeDesc(_currToken) + ")");
     }
 
-    private void throwNotTextXxx(int type) {
+    private void throwNotTextXxx() {
         throw new IllegalStateException(
             "getTextXxx() methods can not be called on " + ErrorConsts.tokenTypeDesc(_currToken));
     }

@@ -46,19 +46,6 @@ public abstract class XMLValidator {
     public final static int CONTENT_ALLOW_WS = 1;
 
     /**
-     * This value is similar to {@link #CONTENT_ALLOW_WS_NONSTRICT},
-     * but only used for content typing purposes, not for validation.
-     * This means that if non-white space text content is encountered,
-     * no problem is reported.
-     *<p>
-     * This value is currently only used with DTD processors, when in
-     * typing (non-validating) mode.
-     *
-     * @since 3.0
-     */
-    public final static int CONTENT_ALLOW_WS_NONSTRICT = 2;
-
-    /**
      * This value indicates that textual content is allowed, but that
      * the validator needs to be called to let it do actual content-based
      * validation. Other event types are ok, and elements will need to be
@@ -74,13 +61,6 @@ public abstract class XMLValidator {
      */
     public final static int CONTENT_ALLOW_ANY_TEXT = 4;
 
-    /**
-     * This value is a placeholder that should never be returned by
-     * validators, but that can be used internally as an uninitialized
-     * value.
-     */
-    public final static int CONTENT_ALLOW_UNDEFINED = 5;
-
     /*
     ///////////////////////////////////////////////////
     // Life-cycle
@@ -95,18 +75,6 @@ public abstract class XMLValidator {
     // Configuration, properties
     ///////////////////////////////////////////////////
      */
-
-    /**
-     * Returns type of schema that was used to construct this
-     * validator instance.
-     *
-     * @return One of external schema identifier values (such as
-     *   {@link XMLValidationSchema#SCHEMA_ID_DTD}).
-     */
-    public String getSchemaType() {
-        XMLValidationSchema sch = getSchema();
-        return (sch == null) ? null : sch.getSchemaType();
-    }
 
     /**
      * Returns the schema instance that created this validator
@@ -256,7 +224,7 @@ public abstract class XMLValidator {
      * is of type ID; derived from DTD, W4C Schema, or some other validation
      * source. Usually schemas explicitly specifies that at most one
      * attribute can have this type for any element.
-     * 
+     *
      * @return Index of the attribute with type ID, in the current
      *    element, if one exists: -1 otherwise
      */
@@ -267,7 +235,7 @@ public abstract class XMLValidator {
      * the attribute collector; having DTD/Schema-derived info in same order)
      * that is of type NOTATION. DTD explicitly specifies that at most one
      * attribute can have this type for any element.
-     * 
+     *
      * @return Index of the attribute with type NOTATION, in the current
      *    element, if one exists: -1 otherwise
      */

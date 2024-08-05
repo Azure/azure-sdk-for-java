@@ -2,7 +2,6 @@
 package com.azure.xml.implementation.stax2;
 
 import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Extended interface that implements functionality that is missing
@@ -10,18 +9,6 @@ import javax.xml.stream.XMLStreamException;
  * implement Stax API v1.0.
  */
 public interface XMLEventReader2 extends XMLEventReader {
-    /**
-     * Method that is similar to {@link #hasNext}, except that it can
-     * throw a {@link XMLStreamException}. This is important distinction,
-     * since the underlying stream reader is NOT allowed to throw such an
-     * exception when its
-     * <code>hasNext()</code> gets called; but the underlying parser
-     * may well need to advance the input stream and in doing so may
-     * encounter an exception. This exception should be propagated to
-     * the caller, as it may signal a problem with the input stream
-     * or xml content.
-     */
-    boolean hasNextEvent() throws XMLStreamException;
 
     /*
     /**********************************************************************

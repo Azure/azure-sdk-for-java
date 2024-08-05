@@ -33,11 +33,6 @@ import com.azure.xml.implementation.aalto.util.CharsetNames;
  * a Stream input source.
  */
 public final class CharSourceBootstrapper extends InputBootstrapper {
-    /**
-     * Whether to use a bigger (4000, ie. 8k) or smaller (2000 -> 4k)
-     * buffer size?
-     */
-    final static int DEFAULT_BUFFER_SIZE = 4000;
 
     final static char CHAR_BOM_MARKER = (char) 0xFEFF;
 

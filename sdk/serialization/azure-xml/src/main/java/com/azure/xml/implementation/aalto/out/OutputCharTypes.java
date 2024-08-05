@@ -84,11 +84,11 @@ public final class OutputCharTypes extends XmlCharTypes {
         modifyForAttrWrite(sUtf8CharTypes.ATTR_CHARS);
     }
 
-    public final static XmlCharTypes getUtf8CharTypes() {
+    public static XmlCharTypes getUtf8CharTypes() {
         return sUtf8CharTypes;
     }
 
-    public final static XmlCharTypes getLatin1CharTypes() {
+    public static XmlCharTypes getLatin1CharTypes() {
         if (sLatin1CharTypes == null) {
             sLatin1CharTypes = new XmlCharTypes(MAIN_TABLE_SIZE);
             fillInLatin1Chars(sLatin1CharTypes.TEXT_CHARS, sLatin1CharTypes.ATTR_CHARS, sLatin1CharTypes.NAME_CHARS,
@@ -105,7 +105,7 @@ public final class OutputCharTypes extends XmlCharTypes {
         return sLatin1CharTypes;
     }
 
-    public final static XmlCharTypes getAsciiCharTypes() {
+    public static XmlCharTypes getAsciiCharTypes() {
         if (sAsciiCharTypes == null) {
             sAsciiCharTypes = new XmlCharTypes(MAIN_TABLE_SIZE);
             // We'll start with 8-bit char set

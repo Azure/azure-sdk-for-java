@@ -1,27 +1,33 @@
 // Original file from https://github.com/FasterXML/stax2-api under BSD 2-Clause "Simplified" License
 package com.azure.xml.implementation.stax2.ri;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-import javax.xml.stream.*;
-import javax.xml.stream.util.StreamReaderDelegate;
-
+import com.azure.xml.implementation.stax2.AttributeInfo;
+import com.azure.xml.implementation.stax2.DTDInfo;
+import com.azure.xml.implementation.stax2.LocationInfo;
+import com.azure.xml.implementation.stax2.XMLStreamLocation2;
+import com.azure.xml.implementation.stax2.XMLStreamReader2;
+import com.azure.xml.implementation.stax2.ri.typed.StringBase64Decoder;
+import com.azure.xml.implementation.stax2.ri.typed.ValueDecoderFactory;
 import com.azure.xml.implementation.stax2.typed.Base64Variant;
 import com.azure.xml.implementation.stax2.typed.Base64Variants;
 import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedValueDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-import com.azure.xml.implementation.stax2.ri.Stax2Util;
-import com.azure.xml.implementation.stax2.ri.typed.StringBase64Decoder;
-import com.azure.xml.implementation.stax2.ri.typed.ValueDecoderFactory;
+import com.azure.xml.implementation.stax2.validation.ValidationProblemHandler;
+import com.azure.xml.implementation.stax2.validation.XMLValidationSchema;
+import com.azure.xml.implementation.stax2.validation.XMLValidator;
 
-import com.azure.xml.implementation.stax2.*;
-import com.azure.xml.implementation.stax2.validation.*;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.util.StreamReaderDelegate;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * This adapter implements parts of {@link XMLStreamReader2}, the
@@ -687,7 +693,7 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
     // // // StAX2, additional attribute access
 
     @Override
-    public AttributeInfo getAttributeInfo() throws XMLStreamException {
+    public AttributeInfo getAttributeInfo() {
         if (getEventType() != START_ELEMENT) {
             throwNotStartElem(getEventType());
         }
@@ -697,7 +703,7 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
     // // // StAX2, Additional DTD access
 
     @Override
-    public DTDInfo getDTDInfo() throws XMLStreamException {
+    public DTDInfo getDTDInfo() {
         if (getEventType() != DTD) {
             return null;
         }
@@ -749,7 +755,7 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
      * implementation always returns false.
      */
     @Override
-    public boolean isEmptyElement() throws XMLStreamException {
+    public boolean isEmptyElement() {
         return false;
     }
 
@@ -828,26 +834,6 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
         return -1;
     }
 
-    @Override
-    public int getIdAttributeIndex() {
-        for (int i = 0, len = getAttributeCount(); i < len; ++i) {
-            if ("ID".equals(getAttributeType(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    public int getNotationAttributeIndex() {
-        for (int i = 0, len = getAttributeCount(); i < len; ++i) {
-            if ("NOTATION".equals(getAttributeType(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     /*
     ///////////////////////////////////////////////////////////////////////
     // DTDInfo implementation (StAX 2)
@@ -892,11 +878,6 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
 
     // // StAX2, v2.0
 
-    @Override
-    public DTDValidationSchema getProcessedDTDSchema() {
-        return null;
-    }
-
     /*
     ///////////////////////////////////////////////////////////////////////
     // LocationInfo implementation (StAX 2)
@@ -904,26 +885,6 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
      */
 
     // // // First, the "raw" offset accessors:
-
-    @Override
-    public long getStartingByteOffset() {
-        return -1L;
-    }
-
-    @Override
-    public long getStartingCharOffset() {
-        return 0;
-    }
-
-    @Override
-    public long getEndingByteOffset() throws XMLStreamException {
-        return -1;
-    }
-
-    @Override
-    public long getEndingCharOffset() throws XMLStreamException {
-        return -1;
-    }
 
     // // // and then the object-based access methods:
 
@@ -940,15 +901,6 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
     public XMLStreamLocation2 getCurrentLocation() {
         // Just need to adapt; no info on parent context, if any:
         return new Stax2LocationAdapter(getLocation());
-    }
-
-    @Override
-    public final XMLStreamLocation2 getEndLocation() throws XMLStreamException {
-        /* We don't really know whether location given is current,
-         * start or end, but it's the best approximation we have
-         * without knowing more about impl:
-         */
-        return getCurrentLocation();
     }
 
     /*

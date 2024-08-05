@@ -156,7 +156,7 @@ public final class WNameTable extends NameTable {
     /**********************************************************************
      */
 
-    protected WNameTable(int hashSize) {
+    WNameTable(int hashSize) {
         mNameFactory = null;
         mParent = null;
 
@@ -216,7 +216,7 @@ public final class WNameTable extends NameTable {
         mCollListShared = true;
     }
 
-    protected synchronized WNameTable createChild(WNameFactory f) {
+    synchronized WNameTable createChild(WNameFactory f) {
         return new WNameTable(this, f);
     }
 
@@ -250,15 +250,6 @@ public final class WNameTable extends NameTable {
         mMainHashShared = true;
         mMainNamesShared = true;
         mCollListShared = true;
-    }
-
-    /**
-     * Method used by test code, to reset state of the name table.
-     */
-    public void nuke() {
-        mMainHash = null;
-        mMainNames = null;
-        mCollList = null;
     }
 
     /*
@@ -401,42 +392,6 @@ public final class WNameTable extends NameTable {
 
         sb.append(avgLength);
         sb.append(']');
-        return sb.toString();
-    }
-
-    // Not really a std method... but commonly useful
-    public String toDebugString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[WNameTable, size: ");
-        sb.append(mCount);
-        sb.append('/');
-        sb.append(mMainHash.length);
-        sb.append(" -> ");
-        for (int i = 0; i < mMainHash.length; ++i) {
-            sb.append("\n#");
-            sb.append(i);
-            sb.append(": 0x");
-            sb.append(Integer.toHexString(mMainHash[i]));
-            sb.append(" == ");
-            WName name = mMainNames[i];
-            if (name == null) {
-                sb.append("null");
-            } else {
-                sb.append('"');
-                sb.append(name.toString());
-                sb.append('"');
-            }
-        }
-        sb.append("\nSpill(");
-        sb.append(mCollEnd);
-        sb.append("):");
-        for (int i = 0; i < mCollEnd; ++i) {
-            Bucket bucket = mCollList[i];
-            sb.append("\nsp#");
-            sb.append(i);
-            sb.append(": ");
-            sb.append(bucket.toDebugString());
-        }
         return sb.toString();
     }
 
@@ -713,18 +668,5 @@ public final class WNameTable extends NameTable {
             return null;
         }
 
-        public String toDebugString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[Bucket(");
-            sb.append(length());
-            sb.append("): ");
-            for (Bucket curr = this; curr != null; curr = curr.mNext) {
-                sb.append('"');
-                sb.append(curr.mName.toString());
-                sb.append("\" -> ");
-            }
-            sb.append("NULL]");
-            return sb.toString();
-        }
     }
 }

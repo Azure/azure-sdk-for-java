@@ -117,7 +117,7 @@ public class Stax2EventAllocatorImpl implements XMLEventAllocator, XMLStreamCons
         return r.getLocation();
     }
 
-    protected EntityReference createEntityReference(XMLStreamReader r, Location loc) throws XMLStreamException {
+    protected EntityReference createEntityReference(XMLStreamReader r, Location loc) {
         /* !!! 28-Jan-2007, TSA: One major problem here: there is no way
          *    to access actual entity declaration via Stax 1.0 or Stax2
          *    stream reader, at not least not after DTD subset has been
@@ -142,7 +142,7 @@ public class Stax2EventAllocatorImpl implements XMLEventAllocator, XMLStreamCons
         return new DTDEventImpl(loc, null, r.getText());
     }
 
-    protected StartElement createStartElement(XMLStreamReader r, Location loc) throws XMLStreamException {
+    protected StartElement createStartElement(XMLStreamReader r, Location loc) {
         NamespaceContext nsCtxt = null;
         /* Note: there's no way to get non-transient namespace context via
          * Stax 1.0 interface -- the context you can access from reader

@@ -17,6 +17,7 @@
 package com.azure.xml.implementation.aalto.in;
 
 import javax.xml.namespace.QName;
+import java.util.Objects;
 
 /**
  * Prefixed Name is similar to {@link javax.xml.namespace.QName} (qualified name),
@@ -89,10 +90,6 @@ public abstract class PName {
         return _prefixedName.equals(n);
     }
 
-    public final NsBinding getNsBinding() {
-        return _namespaceBinding;
-    }
-
     public final String getNsUri() {
         return (_namespaceBinding == null) ? null : _namespaceBinding.mURI;
     }
@@ -134,14 +131,6 @@ public abstract class PName {
      */
 
     /**
-     * @return True if the name has no binding object, but will need
-     *    one (has prefix)
-     */
-    public final boolean needsBinding() {
-        return (_prefix != null) && (_namespaceBinding == null);
-    }
-
-    /**
      * @return True if the name as described either has no prefix (either
      *    belongs to the default ns [elems], or to 'no namespace' [attrs]),
      *    or has a prefix that is bound currently. False if name has a prefix
@@ -156,15 +145,15 @@ public abstract class PName {
      * means that the local name, as well as bound URI are compared.
      */
     public final boolean boundEquals(PName other) {
-        if (other == null || other._localName != _localName) {
+        if (other == null || !Objects.equals(other._localName, _localName)) {
             return false;
         }
         // Let's assume URIs are canonicalized at least on per-doc basis?
-        return other.getNsUri() == getNsUri();
+        return Objects.equals(other.getNsUri(), getNsUri());
     }
 
     public final boolean unboundEquals(PName other) {
-        return (other._prefixedName == _prefixedName);
+        return (Objects.equals(other._prefixedName, _prefixedName));
     }
 
     public final boolean boundEquals(String nsUri, String ln) {
@@ -172,7 +161,7 @@ public abstract class PName {
             return false;
         }
         String thisUri = getNsUri();
-        if (nsUri == null || nsUri.length() == 0) {
+        if (nsUri == null || nsUri.isEmpty()) {
             return (thisUri == null);
         }
         return nsUri.equals(thisUri);
@@ -222,7 +211,7 @@ public abstract class PName {
          * so let's compare separately. Can use identity comparison with
          * those though:
          */
-        return (other._prefix == _prefix) && (other._localName == _localName);
+        return (Objects.equals(other._prefix, _prefix)) && (Objects.equals(other._localName, _localName));
     }
 
     /*
@@ -237,8 +226,6 @@ public abstract class PName {
      */
 
     public abstract int sizeInQuads();
-
-    public abstract int getFirstQuad();
 
     public abstract int getQuad(int index);
 

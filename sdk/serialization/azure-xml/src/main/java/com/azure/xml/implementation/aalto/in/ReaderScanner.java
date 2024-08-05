@@ -23,6 +23,7 @@ import com.azure.xml.implementation.aalto.util.XmlConsts;
  * scanner. Nonetheless, it is included for completeness, since Stax
  * interface allows passing Readers as input sources.
  */
+@SuppressWarnings("fallthrough")
 public final class ReaderScanner extends XmlScanner {
     /**
      * Although java chars are basically UTF-16 in memory, the closest
@@ -39,7 +40,7 @@ public final class ReaderScanner extends XmlScanner {
     /**
      * Underlying InputStream to use for reading content.
      */
-    protected Reader _in;
+    private Reader _in;
 
     /*
     /**********************************************************************
@@ -47,17 +48,17 @@ public final class ReaderScanner extends XmlScanner {
     /**********************************************************************
      */
 
-    protected char[] _inputBuffer;
+    private char[] _inputBuffer;
 
-    protected int _inputPtr;
+    private int _inputPtr;
 
-    protected int _inputEnd;
+    private int _inputEnd;
 
     /**
      * Storage location for a single character that can not be pushed
      * back (for example, multi-byte char)
      */
-    protected int mTmpChar = INT_NULL;
+    private int mTmpChar = INT_NULL;
 
     /*
     /**********************************************************************
@@ -69,7 +70,7 @@ public final class ReaderScanner extends XmlScanner {
      * For now, symbol table contains prefixed names. In future it is
      * possible that they may be split into prefixes and local names?
      */
-    protected final CharBasedPNameTable _symbols;
+    private final CharBasedPNameTable _symbols;
 
     /*
     /**********************************************************************
@@ -135,7 +136,7 @@ public final class ReaderScanner extends XmlScanner {
      */
 
     @Override
-    protected final void finishToken() throws XMLStreamException {
+    protected void finishToken() throws XMLStreamException {
         _tokenIncomplete = false;
         switch (_currToken) {
             case PROCESSING_INSTRUCTION:
@@ -170,7 +171,7 @@ public final class ReaderScanner extends XmlScanner {
     // // // First, main iteration methods
 
     @Override
-    public final int nextFromProlog(boolean isProlog) throws XMLStreamException {
+    public int nextFromProlog(boolean isProlog) throws XMLStreamException {
         if (_tokenIncomplete) { // left-overs from last thingy?
             skipToken();
         }
@@ -235,7 +236,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    public final int nextFromTree() throws XMLStreamException {
+    public int nextFromTree() throws XMLStreamException {
         if (_tokenIncomplete) { // left-overs?
             if (skipToken()) { // Figured out next event (ENTITY_REFERENCE)?
                 // !!! We don't yet parse DTD, don't know real contents
@@ -324,9 +325,9 @@ public final class ReaderScanner extends XmlScanner {
 
     /**
      * Helper method used to isolate things that need to be (re)set in
-     * cases where 
+     * cases where
      */
-    protected int _nextEntity() {
+    private int _nextEntity() {
         // !!! Also, have to assume start location has been set or such
         _textBuilder.resetWithEmpty();
         // !!! TODO: handle start location?
@@ -339,7 +340,7 @@ public final class ReaderScanner extends XmlScanner {
     /**********************************************************************
      */
 
-    protected final int handlePrologDeclStart(boolean isProlog) throws XMLStreamException {
+    private int handlePrologDeclStart(boolean isProlog) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -380,7 +381,7 @@ public final class ReaderScanner extends XmlScanner {
         return _currToken; // never gets here
     }
 
-    private final int handleDtdStart() throws XMLStreamException {
+    private int handleDtdStart() throws XMLStreamException {
         matchAsciiKeyword("DOCTYPE");
         // And then some white space and root  name
         char c = skipInternalWs(true, "after DOCTYPE keyword, before root name");
@@ -428,7 +429,7 @@ public final class ReaderScanner extends XmlScanner {
         return (_currToken = DTD);
     }
 
-    protected final int handleCommentOrCdataStart() throws XMLStreamException {
+    private int handleCommentOrCdataStart() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -474,7 +475,7 @@ public final class ReaderScanner extends XmlScanner {
         return TOKEN_EOI; // never gets here
     }
 
-    protected final int handlePIStart() throws XMLStreamException {
+    private int handlePIStart() throws XMLStreamException {
         _currToken = PROCESSING_INSTRUCTION;
 
         // Ok, first, need a name
@@ -486,7 +487,7 @@ public final class ReaderScanner extends XmlScanner {
         _tokenName = parsePName(c);
         { // but is it "xml" (case insensitive)?
             String ln = _tokenName.getLocalName();
-            if (ln.length() == 3 && ln.equalsIgnoreCase("xml") && _tokenName.getPrefix() == null) {
+            if (ln.equalsIgnoreCase("xml") && _tokenName.getPrefix() == null) {
                 reportInputProblem(ErrorConsts.ERR_WF_PI_XML_TARGET);
             }
         }
@@ -552,7 +553,7 @@ public final class ReaderScanner extends XmlScanner {
      * @return Code point for the entity that expands to a valid XML
      *    content character.
      */
-    protected final int handleCharEntity() throws XMLStreamException {
+    private int handleCharEntity() throws XMLStreamException {
         // Hex or decimal?
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
@@ -618,7 +619,7 @@ public final class ReaderScanner extends XmlScanner {
         return value;
     }
 
-    protected final int handleStartElement(char c) throws XMLStreamException {
+    private int handleStartElement(char c) throws XMLStreamException {
         _currToken = START_ELEMENT;
         _currNsCount = 0;
         PName elemName = parsePName(c);
@@ -698,10 +699,10 @@ public final class ReaderScanner extends XmlScanner {
             boolean isNsDecl;
 
             if (prefix == null) { // can be default ns decl:
-                isNsDecl = (attrName.getLocalName() == "xmlns");
+                isNsDecl = (attrName.getLocalName().equals("xmlns"));
             } else {
                 // May be a namespace decl though?
-                if (prefix == "xmlns") {
+                if (prefix.equals("xmlns")) {
                     isNsDecl = true;
                 } else {
                     attrName = bindName(attrName, prefix);
@@ -857,7 +858,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR:
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -904,7 +905,7 @@ public final class ReaderScanner extends XmlScanner {
                         // default:
                         // Other chars are not important here...
                 }
-            } else if (c >= 0xD800) {
+            } else {
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -994,7 +995,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    protected final int handleEndElement() throws XMLStreamException {
+    private int handleEndElement() throws XMLStreamException {
         --_depth;
 
         _currToken = END_ELEMENT;
@@ -1032,7 +1033,7 @@ public final class ReaderScanner extends XmlScanner {
         return END_ELEMENT;
     }
 
-    protected final int handleEntityInText(boolean inAttr) throws XMLStreamException {
+    private int handleEntityInText(boolean inAttr) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -1243,7 +1244,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void finishComment() throws XMLStreamException {
+    protected void finishComment() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1289,7 +1290,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -1324,7 +1325,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here..
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -1345,7 +1346,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void finishPI() throws XMLStreamException {
+    protected void finishPI() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1418,7 +1419,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -1439,7 +1440,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void finishDTD(boolean copyContents) throws XMLStreamException {
+    protected void finishDTD(boolean copyContents) throws XMLStreamException {
         char[] outputBuffer = copyContents ? _textBuilder.resetWithEmpty() : null;
         int outPtr = 0;
 
@@ -1493,7 +1494,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -1540,7 +1541,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -1573,7 +1574,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void finishCData() throws XMLStreamException {
+    protected void finishCData() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1621,7 +1622,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -1680,7 +1681,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -1708,7 +1709,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void finishCharacters() throws XMLStreamException {
+    protected void finishCharacters() throws XMLStreamException {
         int outPtr;
         char[] outputBuffer;
 
@@ -1787,7 +1788,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         int ptr = _inputPtr;
                         if (ptr >= _inputEnd) {
@@ -1869,7 +1870,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -1894,7 +1895,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void finishSpace() throws XMLStreamException {
+    protected void finishSpace() throws XMLStreamException {
         /* Ok: so, mTmpChar contains first space char. If it looks
          * like indentation, we can probably optimize a bit...
          */
@@ -1979,7 +1980,7 @@ public final class ReaderScanner extends XmlScanner {
      * be textual as well, and if so, read it (and any other following
      * textual segments).
      */
-    protected final void finishCoalescedText() throws XMLStreamException {
+    private void finishCoalescedText() throws XMLStreamException {
         while (true) {
             // no matter what, will need (and can get) one char
             if (_inputPtr >= _inputEnd) {
@@ -2025,7 +2026,7 @@ public final class ReaderScanner extends XmlScanner {
 
     // note: code mostly copied from 'finishCharacters', just simplified
     // in some places
-    protected final void finishCoalescedCData() throws XMLStreamException {
+    private void finishCoalescedCData() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2074,7 +2075,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -2133,7 +2134,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -2155,7 +2156,7 @@ public final class ReaderScanner extends XmlScanner {
 
     // note: code mostly copied from 'finishCharacters', just simplified
     // in some places
-    protected final void finishCoalescedCharacters() throws XMLStreamException {
+    private void finishCoalescedCharacters() throws XMLStreamException {
         // first char can't be from (char) entity (wrt finishCharacters)
 
         final int[] TYPES = sCharTypes.TEXT_CHARS;
@@ -2203,7 +2204,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         int ptr = _inputPtr;
                         if (ptr >= _inputEnd) {
@@ -2285,7 +2286,7 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     char d = checkSurrogate(c);
@@ -2314,7 +2315,7 @@ public final class ReaderScanner extends XmlScanner {
      * @return True if we encountered an unexpandable entity
      */
     @Override
-    protected final boolean skipCoalescedText() throws XMLStreamException {
+    protected boolean skipCoalescedText() throws XMLStreamException {
         while (true) {
             // no matter what, will need (and can get) one char
             if (_inputPtr >= _inputEnd) {
@@ -2363,7 +2364,7 @@ public final class ReaderScanner extends XmlScanner {
      */
 
     @Override
-    protected final void skipComment() throws XMLStreamException {
+    protected void skipComment() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2397,7 +2398,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -2437,7 +2438,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final void skipPI() throws XMLStreamException {
+    protected void skipPI() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2497,12 +2498,12 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     /*char d =*/ checkSurrogate(c);
                 } else if (c >= 0xFFFE) {
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 }
             }
             // skipping, no need to output
@@ -2510,7 +2511,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    protected final boolean skipCharacters() throws XMLStreamException {
+    protected boolean skipCharacters() throws XMLStreamException {
         final int[] TYPES = sCharTypes.TEXT_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2544,7 +2545,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -2598,19 +2599,19 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     /*char d =*/ checkSurrogate(c);
                 } else if (c >= 0xFFFE) {
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 }
             }
         }
     }
 
     @Override
-    protected final void skipCData() throws XMLStreamException {
+    protected void skipCData() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2644,7 +2645,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c <= 0xFF) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         int ptr = _inputPtr;
                         if (ptr >= _inputEnd) {
@@ -2690,19 +2691,19 @@ public final class ReaderScanner extends XmlScanner {
                     // default:
                     // Other types are not important here...
                 }
-            } else if (c >= 0xD800) {  // high-range, surrogates etc
+            } else {  // high-range, surrogates etc
                 if (c < 0xE000) {
                     // if ok, returns second surrogate; otherwise exception
                     /*char d =*/ checkSurrogate(c);
                 } else if (c >= 0xFFFE) {
-                    c = handleInvalidXmlChar(c);
+                    handleInvalidXmlChar(c);
                 }
             }
         }
     }
 
     @Override
-    protected final void skipSpace() throws XMLStreamException {
+    protected void skipSpace() throws XMLStreamException {
         // mTmpChar has a space, but it's been checked, can ignore
         int ptr = _inputPtr;
 
@@ -2749,7 +2750,7 @@ public final class ReaderScanner extends XmlScanner {
     /**
      * @return First byte following skipped white space
      */
-    protected char skipInternalWs(boolean reqd, String msg) throws XMLStreamException {
+    private char skipInternalWs(boolean reqd, String msg) throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -2785,7 +2786,7 @@ public final class ReaderScanner extends XmlScanner {
         return c;
     }
 
-    private final void matchAsciiKeyword(String keyw) throws XMLStreamException {
+    private void matchAsciiKeyword(String keyw) throws XMLStreamException {
         for (int i = 1, len = keyw.length(); i < len; ++i) {
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
@@ -2809,7 +2810,7 @@ public final class ReaderScanner extends XmlScanner {
      * @return -1, if indentation was handled; offset in the output
      *    buffer, if not
      */
-    protected final int checkInTreeIndentation(char c) throws XMLStreamException {
+    private int checkInTreeIndentation(char c) throws XMLStreamException {
         if (c == '\r') {
             // First a degenerate case, a lone \r:
             if (_inputPtr >= _inputEnd && !loadMore()) {
@@ -2875,7 +2876,7 @@ public final class ReaderScanner extends XmlScanner {
      * @return -1, if indentation was handled; offset in the output
      *    buffer, if not
      */
-    protected final int checkPrologIndentation(char c) throws XMLStreamException {
+    private int checkPrologIndentation(char c) throws XMLStreamException {
         if (c == '\r') {
             // First a degenerate case, a lone \r:
             if (_inputPtr >= _inputEnd && !loadMore()) {
@@ -2935,7 +2936,7 @@ public final class ReaderScanner extends XmlScanner {
         return -1;
     }
 
-    protected PName parsePName(char c) throws XMLStreamException {
+    private PName parsePName(char c) throws XMLStreamException {
         char[] nameBuffer = _nameBuffer;
 
         /* Let's do just quick sanity check first; a thorough check will be
@@ -2946,7 +2947,7 @@ public final class ReaderScanner extends XmlScanner {
             throwUnexpectedChar(c, "; expected a name start character");
         }
         nameBuffer[0] = c;
-        int hash = (int) c;
+        int hash = c;
         int ptr = 1;
 
         while (true) {
@@ -2954,7 +2955,7 @@ public final class ReaderScanner extends XmlScanner {
                 loadMoreGuaranteed();
             }
             c = _inputBuffer[_inputPtr];
-            int d = (int) c;
+            int d = c;
             if (d < 65) {
                 // Ok; "_" (45), "." (46) and "0"-"9"/":" (48 - 57/58) still name chars
                 if (d < 45 || d > 58 || d == 47) {
@@ -2975,7 +2976,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    protected final PName addPName(char[] nameBuffer, int nameLen, int hash) throws XMLStreamException {
+    private PName addPName(char[] nameBuffer, int nameLen, int hash) throws XMLStreamException {
         // Let's validate completely, now:
         char c = nameBuffer[0];
         int namePtr = 1;
@@ -3018,20 +3019,20 @@ public final class ReaderScanner extends XmlScanner {
         return _symbols.addSymbol(nameBuffer, 0, nameLen, hash);
     }
 
-    protected String parsePublicId(char quoteChar) throws XMLStreamException {
+    private String parsePublicId(char quoteChar) throws XMLStreamException {
         char[] outputBuffer = _nameBuffer;
         int outPtr = 0;
         final int[] TYPES = XmlCharTypes.PUBID_CHARS;
         boolean addSpace = false;
 
-        main_loop: while (true) {
+        while (true) {
             if (_inputPtr >= _inputEnd) {
                 loadMoreGuaranteed();
             }
             // Easier to check without char type table, first:
             char c = _inputBuffer[_inputPtr++];
             if (c == quoteChar) {
-                break main_loop;
+                break;
             }
             if ((c > 0xFF) || TYPES[c] != XmlCharTypes.PUBID_OK) {
                 throwUnexpectedChar(c, " in public identifier");
@@ -3059,7 +3060,7 @@ public final class ReaderScanner extends XmlScanner {
         return new String(outputBuffer, 0, outPtr);
     }
 
-    protected String parseSystemId(char quoteChar) throws XMLStreamException {
+    private String parseSystemId(char quoteChar) throws XMLStreamException {
         char[] outputBuffer = _nameBuffer;
         int outPtr = 0;
         // attribute types are closest matches, so let's use them
@@ -3074,7 +3075,7 @@ public final class ReaderScanner extends XmlScanner {
             if (TYPES[c] != 0) {
                 switch (TYPES[c]) {
                     case XmlCharTypes.CT_INVALID:
-                        c = handleInvalidXmlChar(c);
+                        handleInvalidXmlChar(c);
                     case XmlCharTypes.CT_WS_CR: {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
@@ -3149,9 +3150,7 @@ public final class ReaderScanner extends XmlScanner {
             reportInvalidXmlChar(val);
         }
         // !!! TODO: xml 1.1 vs 1.0 rules: none valid for 1.0, many for 1.1
-        if (true) {
-            reportInvalidNameChar(val, index);
-        }
+        reportInvalidNameChar(val, index);
         return val;
     }
 
@@ -3181,12 +3180,12 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     private void reportInvalidFirstSurrogate(char ch) throws XMLStreamException {
-        reportInputProblem("Invalid surrogate character (code 0x" + Integer.toHexString((int) ch)
-            + "): can not start a surrogate pair");
+        reportInputProblem(
+            "Invalid surrogate character (code 0x" + Integer.toHexString(ch) + "): can not start a surrogate pair");
     }
 
     private void reportInvalidSecondSurrogate(char ch) throws XMLStreamException {
-        reportInputProblem("Invalid surrogate character (code " + Integer.toHexString((int) ch)
+        reportInputProblem("Invalid surrogate character (code " + Integer.toHexString(ch)
             + "): is not legal as the second part of a surrogate pair");
     }
 
@@ -3219,7 +3218,7 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     @Override
-    public long getEndingByteOffset() throws XMLStreamException {
+    public long getEndingByteOffset() {
         // N/A for this type
         return -1L;
     }
@@ -3233,17 +3232,17 @@ public final class ReaderScanner extends XmlScanner {
         return _pastBytesOrChars + _inputPtr;
     }
 
-    protected final void markLF(int offset) {
+    private void markLF(int offset) {
         _rowStartOffset = offset;
         ++_currRow;
     }
 
-    protected final void markLF() {
+    private void markLF() {
         _rowStartOffset = _inputPtr;
         ++_currRow;
     }
 
-    protected final void setStartLocation() {
+    private void setStartLocation() {
         _startRawOffset = _pastBytesOrChars + _inputPtr;
         _startRow = _currRow;
         _startColumn = _inputPtr - _rowStartOffset;
@@ -3256,7 +3255,7 @@ public final class ReaderScanner extends XmlScanner {
      */
 
     @Override
-    protected final boolean loadMore() throws XMLStreamException {
+    protected boolean loadMore() throws XMLStreamException {
         // If it's a block source, there's no Reader, or any more data:
         if (_in == null) {
             _inputEnd = 0;
@@ -3287,21 +3286,14 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    protected final char loadOne() throws XMLStreamException {
-        if (!loadMore()) {
-            reportInputProblem("Unexpected end-of-input when trying to parse " + ErrorConsts.tokenTypeDesc(_currToken));
-        }
-        return _inputBuffer[_inputPtr++];
-    }
-
-    protected final char loadOne(int type) throws XMLStreamException {
+    private char loadOne(int type) throws XMLStreamException {
         if (!loadMore()) {
             reportInputProblem("Unexpected end-of-input when trying to parse " + ErrorConsts.tokenTypeDesc(type));
         }
         return _inputBuffer[_inputPtr++];
     }
 
-    protected final boolean loadAndRetain(int nrOfChars) throws XMLStreamException {
+    private boolean loadAndRetain(int nrOfChars) throws XMLStreamException {
         /* first: can't move, if we were handed an immutable block
          * (alternative to handing Reader as _in)
          */

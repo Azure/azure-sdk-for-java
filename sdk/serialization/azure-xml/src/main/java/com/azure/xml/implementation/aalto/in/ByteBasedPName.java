@@ -45,9 +45,6 @@ public abstract class ByteBasedPName extends PName {
     // From base class:
 
     @Override
-    public abstract int getFirstQuad();
-
-    @Override
     public abstract int getQuad(int index);
 
     @Override

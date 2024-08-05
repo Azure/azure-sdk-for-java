@@ -146,7 +146,7 @@ public class MergedNsContext implements NamespaceContext {
             l = addToList(l, XMLConstants.XML_NS_PREFIX);
         }
         if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            l = addToList(l, XMLConstants.XMLNS_ATTRIBUTE);
+            addToList(l, XMLConstants.XMLNS_ATTRIBUTE);
         }
 
         return null;

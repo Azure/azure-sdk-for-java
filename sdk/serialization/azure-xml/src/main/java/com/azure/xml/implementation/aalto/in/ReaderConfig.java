@@ -26,27 +26,27 @@ public final class ReaderConfig extends CommonConfig {
     public final static int STANDALONE_NO = 2;
 
     // Standard Stax flags:
-    protected final static int F_NS_AWARE = 0x0001;
-    protected final static int F_COALESCING = 0x0002;
-    protected final static int F_DTD_AWARE = 0x0004;
-    protected final static int F_DTD_VALIDATING = 0x0008;
-    protected final static int F_EXPAND_ENTITIES = 0x0010;
+    private final static int F_NS_AWARE = 0x0001;
+    private final static int F_COALESCING = 0x0002;
+    private final static int F_DTD_AWARE = 0x0004;
+    private final static int F_DTD_VALIDATING = 0x0008;
+    private final static int F_EXPAND_ENTITIES = 0x0010;
 
     // Standard Stax2 flags:
-    protected final static int F_LAZY_PARSING = 0x0100;
-    protected final static int F_INTERN_NAMES = 0x0200;
-    protected final static int F_INTERN_NS_URIS = 0x0400;
-    protected final static int F_REPORT_CDATA = 0x0800;
-    protected final static int F_PRESERVE_LOCATION = 0x1000;
-    protected final static int F_AUTO_CLOSE_INPUT = 0x2000;
+    private final static int F_LAZY_PARSING = 0x0100;
+    private final static int F_INTERN_NAMES = 0x0200;
+    private final static int F_INTERN_NS_URIS = 0x0400;
+    private final static int F_REPORT_CDATA = 0x0800;
+    private final static int F_PRESERVE_LOCATION = 0x1000;
+    private final static int F_AUTO_CLOSE_INPUT = 0x2000;
 
     // Custom flags:
-    protected final static int F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES = 0x4000;
+    private final static int F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES = 0x4000;
 
     /**
      * These are the default settings for XMLInputFactory.
      */
-    protected final static int DEFAULT_FLAGS = F_NS_AWARE | F_DTD_AWARE | F_EXPAND_ENTITIES | F_LAZY_PARSING
+    private final static int DEFAULT_FLAGS = F_NS_AWARE | F_DTD_AWARE | F_EXPAND_ENTITIES | F_LAZY_PARSING
     // by default we do intern names, ns uris...
         | F_INTERN_NAMES | F_INTERN_NS_URIS
         // and will report CDATA as such (and not as CHARACTERS)
@@ -54,28 +54,28 @@ public final class ReaderConfig extends CommonConfig {
 
     private final static HashMap<String, Object> sProperties;
     static {
-        sProperties = new HashMap<String, Object>();
+        sProperties = new HashMap<>();
         /* 28-Oct-2006, tatus: Let's recognize it, but not allow to be
          *   disabled. Can/needs to be changed if we'll support it.
          */
         sProperties.put(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE);
         sProperties.put(XMLInputFactory.IS_VALIDATING,
             //Boolean.FALSE);
-            Integer.valueOf(F_DTD_VALIDATING));
-        sProperties.put(XMLInputFactory.IS_COALESCING, Integer.valueOf(F_COALESCING));
-        sProperties.put(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Integer.valueOf(F_EXPAND_ENTITIES));
+            F_DTD_VALIDATING);
+        sProperties.put(XMLInputFactory.IS_COALESCING, F_COALESCING);
+        sProperties.put(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, F_EXPAND_ENTITIES);
         sProperties.put(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        sProperties.put(XMLInputFactory.SUPPORT_DTD, Integer.valueOf(F_DTD_AWARE));
+        sProperties.put(XMLInputFactory.SUPPORT_DTD, F_DTD_AWARE);
         sProperties.put(XMLInputFactory.REPORTER, null);
         sProperties.put(XMLInputFactory.RESOLVER, null);
         sProperties.put(XMLInputFactory.ALLOCATOR, null);
 
         // // // Stax2:
-        sProperties.put(XMLInputFactory2.P_LAZY_PARSING, Integer.valueOf(F_LAZY_PARSING));
-        sProperties.put(XMLInputFactory2.P_INTERN_NAMES, Integer.valueOf(F_INTERN_NAMES));
-        sProperties.put(XMLInputFactory2.P_INTERN_NS_URIS, Integer.valueOf(F_INTERN_NS_URIS));
-        sProperties.put(XMLInputFactory2.P_AUTO_CLOSE_INPUT, Integer.valueOf(F_AUTO_CLOSE_INPUT));
-        sProperties.put(XMLInputFactory2.P_PRESERVE_LOCATION, Integer.valueOf(F_PRESERVE_LOCATION));
+        sProperties.put(XMLInputFactory2.P_LAZY_PARSING, F_LAZY_PARSING);
+        sProperties.put(XMLInputFactory2.P_INTERN_NAMES, F_INTERN_NAMES);
+        sProperties.put(XMLInputFactory2.P_INTERN_NS_URIS, F_INTERN_NS_URIS);
+        sProperties.put(XMLInputFactory2.P_AUTO_CLOSE_INPUT, F_AUTO_CLOSE_INPUT);
+        sProperties.put(XMLInputFactory2.P_PRESERVE_LOCATION, F_PRESERVE_LOCATION);
 
         // (ones with fixed defaults)
 
@@ -84,7 +84,7 @@ public final class ReaderConfig extends CommonConfig {
          * of document content.
          */
         sProperties.put(XMLInputFactory2.P_REPORT_PROLOG_WHITESPACE, Boolean.FALSE);
-        sProperties.put(XMLInputFactory2.P_REPORT_CDATA, Integer.valueOf(F_REPORT_CDATA));
+        sProperties.put(XMLInputFactory2.P_REPORT_CDATA, F_REPORT_CDATA);
 
         sProperties.put(XMLInputFactory2.P_PRESERVE_LOCATION, Boolean.TRUE);
 
@@ -94,8 +94,7 @@ public final class ReaderConfig extends CommonConfig {
         // Custom ones:
 
         // [aalto-xml#65]: Allow disabling processing of GEs in attribute values:
-        sProperties.put(AaltoInputProperties.P_RETAIN_ATTRIBUTE_GENERAL_ENTITIES,
-            Integer.valueOf(F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES));
+        sProperties.put(AaltoInputProperties.P_RETAIN_ATTRIBUTE_GENERAL_ENTITIES, F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES);
     }
 
     /**
@@ -147,8 +146,7 @@ public final class ReaderConfig extends CommonConfig {
      * to a {@link BufferRecycler} used to provide a low-cost
      * buffer recycling between Reader instances.
      */
-    final static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef
-        = new ThreadLocal<SoftReference<BufferRecycler>>();
+    final static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef = new ThreadLocal<>();
 
     /**
      * This is the actually container of the recyclable buffers. It
@@ -156,7 +154,7 @@ public final class ReaderConfig extends CommonConfig {
      * exists, when Config instance is created. If one does not
      * exist, it will created first time a buffer is returned.
      */
-    protected BufferRecycler _currRecycler = null;
+    private BufferRecycler _currRecycler = null;
 
     /*
     /**********************************************************************
@@ -206,28 +204,28 @@ public final class ReaderConfig extends CommonConfig {
             mXmlDeclVersion = null;
         }
         mXmlDeclEncoding = xmlDeclEnc;
-        if (standalone == XmlConsts.XML_SA_YES) {
+        if (Objects.equals(standalone, XmlConsts.XML_SA_YES)) {
             mXmlDeclStandalone = STANDALONE_YES;
-        } else if (standalone == XmlConsts.XML_SA_NO) {
+        } else if (Objects.equals(standalone, XmlConsts.XML_SA_NO)) {
             mXmlDeclStandalone = STANDALONE_NO;
         } else {
             mXmlDeclStandalone = STANDALONE_UNKNOWN;
         }
     }
 
-    public final void setXmlVersion(String version) {
+    public void setXmlVersion(String version) {
         mXmlDeclVersion = version;
     }
 
-    public final void setXmlEncoding(String enc) {
+    public void setXmlEncoding(String enc) {
         mXmlDeclEncoding = enc;
     }
 
-    public final void setXmlStandalone(Boolean b) {
+    public void setXmlStandalone(Boolean b) {
         if (b == null) {
             mXmlDeclStandalone = STANDALONE_UNKNOWN;
         } else {
-            mXmlDeclStandalone = b.booleanValue() ? STANDALONE_YES : STANDALONE_NO;
+            mXmlDeclStandalone = b ? STANDALONE_YES : STANDALONE_NO;
         }
     }
 
@@ -267,22 +265,6 @@ public final class ReaderConfig extends CommonConfig {
         setFlag(F_LAZY_PARSING, state);
     }
 
-    public void doReportCData(boolean state) {
-        setFlag(F_REPORT_CDATA, state);
-    }
-
-    /**
-     * Method for enabling or disabling
-     * {@link AaltoInputProperties#P_RETAIN_ATTRIBUTE_GENERAL_ENTITIES}.
-     *
-     * @param state Whether to enable or disable property
-     *
-     * @since 1.3
-     */
-    public void doRetainAttributeGeneralEntities(boolean state) {
-        setFlag(F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES, state);
-    }
-
     /*
     /**********************************************************************
     /* Common accessors from CommonConfig
@@ -315,11 +297,6 @@ public final class ReaderConfig extends CommonConfig {
     /**********************************************************************
      */
 
-    protected int findPropertyId(String propName) {
-        Integer I = (Integer) sProperties.get(propName);
-        return (I == null) ? -1 : I.intValue();
-    }
-
     /*
     /**********************************************************************
     /* Standard accessors, configurable properties
@@ -327,7 +304,7 @@ public final class ReaderConfig extends CommonConfig {
      */
 
     @Override
-    public final Object getProperty(String name, boolean isMandatory) {
+    public Object getProperty(String name, boolean isMandatory) {
         Object ob = sProperties.get(name);
         if (ob == null) {
             // Might still have it though
@@ -337,12 +314,12 @@ public final class ReaderConfig extends CommonConfig {
             return super.getProperty(name, isMandatory);
         }
         if (ob instanceof Boolean) {
-            return ((Boolean) ob).booleanValue();
+            return ob;
         }
         if (!(ob instanceof Integer)) {
             throw new RuntimeException("Internal error: unrecognized property value type: " + ob.getClass().getName());
         }
-        int f = ((Integer) ob).intValue();
+        int f = (Integer) ob;
         return hasFlag(f);
     }
 
@@ -362,8 +339,8 @@ public final class ReaderConfig extends CommonConfig {
         if (!(ob instanceof Integer)) {
             throw new RuntimeException("Internal error");
         }
-        int f = ((Integer) ob).intValue();
-        boolean state = ((Boolean) value).booleanValue();
+        int f = (Integer) ob;
+        boolean state = (Boolean) value;
         setFlag(f, state);
         return true;
     }
@@ -516,7 +493,7 @@ public final class ReaderConfig extends CommonConfig {
         doCoalesceText(true);
         //doReplaceEntityRefs(true);
 
-        // StAX2: 
+        // StAX2:
         //doReportCData(false);
         //doReportPrologWhitespace(false);
 
@@ -673,7 +650,7 @@ public final class ReaderConfig extends CommonConfig {
     private BufferRecycler createRecycler() {
         BufferRecycler recycler = new BufferRecycler();
         // No way to reuse/reset SoftReference, have to create new always:
-        _recyclerRef.set(new SoftReference<BufferRecycler>(recycler));
+        _recyclerRef.set(new SoftReference<>(recycler));
         return recycler;
     }
 
@@ -684,13 +661,13 @@ public final class ReaderConfig extends CommonConfig {
      */
 
     public ByteBasedPNameTable getBBSymbols() {
-        if (mActualEncoding == CharsetNames.CS_UTF8) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_UTF8)) {
             return mEncCtxt.getUtf8Symbols();
         }
-        if (mActualEncoding == CharsetNames.CS_ISO_LATIN1) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_ISO_LATIN1)) {
             return mEncCtxt.getLatin1Symbols();
         }
-        if (mActualEncoding == CharsetNames.CS_US_ASCII) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_US_ASCII)) {
             return mEncCtxt.getAsciiSymbols();
         }
         throw new Error("Internal error, unknown encoding '" + mActualEncoding + "'");
@@ -701,11 +678,11 @@ public final class ReaderConfig extends CommonConfig {
     }
 
     public void updateBBSymbols(ByteBasedPNameTable sym) {
-        if (mActualEncoding == CharsetNames.CS_UTF8) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_UTF8)) {
             mEncCtxt.updateUtf8Symbols(sym);
-        } else if (mActualEncoding == CharsetNames.CS_ISO_LATIN1) {
+        } else if (Objects.equals(mActualEncoding, CharsetNames.CS_ISO_LATIN1)) {
             mEncCtxt.updateLatin1Symbols(sym);
-        } else if (mActualEncoding == CharsetNames.CS_US_ASCII) {
+        } else if (Objects.equals(mActualEncoding, CharsetNames.CS_US_ASCII)) {
             mEncCtxt.updateAsciiSymbols(sym);
         } else {
             throw new Error("Internal error, unknown encoding '" + mActualEncoding + "'");
@@ -717,13 +694,13 @@ public final class ReaderConfig extends CommonConfig {
     }
 
     public XmlCharTypes getCharTypes() {
-        if (mActualEncoding == CharsetNames.CS_UTF8) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_UTF8)) {
             return InputCharTypes.getUtf8CharTypes();
         }
-        if (mActualEncoding == CharsetNames.CS_ISO_LATIN1) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_ISO_LATIN1)) {
             return InputCharTypes.getLatin1CharTypes();
         }
-        if (mActualEncoding == CharsetNames.CS_US_ASCII) {
+        if (Objects.equals(mActualEncoding, CharsetNames.CS_US_ASCII)) {
             return InputCharTypes.getAsciiCharTypes();
         }
         throw new Error("Internal error, unknown encoding '" + mActualEncoding + "'");
@@ -796,10 +773,6 @@ public final class ReaderConfig extends CommonConfig {
         public synchronized void updateSymbols(CharBasedPNameTable sym) {
             mGeneralTable.mergeFromChild(sym);
         }
-    }
-
-    public void setIllegalCharHandler(IllegalCharHandler illegalCharHandler) {
-        this.illegalCharHandler = illegalCharHandler;
     }
 
     public IllegalCharHandler getIllegalCharHandler() {
