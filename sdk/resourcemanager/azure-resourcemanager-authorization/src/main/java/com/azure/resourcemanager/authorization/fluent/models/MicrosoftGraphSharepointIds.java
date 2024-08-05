@@ -5,70 +5,68 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** sharepointIds. */
+/**
+ * sharepointIds.
+ */
 @Fluent
-public final class MicrosoftGraphSharepointIds {
+public final class MicrosoftGraphSharepointIds implements JsonSerializable<MicrosoftGraphSharepointIds> {
     /*
      * The unique identifier (guid) for the item's list in SharePoint.
      */
-    @JsonProperty(value = "listId")
     private String listId;
 
     /*
      * An integer identifier for the item within the containing list.
      */
-    @JsonProperty(value = "listItemId")
     private String listItemId;
 
     /*
      * The unique identifier (guid) for the item within OneDrive for Business or a SharePoint site.
      */
-    @JsonProperty(value = "listItemUniqueId")
     private String listItemUniqueId;
 
     /*
      * The unique identifier (guid) for the item's site collection (SPSite).
      */
-    @JsonProperty(value = "siteId")
     private String siteId;
 
     /*
      * The SharePoint URL for the site that contains the item.
      */
-    @JsonProperty(value = "siteUrl")
     private String siteUrl;
 
     /*
      * The unique identifier (guid) for the tenancy.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The unique identifier (guid) for the item's site (SPWeb).
      */
-    @JsonProperty(value = "webId")
     private String webId;
 
     /*
      * sharepointIds
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSharepointIds class. */
+    /**
+     * Creates an instance of MicrosoftGraphSharepointIds class.
+     */
     public MicrosoftGraphSharepointIds() {
     }
 
     /**
      * Get the listId property: The unique identifier (guid) for the item's list in SharePoint.
-     *
+     * 
      * @return the listId value.
      */
     public String listId() {
@@ -77,7 +75,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Set the listId property: The unique identifier (guid) for the item's list in SharePoint.
-     *
+     * 
      * @param listId the listId value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -88,7 +86,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Get the listItemId property: An integer identifier for the item within the containing list.
-     *
+     * 
      * @return the listItemId value.
      */
     public String listItemId() {
@@ -97,7 +95,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Set the listItemId property: An integer identifier for the item within the containing list.
-     *
+     * 
      * @param listItemId the listItemId value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -109,7 +107,7 @@ public final class MicrosoftGraphSharepointIds {
     /**
      * Get the listItemUniqueId property: The unique identifier (guid) for the item within OneDrive for Business or a
      * SharePoint site.
-     *
+     * 
      * @return the listItemUniqueId value.
      */
     public String listItemUniqueId() {
@@ -119,7 +117,7 @@ public final class MicrosoftGraphSharepointIds {
     /**
      * Set the listItemUniqueId property: The unique identifier (guid) for the item within OneDrive for Business or a
      * SharePoint site.
-     *
+     * 
      * @param listItemUniqueId the listItemUniqueId value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -130,7 +128,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Get the siteId property: The unique identifier (guid) for the item's site collection (SPSite).
-     *
+     * 
      * @return the siteId value.
      */
     public String siteId() {
@@ -139,7 +137,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Set the siteId property: The unique identifier (guid) for the item's site collection (SPSite).
-     *
+     * 
      * @param siteId the siteId value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -150,7 +148,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Get the siteUrl property: The SharePoint URL for the site that contains the item.
-     *
+     * 
      * @return the siteUrl value.
      */
     public String siteUrl() {
@@ -159,7 +157,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Set the siteUrl property: The SharePoint URL for the site that contains the item.
-     *
+     * 
      * @param siteUrl the siteUrl value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -170,7 +168,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Get the tenantId property: The unique identifier (guid) for the tenancy.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -179,7 +177,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Set the tenantId property: The unique identifier (guid) for the tenancy.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -190,7 +188,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Get the webId property: The unique identifier (guid) for the item's site (SPWeb).
-     *
+     * 
      * @return the webId value.
      */
     public String webId() {
@@ -199,7 +197,7 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Set the webId property: The unique identifier (guid) for the item's site (SPWeb).
-     *
+     * 
      * @param webId the webId value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -210,17 +208,16 @@ public final class MicrosoftGraphSharepointIds {
 
     /**
      * Get the additionalProperties property: sharepointIds.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: sharepointIds.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSharepointIds object itself.
      */
@@ -229,19 +226,76 @@ public final class MicrosoftGraphSharepointIds {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("listId", this.listId);
+        jsonWriter.writeStringField("listItemId", this.listItemId);
+        jsonWriter.writeStringField("listItemUniqueId", this.listItemUniqueId);
+        jsonWriter.writeStringField("siteId", this.siteId);
+        jsonWriter.writeStringField("siteUrl", this.siteUrl);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("webId", this.webId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSharepointIds from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSharepointIds if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSharepointIds.
+     */
+    public static MicrosoftGraphSharepointIds fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSharepointIds deserializedMicrosoftGraphSharepointIds = new MicrosoftGraphSharepointIds();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("listId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.listId = reader.getString();
+                } else if ("listItemId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.listItemId = reader.getString();
+                } else if ("listItemUniqueId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.listItemUniqueId = reader.getString();
+                } else if ("siteId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.siteId = reader.getString();
+                } else if ("siteUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.siteUrl = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.tenantId = reader.getString();
+                } else if ("webId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharepointIds.webId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSharepointIds.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSharepointIds;
+        });
     }
 }

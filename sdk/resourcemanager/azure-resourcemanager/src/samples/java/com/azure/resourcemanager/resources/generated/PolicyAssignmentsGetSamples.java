@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * getPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Retrieve a policy assignment with overrides.
@@ -26,7 +27,8 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * getPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a user assigned identity.
@@ -44,7 +46,8 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * getPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Retrieve a policy assignment with resource selectors.
@@ -62,7 +65,9 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignment.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignment.
+     * json
      */
     /**
      * Sample code: Retrieve a policy assignment.
@@ -79,7 +84,8 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * getPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a system assigned identity.

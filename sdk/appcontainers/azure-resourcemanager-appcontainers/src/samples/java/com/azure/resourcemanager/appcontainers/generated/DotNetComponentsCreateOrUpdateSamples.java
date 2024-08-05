@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class DotNetComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DotNetComponents_CreateOrUpdate.json
      */
     /**
@@ -24,7 +24,8 @@ public final class DotNetComponentsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateNETComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.dotNetComponents().define("mydotnetcomponent")
+        manager.dotNetComponents()
+            .define("mydotnetcomponent")
             .withExistingManagedEnvironment("examplerg", "myenvironment")
             .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
             .withConfigurations(Arrays.asList(
@@ -33,7 +34,7 @@ public final class DotNetComponentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DotNetComponents_CreateOrUpdate_ServiceBind.json
      */
     /**
@@ -43,13 +44,15 @@ public final class DotNetComponentsCreateOrUpdateSamples {
      */
     public static void createOrUpdateNETComponentWithServiceBinds(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.dotNetComponents().define("mydotnetcomponent")
+        manager.dotNetComponents()
+            .define("mydotnetcomponent")
             .withExistingManagedEnvironment("examplerg", "myenvironment")
             .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
             .withConfigurations(Arrays.asList(
                 new DotNetComponentConfigurationProperty().withPropertyName("dashboard-theme").withValue("dark")))
-            .withServiceBinds(Arrays.asList(new DotNetComponentServiceBind().withName("yellowcat").withServiceId(
-                "/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat")))
+            .withServiceBinds(Arrays.asList(new DotNetComponentServiceBind().withName("yellowcat")
+                .withServiceId(
+                    "/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat")))
             .create();
     }
 }

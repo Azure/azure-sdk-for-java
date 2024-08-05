@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,11 +17,11 @@ import java.util.List;
  * Cosmos DB service.
  */
 @Fluent
-public final class UniqueKeyPolicy {
+public final class UniqueKeyPolicy implements JsonSerializable<UniqueKeyPolicy> {
     /*
-     * List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
+     * List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB
+     * service.
      */
-    @JsonProperty(value = "uniqueKeys")
     private List<UniqueKey> uniqueKeys;
 
     /**
@@ -30,7 +33,7 @@ public final class UniqueKeyPolicy {
     /**
      * Get the uniqueKeys property: List of unique keys on that enforces uniqueness constraint on documents in the
      * collection in the Azure Cosmos DB service.
-     *
+     * 
      * @return the uniqueKeys value.
      */
     public List<UniqueKey> uniqueKeys() {
@@ -40,7 +43,7 @@ public final class UniqueKeyPolicy {
     /**
      * Set the uniqueKeys property: List of unique keys on that enforces uniqueness constraint on documents in the
      * collection in the Azure Cosmos DB service.
-     *
+     * 
      * @param uniqueKeys the uniqueKeys value to set.
      * @return the UniqueKeyPolicy object itself.
      */
@@ -51,12 +54,49 @@ public final class UniqueKeyPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (uniqueKeys() != null) {
             uniqueKeys().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("uniqueKeys", this.uniqueKeys, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UniqueKeyPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UniqueKeyPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UniqueKeyPolicy.
+     */
+    public static UniqueKeyPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UniqueKeyPolicy deserializedUniqueKeyPolicy = new UniqueKeyPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uniqueKeys".equals(fieldName)) {
+                    List<UniqueKey> uniqueKeys = reader.readArray(reader1 -> UniqueKey.fromJson(reader1));
+                    deserializedUniqueKeyPolicy.uniqueKeys = uniqueKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUniqueKeyPolicy;
+        });
     }
 }

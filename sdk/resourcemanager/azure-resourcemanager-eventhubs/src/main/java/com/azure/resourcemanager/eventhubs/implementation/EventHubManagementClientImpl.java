@@ -23,7 +23,6 @@ import com.azure.resourcemanager.eventhubs.fluent.PrivateEndpointConnectionsClie
 import com.azure.resourcemanager.eventhubs.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventhubs.fluent.SchemaRegistriesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
-
 import java.time.Duration;
 
 /**
@@ -40,7 +39,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
     /**
      * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -54,7 +53,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -68,7 +67,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -82,7 +81,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -96,7 +95,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
@@ -110,7 +109,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
@@ -124,7 +123,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     public ClustersClient getClusters() {
@@ -138,7 +137,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the NamespacesClient object to access its operations.
-     *
+     * 
      * @return the NamespacesClient object.
      */
     public NamespacesClient getNamespaces() {
@@ -152,7 +151,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
@@ -166,7 +165,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
@@ -180,7 +179,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the NetworkSecurityPerimeterConfigurationsClient object.
      */
     public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
@@ -194,7 +193,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the NetworkSecurityPerimeterConfigurationsOperationsClient object to access its operations.
-     *
+     * 
      * @return the NetworkSecurityPerimeterConfigurationsOperationsClient object.
      */
     public NetworkSecurityPerimeterConfigurationsOperationsClient
@@ -209,7 +208,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the ConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ConfigurationsClient object.
      */
     public ConfigurationsClient getConfigurations() {
@@ -223,7 +222,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the DisasterRecoveryConfigsClient object to access its operations.
-     *
+     * 
      * @return the DisasterRecoveryConfigsClient object.
      */
     public DisasterRecoveryConfigsClient getDisasterRecoveryConfigs() {
@@ -237,7 +236,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the EventHubsClient object to access its operations.
-     *
+     * 
      * @return the EventHubsClient object.
      */
     public EventHubsClient getEventHubs() {
@@ -251,7 +250,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the ConsumerGroupsClient object to access its operations.
-     *
+     * 
      * @return the ConsumerGroupsClient object.
      */
     public ConsumerGroupsClient getConsumerGroups() {
@@ -265,7 +264,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -279,7 +278,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the SchemaRegistriesClient object to access its operations.
-     *
+     * 
      * @return the SchemaRegistriesClient object.
      */
     public SchemaRegistriesClient getSchemaRegistries() {
@@ -293,7 +292,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Gets the ApplicationGroupsClient object to access its operations.
-     *
+     * 
      * @return the ApplicationGroupsClient object.
      */
     public ApplicationGroupsClient getApplicationGroups() {
@@ -302,7 +301,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Initializes an instance of EventHubManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.

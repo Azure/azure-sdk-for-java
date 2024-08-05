@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -20,7 +19,6 @@ public class ContainerServiceResourceTypes extends ExpandableStringEnum<Containe
      * @param name a name to look for.
      * @return the corresponding ContainerServiceResourceTypes.
      */
-    @JsonCreator
     public static ContainerServiceResourceTypes fromString(String name) {
         return fromString(name, ContainerServiceResourceTypes.class);
     }

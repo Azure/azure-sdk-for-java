@@ -18,7 +18,10 @@ public final class PredefinedAcceleratorsEnableSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void predefinedAcceleratorsEnable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getPredefinedAccelerators().enable("myResourceGroup",
-            "myservice", "default", "acc-name", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getPredefinedAccelerators()
+            .enable("myResourceGroup", "myservice", "default", "acc-name", com.azure.core.util.Context.NONE);
     }
 }

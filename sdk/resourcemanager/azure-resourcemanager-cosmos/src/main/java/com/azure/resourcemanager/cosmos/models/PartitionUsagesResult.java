@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.PartitionUsageInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response to a list partition level usage request.
  */
 @Immutable
-public final class PartitionUsagesResult {
+public final class PartitionUsagesResult implements JsonSerializable<PartitionUsagesResult> {
     /*
      * The list of partition-level usages for the database. A usage is a point in time metric
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PartitionUsageInner> value;
 
     /**
@@ -44,5 +47,42 @@ public final class PartitionUsagesResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartitionUsagesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartitionUsagesResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartitionUsagesResult.
+     */
+    public static PartitionUsagesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartitionUsagesResult deserializedPartitionUsagesResult = new PartitionUsagesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PartitionUsageInner> value
+                        = reader.readArray(reader1 -> PartitionUsageInner.fromJson(reader1));
+                    deserializedPartitionUsagesResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartitionUsagesResult;
+        });
     }
 }

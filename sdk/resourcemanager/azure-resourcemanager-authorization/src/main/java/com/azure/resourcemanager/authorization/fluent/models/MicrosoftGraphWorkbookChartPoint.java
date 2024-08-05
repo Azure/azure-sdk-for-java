@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartPoint. */
+/**
+ * workbookChartPoint.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity {
     /*
      * Json
      */
-    @JsonProperty(value = "value")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> value;
 
     /*
      * workbookChartPointFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartPointFormat format;
 
     /*
      * workbookChartPoint
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartPoint class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartPoint class.
+     */
     public MicrosoftGraphWorkbookChartPoint() {
     }
 
     /**
      * Get the value property: Json.
-     *
+     * 
      * @return the value value.
      */
     public Map<String, Object> value() {
@@ -49,7 +49,7 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
 
     /**
      * Set the value property: Json.
-     *
+     * 
      * @param value the value value to set.
      * @return the MicrosoftGraphWorkbookChartPoint object itself.
      */
@@ -60,7 +60,7 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
 
     /**
      * Get the format property: workbookChartPointFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartPointFormat format() {
@@ -69,7 +69,7 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
 
     /**
      * Set the format property: workbookChartPointFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChartPoint object itself.
      */
@@ -80,17 +80,16 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
 
     /**
      * Get the additionalProperties property: workbookChartPoint.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartPoint.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartPoint object itself.
      */
@@ -99,15 +98,9 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartPoint withId(String id) {
         super.withId(id);
@@ -116,7 +109,7 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -125,5 +118,61 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
         if (format() != null) {
             format().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("value", this.value, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("format", this.format);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartPoint if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartPoint.
+     */
+    public static MicrosoftGraphWorkbookChartPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartPoint deserializedMicrosoftGraphWorkbookChartPoint
+                = new MicrosoftGraphWorkbookChartPoint();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartPoint.withId(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    Map<String, Object> value = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookChartPoint.value = value;
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartPoint.format
+                        = MicrosoftGraphWorkbookChartPointFormat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartPoint.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartPoint;
+        });
     }
 }

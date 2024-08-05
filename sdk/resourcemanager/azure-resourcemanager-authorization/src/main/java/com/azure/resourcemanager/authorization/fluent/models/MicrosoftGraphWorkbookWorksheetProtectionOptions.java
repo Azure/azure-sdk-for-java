@@ -5,95 +5,90 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookWorksheetProtectionOptions. */
+/**
+ * workbookWorksheetProtectionOptions.
+ */
 @Fluent
-public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
+public final class MicrosoftGraphWorkbookWorksheetProtectionOptions
+    implements JsonSerializable<MicrosoftGraphWorkbookWorksheetProtectionOptions> {
     /*
      * Represents the worksheet protection option of allowing using auto filter feature.
      */
-    @JsonProperty(value = "allowAutoFilter")
     private Boolean allowAutoFilter;
 
     /*
      * Represents the worksheet protection option of allowing deleting columns.
      */
-    @JsonProperty(value = "allowDeleteColumns")
     private Boolean allowDeleteColumns;
 
     /*
      * Represents the worksheet protection option of allowing deleting rows.
      */
-    @JsonProperty(value = "allowDeleteRows")
     private Boolean allowDeleteRows;
 
     /*
      * Represents the worksheet protection option of allowing formatting cells.
      */
-    @JsonProperty(value = "allowFormatCells")
     private Boolean allowFormatCells;
 
     /*
      * Represents the worksheet protection option of allowing formatting columns.
      */
-    @JsonProperty(value = "allowFormatColumns")
     private Boolean allowFormatColumns;
 
     /*
      * Represents the worksheet protection option of allowing formatting rows.
      */
-    @JsonProperty(value = "allowFormatRows")
     private Boolean allowFormatRows;
 
     /*
      * Represents the worksheet protection option of allowing inserting columns.
      */
-    @JsonProperty(value = "allowInsertColumns")
     private Boolean allowInsertColumns;
 
     /*
      * Represents the worksheet protection option of allowing inserting hyperlinks.
      */
-    @JsonProperty(value = "allowInsertHyperlinks")
     private Boolean allowInsertHyperlinks;
 
     /*
      * Represents the worksheet protection option of allowing inserting rows.
      */
-    @JsonProperty(value = "allowInsertRows")
     private Boolean allowInsertRows;
 
     /*
      * Represents the worksheet protection option of allowing using pivot table feature.
      */
-    @JsonProperty(value = "allowPivotTables")
     private Boolean allowPivotTables;
 
     /*
      * Represents the worksheet protection option of allowing using sort feature.
      */
-    @JsonProperty(value = "allowSort")
     private Boolean allowSort;
 
     /*
      * workbookWorksheetProtectionOptions
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookWorksheetProtectionOptions class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookWorksheetProtectionOptions class.
+     */
     public MicrosoftGraphWorkbookWorksheetProtectionOptions() {
     }
 
     /**
      * Get the allowAutoFilter property: Represents the worksheet protection option of allowing using auto filter
      * feature.
-     *
+     * 
      * @return the allowAutoFilter value.
      */
     public Boolean allowAutoFilter() {
@@ -103,7 +98,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     /**
      * Set the allowAutoFilter property: Represents the worksheet protection option of allowing using auto filter
      * feature.
-     *
+     * 
      * @param allowAutoFilter the allowAutoFilter value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -114,7 +109,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowDeleteColumns property: Represents the worksheet protection option of allowing deleting columns.
-     *
+     * 
      * @return the allowDeleteColumns value.
      */
     public Boolean allowDeleteColumns() {
@@ -123,7 +118,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowDeleteColumns property: Represents the worksheet protection option of allowing deleting columns.
-     *
+     * 
      * @param allowDeleteColumns the allowDeleteColumns value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -134,7 +129,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowDeleteRows property: Represents the worksheet protection option of allowing deleting rows.
-     *
+     * 
      * @return the allowDeleteRows value.
      */
     public Boolean allowDeleteRows() {
@@ -143,7 +138,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowDeleteRows property: Represents the worksheet protection option of allowing deleting rows.
-     *
+     * 
      * @param allowDeleteRows the allowDeleteRows value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -154,7 +149,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowFormatCells property: Represents the worksheet protection option of allowing formatting cells.
-     *
+     * 
      * @return the allowFormatCells value.
      */
     public Boolean allowFormatCells() {
@@ -163,7 +158,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowFormatCells property: Represents the worksheet protection option of allowing formatting cells.
-     *
+     * 
      * @param allowFormatCells the allowFormatCells value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -174,7 +169,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowFormatColumns property: Represents the worksheet protection option of allowing formatting columns.
-     *
+     * 
      * @return the allowFormatColumns value.
      */
     public Boolean allowFormatColumns() {
@@ -183,7 +178,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowFormatColumns property: Represents the worksheet protection option of allowing formatting columns.
-     *
+     * 
      * @param allowFormatColumns the allowFormatColumns value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -194,7 +189,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowFormatRows property: Represents the worksheet protection option of allowing formatting rows.
-     *
+     * 
      * @return the allowFormatRows value.
      */
     public Boolean allowFormatRows() {
@@ -203,7 +198,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowFormatRows property: Represents the worksheet protection option of allowing formatting rows.
-     *
+     * 
      * @param allowFormatRows the allowFormatRows value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -214,7 +209,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowInsertColumns property: Represents the worksheet protection option of allowing inserting columns.
-     *
+     * 
      * @return the allowInsertColumns value.
      */
     public Boolean allowInsertColumns() {
@@ -223,7 +218,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowInsertColumns property: Represents the worksheet protection option of allowing inserting columns.
-     *
+     * 
      * @param allowInsertColumns the allowInsertColumns value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -235,7 +230,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     /**
      * Get the allowInsertHyperlinks property: Represents the worksheet protection option of allowing inserting
      * hyperlinks.
-     *
+     * 
      * @return the allowInsertHyperlinks value.
      */
     public Boolean allowInsertHyperlinks() {
@@ -245,7 +240,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     /**
      * Set the allowInsertHyperlinks property: Represents the worksheet protection option of allowing inserting
      * hyperlinks.
-     *
+     * 
      * @param allowInsertHyperlinks the allowInsertHyperlinks value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -256,7 +251,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowInsertRows property: Represents the worksheet protection option of allowing inserting rows.
-     *
+     * 
      * @return the allowInsertRows value.
      */
     public Boolean allowInsertRows() {
@@ -265,7 +260,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowInsertRows property: Represents the worksheet protection option of allowing inserting rows.
-     *
+     * 
      * @param allowInsertRows the allowInsertRows value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -277,7 +272,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     /**
      * Get the allowPivotTables property: Represents the worksheet protection option of allowing using pivot table
      * feature.
-     *
+     * 
      * @return the allowPivotTables value.
      */
     public Boolean allowPivotTables() {
@@ -287,7 +282,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     /**
      * Set the allowPivotTables property: Represents the worksheet protection option of allowing using pivot table
      * feature.
-     *
+     * 
      * @param allowPivotTables the allowPivotTables value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -298,7 +293,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the allowSort property: Represents the worksheet protection option of allowing using sort feature.
-     *
+     * 
      * @return the allowSort value.
      */
     public Boolean allowSort() {
@@ -307,7 +302,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Set the allowSort property: Represents the worksheet protection option of allowing using sort feature.
-     *
+     * 
      * @param allowSort the allowSort value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
@@ -318,39 +313,119 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
 
     /**
      * Get the additionalProperties property: workbookWorksheetProtectionOptions.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookWorksheetProtectionOptions.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtectionOptions object itself.
      */
-    public MicrosoftGraphWorkbookWorksheetProtectionOptions withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphWorkbookWorksheetProtectionOptions
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowAutoFilter", this.allowAutoFilter);
+        jsonWriter.writeBooleanField("allowDeleteColumns", this.allowDeleteColumns);
+        jsonWriter.writeBooleanField("allowDeleteRows", this.allowDeleteRows);
+        jsonWriter.writeBooleanField("allowFormatCells", this.allowFormatCells);
+        jsonWriter.writeBooleanField("allowFormatColumns", this.allowFormatColumns);
+        jsonWriter.writeBooleanField("allowFormatRows", this.allowFormatRows);
+        jsonWriter.writeBooleanField("allowInsertColumns", this.allowInsertColumns);
+        jsonWriter.writeBooleanField("allowInsertHyperlinks", this.allowInsertHyperlinks);
+        jsonWriter.writeBooleanField("allowInsertRows", this.allowInsertRows);
+        jsonWriter.writeBooleanField("allowPivotTables", this.allowPivotTables);
+        jsonWriter.writeBooleanField("allowSort", this.allowSort);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookWorksheetProtectionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookWorksheetProtectionOptions if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookWorksheetProtectionOptions.
+     */
+    public static MicrosoftGraphWorkbookWorksheetProtectionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookWorksheetProtectionOptions deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions
+                = new MicrosoftGraphWorkbookWorksheetProtectionOptions();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowAutoFilter".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowAutoFilter
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowDeleteColumns".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowDeleteColumns
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowDeleteRows".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowDeleteRows
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowFormatCells".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowFormatCells
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowFormatColumns".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowFormatColumns
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowFormatRows".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowFormatRows
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowInsertColumns".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowInsertColumns
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowInsertHyperlinks".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowInsertHyperlinks
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowInsertRows".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowInsertRows
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowPivotTables".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowPivotTables
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowSort".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.allowSort
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookWorksheetProtectionOptions;
+        });
     }
 }

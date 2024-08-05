@@ -39,32 +39,40 @@ public final class DeploymentsCreateOrUpdateSamples {
      */
     public static void deploymentsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
-        azure.springServices().manager().serviceClient().getDeployments().createOrUpdate("myResourceGroup", "myservice",
-            "myapp", "mydeployment",
-            new DeploymentResourceInner().withProperties(new DeploymentResourceProperties()
-                .withSource(new SourceUploadedUserSourceInfo().withVersion("1.0").withRelativePath(
-                    "resources/a172cedcae47474b615c54d510a5d84a8dea3032e958587430b413538be3f333-2019082605-e3095339-1723-44b7-8b5e-31b1003978bc")
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .createOrUpdate("myResourceGroup", "myservice", "myapp", "mydeployment", new DeploymentResourceInner()
+                .withProperties(new DeploymentResourceProperties().withSource(new SourceUploadedUserSourceInfo()
+                    .withVersion("1.0")
+                    .withRelativePath(
+                        "resources/a172cedcae47474b615c54d510a5d84a8dea3032e958587430b413538be3f333-2019082605-e3095339-1723-44b7-8b5e-31b1003978bc")
                     .withArtifactSelector("sub-module-1"))
-                .withDeploymentSettings(new DeploymentSettings()
-                    .withResourceRequests(new ResourceRequests().withCpu("1000m").withMemory("3Gi"))
-                    .withEnvironmentVariables(mapOf("env", "test"))
-                    .withApms(Arrays.asList(new ApmReference().withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights")))
-                    .withAddonConfigs(mapOf("ApplicationConfigurationService",
-                        mapOf("patterns",
-                            SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("[\"mypattern\"]",
-                                Object.class, SerializerEncoding.JSON))))
-                    .withLivenessProbe(new Probe()
-                        .withProbeAction(new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
-                        .withDisableProbe(false).withInitialDelaySeconds(30).withPeriodSeconds(10)
-                        .withFailureThreshold(3))
-                    .withReadinessProbe(new Probe()
-                        .withProbeAction(new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
-                        .withDisableProbe(false).withInitialDelaySeconds(30).withPeriodSeconds(10)
-                        .withFailureThreshold(3))
-                    .withTerminationGracePeriodSeconds(30)))
+                    .withDeploymentSettings(new DeploymentSettings()
+                        .withResourceRequests(new ResourceRequests().withCpu("1000m").withMemory("3Gi"))
+                        .withEnvironmentVariables(mapOf("env", "test"))
+                        .withApms(Arrays.asList(new ApmReference().withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights")))
+                        .withAddonConfigs(mapOf("ApplicationConfigurationService",
+                            mapOf("patterns",
+                                SerializerFactory.createDefaultManagementSerializerAdapter()
+                                    .deserialize("[\"mypattern\"]", Object.class, SerializerEncoding.JSON))))
+                        .withLivenessProbe(new Probe()
+                            .withProbeAction(new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                            .withDisableProbe(false)
+                            .withInitialDelaySeconds(30)
+                            .withPeriodSeconds(10)
+                            .withFailureThreshold(3))
+                        .withReadinessProbe(new Probe()
+                            .withProbeAction(new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                            .withDisableProbe(false)
+                            .withInitialDelaySeconds(30)
+                            .withPeriodSeconds(10)
+                            .withFailureThreshold(3))
+                        .withTerminationGracePeriodSeconds(30)))
                 .withSku(new Sku().withName("S0").withTier("Standard").withCapacity(1)),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -77,31 +85,37 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsCreateOrUpdateCustomContainer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
             .createOrUpdate("myResourceGroup", "myservice", "myapp", "mydeployment",
-                new DeploymentResourceInner()
-                    .withProperties(new DeploymentResourceProperties()
-                        .withSource(new CustomContainerUserSourceInfo().withCustomContainer(new CustomContainer()
-                            .withServer("myacr.azurecr.io").withContainerImage("myContainerImage:v1")
-                            .withCommand(Arrays.asList("/bin/sh"))
-                            .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
-                            .withImageRegistryCredential(new ImageRegistryCredential().withUsername("myUsername")
-                                .withPassword("fakeTokenPlaceholder"))
-                            .withLanguageFramework("springboot")))
-                        .withDeploymentSettings(new DeploymentSettings()
-                            .withResourceRequests(new ResourceRequests().withCpu("1000m").withMemory("3Gi"))
-                            .withEnvironmentVariables(mapOf("env", "test"))
-                            .withLivenessProbe(new Probe()
-                                .withProbeAction(
-                                    new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
-                                .withDisableProbe(false).withInitialDelaySeconds(30).withPeriodSeconds(10)
-                                .withFailureThreshold(3))
-                            .withReadinessProbe(new Probe()
-                                .withProbeAction(
-                                    new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
-                                .withDisableProbe(false).withInitialDelaySeconds(30).withPeriodSeconds(10)
-                                .withFailureThreshold(3))
-                            .withTerminationGracePeriodSeconds(30))),
+                new DeploymentResourceInner().withProperties(new DeploymentResourceProperties()
+                    .withSource(new CustomContainerUserSourceInfo()
+                        .withCustomContainer(
+                            new CustomContainer().withServer("myacr.azurecr.io")
+                                .withContainerImage("myContainerImage:v1")
+                                .withCommand(Arrays.asList("/bin/sh"))
+                                .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
+                                .withImageRegistryCredential(new ImageRegistryCredential().withUsername("myUsername")
+                                    .withPassword("fakeTokenPlaceholder"))
+                                .withLanguageFramework("springboot")))
+                    .withDeploymentSettings(new DeploymentSettings()
+                        .withResourceRequests(new ResourceRequests().withCpu("1000m").withMemory("3Gi"))
+                        .withEnvironmentVariables(mapOf("env", "test"))
+                        .withLivenessProbe(new Probe()
+                            .withProbeAction(new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                            .withDisableProbe(false)
+                            .withInitialDelaySeconds(30)
+                            .withPeriodSeconds(10)
+                            .withFailureThreshold(3))
+                        .withReadinessProbe(new Probe()
+                            .withProbeAction(new HttpGetAction().withPath("/health").withScheme(HttpSchemeType.HTTP))
+                            .withDisableProbe(false)
+                            .withInitialDelaySeconds(30)
+                            .withPeriodSeconds(10)
+                            .withFailureThreshold(3))
+                        .withTerminationGracePeriodSeconds(30))),
                 com.azure.core.util.Context.NONE);
     }
 

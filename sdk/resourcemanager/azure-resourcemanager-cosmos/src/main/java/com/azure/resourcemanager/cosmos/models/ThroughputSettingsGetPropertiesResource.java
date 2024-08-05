@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ThroughputSettingsGetPropertiesResource model.
@@ -15,20 +18,37 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * The minimum throughput of the resource
+     */
+    private String minimumThroughput;
+
+    /*
+     * The throughput replace is pending
+     */
+    private String offerReplacePending;
+
+    /*
+     * The offer throughput value to instantly scale up without triggering splits
+     */
+    private String instantMaximumThroughput;
+
+    /*
+     * The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+     */
+    private String softAllowedMaximumThroughput;
 
     /**
      * Creates an instance of ThroughputSettingsGetPropertiesResource class.
@@ -65,6 +85,48 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     }
 
     /**
+     * Get the minimumThroughput property: The minimum throughput of the resource.
+     * 
+     * @return the minimumThroughput value.
+     */
+    @Override
+    public String minimumThroughput() {
+        return this.minimumThroughput;
+    }
+
+    /**
+     * Get the offerReplacePending property: The throughput replace is pending.
+     * 
+     * @return the offerReplacePending value.
+     */
+    @Override
+    public String offerReplacePending() {
+        return this.offerReplacePending;
+    }
+
+    /**
+     * Get the instantMaximumThroughput property: The offer throughput value to instantly scale up without triggering
+     * splits.
+     * 
+     * @return the instantMaximumThroughput value.
+     */
+    @Override
+    public String instantMaximumThroughput() {
+        return this.instantMaximumThroughput;
+    }
+
+    /**
+     * Get the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
+     * (for autoscale) that can be specified.
+     * 
+     * @return the softAllowedMaximumThroughput value.
+     */
+    @Override
+    public String softAllowedMaximumThroughput() {
+        return this.softAllowedMaximumThroughput;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -90,5 +152,62 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("throughput", throughput());
+        jsonWriter.writeJsonField("autoscaleSettings", autoscaleSettings());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThroughputSettingsGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThroughputSettingsGetPropertiesResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThroughputSettingsGetPropertiesResource.
+     */
+    public static ThroughputSettingsGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThroughputSettingsGetPropertiesResource deserializedThroughputSettingsGetPropertiesResource
+                = new ThroughputSettingsGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("throughput".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource
+                        .withThroughput(reader.getNullable(JsonReader::getInt));
+                } else if ("autoscaleSettings".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource
+                        .withAutoscaleSettings(AutoscaleSettingsResource.fromJson(reader));
+                } else if ("minimumThroughput".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.minimumThroughput = reader.getString();
+                } else if ("offerReplacePending".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.offerReplacePending = reader.getString();
+                } else if ("instantMaximumThroughput".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.instantMaximumThroughput = reader.getString();
+                } else if ("softAllowedMaximumThroughput".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.softAllowedMaximumThroughput
+                        = reader.getString();
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedThroughputSettingsGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThroughputSettingsGetPropertiesResource;
+        });
     }
 }

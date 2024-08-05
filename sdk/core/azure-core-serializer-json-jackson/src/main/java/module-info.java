@@ -11,6 +11,7 @@ module com.azure.core.serializer.json.jackson {
     requires com.fasterxml.jackson.datatype.jsr310;
 
     exports com.azure.core.serializer.json.jackson;
+    exports com.azure.core.serializer.json.jackson.models;
 
     provides com.azure.json.JsonProvider with com.azure.core.serializer.json.jackson.JacksonJsonProvider;
     provides com.azure.core.util.serializer.MemberNameConverterProvider

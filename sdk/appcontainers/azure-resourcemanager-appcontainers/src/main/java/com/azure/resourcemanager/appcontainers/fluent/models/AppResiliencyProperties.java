@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.CircuitBreakerPolicy;
 import com.azure.resourcemanager.appcontainers.models.HttpConnectionPool;
 import com.azure.resourcemanager.appcontainers.models.HttpRetryPolicy;
 import com.azure.resourcemanager.appcontainers.models.TcpConnectionPool;
 import com.azure.resourcemanager.appcontainers.models.TcpRetryPolicy;
 import com.azure.resourcemanager.appcontainers.models.TimeoutPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * App Resiliency resource specific properties.
  */
 @Fluent
-public final class AppResiliencyProperties {
+public final class AppResiliencyProperties implements JsonSerializable<AppResiliencyProperties> {
     /*
      * Policy to set request timeouts
      */
-    @JsonProperty(value = "timeoutPolicy")
     private TimeoutPolicy timeoutPolicy;
 
     /*
      * Policy that defines http request retry conditions
      */
-    @JsonProperty(value = "httpRetryPolicy")
     private HttpRetryPolicy httpRetryPolicy;
 
     /*
      * Policy that defines tcp request retry conditions
      */
-    @JsonProperty(value = "tcpRetryPolicy")
     private TcpRetryPolicy tcpRetryPolicy;
 
     /*
      * Policy that defines circuit breaker conditions
      */
-    @JsonProperty(value = "circuitBreakerPolicy")
     private CircuitBreakerPolicy circuitBreakerPolicy;
 
     /*
      * Defines parameters for http connection pooling
      */
-    @JsonProperty(value = "httpConnectionPool")
     private HttpConnectionPool httpConnectionPool;
 
     /*
      * Defines parameters for tcp connection pooling
      */
-    @JsonProperty(value = "tcpConnectionPool")
     private TcpConnectionPool tcpConnectionPool;
 
     /**
@@ -204,5 +202,56 @@ public final class AppResiliencyProperties {
         if (tcpConnectionPool() != null) {
             tcpConnectionPool().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("timeoutPolicy", this.timeoutPolicy);
+        jsonWriter.writeJsonField("httpRetryPolicy", this.httpRetryPolicy);
+        jsonWriter.writeJsonField("tcpRetryPolicy", this.tcpRetryPolicy);
+        jsonWriter.writeJsonField("circuitBreakerPolicy", this.circuitBreakerPolicy);
+        jsonWriter.writeJsonField("httpConnectionPool", this.httpConnectionPool);
+        jsonWriter.writeJsonField("tcpConnectionPool", this.tcpConnectionPool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppResiliencyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppResiliencyProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppResiliencyProperties.
+     */
+    public static AppResiliencyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppResiliencyProperties deserializedAppResiliencyProperties = new AppResiliencyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeoutPolicy".equals(fieldName)) {
+                    deserializedAppResiliencyProperties.timeoutPolicy = TimeoutPolicy.fromJson(reader);
+                } else if ("httpRetryPolicy".equals(fieldName)) {
+                    deserializedAppResiliencyProperties.httpRetryPolicy = HttpRetryPolicy.fromJson(reader);
+                } else if ("tcpRetryPolicy".equals(fieldName)) {
+                    deserializedAppResiliencyProperties.tcpRetryPolicy = TcpRetryPolicy.fromJson(reader);
+                } else if ("circuitBreakerPolicy".equals(fieldName)) {
+                    deserializedAppResiliencyProperties.circuitBreakerPolicy = CircuitBreakerPolicy.fromJson(reader);
+                } else if ("httpConnectionPool".equals(fieldName)) {
+                    deserializedAppResiliencyProperties.httpConnectionPool = HttpConnectionPool.fromJson(reader);
+                } else if ("tcpConnectionPool".equals(fieldName)) {
+                    deserializedAppResiliencyProperties.tcpConnectionPool = TcpConnectionPool.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppResiliencyProperties;
+        });
     }
 }

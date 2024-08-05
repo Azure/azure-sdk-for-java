@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.storage.blob;
 
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.resource.AzureStorageBlobProtocolResolver;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -15,7 +16,8 @@ class AzureStorageBlobResourceAutoConfigurationTests {
 
     private static final String MOCK_URL = "https://test.blob.core.windows.net/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureStorageBlobResourceAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureStorageBlobResourceAutoConfiguration.class))
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new);
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
@@ -23,7 +25,7 @@ class AzureStorageBlobResourceAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(accountNameProperty)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureStorageBlobResourceAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolverConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class);
             });
     }
@@ -34,7 +36,7 @@ class AzureStorageBlobResourceAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(endpointProperty + "=" + MOCK_URL)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureStorageBlobResourceAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolverConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class);
             });
     }
@@ -45,7 +47,7 @@ class AzureStorageBlobResourceAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(connectionStringProperty)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureStorageBlobResourceAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolverConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class);
             });
     }
@@ -57,7 +59,7 @@ class AzureStorageBlobResourceAutoConfigurationTests {
             .withPropertyValues(
                 accountNameProperty,
                 "spring.cloud.azure.storage.blob.enabled:false")
-            .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageBlobResourceAutoConfiguration.class));
+            .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageBlobProtocolResolverConfiguration.class));
     }
 
     @ParameterizedTest
@@ -68,6 +70,6 @@ class AzureStorageBlobResourceAutoConfigurationTests {
                 "spring.cloud.azure.storage.enabled=false",
                 accoutNameProperty
             )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobResourceAutoConfiguration.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobProtocolResolverConfiguration.class));
     }
 }

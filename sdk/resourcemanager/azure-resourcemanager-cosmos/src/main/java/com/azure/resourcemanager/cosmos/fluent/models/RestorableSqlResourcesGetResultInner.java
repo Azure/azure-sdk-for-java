@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specific Databases to restore.
  */
 @Fluent
-public final class RestorableSqlResourcesGetResultInner {
+public final class RestorableSqlResourcesGetResultInner
+    implements JsonSerializable<RestorableSqlResourcesGetResultInner> {
     /*
      * The unique resource identifier of the ARM resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the ARM resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of Azure resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The name of the database available for restore.
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * The names of the collections available for restore.
      */
-    @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
     /**
@@ -122,5 +122,53 @@ public final class RestorableSqlResourcesGetResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeArrayField("collectionNames", this.collectionNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableSqlResourcesGetResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableSqlResourcesGetResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableSqlResourcesGetResultInner.
+     */
+    public static RestorableSqlResourcesGetResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableSqlResourcesGetResultInner deserializedRestorableSqlResourcesGetResultInner
+                = new RestorableSqlResourcesGetResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorableSqlResourcesGetResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableSqlResourcesGetResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableSqlResourcesGetResultInner.type = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedRestorableSqlResourcesGetResultInner.databaseName = reader.getString();
+                } else if ("collectionNames".equals(fieldName)) {
+                    List<String> collectionNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRestorableSqlResourcesGetResultInner.collectionNames = collectionNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableSqlResourcesGetResultInner;
+        });
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
@@ -13,6 +15,7 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.ServiceAttributes;
 import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,8 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.zip.GZIPOutputStream;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.serialize;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.TELEMETRY_ITEM_EXPORTER_ERROR;
 
 public class TelemetryItemExporter {
@@ -128,6 +131,40 @@ public class TelemetryItemExporter {
         }
         return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
     }
+
+    // serialize an array of TelemetryItems to an array of byte buffers
+    private static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
+        try {
+            ByteBufferOutputStream out = writeTelemetryItemsAsByteBufferOutputStream(telemetryItems);
+            out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
+            List<ByteBuffer> byteBuffers = out.getByteBuffers();
+            for (ByteBuffer byteBuffer : byteBuffers) {
+                byteBuffer.flip();
+            }
+            return out.getByteBuffers();
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to serialize list of TelemetryItems to List<ByteBuffer>", e);
+        }
+    }
+
+    // gzip and add new line delimiter from a list of telemetry items to a byte buffer output stream
+    private static ByteBufferOutputStream writeTelemetryItemsAsByteBufferOutputStream(List<TelemetryItem> telemetryItems) throws IOException {
+        try (ByteBufferOutputStream result = new ByteBufferOutputStream(new AppInsightsByteBufferPool())) {
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
+            for (int i = 0; i < telemetryItems.size(); i++) {
+                JsonWriter jsonWriter = JsonProviders.createWriter(gzipOutputStream);
+                telemetryItems.get(i).toJson(jsonWriter);
+                jsonWriter.flush();
+
+                if (i < telemetryItems.size() - 1) {
+                    gzipOutputStream.write('\n');
+                }
+            }
+            gzipOutputStream.close();
+            return result;
+        }
+    }
+
 
     private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);

@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,25 +19,21 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     /*
      * A system generated property that specifies the addressable path of the container resource.
      */
-    @JsonProperty(value = "_self", access = JsonProperty.Access.WRITE_ONLY)
     private String self;
 
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -46,7 +44,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Get the self property: A system generated property that specifies the addressable path of the container resource.
-     *
+     * 
      * @return the self value.
      */
     public String self() {
@@ -55,7 +53,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -64,7 +62,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -74,7 +72,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -186,11 +184,101 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("indexingPolicy", indexingPolicy());
+        jsonWriter.writeJsonField("partitionKey", partitionKey());
+        jsonWriter.writeNumberField("defaultTtl", defaultTtl());
+        jsonWriter.writeJsonField("uniqueKeyPolicy", uniqueKeyPolicy());
+        jsonWriter.writeJsonField("conflictResolutionPolicy", conflictResolutionPolicy());
+        jsonWriter.writeJsonField("clientEncryptionPolicy", clientEncryptionPolicy());
+        jsonWriter.writeNumberField("analyticalStorageTtl", analyticalStorageTtl());
+        jsonWriter.writeJsonField("restoreParameters", restoreParameters());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeArrayField("computedProperties", computedProperties(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableSqlContainerPropertiesResourceContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableSqlContainerPropertiesResourceContainer if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestorableSqlContainerPropertiesResourceContainer.
+     */
+    public static RestorableSqlContainerPropertiesResourceContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableSqlContainerPropertiesResourceContainer deserializedRestorableSqlContainerPropertiesResourceContainer
+                = new RestorableSqlContainerPropertiesResourceContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer.withId(reader.getString());
+                } else if ("indexingPolicy".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withIndexingPolicy(IndexingPolicy.fromJson(reader));
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withPartitionKey(ContainerPartitionKey.fromJson(reader));
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withDefaultTtl(reader.getNullable(JsonReader::getInt));
+                } else if ("uniqueKeyPolicy".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withUniqueKeyPolicy(UniqueKeyPolicy.fromJson(reader));
+                } else if ("conflictResolutionPolicy".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withConflictResolutionPolicy(ConflictResolutionPolicy.fromJson(reader));
+                } else if ("clientEncryptionPolicy".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withClientEncryptionPolicy(ClientEncryptionPolicy.fromJson(reader));
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withAnalyticalStorageTtl(reader.getNullable(JsonReader::getLong));
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withRestoreParameters(ResourceRestoreParameters.fromJson(reader));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("computedProperties".equals(fieldName)) {
+                    List<ComputedProperty> computedProperties
+                        = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withComputedProperties(computedProperties);
+                } else if ("_self".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer.self = reader.getString();
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer.ts
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableSqlContainerPropertiesResourceContainer;
+        });
     }
 }

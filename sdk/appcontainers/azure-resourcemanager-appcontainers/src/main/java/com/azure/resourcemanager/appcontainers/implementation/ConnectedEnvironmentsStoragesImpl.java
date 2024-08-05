@@ -11,9 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsStoragesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStoragesCollectionInner;
+import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentsStorages;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStorage;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStoragesCollection;
-import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentsStorages;
 
 public final class ConnectedEnvironmentsStoragesImpl implements ConnectedEnvironmentsStorages {
     private static final ClientLogger LOGGER = new ClientLogger(ConnectedEnvironmentsStoragesImpl.class);
@@ -75,8 +75,8 @@ public final class ConnectedEnvironmentsStoragesImpl implements ConnectedEnviron
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String storageName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String storageName) {

@@ -6,17 +6,21 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of VIP swap request's frontend IP configuration object.
  */
 @Fluent
-public final class LoadBalancerVipSwapRequestFrontendIpConfigurationProperties {
+public final class LoadBalancerVipSwapRequestFrontendIpConfigurationProperties
+    implements JsonSerializable<LoadBalancerVipSwapRequestFrontendIpConfigurationProperties> {
     /*
      * A reference to public IP address resource.
      */
-    @JsonProperty(value = "publicIPAddress")
     private SubResource publicIpAddress;
 
     /**
@@ -52,5 +56,45 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerVipSwapRequestFrontendIpConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerVipSwapRequestFrontendIpConfigurationProperties if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * LoadBalancerVipSwapRequestFrontendIpConfigurationProperties.
+     */
+    public static LoadBalancerVipSwapRequestFrontendIpConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerVipSwapRequestFrontendIpConfigurationProperties deserializedLoadBalancerVipSwapRequestFrontendIpConfigurationProperties
+                = new LoadBalancerVipSwapRequestFrontendIpConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicIPAddress".equals(fieldName)) {
+                    deserializedLoadBalancerVipSwapRequestFrontendIpConfigurationProperties.publicIpAddress
+                        = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
+        });
     }
 }

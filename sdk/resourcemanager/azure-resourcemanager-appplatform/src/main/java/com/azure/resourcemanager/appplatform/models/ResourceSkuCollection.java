@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Object that includes an array of Azure Spring Apps SKU and a possible link for next set.
  */
 @Fluent
-public final class ResourceSkuCollection {
+public final class ResourceSkuCollection implements JsonSerializable<ResourceSkuCollection> {
     /*
      * Collection of resource SKU
      */
-    @JsonProperty(value = "value")
     private List<ResourceSku> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,5 +85,45 @@ public final class ResourceSkuCollection {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuCollection.
+     */
+    public static ResourceSkuCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuCollection deserializedResourceSkuCollection = new ResourceSkuCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ResourceSku> value = reader.readArray(reader1 -> ResourceSku.fromJson(reader1));
+                    deserializedResourceSkuCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedResourceSkuCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuCollection;
+        });
     }
 }

@@ -6,18 +6,22 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties to create and update ClientEncryptionKey.
  */
 @Fluent
-public final class ClientEncryptionKeyCreateUpdateProperties {
+public final class ClientEncryptionKeyCreateUpdateProperties
+    implements JsonSerializable<ClientEncryptionKeyCreateUpdateProperties> {
     /*
      * The standard JSON format of a ClientEncryptionKey
      */
-    @JsonProperty(value = "resource", required = true)
     private ClientEncryptionKeyResource resource;
 
     /**
@@ -62,4 +66,43 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientEncryptionKeyCreateUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientEncryptionKeyCreateUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientEncryptionKeyCreateUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClientEncryptionKeyCreateUpdateProperties.
+     */
+    public static ClientEncryptionKeyCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientEncryptionKeyCreateUpdateProperties deserializedClientEncryptionKeyCreateUpdateProperties
+                = new ClientEncryptionKeyCreateUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedClientEncryptionKeyCreateUpdateProperties.resource
+                        = ClientEncryptionKeyResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientEncryptionKeyCreateUpdateProperties;
+        });
+    }
 }

@@ -5,34 +5,46 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Uploaded Java source code binary for a deployment.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Source")
 @Fluent
 public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
+    /*
+     * Type of the source uploaded
+     */
+    private String type = "Source";
+
     /*
      * Selector for the artifact to be used for the deployment for multi-module projects. This should be
      * the relative path to the target module/project.
      */
-    @JsonProperty(value = "artifactSelector")
     private String artifactSelector;
 
     /*
      * Runtime version of the source file
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /**
      * Creates an instance of SourceUploadedUserSourceInfo class.
      */
     public SourceUploadedUserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -105,5 +117,53 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("relativePath", relativePath());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("artifactSelector", this.artifactSelector);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceUploadedUserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceUploadedUserSourceInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceUploadedUserSourceInfo.
+     */
+    public static SourceUploadedUserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceUploadedUserSourceInfo deserializedSourceUploadedUserSourceInfo = new SourceUploadedUserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedSourceUploadedUserSourceInfo.withVersion(reader.getString());
+                } else if ("relativePath".equals(fieldName)) {
+                    deserializedSourceUploadedUserSourceInfo.withRelativePath(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSourceUploadedUserSourceInfo.type = reader.getString();
+                } else if ("artifactSelector".equals(fieldName)) {
+                    deserializedSourceUploadedUserSourceInfo.artifactSelector = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedSourceUploadedUserSourceInfo.runtimeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceUploadedUserSourceInfo;
+        });
     }
 }

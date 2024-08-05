@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The AccessPolicy model.
  */
 @Fluent
-public final class AccessPolicy {
+public final class AccessPolicy implements JsonSerializable<AccessPolicy> {
     /*
      * Start time of the access policy
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Expiry time of the access policy
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * List of abbreviated permissions.
      */
-    @JsonProperty(value = "permission")
     private String permission;
 
     /**
@@ -103,5 +106,51 @@ public final class AccessPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeStringField("permission", this.permission);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessPolicy.
+     */
+    public static AccessPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicy deserializedAccessPolicy = new AccessPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedAccessPolicy.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedAccessPolicy.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("permission".equals(fieldName)) {
+                    deserializedAccessPolicy.permission = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicy;
+        });
     }
 }

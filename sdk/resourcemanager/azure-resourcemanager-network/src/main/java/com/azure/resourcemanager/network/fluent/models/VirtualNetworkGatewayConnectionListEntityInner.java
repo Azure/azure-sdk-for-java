@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -18,7 +21,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionM
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,21 +33,28 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     /*
      * Properties of the virtual network gateway connection.
      */
-    @JsonProperty(value = "properties", required = true)
     private VirtualNetworkGatewayConnectionListEntityPropertiesFormat innerProperties
         = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VirtualNetworkGatewayConnectionListEntityInner class.
@@ -88,6 +98,26 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     public VirtualNetworkGatewayConnectionListEntityInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -584,4 +614,59 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayConnectionListEntityInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewayConnectionListEntityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewayConnectionListEntityInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayConnectionListEntityInner.
+     */
+    public static VirtualNetworkGatewayConnectionListEntityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewayConnectionListEntityInner deserializedVirtualNetworkGatewayConnectionListEntityInner
+                = new VirtualNetworkGatewayConnectionListEntityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.innerProperties
+                        = VirtualNetworkGatewayConnectionListEntityPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewayConnectionListEntityInner;
+        });
+    }
 }

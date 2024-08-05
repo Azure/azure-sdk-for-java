@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -41,7 +43,9 @@ public class Paginator {
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-        int maxPageSize) {
+        int maxPageSize,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         int top = -1;
         return getPaginatedQueryResultAsObservable(
@@ -52,7 +56,9 @@ public class Paginator {
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
             qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
+            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+            globalEndpointManager,
+            globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
@@ -63,7 +69,9 @@ public class Paginator {
         int maxPageSize,
         int maxPreFetchCount,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         return getPaginatedQueryResultAsObservable(
             continuationToken,
@@ -74,7 +82,9 @@ public class Paginator {
             maxPreFetchCount,
             false,
             operationContext,
-            cancelledRequestDiagnosticsTracker);
+            cancelledRequestDiagnosticsTracker,
+            globalEndpointManager,
+            globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     public static <T> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
@@ -99,7 +109,10 @@ public class Paginator {
                 top,
                 maxPageSize,
                 isSplitHandlingDisabled,
-                operationContext),
+                operationContext,
+                client.getGlobalEndpointManager(),
+                client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+            ),
             preFetchCount);
     }
 
@@ -137,7 +150,9 @@ public class Paginator {
         int preFetchCount,
         boolean isChangeFeed,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ServerSideOnlyContinuationFetcherImpl<>(
@@ -148,7 +163,9 @@ public class Paginator {
                 top,
                 maxPageSize,
                 operationContext,
-                cancelledRequestDiagnosticsTracker),
+                cancelledRequestDiagnosticsTracker,
+                globalEndpointManager,
+                globalPartitionEndpointManagerForCircuitBreaker),
             preFetchCount);
     }
 
