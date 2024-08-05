@@ -38,9 +38,9 @@ public interface InputAccessor {
     void reset();
 
     /*
-     * /**********************************************************
-     * /* Standard implementation
-     * /**********************************************************
+    /**********************************************************
+    /* Standard implementation
+    /**********************************************************
      */
 
     /**
@@ -128,9 +128,9 @@ public interface InputAccessor {
         }
 
         /*
-         * /**********************************************************
-         * /* Extended API for DataFormatDetector/Matcher
-         * /**********************************************************
+        /**********************************************************
+        /* Extended API for DataFormatDetector/Matcher
+        /**********************************************************
          */
 
         public DataFormatMatcher createMatcher(JsonFactory match, MatchStrength matchStrength) {

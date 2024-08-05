@@ -1,6 +1,7 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
@@ -16,14 +17,14 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  */
 public final class JsonStringEncoder {
     /*
-     * /**********************************************************************
-     * /* Constants
-     * /**********************************************************************
+    /**********************************************************************
+    /* Constants
+    /**********************************************************************
      */
 
-    private final static char[] HC = CharTypes.copyHexChars();
+    private final static char[] HC = CharTypes.copyHexChars(true);
 
-    private final static byte[] HB = CharTypes.copyHexBytes();
+    private final static byte[] HB = CharTypes.copyHexBytes(true);
 
     private final static int SURR1_FIRST = 0xD800;
     private final static int SURR1_LAST = 0xDBFF;
@@ -31,8 +32,8 @@ public final class JsonStringEncoder {
     private final static int SURR2_LAST = 0xDFFF;
 
     // 18-Aug-2021, tatu: [core#712] Change to more dynamic allocation; try
-    // to estimate ok initial encoding buffer, switch to segmented for
-    // possible (but rare) big content
+    //    to estimate ok initial encoding buffer, switch to segmented for
+    //    possible (but rare) big content
 
     final static int MIN_CHAR_BUFFER_SIZE = 16;
     final static int MAX_CHAR_BUFFER_SIZE = 32000; // use segments beyond
@@ -40,9 +41,9 @@ public final class JsonStringEncoder {
     final static int MAX_BYTE_BUFFER_SIZE = 32000; // use segments beyond
 
     /*
-     * /**********************************************************************
-     * /* Construction, instance access
-     * /**********************************************************************
+    /**********************************************************************
+    /* Construction, instance access
+    /**********************************************************************
      */
 
     // Since 2.10 we have stateless singleton and NO fancy ThreadLocal/SofRef caching!!!
@@ -62,9 +63,9 @@ public final class JsonStringEncoder {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API
+    /**********************************************************************
      */
 
     /**
@@ -95,7 +96,12 @@ public final class JsonStringEncoder {
                     if (textBuffer == null) {
                         textBuffer = TextBuffer.fromInitial(outputBuffer);
                     }
-                    outputBuffer = textBuffer.finishCurrentSegment();
+                    try {
+                        outputBuffer = textBuffer.finishCurrentSegment();
+                    } catch (IOException e) {
+                        // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
+                        throw new IllegalStateException(e);
+                    }
                     outPtr = 0;
                 }
                 outputBuffer[outPtr++] = c;
@@ -109,7 +115,8 @@ public final class JsonStringEncoder {
             }
             char d = input.charAt(inPtr++);
             int escCode = escCodes[d];
-            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);;
+            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);
+
             if ((outPtr + length) > outputBuffer.length) {
                 int first = outputBuffer.length - outPtr;
                 if (first > 0) {
@@ -118,7 +125,12 @@ public final class JsonStringEncoder {
                 if (textBuffer == null) {
                     textBuffer = TextBuffer.fromInitial(outputBuffer);
                 }
-                outputBuffer = textBuffer.finishCurrentSegment();
+                try {
+                    outputBuffer = textBuffer.finishCurrentSegment();
+                } catch (IOException e) {
+                    // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
+                    throw new IllegalStateException(e);
+                }
                 int second = length - first;
                 System.arraycopy(qbuf, first, outputBuffer, 0, second);
                 outPtr = second;
@@ -132,7 +144,12 @@ public final class JsonStringEncoder {
             return Arrays.copyOfRange(outputBuffer, 0, outPtr);
         }
         textBuffer.setCurrentLength(outPtr);
-        return textBuffer.contentsAsArray();
+        try {
+            return textBuffer.contentsAsArray();
+        } catch (IOException e) {
+            // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -170,7 +187,12 @@ public final class JsonStringEncoder {
                     if (textBuffer == null) {
                         textBuffer = TextBuffer.fromInitial(outputBuffer);
                     }
-                    outputBuffer = textBuffer.finishCurrentSegment();
+                    try {
+                        outputBuffer = textBuffer.finishCurrentSegment();
+                    } catch (IOException e) {
+                        // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
+                        throw new IllegalStateException(e);
+                    }
                     outPtr = 0;
                 }
                 outputBuffer[outPtr++] = c;
@@ -184,7 +206,8 @@ public final class JsonStringEncoder {
             }
             char d = input.charAt(inPtr++);
             int escCode = escCodes[d];
-            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);;
+            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);
+
             if ((outPtr + length) > outputBuffer.length) {
                 int first = outputBuffer.length - outPtr;
                 if (first > 0) {
@@ -193,7 +216,12 @@ public final class JsonStringEncoder {
                 if (textBuffer == null) {
                     textBuffer = TextBuffer.fromInitial(outputBuffer);
                 }
-                outputBuffer = textBuffer.finishCurrentSegment();
+                try {
+                    outputBuffer = textBuffer.finishCurrentSegment();
+                } catch (IOException e) {
+                    // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
+                    throw new IllegalStateException(e);
+                }
                 int second = length - first;
                 System.arraycopy(qbuf, first, outputBuffer, 0, second);
                 outPtr = second;
@@ -207,7 +235,12 @@ public final class JsonStringEncoder {
             return Arrays.copyOfRange(outputBuffer, 0, outPtr);
         }
         textBuffer.setCurrentLength(outPtr);
-        return textBuffer.contentsAsArray();
+        try {
+            return textBuffer.contentsAsArray();
+        } catch (IOException e) {
+            // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -295,7 +328,7 @@ public final class JsonStringEncoder {
                 outputPtr = 0;
             }
             // Ok, so what did we hit?
-            int ch = (int) text.charAt(inputPtr++);
+            int ch = text.charAt(inputPtr++);
             if (ch <= 0x7F) { // needs quoting
                 int escape = escCodes[ch];
                 // ctrl-char, 6-byte escape...
@@ -552,9 +585,9 @@ public final class JsonStringEncoder {
     }
 
     /*
-     * /**********************************************************************
-     * /* Internal methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Internal methods
+    /**********************************************************************
      */
 
     private char[] _qbuf() {
@@ -606,7 +639,7 @@ public final class JsonStringEncoder {
             throw new IllegalArgumentException("Broken surrogate pair: first char 0x" + Integer.toHexString(p1)
                 + ", second 0x" + Integer.toHexString(p2) + "; illegal combination");
         }
-        return 0x10000 + ((p1 - SURR1_FIRST) << 10) + (p2 - SURR2_FIRST);
+        return (p1 << 10) + p2 + UTF8Writer.SURROGATE_BASE;
     }
 
     private static void _illegal(int c) {

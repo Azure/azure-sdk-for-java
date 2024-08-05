@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -18,14 +17,9 @@ import com.azure.json.implementation.jackson.core.util.RequestPayload;
 public class JsonParseException extends StreamReadException {
     private static final long serialVersionUID = 2L; // 2.7
 
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc) {
-        super(msg, loc, null);
-    }
-
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc, Throwable root) {
-        super(msg, loc, root);
+    // @since 2.15
+    public JsonParseException(String msg) {
+        this(null, msg, null, null);
     }
 
     /**
@@ -39,22 +33,33 @@ public class JsonParseException extends StreamReadException {
      * @since 2.7
      */
     public JsonParseException(JsonParser p, String msg) {
-        super(p, msg);
+        this(p, msg, _currentLocation(p), null);
     }
 
     // @since 2.7
-    public JsonParseException(JsonParser p, String msg, Throwable root) {
-        super(p, msg, root);
+    public JsonParseException(JsonParser p, String msg, Throwable rootCause) {
+        this(p, msg, _currentLocation(p), rootCause);
     }
 
     // @since 2.7
     public JsonParseException(JsonParser p, String msg, JsonLocation loc) {
-        super(p, msg, loc);
+        this(p, msg, loc, null);
     }
 
+    // Canonical constructor
     // @since 2.7
-    public JsonParseException(JsonParser p, String msg, JsonLocation loc, Throwable root) {
-        super(msg, loc, root);
+    public JsonParseException(JsonParser p, String msg, JsonLocation loc, Throwable rootCause) {
+        super(p, msg, loc, rootCause);
+    }
+
+    @Deprecated // since 2.7
+    public JsonParseException(String msg, JsonLocation loc) {
+        this(null, msg, loc, null);
+    }
+
+    @Deprecated // since 2.7
+    public JsonParseException(String msg, JsonLocation loc, Throwable rootCause) {
+        this(null, msg, loc, rootCause);
     }
 
     /**

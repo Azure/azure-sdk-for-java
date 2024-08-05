@@ -1,15 +1,17 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.base;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+
 import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.io.IOContext;
+import com.azure.json.implementation.jackson.core.io.UTF8Writer;
 import com.azure.json.implementation.jackson.core.json.DupDetector;
 import com.azure.json.implementation.jackson.core.json.JsonWriteContext;
 import com.azure.json.implementation.jackson.core.json.PackageVersion;
 import com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
 
 /**
  * This base class implements part of API that a JSON generator exposes
@@ -25,7 +27,7 @@ public abstract class GeneratorBase extends JsonGenerator {
     /**
      * Set of feature masks related to features that need updates of other
      * local configuration or state.
-     * 
+     *
      * @since 2.5
      */
     @SuppressWarnings("deprecation")
@@ -46,15 +48,15 @@ public abstract class GeneratorBase extends JsonGenerator {
      * in "plain" (non-engineering) notation; intent is to prevent asymmetric
      * attack whereupon simple eng-notation with big scale is used to generate
      * huge "plain" serialization. See [core#315] for details.
-     * 
+     *
      * @since 2.7.7
      */
     protected final static int MAX_BIG_DECIMAL_SCALE = 9999;
 
     /*
-     * /**********************************************************
-     * /* Configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration
+    /**********************************************************
      */
 
     protected ObjectCodec _objectCodec;
@@ -66,6 +68,9 @@ public abstract class GeneratorBase extends JsonGenerator {
      */
     protected int _features;
 
+    // since 2.16
+    protected final IOContext _ioContext;
+
     /**
      * Flag set to indicate that implicit conversion from number
      * to JSON String is needed (as per
@@ -74,9 +79,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected boolean _cfgNumbersAsStrings;
 
     /*
-     * /**********************************************************
-     * /* State
-     * /**********************************************************
+    /**********************************************************
+    /* State
+    /**********************************************************
      */
 
     /**
@@ -93,16 +98,23 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected boolean _closed;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
-    @SuppressWarnings("deprecation")
+    @Deprecated // since 2.16
     protected GeneratorBase(int features, ObjectCodec codec) {
+        this(features, codec, (IOContext) null);
+    }
+
+    // @since 2.16
+    @SuppressWarnings("deprecation")
+    protected GeneratorBase(int features, ObjectCodec codec, IOContext ioContext) {
         super();
         _features = features;
         _objectCodec = codec;
+        _ioContext = ioContext;
         DupDetector dups
             = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
         _writeContext = JsonWriteContext.createRootContext(dups);
@@ -110,12 +122,19 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     // @since 2.5
-    @SuppressWarnings("deprecation")
+    @Deprecated // since 2.16
     protected GeneratorBase(int features, ObjectCodec codec, JsonWriteContext ctxt) {
+        this(features, codec, null, ctxt);
+    }
+
+    // @since 2.16
+    @SuppressWarnings("deprecation")
+    protected GeneratorBase(int features, ObjectCodec codec, IOContext ioContext, JsonWriteContext jsonWriteContext) {
         super();
         _features = features;
         _objectCodec = codec;
-        _writeContext = ctxt;
+        _ioContext = ioContext;
+        _writeContext = jsonWriteContext;
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
     }
 
@@ -132,22 +151,24 @@ public abstract class GeneratorBase extends JsonGenerator {
         return PackageVersion.VERSION;
     }
 
+    // Overridden from JsonGenerator for direct context access:
     @Override
-    public Object getCurrentValue() {
+    public Object currentValue() {
         return _writeContext.getCurrentValue();
     }
 
     @Override
-    public void setCurrentValue(Object v) {
+    // Overridden from JsonGenerator for direct context access:
+    public void assignCurrentValue(Object v) {
         if (_writeContext != null) {
             _writeContext.setCurrentValue(v);
         }
     }
 
     /*
-     * /**********************************************************
-     * /* Configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration
+    /**********************************************************
      */
 
     @Override
@@ -160,7 +181,7 @@ public abstract class GeneratorBase extends JsonGenerator {
         return _features;
     }
 
-    // public JsonGenerator configure(Feature f, boolean state) { }
+    //public JsonGenerator configure(Feature f, boolean state) { }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -276,9 +297,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, accessors
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, accessors
+    /**********************************************************
      */
 
     /**
@@ -291,29 +312,40 @@ public abstract class GeneratorBase extends JsonGenerator {
         return _writeContext;
     }
 
+    /**
+     * Accessor for use by {@code jackson-core} itself (tests in particular).
+     *
+     * @return {@link IOContext} in use by this generator
+     *
+     * @since 2.17
+     */
+    public IOContext ioContext() {
+        return _ioContext;
+    }
+
     /*
-     * /**********************************************************
-     * /* Public API, write methods, structural
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, structural
+    /**********************************************************
      */
 
-    // public void writeStartArray() throws IOException
-    // public void writeEndArray() throws IOException
-    // public void writeStartObject() throws IOException
-    // public void writeEndObject() throws IOException
+    //public void writeStartArray() throws IOException
+    //public void writeEndArray() throws IOException
+    //public void writeStartObject() throws IOException
+    //public void writeEndObject() throws IOException
 
     @Override // since 2.8
     public void writeStartObject(Object forValue) throws IOException {
         writeStartObject();
         if (forValue != null) {
-            setCurrentValue(forValue);
+            assignCurrentValue(forValue);
         }
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, textual
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, textual
+    /**********************************************************
      */
 
     @Override
@@ -321,15 +353,15 @@ public abstract class GeneratorBase extends JsonGenerator {
         writeFieldName(name.getValue());
     }
 
-    // public abstract void writeString(String text) throws IOException;
+    //public abstract void writeString(String text) throws IOException;
 
-    // public abstract void writeString(char[] text, int offset, int len) throws IOException;
+    //public abstract void writeString(char[] text, int offset, int len) throws IOException;
 
-    // public abstract void writeString(Reader reader, int len) throws IOException;
+    //public abstract void writeString(Reader reader, int len) throws IOException;
 
-    // public abstract void writeRaw(String text) throws IOException,;
+    //public abstract void writeRaw(String text) throws IOException,;
 
-    // public abstract void writeRaw(char[] text, int offset, int len) throws IOException;
+    //public abstract void writeRaw(char[] text, int offset, int len) throws IOException;
 
     @Override
     public void writeString(SerializableString text) throws IOException {
@@ -368,27 +400,27 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, primitive
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, primitive
+    /**********************************************************
      */
 
     // Not implemented at this level, added as placeholders
 
     /*
-     * public abstract void writeNumber(int i)
-     * public abstract void writeNumber(long l)
-     * public abstract void writeNumber(double d)
-     * public abstract void writeNumber(float f)
-     * public abstract void writeNumber(BigDecimal dec)
-     * public abstract void writeBoolean(boolean state)
-     * public abstract void writeNull()
-     */
+    public abstract void writeNumber(int i)
+    public abstract void writeNumber(long l)
+    public abstract void writeNumber(double d)
+    public abstract void writeNumber(float f)
+    public abstract void writeNumber(BigDecimal dec)
+    public abstract void writeBoolean(boolean state)
+    public abstract void writeNull()
+    */
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, POJOs, trees
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, POJOs, trees
+    /**********************************************************
      */
 
     @Override
@@ -397,11 +429,10 @@ public abstract class GeneratorBase extends JsonGenerator {
             // important: call method that does check value write:
             writeNull();
         } else {
-            /*
-             * 02-Mar-2009, tatu: we are NOT to call _verifyValueWrite here,
-             * because that will be done when codec actually serializes
-             * contained POJO. If we did call it it would advance state
-             * causing exception later on
+            /* 02-Mar-2009, tatu: we are NOT to call _verifyValueWrite here,
+             *   because that will be done when codec actually serializes
+             *   contained POJO. If we did call it it would advance state
+             *   causing exception later on
              */
             if (_objectCodec != null) {
                 _objectCodec.writeValue(this, value);
@@ -425,9 +456,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, low-level output handling
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, low-level output handling
+    /**********************************************************
      */
 
     @Override
@@ -435,7 +466,12 @@ public abstract class GeneratorBase extends JsonGenerator {
 
     @Override
     public void close() throws IOException {
-        _closed = true;
+        if (!_closed) {
+            if (_ioContext != null) {
+                _ioContext.close();
+            }
+            _closed = true;
+        }
     }
 
     @Override
@@ -444,9 +480,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************
-     * /* Package methods for this, sub-classes
-     * /**********************************************************
+    /**********************************************************
+    /* Package methods for this, sub-classes
+    /**********************************************************
      */
 
     /**
@@ -459,7 +495,7 @@ public abstract class GeneratorBase extends JsonGenerator {
      * Method called before trying to write a value (scalar or structured),
      * to verify that this is legal in current output state, as well as to
      * output separators if and as necessary.
-     * 
+     *
      * @param typeMsg Additional message used for generating exception message
      *   if value output is NOT legal in current generator output state.
      *
@@ -507,9 +543,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************
-     * /* UTF-8 related helper method(s)
-     * /**********************************************************
+    /**********************************************************
+    /* UTF-8 related helper method(s)
+    /**********************************************************
      */
 
     // @since 2.5
@@ -519,7 +555,65 @@ public abstract class GeneratorBase extends JsonGenerator {
             String msg = String.format("Incomplete surrogate pair: first char 0x%04X, second 0x%04X", surr1, surr2);
             _reportError(msg);
         }
-        int c = 0x10000 + ((surr1 - SURR1_FIRST) << 10) + (surr2 - SURR2_FIRST);
-        return c;
+        return (surr1 << 10) + surr2 + UTF8Writer.SURROGATE_BASE;
+    }
+
+    /*
+    /**********************************************************************
+    /* Helper methods for validating parameters
+    /**********************************************************************
+     */
+
+    // @since 2.14
+    protected void _checkRangeBoundsForByteArray(byte[] data, int offset, int len) throws IOException {
+        if (data == null) {
+            _reportError("Invalid `byte[]` argument: `null`");
+        }
+        final int dataLen = data.length;
+        final int end = offset + len;
+
+        // Note: we are checking that:
+        //
+        // !(offset < 0)
+        // !(len < 0)
+        // !((offset + len) < 0) // int overflow!
+        // !((offset + len) > dataLen) == !((datalen - (offset+len)) < 0)
+
+        // All can be optimized by OR'ing and checking for negative:
+        int anyNegs = offset | len | end | (dataLen - end);
+        if (anyNegs < 0) {
+            _reportError(String.format("Invalid 'offset' (%d) and/or 'len' (%d) arguments for `byte[]` of length %d",
+                offset, len, dataLen));
+        }
+    }
+
+    // @since 2.14
+    protected void _checkRangeBoundsForCharArray(char[] data, int offset, int len) throws IOException {
+        if (data == null) {
+            _reportError("Invalid `char[]` argument: `null`");
+        }
+        final int dataLen = data.length;
+        final int end = offset + len;
+        // Note: we are checking same things as with other bounds-checks
+        int anyNegs = offset | len | end | (dataLen - end);
+        if (anyNegs < 0) {
+            _reportError(String.format("Invalid 'offset' (%d) and/or 'len' (%d) arguments for `char[]` of length %d",
+                offset, len, dataLen));
+        }
+    }
+
+    // @since 2.14
+    protected void _checkRangeBoundsForString(String data, int offset, int len) throws IOException {
+        if (data == null) {
+            _reportError("Invalid `String` argument: `null`");
+        }
+        final int dataLen = data.length();
+        final int end = offset + len;
+        // Note: we are checking same things as with other bounds-checks
+        int anyNegs = offset | len | end | (dataLen - end);
+        if (anyNegs < 0) {
+            _reportError(String.format("Invalid 'offset' (%d) and/or 'len' (%d) arguments for `String` of length %d",
+                offset, len, dataLen));
+        }
     }
 }

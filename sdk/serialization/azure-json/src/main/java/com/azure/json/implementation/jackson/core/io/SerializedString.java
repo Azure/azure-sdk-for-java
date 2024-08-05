@@ -22,31 +22,30 @@ public class SerializedString implements SerializableString, java.io.Serializabl
 
     protected final String _value;
 
-    /*
-     * 13-Dec-2010, tatu: Whether use volatile or not is actually an important
-     * decision for multi-core use cases. Cost of volatility can be non-trivial
-     * for heavy use cases, and serialized-string instances are accessed often.
-     * Given that all code paths with common Jackson usage patterns go through
-     * a few memory barriers (mostly with cache/reuse pool access) it seems safe
-     * enough to omit volatiles here, given how simple lazy initialization is.
-     * This can be compared to how {@link String#hashCode} works; lazily and
-     * without synchronization or use of volatile keyword.
+    /* 13-Dec-2010, tatu: Whether use volatile or not is actually an important
+     *   decision for multi-core use cases. Cost of volatility can be non-trivial
+     *   for heavy use cases, and serialized-string instances are accessed often.
+     *   Given that all code paths with common Jackson usage patterns go through
+     *   a few memory barriers (mostly with cache/reuse pool access) it seems safe
+     *   enough to omit volatiles here, given how simple lazy initialization is.
+     *   This can be compared to how {@link String#hashCode} works; lazily and
+     *   without synchronization or use of volatile keyword.
      *
-     * Change to remove volatile was a request by implementors of a high-throughput
-     * search framework; and they believed this is an important optimization for
-     * heaviest, multi-core deployed use cases.
+     *   Change to remove volatile was a request by implementors of a high-throughput
+     *   search framework; and they believed this is an important optimization for
+     *   heaviest, multi-core deployed use cases.
      */
     /*
      * 22-Sep-2013, tatu: FWIW, there have been no reports of problems in this
-     * area, or anything pointing to it. So I think we are safe up to JDK7
-     * and hopefully beyond.
+     *   area, or anything pointing to it. So I think we are safe up to JDK7
+     *   and hopefully beyond.
      */
 
-    protected /* volatile */ byte[] _quotedUTF8Ref;
+    protected /*volatile*/ byte[] _quotedUTF8Ref;
 
-    protected /* volatile */ byte[] _unquotedUTF8Ref;
+    protected /*volatile*/ byte[] _unquotedUTF8Ref;
 
-    protected /* volatile */ char[] _quotedChars;
+    protected /*volatile*/ char[] _quotedChars;
 
     public SerializedString(String v) {
         if (v == null) {
@@ -56,15 +55,15 @@ public class SerializedString implements SerializableString, java.io.Serializabl
     }
 
     /*
-     * /**********************************************************
-     * /* Serializable overrides
-     * /**********************************************************
+    /**********************************************************
+    /* Serializable overrides
+    /**********************************************************
      */
 
     /**
      * Ugly hack, to work through the requirement that _value is indeed final,
      * and that JDK serialization won't call ctor(s).
-     * 
+     *
      * @since 2.1
      */
     protected transient String _jdkSerializeValue;
@@ -82,9 +81,9 @@ public class SerializedString implements SerializableString, java.io.Serializabl
     }
 
     /*
-     * /**********************************************************
-     * /* API
-     * /**********************************************************
+    /**********************************************************
+    /* API
+    /**********************************************************
      */
 
     @Override
@@ -141,9 +140,9 @@ public class SerializedString implements SerializableString, java.io.Serializabl
     }
 
     /*
-     * /**********************************************************
-     * /* Additional 2.0 methods for appending/writing contents
-     * /**********************************************************
+    /**********************************************************
+    /* Additional 2.0 methods for appending/writing contents
+    /**********************************************************
      */
 
     @Override
@@ -250,9 +249,9 @@ public class SerializedString implements SerializableString, java.io.Serializabl
     }
 
     /*
-     * /**********************************************************
-     * /* Standard method overrides
-     * /**********************************************************
+    /**********************************************************
+    /* Standard method overrides
+    /**********************************************************
      */
 
     @Override

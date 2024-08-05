@@ -7,7 +7,6 @@ import java.util.Arrays;
  * Generic implementation of PName used for "long" names, where long
  * means that its byte (UTF-8) representation is 13 bytes or more.
  */
-@SuppressWarnings("fallthrough")
 public final class NameN extends Name {
     private final int q1, q2, q3, q4; // first four quads
     private final int qlen; // total number of quads (4 + q.length)
@@ -24,8 +23,7 @@ public final class NameN extends Name {
     }
 
     public static NameN construct(String name, int hash, int[] q, int qlen) {
-        /*
-         * We have specialized implementations for shorter
+        /* We have specialized implementations for shorter
          * names, so let's not allow runt instances here
          */
         if (qlen < 4) {

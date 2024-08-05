@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * {@link ClassLoader} would have dangling reference via {@link ThreadLocal}s.
  * When gc clears a SoftReference, it puts it on a newly introduced referenceQueue.
  * We use this queue to release the inactive SoftReferences from the Set.
- * 
+ *
  * @since 2.9.6
  */
 class ThreadLocalBufferManager {
@@ -35,19 +35,18 @@ class ThreadLocalBufferManager {
      * {@code hashCode()} implementations defined so that they use object identity, so
      * we do not need to use something like {@link IdentityHashMap}
      */
-    private final Map<SoftReference<BufferRecycler>, Boolean> _trackedRecyclers
-        = new ConcurrentHashMap<SoftReference<BufferRecycler>, Boolean>();
+    private final Map<SoftReference<BufferRecycler>, Boolean> _trackedRecyclers = new ConcurrentHashMap<>();
 
     /**
      * Queue where gc will put just-cleared SoftReferences, previously referencing BufferRecyclers.
      * We use it to remove the cleared softRefs from the above set.
      */
-    private final ReferenceQueue<BufferRecycler> _refQueue = new ReferenceQueue<BufferRecycler>();
+    private final ReferenceQueue<BufferRecycler> _refQueue = new ReferenceQueue<>();
 
     /*
-     * /**********************************************************
-     * /* Public API
-     * /**********************************************************
+    /**********************************************************
+    /* Public API
+    /**********************************************************
      */
 
     /**
@@ -72,14 +71,14 @@ class ThreadLocalBufferManager {
                 ref.clear(); // possibly already cleared by gc, nothing happens in that case
                 ++count;
             }
-            _trackedRecyclers.clear(); // release cleared SoftRefs
+            _trackedRecyclers.clear(); //release cleared SoftRefs
             return count;
         }
     }
 
     public SoftReference<BufferRecycler> wrapAndTrack(BufferRecycler br) {
         SoftReference<BufferRecycler> newRef;
-        newRef = new SoftReference<BufferRecycler>(br, _refQueue);
+        newRef = new SoftReference<>(br, _refQueue);
         // also retain softRef to br in a set to be able to release it on shutdown
         _trackedRecyclers.put(newRef, true);
         // gc may have cleared one or more SoftRefs, clean them up to avoid a memleak
@@ -88,9 +87,9 @@ class ThreadLocalBufferManager {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     /**

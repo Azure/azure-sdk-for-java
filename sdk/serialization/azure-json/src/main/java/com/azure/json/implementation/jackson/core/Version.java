@@ -1,11 +1,12 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
 
 package com.azure.json.implementation.jackson.core;
+
+import java.util.Objects;
 
 /**
  * Object that encapsulates versioning information of a component.
@@ -81,7 +82,7 @@ public class Version implements Comparable<Version>, java.io.Serializable {
     }
 
     public boolean isSnapshot() {
-        return (_snapshotInfo != null && _snapshotInfo.length() > 0);
+        return (_snapshotInfo != null) && !_snapshotInfo.isEmpty();
     }
 
     /**
@@ -133,7 +134,8 @@ public class Version implements Comparable<Version>, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        return _artifactId.hashCode() ^ _groupId.hashCode() + _majorVersion - _minorVersion + _patchLevel;
+        return _artifactId.hashCode() ^ _groupId.hashCode()
+            ^ Objects.hashCode(_snapshotInfo) + _majorVersion - _minorVersion + _patchLevel;
     }
 
     @Override
@@ -148,6 +150,7 @@ public class Version implements Comparable<Version>, java.io.Serializable {
         return (other._majorVersion == _majorVersion)
             && (other._minorVersion == _minorVersion)
             && (other._patchLevel == _patchLevel)
+            && Objects.equals(other._snapshotInfo, _snapshotInfo)
             && other._artifactId.equals(_artifactId)
             && other._groupId.equals(_groupId);
     }
@@ -166,6 +169,20 @@ public class Version implements Comparable<Version>, java.io.Serializable {
                     diff = _minorVersion - other._minorVersion;
                     if (diff == 0) {
                         diff = _patchLevel - other._patchLevel;
+                        if (diff == 0) {
+                            // Snapshot: non-snapshot AFTER snapshot, otherwise alphabetical
+                            if (isSnapshot()) {
+                                if (other.isSnapshot()) {
+                                    diff = _snapshotInfo.compareTo(other._snapshotInfo);
+                                } else {
+                                    diff = -1;
+                                }
+                            } else if (other.isSnapshot()) {
+                                diff = 1;
+                            } else {
+                                diff = 0;
+                            }
+                        }
                     }
                 }
             }

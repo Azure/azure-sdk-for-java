@@ -35,10 +35,10 @@ public class DataOutputAsStream extends OutputStream {
     // These are no-ops, base class impl works fine
 
     /*
-     * @Override
-     * public void flush() throws IOException { }
-     * 
-     * @Override
-     * public void close() throws IOException { }
-     */
+    @Override
+    public void flush() throws IOException { }
+    
+    @Override
+    public void close() throws IOException { }
+    */
 }

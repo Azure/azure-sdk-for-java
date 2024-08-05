@@ -3,15 +3,18 @@ package com.azure.json.implementation.jackson.core.io;
 
 import java.util.Arrays;
 
-@SuppressWarnings("cast")
 public final class CharTypes {
     protected final static char[] HC = "0123456789ABCDEF".toCharArray();
+    protected final static char[] HClower = "0123456789abcdef".toCharArray();
     protected final static byte[] HB;
+    protected final static byte[] HBlower;
     static {
         int len = HC.length;
         HB = new byte[len];
+        HBlower = new byte[len];
         for (int i = 0; i < len; ++i) {
             HB[i] = (byte) HC[i];
+            HBlower[i] = (byte) HClower[i];
         }
     }
 
@@ -21,8 +24,7 @@ public final class CharTypes {
      */
     protected final static int[] sInputCodes;
     static {
-        /*
-         * 96 would do for most cases (backslash is ASCII 94)
+        /* 96 would do for most cases (backslash is ASCII 94)
          * but if we want to do lookups by raw bytes it's better
          * to have full table
          */
@@ -82,8 +84,7 @@ public final class CharTypes {
                 table[i] = 0;
             }
         }
-        /*
-         * As per [JACKSON-267], '@', '#' and '*' are also to be accepted as well.
+        /* As per [JACKSON-267], '@', '#' and '*' are also to be accepted as well.
          * And '-' (for hyphenated names); and '+' for sake of symmetricity...
          */
         table['@'] = 0;
@@ -176,6 +177,16 @@ public final class CharTypes {
     }
 
     /**
+     * Lookup table same as {@link #sOutputEscapes128} except that
+     * forward slash ('/') is also escaped
+     */
+    protected final static int[] sOutputEscapes128WithSlash;
+    static {
+        sOutputEscapes128WithSlash = Arrays.copyOf(sOutputEscapes128, sOutputEscapes128.length);
+        sOutputEscapes128WithSlash['/'] = '/';
+    }
+
+    /**
      * Lookup table for the first 256 Unicode characters (ASCII / UTF-8)
      * range. For actual hex digits, contains corresponding value;
      * for others -1.
@@ -249,9 +260,31 @@ public final class CharTypes {
         return AltEscapes.instance.escapesFor(quoteChar);
     }
 
+    /**
+     * Alternative to {@link #get7BitOutputEscapes()} when either a non-standard
+     * quote character is used, or forward slash is to be escaped.
+     *
+     * @param quoteChar Character used for quoting textual values and property names;
+     *    usually double-quote but sometimes changed to single-quote (apostrophe)
+     * @param escapeSlash
+     *
+     * @return 128-entry {@code int[]} that contains escape definitions
+     *
+     * @since 2.17
+     */
+    public static int[] get7BitOutputEscapes(int quoteChar, boolean escapeSlash) {
+        if (quoteChar == '"') {
+            if (escapeSlash) {
+                return sOutputEscapes128WithSlash;
+            }
+            return sOutputEscapes128;
+        }
+        return AltEscapes.instance.escapesFor(quoteChar, escapeSlash);
+    }
+
     public static int charToHex(int ch) {
         // 08-Nov-2019, tatu: As per [core#540] and [core#578], changed to
-        // force masking here so caller need not do that.
+        //   force masking here so caller need not do that.
         return sHexValues[ch & 0xFF];
     }
 
@@ -301,12 +334,32 @@ public final class CharTypes {
         }
     }
 
+    /**
+     * @return Copy of array of 16 upper-case hexadecimal characters
+     *
+     * @deprecated Since 2.14 Use {@link #copyHexChars(boolean)} instead
+     */
+    @Deprecated // since 2.14
     public static char[] copyHexChars() {
-        return (char[]) HC.clone();
+        return copyHexChars(true);
     }
 
+    public static char[] copyHexChars(boolean uppercase) {
+        return (uppercase) ? HC.clone() : HClower.clone();
+    }
+
+    /**
+     * @return Copy of array of 16 upper-case hexadecimal characters as bytes
+     *
+     * @deprecated Since 2.14 Use {@link #copyHexBytes(boolean)} instead
+     */
+    @Deprecated // since 2.14
     public static byte[] copyHexBytes() {
-        return (byte[]) HB.clone();
+        return copyHexBytes(true);
+    }
+
+    public static byte[] copyHexBytes(boolean uppercase) {
+        return (uppercase) ? HB.clone() : HBlower.clone();
     }
 
     /**
@@ -321,6 +374,9 @@ public final class CharTypes {
 
         private int[][] _altEscapes = new int[128][];
 
+        // @since 2.17
+        private int[][] _altEscapesWithSlash = new int[128][];
+
         public int[] escapesFor(int quoteChar) {
             int[] esc = _altEscapes[quoteChar];
             if (esc == null) {
@@ -330,6 +386,20 @@ public final class CharTypes {
                     esc[quoteChar] = CharacterEscapes.ESCAPE_STANDARD;
                 }
                 _altEscapes[quoteChar] = esc;
+            }
+            return esc;
+        }
+
+        // @since 2.17
+        public int[] escapesFor(int quoteChar, boolean escapeSlash) {
+            if (!escapeSlash) {
+                return escapesFor(quoteChar);
+            }
+            int[] esc = _altEscapesWithSlash[quoteChar];
+            if (esc == null) {
+                esc = escapesFor(quoteChar);
+                esc['/'] = '/';
+                _altEscapesWithSlash[quoteChar] = esc;
             }
             return esc;
         }

@@ -29,7 +29,7 @@ public enum JsonWriteFeature implements FormatFeature {
      * Feature that determines whether "NaN" ("not a number", that is, not
      * real number) float/double values are output as JSON strings.
      * The values checked are Double.Nan,
-     * Double.POSITIVE_INFINITY and Double.NEGATIVE_INIFINTY (and 
+     * Double.POSITIVE_INFINITY and Double.NEGATIVE_INIFINTY (and
      * associated Float values).
      * If feature is disabled, these numbers are still output using
      * associated literal values, resulting in non-conforming
@@ -71,7 +71,21 @@ public enum JsonWriteFeature implements FormatFeature {
     @SuppressWarnings("deprecation")
     ESCAPE_NON_ASCII(false, JsonGenerator.Feature.ESCAPE_NON_ASCII),
 
-    // 23-Nov-2015, tatu: for [core#223], if and when it gets implemented
+    /**
+     * Feature that specifies that hex values are encoded with capital letters.
+     *<p>
+     * Can be disabled to have a better possibility to compare between other JSON
+     * writer libraries, such as JSON.stringify from Javascript.
+     *<p>
+     * Feature is enabled by default for backwards compatibility with earlier
+     * versions.
+     *
+     * @since 2.14
+     */
+    @SuppressWarnings("deprecation")
+    WRITE_HEX_UPPER_CASE(true, JsonGenerator.Feature.WRITE_HEX_UPPER_CASE),
+
+    //23-Nov-2015, tatu: for [core#223], if and when it gets implemented
     /*
      * Feature that specifies handling of UTF-8 content that contains
      * characters beyond BMP (Basic Multilingual Plane), which are
@@ -82,16 +96,25 @@ public enum JsonWriteFeature implements FormatFeature {
      * targets, writing of surrogates as is which is typically converted
      * by {@link java.io.Writer} into 4-byte UTF-8 sequence eventually)
      * is used.
-     * <p>
+     *<p>
      * Note that the original JSON specification suggests use of escaping;
      * but that this is not correct from standard UTF-8 handling perspective.
      * Because of two competing goals, this feature was added to allow either
      * behavior to be used, but defaulting to UTF-8 specification compliant
      * mode.
-     * <p>
+     *<p>
      * Feature is disabled by default.
      */
-    // ESCAPE_UTF8_SURROGATES(false, JsonGenerator.Feature.ESCAPE_UTF8_SURROGATES),
+    //    ESCAPE_UTF8_SURROGATES(false, JsonGenerator.Feature.ESCAPE_UTF8_SURROGATES),
+
+    /**
+     * Feature that specifies whether {@link JsonGenerator} should escape forward slashes.
+     * <p>
+     * Feature is disabled by default for Jackson 2.x version, and enabled by default in Jackson 3.0.
+     *
+     * @since 2.17
+     */
+    ESCAPE_FORWARD_SLASHES(false, JsonGenerator.Feature.ESCAPE_FORWARD_SLASHES),
 
     ;
 

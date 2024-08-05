@@ -9,7 +9,10 @@ package com.azure.json.implementation.jackson.core.util;
  *
  * @since 2.12
  */
-public final class JacksonFeatureSet<F extends JacksonFeature> {
+public final class JacksonFeatureSet<F extends JacksonFeature> implements java.io.Serializable // since 2.16
+{
+    private static final long serialVersionUID = 1L;
+
     protected int _enabled;
 
     /**
@@ -48,11 +51,11 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
                 flags |= f.getMask();
             }
         }
-        return new JacksonFeatureSet<F>(flags);
+        return new JacksonFeatureSet<>(flags);
     }
 
     public static <F extends JacksonFeature> JacksonFeatureSet<F> fromBitmask(int bitmask) {
-        return new JacksonFeatureSet<F>(bitmask);
+        return new JacksonFeatureSet<>(bitmask);
     }
 
     /**
@@ -66,7 +69,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
      */
     public JacksonFeatureSet<F> with(F feature) {
         int newMask = _enabled | feature.getMask();
-        return (newMask == _enabled) ? this : new JacksonFeatureSet<F>(newMask);
+        return (newMask == _enabled) ? this : new JacksonFeatureSet<>(newMask);
     }
 
     /**
@@ -80,7 +83,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
      */
     public JacksonFeatureSet<F> without(F feature) {
         int newMask = _enabled & ~feature.getMask();
-        return (newMask == _enabled) ? this : new JacksonFeatureSet<F>(newMask);
+        return (newMask == _enabled) ? this : new JacksonFeatureSet<>(newMask);
     }
 
     /**
@@ -96,7 +99,7 @@ public final class JacksonFeatureSet<F extends JacksonFeature> {
 
     /**
      * Accessor for underlying bitmask
-     * 
+     *
      * @return Bitmask of enabled features
      */
     public int asBitmask() {

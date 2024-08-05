@@ -12,9 +12,15 @@ import com.azure.json.implementation.jackson.core.io.SerializedString;
  * Usually this class is not instantiated directly, but instead
  * method {@link JsonGenerator#useDefaultPrettyPrinter} is
  * used, which will use an instance of this class for operation.
- *
+ *<p>
  * If you override this class, take note of {@link Instantiatable},
  * as subclasses will still create an instance of DefaultPrettyPrinter.
+ *<p>
+ * This class is designed for the JSON data format. It works on other formats
+ * with same logical model (such as binary {@code CBOR} and {@code Smile} formats),
+ * but may not work as-is for other data formats, most notably {@code XML}.
+ * It may be necessary to use format-specific {@link PrettyPrinter}
+ * implementation specific to that format.
  */
 @SuppressWarnings("serial")
 public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<DefaultPrettyPrinter>, java.io.Serializable {
@@ -23,9 +29,11 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
     /**
      * Constant that specifies default "root-level" separator to use between
      * root values: a single space character.
-     * 
+     *
      * @since 2.1
+     * @deprecated in 2.16. Use the Separators API instead.
      */
+    @Deprecated
     public final static SerializedString DEFAULT_ROOT_VALUE_SEPARATOR = new SerializedString(" ");
 
     /**
@@ -62,7 +70,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
     /**
      * String printed between root-level values, if any.
      */
-    protected final SerializableString _rootSeparator;
+    protected SerializableString _rootSeparator;
 
     // // // Config, other white space configuration
 
@@ -70,7 +78,10 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * By default we will add spaces around colons used to
      * separate object fields and values.
      * If disabled, will not use spaces around colon.
+     * 
+     * @deprecated in 2.16. Use Separators API instead.
      */
+    @Deprecated
     protected boolean _spacesInObjectEntries = true;
 
     // // // State:
@@ -91,14 +102,40 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      */
     protected String _objectFieldValueSeparatorWithSpaces;
 
-    /*
-     * /**********************************************************
-     * /* Life-cycle (construct, configure)
-     * /**********************************************************
+    /**
+     * @since 2.16
      */
+    protected String _objectEntrySeparator;
+
+    /**
+     * String to use in empty Object to separate start and end markers.
+     * Default is single space, resulting in output of {@code { }}.
+     * 
+     * @since 2.17
+     */
+    protected String _objectEmptySeparator;
+
+    /**
+     * @since 2.16
+     */
+    protected String _arrayValueSeparator;
+
+    /**
+     * String to use in empty Array to separate start and end markers.
+     * Default is single space, resulting in output of {@code [ ]}.
+     * 
+     * @since 2.17
+     */
+    protected String _arrayEmptySeparator;
+
+    /*
+    /**********************************************************
+    /* Life-cycle (construct, configure)
+    /**********************************************************
+    */
 
     public DefaultPrettyPrinter() {
-        this(DEFAULT_ROOT_VALUE_SEPARATOR);
+        this(DEFAULT_SEPARATORS);
     }
 
     /**
@@ -109,7 +146,9 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * calls {@link #DefaultPrettyPrinter(SerializableString)}
      *
      * @param rootSeparator String to use as root value separator
+     * @deprecated in 2.16. Use the Separators API instead.
      */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter(String rootSeparator) {
         this((rootSeparator == null) ? null : new SerializedString(rootSeparator));
     }
@@ -119,16 +158,17 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * if null, no separator is printed.
      *
      * @param rootSeparator String to use as root value separator
+     * @deprecated in 2.16. Use the Separators API instead.
      */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter(SerializableString rootSeparator) {
-        _rootSeparator = rootSeparator;
-        withSeparators(DEFAULT_SEPARATORS);
+        this(DEFAULT_SEPARATORS.withRootSeparator(rootSeparator.getValue()));
     }
 
-    public DefaultPrettyPrinter(DefaultPrettyPrinter base) {
-        this(base, base._rootSeparator);
-    }
-
+    /**
+     * @deprecated in 2.16. Use the Separators API instead.
+     */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter(DefaultPrettyPrinter base, SerializableString rootSeparator) {
         _arrayIndenter = base._arrayIndenter;
         _objectIndenter = base._objectIndenter;
@@ -137,15 +177,61 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
 
         _separators = base._separators;
         _objectFieldValueSeparatorWithSpaces = base._objectFieldValueSeparatorWithSpaces;
+        _objectEntrySeparator = base._objectEntrySeparator;
+        _objectEmptySeparator = base._objectEmptySeparator;
+        _arrayValueSeparator = base._arrayValueSeparator;
+        _arrayEmptySeparator = base._arrayEmptySeparator;
 
         _rootSeparator = rootSeparator;
     }
 
+    /**
+     * @since 2.16
+     */
+    public DefaultPrettyPrinter(Separators separators) {
+        _separators = separators;
+
+        _rootSeparator
+            = separators.getRootSeparator() == null ? null : new SerializedString(separators.getRootSeparator());
+        _objectFieldValueSeparatorWithSpaces
+            = separators.getObjectFieldValueSpacing().apply(separators.getObjectFieldValueSeparator());
+        _objectEntrySeparator = separators.getObjectEntrySpacing().apply(separators.getObjectEntrySeparator());
+        _objectEmptySeparator = separators.getObjectEmptySeparator();
+        _arrayValueSeparator = separators.getArrayValueSpacing().apply(separators.getArrayValueSeparator());
+        _arrayEmptySeparator = separators.getArrayEmptySeparator();
+    }
+
+    /**
+     * Copy constructor
+     * 
+     * @since 2.16
+     */
+    public DefaultPrettyPrinter(DefaultPrettyPrinter base) {
+        _rootSeparator = base._rootSeparator;
+
+        _arrayIndenter = base._arrayIndenter;
+        _objectIndenter = base._objectIndenter;
+        _spacesInObjectEntries = base._spacesInObjectEntries;
+        _nesting = base._nesting;
+
+        _separators = base._separators;
+        _objectFieldValueSeparatorWithSpaces = base._objectFieldValueSeparatorWithSpaces;
+        _objectEntrySeparator = base._objectEntrySeparator;
+        _objectEmptySeparator = base._objectEmptySeparator;
+        _arrayValueSeparator = base._arrayValueSeparator;
+        _arrayEmptySeparator = base._arrayEmptySeparator;
+    }
+
+    /**
+     * @deprecated in 2.16. Use the Separators API instead.
+     */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter withRootSeparator(SerializableString rootSeparator) {
         if (_rootSeparator == rootSeparator || (rootSeparator != null && rootSeparator.equals(_rootSeparator))) {
             return this;
         }
-        return new DefaultPrettyPrinter(this, rootSeparator);
+        Separators separators = _separators.withRootSeparator(rootSeparator == null ? null : rootSeparator.getValue());
+        return new DefaultPrettyPrinter(this).withSeparators(separators);
     }
 
     /**
@@ -154,7 +240,9 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * @return This pretty-printer instance (for call chaining)
      *
      * @since 2.6
+     * @deprecated in 2.16. Use the Separators API instead.
      */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter withRootSeparator(String rootSeparator) {
         return withRootSeparator((rootSeparator == null) ? null : new SerializedString(rootSeparator));
     }
@@ -167,7 +255,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
         _objectIndenter = (i == null) ? NopIndenter.instance : i;
     }
 
-    // @since 2.3
+    /** @since 2.3 */
     public DefaultPrettyPrinter withArrayIndenter(Indenter i) {
         if (i == null) {
             i = NopIndenter.instance;
@@ -180,7 +268,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
         return pp;
     }
 
-    // @since 2.3
+    /** @since 2.3 */
     public DefaultPrettyPrinter withObjectIndenter(Indenter i) {
         if (i == null) {
             i = NopIndenter.instance;
@@ -202,7 +290,9 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * @return This pretty-printer instance (for call chaining)
      *
      * @since 2.3
+     * @deprecated in 2.16. Use the Separators API instead.
      */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter withSpacesInObjectEntries() {
         return _withSpaces(true);
     }
@@ -216,7 +306,9 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * @return This pretty-printer instance (for call chaining)
      *
      * @since 2.3
+     * @deprecated in 2.16. Use the Separators API instead.
      */
+    @Deprecated // since 2.16
     public DefaultPrettyPrinter withoutSpacesInObjectEntries() {
         return _withSpaces(false);
     }
@@ -225,7 +317,10 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
         if (_spacesInObjectEntries == state) {
             return this;
         }
-        DefaultPrettyPrinter pp = new DefaultPrettyPrinter(this);
+
+        Separators copy
+            = _separators.withObjectFieldValueSpacing(state ? Separators.Spacing.BOTH : Separators.Spacing.NONE);
+        DefaultPrettyPrinter pp = withSeparators(copy);
         pp._spacesInObjectEntries = state;
         return pp;
     }
@@ -240,15 +335,25 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      * @since 2.9
      */
     public DefaultPrettyPrinter withSeparators(Separators separators) {
-        _separators = separators;
-        _objectFieldValueSeparatorWithSpaces = " " + separators.getObjectFieldValueSeparator() + " ";
-        return this;
+        DefaultPrettyPrinter result = new DefaultPrettyPrinter(this);
+        result._separators = separators;
+
+        result._rootSeparator
+            = separators.getRootSeparator() == null ? null : new SerializedString(separators.getRootSeparator());
+        result._objectFieldValueSeparatorWithSpaces
+            = separators.getObjectFieldValueSpacing().apply(separators.getObjectFieldValueSeparator());
+        result._objectEntrySeparator = separators.getObjectEntrySpacing().apply(separators.getObjectEntrySeparator());
+        result._objectEmptySeparator = separators.getObjectEmptySeparator();
+        result._arrayValueSeparator = separators.getArrayValueSpacing().apply(separators.getArrayValueSeparator());
+        result._arrayEmptySeparator = separators.getArrayEmptySeparator();
+
+        return result;
     }
 
     /*
-     * /**********************************************************
-     * /* Instantiatable impl
-     * /**********************************************************
+    /**********************************************************
+    /* Instantiatable impl
+    /**********************************************************
      */
 
     @Override
@@ -261,9 +366,9 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
     }
 
     /*
-     * /**********************************************************
-     * /* PrettyPrinter impl
-     * /**********************************************************
+    /**********************************************************
+    /* PrettyPrinter impl
+    /**********************************************************
      */
 
     @Override
@@ -297,11 +402,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      */
     @Override
     public void writeObjectFieldValueSeparator(JsonGenerator g) throws IOException {
-        if (_spacesInObjectEntries) {
-            g.writeRaw(_objectFieldValueSeparatorWithSpaces);
-        } else {
-            g.writeRaw(_separators.getObjectFieldValueSeparator());
-        }
+        g.writeRaw(_objectFieldValueSeparatorWithSpaces);
     }
 
     /**
@@ -315,7 +416,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      */
     @Override
     public void writeObjectEntrySeparator(JsonGenerator g) throws IOException {
-        g.writeRaw(_separators.getObjectEntrySeparator());
+        g.writeRaw(_objectEntrySeparator);
         _objectIndenter.writeIndentation(g, _nesting);
     }
 
@@ -327,7 +428,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
         if (nrOfEntries > 0) {
             _objectIndenter.writeIndentation(g, _nesting);
         } else {
-            g.writeRaw(' ');
+            g.writeRaw(_objectEmptySeparator);
         }
         g.writeRaw('}');
     }
@@ -356,7 +457,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
      */
     @Override
     public void writeArrayValueSeparator(JsonGenerator g) throws IOException {
-        g.writeRaw(_separators.getArrayValueSeparator());
+        g.writeRaw(_arrayValueSeparator);
         _arrayIndenter.writeIndentation(g, _nesting);
     }
 
@@ -368,15 +469,15 @@ public class DefaultPrettyPrinter implements PrettyPrinter, Instantiatable<Defau
         if (nrOfValues > 0) {
             _arrayIndenter.writeIndentation(g, _nesting);
         } else {
-            g.writeRaw(' ');
+            g.writeRaw(_arrayEmptySeparator);
         }
         g.writeRaw(']');
     }
 
     /*
-     * /**********************************************************
-     * /* Helper classes
-     * /**********************************************************
+    /**********************************************************
+    /* Helper classes
+    /**********************************************************
      */
 
     /**

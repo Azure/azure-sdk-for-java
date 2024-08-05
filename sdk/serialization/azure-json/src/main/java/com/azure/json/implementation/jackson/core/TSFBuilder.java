@@ -1,10 +1,18 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import com.azure.json.implementation.jackson.core.io.InputDecorator;
 import com.azure.json.implementation.jackson.core.io.OutputDecorator;
 import com.azure.json.implementation.jackson.core.json.JsonReadFeature;
 import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
+import com.azure.json.implementation.jackson.core.util.BufferRecycler;
+import com.azure.json.implementation.jackson.core.util.RecyclerPool;
+import com.azure.json.implementation.jackson.core.util.JsonRecyclerPools;
+import com.azure.json.implementation.jackson.core.util.JsonGeneratorDecorator;
 
 /**
  * Since 2.10, Builder class is offered for creating token stream factories
@@ -14,9 +22,9 @@ import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
  */
 public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, B>> {
     /*
-     * /**********************************************************************
-     * /* Constants
-     * /**********************************************************************
+    /**********************************************************************
+    /* Constants
+    /**********************************************************************
      */
 
     /**
@@ -37,9 +45,9 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     protected final static int DEFAULT_GENERATOR_FEATURE_FLAGS = JsonGenerator.Feature.collectDefaults();
 
     /*
-     * /**********************************************************************
-     * /* Configured features
-     * /**********************************************************************
+    /**********************************************************************
+    /* Configured features
+    /**********************************************************************
      */
 
     /**
@@ -59,10 +67,15 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     protected int _streamWriteFeatures;
 
     /*
-     * /**********************************************************************
-     * /* Other configuration
-     * /**********************************************************************
+    /**********************************************************************
+    /* Other configuration
+    /**********************************************************************
      */
+
+    /**
+     * @since 2.16
+     */
+    protected RecyclerPool<BufferRecycler> _recyclerPool;
 
     /**
      * Optional helper object that may decorate input sources, to do
@@ -76,28 +89,73 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
      */
     protected OutputDecorator _outputDecorator;
 
+    /**
+     * {@link StreamReadConstraints} to use.
+     *
+     * @since 2.15
+     */
+    protected StreamReadConstraints _streamReadConstraints;
+
+    /**
+     * {@link StreamWriteConstraints} to use.
+     *
+     * @since 2.16
+     */
+    protected StreamWriteConstraints _streamWriteConstraints;
+
+    /**
+     * {@link ErrorReportConfiguration} to use.
+     *
+     * @since 2.16
+     */
+    protected ErrorReportConfiguration _errorReportConfiguration;
+
+    /**
+     * @since 2.16
+     */
+    protected List<JsonGeneratorDecorator> _generatorDecorators;
+
     /*
-     * /**********************************************************************
-     * /* Construction
-     * /**********************************************************************
+    /**********************************************************************
+    /* Construction
+    /**********************************************************************
      */
 
     protected TSFBuilder() {
-        _factoryFeatures = DEFAULT_FACTORY_FEATURE_FLAGS;
-        _streamReadFeatures = DEFAULT_PARSER_FEATURE_FLAGS;
-        _streamWriteFeatures = DEFAULT_GENERATOR_FEATURE_FLAGS;
-        _inputDecorator = null;
-        _outputDecorator = null;
+        this(DEFAULT_FACTORY_FEATURE_FLAGS, DEFAULT_PARSER_FEATURE_FLAGS, DEFAULT_GENERATOR_FEATURE_FLAGS);
     }
 
     protected TSFBuilder(JsonFactory base) {
         this(base._factoryFeatures, base._parserFeatures, base._generatorFeatures);
+        _inputDecorator = base._inputDecorator;
+        _outputDecorator = base._outputDecorator;
+        _streamReadConstraints = base._streamReadConstraints;
+        _streamWriteConstraints = base._streamWriteConstraints;
+        _errorReportConfiguration = base._errorReportConfiguration;
+        _generatorDecorators = _copy(base._generatorDecorators);
     }
 
     protected TSFBuilder(int factoryFeatures, int parserFeatures, int generatorFeatures) {
+        _recyclerPool = JsonRecyclerPools.defaultPool();
+
         _factoryFeatures = factoryFeatures;
         _streamReadFeatures = parserFeatures;
         _streamWriteFeatures = generatorFeatures;
+
+        _inputDecorator = null;
+        _outputDecorator = null;
+        _streamReadConstraints = StreamReadConstraints.defaults();
+        _streamWriteConstraints = StreamWriteConstraints.defaults();
+        _errorReportConfiguration = ErrorReportConfiguration.defaults();
+        _generatorDecorators = null;
+    }
+
+    // @since 2.16
+    protected static <T> List<T> _copy(List<T> src) {
+        if (src == null) {
+            return src;
+        }
+        return new ArrayList<>(src);
     }
 
     // // // Accessors
@@ -112,6 +170,10 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
 
     public int streamWriteFeatures() {
         return _streamWriteFeatures;
+    }
+
+    public RecyclerPool<BufferRecycler> recyclerPool() {
+        return _recyclerPool;
     }
 
     public InputDecorator inputDecorator() {
@@ -202,12 +264,11 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
         return state ? enable(f) : disable(f);
     }
 
-    /*
-     * 26-Jun-2018, tatu: This should not be needed here, but due to 2.x limitations,
-     * we do need to include it or require casting.
-     * Specifically: since `JsonFactory` (and not `TokenStreamFactory`) is base class
-     * for all backends, it can not expose JSON-specific builder, but this.
-     * So let's select lesser evil(s).
+    /* 26-Jun-2018, tatu: This should not be needed here, but due to 2.x limitations,
+     *   we do need to include it or require casting.
+     *   Specifically: since `JsonFactory` (and not `TokenStreamFactory`) is base class
+     *   for all backends, it can not expose JSON-specific builder, but this.
+     *   So let's select lesser evil(s).
      */
 
     // // // JSON-specific, reads
@@ -259,7 +320,21 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
         return _failNonJSON(f);
     }
 
-    // // // Other configuration
+    // // // Other configuration, helper objects
+
+    /**
+     * @param p RecyclerPool to use for buffer allocation
+     *
+     * @return this builder (for call chaining)
+     *
+     * @since 2.16
+     */
+    public B recyclerPool(RecyclerPool<BufferRecycler> p) {
+        _recyclerPool = Objects.requireNonNull(p);
+        return _this();
+    }
+
+    // // // Other configuration, decorators
 
     public B inputDecorator(InputDecorator dec) {
         _inputDecorator = dec;
@@ -268,6 +343,52 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
 
     public B outputDecorator(OutputDecorator dec) {
         _outputDecorator = dec;
+        return _this();
+    }
+
+    public B addDecorator(JsonGeneratorDecorator decorator) {
+        if (_generatorDecorators == null) {
+            _generatorDecorators = new ArrayList<>();
+        }
+        _generatorDecorators.add(decorator);
+        return _this();
+    }
+
+    // // // Other configuration, constraints
+
+    /**
+     * Sets the constraints for streaming reads.
+     *
+     * @param streamReadConstraints constraints for streaming reads
+     * @return this builder (for call chaining)
+     * @since 2.15
+     */
+    public B streamReadConstraints(StreamReadConstraints streamReadConstraints) {
+        _streamReadConstraints = Objects.requireNonNull(streamReadConstraints);
+        return _this();
+    }
+
+    /**
+     * Sets the constraints for streaming writes.
+     *
+     * @param streamWriteConstraints constraints for streaming reads
+     * @return this builder (for call chaining)
+     * @since 2.16
+     */
+    public B streamWriteConstraints(StreamWriteConstraints streamWriteConstraints) {
+        _streamWriteConstraints = Objects.requireNonNull(streamWriteConstraints);
+        return _this();
+    }
+
+    /**
+     * Sets the configuration for error reporting.
+     *
+     * @param errorReportConfiguration configuration values used for handling erroneous token inputs. 
+     * @return this builder (for call chaining)
+     * @since 2.16
+     */
+    public B errorReportConfiguration(ErrorReportConfiguration errorReportConfiguration) {
+        _errorReportConfiguration = Objects.requireNonNull(errorReportConfiguration);
         return _this();
     }
 

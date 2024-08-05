@@ -15,15 +15,15 @@ import com.azure.json.implementation.jackson.core.util.JsonGeneratorDelegate;
  * Specialized {@link JsonGeneratorDelegate} that allows use of
  * {@link TokenFilter} for outputting a subset of content that
  * caller tries to generate.
- * 
+ *
  * @since 2.6
  */
 public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
 
     /*
-     * /**********************************************************
-     * /* Configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration
+    /**********************************************************
      */
 
     /**
@@ -50,9 +50,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     protected TokenFilter.Inclusion _inclusion;
 
     /*
-     * /**********************************************************
-     * /* Additional state
-     * /**********************************************************
+    /**********************************************************
+    /* Additional state
+    /**********************************************************
      */
 
     /**
@@ -76,9 +76,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     protected int _matchCount;
 
     /*
-     * /**********************************************************
-     * /* Construction, initialization
-     * /**********************************************************
+    /**********************************************************
+    /* Construction, initialization
+    /**********************************************************
      */
 
     /**
@@ -117,9 +117,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Extended API
-     * /**********************************************************
+    /**********************************************************
+    /* Extended API
+    /**********************************************************
      */
 
     public TokenFilter getFilter() {
@@ -141,25 +141,24 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, accessors
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, accessors
+    /**********************************************************
      */
 
     @Override
     public JsonStreamContext getOutputContext() {
-        /*
-         * 11-Apr-2015, tatu: Choice is between pre- and post-filter context;
-         * let's expose post-filter context that correlates with the view
-         * of caller.
+        /* 11-Apr-2015, tatu: Choice is between pre- and post-filter context;
+         *   let's expose post-filter context that correlates with the view
+         *   of caller.
          */
         return _filterContext;
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, structural
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, structural
+    /**********************************************************
      */
 
     @Override
@@ -252,6 +251,10 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
             _checkParentPath();
             _filterContext = _filterContext.createChildArrayContext(_itemFilter, true);
             delegate.writeStartArray(forValue);
+        } else if (_itemFilter != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+            _checkParentPath(false /* isMatch */);
+            _filterContext = _filterContext.createChildArrayContext(_itemFilter, true);
+            delegate.writeStartArray(forValue);
         } else {
             _filterContext = _filterContext.createChildArrayContext(_itemFilter, false);
         }
@@ -278,6 +281,10 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
         }
         if (_itemFilter == TokenFilter.INCLUDE_ALL) {
             _checkParentPath();
+            _filterContext = _filterContext.createChildArrayContext(_itemFilter, true);
+            delegate.writeStartArray(forValue, size);
+        } else if (_itemFilter != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+            _checkParentPath(false /* isMatch */);
             _filterContext = _filterContext.createChildArrayContext(_itemFilter, true);
             delegate.writeStartArray(forValue, size);
         } else {
@@ -308,6 +315,7 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
 
         TokenFilter f = _filterContext.checkValue(_itemFilter);
         if (f == null) {
+            _filterContext = _filterContext.createChildObjectContext(null, false);
             return;
         }
 
@@ -341,6 +349,7 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
 
         TokenFilter f = _filterContext.checkValue(_itemFilter);
         if (f == null) {
+            _filterContext = _filterContext.createChildObjectContext(null, false);
             return;
         }
 
@@ -374,6 +383,7 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
 
         TokenFilter f = _filterContext.checkValue(_itemFilter);
         if (f == null) {
+            _filterContext = _filterContext.createChildObjectContext(null, false);
             return;
         }
 
@@ -442,9 +452,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, text/String values
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, text/String values
+    /**********************************************************
      */
 
     @Override
@@ -546,9 +556,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, binary/raw content
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, binary/raw content
+    /**********************************************************
      */
 
     @Override
@@ -623,9 +633,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, other value types
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, other value types
+    /**********************************************************
      */
 
     @Override
@@ -850,9 +860,9 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Overridden field methods
-     * /**********************************************************
+    /**********************************************************
+    /* Overridden field methods
+    /**********************************************************
      */
 
     @Override
@@ -864,13 +874,13 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, Native Ids
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, Native Ids
+    /**********************************************************
      */
 
     // 25-Mar-2015, tatu: These are tricky as they sort of predate actual filtering calls.
-    // Let's try to use current state as a clue at least...
+    //   Let's try to use current state as a clue at least...
 
     @Override
     public void writeObjectId(Object id) throws IOException {
@@ -894,76 +904,76 @@ public class FilteringGeneratorDelegate extends JsonGeneratorDelegate {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, write methods, serializing Java objects
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, write methods, serializing Java objects
+    /**********************************************************
      */
 
     // Base class definitions for these seems correct to me, iff not directly delegating:
 
     /*
-     * @Override
-     * public void writeObject(Object pojo) throws IOException,JsonProcessingException {
-     * if (delegateCopyMethods) {
-     * delegate.writeObject(pojo);
-     * return;
-     * }
-     * // NOTE: copied from
-     * if (pojo == null) {
-     * writeNull();
-     * } else {
-     * if (getCodec() != null) {
-     * getCodec().writeValue(this, pojo);
-     * return;
-     * }
-     * _writeSimpleObject(pojo);
-     * }
-     * }
-     * 
-     * @Override
-     * public void writeTree(TreeNode rootNode) throws IOException {
-     * if (delegateCopyMethods) {
-     * delegate.writeTree(rootNode);
-     * return;
-     * }
-     * // As with 'writeObject()', we are not check if write would work
-     * if (rootNode == null) {
-     * writeNull();
-     * } else {
-     * if (getCodec() == null) {
-     * throw new IllegalStateException("No ObjectCodec defined");
-     * }
-     * getCodec().writeValue(this, rootNode);
-     * }
-     * }
-     */
+    @Override
+    public void writeObject(Object pojo) throws IOException,JsonProcessingException {
+        if (delegateCopyMethods) {
+            delegate.writeObject(pojo);
+            return;
+        }
+        // NOTE: copied from
+        if (pojo == null) {
+            writeNull();
+        } else {
+            if (getCodec() != null) {
+                getCodec().writeValue(this, pojo);
+                return;
+            }
+            _writeSimpleObject(pojo);
+        }
+    }
+    
+    @Override
+    public void writeTree(TreeNode rootNode) throws IOException {
+        if (delegateCopyMethods) {
+            delegate.writeTree(rootNode);
+            return;
+        }
+        // As with 'writeObject()', we are not check if write would work
+        if (rootNode == null) {
+            writeNull();
+        } else {
+            if (getCodec() == null) {
+                throw new IllegalStateException("No ObjectCodec defined");
+            }
+            getCodec().writeValue(this, rootNode);
+        }
+    }
+    */
 
     /*
-     * /**********************************************************
-     * /* Public API, copy-through methods
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, copy-through methods
+    /**********************************************************
      */
 
     // Base class definitions for these seems correct to me, iff not directly delegating:
 
     /*
-     * @Override
-     * public void copyCurrentEvent(JsonParser jp) throws IOException {
-     * if (delegateCopyMethods) delegate.copyCurrentEvent(jp);
-     * else super.copyCurrentEvent(jp);
-     * }
-     * 
-     * @Override
-     * public void copyCurrentStructure(JsonParser jp) throws IOException {
-     * if (delegateCopyMethods) delegate.copyCurrentStructure(jp);
-     * else super.copyCurrentStructure(jp);
-     * }
-     */
+    @Override
+    public void copyCurrentEvent(JsonParser jp) throws IOException {
+        if (delegateCopyMethods) delegate.copyCurrentEvent(jp);
+        else super.copyCurrentEvent(jp);
+    }
+    
+    @Override
+    public void copyCurrentStructure(JsonParser jp) throws IOException {
+        if (delegateCopyMethods) delegate.copyCurrentStructure(jp);
+        else super.copyCurrentStructure(jp);
+    }
+    */
 
     /*
-     * /**********************************************************
-     * /* Helper methods
-     * /**********************************************************
+    /**********************************************************
+    /* Helper methods
+    /**********************************************************
      */
 
     protected void _checkParentPath() throws IOException {

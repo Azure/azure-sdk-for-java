@@ -15,7 +15,7 @@ import com.azure.json.implementation.jackson.core.*;
  * scopes with large number of entries). Another consideration is trying to limit
  * actual number of compiled classes as it contributes significantly to overall
  * jar size (due to linkage etc).
- * 
+ *
  * @since 2.3
  */
 public class DupDetector {
@@ -58,7 +58,7 @@ public class DupDetector {
     public JsonLocation findLocation() {
         // ugly but:
         if (_source instanceof JsonParser) {
-            return ((JsonParser) _source).getCurrentLocation();
+            return ((JsonParser) _source).currentLocation();
         }
         // do generators have a way to provide Location? Apparently not...
         return null;
@@ -101,7 +101,7 @@ public class DupDetector {
             return true;
         }
         if (_seen == null) {
-            _seen = new HashSet<String>(16); // 16 is default, seems reasonable
+            _seen = new HashSet<>(16); // 16 is default, seems reasonable
             _seen.add(_firstName);
             _seen.add(_secondName);
         }

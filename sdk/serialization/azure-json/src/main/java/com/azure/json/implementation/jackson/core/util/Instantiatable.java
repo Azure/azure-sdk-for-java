@@ -9,9 +9,9 @@ package com.azure.json.implementation.jackson.core.util;
  *<p>
  * Note that some implementations may choose to implement {@link #createInstance}
  * by simply returning 'this': this is acceptable if instances are stateless.
- * 
+ *
  * @see DefaultPrettyPrinter
- * 
+ *
  * @since 2.1
  */
 public interface Instantiatable<T> {

@@ -6,7 +6,7 @@ import java.io.IOException;
 /**
  * Interface that defines objects that can read and write
  * {@link TreeNode} instances using Streaming API.
- * 
+ *
  * @since 2.3
  */
 public abstract class TreeCodec {
@@ -17,7 +17,7 @@ public abstract class TreeCodec {
     /**
      * @return Node that represents "missing" node during traversal: something
      *   referenced but that does not exist in content model
-     * 
+     *
      * @since 2.10
      */
     public TreeNode missingNode() {
@@ -25,8 +25,8 @@ public abstract class TreeCodec {
     }
 
     /**
-     * @return Node that represents explict {@code null} value in content
-     * 
+     * @return Node that represents explicit {@code null} value in content
+     *
      * @since 2.10
      */
     public TreeNode nullNode() {

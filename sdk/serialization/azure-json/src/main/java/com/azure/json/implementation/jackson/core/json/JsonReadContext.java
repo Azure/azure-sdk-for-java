@@ -22,19 +22,19 @@ public final class JsonReadContext extends JsonStreamContext {
     protected DupDetector _dups;
 
     /*
-     * /**********************************************************
-     * /* Simple instance reuse slots; speeds up things a bit (10-15%)
-     * /* for docs with lots of small arrays/objects (for which
-     * /* allocation was visible in profile stack frames)
-     * /**********************************************************
+    /**********************************************************
+    /* Simple instance reuse slots; speeds up things a bit (10-15%)
+    /* for docs with lots of small arrays/objects (for which
+    /* allocation was visible in profile stack frames)
+    /**********************************************************
      */
 
     protected JsonReadContext _child;
 
     /*
-     * /**********************************************************
-     * /* Location/state information (minus source reference)
-     * /**********************************************************
+    /**********************************************************
+    /* Location/state information (minus source reference)
+    /**********************************************************
      */
 
     protected String _currentName;
@@ -48,11 +48,34 @@ public final class JsonReadContext extends JsonStreamContext {
     protected int _columnNr;
 
     /*
-     * /**********************************************************
-     * /* Instance construction, config, reuse
-     * /**********************************************************
+    /**********************************************************
+    /* Instance construction, config, reuse
+    /**********************************************************
      */
 
+    /**
+     * @param parent Parent context, if any ({@code null} for Root context)
+     * @param nestingDepth Number of parents this context has (0 for Root context)
+     * @param dups Detector used for checking duplicate names, if any ({@code null} if none)
+     * @param type Type to assign to this context node
+     * @param lineNr Line of the starting position of this context
+     * @param colNr Column of the starting position of this context
+     * 
+     * @since 2.15
+     */
+    public JsonReadContext(JsonReadContext parent, int nestingDepth, DupDetector dups, int type, int lineNr,
+        int colNr) {
+        super();
+        _parent = parent;
+        _dups = dups;
+        _type = type;
+        _lineNr = lineNr;
+        _columnNr = colNr;
+        _index = -1;
+        _nestingDepth = nestingDepth;
+    }
+
+    @Deprecated // since 2.15
     public JsonReadContext(JsonReadContext parent, DupDetector dups, int type, int lineNr, int colNr) {
         super();
         _parent = parent;
@@ -61,6 +84,7 @@ public final class JsonReadContext extends JsonStreamContext {
         _lineNr = lineNr;
         _columnNr = colNr;
         _index = -1;
+        _nestingDepth = parent == null ? 0 : parent._nestingDepth + 1;
     }
 
     /**
@@ -89,10 +113,10 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-     * public void trackDups(JsonParser p) {
-     * _dups = DupDetector.rootDetector(p);
-     * }
-     */
+    public void trackDups(JsonParser p) {
+        _dups = DupDetector.rootDetector(p);
+    }
+    */
 
     public JsonReadContext withDupDetector(DupDetector dups) {
         _dups = dups;
@@ -110,24 +134,24 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* Factory methods
-     * /**********************************************************
+    /**********************************************************
+    /* Factory methods
+    /**********************************************************
      */
 
     public static JsonReadContext createRootContext(int lineNr, int colNr, DupDetector dups) {
-        return new JsonReadContext(null, dups, TYPE_ROOT, lineNr, colNr);
+        return new JsonReadContext(null, 0, dups, TYPE_ROOT, lineNr, colNr);
     }
 
     public static JsonReadContext createRootContext(DupDetector dups) {
-        return new JsonReadContext(null, dups, TYPE_ROOT, 1, 0);
+        return new JsonReadContext(null, 0, dups, TYPE_ROOT, 1, 0);
     }
 
     public JsonReadContext createChildArrayContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
-            _child
-                = ctxt = new JsonReadContext(this, (_dups == null) ? null : _dups.child(), TYPE_ARRAY, lineNr, colNr);
+            _child = ctxt = new JsonReadContext(this, _nestingDepth + 1, (_dups == null) ? null : _dups.child(),
+                TYPE_ARRAY, lineNr, colNr);
         } else {
             ctxt.reset(TYPE_ARRAY, lineNr, colNr);
         }
@@ -137,8 +161,8 @@ public final class JsonReadContext extends JsonStreamContext {
     public JsonReadContext createChildObjectContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
-            _child
-                = ctxt = new JsonReadContext(this, (_dups == null) ? null : _dups.child(), TYPE_OBJECT, lineNr, colNr);
+            _child = ctxt = new JsonReadContext(this, _nestingDepth + 1, (_dups == null) ? null : _dups.child(),
+                TYPE_OBJECT, lineNr, colNr);
             return ctxt;
         }
         ctxt.reset(TYPE_OBJECT, lineNr, colNr);
@@ -146,9 +170,9 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* Abstract method implementations, overrides
-     * /**********************************************************
+    /**********************************************************
+    /* Abstract method implementations, overrides
+    /**********************************************************
      */
 
     @Override
@@ -181,9 +205,9 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* Extended API
-     * /**********************************************************
+    /**********************************************************
+    /* Extended API
+    /**********************************************************
      */
 
     /**
@@ -209,14 +233,13 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* State changes
-     * /**********************************************************
+    /**********************************************************
+    /* State changes
+    /**********************************************************
      */
 
     public boolean expectComma() {
-        /*
-         * Assumption here is that we will be getting a value (at least
+        /* Assumption here is that we will be getting a value (at least
          * before calling this method again), and
          * so will auto-increment index to avoid having to do another call
          */

@@ -91,6 +91,28 @@ public enum StreamReadFeature implements JacksonFeature // since 2.12
      */
     INCLUDE_SOURCE_IN_LOCATION(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION),
 
+    /**
+     * Feature that determines whether we use the built-in {@link Double#parseDouble(String)} code to parse
+     * doubles or if we use {@code FastDoubleParser}
+     * instead.
+     *<p>
+     * This setting is disabled by default.
+     *
+     * @since 2.14
+     */
+    USE_FAST_DOUBLE_PARSER(JsonParser.Feature.USE_FAST_DOUBLE_PARSER),
+
+    /**
+     * Feature that determines whether to use the built-in Java code for parsing
+     * <code>BigDecimal</code>s and <code>BigIntegers</code>s or to use
+     * {@code FastDoubleParser} instead.
+     *<p>
+     * This setting is disabled by default.
+     *
+     * @since 2.15
+     */
+    USE_FAST_BIG_NUMBER_PARSER(JsonParser.Feature.USE_FAST_BIG_NUMBER_PARSER)
+
     ;
 
     /**

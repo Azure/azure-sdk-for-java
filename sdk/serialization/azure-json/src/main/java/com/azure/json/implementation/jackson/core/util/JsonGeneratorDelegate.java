@@ -24,9 +24,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     protected boolean delegateCopyMethods;
 
     /*
-     * /**********************************************************************
-     * /* Construction, initialization
-     * /**********************************************************************
+    /**********************************************************************
+    /* Construction, initialization
+    /**********************************************************************
      */
 
     public JsonGeneratorDelegate(JsonGenerator d) {
@@ -37,7 +37,7 @@ public class JsonGeneratorDelegate extends JsonGenerator {
      * @param d Underlying generator to delegate calls to
      * @param delegateCopyMethods Flag assigned to <code>delagateCopyMethod</code>
      *   and which defines whether copy methods are handled locally (false), or
-     *   delegated to configured 
+     *   delegated to configured
      */
     public JsonGeneratorDelegate(JsonGenerator d, boolean delegateCopyMethods) {
         delegate = d;
@@ -45,9 +45,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, metadata/state access
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, metadata/state access
+    /**********************************************************************
      */
 
     @Override
@@ -96,22 +96,22 @@ public class JsonGeneratorDelegate extends JsonGenerator {
         return delegate.currentValue();
     }
 
-    // TODO: deprecate in 2.14 or later
+    @Deprecated // since 2.17
     @Override
     public void setCurrentValue(Object v) {
         delegate.setCurrentValue(v);
     }
 
-    // TODO: deprecate in 2.14 or later
+    @Deprecated // since 2.17
     @Override
     public Object getCurrentValue() {
         return delegate.getCurrentValue();
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, capability introspection
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, capability introspection
+    /**********************************************************************
      */
 
     @Override
@@ -150,9 +150,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, configuration
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, configuration
+    /**********************************************************************
      */
 
     @Override
@@ -173,7 +173,7 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     // final, can't override (and no need to)
-    // public final JsonGenerator configure(Feature f, boolean state)
+    //public final JsonGenerator configure(Feature f, boolean state)
 
     @Override
     public int getFeatureMask() {
@@ -200,10 +200,10 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Configuring generator
-     * /**********************************************************************
-     */
+    /**********************************************************************
+    /* Configuring generator
+    /**********************************************************************
+      */
 
     @Override
     public JsonGenerator setPrettyPrinter(PrettyPrinter pp) {
@@ -251,9 +251,20 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, write methods, structural
-     * /**********************************************************************
+    /**********************************************************************
+    /* Constraints violation checking (2.16)
+    /**********************************************************************
+     */
+
+    @Override
+    public StreamWriteConstraints streamWriteConstraints() {
+        return delegate.streamWriteConstraints();
+    }
+
+    /*
+    /**********************************************************************
+    /* Public API, write methods, structural
+    /**********************************************************************
      */
 
     @Override
@@ -338,9 +349,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, write methods, text/String values
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, write methods, text/String values
+    /**********************************************************************
      */
 
     @Override
@@ -374,9 +385,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, write methods, binary/raw content
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, write methods, binary/raw content
+    /**********************************************************************
      */
 
     @Override
@@ -430,9 +441,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, write methods, other value types
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, write methods, other value types
+    /**********************************************************************
      */
 
     @Override
@@ -492,24 +503,24 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, convenience field-write methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, convenience field-write methods
+    /**********************************************************************
      */
 
     // 04-Oct-2019, tatu: Reminder: these should NOT be delegated, unless matching
-    // methods in `FilteringGeneratorDelegate` are re-defined to "split" calls again
+    //    methods in `FilteringGeneratorDelegate` are re-defined to "split" calls again
 
-    // public void writeBinaryField(String fieldName, byte[] data) throws IOException {
-    // public void writeBooleanField(String fieldName, boolean value) throws IOException {
-    // public void writeNullField(String fieldName) throws IOException {
-    // public void writeStringField(String fieldName, String value) throws IOException {
-    // public void writeNumberField(String fieldName, short value) throws IOException {
+    //    public void writeBinaryField(String fieldName, byte[] data) throws IOException {
+    //    public void writeBooleanField(String fieldName, boolean value) throws IOException {
+    //    public void writeNullField(String fieldName) throws IOException {
+    //    public void writeStringField(String fieldName, String value) throws IOException {
+    //    public void writeNumberField(String fieldName, short value) throws IOException {
 
-    // public void writeArrayFieldStart(String fieldName) throws IOException {
-    // public void writeObjectFieldStart(String fieldName) throws IOException {
-    // public void writeObjectField(String fieldName, Object pojo) throws IOException {
-    // public void writePOJOField(String fieldName, Object pojo) throws IOException {
+    //    public void writeArrayFieldStart(String fieldName) throws IOException {
+    //    public void writeObjectFieldStart(String fieldName) throws IOException {
+    //    public void writeObjectField(String fieldName, Object pojo) throws IOException {
+    //    public void writePOJOField(String fieldName, Object pojo) throws IOException {
 
     // Sole exception being this method as it is not a "combo" method
 
@@ -519,9 +530,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, write methods, Native Ids
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, write methods, Native Ids
+    /**********************************************************************
      */
 
     @Override
@@ -545,9 +556,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, write methods, serializing Java objects
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, write methods, serializing Java objects
+    /**********************************************************************
      */
 
     @Override // since 2.13
@@ -592,17 +603,17 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, convenience field write methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, convenience field write methods
+    /**********************************************************************
      */
 
     // // These are fine, just delegate to other methods...
 
     /*
-     * /**********************************************************************
-     * /* Public API, copy-through methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, copy-through methods
+    /**********************************************************************
      */
 
     @Override
@@ -622,9 +633,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, context access
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, context access
+    /**********************************************************************
      */
 
     @Override
@@ -633,9 +644,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, buffer handling
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, buffer handling
+    /**********************************************************************
      */
 
     @Override
@@ -654,9 +665,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-     * /**********************************************************************
-     * /* Extended API
-     * /**********************************************************************
+    /**********************************************************************
+    /* Extended API
+    /**********************************************************************
      */
 
     @Deprecated // since 2.11

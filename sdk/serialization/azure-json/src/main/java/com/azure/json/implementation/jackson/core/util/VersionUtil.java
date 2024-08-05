@@ -28,9 +28,9 @@ public class VersionUtil {
     private final static Pattern V_SEP = Pattern.compile("[-_./;:]");
 
     /*
-     * /**********************************************************************
-     * /* Instance life-cycle
-     * /**********************************************************************
+    /**********************************************************************
+    /* Instance life-cycle
+    /**********************************************************************
      */
 
     protected VersionUtil() {
@@ -42,9 +42,9 @@ public class VersionUtil {
     }
 
     /*
-     * /**********************************************************************
-     * /* Static load methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Static load methods
+    /**********************************************************************
      */
 
     /**
@@ -57,7 +57,7 @@ public class VersionUtil {
      *
      * @param cls Class for which to look version information
      *
-     * @return Version information discovered if any; 
+     * @return Version information discovered if any;
      *  {@link Version#unknownVersion()} if none
      */
     public static Version versionFor(Class<?> cls) {
@@ -71,7 +71,8 @@ public class VersionUtil {
             } catch (Exception e) {
                 throw new IllegalArgumentException("Failed to get Versioned out of " + vClass);
             }
-        } catch (Exception e) { // ok to be missing (not good but acceptable)
+        } catch (Exception e) {
+            // ok to be missing (not good but acceptable)
             ;
         }
         return (v == null) ? Version.unknownVersion() : v;
@@ -82,7 +83,7 @@ public class VersionUtil {
      *
      * @param cls Class for which to look version information
      *
-     * @return Version information discovered if any; 
+     * @return Version information discovered if any;
      *  {@link Version#unknownVersion()} if none
      *
      * @deprecated Since 2.12 simply use {@link #versionFor(Class)} instead
@@ -102,7 +103,7 @@ public class VersionUtil {
      * @param groupId the groupId of the library
      * @param artifactId the artifactId of the library
      * @return The version
-     * 
+     *
      * @deprecated Since 2.6: functionality not used by any official Jackson component, should be
      *   moved out if anyone needs it
      */
@@ -167,12 +168,16 @@ public class VersionUtil {
     }
 
     /*
-     * /**********************************************************************
-     * /* Orphan utility methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Orphan utility methods
+    /**********************************************************************
      */
 
     public final static void throwInternal() {
+        throw new RuntimeException("Internal error: this code path should never get executed");
+    }
+
+    public final static <T> T throwInternalReturnAny() {
         throw new RuntimeException("Internal error: this code path should never get executed");
     }
 }

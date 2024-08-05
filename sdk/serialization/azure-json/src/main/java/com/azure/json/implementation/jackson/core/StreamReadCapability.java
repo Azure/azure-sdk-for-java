@@ -46,7 +46,44 @@ public enum StreamReadCapability implements JacksonFeature {
      *<p>
      * This capability is true for many textual formats like CSV, Properties and XML.
      */
-    UNTYPED_SCALARS(false),;
+    UNTYPED_SCALARS(false),
+
+    /**
+     * Capability that indicates whether data format supports reporting of
+     * accurate floating point values (with respect to reported numeric type,
+     * {@link com.azure.json.implementation.jackson.core.JsonParser.NumberType#DOUBLE}) or not.
+     * This usually depends on whether format stores such values natively
+     * (as IEEE binary FP formats for {@code java.lang.Float} and {@code java.lang.Double};
+     * using some other value preserving presentation for {@code java.math.BigDecimal})
+     * or not: most binary formats do, and most textual formats do not (at least for
+     * {@code Float} and {@code Double}, specifically).
+     *<p>
+     * In case of JSON numbers (as well as for most if not all textual formats),
+     * all floating-point numbers are represented simply by decimal (10-base)
+     * textual representation and can only be represented accurately using
+     * {@link java.math.BigDecimal}. But for performance reasons they may be
+     * (depending on settings) be exposed as {@link java.lang.Double}s (that is,
+     * {@link com.azure.json.implementation.jackson.core.JsonParser.NumberType#DOUBLE}).
+     * Note that methods like {@link JsonParser#getNumberValueExact()},
+     * {@link JsonParser#getValueAsString()} and
+     * {@link JsonParser#getDecimalValue()} report values without
+     * precision loss.
+     *<p>
+     * The main intended use case is to let non-Jackson code to handle cases
+     * where exact accuracy is necessary in a way that handling does not incur
+     * unnecessary conversions across different formats: for example, when reading
+     * binary format, simple access is essentially guaranteed to expose value exactly
+     * as encoded by the format (as {@code float}, {@code double} or {@code BigDecimal}),
+     * whereas for textual formats like JSON it is necessary to access value explicitly
+     * as {@code BigDecimal} using {@code JsonParser#getDecimalValue}.
+     *<p>
+     * Capability is false for text formats like JSON, but true for binary formats
+     * like Smile, MessagePack, etc., where type is precisely and inexpensively
+     * indicated by format.
+     *
+     * @since 2.14
+     */
+    EXACT_FLOATS(false);
 
     /**
      * Whether feature is enabled or disabled by default.

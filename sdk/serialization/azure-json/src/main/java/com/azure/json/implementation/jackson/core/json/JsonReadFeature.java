@@ -95,7 +95,7 @@ public enum JsonReadFeature implements FormatFeature {
 
     /**
      * Feature that determines whether parser will allow
-     * JSON integral numbers to start with additional (ignorable) 
+     * JSON integral numbers to start with additional (ignorable)
      * zeroes (like: 000001). If enabled, no exception is thrown, and extra
      * nulls are silently ignored (and not included in textual representation
      * exposed via {@link JsonParser#getText}).
@@ -108,17 +108,45 @@ public enum JsonReadFeature implements FormatFeature {
 
     /**
      * Feature that determines whether parser will allow
+     * JSON decimal numbers to start with a plus sign
+     * (like: +123). If enabled, no exception is thrown, and the number
+     * is parsed as though a leading sign had not been present.
+     *<p>
+     * Since JSON specification does not allow leading plus signs,
+     * this is a non-standard feature, and as such disabled by default.
+     *
+     * @since 2.14
+     */
+    @SuppressWarnings("deprecation")
+    ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS(false, JsonParser.Feature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS),
+
+    /**
+     * Feature that determines whether parser will allow
      * JSON decimal numbers to start with a decimal point
      * (like: .123). If enabled, no exception is thrown, and the number
      * is parsed as though a leading 0 had been present.
      *<p>
-     * Since JSON specification does not allow leading decimal,
+     * Since JSON specification does not allow leading decimal points,
      * this is a non-standard feature, and as such disabled by default.
      *
      * @since 2.11
      */
     @SuppressWarnings("deprecation")
     ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS(false, JsonParser.Feature.ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS),
+
+    /**
+     * Feature that determines whether parser will allow
+     * JSON decimal numbers to end with a decimal point
+     * (like: 123.). If enabled, no exception is thrown, and the number
+     * is parsed as though the trailing decimal point had not been present.
+     *<p>
+     * Since JSON specification does not allow trailing decimal points,
+     * this is a non-standard feature, and as such disabled by default.
+     *
+     * @since 2.14
+     */
+    @SuppressWarnings("deprecation")
+    ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS(false, JsonParser.Feature.ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS),
 
     /**
      * Feature that allows parser to recognize set of
@@ -152,7 +180,7 @@ public enum JsonReadFeature implements FormatFeature {
      * in data-binding.
      * <p>
      * For example, enabling this feature will represent a JSON array <code>["value1",,"value3",]</code>
-     * as <code>["value1", null, "value3", null]</code> 
+     * as <code>["value1", null, "value3", null]</code>
      * <p>
      * Since the JSON specification does not allow missing values this is a non-compliant JSON
      * feature and is disabled by default.

@@ -25,29 +25,32 @@ public abstract class StreamReadException extends JsonProcessingException {
      */
     protected RequestPayload _requestPayload;
 
-    protected StreamReadException(JsonParser p, String msg) {
-        super(msg, (p == null) ? null : p.getCurrentLocation());
-        _processor = p;
+    // @since 2.15
+    protected StreamReadException(String msg) {
+        this(null, msg, null, null);
     }
 
-    protected StreamReadException(JsonParser p, String msg, Throwable root) {
-        super(msg, (p == null) ? null : p.getCurrentLocation(), root);
-        _processor = p;
+    protected StreamReadException(JsonParser p, String msg) {
+        this(p, msg, _currentLocation(p), null);
+    }
+
+    protected StreamReadException(JsonParser p, String msg, Throwable rootCause) {
+        this(p, msg, _currentLocation(p), rootCause);
     }
 
     protected StreamReadException(JsonParser p, String msg, JsonLocation loc) {
-        super(msg, loc, null);
-        _processor = p;
+        this(p, msg, loc, null);
     }
 
+    protected StreamReadException(String msg, JsonLocation loc, Throwable rootCause) {
+        this(null, msg, loc, rootCause);
+    }
+
+    // Canonical constructor
     // @since 2.13
     protected StreamReadException(JsonParser p, String msg, JsonLocation loc, Throwable rootCause) {
         super(msg, loc, rootCause);
         _processor = p;
-    }
-
-    protected StreamReadException(String msg, JsonLocation loc, Throwable rootCause) {
-        super(msg, loc, rootCause);
     }
 
     /**
@@ -92,7 +95,7 @@ public abstract class StreamReadException extends JsonProcessingException {
     /**
      * The method returns the String representation of the request payload if
      * one was specified for parser that threw this Exception.
-     * 
+     *
      * @return request body as String, if payload was specified; `null` otherwise
      */
     public String getRequestPayloadAsString() {
@@ -109,5 +112,10 @@ public abstract class StreamReadException extends JsonProcessingException {
             msg += "\nRequest payload : " + _requestPayload.toString();
         }
         return msg;
+    }
+
+    // @since 2.17
+    protected static JsonLocation _currentLocation(JsonParser p) {
+        return (p == null) ? null : p.currentLocation();
     }
 }

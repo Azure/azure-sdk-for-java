@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -16,6 +15,8 @@ package com.azure.json.implementation.jackson.core;
  *<p>
  * Since Jackson 2.12 extends intermediate {@link JacksonException} type
  * instead of directly extending {@link java.io.IOException}.
+ *<p>
+ * Since Jackson 2.16, handles its content as configured using {@link com.azure.json.implementation.jackson.core.ErrorReportConfiguration}.
  */
 public class JsonProcessingException extends JacksonException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
@@ -44,9 +45,9 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /*
-     * /**********************************************************************
-     * /* Extended API
-     * /**********************************************************************
+    /**********************************************************************
+    /* Extended API
+    /**********************************************************************
      */
 
     @Override
@@ -88,7 +89,7 @@ public class JsonProcessingException extends JacksonException {
      * to set it; this means that caller needs to take care to check for nulls.
      * Subtypes override this method with co-variant return type, for more
      * type-safe access.
-     * 
+     *
      * @return Originating processor, if available; null if not.
      *
      * @since 2.7
@@ -99,9 +100,9 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /*
-     * /**********************************************************************
-     * /* Methods for sub-classes to use, override
-     * /**********************************************************************
+    /**********************************************************************
+    /* Methods for sub-classes to use, override
+    /**********************************************************************
      */
 
     /**
@@ -116,9 +117,9 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /*
-     * /**********************************************************************
-     * /* Overrides of standard methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Overrides of standard methods
+    /**********************************************************************
      */
 
     /**

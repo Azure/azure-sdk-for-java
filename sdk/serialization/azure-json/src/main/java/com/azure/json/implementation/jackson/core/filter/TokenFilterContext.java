@@ -8,7 +8,7 @@ import com.azure.json.implementation.jackson.core.*;
 /**
  * Alternative variant of {@link JsonStreamContext}, used when filtering
  * content being read or written (based on {@link TokenFilter}).
- * 
+ *
  * @since 2.6
  */
 public class TokenFilterContext extends JsonStreamContext {
@@ -18,19 +18,19 @@ public class TokenFilterContext extends JsonStreamContext {
     protected final TokenFilterContext _parent;
 
     /*
-     * /**********************************************************
-     * /* Simple instance reuse slots; speed up things
-     * /* a bit (10-15%) for docs with lots of small
-     * /* arrays/objects
-     * /**********************************************************
+    /**********************************************************
+    /* Simple instance reuse slots; speed up things
+    /* a bit (10-15%) for docs with lots of small
+    /* arrays/objects
+    /**********************************************************
      */
 
     protected TokenFilterContext _child;
 
     /*
-     * /**********************************************************
-     * /* Location/state information
-     * /**********************************************************
+    /**********************************************************
+    /* Location/state information
+    /**********************************************************
      */
 
     /**
@@ -60,15 +60,16 @@ public class TokenFilterContext extends JsonStreamContext {
     protected boolean _needToHandleName;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     protected TokenFilterContext(int type, TokenFilterContext parent, TokenFilter filter, boolean startHandled) {
         super();
         _type = type;
         _parent = parent;
+        _nestingDepth = parent == null ? 0 : parent._nestingDepth + 1;
         _filter = filter;
         _index = -1;
         _startHandled = startHandled;
@@ -86,9 +87,9 @@ public class TokenFilterContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* Factory methods
-     * /**********************************************************
+    /**********************************************************
+    /* Factory methods
+    /**********************************************************
      */
 
     public static TokenFilterContext createRootContext(TokenFilter filter) {
@@ -115,9 +116,9 @@ public class TokenFilterContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* State changes
-     * /**********************************************************
+    /**********************************************************
+    /* State changes
+    /**********************************************************
      */
 
     public TokenFilter setFieldName(String name) throws JsonProcessingException {
@@ -225,6 +226,16 @@ public class TokenFilterContext extends JsonStreamContext {
     public TokenFilterContext closeArray(JsonGenerator gen) throws IOException {
         if (_startHandled) {
             gen.writeEndArray();
+        } else {
+            if ((_filter != null) && (_filter != TokenFilter.INCLUDE_ALL)) {
+                if (_filter.includeEmptyArray(hasCurrentIndex())) {
+                    if (_parent != null) {
+                        _parent._writePath(gen);
+                    }
+                    gen.writeStartArray();
+                    gen.writeEndArray();
+                }
+            }
         }
         if ((_filter != null) && (_filter != TokenFilter.INCLUDE_ALL)) {
             _filter.filterFinishArray();
@@ -235,6 +246,16 @@ public class TokenFilterContext extends JsonStreamContext {
     public TokenFilterContext closeObject(JsonGenerator gen) throws IOException {
         if (_startHandled) {
             gen.writeEndObject();
+        } else {
+            if ((_filter != null) && (_filter != TokenFilter.INCLUDE_ALL)) {
+                if (_filter.includeEmptyObject(hasCurrentName())) {
+                    if (_parent != null) {
+                        _parent._writePath(gen);
+                    }
+                    gen.writeStartObject();
+                    gen.writeEndObject();
+                }
+            }
         }
         if ((_filter != null) && (_filter != TokenFilter.INCLUDE_ALL)) {
             _filter.filterFinishObject();
@@ -245,14 +266,14 @@ public class TokenFilterContext extends JsonStreamContext {
     public void skipParentChecks() {
         _filter = null;
         for (TokenFilterContext ctxt = _parent; ctxt != null; ctxt = ctxt._parent) {
-            _parent._filter = null;
+            ctxt._filter = null;
         }
     }
 
     /*
-     * /**********************************************************
-     * /* Accessors, mutators
-     * /**********************************************************
+    /**********************************************************
+    /* Accessors, mutators
+    /**********************************************************
      */
 
     @Override

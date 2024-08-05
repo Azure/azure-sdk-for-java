@@ -4,6 +4,7 @@ package com.azure.json.implementation.jackson.core.base;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 import com.azure.json.implementation.jackson.core.*;
 import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
@@ -67,9 +68,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static int[] NO_INTS = new int[0];
 
     /*
-     * /**********************************************************
-     * /* Constants and fields of former 'JsonNumericParserBase'
-     * /**********************************************************
+    /**********************************************************
+    /* Constants and fields of former 'JsonNumericParserBase'
+    /**********************************************************
      */
 
     protected final static int NR_UNKNOWN = 0;
@@ -106,21 +107,21 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static BigDecimal BD_MIN_INT = new BigDecimal(BI_MIN_INT);
     protected final static BigDecimal BD_MAX_INT = new BigDecimal(BI_MAX_INT);
 
-    protected final static long MIN_INT_L = (long) Integer.MIN_VALUE;
-    protected final static long MAX_INT_L = (long) Integer.MAX_VALUE;
+    protected final static long MIN_INT_L = Integer.MIN_VALUE;
+    protected final static long MAX_INT_L = Integer.MAX_VALUE;
 
     // These are not very accurate, but have to do... (for bounds checks)
 
-    protected final static double MIN_LONG_D = (double) Long.MIN_VALUE;
-    protected final static double MAX_LONG_D = (double) Long.MAX_VALUE;
+    protected final static double MIN_LONG_D = Long.MIN_VALUE;
+    protected final static double MAX_LONG_D = Long.MAX_VALUE;
 
-    protected final static double MIN_INT_D = (double) Integer.MIN_VALUE;
-    protected final static double MAX_INT_D = (double) Integer.MAX_VALUE;
+    protected final static double MIN_INT_D = Integer.MIN_VALUE;
+    protected final static double MAX_INT_D = Integer.MAX_VALUE;
 
     /*
-     * /**********************************************************
-     * /* Misc other constants
-     * /**********************************************************
+    /**********************************************************
+    /* Misc other constants
+    /**********************************************************
      */
 
     /**
@@ -128,13 +129,15 @@ public abstract class ParserMinimalBase extends JsonParser {
      * as part of error messages.
      *
      * @since 2.9
+     * @deprecated Since 2.16. {@link ErrorReportConfiguration#getMaxErrorTokenLength()} will be used instead.
      */
+    @Deprecated
     protected final static int MAX_ERROR_TOKEN_LENGTH = 256;
 
     /*
-     * /**********************************************************
-     * /* Minimal generally useful state
-     * /**********************************************************
+    /**********************************************************
+    /* Minimal generally useful state
+    /**********************************************************
      */
 
     /**
@@ -151,12 +154,13 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected JsonToken _lastClearedToken;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     protected ParserMinimalBase() {
+        super();
     }
 
     protected ParserMinimalBase(int features) {
@@ -167,22 +171,22 @@ public abstract class ParserMinimalBase extends JsonParser {
     // public abstract Version version();
 
     /*
-     * /**********************************************************
-     * /* Configuration overrides if any
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration overrides if any
+    /**********************************************************
      */
 
     // from base class:
 
-    // public void enableFeature(Feature f)
-    // public void disableFeature(Feature f)
-    // public void setFeature(Feature f, boolean state)
-    // public boolean isFeatureEnabled(Feature f)
+    //public void enableFeature(Feature f)
+    //public void disableFeature(Feature f)
+    //public void setFeature(Feature f, boolean state)
+    //public boolean isFeatureEnabled(Feature f)
 
     /*
-     * /**********************************************************
-     * /* JsonParser impl
-     * /**********************************************************
+    /**********************************************************
+    /* JsonParser impl
+    /**********************************************************
      */
 
     @Override
@@ -269,8 +273,7 @@ public abstract class ParserMinimalBase extends JsonParser {
             JsonToken t = nextToken();
             if (t == null) {
                 _handleEOF();
-                /*
-                 * given constraints, above should never return;
+                /* given constraints, above should never return;
                  * however, FindBugs doesn't know about it and
                  * complains... so let's add dummy break here
                  */
@@ -301,9 +304,10 @@ public abstract class ParserMinimalBase extends JsonParser {
      */
     protected abstract void _handleEOF() throws JsonParseException;
 
-    // public JsonToken getCurrentToken()
-    // public boolean hasCurrentToken()
+    //public JsonToken getCurrentToken()
+    //public boolean hasCurrentToken()
 
+    @Deprecated // since 2.17 -- still need to implement
     @Override
     public abstract String getCurrentName() throws IOException;
 
@@ -316,14 +320,14 @@ public abstract class ParserMinimalBase extends JsonParser {
     @Override
     public abstract JsonStreamContext getParsingContext();
 
-    // public abstract JsonLocation getTokenLocation();
+    //    public abstract JsonLocation getTokenLocation();
 
-    // public abstract JsonLocation getCurrentLocation();
+    //   public abstract JsonLocation getCurrentLocation();
 
     /*
-     * /**********************************************************
-     * /* Public API, token state overrides
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, token state overrides
+    /**********************************************************
      */
 
     @Override
@@ -343,9 +347,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     public abstract void overrideCurrentName(String name);
 
     /*
-     * /**********************************************************
-     * /* Public API, access to token information, text
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, access to token information, text
+    /**********************************************************
      */
 
     @Override
@@ -364,18 +368,18 @@ public abstract class ParserMinimalBase extends JsonParser {
     public abstract int getTextOffset() throws IOException;
 
     /*
-     * /**********************************************************
-     * /* Public API, access to token information, binary
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, access to token information, binary
+    /**********************************************************
      */
 
     @Override
     public abstract byte[] getBinaryValue(Base64Variant b64variant) throws IOException;
 
     /*
-     * /**********************************************************
-     * /* Public API, access with conversion/coercion
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, access with conversion/coercion
+    /**********************************************************
      */
 
     @Override
@@ -437,7 +441,7 @@ public abstract class ParserMinimalBase extends JsonParser {
         if (t != null) {
             switch (t.id()) {
                 case ID_STRING:
-                    String str = getText();
+                    final String str = getText();
                     if (_hasTextualNull(str)) {
                         return 0;
                     }
@@ -480,7 +484,7 @@ public abstract class ParserMinimalBase extends JsonParser {
         if (t != null) {
             switch (t.id()) {
                 case ID_STRING:
-                    String str = getText();
+                    final String str = getText();
                     if (_hasTextualNull(str)) {
                         return 0L;
                     }
@@ -513,6 +517,7 @@ public abstract class ParserMinimalBase extends JsonParser {
                     if (_hasTextualNull(str)) {
                         return 0L;
                     }
+                    streamReadConstraints().validateFPLength(str.length());
                     return NumberInput.parseAsDouble(str, defaultValue);
 
                 case ID_NUMBER_INT:
@@ -548,7 +553,7 @@ public abstract class ParserMinimalBase extends JsonParser {
             return getText();
         }
         if (_currToken == JsonToken.FIELD_NAME) {
-            return getCurrentName();
+            return currentName();
         }
         if (_currToken == null || _currToken == JsonToken.VALUE_NULL || !_currToken.isScalarValue()) {
             return defaultValue;
@@ -557,9 +562,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-     * /**********************************************************
-     * /* Base64 decoding
-     * /**********************************************************
+    /**********************************************************
+    /* Base64 decoding
+    /**********************************************************
      */
 
     /**
@@ -582,9 +587,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-     * /**********************************************************
-     * /* Coercion helper methods (overridable)
-     * /**********************************************************
+    /**********************************************************
+    /* Coercion helper methods (overridable)
+    /**********************************************************
      */
 
     /**
@@ -606,17 +611,37 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-     * /**********************************************************
-     * /* Error reporting
-     * /**********************************************************
+    /**********************************************************
+    /* Error reporting
+    /**********************************************************
      */
 
-    protected void reportUnexpectedNumberChar(int ch, String comment) throws JsonParseException {
-        String msg = String.format("Unexpected character (%s) in numeric value", _getCharDesc(ch));
-        if (comment != null) {
-            msg += ": " + comment;
+    // @since 2.10
+    protected void _reportInputCoercion(String msg, JsonToken inputType, Class<?> targetType)
+        throws InputCoercionException {
+        throw new InputCoercionException(this, msg, inputType, targetType);
+    }
+
+    protected void _reportInvalidEOF() throws JsonParseException {
+        _reportInvalidEOF(" in " + _currToken, _currToken);
+    }
+
+    // @since 2.8
+    protected void _reportInvalidEOFInValue(JsonToken type) throws JsonParseException {
+        String msg;
+        if (type == JsonToken.VALUE_STRING) {
+            msg = " in a String value";
+        } else if ((type == JsonToken.VALUE_NUMBER_INT) || (type == JsonToken.VALUE_NUMBER_FLOAT)) {
+            msg = " in a Number value";
+        } else {
+            msg = " in a value";
         }
-        _reportError(msg);
+        _reportInvalidEOF(msg, type);
+    }
+
+    // @since 2.8
+    protected void _reportInvalidEOF(String msg, JsonToken currToken) throws JsonParseException {
+        throw new JsonEOFException(this, currToken, "Unexpected end-of-input" + msg);
     }
 
     /**
@@ -630,7 +655,11 @@ public abstract class ParserMinimalBase extends JsonParser {
      * @throws JsonParseException Exception that describes problem with number validity
      */
     protected void reportInvalidNumber(String msg) throws JsonParseException {
-        _reportError("Invalid numeric value: " + msg);
+        throw _constructReadException("Invalid numeric value: " + msg);
+    }
+
+    protected void _reportMissingRootWS(int ch) throws JsonParseException {
+        _reportUnexpectedChar(ch, "Expected space separating root-level values");
     }
 
     /**
@@ -677,12 +706,6 @@ public abstract class ParserMinimalBase extends JsonParser {
             _longIntegerDesc(numDesc), Long.MIN_VALUE, Long.MAX_VALUE), inputType, Long.TYPE);
     }
 
-    // @since 2.10
-    protected void _reportInputCoercion(String msg, JsonToken inputType, Class<?> targetType)
-        throws InputCoercionException {
-        throw new InputCoercionException(this, msg, inputType, targetType);
-    }
-
     // @since 2.9.8
     protected String _longIntegerDesc(String rawNum) {
         int rawLen = rawNum.length();
@@ -715,68 +738,63 @@ public abstract class ParserMinimalBase extends JsonParser {
         if (comment != null) {
             msg += ": " + comment;
         }
-        _reportError(msg);
+        throw _constructReadException(msg, _currentLocationMinusOne());
     }
 
-    protected void _reportInvalidEOF() throws JsonParseException {
-        _reportInvalidEOF(" in " + _currToken, _currToken);
-    }
-
-    // @since 2.8
-    protected void _reportInvalidEOFInValue(JsonToken type) throws JsonParseException {
-        String msg;
-        if (type == JsonToken.VALUE_STRING) {
-            msg = " in a String value";
-        } else if ((type == JsonToken.VALUE_NUMBER_INT) || (type == JsonToken.VALUE_NUMBER_FLOAT)) {
-            msg = " in a Number value";
-        } else {
-            msg = " in a value";
+    /**
+     * @since 2.14
+     *
+     * @param ch Character that was unexpected
+     * @param comment Additional failure comment to add, if any
+     *
+     * @throws JsonParseException
+     */
+    protected <T> T _reportUnexpectedNumberChar(int ch, String comment) throws JsonParseException {
+        String msg = String.format("Unexpected character (%s) in numeric value", _getCharDesc(ch));
+        if (comment != null) {
+            msg += ": " + comment;
         }
-        _reportInvalidEOF(msg, type);
+        throw _constructReadException(msg, _currentLocationMinusOne());
     }
 
-    // @since 2.8
-    protected void _reportInvalidEOF(String msg, JsonToken currToken) throws JsonParseException {
-        throw new JsonEOFException(this, currToken, "Unexpected end-of-input" + msg);
-    }
-
-    /**
-     * @deprecated Since 2.8 use {@link #_reportInvalidEOF(String, JsonToken)} instead
-     *
-     * @throws JsonParseException Exception that describes problem with end-of-content within value
-     */
-    @Deprecated // since 2.8
-    protected void _reportInvalidEOFInValue() throws JsonParseException {
-        _reportInvalidEOF(" in a value");
-    }
-
-    /**
-     * @param msg Addition message snippet to append to base exception message
-     * @deprecated Since 2.8 use {@link #_reportInvalidEOF(String, JsonToken)} instead
-     *
-     * @throws JsonParseException Exception that describes problem with end-of-content within value
-     */
-    @Deprecated // since 2.8
-    protected void _reportInvalidEOF(String msg) throws JsonParseException {
-        throw new JsonEOFException(this, null, "Unexpected end-of-input" + msg);
-    }
-
-    protected void _reportMissingRootWS(int ch) throws JsonParseException {
-        _reportUnexpectedChar(ch, "Expected space separating root-level values");
+    @Deprecated // @since 2.14
+    protected void reportUnexpectedNumberChar(int ch, String comment) throws JsonParseException {
+        _reportUnexpectedNumberChar(ch, comment);
     }
 
     protected void _throwInvalidSpace(int i) throws JsonParseException {
         char c = (char) i;
         String msg = "Illegal character (" + _getCharDesc(c)
             + "): only regular white space (\\r, \\n, \\t) is allowed between tokens";
-        _reportError(msg);
+        throw _constructReadException(msg);
     }
 
     /*
-     * /**********************************************************
-     * /* Error reporting, generic
-     * /**********************************************************
+    /**********************************************************
+    /* Error reporting, generic
+    /**********************************************************
      */
+
+    protected final JsonParseException _constructError(String msg, Throwable t) {
+        return _constructReadException(msg, t);
+    }
+
+    /**
+     * Factory method used to provide location for cases where we must read
+     * and consume a single "wrong" character (to possibly allow error recovery),
+     * but need to report accurate location for that character: if so, the
+     * current location is past location we want, and location we want will be
+     * "one location earlier".
+     *<p>
+     * Default implementation simply returns {@link #currentLocation()}
+     *
+     * @since 2.17
+     *
+     * @return Same as {@link #currentLocation()} except offset by -1
+     */
+    protected JsonLocation _currentLocationMinusOne() {
+        return currentLocation();
+    }
 
     protected final static String _getCharDesc(int ch) {
         char c = (char) ch;
@@ -790,29 +808,30 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     protected final void _reportError(String msg) throws JsonParseException {
-        throw _constructError(msg);
+        throw _constructReadException(msg);
     }
 
     // @since 2.9
     protected final void _reportError(String msg, Object arg) throws JsonParseException {
-        throw _constructError(String.format(msg, arg));
+        throw _constructReadException(msg, arg);
     }
 
     // @since 2.9
     protected final void _reportError(String msg, Object arg1, Object arg2) throws JsonParseException {
-        throw _constructError(String.format(msg, arg1, arg2));
-    }
-
-    protected final void _wrapError(String msg, Throwable t) throws JsonParseException {
-        throw _constructError(msg, t);
+        throw _constructReadException(msg, arg1, arg2);
     }
 
     protected final void _throwInternal() {
         VersionUtil.throwInternal();
     }
 
-    protected final JsonParseException _constructError(String msg, Throwable t) {
-        return new JsonParseException(this, msg, t);
+    // @since 2.17
+    protected final <T> T _throwInternalReturnAny() {
+        return VersionUtil.throwInternalReturnAny();
+    }
+
+    protected final void _wrapError(String msg, Throwable t) throws JsonParseException {
+        throw _constructReadException(msg, t);
     }
 
     @Deprecated // since 2.11
@@ -826,10 +845,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     @Deprecated // since 2.11
     protected static String _ascii(byte[] b) {
-        try {
-            return new String(b, "US-ASCII");
-        } catch (IOException e) { // never occurs
-            throw new RuntimeException(e);
-        }
+        return new String(b, StandardCharsets.US_ASCII);
     }
 }

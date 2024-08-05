@@ -5,6 +5,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.azure.json.implementation.jackson.core.JsonParseException;
 import com.azure.json.implementation.jackson.core.io.NumberInput;
 
 /**
@@ -25,7 +26,7 @@ import com.azure.json.implementation.jackson.core.io.NumberInput;
  *    </li>
  * </ul>
  */
-public final class TextBuffer {
+public class TextBuffer {
     final static char[] NO_CHARS = new char[0];
 
     /**
@@ -42,17 +43,17 @@ public final class TextBuffer {
     final static int MAX_SEGMENT_LEN = 0x10000;
 
     /*
-     * /**********************************************************
-     * /* Configuration:
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration:
+    /**********************************************************
      */
 
     private final BufferRecycler _allocator;
 
     /*
-     * /**********************************************************
-     * /* Shared input buffers
-     * /**********************************************************
+    /**********************************************************
+    /* Shared input buffers
+    /**********************************************************
      */
 
     /**
@@ -71,9 +72,9 @@ public final class TextBuffer {
     private int _inputLen;
 
     /*
-     * /**********************************************************
-     * /* Aggregation segments (when not using input buf)
-     * /**********************************************************
+    /**********************************************************
+    /* Aggregation segments (when not using input buf)
+    /**********************************************************
      */
 
     /**
@@ -101,9 +102,9 @@ public final class TextBuffer {
     private int _currentSize;
 
     /*
-     * /**********************************************************
-     * /* Caching of results
-     * /**********************************************************
+    /**********************************************************
+    /* Caching of results
+    /**********************************************************
      */
 
     /**
@@ -115,9 +116,9 @@ public final class TextBuffer {
     private char[] _resultArray;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     public TextBuffer(BufferRecycler allocator) {
@@ -126,7 +127,7 @@ public final class TextBuffer {
 
     // @since 2.10
     protected TextBuffer(BufferRecycler allocator, char[] initialSegment) {
-        _allocator = allocator;
+        this(allocator);
         _currentSegment = initialSegment;
         _currentSize = initialSegment.length;
         _inputStart = -1;
@@ -254,7 +255,13 @@ public final class TextBuffer {
         }
     }
 
-    public void resetWithCopy(char[] buf, int offset, int len) {
+    /**
+     * @param buf Buffer that contains new contents
+     * @param offset Offset of the first content character in {@code buf}
+     * @param len Length of content in {@code buf}
+     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public void resetWithCopy(char[] buf, int offset, int len) throws IOException {
         _inputBuffer = null;
         _inputStart = -1; // indicates shared buffer not used
         _inputLen = 0;
@@ -272,8 +279,14 @@ public final class TextBuffer {
         append(buf, offset, len);
     }
 
-    // @since 2.9
-    public void resetWithCopy(String text, int start, int len) {
+    /**
+     * @param text String that contains new contents
+     * @param start Offset of the first content character in {@code text}
+     * @param len Length of content in {@code text}
+     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @since 2.9
+     */
+    public void resetWithCopy(String text, int start, int len) throws IOException {
         _inputBuffer = null;
         _inputStart = -1;
         _inputLen = 0;
@@ -290,11 +303,16 @@ public final class TextBuffer {
         append(text, start, len);
     }
 
-    public void resetWithString(String value) {
+    /**
+     * @param value to replace existing buffer
+     * @throws IOException if the value is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public void resetWithString(String value) throws IOException {
         _inputBuffer = null;
         _inputStart = -1;
         _inputLen = 0;
 
+        validateStringLength(value.length());
         _resultString = value;
         _resultArray = null;
 
@@ -328,24 +346,29 @@ public final class TextBuffer {
 
     private void clearSegments() {
         _hasSegments = false;
-        /*
-         * Let's start using _last_ segment from list; for one, it's
+        /* Let's start using _last_ segment from list; for one, it's
          * the biggest one, and it's also most likely to be cached
          */
-        /*
-         * 28-Aug-2009, tatu: Actually, the current segment should
-         * be the biggest one, already
+        /* 28-Aug-2009, tatu: Actually, the current segment should
+         *   be the biggest one, already
          */
-        // _currentSegment = _segments.get(_segments.size() - 1);
+        //_currentSegment = _segments.get(_segments.size() - 1);
         _segments.clear();
         _currentSize = _segmentSize = 0;
     }
 
     /*
-     * /**********************************************************
-     * /* Accessors for implementing public interface
-     * /**********************************************************
+    /**********************************************************
+    /* Accessors for implementing public interface
+    /**********************************************************
      */
+
+    /**
+     * @since 2.17
+     */
+    public BufferRecycler bufferRecycler() {
+        return _allocator;
+    }
 
     /**
      * @return Number of characters currently stored in this buffer
@@ -365,8 +388,7 @@ public final class TextBuffer {
     }
 
     public int getTextOffset() {
-        /*
-         * Only shared input buffer can have non-zero offset; buffer
+        /* Only shared input buffer can have non-zero offset; buffer
          * segments start at 0, and if we have to create a combo buffer,
          * that too will start from beginning of the buffer
          */
@@ -396,8 +418,9 @@ public final class TextBuffer {
      * fashion or not: this typically require allocation of the result buffer.
      *
      * @return Aggregated {@code char[]} that contains all buffered content
+     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
      */
-    public char[] getTextBuffer() {
+    public char[] getTextBuffer() throws IOException {
         // Are we just using shared input buffer?
         if (_inputStart >= 0)
             return _inputBuffer;
@@ -415,9 +438,9 @@ public final class TextBuffer {
     }
 
     /*
-     * /**********************************************************
-     * /* Other accessors:
-     * /**********************************************************
+    /**********************************************************
+    /* Other accessors:
+    /**********************************************************
      */
 
     /**
@@ -426,11 +449,13 @@ public final class TextBuffer {
      * fashion or not: this typically require construction of the result String.
      *
      * @return Aggregated buffered contents as a {@link java.lang.String}
+     * @throws IOException if the contents are too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
      */
-    public String contentsAsString() {
+    public String contentsAsString() throws IOException {
         if (_resultString == null) {
             // Has array been requested? Can make a shortcut, if so:
             if (_resultArray != null) {
+                // _resultArray length should already be validated, no need to check again
                 _resultString = new String(_resultArray);
             } else {
                 // Do we use shared array?
@@ -438,6 +463,7 @@ public final class TextBuffer {
                     if (_inputLen < 1) {
                         return (_resultString = "");
                     }
+                    validateStringLength(_inputLen);
                     _resultString = new String(_inputBuffer, _inputStart, _inputLen);
                 } else { // nope... need to copy
                     // But first, let's see if we have just one buffer
@@ -445,9 +471,20 @@ public final class TextBuffer {
                     int currLen = _currentSize;
 
                     if (segLen == 0) { // yup
-                        _resultString = (currLen == 0) ? "" : new String(_currentSegment, 0, currLen);
+                        if (currLen == 0) {
+                            _resultString = "";
+                        } else {
+                            validateStringLength(currLen);
+                            _resultString = new String(_currentSegment, 0, currLen);
+                        }
                     } else { // no, need to combine
-                        StringBuilder sb = new StringBuilder(segLen + currLen);
+                        final int builderLen = segLen + currLen;
+                        if (builderLen < 0) {
+                            _reportBufferOverflow(segLen, currLen);
+                        }
+                        validateStringLength(builderLen);
+                        StringBuilder sb = new StringBuilder(builderLen);
+
                         // First stored segments
                         if (_segments != null) {
                             for (int i = 0, len = _segments.size(); i < len; ++i) {
@@ -466,7 +503,11 @@ public final class TextBuffer {
         return _resultString;
     }
 
-    public char[] contentsAsArray() {
+    /**
+     * @return char array
+     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public char[] contentsAsArray() throws IOException {
         char[] result = _resultArray;
         if (result == null) {
             _resultArray = result = resultArray();
@@ -476,27 +517,22 @@ public final class TextBuffer {
 
     /**
      * Convenience method for converting contents of the buffer
-     * into a {@link BigDecimal}.
+     * into a Double value.
      *
-     * @return Buffered text value parsed as a {@link BigDecimal}, if possible
+     * @param useFastParser whether to use {@code FastDoubleParser}
+     * @return Buffered text value parsed as a {@link Double}, if possible
      *
      * @throws NumberFormatException if contents are not a valid Java number
+     *
+     * @since 2.14
      */
-    public BigDecimal contentsAsDecimal() throws NumberFormatException {
-        // Already got a pre-cut array?
-        if (_resultArray != null) {
-            return NumberInput.parseBigDecimal(_resultArray);
+    public double contentsAsDouble(final boolean useFastParser) throws NumberFormatException {
+        try {
+            return NumberInput.parseDouble(contentsAsString(), useFastParser);
+        } catch (IOException e) {
+            // JsonParseException is used to denote a string that is too long
+            throw new NumberFormatException(e.getMessage());
         }
-        // Or a shared buffer?
-        if ((_inputStart >= 0) && (_inputBuffer != null)) {
-            return NumberInput.parseBigDecimal(_inputBuffer, _inputStart, _inputLen);
-        }
-        // Or if not, just a single buffer (the usual case)
-        if ((_segmentSize == 0) && (_currentSegment != null)) {
-            return NumberInput.parseBigDecimal(_currentSegment, 0, _currentSize);
-        }
-        // If not, let's just get it aggregated...
-        return NumberInput.parseBigDecimal(contentsAsArray());
     }
 
     /**
@@ -506,9 +542,64 @@ public final class TextBuffer {
      * @return Buffered text value parsed as a {@link Double}, if possible
      *
      * @throws NumberFormatException if contents are not a valid Java number
+     *
+     * @deprecated use {@link #contentsAsDouble(boolean)}
      */
+    @Deprecated // @since 2.14
     public double contentsAsDouble() throws NumberFormatException {
-        return NumberInput.parseDouble(contentsAsString());
+        return contentsAsDouble(false);
+    }
+
+    /**
+     * Convenience method for converting contents of the buffer
+     * into a Float value.
+     *
+     * @return Buffered text value parsed as a {@link Float}, if possible
+     *
+     * @throws NumberFormatException if contents are not a valid Java number
+     * @deprecated use {@link #contentsAsFloat(boolean)}
+     */
+    @Deprecated // @since 2.14
+    public float contentsAsFloat() throws NumberFormatException {
+        return contentsAsFloat(false);
+    }
+
+    /**
+     * Convenience method for converting contents of the buffer
+     * into a Float value.
+     *
+     * @param useFastParser whether to use {@code FastDoubleParser}
+     * @return Buffered text value parsed as a {@link Float}, if possible
+     *
+     * @throws NumberFormatException if contents are not a valid Java number
+     * @since 2.14
+     */
+    public float contentsAsFloat(final boolean useFastParser) throws NumberFormatException {
+        try {
+            return NumberInput.parseFloat(contentsAsString(), useFastParser);
+        } catch (IOException e) {
+            // JsonParseException is used to denote a string that is too long
+            throw new NumberFormatException(e.getMessage());
+        }
+    }
+
+    /**
+     * @return Buffered text value parsed as a {@link BigDecimal}, if possible
+     * @throws NumberFormatException if contents are not a valid Java number
+     *
+     * @deprecated Since 2.15 just access String contents if necessary, call
+     *   {@link NumberInput#parseBigDecimal(String, boolean)} (or other overloads)
+     *   directly instead
+     */
+    @Deprecated
+    public BigDecimal contentsAsDecimal() throws NumberFormatException {
+        // Was more optimized earlier, removing special handling due to deprecation
+        try {
+            return NumberInput.parseBigDecimal(contentsAsArray());
+        } catch (IOException e) {
+            // JsonParseException is used to denote a string that is too long
+            throw new NumberFormatException(e.getMessage());
+        }
     }
 
     /**
@@ -601,22 +692,22 @@ public final class TextBuffer {
             for (int i = 0, end = _segments.size(); i < end; ++i) {
                 char[] curr = _segments.get(i);
                 int currLen = curr.length;
-                w.write(curr, 0, currLen);
                 total += currLen;
+                w.write(curr, 0, currLen);
             }
         }
         int len = _currentSize;
         if (len > 0) {
-            w.write(_currentSegment, 0, len);
             total += len;
+            w.write(_currentSegment, 0, len);
         }
         return total;
     }
 
     /*
-     * /**********************************************************
-     * /* Public mutators:
-     * /**********************************************************
+    /**********************************************************
+    /* Public mutators:
+    /**********************************************************
      */
 
     /**
@@ -629,23 +720,35 @@ public final class TextBuffer {
         }
     }
 
-    public void append(char c) {
+    /**
+     * @param c char to append
+     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public void append(char c) throws IOException {
         // Using shared buffer so far?
         if (_inputStart >= 0) {
             unshare(16);
         }
         _resultString = null;
         _resultArray = null;
+
         // Room in current segment?
         char[] curr = _currentSegment;
         if (_currentSize >= curr.length) {
-            expand(1);
+            validateAppend(1);
+            expand();
             curr = _currentSegment;
         }
         curr[_currentSize++] = c;
     }
 
-    public void append(char[] c, int start, int len) {
+    /**
+     * @param c char array to append
+     * @param start the start index within the array (from which we read chars to append)
+     * @param len number of chars to take from the array
+     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public void append(char[] c, int start, int len) throws IOException {
         // Can't append to shared buf (sanity check)
         if (_inputStart >= 0) {
             unshare(len);
@@ -662,6 +765,9 @@ public final class TextBuffer {
             _currentSize += len;
             return;
         }
+
+        validateAppend(len);
+
         // No room for all, need to copy part(s):
         if (max > 0) {
             System.arraycopy(c, start, curr, _currentSize, max);
@@ -671,7 +777,7 @@ public final class TextBuffer {
         // And then allocate new segment; we are guaranteed to now
         // have enough room in segment.
         do {
-            expand(len);
+            expand();
             int amount = Math.min(_currentSegment.length, len);
             System.arraycopy(c, start, _currentSegment, 0, amount);
             _currentSize += amount;
@@ -680,7 +786,13 @@ public final class TextBuffer {
         } while (len > 0);
     }
 
-    public void append(String str, int offset, int len) {
+    /**
+     * @param str string to append
+     * @param offset the start index within the string (from which we read chars to append)
+     * @param len number of chars to take from the string
+     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public void append(String str, int offset, int len) throws IOException {
         // Can't append to shared buf (sanity check)
         if (_inputStart >= 0) {
             unshare(len);
@@ -696,6 +808,9 @@ public final class TextBuffer {
             _currentSize += len;
             return;
         }
+
+        validateAppend(len);
+
         // No room for all, need to copy part(s):
         if (max > 0) {
             str.getChars(offset, offset + max, curr, _currentSize);
@@ -705,7 +820,7 @@ public final class TextBuffer {
         // And then allocate new segment; we are guaranteed to now
         // have enough room in segment.
         do {
-            expand(len);
+            expand();
             int amount = Math.min(_currentSegment.length, len);
             str.getChars(offset, offset + amount, _currentSegment, 0);
             _currentSize += amount;
@@ -714,15 +829,23 @@ public final class TextBuffer {
         } while (len > 0);
     }
 
+    private void validateAppend(int toAppend) throws IOException {
+        int newTotalLength = _segmentSize + _currentSize + toAppend;
+        // guard against overflow
+        if (newTotalLength < 0) {
+            newTotalLength = Integer.MAX_VALUE;
+        }
+        validateStringLength(newTotalLength);
+    }
+
     /*
-     * /**********************************************************
-     * /* Raw access, for high-performance use:
-     * /**********************************************************
+    /**********************************************************
+    /* Raw access, for high-performance use:
+    /**********************************************************
      */
 
     public char[] getCurrentSegment() {
-        /*
-         * Since the intention of the caller is to directly add stuff into
+        /* Since the intention of the caller is to directly add stuff into
          * buffers, we should NOT have anything in shared buffer... ie. may
          * need to unshare contents.
          */
@@ -734,7 +857,7 @@ public final class TextBuffer {
                 _currentSegment = buf(0);
             } else if (_currentSize >= curr.length) {
                 // Plus, we better have room for at least one more char
-                expand(1);
+                expand();
             }
         }
         return _currentSegment;
@@ -778,10 +901,11 @@ public final class TextBuffer {
      * @param len Length of content (in characters) of the current active segment
      *
      * @return String that contains all buffered content
+     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
      *
      * @since 2.6
      */
-    public String setCurrentAndReturn(int len) {
+    public String setCurrentAndReturn(int len) throws IOException {
         _currentSize = len;
         // We can simplify handling here compared to full `contentsAsString()`:
         if (_segmentSize > 0) { // longer text; call main method
@@ -789,20 +913,29 @@ public final class TextBuffer {
         }
         // more common case: single segment
         int currLen = _currentSize;
+        validateStringLength(currLen);
         String str = (currLen == 0) ? "" : new String(_currentSegment, 0, currLen);
         _resultString = str;
         return str;
     }
 
-    public char[] finishCurrentSegment() {
+    /**
+     * @return char array
+     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     */
+    public char[] finishCurrentSegment() throws IOException {
         if (_segments == null) {
-            _segments = new ArrayList<char[]>();
+            _segments = new ArrayList<>();
         }
         _hasSegments = true;
         _segments.add(_currentSegment);
         int oldLen = _currentSegment.length;
         _segmentSize += oldLen;
+        if (_segmentSize < 0) {
+            _reportBufferOverflow(_segmentSize - oldLen, oldLen);
+        }
         _currentSize = 0;
+        validateStringLength(_segmentSize);
 
         // Let's grow segments by 50%
         int newLen = oldLen + (oldLen >> 1);
@@ -814,6 +947,51 @@ public final class TextBuffer {
         char[] curr = carr(newLen);
         _currentSegment = curr;
         return curr;
+    }
+
+    /**
+     * @param lastSegmentEnd End offset in the currently active segment,
+     *    could be 0 in the case of first character is
+     *    delimiter or end-of-line
+     * @param trimTrailingSpaces Whether trailing spaces should be trimmed or not
+     * @return token as text
+     * @throws IOException If length constraints (of longest allowed Text value) are violated
+     *
+     * @since 2.15
+     */
+    public String finishAndReturn(int lastSegmentEnd, boolean trimTrailingSpaces) throws IOException {
+        if (trimTrailingSpaces) {
+            // First, see if it's enough to trim end of current segment:
+            int ptr = lastSegmentEnd - 1;
+            if (ptr < 0 || _currentSegment[ptr] <= 0x0020) {
+                return _doTrim(ptr);
+            }
+        }
+        _currentSize = lastSegmentEnd;
+        return contentsAsString();
+    }
+
+    // @since 2.15
+    private String _doTrim(int ptr) throws IOException {
+        while (true) {
+            final char[] curr = _currentSegment;
+            while (--ptr >= 0) {
+                if (curr[ptr] > 0x0020) { // found the ending non-space char, all done:
+                    _currentSize = ptr + 1;
+                    return contentsAsString();
+                }
+            }
+            // nope: need to handle previous segment; if there is one:
+            if (_segments == null || _segments.isEmpty()) {
+                break;
+            }
+            _currentSegment = _segments.remove(_segments.size() - 1);
+            ptr = _currentSegment.length;
+        }
+        // we get here if everything was trimmed, so:
+        _currentSize = 0;
+        _hasSegments = false;
+        return contentsAsString();
     }
 
     /**
@@ -840,7 +1018,7 @@ public final class TextBuffer {
      * Method called to expand size of the current segment, to
      * accommodate for more contiguous content. Usually only
      * used when parsing tokens like names if even then.
-     * 
+     *
      * @param minSize Required minimum strength of the current segment
      *
      * @return Expanded current segment
@@ -856,9 +1034,9 @@ public final class TextBuffer {
     }
 
     /*
-     * /**********************************************************
-     * /* Standard methods:
-     * /**********************************************************
+    /**********************************************************
+    /* Standard methods:
+    /**********************************************************
      */
 
     /**
@@ -868,13 +1046,17 @@ public final class TextBuffer {
      */
     @Override
     public String toString() {
-        return contentsAsString();
+        try {
+            return contentsAsString();
+        } catch (IOException e) {
+            return "TextBuffer: Exception when reading contents";
+        }
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods:
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods:
+    /**********************************************************
      */
 
     /**
@@ -902,15 +1084,18 @@ public final class TextBuffer {
     }
 
     // Method called when current segment is full, to allocate new segment.
-    private void expand(int minNewSegmentSize) {
+    private void expand() {
         // First, let's move current segment to segment list:
         if (_segments == null) {
-            _segments = new ArrayList<char[]>();
+            _segments = new ArrayList<>();
         }
         char[] curr = _currentSegment;
         _hasSegments = true;
         _segments.add(curr);
         _segmentSize += curr.length;
+        if (_segmentSize < 0) {
+            _reportBufferOverflow(_segmentSize - curr.length, curr.length);
+        }
         _currentSize = 0;
         int oldLen = curr.length;
 
@@ -924,7 +1109,7 @@ public final class TextBuffer {
         _currentSegment = carr(newLen);
     }
 
-    private char[] resultArray() {
+    private char[] resultArray() throws IOException {
         if (_resultString != null) { // Can take a shortcut...
             return _resultString.toCharArray();
         }
@@ -934,6 +1119,7 @@ public final class TextBuffer {
             if (len < 1) {
                 return NO_CHARS;
             }
+            validateStringLength(len);
             final int start = _inputStart;
             if (start == 0) {
                 return Arrays.copyOf(_inputBuffer, len);
@@ -943,8 +1129,12 @@ public final class TextBuffer {
         // nope, not shared
         int size = size();
         if (size < 1) {
+            if (size < 0) {
+                _reportBufferOverflow(_segmentSize, _currentSize);
+            }
             return NO_CHARS;
         }
+        validateStringLength(size);
         int offset = 0;
         final char[] result = carr(size);
         if (_segments != null) {
@@ -961,5 +1151,33 @@ public final class TextBuffer {
 
     private char[] carr(int len) {
         return new char[len];
+    }
+
+    /*
+    /**********************************************************************
+    /* Convenience methods for validation
+    /**********************************************************************
+     */
+
+    protected void _reportBufferOverflow(int prev, int curr) {
+        long newSize = (long) prev + (long) curr;
+        throw new IllegalStateException(
+            "TextBuffer overrun: size reached (" + newSize + ") exceeds maximum of " + Integer.MAX_VALUE);
+    }
+
+    /**
+     * Convenience method that can be used to verify that a String
+     * of specified length does not exceed maximum specific by this
+     * constraints object: if it does, a
+     * {@link JsonParseException}
+     * is thrown.
+     *
+     * @param length Length of string in input units
+     *
+     * @throws IOException If length exceeds maximum
+     * @since 2.15
+     */
+    protected void validateStringLength(int length) throws IOException {
+        // no-op
     }
 }

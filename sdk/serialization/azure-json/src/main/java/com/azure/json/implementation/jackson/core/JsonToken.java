@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -12,13 +11,12 @@ package com.azure.json.implementation.jackson.core;
  * of parsing JSON content.
  */
 public enum JsonToken {
-    /*
-     * Some notes on implementation:
+    /* Some notes on implementation:
      *
      * - Entries are to be ordered such that start/end array/object
-     * markers come first, then field name marker (if any), and
-     * finally scalar value tokens. This is assumed by some
-     * typing checks.
+     *   markers come first, then field name marker (if any), and
+     *   finally scalar value tokens. This is assumed by some
+     *   typing checks.
      */
 
     /**
@@ -215,7 +213,7 @@ public enum JsonToken {
      *
      * @return {@code True} if this token is {@code END_OBJECT} or {@code END_ARRAY},
      *   {@code false} otherwise
-     * 
+     *
      * @since 2.3
      */
     public final boolean isStructEnd() {
@@ -241,5 +239,55 @@ public enum JsonToken {
      */
     public final boolean isBoolean() {
         return _isBoolean;
+    }
+
+    /**
+     * Helper method for constructing description like "Object value" given
+     * {@link JsonToken} encountered.
+     *
+     * @param t Token to get description for
+     *
+     * @return String description of given token
+     *
+     * @since 2.16
+     */
+    public static String valueDescFor(JsonToken t) {
+        if (t == null) {
+            return "<end of input>";
+        }
+        switch (t) {
+            case START_OBJECT:
+            case END_OBJECT:
+            case FIELD_NAME:
+                return "Object value";
+
+            case START_ARRAY:
+            case END_ARRAY:
+                return "Array value";
+
+            case VALUE_FALSE:
+            case VALUE_TRUE:
+                return "Boolean value";
+
+            case VALUE_EMBEDDED_OBJECT:
+                return "Embedded Object value";
+
+            case VALUE_NUMBER_FLOAT:
+                return "Floating-point value";
+
+            case VALUE_NUMBER_INT:
+                return "Integer value";
+
+            case VALUE_STRING:
+                return "String value";
+
+            case VALUE_NULL:
+                return "Null value";
+
+            case NOT_AVAILABLE:
+            default:
+                return "[Unavailable value]";
+        }
+
     }
 }

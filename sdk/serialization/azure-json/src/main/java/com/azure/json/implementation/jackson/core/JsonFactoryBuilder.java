@@ -45,9 +45,9 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
     }
 
     /*
-     * /**********************************************************
-     * /* Mutators
-     * /**********************************************************
+    /**********************************************************
+    /* Mutators
+    /**********************************************************
      */
 
     // // // JSON-parsing features
@@ -146,7 +146,7 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
     /**
      * Method that allows overriding String used for separating root-level
      * JSON values (default is single space character)
-     * 
+     *
      * @param sep Separator to use, if any; null means that no separator is
      *   automatically added
      *
@@ -160,7 +160,7 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
     /**
      * Method that allows overriding String used for separating root-level
      * JSON values (default is single space character)
-     * 
+     *
      * @param sep Separator to use, if any; null means that no separator is
      *   automatically added
      *
@@ -182,7 +182,7 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
      * NOTE! Lowest legal value (aside from marker 0) is 127: for ASCII range, other checks apply
      * and this threshold is ignored. If value between [1, 126] is specified, 127 will be
      * used instead.
-     * 
+     *
      * @param maxNonEscaped Highest character code that is NOT automatically escaped; if
      *    positive value above 0, or 0 to indicate that no automatic escaping is applied
      *    beside from what JSON specification requires (and possible custom escape settings).
@@ -211,9 +211,9 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
      */
     public JsonFactoryBuilder quoteChar(char ch) {
         // 12-Aug-2019, tatu: Due to implementation details, escaping characters beyond
-        // 7-bit ASCII set has deep overhead so let's limit set. If we absolutely
-        // must it is possible of course, but leads to problems combining with
-        // custom escaping aspects.
+        //    7-bit ASCII set has deep overhead so let's limit set. If we absolutely
+        //    must it is possible of course, but leads to problems combining with
+        //    custom escaping aspects.
         if (ch > 0x7F) {
             throw new IllegalArgumentException("Can only use Unicode characters up to 0x7F as quote characters");
         }

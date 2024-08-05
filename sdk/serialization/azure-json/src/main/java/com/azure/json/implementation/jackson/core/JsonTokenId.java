@@ -6,7 +6,7 @@ package com.azure.json.implementation.jackson.core;
  * Needed because it is impossible to define these constants in
  * {@link JsonToken} itself, as static constants (oddity of how Enums
  * are implemented by JVM).
- * 
+ *
  * @since 2.3
  */
 public interface JsonTokenId {

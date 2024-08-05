@@ -28,18 +28,18 @@ public class JsonWriteContext extends JsonStreamContext {
     protected DupDetector _dups;
 
     /*
-     * /**********************************************************
-     * /* Simple instance reuse slots; speed up things a bit (10-15%)
-     * /* for docs with lots of small arrays/objects
-     * /**********************************************************
+    /**********************************************************
+    /* Simple instance reuse slots; speed up things a bit (10-15%)
+    /* for docs with lots of small arrays/objects
+    /**********************************************************
      */
 
     protected JsonWriteContext _child;
 
     /*
-     * /**********************************************************
-     * /* Location/state information (minus source reference)
-     * /**********************************************************
+    /**********************************************************
+    /* Location/state information (minus source reference)
+    /**********************************************************
      */
 
     /**
@@ -60,15 +60,16 @@ public class JsonWriteContext extends JsonStreamContext {
     protected boolean _gotName;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     protected JsonWriteContext(int type, JsonWriteContext parent, DupDetector dups) {
         super();
         _type = type;
         _parent = parent;
+        _nestingDepth = parent == null ? 0 : parent._nestingDepth + 1;
         _dups = dups;
         _index = -1;
     }
@@ -78,6 +79,7 @@ public class JsonWriteContext extends JsonStreamContext {
         super();
         _type = type;
         _parent = parent;
+        _nestingDepth = parent == null ? 0 : parent._nestingDepth + 1;
         _dups = dups;
         _index = -1;
         _currentValue = currValue;
@@ -152,9 +154,9 @@ public class JsonWriteContext extends JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* Factory methods
-     * /**********************************************************
+    /**********************************************************
+    /* Factory methods
+    /**********************************************************
      */
 
     /**

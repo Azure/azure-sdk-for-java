@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.azure.json.implementation.jackson.core.JsonGenerator;
 import com.azure.json.implementation.jackson.core.PrettyPrinter;
+import com.azure.json.implementation.jackson.core.util.Separators.Spacing;
 
 /**
  * {@link PrettyPrinter} implementation that adds no indentation,
@@ -34,9 +35,9 @@ public class MinimalPrettyPrinter implements PrettyPrinter, java.io.Serializable
     protected Separators _separators;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle, construction, configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle, construction, configuration
+    /**********************************************************
      */
 
     public MinimalPrettyPrinter() {
@@ -45,7 +46,7 @@ public class MinimalPrettyPrinter implements PrettyPrinter, java.io.Serializable
 
     public MinimalPrettyPrinter(String rootValueSeparator) {
         _rootValueSeparator = rootValueSeparator;
-        _separators = DEFAULT_SEPARATORS;
+        _separators = DEFAULT_SEPARATORS.withObjectFieldValueSpacing(Spacing.NONE);
     }
 
     public void setRootValueSeparator(String sep) {
@@ -65,9 +66,9 @@ public class MinimalPrettyPrinter implements PrettyPrinter, java.io.Serializable
     }
 
     /*
-     * /**********************************************************
-     * /* PrettyPrinter impl
-     * /**********************************************************
+    /**********************************************************
+    /* PrettyPrinter impl
+    /**********************************************************
      */
 
     @Override

@@ -9,6 +9,11 @@ public final class UTF8Writer extends Writer {
     final static int SURR2_FIRST = 0xDC00;
     final static int SURR2_LAST = 0xDFFF;
 
+    /**
+     * @since 2.17
+     */
+    public static final int SURROGATE_BASE = 0x10000 - UTF8Writer.SURR2_FIRST - (UTF8Writer.SURR1_FIRST << 10);
+
     final private IOContext _context;
 
     private OutputStream _out;
@@ -31,8 +36,7 @@ public final class UTF8Writer extends Writer {
         _out = out;
 
         _outBuffer = ctxt.allocWriteEncodingBuffer();
-        /*
-         * Max. expansion for a single char (in unmodified UTF-8) is
+        /* Max. expansion for a single char (in unmodified UTF-8) is
          * 4 bytes (or 3 depending on how you view it -- 4 when recombining
          * surrogate pairs)
          */
@@ -72,6 +76,7 @@ public final class UTF8Writer extends Writer {
                 illegalSurrogate(code);
             }
         }
+        _context.close();
     }
 
     @Override
@@ -115,8 +120,7 @@ public final class UTF8Writer extends Writer {
         len += off; // len will now be the end of input buffer
 
         output_loop: for (; off < len;) {
-            /*
-             * First, let's ensure we can output at least 4 bytes
+            /* First, let's ensure we can output at least 4 bytes
              * (longest UTF-8 encoded codepoint):
              */
             if (outPtr >= outBufLast) {
@@ -259,8 +263,7 @@ public final class UTF8Writer extends Writer {
         len += off; // len will now be the end of input buffer
 
         output_loop: for (; off < len;) {
-            /*
-             * First, let's ensure we can output at least 4 bytes
+            /* First, let's ensure we can output at least 4 bytes
              * (longest UTF-8 encoded codepoint):
              */
             if (outPtr >= outBufLast) {
@@ -329,9 +332,9 @@ public final class UTF8Writer extends Writer {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     /**
@@ -352,7 +355,7 @@ public final class UTF8Writer extends Writer {
             throw new IOException("Broken surrogate pair: first char 0x" + Integer.toHexString(firstPart)
                 + ", second 0x" + Integer.toHexString(secondPart) + "; illegal combination");
         }
-        return 0x10000 + ((firstPart - SURR1_FIRST) << 10) + (secondPart - SURR2_FIRST);
+        return (firstPart << 10) + secondPart + UTF8Writer.SURROGATE_BASE;
     }
 
     protected static void illegalSurrogate(int code) throws IOException {

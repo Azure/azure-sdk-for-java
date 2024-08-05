@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -15,7 +14,7 @@ import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
  * variant of Base64 encoding/decoding is to be used. Although there is
  * somewhat standard basic version (so-called "MIME Base64"), other variants
  * exists, see <a href="http://en.wikipedia.org/wiki/Base64">Base64 Wikipedia entry</a> for details.
- * 
+ *
  * @author Tatu Saloranta
  */
 public final class Base64Variant implements java.io.Serializable {
@@ -70,9 +69,9 @@ public final class Base64Variant implements java.io.Serializable {
     public final static int BASE64_VALUE_PADDING = -2;
 
     /*
-     * /**********************************************************
-     * /* Encoding/decoding tables
-     * /**********************************************************
+    /**********************************************************
+    /* Encoding/decoding tables
+    /**********************************************************
      */
 
     /**
@@ -93,9 +92,9 @@ public final class Base64Variant implements java.io.Serializable {
     private final transient byte[] _base64ToAsciiB = new byte[64];
 
     /*
-     * /**********************************************************
-     * /* Other configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Other configuration
+    /**********************************************************
      */
 
     /**
@@ -138,9 +137,9 @@ public final class Base64Variant implements java.io.Serializable {
     private final PaddingReadBehaviour _paddingReadBehaviour;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     public Base64Variant(String name, String base64Alphabet, boolean writePadding, char paddingChar,
@@ -169,7 +168,7 @@ public final class Base64Variant implements java.io.Serializable {
 
         // Plus if we use padding, add that in too
         if (writePadding) {
-            _asciiToBase64[(int) paddingChar] = BASE64_VALUE_PADDING;
+            _asciiToBase64[paddingChar] = BASE64_VALUE_PADDING;
         }
 
         // By default, require padding on input if written on output; do not
@@ -279,15 +278,15 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Serializable overrides
-     * /**********************************************************
+    /**********************************************************
+    /* Serializable overrides
+    /**********************************************************
      */
 
     // 26-Oct-2020, tatu: Much more complicated with 2.12 as it is
-    // possible to create differently configured instances.
-    // Need to start with name to regenerate tables etc but then
-    // handle overrides
+    //   possible to create differently configured instances.
+    //   Need to start with name to regenerate tables etc but then
+    //   handle overrides
     protected Object readResolve() {
         Base64Variant base = Base64Variants.valueOf(_name);
         if ((_writePadding != base._writePadding)
@@ -301,9 +300,9 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Public accessors
-     * /**********************************************************
+    /**********************************************************
+    /* Public accessors
+    /**********************************************************
      */
 
     public String getName() {
@@ -341,7 +340,7 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     public boolean usesPaddingChar(int ch) {
-        return ch == (int) _paddingChar;
+        return ch == _paddingChar;
     }
 
     /**
@@ -367,18 +366,18 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Decoding support
-     * /**********************************************************
+    /**********************************************************
+    /* Decoding support
+    /**********************************************************
      */
 
     /**
      * @param c Character to decode
      *
-     * @return 6-bit decoded value, if valid character; 
+     * @return 6-bit decoded value, if valid character;
      */
     public int decodeBase64Char(char c) {
-        int ch = (int) c;
+        int ch = c;
         return (ch <= 127) ? _asciiToBase64[ch] : BASE64_VALUE_INVALID;
     }
 
@@ -387,7 +386,7 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     public int decodeBase64Byte(byte b) {
-        int ch = (int) b;
+        int ch = b;
         // note: cast retains sign, so it's from -128 to +127
         if (ch < 0) {
             return BASE64_VALUE_INVALID;
@@ -396,9 +395,9 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Encoding support
-     * /**********************************************************
+    /**********************************************************
+    /* Encoding support
+    /**********************************************************
      */
 
     public char encodeBase64BitsAsChar(int value) {
@@ -526,16 +525,16 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Convenience conversion methods for String to/from bytes use case
-     * /**********************************************************
+    /**********************************************************
+    /* Convenience conversion methods for String to/from bytes use case
+    /**********************************************************
      */
 
     /**
      * Convenience method for converting given byte array as base64 encoded
      * String using this variant's settings.
      * Resulting value is "raw", that is, not enclosed in double-quotes.
-     * 
+     *
      * @param input Byte array to encode
      *
      * @return Base64 encoded String of encoded {@code input} bytes, not surrounded by quotes
@@ -549,7 +548,7 @@ public final class Base64Variant implements java.io.Serializable {
      * using this variant's settings, optionally enclosed in double-quotes.
      * Linefeeds added, if needed, are expressed as 2-character JSON (and Java source)
      * escape sequence of backslash + `n`.
-     * 
+     *
      * @param input Byte array to encode
      * @param addQuotes Whether to surround resulting value in double quotes or not
      *
@@ -571,9 +570,9 @@ public final class Base64Variant implements java.io.Serializable {
 
         while (inputPtr <= safeInputEnd) {
             // First, mash 3 bytes into lsb of 32-bit int
-            int b24 = ((int) input[inputPtr++]) << 8;
-            b24 |= ((int) input[inputPtr++]) & 0xFF;
-            b24 = (b24 << 8) | (((int) input[inputPtr++]) & 0xFF);
+            int b24 = (input[inputPtr++]) << 8;
+            b24 |= (input[inputPtr++]) & 0xFF;
+            b24 = (b24 << 8) | ((input[inputPtr++]) & 0xFF);
             encodeBase64Chunk(sb, b24);
             if (--chunksBeforeLF <= 0) {
                 // note: must quote in JSON value, so not really useful...
@@ -586,9 +585,9 @@ public final class Base64Variant implements java.io.Serializable {
         // And then we may have 1 or 2 leftover bytes to encode
         int inputLeft = inputEnd - inputPtr; // 0, 1 or 2
         if (inputLeft > 0) { // yes, but do we have room for output?
-            int b24 = ((int) input[inputPtr++]) << 16;
+            int b24 = (input[inputPtr++]) << 16;
             if (inputLeft == 2) {
-                b24 |= (((int) input[inputPtr++]) & 0xFF) << 8;
+                b24 |= ((input[inputPtr++]) & 0xFF) << 8;
             }
             encodeBase64Partial(sb, b24, inputLeft);
         }
@@ -603,7 +602,7 @@ public final class Base64Variant implements java.io.Serializable {
      * Convenience method for converting given byte array as base64 encoded String
      * using this variant's settings, optionally enclosed in double-quotes.
      * Linefeed character to use is passed explicitly.
-     * 
+     *
      * @param input Byte array to encode
      * @param addQuotes Whether to surround resulting value in double quotes or not
      * @param linefeed Linefeed to use for encoded content
@@ -625,9 +624,9 @@ public final class Base64Variant implements java.io.Serializable {
         int safeInputEnd = inputEnd - 3;
 
         while (inputPtr <= safeInputEnd) {
-            int b24 = ((int) input[inputPtr++]) << 8;
-            b24 |= ((int) input[inputPtr++]) & 0xFF;
-            b24 = (b24 << 8) | (((int) input[inputPtr++]) & 0xFF);
+            int b24 = (input[inputPtr++]) << 8;
+            b24 |= (input[inputPtr++]) & 0xFF;
+            b24 = (b24 << 8) | ((input[inputPtr++]) & 0xFF);
             encodeBase64Chunk(sb, b24);
             if (--chunksBeforeLF <= 0) {
                 sb.append(linefeed);
@@ -636,9 +635,9 @@ public final class Base64Variant implements java.io.Serializable {
         }
         int inputLeft = inputEnd - inputPtr;
         if (inputLeft > 0) {
-            int b24 = ((int) input[inputPtr++]) << 16;
+            int b24 = (input[inputPtr++]) << 16;
             if (inputLeft == 2) {
-                b24 |= (((int) input[inputPtr++]) & 0xFF) << 8;
+                b24 |= ((input[inputPtr++]) & 0xFF) << 8;
             }
             encodeBase64Partial(sb, b24, inputLeft);
         }
@@ -656,7 +655,7 @@ public final class Base64Variant implements java.io.Serializable {
      * @param input Base64-encoded input String to decode
      *
      * @return Byte array of decoded contents
-     * 
+     *
      * @since 2.3
      *
      * @throws IllegalArgumentException if input is not valid base64 encoded data
@@ -778,9 +777,9 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Overridden standard methods
-     * /**********************************************************
+    /**********************************************************
+    /* Overridden standard methods
+    /**********************************************************
      */
 
     @Override
@@ -811,9 +810,9 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal helper methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal helper methods
+    /**********************************************************
      */
 
     /**

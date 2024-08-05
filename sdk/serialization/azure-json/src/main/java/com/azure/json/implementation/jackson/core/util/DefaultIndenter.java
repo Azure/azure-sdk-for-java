@@ -8,7 +8,7 @@ import com.azure.json.implementation.jackson.core.JsonGenerator;
 /**
  * Default linefeed-based indenter, used by {@link DefaultPrettyPrinter} (unless
  * overridden). Uses system-specific linefeeds and 2 spaces for indentation per level.
- * 
+ *
  * @since 2.5
  */
 public class DefaultIndenter extends DefaultPrettyPrinter.NopIndenter {

@@ -1,8 +1,12 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
+import com.azure.json.implementation.jackson.core.ErrorReportConfiguration;
 import com.azure.json.implementation.jackson.core.JsonEncoding;
+import com.azure.json.implementation.jackson.core.StreamReadConstraints;
+import com.azure.json.implementation.jackson.core.StreamWriteConstraints;
 import com.azure.json.implementation.jackson.core.util.BufferRecycler;
+import com.azure.json.implementation.jackson.core.util.ReadConstrainedTextBuffer;
 import com.azure.json.implementation.jackson.core.util.TextBuffer;
 
 /**
@@ -13,11 +17,11 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  *<p>
  * NOTE: non-final since 2.4, to allow sub-classing.
  */
-public class IOContext {
+public class IOContext implements AutoCloseable {
     /*
-     * /**********************************************************************
-     * /* Configuration
-     * /**********************************************************************
+    /**********************************************************************
+    /* Configuration
+    /**********************************************************************
      */
 
     /**
@@ -50,15 +54,40 @@ public class IOContext {
     protected final boolean _managedResource;
 
     /*
-     * /**********************************************************************
-     * /* Buffer handling, recycling
-     * /**********************************************************************
+    /**********************************************************************
+    /* Buffer handling, recycling
+    /**********************************************************************
      */
 
     /**
      * Recycler used for actual allocation/deallocation/reuse
      */
     protected final BufferRecycler _bufferRecycler;
+
+    /**
+     * Flag that indicates whether this context instance should release
+     * configured {@code _bufferRecycler} or not: if it does, it needs to call
+     * (via {@link BufferRecycler#releaseToPool()} when closed; if not,
+     * should do nothing (recycler life-cycle is externally managed)
+     *
+     * @since 2.17
+     */
+    protected boolean _releaseRecycler = true;
+
+    /**
+     * @since 2.15
+     */
+    protected final StreamReadConstraints _streamReadConstraints;
+
+    /**
+     * @since 2.16
+     */
+    protected final StreamWriteConstraints _streamWriteConstraints;
+
+    /**
+     * @since 2.16
+     */
+    protected final ErrorReportConfiguration _errorReportConfiguration;
 
     /**
      * Reference to the allocated I/O buffer for low-level input reading,
@@ -100,31 +129,120 @@ public class IOContext {
      */
     protected char[] _nameCopyBuffer;
 
+    private boolean _closed = false;
+
     /*
-     * /**********************************************************************
-     * /* Life-cycle
-     * /**********************************************************************
+    /**********************************************************************
+    /* Life-cycle
+    /**********************************************************************
      */
 
     /**
      * Main constructor to use.
-     * 
+     *
+     * @param src constraints for streaming reads
+     * @param swc constraints for streaming writes
      * @param br BufferRecycler to use, if any ({@code null} if none)
      * @param contentRef Input source reference for location reporting
      * @param managedResource Whether input source is managed (owned) by Jackson library
+     * @param erc Error report configuration to use
      *
-     * @since 2.13
+     * @since 2.16
      */
-    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
+    public IOContext(StreamReadConstraints src, StreamWriteConstraints swc, ErrorReportConfiguration erc,
+        BufferRecycler br, ContentReference contentRef, boolean managedResource) {
+        _streamReadConstraints = src;
+        _streamWriteConstraints = swc;
+        _errorReportConfiguration = erc;
         _bufferRecycler = br;
         _contentReference = contentRef;
         _sourceRef = contentRef.getRawContent();
         _managedResource = managedResource;
     }
 
+    /**
+     * Deprecated legacy constructor.
+     *
+     * @param src constraints for streaming reads
+     * @param br BufferRecycler to use, if any ({@code null} if none)
+     * @param contentRef Input source reference for location reporting
+     * @param managedResource Whether input source is managed (owned) by Jackson library
+     *
+     * @since 2.15
+     * @deprecated Since 2.16. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints, 
+     * ErrorReportConfiguration, BufferRecycler, ContentReference, boolean)} instead.
+     */
+    @Deprecated
+    public IOContext(StreamReadConstraints src, BufferRecycler br, ContentReference contentRef,
+        boolean managedResource) {
+        this(src, StreamWriteConstraints.defaults(), ErrorReportConfiguration.defaults(), br, contentRef,
+            managedResource);
+    }
+
+    /**
+     * Deprecated legacy constructor.
+     *
+     * @param br BufferRecycler to use, if any ({@code null} if none)
+     * @param contentRef Input source reference for location reporting
+     * @param managedResource Whether input source is managed (owned) by Jackson library
+     *
+     * @since 2.13
+     * @deprecated Since 2.15. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints, 
+     * ErrorReportConfiguration, BufferRecycler, ContentReference, boolean)} instead.
+     */
+    @Deprecated // since 2.15
+    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
+        this(StreamReadConstraints.defaults(), StreamWriteConstraints.defaults(), ErrorReportConfiguration.defaults(),
+            br, contentRef, managedResource);
+    }
+
     @Deprecated // since 2.13
     public IOContext(BufferRecycler br, Object rawContent, boolean managedResource) {
         this(br, ContentReference.rawReference(rawContent), managedResource);
+    }
+
+    /**
+     * Method to call to prevent {@link #_bufferRecycler} release upon
+     * {@link #close()}: called when {@link #_bufferRecycler} life-cycle is
+     * externally managed.
+     *
+     * @since 2.17
+     */
+    public IOContext markBufferRecyclerReleased() {
+        _releaseRecycler = false;
+        return this;
+    }
+
+    /*
+    /**********************************************************************
+    /* Public API, accessors
+    /**********************************************************************
+     */
+
+    /**
+     * @return constraints for streaming reads
+     * @since 2.15
+     */
+    public StreamReadConstraints streamReadConstraints() {
+        return _streamReadConstraints;
+    }
+
+    /**
+     * @return constraints for streaming writes
+     * @since 2.16
+     */
+    public StreamWriteConstraints streamWriteConstraints() {
+        return _streamWriteConstraints;
+    }
+
+    /**
+     * @return Configured {@link ErrorReportConfiguration}, containing configured values for 
+     * handling error reporting.
+     *
+     * @since 2.16
+     */
+    public ErrorReportConfiguration errorReportConfiguration() {
+        return _errorReportConfiguration;
     }
 
     public void setEncoding(JsonEncoding enc) {
@@ -135,12 +253,6 @@ public class IOContext {
         _encoding = enc;
         return this;
     }
-
-    /*
-     * /**********************************************************************
-     * /* Public API, accessors
-     * /**********************************************************************
-     */
 
     public JsonEncoding getEncoding() {
         return _encoding;
@@ -153,7 +265,7 @@ public class IOContext {
     /**
      * Accessor for getting (some) information about input source, mostly
      * usable for error reporting purposes.
-     * 
+     *
      * @return Reference to input source
      *
      * @since 2.13
@@ -171,14 +283,23 @@ public class IOContext {
         return _sourceRef;
     }
 
+    // @since 2.17
+    public BufferRecycler bufferRecycler() {
+        return _bufferRecycler;
+    }
+
     /*
-     * /**********************************************************************
-     * /* Public API, buffer management
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, buffer management
+    /**********************************************************************
      */
 
     public TextBuffer constructTextBuffer() {
         return new TextBuffer(_bufferRecycler);
+    }
+
+    public TextBuffer constructReadConstrainedTextBuffer() {
+        return new ReadConstrainedTextBuffer(_streamReadConstraints, _bufferRecycler);
     }
 
     /**
@@ -348,9 +469,9 @@ public class IOContext {
     }
 
     /*
-     * /**********************************************************************
-     * /* Internal helpers
-     * /**********************************************************************
+    /**********************************************************************
+    /* Internal helpers
+    /**********************************************************************
      */
 
     protected final void _verifyAlloc(Object buffer) {
@@ -376,5 +497,16 @@ public class IOContext {
     private IllegalArgumentException wrongBuf() {
         // sanity check failed; trying to return different, smaller buffer.
         return new IllegalArgumentException("Trying to release buffer smaller than original");
+    }
+
+    @Override
+    public void close() {
+        if (!_closed) {
+            _closed = true;
+            if (_releaseRecycler) {
+                _releaseRecycler = false;
+                _bufferRecycler.releaseToPool();
+            }
+        }
     }
 }

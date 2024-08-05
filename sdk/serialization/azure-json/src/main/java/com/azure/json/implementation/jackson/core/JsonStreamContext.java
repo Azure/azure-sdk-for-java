@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -40,7 +39,7 @@ public abstract class JsonStreamContext {
     public final static int TYPE_OBJECT = 2;
 
     /**
-     * Indicates logical type of context as one of {@code TYPE_xxx} consants.
+     * Indicates logical type of context as one of {@code TYPE_xxx} constants.
      */
     protected int _type;
 
@@ -53,10 +52,18 @@ public abstract class JsonStreamContext {
      */
     protected int _index;
 
+    /**
+     * The nesting depth is a count of objects and arrays that have not
+     * been closed, `{` and `[` respectively.
+     *
+     * @since 2.15
+     */
+    protected int _nestingDepth;
+
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     protected JsonStreamContext() {
@@ -82,9 +89,9 @@ public abstract class JsonStreamContext {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, accessors
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, accessors
+    /**********************************************************
      */
 
     /**
@@ -127,8 +134,20 @@ public abstract class JsonStreamContext {
     }
 
     /**
+     * The nesting depth is a count of objects and arrays that have not
+     * been closed, `{` and `[` respectively.
+     *
+     * @return Nesting depth
+     *
+     * @since 2.15
+     */
+    public final int getNestingDepth() {
+        return _nestingDepth;
+    }
+
+    /**
      * @return Type description String
-     * 
+     *
      * @deprecated Since 2.8 use {@link #typeDesc} instead
      */
     @Deprecated // since 2.8
@@ -150,7 +169,7 @@ public abstract class JsonStreamContext {
      * Method for accessing simple type description of current context;
      * either ROOT (for root-level values), OBJECT (for field names and
      * values of JSON Objects) or ARRAY (for values of JSON Arrays)
-     * 
+     *
      * @return Type description String
      *
      * @since 2.8
@@ -252,9 +271,9 @@ public abstract class JsonStreamContext {
      * it is only used by higher-level data-binding functionality.
      * The reason it is included here is that it can be stored and accessed hierarchically,
      * and gets passed through data-binding.
-     * 
+     *
      * @return Currently active value, if one has been assigned.
-     * 
+     *
      * @since 2.5
      */
     public Object getCurrentValue() {
@@ -337,7 +356,7 @@ public abstract class JsonStreamContext {
      *
      * @return Simple developer-readable description this context layer
      *   (note: NOT constructed with parents, unlike {@link #pathAsPointer})
-     * 
+     *
      * @since 2.9
      */
     @Override

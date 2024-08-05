@@ -8,9 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * regular String.intern() functionality. This is done as a minor
  * performance optimization, to avoid calling native intern() method
  * in cases where same String is being interned multiple times.
- *<p>
- * Note: that this class extends {@link java.util.LinkedHashMap} is an implementation
- * detail -- no code should ever directly call Map methods.
  */
 public final class InternCache extends ConcurrentHashMap<String, String> // since 2.3
 {
@@ -34,8 +31,12 @@ public final class InternCache extends ConcurrentHashMap<String, String> // sinc
      */
     private final Object lock = new Object();
 
-    private InternCache() {
-        super(MAX_ENTRIES, 0.8f, 4);
+    public InternCache() {
+        this(MAX_ENTRIES, 0.8f, 4);
+    }
+
+    public InternCache(int maxSize, float loadFactor, int concurrency) {
+        super(maxSize, loadFactor, concurrency);
     }
 
     public String intern(String input) {
@@ -44,15 +45,13 @@ public final class InternCache extends ConcurrentHashMap<String, String> // sinc
             return result;
         }
 
-        /*
-         * 18-Sep-2013, tatu: We used to use LinkedHashMap, which has simple LRU
-         * method. No such functionality exists with CHM; and let's use simplest
-         * possible limitation: just clear all contents. This because otherwise
-         * we are simply likely to keep on clearing same, commonly used entries.
+        /* 18-Sep-2013, tatu: We used to use LinkedHashMap, which has simple LRU
+         *   method. No such functionality exists with CHM; and let's use simplest
+         *   possible limitation: just clear all contents. This because otherwise
+         *   we are simply likely to keep on clearing same, commonly used entries.
          */
         if (size() >= MAX_ENTRIES) {
-            /*
-             * Not incorrect wrt well-known double-locking anti-pattern because underlying
+            /* Not incorrect wrt well-known double-locking anti-pattern because underlying
              * storage gives close enough answer to real one here; and we are
              * more concerned with flooding than starvation.
              */

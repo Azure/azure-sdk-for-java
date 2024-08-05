@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -28,7 +27,7 @@ import java.util.*;
  * theoretically this builder can aggregate more content it will not be usable
  * as things are. Behavior may be improved if we solve the access problem.
  */
-public final class ByteArrayBuilder extends OutputStream {
+public final class ByteArrayBuilder extends OutputStream implements BufferRecycler.Gettable {
     public final static byte[] NO_BYTES = new byte[0];
 
     // Size of the first block we will allocate.
@@ -42,7 +41,7 @@ public final class ByteArrayBuilder extends OutputStream {
 
     // Optional buffer recycler instance that we can use for allocating the first block.
     private final BufferRecycler _bufferRecycler;
-    private final LinkedList<byte[]> _pastBlocks = new LinkedList<byte[]>();
+    private final LinkedList<byte[]> _pastBlocks = new LinkedList<>();
 
     // Number of bytes within byte arrays in {@link _pastBlocks}.
     private int _pastLen;
@@ -64,7 +63,7 @@ public final class ByteArrayBuilder extends OutputStream {
     public ByteArrayBuilder(BufferRecycler br, int firstBlockSize) {
         _bufferRecycler = br;
         // 04-Sep-2020, tatu: Let's make this bit more robust and refuse to allocate
-        // humongous blocks even if requested
+        //    humongous blocks even if requested
         if (firstBlockSize > MAX_BLOCK_SIZE) {
             firstBlockSize = MAX_BLOCK_SIZE;
         }
@@ -73,7 +72,7 @@ public final class ByteArrayBuilder extends OutputStream {
     }
 
     private ByteArrayBuilder(BufferRecycler br, byte[] initialBlock, int initialLen) {
-        _bufferRecycler = null;
+        _bufferRecycler = br;
         _currBlock = initialBlock;
         _currBlockPtr = initialLen;
     }
@@ -103,7 +102,7 @@ public final class ByteArrayBuilder extends OutputStream {
     /**
      * Clean up method to call to release all buffers this object may be
      * using. After calling the method, no other accessors can be used (and
-     * attempt to do so may result in an exception)
+     * attempt to do so may result in an exception).
      */
     public void release() {
         reset();
@@ -190,10 +189,40 @@ public final class ByteArrayBuilder extends OutputStream {
         return result;
     }
 
+    /**
+     * Method functionally same as calling:
+     *<pre>
+     *  byte[] bytes = toByteArray();
+     *  release();
+     *  return bytes;
+     *</pre>
+     * that is; aggregates output contained in the builder (if any),
+     * clear state; returns buffer(s) to {@link BufferRecycler} configured,
+     * if any, and returns output to caller.
+     *
+     * @since 2.17
+     */
+    public byte[] getClearAndRelease() {
+        byte[] result = toByteArray();
+        release();
+        return result;
+    }
+
     /*
-     * /**********************************************************
-     * /* Non-stream API (similar to TextBuffer)
-     * /**********************************************************
+    /**********************************************************
+    /* BufferRecycler.Gettable implementation
+    /**********************************************************
+     */
+
+    @Override
+    public BufferRecycler bufferRecycler() {
+        return _bufferRecycler;
+    }
+
+    /*
+    /**********************************************************
+    /* Non-stream API (similar to TextBuffer)
+    /**********************************************************
      */
 
     /**
@@ -222,10 +251,10 @@ public final class ByteArrayBuilder extends OutputStream {
     /**
      * Method that will complete "manual" output process, coalesce
      * content (if necessary) and return results as a contiguous buffer.
-     * 
+     *
      * @param lastBlockLength Amount of content in the current segment
      * buffer.
-     * 
+     *
      * @return Coalesced contents
      */
     public byte[] completeAndCoalesce(int lastBlockLength) {
@@ -246,9 +275,9 @@ public final class ByteArrayBuilder extends OutputStream {
     }
 
     /*
-     * /**********************************************************
-     * /* OutputStream implementation
-     * /**********************************************************
+    /**********************************************************
+    /* OutputStream implementation
+    /**********************************************************
      */
 
     @Override
@@ -280,31 +309,32 @@ public final class ByteArrayBuilder extends OutputStream {
 
     @Override
     public void close() {
-        /* NOP */ }
+        // 18-Jan-2024, tatu: Ideally would call `release()` but currently
+        //   not possible due to existing usage
+    }
 
     @Override
     public void flush() {
         /* NOP */ }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     private void _allocMore() {
         final int newPastLen = _pastLen + _currBlock.length;
 
         // 13-Feb-2016, tatu: As per [core#351] let's try to catch problem earlier;
-        // for now we are strongly limited by 2GB limit of Java arrays
+        //     for now we are strongly limited by 2GB limit of Java arrays
         if (newPastLen < 0) {
             throw new IllegalStateException("Maximum Java array size (2GB) exceeded by `ByteArrayBuilder`");
         }
 
         _pastLen = newPastLen;
 
-        /*
-         * Let's allocate block that's half the total size, except
+        /* Let's allocate block that's half the total size, except
          * never smaller than twice the initial block size.
          * The idea is just to grow with reasonable rate, to optimize
          * between minimal number of chunks and minimal amount of

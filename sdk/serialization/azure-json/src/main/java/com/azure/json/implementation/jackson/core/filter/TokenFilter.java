@@ -15,7 +15,6 @@ import com.azure.json.implementation.jackson.core.JsonParser;
  * @since 2.6
  */
 public class TokenFilter {
-
     /**
      * Enumeration that controls how TokenFilter return values are interpreted.
      *
@@ -46,7 +45,7 @@ public class TokenFilter {
      * Marker value that should be used to indicate inclusion of a structured
      * value (sub-tree representing Object or Array), or value of a named
      * property (regardless of type).
-     * Note that if this instance is returned, it will used as a marker, and 
+     * Note that if this instance is returned, it will used as a marker, and
      * no actual callbacks need to be made. For this reason, it is more efficient
      * to return this instance if the whole sub-tree is to be included, instead
      * of implementing similar filter functionality explicitly.
@@ -59,9 +58,9 @@ public class TokenFilter {
     }
 
     /*
-     * /**********************************************************
-     * /* API, structured values
-     * /**********************************************************
+    /**********************************************************************
+    /* API, structured values
+    /**********************************************************************
      */
 
     /**
@@ -83,7 +82,7 @@ public class TokenFilter {
      *<p>
      * Default implementation returns <code>this</code>, which means that checks
      * are made recursively for properties of the Object to determine possible inclusion.
-     * 
+     *
      * @return TokenFilter to use for further calls within Array, unless return value
      *   is <code>null</code> or {@link #INCLUDE_ALL} (which have simpler semantics)
      */
@@ -110,7 +109,7 @@ public class TokenFilter {
      *<p>
      * Default implementation returns <code>this</code>, which means that checks
      * are made recursively for elements of the array to determine possible inclusion.
-     * 
+     *
      * @return TokenFilter to use for further calls within Array, unless return value
      *   is <code>null</code> or {@link #INCLUDE_ALL} (which have simpler semantics)
      */
@@ -137,9 +136,9 @@ public class TokenFilter {
     }
 
     /*
-     * /**********************************************************
-     * /* API, properties/elements
-     * /**********************************************************
+    /**********************************************************************
+    /* API, properties/elements
+    /**********************************************************************
      */
 
     /**
@@ -160,7 +159,7 @@ public class TokenFilter {
      *<p>
      * The default implementation simply returns <code>this</code> to continue calling
      * methods on this filter object, without full inclusion or exclusion.
-     * 
+     *
      * @param name Name of Object property to check
      *
      * @return TokenFilter to use for further calls within property value, unless return value
@@ -227,9 +226,9 @@ public class TokenFilter {
     }
 
     /*
-     * /**********************************************************
-     * /* API, scalar values (being read)
-     * /**********************************************************
+    /**********************************************************************
+    /* API, scalar values (being read)
+    /**********************************************************************
      */
 
     /**
@@ -252,9 +251,9 @@ public class TokenFilter {
     }
 
     /*
-     * /**********************************************************
-     * /* API, scalar values (being written)
-     * /**********************************************************
+    /**********************************************************************
+    /* API, scalar values (being written)
+    /**********************************************************************
      */
 
     /**
@@ -318,7 +317,7 @@ public class TokenFilter {
      * Call made to verify whether leaf-level
      * <code>int</code> value
      * should be included in output or not.
-     * 
+     *
      * NOTE: also called for `short`, `byte`
      *
      * @param value Value to check
@@ -435,10 +434,40 @@ public class TokenFilter {
         return _includeScalar();
     }
 
+    /**
+     * Call made to verify whether leaf-level empty Array value
+     * should be included in output or not.
+     *
+     * @param contentsFiltered True if Array had contents but they were
+     *   filtered out (NOT included); false if we had actual empty Array.
+     *
+     * @return True if value is to be included; false if not
+     *
+     * @since 2.14
+     */
+    public boolean includeEmptyArray(boolean contentsFiltered) {
+        return false;
+    }
+
+    /**
+     * Call made to verify whether leaf-level empty Object value
+     * should be included in output or not.
+     *
+     * @param contentsFiltered True if Object had contents but they were
+     *   filtered out (NOT included); false if we had actual empty Object.
+     *
+     * @return True if value is to be included; false if not
+     *
+     * @since 2.14
+     */
+    public boolean includeEmptyObject(boolean contentsFiltered) {
+        return false;
+    }
+
     /*
-     * /**********************************************************
-     * /* Overrides
-     * /**********************************************************
+    /**********************************************************************
+    /* Overrides
+    /**********************************************************************
      */
 
     @Override
@@ -450,9 +479,9 @@ public class TokenFilter {
     }
 
     /*
-     * /**********************************************************
-     * /* Other methods
-     * /**********************************************************
+    /**********************************************************************
+    /* Other methods
+    /**********************************************************************
      */
 
     /**

@@ -8,21 +8,20 @@ import com.azure.json.implementation.jackson.core.base.GeneratorBase;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
-import com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter;
 import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 import com.azure.json.implementation.jackson.core.util.VersionUtil;
 
 /**
  * Intermediate base class shared by JSON-backed generators
  * like {@link UTF8JsonGenerator} and {@link WriterBasedJsonGenerator}.
- * 
+ *
  * @since 2.1
  */
 public abstract class JsonGeneratorImpl extends GeneratorBase {
     /*
-     * /**********************************************************
-     * /* Constants
-     * /**********************************************************
+    /**********************************************************
+    /* Constants
+    /**********************************************************
      */
 
     /**
@@ -41,17 +40,20 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
         = DEFAULT_TEXTUAL_WRITE_CAPABILITIES;
 
     /*
-     * /**********************************************************
-     * /* Configuration, basic I/O
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration, basic I/O
+    /**********************************************************
      */
 
-    protected final IOContext _ioContext;
+    /**
+     * @since 2.16
+     */
+    protected final StreamWriteConstraints _streamWriteConstraints;
 
     /*
-     * /**********************************************************
-     * /* Configuration, output escaping
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration, output escaping
+    /**********************************************************
      */
 
     /**
@@ -81,17 +83,17 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     protected CharacterEscapes _characterEscapes;
 
     /*
-     * /**********************************************************
-     * /* Configuration, other
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration, other
+    /**********************************************************
      */
 
     /**
      * Separator to use, if any, between root-level values.
-     * 
+     *
      * @since 2.1
      */
-    protected SerializableString _rootValueSeparator = DefaultPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR;
+    protected SerializableString _rootValueSeparator = JsonFactory.DEFAULT_ROOT_VALUE_SEPARATOR;
 
     /**
      * Flag that is set if quoting is not to be added around
@@ -101,27 +103,35 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
      */
     protected boolean _cfgUnqNames;
 
+    /**
+     * Write Hex values with uppercase letters
+     *
+     * @since 2.14
+     */
+    protected boolean _cfgWriteHexUppercase;
+
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     @SuppressWarnings("deprecation")
     public JsonGeneratorImpl(IOContext ctxt, int features, ObjectCodec codec) {
-        super(features, codec);
-        _ioContext = ctxt;
+        super(features, codec, ctxt);
+        _streamWriteConstraints = ctxt.streamWriteConstraints();
         if (Feature.ESCAPE_NON_ASCII.enabledIn(features)) {
             // inlined `setHighestNonEscapedChar()`
             _maximumNonEscapedChar = 127;
         }
+        _cfgWriteHexUppercase = Feature.WRITE_HEX_UPPER_CASE.enabledIn(features);
         _cfgUnqNames = !Feature.QUOTE_FIELD_NAMES.enabledIn(features);
     }
 
     /*
-     * /**********************************************************
-     * /* Versioned
-     * /**********************************************************
+    /**********************************************************
+    /* Versioned
+    /**********************************************************
      */
 
     @Override
@@ -130,9 +140,20 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     }
 
     /*
-     * /**********************************************************
-     * /* Overridden configuration methods
-     * /**********************************************************
+    /**********************************************************************
+    /* Constraints violation checking (2.16)
+    /**********************************************************************
+     */
+
+    @Override
+    public StreamWriteConstraints streamWriteConstraints() {
+        return _streamWriteConstraints;
+    }
+
+    /*
+    /**********************************************************
+    /* Overridden configuration methods
+    /**********************************************************
      */
 
     @SuppressWarnings("deprecation")
@@ -141,6 +162,8 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
         super.enable(f);
         if (f == Feature.QUOTE_FIELD_NAMES) {
             _cfgUnqNames = false;
+        } else if (f == Feature.WRITE_HEX_UPPER_CASE) {
+            _cfgWriteHexUppercase = true;
         }
         return this;
     }
@@ -151,6 +174,8 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
         super.disable(f);
         if (f == Feature.QUOTE_FIELD_NAMES) {
             _cfgUnqNames = true;
+        } else if (f == Feature.WRITE_HEX_UPPER_CASE) {
+            _cfgWriteHexUppercase = false;
         }
         return this;
     }
@@ -160,6 +185,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
         super._checkStdFeatureChanges(newFeatureFlags, changedFeatures);
         _cfgUnqNames = !Feature.QUOTE_FIELD_NAMES.enabledIn(newFeatureFlags);
+        _cfgWriteHexUppercase = Feature.WRITE_HEX_UPPER_CASE.enabledIn(newFeatureFlags);
     }
 
     @Override
@@ -205,9 +231,9 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     }
 
     /*
-     * /**********************************************************
-     * /* Shared helper methods
-     * /**********************************************************
+    /**********************************************************
+    /* Shared helper methods
+    /**********************************************************
      */
 
     protected void _verifyPrettyValueWrite(String typeMsg, int status) throws IOException {

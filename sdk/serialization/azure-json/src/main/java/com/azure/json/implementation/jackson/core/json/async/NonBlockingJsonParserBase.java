@@ -4,23 +4,25 @@ package com.azure.json.implementation.jackson.core.json.async;
 import java.io.*;
 
 import com.azure.json.implementation.jackson.core.*;
-import com.azure.json.implementation.jackson.core.base.ParserBase;
+import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
 import com.azure.json.implementation.jackson.core.io.IOContext;
+import com.azure.json.implementation.jackson.core.json.JsonParserBase;
 import com.azure.json.implementation.jackson.core.json.JsonReadContext;
 import com.azure.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 
 import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
 
 /**
  * Intermediate base class for non-blocking JSON parsers.
+ *
+ * @since 2.9
  */
-public abstract class NonBlockingJsonParserBase extends ParserBase {
+public abstract class NonBlockingJsonParserBase extends JsonParserBase {
     /*
-     * /**********************************************************************
-     * /* Major state constants
-     * /**********************************************************************
+    /**********************************************************************
+    /* Major state constants
+    /**********************************************************************
      */
 
     /**
@@ -50,9 +52,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     protected final static int MAJOR_CLOSED = 7;
 
     /*
-     * /**********************************************************************
-     * /* Minor state constants
-     * /**********************************************************************
+    /**********************************************************************
+    /* Minor state constants
+    /**********************************************************************
      */
 
     /**
@@ -98,6 +100,8 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
 
     protected final static int MINOR_VALUE_TOKEN_NON_STD = 19;
 
+    protected final static int MINOR_NUMBER_PLUS = 22;
+
     protected final static int MINOR_NUMBER_MINUS = 23;
     protected final static int MINOR_NUMBER_ZERO = 24; // zero as first, possibly trimming multiple
     protected final static int MINOR_NUMBER_MINUSZERO = 25; // "-0" (and possibly more zeroes) receive
@@ -130,9 +134,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     protected final static int MINOR_COMMENT_YAML = 55;
 
     /*
-     * /**********************************************************************
-     * /* Helper objects, symbols (field names)
-     * /**********************************************************************
+    /**********************************************************************
+    /* Helper objects, symbols (field names)
+    /**********************************************************************
      */
 
     /**
@@ -158,9 +162,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     protected int _quotedDigits;
 
     /*
-     * /**********************************************************************
-     * /* Additional parsing state
-     * /**********************************************************************
+    /**********************************************************************
+    /* Additional parsing state
+    /**********************************************************************
      */
 
     /**
@@ -191,9 +195,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     protected boolean _endOfInput = false;
 
     /*
-     * /**********************************************************************
-     * /* Additional parsing state: non-standard tokens
-     * /**********************************************************************
+    /**********************************************************************
+    /* Additional parsing state: non-standard tokens
+    /**********************************************************************
      */
 
     protected final static int NON_STD_TOKEN_NAN = 0;
@@ -214,9 +218,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     protected int _nonStdTokenType;
 
     /*
-     * /**********************************************************************
-     * /* Location tracking, additional
-     * /**********************************************************************
+    /**********************************************************************
+    /* Location tracking, additional
+    /**********************************************************************
      */
 
     /**
@@ -236,13 +240,13 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     protected int _currInputRowAlt = 1;
 
     /*
-     * /**********************************************************************
-     * /* Life-cycle
-     * /**********************************************************************
+    /**********************************************************************
+    /* Life-cycle
+    /**********************************************************************
      */
 
     public NonBlockingJsonParserBase(IOContext ctxt, int parserFeatures, ByteQuadsCanonicalizer sym) {
-        super(ctxt, parserFeatures);
+        super(ctxt, parserFeatures, null);
         _symbols = sym;
         _currToken = null;
         _majorState = MAJOR_INITIAL;
@@ -250,29 +254,25 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     @Override
-    public ObjectCodec getCodec() {
-        return null;
-    }
-
-    @Override
     public void setCodec(ObjectCodec c) {
         throw new UnsupportedOperationException("Can not use ObjectMapper with non-blocking parser");
     }
+
+    /*
+    /**********************************************************
+    /* Capability introspection
+    /**********************************************************
+     */
 
     @Override // since 2.9
     public boolean canParseAsync() {
         return true;
     }
 
-    @Override // @since 2.12
-    public JacksonFeatureSet<StreamReadCapability> getReadCapabilities() {
-        return JSON_READ_CAPABILITIES;
-    }
-
     /*
-     * /**********************************************************
-     * /* Test support
-     * /**********************************************************
+    /**********************************************************
+    /* Test support
+    /**********************************************************
      */
 
     protected ByteQuadsCanonicalizer symbolTableForTests() {
@@ -280,9 +280,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     /*
-     * /**********************************************************
-     * /* Abstract methods from JsonParser
-     * /**********************************************************
+    /**********************************************************
+    /* Abstract methods from JsonParser
+    /**********************************************************
      */
 
     @Override
@@ -305,16 +305,16 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     @Override
     protected void _closeInput() throws IOException {
         // 30-May-2017, tatu: Seems like this is the most certain way to prevent
-        // further decoding... not the optimal place, but due to inheritance
-        // hierarchy most convenient.
+        //    further decoding... not the optimal place, but due to inheritance
+        //    hierarchy most convenient.
         _currBufferStart = 0;
         _inputEnd = 0;
     }
 
     /*
-     * /**********************************************************************
-     * /* Overridden methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Overridden methods
+    /**********************************************************************
      */
 
     @Override
@@ -332,24 +332,32 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     @Override
-    public JsonLocation getCurrentLocation() {
+    public JsonLocation currentLocation() {
         int col = _inputPtr - _currInputRowStart + 1; // 1-based
         // Since we track CR and LF separately, max should gives us right answer
         int row = Math.max(_currInputRow, _currInputRowAlt);
-        return new JsonLocation(_contentReference(), _currInputProcessed + (_inputPtr - _currBufferStart), -1L, // bytes,
-            // chars
+        return new JsonLocation(_contentReference(), _currInputProcessed + (_inputPtr - _currBufferStart), -1L, // bytes, chars
+            row, col);
+    }
+
+    @Override // @since 2.17
+    protected JsonLocation _currentLocationMinusOne() {
+        final int prevInputPtr = _inputPtr - 1;
+        int row = Math.max(_currInputRow, _currInputRowAlt);
+        final int col = prevInputPtr - _currInputRowStart + 1; // 1-based
+        return new JsonLocation(_contentReference(), _currInputProcessed + (prevInputPtr - _currBufferStart), -1L, // bytes, chars
             row, col);
     }
 
     @Override
-    public JsonLocation getTokenLocation() {
+    public JsonLocation currentTokenLocation() {
         return new JsonLocation(_contentReference(), _tokenInputTotal, -1L, _tokenInputRow, _tokenInputCol);
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, access to token information, text
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, access to token information, text
+    /**********************************************************************
      */
 
     /**
@@ -357,6 +365,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
      * if no current event (before first call to {@link #nextToken}, or
      * after encountering end-of-input), returns null.
      * Method can be called for any event.
+     *
+     * @throws IOException if there are general I/O or parse issues, including if the text is too large,
+     * see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
      */
     @Override
     public String getText() throws IOException {
@@ -366,7 +377,7 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
         return _getText2(_currToken);
     }
 
-    protected final String _getText2(JsonToken t) {
+    protected final String _getText2(JsonToken t) throws IOException {
         if (t == null) {
             return null;
         }
@@ -422,7 +433,7 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
             return _textBuffer.contentsAsString();
         }
         if (_currToken == JsonToken.FIELD_NAME) {
-            return getCurrentName();
+            return currentName();
         }
         return super.getValueAsString(null);
     }
@@ -434,7 +445,7 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
             return _textBuffer.contentsAsString();
         }
         if (_currToken == JsonToken.FIELD_NAME) {
-            return getCurrentName();
+            return currentName();
         }
         return super.getValueAsString(defValue);
     }
@@ -513,9 +524,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, access to token information, binary
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, access to token information, binary
+    /**********************************************************************
      */
 
     @Override
@@ -549,20 +560,20 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     /*
-     * /**********************************************************************
-     * /* Handling of nested scope, state
-     * /**********************************************************************
+    /**********************************************************************
+    /* Handling of nested scope, state
+    /**********************************************************************
      */
 
     protected final JsonToken _startArrayScope() throws IOException {
-        _parsingContext = _parsingContext.createChildArrayContext(-1, -1);
+        createChildArrayContext(-1, -1);
         _majorState = MAJOR_ARRAY_ELEMENT_FIRST;
         _majorStateAfterValue = MAJOR_ARRAY_ELEMENT_NEXT;
         return (_currToken = JsonToken.START_ARRAY);
     }
 
     protected final JsonToken _startObjectScope() throws IOException {
-        _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+        createChildObjectContext(-1, -1);
         _majorState = MAJOR_OBJECT_FIELD_FIRST;
         _majorStateAfterValue = MAJOR_OBJECT_FIELD_NEXT;
         return (_currToken = JsonToken.START_OBJECT);
@@ -607,12 +618,12 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods, symbol (name) handling
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods, symbol (name) handling
+    /**********************************************************
      */
 
-    protected final String _findName(int q1, int lastQuadBytes) throws JsonParseException {
+    protected final String _findName(int q1, int lastQuadBytes) throws JsonParseException, StreamConstraintsException {
         q1 = _padLastQuad(q1, lastQuadBytes);
         // Usually we'll find it from the canonical symbol table already
         String name = _symbols.findName(q1);
@@ -624,7 +635,8 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
         return _addName(_quadBuffer, 1, lastQuadBytes);
     }
 
-    protected final String _findName(int q1, int q2, int lastQuadBytes) throws JsonParseException {
+    protected final String _findName(int q1, int q2, int lastQuadBytes)
+        throws JsonParseException, StreamConstraintsException {
         q2 = _padLastQuad(q2, lastQuadBytes);
         // Usually we'll find it from the canonical symbol table already
         String name = _symbols.findName(q1, q2);
@@ -637,7 +649,8 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
         return _addName(_quadBuffer, 2, lastQuadBytes);
     }
 
-    protected final String _findName(int q1, int q2, int q3, int lastQuadBytes) throws JsonParseException {
+    protected final String _findName(int q1, int q2, int q3, int lastQuadBytes)
+        throws JsonParseException, StreamConstraintsException {
         q3 = _padLastQuad(q3, lastQuadBytes);
         String name = _symbols.findName(q1, q2, q3);
         if (name != null) {
@@ -654,17 +667,17 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     // table miss. It needs to demultiplex individual bytes, decode
     // multi-byte chars (if any), and then construct Name instance
     // and add it to the symbol table.
-    protected final String _addName(int[] quads, int qlen, int lastQuadBytes) throws JsonParseException {
-        /*
-         * Ok: must decode UTF-8 chars. No other validation is
-         * needed, since unescaping has been done earlier as necessary
+    protected final String _addName(int[] quads, int qlen, int lastQuadBytes)
+        throws JsonParseException, StreamConstraintsException {
+        /* Ok: must decode UTF-8 chars. No other validation is
+         * needed, since unescaping has been done earlier, as necessary
          * (as well as error reporting for unescaped control chars)
          */
         // 4 bytes per quad, except last one maybe less
-        int byteLen = (qlen << 2) - 4 + lastQuadBytes;
+        final int byteLen = (qlen << 2) - 4 + lastQuadBytes;
+        _streamReadConstraints.validateNameLength(byteLen);
 
-        /*
-         * And last one is not correctly aligned (leading zero bytes instead
+        /* And last one is not correctly aligned (leading zero bytes instead
          * need to shift a bit, instead of trailing). Only need to shift it
          * for UTF-8 decoding; need revert for storage (since key will not
          * be aligned, to optimize lookup speed)
@@ -756,6 +769,10 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
 
         // Ok. Now we have the character array, and can construct the String
         String baseName = new String(cbuf, 0, cix);
+        // 5-May-2023, ckozak: [core#1015] respect CANONICALIZE_FIELD_NAMES factory config.
+        if (!_symbols.isCanonicalizing()) {
+            return baseName;
+        }
         // And finally, un-align if necessary
         if (lastQuadBytes < 4) {
             quads[qlen - 1] = lastQuad;
@@ -769,9 +786,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     /*
-     * /**********************************************************************
-     * /* Internal methods, state changes
-     * /**********************************************************************
+    /**********************************************************************
+    /* Internal methods, state changes
+    /**********************************************************************
      */
 
     // Helper method called at point when all input has been exhausted and
@@ -813,7 +830,7 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
         String tokenStr = NON_STD_TOKENS[type];
         _textBuffer.resetWithString(tokenStr);
         if (!isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
-            _reportError("Non-standard token '%s': enable JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS to allow",
+            _reportError("Non-standard token '%s': enable `JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS` to allow",
                 tokenStr);
         }
         _intLength = 0;
@@ -828,9 +845,9 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
     }
 
     /*
-     * /**********************************************************************
-     * /* Internal methods, error reporting, related
-     * /**********************************************************************
+    /**********************************************************************
+    /* Internal methods, error reporting, related
+    /**********************************************************************
      */
 
     protected final void _updateTokenLocation() {

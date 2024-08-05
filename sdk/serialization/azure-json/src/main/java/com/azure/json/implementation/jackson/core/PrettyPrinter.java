@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -33,17 +32,17 @@ public interface PrettyPrinter {
 
     /**
      * Default String used for separating root values is single space.
-     * 
+     *
      * @since 2.9
      */
     public final static SerializedString DEFAULT_ROOT_VALUE_SEPARATOR = new SerializedString(" ");
 
     /*
-     * /**********************************************************
-     * /* First methods that act both as events, and expect
-     * /* output for correct functioning (i.e something gets
-     * /* output even when not pretty-printing)
-     * /**********************************************************
+    /**********************************************************
+    /* First methods that act both as events, and expect
+    /* output for correct functioning (i.e something gets
+    /* output even when not pretty-printing)
+    /**********************************************************
      */
 
     // // // Root-level handling:
@@ -189,10 +188,10 @@ public interface PrettyPrinter {
     void writeArrayValueSeparator(JsonGenerator gen) throws IOException;
 
     /*
-     * /**********************************************************
-     * /* Then events that by default do not produce any output but that are
-     * /* often overridden to add white space in pretty-printing mode
-     * /**********************************************************
+    /**********************************************************
+    /* Then events that by default do not produce any output but that are
+    /* often overridden to add white space in pretty-printing mode
+    /**********************************************************
      */
 
     /**

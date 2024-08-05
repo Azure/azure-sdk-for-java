@@ -25,19 +25,17 @@ public abstract class JacksonException extends java.io.IOException {
     protected JacksonException(String msg, Throwable rootCause) {
         super(msg, rootCause);
         // 23-Sep-2020, tatu: before 2.12, had null checks for some reason...
-        // But I don't think that is actually required; Javadocs for
-        // `java.lang.Throwable` constructor claim {@code null} is fine.
-        /*
-         * if (rootCause != null) {
-         * initCause(rootCause);
-         * }
-         */
+        //   But I don't think that is actually required; Javadocs for
+        //   `java.lang.Throwable` constructor claim {@code null} is fine.
+        /*        if (rootCause != null) {
+            initCause(rootCause);
+        }*/
     }
 
     /*
-     * /**********************************************************************
-     * /* Extended API
-     * /**********************************************************************
+    /**********************************************************************
+    /* Extended API
+    /**********************************************************************
      */
 
     /**
@@ -74,7 +72,7 @@ public abstract class JacksonException extends java.io.IOException {
      * to set it; this means that caller needs to take care to check for nulls.
      * Subtypes override this method with co-variant return type, for more
      * type-safe access.
-     * 
+     *
      * @return Originating processor, if available; {@code null} if not.
      */
     public abstract Object getProcessor();

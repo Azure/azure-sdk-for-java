@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -33,9 +32,9 @@ public abstract class ObjectCodec extends TreeCodec // since 2.3
     public abstract Version version();
 
     /*
-     * /**********************************************************
-     * /* API for de-serialization (JSON-to-Object)
-     * /**********************************************************
+    /**********************************************************
+    /* API for de-serialization (JSON-to-Object)
+    /**********************************************************
      */
 
     /**
@@ -63,8 +62,8 @@ public abstract class ObjectCodec extends TreeCodec // since 2.3
     /**
      * Method to deserialize JSON content into a Java type, reference
      * to which is passed as argument. Type is passed using so-called
-     * "super type token" 
-     * and specifically needs to be used if the root type is a 
+     * "super type token"
+     * and specifically needs to be used if the root type is a
      * parameterized (generic) container type.
      *
      * @param <T> Nominal parameter for target type
@@ -146,9 +145,9 @@ public abstract class ObjectCodec extends TreeCodec // since 2.3
     public abstract <T> Iterator<T> readValues(JsonParser p, ResolvedType valueType) throws IOException;
 
     /*
-     * /**********************************************************
-     * /* API for serialization (Object-to-JSON)
-     * /**********************************************************
+    /**********************************************************
+    /* API for serialization (Object-to-JSON)
+    /**********************************************************
      */
 
     /**
@@ -164,9 +163,9 @@ public abstract class ObjectCodec extends TreeCodec // since 2.3
     public abstract void writeValue(JsonGenerator gen, Object value) throws IOException;
 
     /*
-     * /**********************************************************
-     * /* TreeCodec pass-through methods
-     * /**********************************************************
+    /**********************************************************
+    /* TreeCodec pass-through methods
+    /**********************************************************
      */
 
     /**
@@ -229,9 +228,9 @@ public abstract class ObjectCodec extends TreeCodec // since 2.3
     public abstract JsonParser treeAsTokens(TreeNode n);
 
     /*
-     * /**********************************************************
-     * /* Extended tree conversions beyond TreeCodec
-     * /**********************************************************
+    /**********************************************************
+    /* Extended tree conversions beyond TreeCodec
+    /**********************************************************
      */
 
     /**
@@ -251,9 +250,9 @@ public abstract class ObjectCodec extends TreeCodec // since 2.3
     public abstract <T> T treeToValue(TreeNode n, Class<T> valueType) throws JsonProcessingException;
 
     /*
-     * /**********************************************************
-     * /* Basic accessors
-     * /**********************************************************
+    /**********************************************************
+    /* Basic accessors
+    /**********************************************************
      */
 
     /**

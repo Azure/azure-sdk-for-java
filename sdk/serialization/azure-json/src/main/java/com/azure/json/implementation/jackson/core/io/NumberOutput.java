@@ -1,13 +1,16 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
+import com.azure.json.implementation.jackson.core.io.schubfach.DoubleToDecimal;
+import com.azure.json.implementation.jackson.core.io.schubfach.FloatToDecimal;
+
 public final class NumberOutput {
     private static int MILLION = 1000000;
     private static int BILLION = 1000000000;
     private static long BILLION_L = 1000000000L;
 
-    private static long MIN_INT_AS_LONG = (long) Integer.MIN_VALUE;
-    private static long MAX_INT_AS_LONG = (long) Integer.MAX_VALUE;
+    private static long MIN_INT_AS_LONG = Integer.MIN_VALUE;
+    private static long MAX_INT_AS_LONG = Integer.MAX_VALUE;
 
     final static String SMALLEST_INT = String.valueOf(Integer.MIN_VALUE);
     final static String SMALLEST_LONG = String.valueOf(Long.MIN_VALUE);
@@ -40,9 +43,9 @@ public final class NumberOutput {
         = new String[] { "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10" };
 
     /*
-     * /**********************************************************
-     * /* Efficient serialization methods using raw buffers
-     * /**********************************************************
+    /**********************************************************
+    /* Efficient serialization methods using raw buffers
+    /**********************************************************
      */
 
     /**
@@ -77,7 +80,7 @@ public final class NumberOutput {
                 }
                 return _leading3(v, b, off);
             }
-            int thousands = v / 1000;
+            int thousands = divBy1000(v);
             v -= (thousands * 1000); // == value % 1000
             off = _leading3(thousands, b, off);
             off = _full3(v, b, off);
@@ -85,8 +88,7 @@ public final class NumberOutput {
         }
 
         // ok, all 3 triplets included
-        /*
-         * Let's first hand possible billions separately before
+        /* Let's first hand possible billions separately before
          * handling 3 triplets. This is possible since we know we
          * can have at most '2' as billion count.
          */
@@ -100,10 +102,10 @@ public final class NumberOutput {
             }
             return _outputFullBillion(v, b, off);
         }
-        int newValue = v / 1000;
+        int newValue = divBy1000(v);
         int ones = (v - (newValue * 1000)); // == value % 1000
         v = newValue;
-        newValue /= 1000;
+        newValue = divBy1000(newValue);
         int thousands = (v - (newValue * 1000));
 
         off = _leading3(newValue, b, off);
@@ -128,7 +130,7 @@ public final class NumberOutput {
                     off = _leading3(v, b, off);
                 }
             } else {
-                int thousands = v / 1000;
+                int thousands = divBy1000(v);
                 v -= (thousands * 1000); // == value % 1000
                 off = _leading3(thousands, b, off);
                 off = _full3(v, b, off);
@@ -145,10 +147,10 @@ public final class NumberOutput {
             }
             return _outputFullBillion(v, b, off);
         }
-        int newValue = v / 1000;
+        int newValue = divBy1000(v);
         int ones = (v - (newValue * 1000)); // == value % 1000
         v = newValue;
-        newValue /= 1000;
+        newValue = divBy1000(newValue);
         int thousands = (v - (newValue * 1000));
         off = _leading3(newValue, b, off);
         off = _full3(thousands, b, off);
@@ -235,15 +237,24 @@ public final class NumberOutput {
         return _outputFullBillion((int) v, b, off);
     }
 
-    /*
-     * /**********************************************************
-     * /* Convenience serialization methods
-     * /**********************************************************
+    /**
+     * Optimized code for integer division by 1000; typically 50% higher
+     * throughput for calculation
+     *
+     * @since 2.17
      */
+    static int divBy1000(int number) {
+        return (int) (number * 274_877_907L >>> 38);
+    }
 
     /*
-     * !!! 05-Aug-2008, tatus: Any ways to further optimize
-     * these? (or need: only called by diagnostics methods?)
+    /**********************************************************
+    /* Convenience serialization methods
+    /**********************************************************
+     */
+
+    /* !!! 05-Aug-2008, tatus: Any ways to further optimize
+     *   these? (or need: only called by diagnostics methods?)
      */
     public static String toString(int v) {
         // Lookup table for small values
@@ -266,19 +277,47 @@ public final class NumberOutput {
         return Long.toString(v);
     }
 
-    public static String toString(double v) {
-        return Double.toString(v);
+    /**
+     * @param v double
+     * @return double as a string
+     */
+    public static String toString(final double v) {
+        return toString(v, false);
     }
 
-    // @since 2.6
-    public static String toString(float v) {
-        return Float.toString(v);
+    /**
+     * @param v double
+     * @param useFastWriter whether to use Schubfach algorithm to write output (default false)
+     * @return double as a string
+     * @since 2.14
+     */
+    public static String toString(final double v, final boolean useFastWriter) {
+        return useFastWriter ? DoubleToDecimal.toString(v) : Double.toString(v);
+    }
+
+    /**
+     * @param v float
+     * @return float as a string
+     * @since 2.6
+     */
+    public static String toString(final float v) {
+        return toString(v, false);
+    }
+
+    /**
+     * @param v float
+     * @param useFastWriter whether to use Schubfach algorithm to write output (default false)
+     * @return float as a string
+     * @since 2.14
+     */
+    public static String toString(final float v, final boolean useFastWriter) {
+        return useFastWriter ? FloatToDecimal.toString(v) : Float.toString(v);
     }
 
     /*
-     * /**********************************************************
-     * /* Other convenience methods
-     * /**********************************************************
+    /**********************************************************
+    /* Other convenience methods
+    /**********************************************************
      */
 
     /**
@@ -292,8 +331,7 @@ public final class NumberOutput {
      * Since 2.10
      */
     public static boolean notFinite(double value) {
-        // before Java 8 need separate checks
-        return Double.isNaN(value) || Double.isInfinite(value);
+        return !Double.isFinite(value);
     }
 
     /**
@@ -307,14 +345,13 @@ public final class NumberOutput {
      * Since 2.10
      */
     public static boolean notFinite(float value) {
-        // before Java 8 need separate checks
-        return Float.isNaN(value) || Float.isInfinite(value);
+        return !Float.isFinite(value);
     }
 
     /*
-     * /**********************************************************
-     * /* Internal helper methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal helper methods
+    /**********************************************************
      */
 
     private static int _outputUptoBillion(int v, char[] b, int off) {
@@ -322,13 +359,13 @@ public final class NumberOutput {
             if (v < 1000) {
                 return _leading3(v, b, off);
             }
-            int thousands = v / 1000;
+            int thousands = divBy1000(v);
             int ones = v - (thousands * 1000); // == value % 1000
             return _outputUptoMillion(b, off, thousands, ones);
         }
-        int thousands = v / 1000;
+        int thousands = divBy1000(v);
         int ones = (v - (thousands * 1000)); // == value % 1000
-        int millions = thousands / 1000;
+        int millions = divBy1000(thousands);
         thousands -= (millions * 1000);
 
         off = _leading3(millions, b, off);
@@ -347,9 +384,9 @@ public final class NumberOutput {
     }
 
     private static int _outputFullBillion(int v, char[] b, int off) {
-        int thousands = v / 1000;
+        int thousands = divBy1000(v);
         int ones = (v - (thousands * 1000)); // == value % 1000
-        int millions = thousands / 1000;
+        int millions = divBy1000(thousands);
 
         int enc = TRIPLET_TO_CHARS[millions];
         b[off++] = (char) (enc >> 16);
@@ -375,13 +412,13 @@ public final class NumberOutput {
             if (v < 1000) {
                 return _leading3(v, b, off);
             }
-            int thousands = v / 1000;
+            int thousands = divBy1000(v);
             int ones = v - (thousands * 1000); // == value % 1000
             return _outputUptoMillion(b, off, thousands, ones);
         }
-        int thousands = v / 1000;
+        int thousands = divBy1000(v);
         int ones = (v - (thousands * 1000)); // == value % 1000
-        int millions = thousands / 1000;
+        int millions = divBy1000(thousands);
         thousands -= (millions * 1000);
 
         off = _leading3(millions, b, off);
@@ -400,9 +437,9 @@ public final class NumberOutput {
     }
 
     private static int _outputFullBillion(int v, byte[] b, int off) {
-        int thousands = v / 1000;
+        int thousands = divBy1000(v);
         int ones = (v - (thousands * 1000)); // == value % 1000
-        int millions = thousands / 1000;
+        int millions = divBy1000(thousands);
         thousands -= (millions * 1000);
 
         int enc = TRIPLET_TO_CHARS[millions];

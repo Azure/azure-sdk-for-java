@@ -48,9 +48,9 @@ public class UTF32Reader extends Reader {
     protected final boolean _managedBuffers;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     public UTF32Reader(IOContext ctxt, InputStream in, byte[] buf, int ptr, int len, boolean isBigEndian) {
@@ -64,9 +64,9 @@ public class UTF32Reader extends Reader {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API
-     * /**********************************************************
+    /**********************************************************
+    /* Public API
+    /**********************************************************
      */
 
     @Override
@@ -176,9 +176,9 @@ public class UTF32Reader extends Reader {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     private void reportUnexpectedEOF(int gotBytes, int needed) throws IOException {
@@ -203,9 +203,9 @@ public class UTF32Reader extends Reader {
      */
     private boolean loadMore(int available) throws IOException {
         // 06-Apr-2021, tatu: If no InputStream (either due to closure or
-        // input being passed direcly in buffer) let's NOT bother
-        // trying to read (can't).
-        // Similarly, without read buffer cannot really read...
+        //    input being passed direcly in buffer) let's NOT bother
+        //    trying to read (can't).
+        //    Similarly, without read buffer cannot really read...
         if ((_in == null) || (_buffer == null)) {
             return false;
         }

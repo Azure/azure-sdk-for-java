@@ -31,7 +31,7 @@ public class JsonParserSequence extends JsonParserDelegate {
      *<p>
      * Default setting is <code>false</code> (for backwards-compatibility)
      * so that possible existing token is not considered for parsers.
-     * 
+     *
      * @since 2.8
      */
     protected final boolean _checkForExistingToken;
@@ -90,7 +90,7 @@ public class JsonParserSequence extends JsonParserDelegate {
         if (!(first instanceof JsonParserSequence || second instanceof JsonParserSequence)) {
             return new JsonParserSequence(checkForExistingToken, new JsonParser[] { first, second });
         }
-        ArrayList<JsonParser> p = new ArrayList<JsonParser>();
+        ArrayList<JsonParser> p = new ArrayList<>();
         if (first instanceof JsonParserSequence) {
             ((JsonParserSequence) first).addFlattenedActiveParsers(p);
         } else {
@@ -122,10 +122,10 @@ public class JsonParserSequence extends JsonParserDelegate {
     }
 
     /*
-     * /*******************************************************
-     * /* Overridden methods, needed: cases where default
-     * /* delegation does not work
-     * /*******************************************************
+    /*******************************************************
+    /* Overridden methods, needed: cases where default
+    /* delegation does not work
+    /*******************************************************
      */
 
     @Override
@@ -181,9 +181,9 @@ public class JsonParserSequence extends JsonParserDelegate {
     }
 
     /*
-     * /*******************************************************
-     * /* Additional extended API
-     * /*******************************************************
+    /*******************************************************
+    /* Additional extended API
+    /*******************************************************
      */
 
     /**
@@ -198,16 +198,16 @@ public class JsonParserSequence extends JsonParserDelegate {
     }
 
     /*
-     * /*******************************************************
-     * /* Helper methods
-     * /*******************************************************
+    /*******************************************************
+    /* Helper methods
+    /*******************************************************
      */
 
     /**
      * Method that will switch active delegate parser from the current one
      * to the next parser in sequence, if there is another parser left:
      * if so, the next parser will become the active delegate parser.
-     * 
+     *
      * @return True if switch succeeded; false otherwise
      *
      * @since 2.8

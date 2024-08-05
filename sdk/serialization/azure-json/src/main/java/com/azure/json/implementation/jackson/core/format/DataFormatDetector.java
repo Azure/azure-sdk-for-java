@@ -29,14 +29,14 @@ public class DataFormatDetector {
     /**
      * Strength of match we consider to be good enough to be used
      * without checking any other formats.
-     * Default value is {@link MatchStrength#SOLID_MATCH}, 
+     * Default value is {@link MatchStrength#SOLID_MATCH},
      */
     protected final MatchStrength _optimalMatch;
 
     /**
      * Strength of minimal match we accept as the answer, unless
-     * better matches are found. 
-     * Default value is {@link MatchStrength#WEAK_MATCH}, 
+     * better matches are found.
+     * Default value is {@link MatchStrength#WEAK_MATCH},
      */
     protected final MatchStrength _minimalMatch;
 
@@ -49,9 +49,9 @@ public class DataFormatDetector {
     protected final int _maxInputLookahead;
 
     /*
-     * /**********************************************************
-     * /* Construction
-     * /**********************************************************
+    /**********************************************************
+    /* Construction
+    /**********************************************************
      */
 
     public DataFormatDetector(JsonFactory... detectors) {
@@ -118,9 +118,9 @@ public class DataFormatDetector {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API
-     * /**********************************************************
+    /**********************************************************
+    /* Public API
+    /**********************************************************
      */
 
     /**
@@ -157,7 +157,7 @@ public class DataFormatDetector {
     /**
      * Method to call to find format that given content (full document)
      * has, as per configuration of this detector instance.
-     * 
+     *
      * @param fullInputData Full contents to use for format detection
      * @param offset Offset of the first content byte
      * @param len Length of content
@@ -166,7 +166,7 @@ public class DataFormatDetector {
      *    where no match (with specified minimal match strength) is found.
      *
      * @throws IOException for read I/O problems
-     * 
+     *
      * @since 2.1
      */
     public DataFormatMatcher findFormat(byte[] fullInputData, int offset, int len) throws IOException {
@@ -174,9 +174,9 @@ public class DataFormatDetector {
     }
 
     /*
-     * /**********************************************************
-     * /* Overrides
-     * /**********************************************************
+    /**********************************************************
+    /* Overrides
+    /**********************************************************
      */
 
     @Override
@@ -196,9 +196,9 @@ public class DataFormatDetector {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     private DataFormatMatcher _findFormat(InputAccessor.Std acc) throws IOException {

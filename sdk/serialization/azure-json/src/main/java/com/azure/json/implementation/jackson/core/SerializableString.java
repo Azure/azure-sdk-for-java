@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -20,8 +19,8 @@ import java.nio.ByteBuffer;
  *<p>
  * Note that "quoted" in methods means quoting of 'special' characters using
  * JSON backlash notation (and not use of actual double quotes).
- * 
- * @see com.azure.json.implementation.jackson.core.io.SerializedString
+ *
+ * @see com.fasterxml.jackson.core.io.SerializedString
  */
 public interface SerializableString {
     /**
@@ -44,9 +43,9 @@ public interface SerializableString {
     int charLength();
 
     /*
-     * /**********************************************************
-     * /* Accessors for byte sequences
-     * /**********************************************************
+    /**********************************************************
+    /* Accessors for byte sequences
+    /**********************************************************
      */
 
     /**
@@ -80,9 +79,9 @@ public interface SerializableString {
     byte[] asQuotedUTF8();
 
     /*
-     * /**********************************************************
-     * /* Helper methods for appending byte/char sequences
-     * /**********************************************************
+    /**********************************************************
+    /* Helper methods for appending byte/char sequences
+    /**********************************************************
      */
 
     /**
@@ -113,7 +112,7 @@ public interface SerializableString {
      *
      * @param buffer Buffer to append JSON-escaped String into
      * @param offset Offset in {@code buffer} to append String at
-     * 
+     *
      * @return Number of characters appended, if successful, otherwise -1
      */
     int appendQuoted(char[] buffer, int offset);
@@ -129,7 +128,7 @@ public interface SerializableString {
      *
      * @param buffer Buffer to append literal (unescaped) String into
      * @param offset Offset in {@code buffer} to append String at
-     * 
+     *
      * @return Number of bytes appended, if successful, otherwise -1
      */
     int appendUnquotedUTF8(byte[] buffer, int offset);
@@ -145,15 +144,15 @@ public interface SerializableString {
      *
      * @param buffer Buffer to append literal (unescaped) String into
      * @param offset Offset in {@code buffer} to append String at
-     * 
+     *
      * @return Number of characters appended, if successful, otherwise -1
      */
     int appendUnquoted(char[] buffer, int offset);
 
     /*
-     * /**********************************************************
-     * /* Helper methods for writing out byte sequences
-     * /**********************************************************
+    /**********************************************************
+    /* Helper methods for writing out byte sequences
+    /**********************************************************
      */
 
     /**

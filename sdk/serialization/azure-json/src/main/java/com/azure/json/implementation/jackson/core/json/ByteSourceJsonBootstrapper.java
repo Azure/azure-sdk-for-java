@@ -9,6 +9,7 @@ import com.azure.json.implementation.jackson.core.format.MatchStrength;
 import com.azure.json.implementation.jackson.core.io.*;
 import com.azure.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
 import com.azure.json.implementation.jackson.core.sym.CharsToNameCanonicalizer;
+import com.azure.json.implementation.jackson.core.util.VersionUtil;
 
 /**
  * This class is used to determine the encoding of byte stream
@@ -22,10 +23,13 @@ public final class ByteSourceJsonBootstrapper {
     public final static byte UTF8_BOM_2 = (byte) 0xBB;
     public final static byte UTF8_BOM_3 = (byte) 0xBF;
 
+    // [jackson-core#1081] Limit in bytes for input byte array length to use StringReader instead of InputStreamReader
+    private static final int STRING_READER_BYTE_ARRAY_LENGTH_LIMIT = 8192;
+
     /*
-     * /**********************************************************
-     * /* Configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration
+    /**********************************************************
      */
 
     private final IOContext _context;
@@ -33,9 +37,9 @@ public final class ByteSourceJsonBootstrapper {
     private final InputStream _in;
 
     /*
-     * /**********************************************************
-     * /* Input buffering
-     * /**********************************************************
+    /**********************************************************
+    /* Input buffering
+    /**********************************************************
      */
 
     private final byte[] _inputBuffer;
@@ -51,9 +55,9 @@ public final class ByteSourceJsonBootstrapper {
     private final boolean _bufferRecyclable;
 
     /*
-     * /**********************************************************
-     * /* Input location
-     * /**********************************************************
+    /**********************************************************
+    /* Input location
+    /**********************************************************
      */
 
     /**
@@ -63,12 +67,12 @@ public final class ByteSourceJsonBootstrapper {
      *<p>
      * Note: includes possible BOMs, if those were part of the input.
      */
-    // private int _inputProcessed;
+    //    private int _inputProcessed;
 
     /*
-     * /**********************************************************
-     * /* Data gathered
-     * /**********************************************************
+    /**********************************************************
+    /* Data gathered
+    /**********************************************************
      */
 
     /**
@@ -79,9 +83,9 @@ public final class ByteSourceJsonBootstrapper {
     private int _bytesPerChar; // 0 means "dunno yet"
 
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     public ByteSourceJsonBootstrapper(IOContext ctxt, InputStream in) {
@@ -89,7 +93,7 @@ public final class ByteSourceJsonBootstrapper {
         _in = in;
         _inputBuffer = ctxt.allocReadIOBuffer();
         _inputEnd = _inputPtr = 0;
-        // _inputProcessed = 0;
+        //        _inputProcessed = 0;
         _bufferRecyclable = true;
     }
 
@@ -100,14 +104,14 @@ public final class ByteSourceJsonBootstrapper {
         _inputPtr = inputStart;
         _inputEnd = (inputStart + inputLen);
         // Need to offset this for correct location info
-        // _inputProcessed = -inputStart;
+        //        _inputProcessed = -inputStart;
         _bufferRecyclable = false;
     }
 
     /*
-     * /**********************************************************
-     * /* Encoding detection during bootstrapping
-     * /**********************************************************
+    /**********************************************************
+    /*  Encoding detection during bootstrapping
+    /**********************************************************
      */
 
     /**
@@ -123,8 +127,7 @@ public final class ByteSourceJsonBootstrapper {
         boolean foundEncoding = false;
 
         // First things first: BOM handling
-        /*
-         * Note: we can require 4 bytes to be read, since no
+        /* Note: we can require 4 bytes to be read, since no
          * combination of BOM + valid JSON content can have
          * shorter length (shortest valid JSON content is single
          * digit char, but BOMs are chosen such that combination
@@ -137,8 +140,7 @@ public final class ByteSourceJsonBootstrapper {
             if (handleBOM(quad)) {
                 foundEncoding = true;
             } else {
-                /*
-                 * If no BOM, need to auto-detect based on first char;
+                /* If no BOM, need to auto-detect based on first char;
                  * this works since it must be 7-bit ascii (wrt. unicode
                  * compatible encodings, only ones JSON can be transferred
                  * over)
@@ -177,7 +179,7 @@ public final class ByteSourceJsonBootstrapper {
                     break;
 
                 default:
-                    throw new RuntimeException("Internal error"); // should never get here
+                    return VersionUtil.throwInternalReturnAny();
             }
         }
         _context.setEncoding(enc);
@@ -217,9 +219,9 @@ public final class ByteSourceJsonBootstrapper {
     }
 
     /*
-     * /**********************************************************
-     * /* Constructing a Reader
-     * /**********************************************************
+    /**********************************************************
+    /* Constructing a Reader
+    /**********************************************************
      */
 
     @SuppressWarnings("resource")
@@ -232,12 +234,16 @@ public final class ByteSourceJsonBootstrapper {
                 InputStream in = _in;
 
                 if (in == null) {
+                    int length = _inputEnd - _inputPtr;
+                    if (length <= STRING_READER_BYTE_ARRAY_LENGTH_LIMIT) {
+                        // [jackson-core#1081] Avoid overhead of heap ByteBuffer allocated by InputStreamReader
+                        // when processing small inputs up to 8KiB.
+                        return new StringReader(new String(_inputBuffer, _inputPtr, length, enc.getJavaName()));
+                    }
                     in = new ByteArrayInputStream(_inputBuffer, _inputPtr, _inputEnd);
                 } else {
-                    /*
-                     * Also, if we have any read but unused input (usually true),
-                     * need to merge that input in:
-                     */
+                    // Also, if we have any read but unused input (usually true),
+                    // need to merge that input in:
                     if (_inputPtr < _inputEnd) {
                         in = new MergedStream(_context, in, _inputBuffer, _inputPtr, _inputEnd);
                     }
@@ -249,20 +255,19 @@ public final class ByteSourceJsonBootstrapper {
                 return new UTF32Reader(_context, _in, _inputBuffer, _inputPtr, _inputEnd,
                     _context.getEncoding().isBigEndian());
         }
-        throw new RuntimeException("Internal error"); // should never get here
+        return VersionUtil.throwInternalReturnAny();
     }
 
     public JsonParser constructParser(int parserFeatures, ObjectCodec codec, ByteQuadsCanonicalizer rootByteSymbols,
         CharsToNameCanonicalizer rootCharSymbols, int factoryFeatures) throws IOException {
         int prevInputPtr = _inputPtr;
-        JsonEncoding enc = detectEncoding();
+        JsonEncoding enc
+            = JsonFactory.Feature.CHARSET_DETECTION.enabledIn(factoryFeatures) ? detectEncoding() : JsonEncoding.UTF8;
         int bytesProcessed = _inputPtr - prevInputPtr;
 
         if (enc == JsonEncoding.UTF8) {
-            /*
-             * and without canonicalization, byte-based approach is not performant; just use std UTF-8 reader
-             * (which is ok for larger input; not so hot for smaller; but this is not a common case)
-             */
+            // and without canonicalization, byte-based approach is not performant; just use std UTF-8 reader
+            // (which is ok for larger input; not so hot for smaller; but this is not a common case)
             if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
                 ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
                 return new UTF8StreamJsonParser(_context, parserFeatures, _in, codec, can, _inputBuffer, _inputPtr,
@@ -270,18 +275,18 @@ public final class ByteSourceJsonBootstrapper {
             }
         }
         return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), codec,
-            rootCharSymbols.makeChild(factoryFeatures));
+            rootCharSymbols.makeChild());
     }
 
     /*
-     * /**********************************************************
-     * /* Encoding detection for data format auto-detection
-     * /**********************************************************
+    /**********************************************************
+    /*  Encoding detection for data format auto-detection
+    /**********************************************************
      */
 
     /**
      * Current implementation is not as thorough as other functionality
-     * ({@link com.azure.json.implementation.jackson.core.json.ByteSourceJsonBootstrapper}); 
+     * ({@link com.azure.json.implementation.jackson.core.json.ByteSourceJsonBootstrapper});
      * supports UTF-8, for example. But it should work, for now, and can
      * be improved as necessary.
      *
@@ -401,7 +406,7 @@ public final class ByteSourceJsonBootstrapper {
 
     private static int skipSpace(InputAccessor acc, byte b) throws IOException {
         while (true) {
-            int ch = (int) b & 0xFF;
+            int ch = b & 0xFF;
             if (!(ch == ' ' || ch == '\r' || ch == '\n' || ch == '\t')) {
                 return ch;
             }
@@ -413,9 +418,9 @@ public final class ByteSourceJsonBootstrapper {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods, parsing
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods, parsing
+    /**********************************************************
      */
 
     /**
@@ -423,8 +428,7 @@ public final class ByteSourceJsonBootstrapper {
      *   thereby recognized.
      */
     private boolean handleBOM(int quad) throws IOException {
-        /*
-         * Handling of (usually) optional BOM (required for
+        /* Handling of (usually) optional BOM (required for
          * multi-byte formats); first 32-bit charsets:
          */
         switch (quad) {
@@ -475,8 +479,7 @@ public final class ByteSourceJsonBootstrapper {
     }
 
     private boolean checkUTF32(int quad) throws IOException {
-        /*
-         * Handling of (usually) optional BOM (required for
+        /* Handling of (usually) optional BOM (required for
          * multi-byte formats); first 32-bit charsets:
          */
         if ((quad >> 8) == 0) { // 0x000000?? -> UTF32-BE
@@ -492,7 +495,7 @@ public final class ByteSourceJsonBootstrapper {
             return false;
         }
         // Not BOM (just regular content), nothing to skip past:
-        // _inputPtr += 4;
+        //_inputPtr += 4;
         _bytesPerChar = 4;
         return true;
     }
@@ -502,19 +505,19 @@ public final class ByteSourceJsonBootstrapper {
             _bigEndian = true;
         } else if ((i16 & 0x00FF) == 0) { // UTF-16LE
             _bigEndian = false;
-        } else { // nope, not UTF-16
+        } else { // nope, not  UTF-16
             return false;
         }
         // Not BOM (just regular content), nothing to skip past:
-        // _inputPtr += 2;
+        //_inputPtr += 2;
         _bytesPerChar = 2;
         return true;
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods, problem reporting
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods, problem reporting
+    /**********************************************************
      */
 
     private void reportWeirdUCS4(String type) throws IOException {
@@ -522,16 +525,14 @@ public final class ByteSourceJsonBootstrapper {
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods, raw input access
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods, raw input access
+    /**********************************************************
      */
 
     protected boolean ensureLoaded(int minimum) throws IOException {
-        /*
-         * Let's assume here buffer has enough room -- this will always
-         * be true for the limited used this method gets
-         */
+        // Let's assume here buffer has enough room -- this will always
+        // be true for the limited used this method gets
         int gotten = (_inputEnd - _inputPtr);
         while (gotten < minimum) {
             int count;

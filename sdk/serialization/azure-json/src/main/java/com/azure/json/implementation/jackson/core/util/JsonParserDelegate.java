@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.async.NonBlockingInputFeeder;
 
 /**
  * Helper class that implements
@@ -27,9 +28,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, configuration
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, configuration
+    /**********************************************************************
      */
 
     @Override
@@ -109,14 +110,30 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Capability introspection
-     * /**********************************************************************
+    /**********************************************************************
+    /* Constraints violation checking (2.15)
+    /**********************************************************************
      */
 
     @Override
-    public boolean requiresCustomCodec() {
-        return delegate.requiresCustomCodec();
+    public StreamReadConstraints streamReadConstraints() {
+        return delegate.streamReadConstraints();
+    }
+
+    /*
+    /**********************************************************************
+    /* Capability introspection
+    /**********************************************************************
+     */
+
+    @Override
+    public boolean canParseAsync() {
+        return delegate.canParseAsync();
+    }
+
+    @Override
+    public NonBlockingInputFeeder getNonBlockingInputFeeder() {
+        return delegate.getNonBlockingInputFeeder();
     }
 
     @Override
@@ -124,10 +141,15 @@ public class JsonParserDelegate extends JsonParser {
         return delegate.getReadCapabilities();
     }
 
+    @Override
+    public boolean requiresCustomCodec() {
+        return delegate.requiresCustomCodec();
+    }
+
     /*
-     * /**********************************************************************
-     * /* Closeable impl
-     * /**********************************************************************
+    /**********************************************************************
+    /* Closeable impl
+    /**********************************************************************
      */
 
     @Override
@@ -141,9 +163,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, state change/override methods
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, state change/override methods
+    /**********************************************************************
      */
 
     @Override
@@ -166,16 +188,16 @@ public class JsonParserDelegate extends JsonParser {
         delegate.assignCurrentValue(v);
     }
 
-    // TODO: deprecate in 2.14 or later
     @Override
+    @Deprecated
     public void setCurrentValue(Object v) {
         delegate.setCurrentValue(v);
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, state/location accessors
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, state/location accessors
+    /**********************************************************************
      */
 
     @Override
@@ -198,23 +220,23 @@ public class JsonParserDelegate extends JsonParser {
         return delegate.currentName();
     }
 
-    @Override // since 2.13
+    @Override
     public Object currentValue() {
         return delegate.currentValue();
     }
 
-    @Override // since 2.13
-    public JsonLocation currentLocation() {
-        return delegate.getCurrentLocation();
-    }
-
-    @Override // since 2.13
-    public JsonLocation currentTokenLocation() {
-        return delegate.getTokenLocation();
-    }
-
-    // TODO: deprecate in 2.14 or later
     @Override
+    public JsonLocation currentLocation() {
+        return delegate.currentLocation();
+    }
+
+    @Override
+    public JsonLocation currentTokenLocation() {
+        return delegate.currentTokenLocation();
+    }
+
+    @Override
+    @Deprecated
     public JsonToken getCurrentToken() {
         return delegate.getCurrentToken();
     }
@@ -225,34 +247,34 @@ public class JsonParserDelegate extends JsonParser {
         return delegate.getCurrentTokenId();
     }
 
-    // TODO: deprecate in 2.14 or later
     @Override
+    @Deprecated // since 2.17
     public String getCurrentName() throws IOException {
         return delegate.getCurrentName();
     }
 
-    // TODO: deprecate in 2.14 or later
     @Override
+    @Deprecated // since 2.17
     public Object getCurrentValue() {
         return delegate.getCurrentValue();
     }
 
-    // TODO: deprecate in 2.14 or later
     @Override
+    @Deprecated // since 2.17
     public JsonLocation getCurrentLocation() {
         return delegate.getCurrentLocation();
     }
 
-    // TODO: deprecate in 2.14 or later
     @Override
+    @Deprecated // since 2.17
     public JsonLocation getTokenLocation() {
         return delegate.getTokenLocation();
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, token accessors
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, token accessors
+    /**********************************************************************
      */
 
     @Override
@@ -291,9 +313,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, access to token textual content
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, access to token textual content
+    /**********************************************************************
      */
 
     @Override
@@ -327,9 +349,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, access to token numeric values
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, access to token numeric values
+    /**********************************************************************
      */
 
     @Override
@@ -383,6 +405,11 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     @Override
+    public NumberTypeFP getNumberTypeFP() throws IOException {
+        return delegate.getNumberTypeFP();
+    }
+
+    @Override
     public Number getNumberValue() throws IOException {
         return delegate.getNumberValue();
     }
@@ -392,10 +419,15 @@ public class JsonParserDelegate extends JsonParser {
         return delegate.getNumberValueExact();
     }
 
+    @Override
+    public Object getNumberValueDeferred() throws IOException {
+        return delegate.getNumberValueDeferred();
+    }
+
     /*
-     * /**********************************************************************
-     * /* Public API, access to token information, coercion/conversion
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, access to token information, coercion/conversion
+    /**********************************************************************
      */
 
     @Override
@@ -449,9 +481,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, access to token values, other
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, access to token values, other
+    /**********************************************************************
      */
 
     @Override
@@ -492,9 +524,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Public API, Native Ids (type, object)
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, Native Ids (type, object)
+    /**********************************************************************
      */
 
     @Override
@@ -518,9 +550,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-     * /**********************************************************************
-     * /* Extended API
-     * /**********************************************************************
+    /**********************************************************************
+    /* Extended API
+    /**********************************************************************
      */
 
     /**
