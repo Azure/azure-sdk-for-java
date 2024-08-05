@@ -4,7 +4,6 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.http.stress.util.TelemetryHelper;
 import io.clientcore.core.http.client.DefaultHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
@@ -18,16 +17,14 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import reactor.core.publisher.Mono;
-
+import io.clientcore.http.stress.util.TelemetryHelper;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
+import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.

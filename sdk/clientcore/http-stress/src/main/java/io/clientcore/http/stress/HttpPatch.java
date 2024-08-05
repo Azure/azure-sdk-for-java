@@ -19,7 +19,6 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
-import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -75,11 +74,6 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.error(new UnsupportedOperationException("Not implemented"));
-    }
-
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        return runAsync().toFuture();
     }
 
     private HttpRequest createRequest() {

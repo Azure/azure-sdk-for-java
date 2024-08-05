@@ -3,11 +3,6 @@
 
 package com.azure.perf.test.core;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -44,5 +39,4 @@ class SleepTest extends PerfStressTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return Mono.delay(Duration.ofSeconds(secondsPerOperation)).then();
     }
-
 }

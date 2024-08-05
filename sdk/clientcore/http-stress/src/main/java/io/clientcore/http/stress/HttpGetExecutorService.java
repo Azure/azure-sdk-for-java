@@ -18,9 +18,6 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
-import java.util.concurrent.Future;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -30,6 +27,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
+import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.
@@ -77,11 +75,6 @@ public class HttpGetExecutorService extends ScenarioBase<StressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(() -> CompletableFuture.runAsync(this::runInternal, executorService));
-    }
-
-    @Override
-    public Future<Void> runAsyncCompletableFuture() {
-        return CompletableFuture.runAsync(this::runInternal, executorService);
     }
 
     private HttpRequest createRequest() {

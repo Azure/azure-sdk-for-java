@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

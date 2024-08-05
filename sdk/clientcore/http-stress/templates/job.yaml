@@ -44,7 +44,6 @@ spec:
           --duration {{ mul .Stress.testDurationMin 60 }} \
           --endpoint https://localhost:8081 \
           {{ if ne .Stress.httpClient "default" }}--http-client {{ .Stress.httpClient }}{{ end }} \
-          --sync \
           --warmup 0
       # add your test parameters here
       resources:

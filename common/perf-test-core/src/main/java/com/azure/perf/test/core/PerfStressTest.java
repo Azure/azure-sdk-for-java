@@ -3,8 +3,6 @@
 
 package com.azure.perf.test.core;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 /**

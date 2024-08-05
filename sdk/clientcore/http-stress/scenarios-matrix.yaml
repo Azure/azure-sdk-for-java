@@ -16,15 +16,15 @@ matrix:
     getExecutor:
         imageBuildDir: ..\..\..\
         testDurationMin: 30
-        testScenario: httpgetExecutor
+        testScenario: httpgetexecutor
         concurrency: 75
     getFuture:
         imageBuildDir: ..\..\..\
         testDurationMin: 30
-        testScenario: httpgetFuture
+        testScenario: httpgetfuture
         concurrency: 75
     getVirtualThreads:
         imageBuildDir: ..\..\..\
         testDurationMin: 30
-        testScenario: httpgetVirtualThreads
+        testScenario: httpgetvirtualthreads
         concurrency: 75

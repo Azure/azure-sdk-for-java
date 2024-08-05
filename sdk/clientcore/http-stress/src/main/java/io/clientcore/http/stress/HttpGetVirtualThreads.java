@@ -18,18 +18,16 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
+import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.

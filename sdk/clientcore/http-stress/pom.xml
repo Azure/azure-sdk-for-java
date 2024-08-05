@@ -17,6 +17,12 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-stress;current} -->
   <packaging>jar</packaging>
 
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <doclint>all,-missing</doclint>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -68,10 +74,6 @@
     </dependency>
   </dependencies>
 
-  <properties>
-    <maven.compiler.release>21</maven.compiler.release>
-  </properties>
-
   <build>
     <plugins>
       <plugin>
@@ -91,14 +93,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
-        <configuration>
-          <source>21</source>
-          <target>21</target>
         </configuration>
       </plugin>
       <plugin>
@@ -143,7 +137,7 @@
     <profile>
       <id>java12plus</id>
       <activation>
-        <jdk>[12,21)</jdk>
+        <jdk>[12,)</jdk>
       </activation>
       <dependencies>
         <dependency>
