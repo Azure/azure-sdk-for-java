@@ -240,7 +240,7 @@ public class Utf32Reader extends Reader {
             if (count < 1) {
                 if (count < 0) { // -1, EOF... no good!
                     freeBuffers(); // to help GC?
-                    reportUnexpectedEOF(mLength, 4);
+                    reportUnexpectedEOF(mLength);
                 }
                 // 0 count is no good; let's err out
                 reportStrangeStream();
@@ -266,12 +266,12 @@ public class Utf32Reader extends Reader {
     /**********************************************************************
      */
 
-    private void reportUnexpectedEOF(int gotBytes, int needed) throws IOException {
+    private void reportUnexpectedEOF(int gotBytes) throws IOException {
         int bytePos = mByteCount + gotBytes;
         int charPos = mCharCount;
 
         throw new CharConversionException("Unexpected EOF in the middle of a 4-byte UTF-32 char: got " + gotBytes
-            + ", needed " + needed + ", at char #" + charPos + ", byte #" + bytePos + ")");
+            + ", needed " + 4 + ", at char #" + charPos + ", byte #" + bytePos + ")");
     }
 
     private void reportInvalid(int value, int offset, String msg) throws IOException {

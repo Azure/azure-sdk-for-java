@@ -67,7 +67,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
     final static byte BYTE_GT = (byte) '>';
     final static byte BYTE_AMP = (byte) '&';
     final static byte BYTE_QUOT = (byte) '"';
-    final static byte BYTE_APOS = (byte) '\'';
 
     final static byte BYTE_A = (byte) 'a';
     final static byte BYTE_G = (byte) 'g';
@@ -86,9 +85,9 @@ public abstract class ByteXmlWriter extends XmlWriter {
     final static byte[] BYTES_COMMENT_START = getAscii("<!--");
     final static byte[] BYTES_COMMENT_END = getAscii("-->");
 
-    final static byte[] BYTES_XMLDECL_START = getAscii("<?xml version='");
-    final static byte[] BYTES_XMLDECL_ENCODING = getAscii(" encoding='");
-    final static byte[] BYTES_XMLDECL_STANDALONE = getAscii(" standalone='");
+    final static byte[] BYTES_XMLDECL_START = getAscii("<?xml version=\"");
+    final static byte[] BYTES_XMLDECL_ENCODING = getAscii(" encoding=\"");
+    final static byte[] BYTES_XMLDECL_STANDALONE = getAscii(" standalone=\"");
 
     /*
     /**********************************************************************
@@ -1360,19 +1359,19 @@ public abstract class ByteXmlWriter extends XmlWriter {
         writeRaw(BYTES_XMLDECL_START); // will check surrogates
         // !!! TBI: check validity
         writeRaw(version, 0, version.length());
-        writeRaw(BYTE_APOS);
+        writeRaw(BYTE_QUOT);
 
         if (encoding != null && !encoding.isEmpty()) {
             writeRaw(BYTES_XMLDECL_ENCODING);
             // !!! TBI: check validity
             writeRaw(encoding, 0, encoding.length());
-            writeRaw(BYTE_APOS);
+            writeRaw(BYTE_QUOT);
         }
         if (standalone != null) {
             writeRaw(BYTES_XMLDECL_STANDALONE);
             // !!! TBI: check validity
             writeRaw(standalone, 0, standalone.length());
-            writeRaw(BYTE_APOS);
+            writeRaw(BYTE_QUOT);
         }
         writeRaw(BYTE_QMARK, BYTE_GT);
     }

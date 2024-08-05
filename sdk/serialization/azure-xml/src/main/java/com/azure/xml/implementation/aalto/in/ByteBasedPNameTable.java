@@ -192,10 +192,10 @@ public final class ByteBasedPNameTable extends NameTable {
         mCollListShared = true;
     }
 
-    public boolean mergeFromChild(ByteBasedPNameTable child) {
+    public void mergeFromChild(ByteBasedPNameTable child) {
         // Only makes sense if child has more entries
         if (child.mCount <= mCount) {
-            return false;
+            return;
         }
         //System.out.print("["+mCount+"->"+child.mCount+"/"+mMainHash.length+"]");
 
@@ -211,7 +211,6 @@ public final class ByteBasedPNameTable extends NameTable {
          * as shared, just in case it might still be used:
          */
         child.markAsShared();
-        return true;
     }
 
     public void markAsShared() {

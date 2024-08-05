@@ -42,7 +42,6 @@ public abstract class ByteBasedScanner extends XmlScanner {
 
     // White-space:
 
-    final protected static byte BYTE_NULL = (byte) 0;
     final protected static byte BYTE_SPACE = (byte) ' ';
     final protected static byte BYTE_LF = (byte) '\n';
     final protected static byte BYTE_CR = (byte) '\r';
@@ -56,9 +55,6 @@ public abstract class ByteBasedScanner extends XmlScanner {
     final protected static byte BYTE_HYPHEN = (byte) '-';
     final protected static byte BYTE_QMARK = (byte) '?';
     final protected static byte BYTE_SLASH = (byte) '/';
-    final protected static byte BYTE_EQ = (byte) '=';
-    final protected static byte BYTE_QUOT = (byte) '"';
-    final protected static byte BYTE_APOS = (byte) '\'';
     final protected static byte BYTE_LBRACKET = (byte) '[';
     final protected static byte BYTE_RBRACKET = (byte) ']';
     final protected static byte BYTE_SEMICOLON = (byte) ';';
@@ -75,12 +71,9 @@ public abstract class ByteBasedScanner extends XmlScanner {
     final protected static byte BYTE_u = (byte) 'u';
     final protected static byte BYTE_x = (byte) 'x';
 
-    final protected static byte BYTE_A = (byte) 'A';
-    final protected static byte BYTE_C = (byte) 'C';
     final protected static byte BYTE_D = (byte) 'D';
     final protected static byte BYTE_P = (byte) 'P';
     final protected static byte BYTE_S = (byte) 'S';
-    final protected static byte BYTE_T = (byte) 'T';
 
     /*
     /**********************************************************************
@@ -140,37 +133,6 @@ public abstract class ByteBasedScanner extends XmlScanner {
     public XMLStreamLocation2 getCurrentLocation() {
         return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _pastBytesOrChars + _inputPtr,
             _currRow, _inputPtr - _rowStartOffset);
-    }
-
-    @Override
-    public int getCurrentColumnNr() {
-        return _inputPtr - _rowStartOffset;
-    }
-
-    @Override
-    public long getStartingByteOffset() {
-        return _startRawOffset;
-    }
-
-    @Override
-    public long getStartingCharOffset() {
-        // N/A for this type
-        return -1L;
-    }
-
-    @Override
-    public long getEndingByteOffset() throws XMLStreamException {
-        // Have to complete the token to know the ending location...
-        if (_tokenIncomplete) {
-            finishToken();
-        }
-        return _pastBytesOrChars + _inputPtr;
-    }
-
-    @Override
-    public long getEndingCharOffset() {
-        // N/A for this type
-        return -1L;
     }
 
     protected final void markLF(int offset) {
@@ -271,7 +233,7 @@ public abstract class ByteBasedScanner extends XmlScanner {
                     needed = ch = 1; // never really gets this far
                 }
                 if ((ix + needed) > byteLen) {
-                    reportEofInName(cbuf, 0);
+                    reportEofInName();
                 }
                 ix += needed;
 
@@ -366,7 +328,7 @@ public abstract class ByteBasedScanner extends XmlScanner {
                         needed = ch = 1; // never really gets this far
                     }
                     if ((ix + needed) > byteLen) {
-                        reportEofInName(cbuf, cix);
+                        reportEofInName();
                     }
 
                     // Ok, always need at least one more:

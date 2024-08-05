@@ -82,14 +82,6 @@ public abstract class PName {
         return _localName;
     }
 
-    public boolean hasPrefix() {
-        return _prefix != null;
-    }
-
-    public boolean hasPrefixedName(String n) {
-        return _prefixedName.equals(n);
-    }
-
     public final String getNsUri() {
         return (_namespaceBinding == null) ? null : _namespaceBinding.mURI;
     }
@@ -178,7 +170,7 @@ public abstract class PName {
         return _localName.hashCode();
     }
 
-    public static int boundHashCode(String nsURI, String localName) {
+    public static int boundHashCode(String localName) {
         return localName.hashCode();
     }
 
@@ -229,5 +221,4 @@ public abstract class PName {
 
     public abstract int getQuad(int index);
 
-    public abstract int getLastQuad();
 }

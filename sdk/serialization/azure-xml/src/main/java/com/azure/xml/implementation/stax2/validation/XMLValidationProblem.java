@@ -9,7 +9,6 @@ import javax.xml.stream.Location;
  * a validation exception.
  */
 public class XMLValidationProblem {
-    public final static int SEVERITY_WARNING = 1;
     public final static int SEVERITY_ERROR = 2;
 
     /**
@@ -27,14 +26,6 @@ public class XMLValidationProblem {
      * @since 3.0
      */
     protected String mType;
-
-    /**
-     * Validator instance that reported the problem, if any (may be
-     * null if stream reader or writer itself reported the problem)
-     *
-     * @since 3.0
-     */
-    protected XMLValidator mReporter;
 
     public XMLValidationProblem(Location loc, String msg, int severity) {
         this(loc, msg, severity, null);
@@ -93,14 +84,4 @@ public class XMLValidationProblem {
         return mType;
     }
 
-    /**
-     * Returns the validator that reported the problem if known.
-     *
-     * @return Validator that reported the problem; null if unknown or N/A.
-     *
-     * @since 3.0
-     */
-    public XMLValidator getReporter() {
-        return mReporter;
-    }
 }

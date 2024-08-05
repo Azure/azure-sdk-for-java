@@ -93,20 +93,6 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
         super(sr);
     }
 
-    /**
-     * Method that should be used to add dynamic support for
-     * {@link XMLStreamReader2}. Method will check whether the
-     * stream reader passed happens to be a {@link XMLStreamReader2};
-     * and if it is, return it properly cast. If not, it will create
-     * necessary wrapper.
-     */
-    public static XMLStreamReader2 wrapIfNecessary(XMLStreamReader sr) {
-        if (sr instanceof XMLStreamReader2) {
-            return (XMLStreamReader2) sr;
-        }
-        return new Stax2ReaderAdapter(sr);
-    }
-
     /*
     ///////////////////////////////////////////////////////////////////////
     // Stax 1.0 methods overridden
@@ -839,11 +825,6 @@ public class Stax2ReaderAdapter extends StreamReaderDelegate /* from Stax 1.0 */
     // DTDInfo implementation (StAX 2)
     ///////////////////////////////////////////////////////////////////////
      */
-
-    @Override
-    public Object getProcessedDTD() {
-        return null;
-    }
 
     @Override
     public String getDTDRootName() {

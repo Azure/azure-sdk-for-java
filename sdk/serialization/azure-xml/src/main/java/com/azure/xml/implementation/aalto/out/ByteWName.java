@@ -54,7 +54,7 @@ public final class ByteWName extends WName {
     }
 
     @Override
-    public int appendChars(char[] buffer, int offset) {
+    public void appendChars(char[] buffer, int offset) {
         throw new RuntimeException("Internal error: appendChars() should never be called");
     }
 

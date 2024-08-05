@@ -19,32 +19,6 @@ import javax.xml.stream.XMLStreamException;
  * (DTD, W3C Schema, Relax NG).
  */
 public interface ValidationContext {
-    /*
-    ///////////////////////////////////////////////////////////////////////
-    // Basic configuration
-    ///////////////////////////////////////////////////////////////////////
-     */
-
-    /*
-    ///////////////////////////////////////////////////////////////////////
-    // Input element stack access
-    ///////////////////////////////////////////////////////////////////////
-     */
-
-    /**
-     * Method that can be called by the validator to resolve a namespace
-     * prefix of the currently active top-level element. This may be
-     * necessary for things like DTD validators (which may need to
-     * heuristically guess proper namespace URI of attributes, esp.
-     * ones with default values).
-     */
-    String getNamespaceURI(String prefix);
-
-    /*
-    ///////////////////////////////////////////////////////////////////////
-    // Access to notation and unparsed entity information
-    ///////////////////////////////////////////////////////////////////////
-     */
 
     /*
     ///////////////////////////////////////////////////////////////////////
@@ -76,11 +50,4 @@ public interface ValidationContext {
      * as basic Stax interface {@link javax.xml.stream.XMLReporter}.
      */
     void reportProblem(XMLValidationProblem problem) throws XMLStreamException;
-
-    /*
-    ///////////////////////////////////////////////////////////////////////
-    // Infoset modifiers
-    ///////////////////////////////////////////////////////////////////////
-     */
-
 }

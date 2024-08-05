@@ -16,7 +16,6 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -46,7 +45,6 @@ import com.azure.xml.implementation.stax2.ri.typed.ValueDecoderFactory;
 import com.azure.xml.implementation.aalto.UncheckedStreamException;
 import com.azure.xml.implementation.aalto.WFCException;
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.in.InputBootstrapper;
 import com.azure.xml.implementation.aalto.in.PName;
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
@@ -159,13 +157,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         return new StreamReaderImpl(bs.bootstrap());
     }
 
-    /**
-     * Should not really be public, but needed by SAX code
-     */
-    public XmlScanner getScanner() {
-        return _scanner;
-    }
-
     /*
     /**********************************************************************
     /* XMLStreamReader API
@@ -265,10 +256,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         }
         // false -> not mandatory, unrecognized will return null
         return _scanner.getConfig().getProperty(name, false);
-    }
-
-    public ReaderConfig getConfig() {
-        return _scanner.getConfig();
     }
 
     /*
@@ -1467,16 +1454,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     /**********************************************************************
      */
 
-    /**
-     *<p>
-     * Note: DTD-handling sub-classes need to override this method.
-     */
-    @Override
-    public final Object getProcessedDTD() {
-        // !!! TBI
-        return null;
-    }
-
     @Override
     public final String getDTDRootName() {
         if (_currToken != DTD) {
@@ -1631,10 +1608,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     private void throwNotTextXxx() {
         throw new IllegalStateException(
             "getTextXxx() methods can not be called on " + ErrorConsts.tokenTypeDesc(_currToken));
-    }
-
-    protected void throwFromIOE(IOException ioe) throws XMLStreamException {
-        throw new IoStreamException(ioe);
     }
 
     protected void throwUnexpectedEOI(String msg) throws XMLStreamException {

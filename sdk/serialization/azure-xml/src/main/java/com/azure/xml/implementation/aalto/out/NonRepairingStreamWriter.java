@@ -16,10 +16,7 @@
 
 package com.azure.xml.implementation.aalto.out;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.*;
-
-import com.azure.xml.implementation.stax2.ri.typed.AsciiValueEncoder;
 
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 
@@ -45,7 +42,7 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
      */
 
     @Override
-    public void setDefaultNamespace(String uri) throws XMLStreamException {
+    public void setDefaultNamespace(String uri) {
         _currElem.setDefaultNsURI(uri);
     }
 
@@ -174,34 +171,5 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
             name = _symbols.findSymbol(prefix, localName);
         }
         _writeStartTag(name, false, nsURI);
-    }
-
-    /*
-    /**********************************************************************
-    /* Implementations of abstract methods from base class, Stax2 Typed API Access (v3.0)
-    /**********************************************************************
-     */
-
-    @Override
-    public void writeTypedAttribute(String prefix, String nsURI, String localName, AsciiValueEncoder enc)
-        throws XMLStreamException {
-        if (!_stateStartElementOpen) {
-            throwOutputError(ErrorConsts.WERR_ATTR_NO_ELEM);
-        }
-        WName name = (prefix == null || prefix.isEmpty())
-            ? _symbols.findSymbol(localName)
-            : _symbols.findSymbol(prefix, localName);
-        _writeAttribute(name, enc);
-    }
-
-    @Override
-    protected String _serializeQName(QName name) {
-        String prefix = name.getPrefix();
-        String local = name.getLocalPart();
-        if (prefix == null || prefix.isEmpty()) {
-            return local;
-        }
-        // Not efficient... but should be ok
-        return prefix + ":" + local;
     }
 }

@@ -33,7 +33,7 @@ public final class XmlNames {
             }
             ++ptr;
             // Only returns if ok; throws exception otherwise
-            if (!validSurrogateNameChar(c, name.charAt(ptr))) {
+            if (validSurrogateNameChar()) {
                 return ptr;
             }
         }
@@ -50,7 +50,7 @@ public final class XmlNames {
                     if ((ptr + 1) >= len) { // unpaired surrogate
                         return ptr;
                     }
-                    if (!validSurrogateNameChar(c, name.charAt(ptr + 1))) {
+                    if (validSurrogateNameChar()) {
                         return ptr;
                     }
                     ++ptr;
@@ -67,7 +67,7 @@ public final class XmlNames {
                     if ((ptr + 1) >= len) { // unpaired surrogate
                         return ptr;
                     }
-                    if (!validSurrogateNameChar(c, name.charAt(ptr + 1))) {
+                    if (validSurrogateNameChar()) {
                         return ptr;
                     }
                     ++ptr;
@@ -77,13 +77,7 @@ public final class XmlNames {
         return -1;
     }
 
-    private static boolean validSurrogateNameChar(char firstChar, char sec) {
-        if (firstChar >= 0xDC00) {
-            return false;
-        }
-        if (sec < 0xDC00 || sec >= 0xE000) {
-            return false;
-        }
+    private static boolean validSurrogateNameChar() {
         // And the composite, is it ok?
         //        int val = ((firstChar - 0xD800) << 10) + 0x10000;
 
@@ -98,7 +92,7 @@ public final class XmlNames {
         // 04-Jan-2021, tatu: Hmmh. Do we really fail on all surrogate characters in
         //   names (for now). That seems incorrect.
 
-        return false;
+        return true;
     }
 
 }

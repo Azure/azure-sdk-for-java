@@ -17,14 +17,12 @@ public class DOMOutputElement extends OutputElementBase {
      * Non-final to allow temporary pooling
      * (on per-writer basis, to keep these short-lived).
      */
-    private DOMOutputElement _parent;
+    private final DOMOutputElement _parent;
 
     /**
      * Actual DOM element for which this element object acts as a proxy.
      */
-    private Element _element;
-
-    private boolean _defaultNsSet;
+    private final Element _element;
 
     /**
      * Constructor for the virtual root element
@@ -37,7 +35,6 @@ public class DOMOutputElement extends OutputElementBase {
         _nsMapShared = false;
         _defaultNsURI = "";
         _rootNsContext = null;
-        _defaultNsSet = false;
     }
 
     private DOMOutputElement(DOMOutputElement parent, Element element, BijectiveNsMap ns) {
@@ -48,18 +45,6 @@ public class DOMOutputElement extends OutputElementBase {
         _nsMapShared = (ns != null);
         _defaultNsURI = parent._defaultNsURI;
         _rootNsContext = parent._rootNsContext;
-        _defaultNsSet = false;
-    }
-
-    /**
-     * Method called to reuse a pooled instance.
-     */
-    private void relink(DOMOutputElement parent, Element element) {
-        super.relink(parent);
-        _parent = parent;
-        _element = element;
-        parent.appendNode(element);
-        _defaultNsSet = false;
     }
 
     public static DOMOutputElement createRoot() {
@@ -84,15 +69,6 @@ public class DOMOutputElement extends OutputElementBase {
 
     protected DOMOutputElement createChild(Element element) {
         return new DOMOutputElement(this, element, _nsMapping);
-    }
-
-    /**
-     * @return New head of the recycle pool
-     */
-    protected DOMOutputElement reuseAsChild(DOMOutputElement parent, Element element) {
-        DOMOutputElement poolHead = _parent;
-        relink(parent, element);
-        return poolHead;
     }
 
     /*
@@ -120,7 +96,6 @@ public class DOMOutputElement extends OutputElementBase {
     @Override
     public void setDefaultNsUri(String uri) {
         _defaultNsURI = uri;
-        _defaultNsSet = true;
     }
 
     /*

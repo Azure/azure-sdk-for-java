@@ -1,10 +1,10 @@
 // Original file from https://github.com/FasterXML/stax2-api under BSD 2-Clause "Simplified" License
 package com.azure.xml.implementation.stax2.ri;
 
-import java.util.Iterator;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Dummy {@link NamespaceContext} implementation that contains no
@@ -72,11 +72,11 @@ public class EmptyNamespaceContext implements NamespaceContext {
             throw new IllegalArgumentException("Illegal to pass null/empty prefix as argument.");
         }
         if (nsURI.equals(XMLConstants.XML_NS_URI)) {
-            return SingletonIterator.create(XMLConstants.XML_NS_PREFIX);
+            return Collections.singletonList(XMLConstants.XML_NS_PREFIX).iterator();
         }
         if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            return SingletonIterator.create(XMLConstants.XMLNS_ATTRIBUTE);
+            return Collections.singletonList(XMLConstants.XMLNS_ATTRIBUTE).iterator();
         }
-        return EmptyIterator.getInstance();
+        return Collections.emptyIterator();
     }
 }

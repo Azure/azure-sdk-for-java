@@ -38,11 +38,4 @@ public interface XMLValidationSchema {
     ///////////////////////////////////////////////////
      */
 
-    /**
-     * Returns type of this schema.
-     *
-     * @return One of external schema identifier values (such as
-     *   {@link #SCHEMA_ID_DTD}).
-     */
-    String getSchemaType();
 }

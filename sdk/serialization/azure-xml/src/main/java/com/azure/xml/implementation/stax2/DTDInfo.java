@@ -14,14 +14,6 @@ public interface DTDInfo {
     // // // Stax2, v1.0
 
     /**
-     * @return If current event is DTD, DTD support is enabled,
-     *   and reader supports DTD processing, returns an internal
-     *   Object implementation uses for storing/processing DTD;
-     *   otherwise returns null.
-     */
-    Object getProcessedDTD();
-
-    /**
      * @return If current event is DTD, returns the full root name
      *   (including prefix, if any); otherwise returns null
      */

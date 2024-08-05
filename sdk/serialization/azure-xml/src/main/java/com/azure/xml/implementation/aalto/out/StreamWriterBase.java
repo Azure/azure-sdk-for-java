@@ -17,23 +17,16 @@
 package com.azure.xml.implementation.aalto.out;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.*;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
 import javax.xml.stream.*;
 
 import com.azure.xml.implementation.stax2.*;
 import com.azure.xml.implementation.stax2.validation.*;
 import com.azure.xml.implementation.stax2.ri.Stax2WriterImpl;
-import com.azure.xml.implementation.stax2.ri.typed.AsciiValueEncoder;
-import com.azure.xml.implementation.stax2.ri.typed.ValueEncoderFactory;
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.Base64Variants;
 
 import com.azure.xml.implementation.aalto.ValidationException;
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
@@ -98,13 +91,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
      * Actual physical writer to output serialized XML content to
      */
     protected final XmlWriter _xmlWriter;
-
-    /**
-     * When outputting using Typed Access API, we will need
-     * encoders. If so, they will created by lazily-constructed
-     * factory
-     */
-    protected ValueEncoderFactory _valueEncoderFactory;
 
     /*
     /**********************************************************************
@@ -233,7 +219,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     @Override
     public void close() throws XMLStreamException {
-        _finishDocument(false);
+        _finishDocument();
     }
 
     @Override
@@ -498,7 +484,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     @Override
     public void writeEndDocument() throws XMLStreamException {
-        _finishDocument(false);
+        _finishDocument();
     }
 
     @Override
@@ -693,190 +679,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     // // // Typed element content write methods
 
-    @Override
-    public void writeBoolean(boolean b) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getScalarEncoder(b ? "true" : "false"));
-    }
-
-    @Override
-    public void writeInt(int value) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public void writeLong(long value) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public void writeFloat(float value) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public void writeDouble(double value) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public void writeInteger(BigInteger value) throws XMLStreamException {
-        // Not optimal, but should do ok:
-        writeTypedElement(valueEncoderFactory().getScalarEncoder(value.toString()));
-    }
-
-    @Override
-    public void writeDecimal(BigDecimal value) throws XMLStreamException {
-        // Not optimal, but should do ok:
-        writeTypedElement(valueEncoderFactory().getScalarEncoder(value.toString()));
-    }
-
-    @Override
-    public void writeQName(QName value) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getScalarEncoder(_serializeQName(value)));
-    }
-
-    @Override
-    public final void writeIntArray(int[] value, int from, int length) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value, from, length));
-    }
-
-    @Override
-    public void writeLongArray(long[] value, int from, int length) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value, from, length));
-    }
-
-    @Override
-    public void writeFloatArray(float[] value, int from, int length) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value, from, length));
-    }
-
-    @Override
-    public void writeDoubleArray(double[] value, int from, int length) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(value, from, length));
-    }
-
-    @Override
-    public void writeBinary(byte[] value, int from, int length) throws XMLStreamException {
-        Base64Variant v = Base64Variants.getDefaultVariant();
-        writeTypedElement(valueEncoderFactory().getEncoder(v, value, from, length));
-    }
-
-    @Override
-    public void writeBinary(Base64Variant v, byte[] value, int from, int length) throws XMLStreamException {
-        writeTypedElement(valueEncoderFactory().getEncoder(v, value, from, length));
-    }
-
-    private void writeTypedElement(AsciiValueEncoder enc) throws XMLStreamException {
-        _stateAnyOutput = true;
-        if (_stateStartElementOpen) {
-            _closeStartElement(_stateEmptyElement);
-        }
-        try {
-            _xmlWriter.writeTypedValue(enc);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
-    }
-
     // // // Typed attribute value write methods
-
-    @Override
-    public final void writeBooleanAttribute(String prefix, String nsURI, String localName, boolean value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public final void writeIntAttribute(String prefix, String nsURI, String localName, int value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public final void writeLongAttribute(String prefix, String nsURI, String localName, long value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public final void writeFloatAttribute(String prefix, String nsURI, String localName, float value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public final void writeDoubleAttribute(String prefix, String nsURI, String localName, double value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value));
-    }
-
-    @Override
-    public final void writeIntegerAttribute(String prefix, String nsURI, String localName, BigInteger value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getScalarEncoder(value.toString()));
-    }
-
-    @Override
-    public final void writeDecimalAttribute(String prefix, String nsURI, String localName, BigDecimal value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getScalarEncoder(value.toString()));
-    }
-
-    @Override
-    public final void writeQNameAttribute(String prefix, String nsURI, String localName, QName value)
-        throws XMLStreamException {
-        /* Can't use AsciiValueEncoder, since QNames can contain
-         * non-ascii characters
-         */
-        writeAttribute(prefix, nsURI, localName, _serializeQName(value));
-    }
-
-    @Override
-    public void writeIntArrayAttribute(String prefix, String nsURI, String localName, int[] value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value, 0, value.length));
-    }
-
-    @Override
-    public void writeLongArrayAttribute(String prefix, String nsURI, String localName, long[] value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value, 0, value.length));
-    }
-
-    @Override
-    public void writeFloatArrayAttribute(String prefix, String nsURI, String localName, float[] value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value, 0, value.length));
-    }
-
-    @Override
-    public void writeDoubleArrayAttribute(String prefix, String nsURI, String localName, double[] value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(value, 0, value.length));
-    }
-
-    @Override
-    public void writeBinaryAttribute(String prefix, String nsURI, String localName, byte[] value)
-        throws XMLStreamException {
-        Base64Variant v = Base64Variants.getDefaultVariant();
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(v, value, 0, value.length));
-    }
-
-    @Override
-    public void writeBinaryAttribute(Base64Variant v, String prefix, String nsURI, String localName, byte[] value)
-        throws XMLStreamException {
-        writeTypedAttribute(prefix, nsURI, localName, valueEncoderFactory().getEncoder(v, value, 0, value.length));
-    }
-
-    /**
-     * Need to leave implementation of this method abstract, because
-     * repairing and non-repairing modes differ in how names are
-     * handled.
-     */
-    public abstract void writeTypedAttribute(String prefix, String nsURI, String localName, AsciiValueEncoder enc)
-        throws XMLStreamException;
-
-    protected abstract String _serializeQName(QName name) throws XMLStreamException;
 
     /*
     /**********************************************************************
@@ -1176,13 +979,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         return (_state != State.TREE);
     }
 
-    protected final ValueEncoderFactory valueEncoderFactory() {
-        if (_valueEncoderFactory == null) {
-            _valueEncoderFactory = new ValueEncoderFactory();
-        }
-        return _valueEncoderFactory;
-    }
-
     /*
     /**********************************************************************
     /* Package methods, write helpers
@@ -1195,17 +991,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
         try {
             _xmlWriter.writeAttribute(name, value);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
-    }
-
-    protected final void _writeAttribute(WName name, AsciiValueEncoder enc) throws XMLStreamException {
-        if (_cfgCheckAttrs) { // still need to ensure no duplicate attrs?
-            _verifyWriteAttr();
-        }
-        try {
-            _xmlWriter.writeAttribute(name, enc);
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
         }
@@ -1430,18 +1215,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         throwOutputError(msg, arg);
     }
 
-    protected static void throwFromIOE(IOException ioe) throws XMLStreamException {
-        throw new IoStreamException(ioe);
-    }
-
-    /*
-    protected static void throwIllegalState(String msg)
-        throws IllegalArgumentException
-    {
-        throw new IllegalStateException(msg);
-    }
-    */
-
     /*
     /**********************************************************************
     /* Package methods, output validation problem reporting
@@ -1483,7 +1256,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    private void _finishDocument(boolean forceRealClose) throws XMLStreamException {
+    private void _finishDocument() throws XMLStreamException {
         // Is tree still open?
         if (_state != State.EPILOG) {
             if (_cfgCheckStructure && _state == State.PROLOG) {
@@ -1509,7 +1282,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
          * and release its buffers, and close components it uses if any.
          */
         try {
-            _xmlWriter.close(forceRealClose);
+            _xmlWriter.close(false);
         } catch (IOException ie) {
             throw new IoStreamException(ie);
         }

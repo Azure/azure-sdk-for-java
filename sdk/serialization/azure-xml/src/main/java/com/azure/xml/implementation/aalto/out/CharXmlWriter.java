@@ -716,22 +716,22 @@ public final class CharXmlWriter extends XmlWriter {
 
     @Override
     public void writeXmlDeclaration(String version, String encoding, String standalone) throws IOException {
-        fastWriteRaw("<?xml version='");
+        fastWriteRaw("<?xml version=\"");
         // !!! TBI: check validity
         fastWriteRaw(version);
-        fastWriteRaw('\'');
+        fastWriteRaw('"');
 
         if (encoding != null && !encoding.isEmpty()) {
-            fastWriteRaw(" encoding='");
+            fastWriteRaw(" encoding=\"");
             // !!! TBI: check validity
             fastWriteRaw(encoding);
-            fastWriteRaw('\'');
+            fastWriteRaw('"');
         }
         if (standalone != null) {
-            fastWriteRaw(" standalone='");
+            fastWriteRaw(" standalone=\"");
             // !!! TBI: check validity
             fastWriteRaw(standalone);
-            fastWriteRaw('\'');
+            fastWriteRaw('"');
         }
         fastWriteRaw('?', '>');
     }

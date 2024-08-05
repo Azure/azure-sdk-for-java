@@ -16,13 +16,12 @@
 
 package com.azure.xml.implementation.aalto.out;
 
-import java.util.*;
-
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-
-import com.azure.xml.implementation.aalto.util.EmptyIterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Simple container for information regarding an open element within
@@ -33,10 +32,6 @@ import com.azure.xml.implementation.aalto.util.EmptyIterator;
  * and can be recycled by it, as necessary.
  */
 final class OutputElement {
-
-    public enum PrefixState {
-        UNBOUND, OK, MISBOUND
-    }
 
     /**
      * Reference to either the parent (enclosing element) of this
@@ -185,10 +180,6 @@ final class OutputElement {
         return (p == null) ? "" : null;
     }
 
-    public boolean hasPrefix() {
-        return _name.hasPrefix();
-    }
-
     /**
      * @return String presentation of the fully-qualified name, in
      *   "prefix:localName" format (no URI). Useful for error and
@@ -200,10 +191,6 @@ final class OutputElement {
 
     public String getNonNullNamespaceURI() {
         return (_uri == null) ? "" : _uri;
-    }
-
-    public boolean hasEmptyDefaultNs() {
-        return (_defaultNsURI == null) || (_defaultNsURI.isEmpty());
     }
 
     public QName getQName() {
@@ -218,15 +205,6 @@ final class OutputElement {
 
     public void setDefaultNsURI(String uri) {
         _defaultNsURI = uri;
-    }
-
-    public String generatePrefix(NamespaceContext rootNsContext, String prefixBase, int[] seqArr) {
-        // Didn't have a mapping yet? Need to create one...
-        if (_nsBinder == null) {
-            _nsBinder = NsBinder.createEmpty();
-        }
-        // no need to share though, won't be adding anything quite yet
-        return _nsBinder.generatePrefix(prefixBase, rootNsContext, seqArr);
     }
 
     public void addPrefix(String prefix, String uri) {
@@ -300,7 +278,7 @@ final class OutputElement {
             }
         }
         if (l == null) {
-            return EmptyIterator.getInstance();
+            return Collections.emptyIterator();
         }
         return l.iterator();
     }
@@ -328,77 +306,6 @@ final class OutputElement {
             }
         }
         return null;
-    }
-
-    /**
-     * Method that verifies that passed-in non-empty prefix indeed maps
-     * to specified non-empty namespace URI; and depending on how it goes
-     * returns a status for caller.
-     *
-     * @return OK, if passed-in prefix matches matched-in namespace URI
-     *    in current scope; UNBOUND if it's not bound to anything,
-     *    and MISBOUND if it's bound to another URI.
-     */
-    public PrefixState checkPrefixValidity(String prefix, String nsURI, NamespaceContext rootNsContext) {
-        /* First thing is to see if specified prefix is bound to a namespace;
-         * and if so, verify it matches with data passed in:
-         */
-
-        /* Need to handle 'xml' prefix and its associated
-         *   URI; they are always declared by default
-         */
-        if (prefix.equals("xml")) {
-            return nsURI.equals(XMLConstants.XML_NS_URI) ? PrefixState.OK : PrefixState.MISBOUND;
-        }
-
-        // Nope checking some other namespace
-        String act = (_nsBinder == null) ? null : _nsBinder.findUriByPrefix(prefix);
-        if (act == null && rootNsContext != null) {
-            act = rootNsContext.getNamespaceURI(prefix);
-        }
-        // Not (yet) bound...
-        if (act == null) {
-            return PrefixState.UNBOUND;
-        }
-        return (act.equals(nsURI)) ? PrefixState.OK : PrefixState.MISBOUND;
-    }
-
-    public boolean isPrefixBoundTo(String prefix, String nsURI, NamespaceContext rootNsContext) {
-        // First: test default namespace
-        if (prefix == null || prefix.isEmpty()) {
-            return _defaultNsURI.equals(nsURI);
-        }
-
-        /* Need to handle 'xml' prefix and its associated
-         *   URI; they are always declared by default
-         */
-        if ("xml".equals(prefix)) {
-            return nsURI.equals(XMLConstants.XML_NS_URI);
-        }
-        // Nope checking some other namespace
-        String act = (_nsBinder == null) ? null : _nsBinder.findUriByPrefix(prefix);
-        if (act == null && rootNsContext != null) {
-            act = rootNsContext.getNamespaceURI(prefix);
-        }
-        // Not (yet) bound...
-        return (act != null) && (act.equals(nsURI));
-    }
-
-    public boolean isPrefixUnbound(String prefix, NamespaceContext rootNsContext) {
-        // First: if an explict binding is found, can't be unbound
-        String act = (_nsBinder == null) ? null : _nsBinder.findUriByPrefix(prefix);
-        if (act != null && !act.isEmpty()) {
-            return false;
-        }
-        if (prefix.equals("xml")) { // "xml" is always bound as well
-            return false;
-        }
-        if (rootNsContext != null) { // or maybe root context has a binding?
-            act = rootNsContext.getNamespaceURI(prefix);
-            return act == null || act.isEmpty();
-        }
-        // Must be unbound
-        return true;
     }
 
     /*

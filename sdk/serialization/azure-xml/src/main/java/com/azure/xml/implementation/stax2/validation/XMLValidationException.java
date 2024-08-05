@@ -24,14 +24,6 @@ public class XMLValidationException extends XMLStreamException {
     // // Constructors are protected; sub-classes need to know what
     // // they are doing
 
-    protected XMLValidationException(XMLValidationProblem cause) {
-        super();
-        if (cause == null) {
-            throwMissing();
-        }
-        mCause = cause;
-    }
-
     protected XMLValidationException(XMLValidationProblem cause, String msg) {
         super(msg);
         if (cause == null) {
@@ -49,18 +41,6 @@ public class XMLValidationException extends XMLStreamException {
     }
 
     // // // Factory methods
-
-    public static XMLValidationException createException(XMLValidationProblem cause) {
-        String msg = cause.getMessage();
-        if (msg == null) {
-            return new XMLValidationException(cause);
-        }
-        Location loc = cause.getLocation();
-        if (loc == null) {
-            return new XMLValidationException(cause, msg);
-        }
-        return new XMLValidationException(cause, msg, loc);
-    }
 
     // // // Accessors
 

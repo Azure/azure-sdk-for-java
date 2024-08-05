@@ -5,10 +5,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.ext.LexicalHandler;
-
 import com.azure.xml.implementation.stax2.typed.Base64Variant;
 import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
 import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
@@ -192,7 +188,7 @@ public final class TextBuilder {
         }
         _currentSize = 0;
         if (_currentSegment == null) {
-            _currentSegment = allocBuffer(0);
+            _currentSegment = allocBuffer();
         }
         return _currentSegment;
     }
@@ -223,44 +219,6 @@ public final class TextBuilder {
             }
         }
         _resultString = text;
-    }
-
-    /**
-     * Method called to initialize the buffer with just a single char
-     */
-    public void resetWithChar(char c) {
-        _resultString = null;
-        _resultArray = null;
-        _isIndentation = false;
-
-        // And then reset internal input buffers, if necessary:
-        if (_segments != null && !_segments.isEmpty()) {
-            _segments.clear();
-            _segmentSize = 0;
-        }
-        _currentSize = 1;
-        if (_currentSegment == null) {
-            _currentSegment = allocBuffer(1);
-        }
-        _currentSegment[0] = c;
-    }
-
-    public void resetWithSurrogate(int c) {
-        _resultString = null;
-        _resultArray = null;
-        _isIndentation = false;
-
-        // And then reset internal input buffers, if necessary:
-        if (_segments != null && !_segments.isEmpty()) {
-            _segments.clear();
-            _segmentSize = 0;
-        }
-        _currentSize = 2;
-        if (_currentSegment == null) {
-            _currentSegment = allocBuffer(2);
-        }
-        _currentSegment[0] = (char) (0xD800 | (c >> 10));
-        _currentSegment[1] = (char) (0xDC00 | (c & 0x3FF));
     }
 
     public char[] getBufferWithoutReset() {
@@ -473,91 +431,11 @@ public final class TextBuilder {
     }
     */
 
-    /**
-     * Note: it is assumed that this method is not used often enough to
-     * be a bottleneck, or for long segments. Based on this, it is optimized
-     * for common simple cases where there is only one single character
-     * segment to use; fallback for other cases is to create such segment.
-     */
-    public boolean equalsString(String str) {
-        int expLen = str.length();
-
-        // Otherwise, segments:
-        if (expLen != size()) {
-            return false;
-        }
-        char[] seg;
-        if (_segments == null || _segments.isEmpty()) {
-            // just one segment, still easy
-            seg = _currentSegment;
-        } else {
-            /* Ok; this is the sub-optimal case. Could obviously juggle through
-             * segments, but probably not worth the hassle, we seldom if ever
-             * get here...
-             */
-            seg = contentsAsArray();
-        }
-
-        for (int i = 0; i < expLen; ++i) {
-            if (seg[i] != str.charAt(i)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /*
     /**********************************************************************
     /* Methods for generating SAX events
     /**********************************************************************
      */
-
-    /**
-     * This is a specialized "accessor" method, which is basically
-     * to fire SAX characters() events in an optimal way, based on
-     * which internal buffers are being used
-     */
-    public void fireSaxCharacterEvents(ContentHandler h) throws SAXException {
-        if (_resultArray != null) { // only happens for indentation
-            h.characters(_resultArray, 0, _resultLen);
-        } else {
-            if (_segments != null) {
-                for (char[] segment : _segments) {
-                    h.characters(segment, 0, segment.length);
-                }
-            }
-            if (_currentSize > 0) {
-                h.characters(_currentSegment, 0, _currentSize);
-            }
-        }
-    }
-
-    public void fireSaxSpaceEvents(ContentHandler h) throws SAXException {
-        if (_resultArray != null) { // only happens for indentation
-            h.ignorableWhitespace(_resultArray, 0, _resultLen);
-        } else {
-            if (_segments != null) {
-                for (char[] segment : _segments) {
-                    h.ignorableWhitespace(segment, 0, segment.length);
-                }
-            }
-            if (_currentSize > 0) {
-                h.ignorableWhitespace(_currentSegment, 0, _currentSize);
-            }
-        }
-    }
-
-    public void fireSaxCommentEvent(LexicalHandler h) throws SAXException {
-        // Comment can not be split, so may need to combine the array
-        if (_resultArray != null) { // only happens for indentation
-            h.comment(_resultArray, 0, _resultLen);
-        } else if (_segments != null && !_segments.isEmpty()) {
-            char[] ch = contentsAsArray();
-            h.comment(ch, 0, ch.length);
-        } else {
-            h.comment(_currentSegment, 0, _currentSize);
-        }
-    }
 
     /*
     /**********************************************************************
@@ -592,11 +470,6 @@ public final class TextBuilder {
             expand(1);
         }
         curr[_currentSize++] = c;
-    }
-
-    public void appendSurrogate(int surr) {
-        append((char) (0xD800 | (surr >> 10)));
-        append((char) (0xDC00 | (surr & 0x3FF)));
     }
 
     public void append(char[] c, int start, int len) {
@@ -805,8 +678,8 @@ public final class TextBuilder {
     /**********************************************************************
      */
 
-    private char[] allocBuffer(int minNeeded) {
-        int size = Math.max(DEF_INITIAL_BUFFER_SIZE, minNeeded);
+    private char[] allocBuffer() {
+        int size = Math.max(DEF_INITIAL_BUFFER_SIZE, 0);
         char[] buf;
         if (_config != null) {
             buf = _config.allocMediumCBuffer(size);

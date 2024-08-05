@@ -530,28 +530,6 @@ public final class DOMWriterImpl extends DOMWrappingWriter {
      */
 
     /**
-     * Method called to find an existing prefix for the given namespace,
-     * if any exists in the scope. If one is found, it's returned (including
-     * "" for the current default namespace); if not, null is returned.
-     *
-     * @param nsURI URI of namespace for which we need a prefix
-     */
-    private String findElemPrefix(String nsURI, DOMOutputElement elem) {
-        /* Special case: empty NS URI can only be bound to the empty
-         * prefix...
-         */
-        if (nsURI == null || nsURI.isEmpty()) {
-            String currDefNsURI = elem.getDefaultNsUri();
-            if (currDefNsURI != null && !currDefNsURI.isEmpty()) {
-                // Nope; won't do... has to be re-bound, but not here:
-                return null;
-            }
-            return "";
-        }
-        return _currElem.getPrefix(nsURI);
-    }
-
-    /**
      * Method called after {@link #findElemPrefix} has returned null,
      * to create and bind a namespace mapping for specified namespace.
      */

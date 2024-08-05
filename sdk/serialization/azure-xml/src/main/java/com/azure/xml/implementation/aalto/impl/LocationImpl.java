@@ -8,7 +8,6 @@ import com.azure.xml.implementation.stax2.XMLStreamLocation2;
  * readers and writers.
  */
 public class LocationImpl implements XMLStreamLocation2 {
-    private final static LocationImpl EMPTY = new LocationImpl("", "", -1, -1, -1);
 
     final protected String _publicId, _systemId;
 
@@ -37,10 +36,6 @@ public class LocationImpl implements XMLStreamLocation2 {
         // TODO: handle overflow
         int offset = (int) rawOffset;
         return new LocationImpl(pubId, sysId, offset, rawRow + 1, rawCol + 1);
-    }
-
-    public static LocationImpl getEmptyLocation() {
-        return EMPTY;
     }
 
     @Override

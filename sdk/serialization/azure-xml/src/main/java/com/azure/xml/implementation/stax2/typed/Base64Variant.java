@@ -196,10 +196,6 @@ public final class Base64Variant {
         return _paddingChar;
     }
 
-    public int getMaxLineLength() {
-        return _maxLineLength;
-    }
-
     /*
     ////////////////////////////////////////////////////
     // Decoding support
@@ -218,75 +214,6 @@ public final class Base64Variant {
     // Encoding support
     ////////////////////////////////////////////////////
      */
-
-    /**
-     * Method that encodes given right-aligned (LSB) 24-bit value
-     * into 4 base64 characters, stored in given result buffer.
-     */
-    public int encodeBase64Chunk(int b24, char[] buffer, int ptr) {
-        buffer[ptr++] = _base64ToAsciiC[(b24 >> 18) & 0x3F];
-        buffer[ptr++] = _base64ToAsciiC[(b24 >> 12) & 0x3F];
-        buffer[ptr++] = _base64ToAsciiC[(b24 >> 6) & 0x3F];
-        buffer[ptr++] = _base64ToAsciiC[b24 & 0x3F];
-        return ptr;
-    }
-
-    /**
-     * Method that outputs partial chunk (which only encodes one
-     * or two bytes of data). Data given is still aligned same as if
-     * it as full data; that is, missing data is at the "right end"
-     * (LSB) of int.
-     *
-     * @param outputBytes Number of encoded bytes included (either 1 or 2)
-     */
-    public int encodeBase64Partial(int bits, int outputBytes, char[] buffer, int outPtr) {
-        buffer[outPtr++] = _base64ToAsciiC[(bits >> 18) & 0x3F];
-        buffer[outPtr++] = _base64ToAsciiC[(bits >> 12) & 0x3F];
-        if (_usesPadding) {
-            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar;
-            buffer[outPtr++] = _paddingChar;
-        } else {
-            if (outputBytes == 2) {
-                buffer[outPtr++] = _base64ToAsciiC[(bits >> 6) & 0x3F];
-            }
-        }
-        return outPtr;
-    }
-
-    /**
-     * Method that encodes given right-aligned (LSB) 24-bit value
-     * into 4 base64 bytes (ascii), stored in given result buffer.
-     */
-    public int encodeBase64Chunk(int b24, byte[] buffer, int ptr) {
-        buffer[ptr++] = _base64ToAsciiB[(b24 >> 18) & 0x3F];
-        buffer[ptr++] = _base64ToAsciiB[(b24 >> 12) & 0x3F];
-        buffer[ptr++] = _base64ToAsciiB[(b24 >> 6) & 0x3F];
-        buffer[ptr++] = _base64ToAsciiB[b24 & 0x3F];
-        return ptr;
-    }
-
-    /**
-     * Method that outputs partial chunk (which only encodes one
-     * or two bytes of data). Data given is still aligned same as if
-     * it as full data; that is, missing data is at the "right end"
-     * (LSB) of int.
-     *
-     * @param outputBytes Number of encoded bytes included (either 1 or 2)
-     */
-    public int encodeBase64Partial(int bits, int outputBytes, byte[] buffer, int outPtr) {
-        buffer[outPtr++] = _base64ToAsciiB[(bits >> 18) & 0x3F];
-        buffer[outPtr++] = _base64ToAsciiB[(bits >> 12) & 0x3F];
-        if (_usesPadding) {
-            byte pb = (byte) _paddingChar;
-            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiB[(bits >> 6) & 0x3F] : pb;
-            buffer[outPtr++] = pb;
-        } else {
-            if (outputBytes == 2) {
-                buffer[outPtr++] = _base64ToAsciiB[(bits >> 6) & 0x3F];
-            }
-        }
-        return outPtr;
-    }
 
     /*
     ////////////////////////////////////////////////////

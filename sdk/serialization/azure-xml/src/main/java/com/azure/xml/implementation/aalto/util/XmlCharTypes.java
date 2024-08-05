@@ -45,7 +45,6 @@ public class XmlCharTypes {
     public final static int CT_HYPHEN = 13; // for Comments
     public final static int CT_ATTR_QUOTE = 14; // ' and ", for attr values
 
-    public final static int CT_LBRACKET = 16; // for dtd subset sections
     public final static int CT_GT = 17; // for dtd subset sections
 
     // // // Constants for DTDs:
@@ -69,7 +68,6 @@ public class XmlCharTypes {
 
     // // // Constants for public ids:
 
-    public final static int PUBID_INVALID = 0;
     public final static int PUBID_OK = 1;
 
     // Instance data

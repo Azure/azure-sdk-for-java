@@ -213,22 +213,6 @@ public final class ReaderConfig extends CommonConfig {
         }
     }
 
-    public void setXmlVersion(String version) {
-        mXmlDeclVersion = version;
-    }
-
-    public void setXmlEncoding(String enc) {
-        mXmlDeclEncoding = enc;
-    }
-
-    public void setXmlStandalone(Boolean b) {
-        if (b == null) {
-            mXmlDeclStandalone = STANDALONE_UNKNOWN;
-        } else {
-            mXmlDeclStandalone = b ? STANDALONE_YES : STANDALONE_NO;
-        }
-    }
-
     /*
     /**********************************************************************
     /* Additional configuration setters
@@ -390,10 +374,6 @@ public final class ReaderConfig extends CommonConfig {
         return hasFlag(F_REPORT_CDATA);
     }
 
-    public boolean willPreserveLocation() {
-        return hasFlag(F_PRESERVE_LOCATION);
-    }
-
     public boolean willAutoCloseInput() {
         return hasFlag(F_AUTO_CLOSE_INPUT);
     }
@@ -539,24 +519,6 @@ public final class ReaderConfig extends CommonConfig {
 
         // StAX2:
         doPreserveLocation(false); // can reduce temporary mem usage
-    }
-
-    /**
-     * Method to call to make Reader try to preserve as much of input
-     * formatting as possible, so that round-tripping would be as lossless
-     * as possible.
-     *<p>
-     * See {@link XMLInputFactory2#configureForLowMemUsage} for
-     * required settings for standard StAX/StAX2 properties.
-     */
-    public void configureForRoundTripping() {
-        // StAX (1.0)
-        doCoalesceText(false);
-        //doReplaceEntityRefs(false);
-
-        // StAX2:
-        //doReportCData(true);
-        //doReportPrologWhitespace(true);
     }
 
     /*

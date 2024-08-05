@@ -13,17 +13,6 @@ public final class DataUtil {
     ////////////////////////////////////////////////////////////
     */
 
-    public static String[] growArrayBy(String[] arr, int more) {
-        if (arr == null) {
-            return new String[more];
-        }
-        String[] old = arr;
-        int len = arr.length;
-        arr = new String[len + more];
-        System.arraycopy(old, 0, arr, 0, len);
-        return arr;
-    }
-
     public static int[] growArrayBy(int[] arr, int more) {
         if (arr == null) {
             return new int[more];

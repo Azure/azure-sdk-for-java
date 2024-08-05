@@ -102,8 +102,6 @@ public final class InputCharTypes extends XmlCharTypes {
         fillInMultiByteTextRange(dtdChars);
 
         // ... lotsa matching to do here
-        // 25-Jan-2011, tatu: Can't remember why LBRACKET would be needed:
-        //        otherChars['['] = CT_LBRACKET;
         otherChars[']'] = CT_RBRACKET;
         otherChars['>'] = CT_GT;
 

@@ -185,11 +185,8 @@ public final class BijectiveNsMap {
      *
      * @param prefix Prefix to bind
      * @param uri URI to bind to the prefix
-     *
-     * @return If the prefix was already bound, the URI it was bound to:
-     *   null if it's a new binding for the current scope.
      */
-    public String addMapping(String prefix, String uri) {
+    public void addMapping(String prefix, String uri) {
         String[] strs = _nsStrings;
         int phash = prefix.hashCode();
 
@@ -197,9 +194,8 @@ public final class BijectiveNsMap {
             String thisP = strs[ix];
             if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                 // Overriding an existing mapping
-                String old = strs[ix + 1];
                 strs[ix + 1] = uri;
-                return old;
+                return;
             }
         }
         // no previous binding, let's just add it at the end
@@ -211,7 +207,6 @@ public final class BijectiveNsMap {
         strs[_scopeEnd++] = prefix;
         strs[_scopeEnd++] = uri;
 
-        return null;
     }
 
     /**

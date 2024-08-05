@@ -59,11 +59,6 @@ public final class PName3 extends ByteBasedPName {
     }
 
     @Override
-    public int getLastQuad() {
-        return mQuad3;
-    }
-
-    @Override
     public int getQuad(int index) {
         if (index < 2) {
             return (index == 0) ? mQuad1 : mQuad2;

@@ -27,7 +27,7 @@ public final class XmlWriter implements AutoCloseable {
     static {
         XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
         if ("com.sun.xml.internal.stream.XMLOutputFactoryImpl".equals(xmlOutputFactory.getClass().getName())) {
-            xmlOutputFactory = OutputFactoryImpl.newInstance();
+            xmlOutputFactory = new OutputFactoryImpl();
         }
 
         XML_OUTPUT_FACTORY = xmlOutputFactory;

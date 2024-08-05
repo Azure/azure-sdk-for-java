@@ -1,13 +1,12 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.in;
 
-import java.util.*;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-
-import com.azure.xml.implementation.stax2.ri.EmptyIterator;
-import com.azure.xml.implementation.stax2.ri.SingletonIterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * Non-transient implementation of {@link NamespaceContext}.
@@ -156,10 +155,10 @@ public final class FixedNsContext implements NamespaceContext {
             throw new IllegalArgumentException("Illegal to pass null/empty prefix as argument.");
         }
         if (nsURI.equals(XMLConstants.XML_NS_URI)) {
-            return SingletonIterator.create(XMLConstants.XML_NS_PREFIX);
+            return Collections.singletonList(XMLConstants.XML_NS_PREFIX).iterator();
         }
         if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            return SingletonIterator.create(XMLConstants.XMLNS_ATTRIBUTE);
+            return Collections.singletonList(XMLConstants.XMLNS_ATTRIBUTE).iterator();
         }
 
         String[] ns = _declarationData;
@@ -193,9 +192,9 @@ public final class FixedNsContext implements NamespaceContext {
             return all.iterator();
         }
         if (first != null) {
-            return SingletonIterator.create(first);
+            return Collections.singletonList(first).iterator();
         }
-        return EmptyIterator.getInstance();
+        return Collections.emptyIterator();
     }
 
     /*

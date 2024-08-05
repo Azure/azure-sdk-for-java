@@ -15,26 +15,36 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import java.io.*;
+import com.azure.xml.implementation.aalto.dom.DOMWriterImpl;
+import com.azure.xml.implementation.aalto.impl.IoStreamException;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
+import com.azure.xml.implementation.aalto.out.AsciiXmlWriter;
+import com.azure.xml.implementation.aalto.out.CharXmlWriter;
+import com.azure.xml.implementation.aalto.out.Latin1XmlWriter;
+import com.azure.xml.implementation.aalto.out.NonRepairingStreamWriter;
+import com.azure.xml.implementation.aalto.out.Utf8XmlWriter;
+import com.azure.xml.implementation.aalto.out.WNameTable;
+import com.azure.xml.implementation.aalto.out.WriterConfig;
+import com.azure.xml.implementation.aalto.out.XmlWriter;
+import com.azure.xml.implementation.aalto.util.CharsetNames;
+import com.azure.xml.implementation.aalto.util.URLUtil;
+import com.azure.xml.implementation.aalto.util.XmlConsts;
+import com.azure.xml.implementation.stax2.XMLOutputFactory2;
+import com.azure.xml.implementation.stax2.XMLStreamWriter2;
+import com.azure.xml.implementation.stax2.io.Stax2Result;
 
-import javax.xml.stream.*;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
-
-import com.azure.xml.implementation.stax2.XMLOutputFactory2;
-import com.azure.xml.implementation.stax2.XMLStreamWriter2;
-import com.azure.xml.implementation.stax2.io.Stax2Result;
-import com.azure.xml.implementation.stax2.ri.Stax2EventWriterImpl;
-
-import com.azure.xml.implementation.aalto.dom.DOMWriterImpl;
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
-import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
-import com.azure.xml.implementation.aalto.out.*;
-import com.azure.xml.implementation.aalto.util.CharsetNames;
-import com.azure.xml.implementation.aalto.util.URLUtil;
-import com.azure.xml.implementation.aalto.util.XmlConsts;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 /**
  * Basic implementation of {@link XMLOutputFactory}.
@@ -67,23 +77,23 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
      */
 
     @Override
-    public XMLEventWriter createXMLEventWriter(OutputStream out) throws XMLStreamException {
-        return createXMLEventWriter(out, null);
+    public XMLEventWriter createXMLEventWriter(OutputStream out) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public XMLEventWriter createXMLEventWriter(OutputStream out, String enc) throws XMLStreamException {
-        return new Stax2EventWriterImpl(createSW(out, null, enc, false));
+    public XMLEventWriter createXMLEventWriter(OutputStream out, String enc) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public XMLEventWriter createXMLEventWriter(javax.xml.transform.Result result) throws XMLStreamException {
-        return new Stax2EventWriterImpl(createSW(result));
+    public XMLEventWriter createXMLEventWriter(javax.xml.transform.Result result) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public XMLEventWriter createXMLEventWriter(Writer w) throws XMLStreamException {
-        return new Stax2EventWriterImpl(createSW(null, w, null, false));
+    public XMLEventWriter createXMLEventWriter(Writer w) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -224,9 +234,6 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
             symbols = _config.getCharSymbols(xw);
         }
 
-        if (cfg.willRepairNamespaces()) {
-            return new RepairingStreamWriter(cfg, xw, symbols);
-        }
         return new NonRepairingStreamWriter(cfg, xw, symbols);
     }
 

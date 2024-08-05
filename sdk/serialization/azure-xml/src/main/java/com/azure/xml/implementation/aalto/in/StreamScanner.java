@@ -343,7 +343,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         return _currToken; // never gets here
     }
 
-    private int handleDtdStart() throws XMLStreamException {
+    private void handleDtdStart() throws XMLStreamException {
         matchAsciiKeyword("DOCTYPE");
 
         // And then some white space and root  name
@@ -373,7 +373,8 @@ public abstract class StreamScanner extends ByteBasedScanner {
          */
         if (b == BYTE_GT) { // fine, we are done
             _tokenIncomplete = false;
-            return (_currToken = DTD);
+            _currToken = DTD;
+            return;
         }
 
         if (b != BYTE_LBRACKET) { // If not end, must have int. subset
@@ -388,7 +389,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
          */
 
         _tokenIncomplete = true;
-        return (_currToken = DTD);
+        _currToken = DTD;
     }
 
     private int handleCommentOrCdataStart() throws XMLStreamException {
@@ -1455,7 +1456,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
         return _inputBuffer[_inputPtr++];
     }
 
-    protected final boolean loadAndRetain(int nrOfChars) throws XMLStreamException {
+    protected final boolean loadAndRetain() throws XMLStreamException {
         /* first: can't move, if we were handed an immutable block
          * (alternative to handing InputStream as _in)
          */
@@ -1485,7 +1486,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
                     return false;
                 }
                 _inputEnd += count;
-            } while (_inputEnd < nrOfChars);
+            } while (_inputEnd < 3);
             return true;
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);

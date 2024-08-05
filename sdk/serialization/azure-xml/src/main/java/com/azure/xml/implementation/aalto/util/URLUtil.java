@@ -115,14 +115,6 @@ public final class URLUtil {
         return new URL("file", "", absPath);
     }
 
-    public static String fileToSystemId(File f) throws IOException {
-        return fileToURL(f).toExternalForm();
-    }
-
-    public static String urlToSystemId(URL u) {
-        return u.toExternalForm();
-    }
-
     /*
     ///////////////////////////////////////////
     // Private helper methods

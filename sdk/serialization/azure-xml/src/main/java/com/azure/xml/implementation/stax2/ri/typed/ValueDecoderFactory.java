@@ -314,33 +314,12 @@ public final class ValueDecoderFactory {
              */
             int num = digitChars[start] - '0';
             if (++start < end) {
-                num = (num * 10) + (digitChars[start] - '0');
-                if (++start < end) {
-                    num = (num * 10) + (digitChars[start] - '0');
-                    if (++start < end) {
-                        num = (num * 10) + (digitChars[start] - '0');
-                        if (++start < end) {
-                            num = (num * 10) + (digitChars[start] - '0');
-                            if (++start < end) {
-                                num = (num * 10) + (digitChars[start] - '0');
-                                if (++start < end) {
-                                    num = (num * 10) + (digitChars[start] - '0');
-                                    if (++start < end) {
-                                        num = (num * 10) + (digitChars[start] - '0');
-                                        if (++start < end) {
-                                            num = (num * 10) + (digitChars[start] - '0');
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                num = getNum(digitChars, start, end, num);
             }
             return num;
         }
 
-        protected static int parseInt(int num, char[] digitChars, int start, int end) {
+        private static int getNum(char[] digitChars, int start, int end, int num) {
             num = (num * 10) + (digitChars[start] - '0');
             if (++start < end) {
                 num = (num * 10) + (digitChars[start] - '0');
@@ -366,36 +345,20 @@ public final class ValueDecoderFactory {
             return num;
         }
 
+        protected static int parseInt(int num, char[] digitChars, int start, int end) {
+            num = getNum(digitChars, start, end, num);
+            return num;
+        }
+
         protected static int parseInt(String digitChars, int start, int end) {
             int num = digitChars.charAt(start) - '0';
             if (++start < end) {
-                num = (num * 10) + (digitChars.charAt(start) - '0');
-                if (++start < end) {
-                    num = (num * 10) + (digitChars.charAt(start) - '0');
-                    if (++start < end) {
-                        num = (num * 10) + (digitChars.charAt(start) - '0');
-                        if (++start < end) {
-                            num = (num * 10) + (digitChars.charAt(start) - '0');
-                            if (++start < end) {
-                                num = (num * 10) + (digitChars.charAt(start) - '0');
-                                if (++start < end) {
-                                    num = (num * 10) + (digitChars.charAt(start) - '0');
-                                    if (++start < end) {
-                                        num = (num * 10) + (digitChars.charAt(start) - '0');
-                                        if (++start < end) {
-                                            num = (num * 10) + (digitChars.charAt(start) - '0');
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                num = getNum(digitChars, start, end, num);
             }
             return num;
         }
 
-        protected static int parseInt(int num, String digitChars, int start, int end) {
+        private static int getNum(String digitChars, int start, int end, int num) {
             num = (num * 10) + (digitChars.charAt(start) - '0');
             if (++start < end) {
                 num = (num * 10) + (digitChars.charAt(start) - '0');
@@ -418,6 +381,11 @@ public final class ValueDecoderFactory {
                     }
                 }
             }
+            return num;
+        }
+
+        protected static int parseInt(int num, String digitChars, int start, int end) {
+            num = getNum(digitChars, start, end, num);
             return num;
         }
 

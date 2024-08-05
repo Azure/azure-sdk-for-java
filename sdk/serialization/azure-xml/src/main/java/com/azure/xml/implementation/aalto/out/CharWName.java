@@ -62,10 +62,9 @@ final class CharWName extends WName {
     }
 
     @Override
-    public int appendChars(char[] buffer, int offset) {
+    public void appendChars(char[] buffer, int offset) {
         int len = _chars.length;
         System.arraycopy(_chars, 0, buffer, offset, len);
-        return len;
     }
 
     @Override

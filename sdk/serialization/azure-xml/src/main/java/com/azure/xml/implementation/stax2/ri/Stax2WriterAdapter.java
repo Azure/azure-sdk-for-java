@@ -15,17 +15,9 @@
  */
 package com.azure.xml.implementation.stax2.ri;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
 import javax.xml.stream.*;
 
 import com.azure.xml.implementation.stax2.*;
-import com.azure.xml.implementation.stax2.ri.typed.SimpleValueEncoder;
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.Base64Variants;
 // Not from Stax 1.0, but Stax2 does provide it:
 import com.azure.xml.implementation.stax2.util.StreamWriterDelegate;
 import com.azure.xml.implementation.stax2.validation.ValidationProblemHandler;
@@ -58,8 +50,6 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
      */
     protected String mEncoding;
 
-    protected SimpleValueEncoder mValueEncoder;
-
     protected final boolean mNsRepairing;
 
     /*
@@ -75,21 +65,6 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
         mNsRepairing = (value instanceof Boolean) && (Boolean) value;
     }
 
-    /**
-     * Method that should be used to add dynamic support for
-     * {@link XMLStreamWriter2}. Method will check whether the
-     * stream reader passed happens to be a {@link XMLStreamWriter2};
-     * and if it is, return it properly cast. If not, it will create
-     * necessary wrapper to support features needed by StaxMate,
-     * using vanilla Stax 1.0 interface.
-     */
-    public static XMLStreamWriter2 wrapIfNecessary(XMLStreamWriter sw) {
-        if (sw instanceof XMLStreamWriter2) {
-            return (XMLStreamWriter2) sw;
-        }
-        return new Stax2WriterAdapter(sw);
-    }
-
     /*
     ///////////////////////////////////////////////////////////////////////
     // TypedXMLStreamWriter2 implementation
@@ -99,160 +74,7 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
 
     // // // Typed element content write methods
 
-    @Override
-    public void writeBoolean(boolean b) throws XMLStreamException {
-        mDelegate.writeCharacters(b ? "true" : "false");
-    }
-
-    @Override
-    public void writeInt(int value) throws XMLStreamException {
-        mDelegate.writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeLong(long value) throws XMLStreamException {
-        mDelegate.writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeFloat(float value) throws XMLStreamException {
-        mDelegate.writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeDouble(double value) throws XMLStreamException {
-        mDelegate.writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeInteger(BigInteger value) throws XMLStreamException {
-        mDelegate.writeCharacters(value.toString());
-    }
-
-    @Override
-    public void writeDecimal(BigDecimal value) throws XMLStreamException {
-        mDelegate.writeCharacters(value.toString());
-    }
-
-    @Override
-    public void writeQName(QName name) throws XMLStreamException {
-        mDelegate.writeCharacters(serializeQNameValue(name));
-    }
-
-    @Override
-    public void writeIntArray(int[] value, int from, int length) throws XMLStreamException {
-        mDelegate.writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeLongArray(long[] value, int from, int length) throws XMLStreamException {
-        mDelegate.writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeFloatArray(float[] value, int from, int length) throws XMLStreamException {
-        mDelegate.writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeDoubleArray(double[] value, int from, int length) throws XMLStreamException {
-        mDelegate.writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeBinary(Base64Variant v, byte[] value, int from, int length) throws XMLStreamException {
-        mDelegate.writeCharacters(getValueEncoder().encodeAsString(v, value, from, length));
-    }
-
-    @Override
-    public void writeBinary(byte[] value, int from, int length) throws XMLStreamException {
-        writeBinary(Base64Variants.getDefaultVariant(), value, from, length);
-    }
-
     // // // Typed attribute value write methods
-
-    @Override
-    public void writeBooleanAttribute(String prefix, String nsURI, String localName, boolean b)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, b ? "true" : "false");
-    }
-
-    @Override
-    public void writeIntAttribute(String prefix, String nsURI, String localName, int value) throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeLongAttribute(String prefix, String nsURI, String localName, long value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeFloatAttribute(String prefix, String nsURI, String localName, float value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeDoubleAttribute(String prefix, String nsURI, String localName, double value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeIntegerAttribute(String prefix, String nsURI, String localName, BigInteger value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, value.toString());
-    }
-
-    @Override
-    public void writeDecimalAttribute(String prefix, String nsURI, String localName, BigDecimal value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, value.toString());
-    }
-
-    @Override
-    public void writeQNameAttribute(String prefix, String nsURI, String localName, QName name)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, serializeQNameValue(name));
-    }
-
-    @Override
-    public void writeIntArrayAttribute(String prefix, String nsURI, String localName, int[] value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeLongArrayAttribute(String prefix, String nsURI, String localName, long[] value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeFloatArrayAttribute(String prefix, String nsURI, String localName, float[] value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeDoubleArrayAttribute(String prefix, String nsURI, String localName, double[] value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeBinaryAttribute(String prefix, String nsURI, String localName, byte[] value)
-        throws XMLStreamException {
-        writeBinaryAttribute(Base64Variants.getDefaultVariant(), prefix, nsURI, localName, value);
-    }
-
-    @Override
-    public void writeBinaryAttribute(Base64Variant v, String prefix, String nsURI, String localName, byte[] value)
-        throws XMLStreamException {
-        mDelegate.writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(v, value, 0, value.length));
-    }
 
     /*
     ///////////////////////////////////////////////////////////////////////
@@ -536,50 +358,4 @@ public class Stax2WriterAdapter extends StreamWriterDelegate implements XMLStrea
         }
     }
 
-    /**
-     * Method called to serialize given qualified name into valid
-     * String serialization, taking into account existing namespace
-     * bindings.
-     */
-    protected String serializeQNameValue(QName name) throws XMLStreamException {
-        String prefix;
-        // Ok as is? In repairing mode need to ensure it's properly bound
-        if (mNsRepairing) {
-            String uri = name.getNamespaceURI();
-            // First: let's see if a valid binding already exists:
-            NamespaceContext ctxt = getNamespaceContext();
-            prefix = (ctxt == null) ? null : ctxt.getPrefix(uri);
-            if (prefix == null) {
-                // nope: need to (try to) bind
-                String origPrefix = name.getPrefix();
-                if (origPrefix == null || origPrefix.isEmpty()) {
-                    prefix = "";
-                    /* note: could cause a namespace conflict... but
-                     * there is nothing we can do with just stax1 stream
-                     * writer
-                     */
-                    writeDefaultNamespace(uri);
-                } else {
-                    prefix = origPrefix;
-                    writeNamespace(prefix, uri);
-                }
-            }
-        } else { // in non-repairing, good as is
-            prefix = name.getPrefix();
-        }
-        String local = name.getLocalPart();
-        if (prefix == null || prefix.isEmpty()) {
-            return local;
-        }
-
-        // Not efficient... but should be ok
-        return prefix + ":" + local;
-    }
-
-    protected SimpleValueEncoder getValueEncoder() {
-        if (mValueEncoder == null) {
-            mValueEncoder = new SimpleValueEncoder();
-        }
-        return mValueEncoder;
-    }
 }

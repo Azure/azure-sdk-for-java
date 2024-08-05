@@ -228,11 +228,6 @@ public abstract class Stax2ReaderImpl implements XMLStreamReader2 /* From Stax2 
      */
 
     @Override
-    public Object getProcessedDTD() {
-        return null;
-    }
-
-    @Override
     public String getDTDRootName() {
         return null;
     }

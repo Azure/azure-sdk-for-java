@@ -16,11 +16,7 @@
 
 package com.azure.xml.implementation.stax2.ri.dom;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
 import javax.xml.stream.*;
 
 import org.w3c.dom.*;
@@ -28,9 +24,6 @@ import org.w3c.dom.*;
 import com.azure.xml.implementation.stax2.XMLStreamLocation2;
 import com.azure.xml.implementation.stax2.XMLStreamReader2;
 import com.azure.xml.implementation.stax2.XMLStreamWriter2;
-import com.azure.xml.implementation.stax2.ri.typed.SimpleValueEncoder;
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.Base64Variants;
 import com.azure.xml.implementation.stax2.validation.*;
 
 /**
@@ -99,12 +92,6 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     /* Helper objects
     /**********************************************************************
      */
-
-    /**
-     * Encoding of typed values is used the standard encoder
-     * included in RI.
-     */
-    protected SimpleValueEncoder mValueEncoder;
 
     /*
     /**********************************************************************
@@ -212,7 +199,7 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     }
 
     @Override
-    public void writeComment(String data) throws XMLStreamException {
+    public void writeComment(String data) {
         appendLeaf(mDocument.createComment(data));
     }
 
@@ -255,19 +242,19 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     }
 
     @Override
-    public void writeStartDocument() throws XMLStreamException {
+    public void writeStartDocument() {
         // Note: while these defaults are not very intuitive, they
         // are what Stax 1.0 specification clearly mandates:
         writeStartDocument(DEFAULT_OUTPUT_ENCODING, DEFAULT_XML_VERSION);
     }
 
     @Override
-    public void writeStartDocument(String version) throws XMLStreamException {
+    public void writeStartDocument(String version) {
         writeStartDocument(null, version);
     }
 
     @Override
-    public void writeStartDocument(String encoding, String version) throws XMLStreamException {
+    public void writeStartDocument(String encoding, String version) {
         // Is there anything here we can or should do? No?
         mEncoding = encoding;
     }
@@ -328,7 +315,7 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     }
 
     @Override
-    public void writeStartDocument(String version, String encoding, boolean standAlone) throws XMLStreamException {
+    public void writeStartDocument(String version, String encoding, boolean standAlone) {
         writeStartDocument(encoding, version);
     }
 
@@ -402,165 +389,7 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
 
     // // // Typed element content write methods
 
-    @Override
-    public void writeBoolean(boolean value) throws XMLStreamException {
-        writeCharacters(value ? "true" : "false");
-    }
-
-    @Override
-    public void writeInt(int value) throws XMLStreamException {
-        writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeLong(long value) throws XMLStreamException {
-        writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeFloat(float value) throws XMLStreamException {
-        writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeDouble(double value) throws XMLStreamException {
-        writeCharacters(String.valueOf(value));
-    }
-
-    @Override
-    public void writeInteger(BigInteger value) throws XMLStreamException {
-        writeCharacters(value.toString());
-    }
-
-    @Override
-    public void writeDecimal(BigDecimal value) throws XMLStreamException {
-        writeCharacters(value.toString());
-    }
-
-    @Override
-    public void writeQName(QName name) throws XMLStreamException {
-        writeCharacters(serializeQNameValue(name));
-    }
-
-    @Override
-    public void writeIntArray(int[] value, int from, int length) throws XMLStreamException {
-        // true -> start with space, to allow for multiple consecutive
-        // to be written
-        writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeLongArray(long[] value, int from, int length) throws XMLStreamException {
-        // true -> start with space, for multiple segments
-        writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeFloatArray(float[] value, int from, int length) throws XMLStreamException {
-        // true -> start with space, for multiple segments
-        writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeDoubleArray(double[] value, int from, int length) throws XMLStreamException {
-        // true -> start with space, for multiple segments
-        writeCharacters(getValueEncoder().encodeAsString(value, from, length));
-    }
-
-    @Override
-    public void writeBinary(byte[] value, int from, int length) throws XMLStreamException {
-        writeBinary(Base64Variants.getDefaultVariant(), value, from, length);
-    }
-
-    @Override
-    public void writeBinary(Base64Variant v, byte[] value, int from, int length) throws XMLStreamException {
-        writeCharacters(getValueEncoder().encodeAsString(v, value, from, length));
-    }
-
     // // // Typed attribute value write methods
-
-    @Override
-    public void writeBooleanAttribute(String prefix, String nsURI, String localName, boolean value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, value ? "true" : "false");
-    }
-
-    @Override
-    public void writeIntAttribute(String prefix, String nsURI, String localName, int value) throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeLongAttribute(String prefix, String nsURI, String localName, long value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeFloatAttribute(String prefix, String nsURI, String localName, float value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeDoubleAttribute(String prefix, String nsURI, String localName, double value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, String.valueOf(value));
-    }
-
-    @Override
-    public void writeIntegerAttribute(String prefix, String nsURI, String localName, BigInteger value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, value.toString());
-    }
-
-    @Override
-    public void writeDecimalAttribute(String prefix, String nsURI, String localName, BigDecimal value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, value.toString());
-    }
-
-    @Override
-    public void writeQNameAttribute(String prefix, String nsURI, String localName, QName name)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, serializeQNameValue(name));
-    }
-
-    @Override
-    public void writeIntArrayAttribute(String prefix, String nsURI, String localName, int[] value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeLongArrayAttribute(String prefix, String nsURI, String localName, long[] value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeFloatArrayAttribute(String prefix, String nsURI, String localName, float[] value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeDoubleArrayAttribute(String prefix, String nsURI, String localName, double[] value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(value, 0, value.length));
-    }
-
-    @Override
-    public void writeBinaryAttribute(String prefix, String nsURI, String localName, byte[] value)
-        throws XMLStreamException {
-        writeBinaryAttribute(Base64Variants.getDefaultVariant(), prefix, nsURI, localName, value);
-    }
-
-    @Override
-    public void writeBinaryAttribute(Base64Variant v, String prefix, String nsURI, String localName, byte[] value)
-        throws XMLStreamException {
-        writeAttribute(prefix, nsURI, localName, getValueEncoder().encodeAsString(v, value, 0, value.length));
-    }
 
     /*
     /**********************************************************************
@@ -575,53 +404,6 @@ public abstract class DOMWrappingWriter implements XMLStreamWriter2 {
     /* Shared package methods
     /**********************************************************************
      */
-
-    /**
-     * Method called to serialize given qualified name into valid
-     * String serialization, taking into account existing namespace
-     * bindings.
-     */
-    protected String serializeQNameValue(QName name) throws XMLStreamException {
-        String prefix;
-        // Ok as is? In repairing mode need to ensure it's properly bound
-        if (mNsRepairing) {
-            String uri = name.getNamespaceURI();
-            // First: let's see if a valid binding already exists:
-            NamespaceContext ctxt = getNamespaceContext();
-            prefix = (ctxt == null) ? null : ctxt.getPrefix(uri);
-            if (prefix == null) {
-                // nope: need to (try to) bind
-                String origPrefix = name.getPrefix();
-                if (origPrefix == null || origPrefix.isEmpty()) {
-                    prefix = "";
-                    /* note: could cause a namespace conflict... but
-                     * there is nothing we can do with just stax1 stream
-                     * writer
-                     */
-                    writeDefaultNamespace(uri);
-                } else {
-                    prefix = origPrefix;
-                    writeNamespace(prefix, uri);
-                }
-            }
-        } else { // in non-repairing, good as is
-            prefix = name.getPrefix();
-        }
-        String local = name.getLocalPart();
-        if (prefix == null || prefix.isEmpty()) {
-            return local;
-        }
-
-        // Not efficient... but should be ok
-        return prefix + ":" + local;
-    }
-
-    protected SimpleValueEncoder getValueEncoder() {
-        if (mValueEncoder == null) {
-            mValueEncoder = new SimpleValueEncoder();
-        }
-        return mValueEncoder;
-    }
 
     /*
     /**********************************************************************

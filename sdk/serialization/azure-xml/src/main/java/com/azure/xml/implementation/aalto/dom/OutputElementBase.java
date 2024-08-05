@@ -1,13 +1,13 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.dom;
 
-import java.util.*;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.stax2.ri.EmptyIterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class that encapsulates information about a specific element in virtual
@@ -72,16 +72,6 @@ public abstract class OutputElementBase implements NamespaceContext {
     protected OutputElementBase(OutputElementBase parent, BijectiveNsMap ns) {
         _nsMapping = ns;
         _nsMapShared = (ns != null);
-        _defaultNsURI = parent._defaultNsURI;
-        _rootNsContext = parent._rootNsContext;
-    }
-
-    /**
-     * Method called to reuse a pooled instance.
-     */
-    protected void relink(OutputElementBase parent) {
-        _nsMapping = parent._nsMapping;
-        _nsMapShared = (_nsMapping != null);
         _defaultNsURI = parent._defaultNsURI;
         _rootNsContext = parent._rootNsContext;
     }
@@ -313,7 +303,7 @@ public abstract class OutputElementBase implements NamespaceContext {
             }
         }
         if (l == null) {
-            return EmptyIterator.getInstance();
+            return Collections.emptyIterator();
         }
         return l.iterator();
     }

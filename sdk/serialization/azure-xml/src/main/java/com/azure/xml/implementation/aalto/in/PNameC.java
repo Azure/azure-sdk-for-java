@@ -114,12 +114,6 @@ public final class PNameC extends PName {
     }
 
     @Override
-    public int getLastQuad() {
-        ErrorConsts.throwInternalError();
-        return 0; // never gets here
-    }
-
-    @Override
     public int getQuad(int index) {
         ErrorConsts.throwInternalError();
         return 0; // never gets here

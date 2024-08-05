@@ -76,10 +76,6 @@ public abstract class WName {
         return _localName;
     }
 
-    public final boolean hasPrefix() {
-        return _prefix != null;
-    }
-
     /*
     //////////////////////////////////////////////////////////
     // Serialization
@@ -90,7 +86,7 @@ public abstract class WName {
 
     public abstract void writeBytes(OutputStream out) throws IOException;
 
-    public abstract int appendChars(char[] buffer, int offset);
+    public abstract void appendChars(char[] buffer, int offset);
 
     public abstract void writeChars(Writer w) throws IOException;
 

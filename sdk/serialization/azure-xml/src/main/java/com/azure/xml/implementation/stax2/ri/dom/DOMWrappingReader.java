@@ -16,28 +16,12 @@
 
 package com.azure.xml.implementation.stax2.ri.dom;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-
-import javax.xml.transform.dom.DOMSource;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-import javax.xml.stream.*;
-
-import org.w3c.dom.*;
-
 import com.azure.xml.implementation.stax2.AttributeInfo;
 import com.azure.xml.implementation.stax2.DTDInfo;
 import com.azure.xml.implementation.stax2.LocationInfo;
 import com.azure.xml.implementation.stax2.XMLStreamLocation2;
 import com.azure.xml.implementation.stax2.XMLStreamReader2;
-import com.azure.xml.implementation.stax2.ri.EmptyIterator;
 import com.azure.xml.implementation.stax2.ri.EmptyNamespaceContext;
-import com.azure.xml.implementation.stax2.ri.SingletonIterator;
 import com.azure.xml.implementation.stax2.ri.Stax2Util;
 import com.azure.xml.implementation.stax2.ri.typed.StringBase64Decoder;
 import com.azure.xml.implementation.stax2.ri.typed.ValueDecoderFactory;
@@ -49,6 +33,29 @@ import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
 import com.azure.xml.implementation.stax2.validation.ValidationProblemHandler;
 import com.azure.xml.implementation.stax2.validation.XMLValidationSchema;
 import com.azure.xml.implementation.stax2.validation.XMLValidator;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.dom.DOMSource;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * This is an adapter class that presents a DOM document as if it was
@@ -1146,9 +1153,9 @@ public abstract class DOMWrappingReader
     public Iterator<String> getPrefixes(String namespaceURI) {
         String prefix = getPrefix(namespaceURI);
         if (prefix == null) {
-            return EmptyIterator.getInstance();
+            return Collections.emptyIterator();
         }
-        return SingletonIterator.create(prefix);
+        return Collections.singletonList(prefix).iterator();
     }
 
     /*
@@ -1901,7 +1908,7 @@ public abstract class DOMWrappingReader
     }
 
     @Override
-    public void closeCompletely() throws XMLStreamException {
+    public void closeCompletely() {
         // Nothing special to do...
     }
 
@@ -1910,11 +1917,6 @@ public abstract class DOMWrappingReader
     /* DTDInfo implementation (StAX 2)
     /**********************************************************************
      */
-
-    @Override
-    public Object getProcessedDTD() {
-        return null;
-    }
 
     @Override
     public String getDTDRootName() {

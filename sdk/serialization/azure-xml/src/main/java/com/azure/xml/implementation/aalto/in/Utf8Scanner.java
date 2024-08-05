@@ -365,7 +365,7 @@ public final class Utf8Scanner extends StreamScanner {
                 case XmlCharTypes.CT_AMP:
                     c = handleEntityInText(false);
                     if (c == 0) { // unexpanded general entity... not good
-                        reportUnexpandedEntityInAttr(attrName, false);
+                        reportUnexpandedEntityInAttr(false);
                     }
                     // Ok; does it need a surrogate though? (over 16 bits)
                     if ((c >> 16) != 0) {
@@ -413,7 +413,7 @@ public final class Utf8Scanner extends StreamScanner {
             if (b == BYTE_AMP) { // entity
                 c = handleEntityInText(false);
                 if (c == 0) { // general entity; should never happen
-                    reportUnexpandedEntityInAttr(name, true);
+                    reportUnexpandedEntityInAttr(true);
                 }
                 // Ok; does it need a surrogate though? (over 16 bits)
                 if ((c >> 16) != 0) {
@@ -2150,7 +2150,7 @@ public final class Utf8Scanner extends StreamScanner {
                  * if we are getting a CDATA section
                  */
                 if ((_inputPtr + 3) >= _inputEnd) {
-                    if (!loadAndRetain(3)) {
+                    if (!loadAndRetain()) {
                         // probably an error, but will be handled later
                         return;
                     }
@@ -2491,7 +2491,7 @@ public final class Utf8Scanner extends StreamScanner {
                  * if we are getting a CDATA section
                  */
                 if ((_inputPtr + 3) >= _inputEnd) {
-                    if (!loadAndRetain(3)) { // probably an error, but will be handled later
+                    if (!loadAndRetain()) { // probably an error, but will be handled later
                         return false;
                     }
                 }

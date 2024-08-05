@@ -3,13 +3,9 @@ package com.azure.xml.implementation.aalto.in;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.ext.LexicalHandler;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
@@ -74,14 +70,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     protected final static int INT_EQ = '=';
 
     protected final static int INT_A = 'A';
-    protected final static int INT_F = 'F';
-
-    protected final static int INT_a = 'a';
-    protected final static int INT_f = 'f';
-    protected final static int INT_z = 'z';
-
-    protected final static int INT_0 = '0';
-    protected final static int INT_9 = '9';
 
     // // // Config for bound PName cache:
 
@@ -369,10 +357,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return _config;
     }
 
-    public AttributeCollector getAttrCollector() {
-        return _attrCollector;
-    }
-
     /*
     /**********************************************************************
     /* Public scanner interface, iterating
@@ -467,36 +451,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         int row = (int) _startRow;
         int col = (int) _startColumn;
         return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _startRawOffset, row, col);
-    }
-
-    public abstract long getStartingByteOffset();
-
-    public abstract long getStartingCharOffset();
-
-    public abstract long getEndingByteOffset() throws XMLStreamException;
-
-    public abstract long getEndingCharOffset() throws XMLStreamException;
-
-    public XMLStreamLocation2 getEndLocation() throws XMLStreamException {
-        // Have to complete the token to know the ending location...
-        if (_tokenIncomplete) {
-            finishToken();
-        }
-        return getCurrentLocation();
-    }
-
-    public final int getCurrentLineNr() {
-        return _currRow + 1;
-    }
-
-    public abstract int getCurrentColumnNr();
-
-    public final String getInputSystemId() {
-        return _config.getSystemId();
-    }
-
-    public final String getInputPublicId() {
-        return _config.getPublicId();
     }
 
     /*
@@ -635,91 +589,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     /* Data accessors, firing SAX events
     /**********************************************************************
      */
-
-    public void fireSaxStartElement(ContentHandler h, Attributes attrs) throws SAXException {
-        if (h != null) {
-            // First; any ns declarations?
-            NsDeclaration nsDecl = _lastNsDecl;
-            /* 17-Sep-2006, tatus: There is disparity between START/END_ELEMENT;
-             *   with START_ELEMENT, _depth is one higher than that of ns
-             *   declarations; with END_ELEMENT, the same
-             */
-            int level = _depth - 1;
-            while (nsDecl != null && nsDecl.getLevel() == level) {
-                String prefix = nsDecl.getPrefix();
-                String uri = nsDecl.getCurrNsURI();
-                h.startPrefixMapping((prefix == null) ? "" : prefix, uri);
-                nsDecl = nsDecl.getPrev();
-            }
-
-            // Then start-elem event itself:
-            PName n = getName();
-            String uri = n.getNsUri();
-            // Sax requires "" (not null) for ns uris...
-            h.startElement((uri == null) ? "" : uri, n.getLocalName(), n.getPrefixedName(), attrs);
-        }
-    }
-
-    public void fireSaxEndElement(ContentHandler h) throws SAXException {
-        if (h != null) {
-            /* Order of events is reversed (wrt. start-element): first
-             * the end tag event, then unbound prefixes
-             */
-            // End element:
-            PName n = getName();
-            String uri = n.getNsUri();
-            // Sax requires "" (not null) for ns uris...
-            h.endElement((uri == null) ? "" : uri, n.getLocalName(), n.getPrefixedName());
-            // Then, any expiring ns declarations?
-            NsDeclaration nsDecl = _lastNsDecl;
-            /* 17-Sep-2006, tatus: There is disparity between START/END_ELEMENT;
-             *   with START_ELEMENT, _depth is one higher than that of ns
-             *   declarations; with END_ELEMENT, the same
-             */
-            int level = _depth;
-            while (nsDecl != null && nsDecl.getLevel() == level) {
-                String prefix = nsDecl.getPrefix();
-                h.endPrefixMapping((prefix == null) ? "" : prefix);
-                nsDecl = nsDecl.getPrev();
-            }
-        }
-    }
-
-    public void fireSaxCharacterEvents(ContentHandler h) throws XMLStreamException, SAXException {
-        if (h != null) {
-            if (_tokenIncomplete) {
-                finishToken();
-            }
-            _textBuilder.fireSaxCharacterEvents(h);
-        }
-    }
-
-    public void fireSaxSpaceEvents(ContentHandler h) throws XMLStreamException, SAXException {
-        if (h != null) {
-            if (_tokenIncomplete) {
-                finishToken();
-            }
-            _textBuilder.fireSaxSpaceEvents(h);
-        }
-    }
-
-    public void fireSaxCommentEvent(LexicalHandler h) throws XMLStreamException, SAXException {
-        if (h != null) {
-            if (_tokenIncomplete) {
-                finishToken();
-            }
-            _textBuilder.fireSaxCommentEvent(h);
-        }
-    }
-
-    public void fireSaxPIEvent(ContentHandler h) throws XMLStreamException, SAXException {
-        if (h != null) {
-            if (_tokenIncomplete) {
-                finishToken();
-            }
-            h.processingInstruction(_tokenName.getLocalName(), getText());
-        }
-    }
 
     /*
     /**********************************************************************
@@ -948,10 +817,10 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
         }
         if (nsURI.equals(XMLConstants.XML_NS_URI)) {
-            return new SingletonIterator(XMLConstants.XML_NS_PREFIX);
+            return Collections.singletonList(XMLConstants.XML_NS_PREFIX).iterator();
         }
         if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            return new SingletonIterator(XMLConstants.XMLNS_ATTRIBUTE);
+            return Collections.singletonList(XMLConstants.XMLNS_ATTRIBUTE).iterator();
         }
         ArrayList<String> l = null;
 
@@ -981,10 +850,10 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         }
 
         if (l == null) {
-            return EmptyIterator.getInstance();
+            return Collections.emptyIterator();
         }
         if (l.size() == 1) {
-            return new SingletonIterator(l.get(0));
+            return Collections.singletonList(l.get(0)).iterator();
         }
         return l.iterator();
     }
@@ -1092,15 +961,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
          * not try caching, yet, but let's note it as a miss
          */
         ++_nsBindMisses;
-        NsBinding b = new NsBinding(prefix);
-        if (_nsBindingCount == 0) {
-            _nsBindings = new NsBinding[16];
-        } else if (_nsBindingCount >= _nsBindings.length) {
-            _nsBindings = (NsBinding[]) DataUtil.growAnyArrayBy(_nsBindings, _nsBindings.length);
-        }
-        _nsBindings[_nsBindingCount] = b;
-        ++_nsBindingCount;
-        return name.createBoundName(b);
+        return name.createBoundName(createNewBinding(prefix));
     }
 
     /**
@@ -1133,6 +994,10 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             return NsBinding.XMLNS_BINDING;
         }
         // Nope. Need to create a new binding
+        return createNewBinding(prefix);
+    }
+
+    private NsBinding createNewBinding(String prefix) {
         NsBinding b = new NsBinding(prefix);
         if (_nsBindingCount == 0) {
             _nsBindings = new NsBinding[16];
@@ -1254,7 +1119,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
      * Method called when a call to expand an entity within attribute
      * value fails to expand it.
      */
-    protected void reportUnexpandedEntityInAttr(PName name, boolean isNsDecl) throws XMLStreamException {
+    protected void reportUnexpandedEntityInAttr(boolean isNsDecl) throws XMLStreamException {
         reportInputProblem("Unexpanded ENTITY_REFERENCE (" + _tokenName + ") in "
             + (isNsDecl ? "namespace declaration" : "attribute value"));
     }
@@ -1290,11 +1155,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         throwUnexpectedChar(ch, fullMsg);
     }
 
-    protected void reportPrologProblem(boolean isProlog, String msg) throws XMLStreamException {
-        String prefix = isProlog ? ErrorConsts.SUFFIX_IN_PROLOG : ErrorConsts.SUFFIX_IN_EPILOG;
-        reportInputProblem(prefix + ": " + msg);
-    }
-
     protected void reportTreeUnexpChar(int ch, String msg) throws XMLStreamException {
         String fullMsg = ErrorConsts.SUFFIX_IN_TREE;
         if (msg != null) {
@@ -1324,7 +1184,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         reportInputProblem("Invalid xml content character (0x" + Integer.toHexString(ch) + ")");
     }
 
-    protected void reportEofInName(char[] cbuf, int clen) throws XMLStreamException {
+    protected void reportEofInName() throws XMLStreamException {
         reportInputProblem("Unexpected end-of-input in name (parsing " + ErrorConsts.tokenTypeDesc(_currToken) + ")");
     }
 

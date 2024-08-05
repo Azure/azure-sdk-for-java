@@ -282,7 +282,7 @@ public final class ReaderScanner extends XmlScanner {
          */
         if (c == '<') { // root element, comment, proc instr?
             ++_inputPtr;
-            c = (_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne(COMMENT);
+            c = (_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne();
             if (c == '!') { // comment or CDATA
                 return handleCommentOrCdataStart();
             }
@@ -381,7 +381,7 @@ public final class ReaderScanner extends XmlScanner {
         return _currToken; // never gets here
     }
 
-    private int handleDtdStart() throws XMLStreamException {
+    private void handleDtdStart() throws XMLStreamException {
         matchAsciiKeyword("DOCTYPE");
         // And then some white space and root  name
         char c = skipInternalWs(true, "after DOCTYPE keyword, before root name");
@@ -412,7 +412,8 @@ public final class ReaderScanner extends XmlScanner {
          */
         if (c == '>') { // fine, we are done
             _tokenIncomplete = false;
-            return (_currToken = DTD);
+            _currToken = DTD;
+            return;
         }
 
         if (c != '[') { // If not end, must have int. subset
@@ -426,7 +427,7 @@ public final class ReaderScanner extends XmlScanner {
          * either skip or parse later on
          */
         _tokenIncomplete = true;
-        return (_currToken = DTD);
+        _currToken = DTD;
     }
 
     private int handleCommentOrCdataStart() throws XMLStreamException {
@@ -881,7 +882,7 @@ public final class ReaderScanner extends XmlScanner {
                         if (!_config.willRetainAttributeGeneralEntities()) {
                             int d = handleEntityInText(false);
                             if (d == 0) { // unexpanded general entity... not good
-                                reportUnexpandedEntityInAttr(attrName, false);
+                                reportUnexpandedEntityInAttr(false);
                             }
                             // Ok; does it need a surrogate though? (over 16 bits)
                             if ((d >> 16) != 0) {
@@ -945,7 +946,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c == '&') { // entity
                 int d = handleEntityInText(false);
                 if (d == 0) { // general entity; should never happen
-                    reportUnexpandedEntityInAttr(name, true);
+                    reportUnexpandedEntityInAttr(true);
                 }
                 // Ok; does it need a surrogate though? (over 16 bits)
                 if ((d >> 16) != 0) {
@@ -1994,7 +1995,7 @@ public final class ReaderScanner extends XmlScanner {
                  * if we are getting a CDATA section
                  */
                 if ((_inputPtr + 3) >= _inputEnd) {
-                    if (!loadAndRetain(3)) {
+                    if (!loadAndRetain()) {
                         // probably an error, but will be handled later
                         return;
                     }
@@ -2329,7 +2330,7 @@ public final class ReaderScanner extends XmlScanner {
                  * if we are getting a CDATA section
                  */
                 if ((_inputPtr + 3) >= _inputEnd) {
-                    if (!loadAndRetain(3)) { // probably an error, but will be handled later
+                    if (!loadAndRetain()) { // probably an error, but will be handled later
                         return false;
                     }
                 }
@@ -3137,7 +3138,7 @@ public final class ReaderScanner extends XmlScanner {
         return sec;
     }
 
-    private int checkSurrogateNameChar(char firstChar, char sec, int index) throws XMLStreamException {
+    private void checkSurrogateNameChar(char firstChar, char sec, int index) throws XMLStreamException {
         if (firstChar >= 0xDC00) {
             reportInvalidFirstSurrogate(firstChar);
         }
@@ -3151,7 +3152,6 @@ public final class ReaderScanner extends XmlScanner {
         }
         // !!! TODO: xml 1.1 vs 1.0 rules: none valid for 1.0, many for 1.1
         reportInvalidNameChar(val, index);
-        return val;
     }
 
     /**
@@ -3199,37 +3199,6 @@ public final class ReaderScanner extends XmlScanner {
     public XMLStreamLocation2 getCurrentLocation() {
         return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _pastBytesOrChars + _inputPtr,
             _currRow, _inputPtr - _rowStartOffset);
-    }
-
-    @Override
-    public int getCurrentColumnNr() {
-        return _inputPtr - _rowStartOffset;
-    }
-
-    @Override
-    public long getStartingByteOffset() {
-        // N/A for this type
-        return -1L;
-    }
-
-    @Override
-    public long getStartingCharOffset() {
-        return _startRawOffset;
-    }
-
-    @Override
-    public long getEndingByteOffset() {
-        // N/A for this type
-        return -1L;
-    }
-
-    @Override
-    public long getEndingCharOffset() throws XMLStreamException {
-        // Have to complete the token to know the ending location...
-        if (_tokenIncomplete) {
-            finishToken();
-        }
-        return _pastBytesOrChars + _inputPtr;
     }
 
     private void markLF(int offset) {
@@ -3286,14 +3255,15 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    private char loadOne(int type) throws XMLStreamException {
+    private char loadOne() throws XMLStreamException {
         if (!loadMore()) {
-            reportInputProblem("Unexpected end-of-input when trying to parse " + ErrorConsts.tokenTypeDesc(type));
+            reportInputProblem("Unexpected end-of-input when trying to parse "
+                + ErrorConsts.tokenTypeDesc(javax.xml.stream.XMLStreamConstants.COMMENT));
         }
         return _inputBuffer[_inputPtr++];
     }
 
-    private boolean loadAndRetain(int nrOfChars) throws XMLStreamException {
+    private boolean loadAndRetain() throws XMLStreamException {
         /* first: can't move, if we were handed an immutable block
          * (alternative to handing Reader as _in)
          */
@@ -3323,7 +3293,7 @@ public final class ReaderScanner extends XmlScanner {
                     return false;
                 }
                 _inputEnd += count;
-            } while (_inputEnd < nrOfChars);
+            } while (_inputEnd < 3);
             return true;
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);

@@ -288,45 +288,6 @@ public final class WriterConfig extends CommonConfig {
     /**********************************************************************
      */
 
-    public void configureForXmlConformance() {
-        // !!! TBI
-        /*
-        doValidateAttributes(true);
-        doValidateContent(true);
-        doValidateStructure(true);
-        doValidateNames(true);
-        */
-    }
-
-    public void configureForRobustness() {
-        // !!! TBI
-        /*
-        doValidateAttributes(true);
-        doValidateStructure(true);
-        doValidateNames(true);
-        
-        doValidateContent(true);
-        doFixContent(true);
-        */
-    }
-
-    /**
-     * For Woodstox, setting this profile disables most checks for validity;
-     * specifically anything that can have measurable performance impact.
-     *
-     */
-    public void configureForSpeed() {
-        // !!! TBI
-        /*
-        doValidateAttributes(false);
-        doValidateContent(false);
-        doValidateNames(false);
-        
-        // Structural validation is cheap: can be left enabled (if already so)
-        //doValidateStructure(false);
-        */
-    }
-
     /*
     /**********************************************************************
     /* Impl specific additions, validation

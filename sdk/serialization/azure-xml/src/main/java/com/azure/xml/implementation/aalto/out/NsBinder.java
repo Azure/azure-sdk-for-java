@@ -19,7 +19,6 @@ package com.azure.xml.implementation.aalto.out;
 import java.util.*;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
 
 /**
  * Simple helper class to allow resolving of namespace bindings either
@@ -195,11 +194,8 @@ final class NsBinder {
      *
      * @param prefix Prefix to bind
      * @param uri URI to bind to the prefix
-     *
-     * @return If the prefix was already bound, the URI it was bound to:
-     *   null if it's a new binding for the current scope.
      */
-    String addMapping(String prefix, String uri) {
+    void addMapping(String prefix, String uri) {
         String[] strs = _nsStrings;
         int phash = prefix.hashCode();
 
@@ -207,9 +203,8 @@ final class NsBinder {
             String thisP = strs[ix];
             if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
                 // Overriding an existing mapping
-                String old = strs[ix + 1];
                 strs[ix + 1] = uri;
-                return old;
+                return;
             }
         }
         // no previous binding, let's just add it at the end
@@ -220,47 +215,6 @@ final class NsBinder {
         strs[_scopeEnd++] = prefix;
         strs[_scopeEnd++] = uri;
 
-        return null;
-    }
-
-    /**
-     * Method used to generate a new prefix that does not conflict with
-     * an existing bound prefix.
-     */
-    String generatePrefix(String prefixBase, NamespaceContext ctxt, int[] seqArr) {
-        String[] strs = _nsStrings;
-        int seqNr = seqArr[0];
-
-        main_loop: while (true) {
-            // We better intern the resulting prefix? Or not?
-            /* TODO: use cheaper canonicalization? (joint cache
-             * with input side prefix canonicalization?)
-             */
-            String prefix = (prefixBase + seqNr).intern();
-            ++seqNr;
-
-            /* Ok, let's see if we have a mapping (masked or not) for
-             * the prefix. If we do, let's just not use it: we could
-             * of course mask it (unless it's in current scope), but
-             * it's easier to just get a "virgin" prefix...
-             */
-            int phash = prefix.hashCode();
-
-            for (int ix = _scopeEnd - 2; ix >= 0; ix -= 2) {
-                String thisP = strs[ix];
-                if (Objects.equals(thisP, prefix) || (thisP.hashCode() == phash && thisP.equals(prefix))) {
-                    continue main_loop;
-                }
-            }
-            /* So far so good... but still need to ensure there's nothing
-             * in the root context, if we were given one?
-             */
-            if (ctxt != null && ctxt.getNamespaceURI(prefix) != null) {
-                continue;
-            }
-            seqArr[0] = seqNr;
-            return prefix;
-        }
     }
 
     /*

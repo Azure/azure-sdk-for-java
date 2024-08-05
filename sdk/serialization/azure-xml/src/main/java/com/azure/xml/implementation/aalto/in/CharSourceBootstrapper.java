@@ -106,7 +106,7 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
 
     public XmlScanner doBootstrap() throws IOException, XMLStreamException {
         if (_inputPtr >= _inputLast) {
-            initialLoad(7);
+            initialLoad();
         }
 
         String normEnc = null;
@@ -193,22 +193,21 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
     /////////////////////////////////////////////////////
     */
 
-    private boolean initialLoad(int minimum) throws IOException {
+    private void initialLoad() throws IOException {
         _inputPtr = 0;
         _inputLast = 0;
 
         if (_in == null) { // for block sources
-            return false;
+            return;
         }
 
-        while (_inputLast < minimum) {
+        while (_inputLast < 7) {
             int count = _in.read(_inputBuffer, _inputLast, _inputBuffer.length - _inputLast);
             if (count < 1) {
-                return false;
+                return;
             }
             _inputLast += count;
         }
-        return true;
     }
 
     private void loadMore() throws IOException, XMLStreamException {

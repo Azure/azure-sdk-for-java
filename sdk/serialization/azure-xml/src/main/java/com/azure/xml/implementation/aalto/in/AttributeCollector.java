@@ -192,10 +192,6 @@ public final class AttributeCollector {
         return _valueBuffer;
     }
 
-    public char[] continueValue() {
-        return _valueBuffer;
-    }
-
     /**
      * Method called after all attribute entries have been parsed,
      * and thus the end of the last value in the buffer is known.
@@ -403,7 +399,7 @@ public final class AttributeCollector {
         }
 
         // Need to/can use hash... primary hit?
-        int hash = PName.boundHashCode(nsUri, localName);
+        int hash = PName.boundHashCode(localName);
         int ix = _attrMap[hash & (hashSize - 1)];
 
         if (ix > 0) { // has primary entry, does it match?

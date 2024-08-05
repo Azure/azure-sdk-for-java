@@ -220,19 +220,18 @@ public final class WNameTable extends NameTable {
         return new WNameTable(this, f);
     }
 
-    public boolean mergeToParent() {
-        boolean changed = mParent.mergeFromChild(this);
+    public void mergeToParent() {
+        mParent.mergeFromChild(this);
         /* Plus, as an added safety measure, let's mark child buffers
          * as shared, just in case it might still be used:
          */
         markAsShared();
-        return changed;
     }
 
-    private synchronized boolean mergeFromChild(WNameTable child) {
+    private synchronized void mergeFromChild(WNameTable child) {
         // Only makes sense if child has more entries
         if (child.mCount <= mCount) {
-            return false;
+            return;
         }
         //System.out.print("["+mCount+"->"+child.mCount+"/"+mMainHash.length+"]");
 
@@ -243,7 +242,6 @@ public final class WNameTable extends NameTable {
         mCollList = child.mCollList;
         mCollCount = child.mCollCount;
         mCollEnd = child.mCollEnd;
-        return true;
     }
 
     public void markAsShared() {

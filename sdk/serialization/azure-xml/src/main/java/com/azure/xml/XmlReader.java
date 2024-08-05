@@ -27,7 +27,7 @@ public final class XmlReader implements AutoCloseable {
     static {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         if ("com.sun.xml.internal.stream.XMLInputFactoryImpl".equals(xmlInputFactory.getClass().getName())) {
-            xmlInputFactory = InputFactoryImpl.newInstance();
+            xmlInputFactory = new InputFactoryImpl();
         }
 
         XML_INPUT_FACTORY = xmlInputFactory;
