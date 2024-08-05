@@ -407,4 +407,32 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         assertEquals(protocols.toString(), properties.getProtocols().toString());
         assertTrue(properties.isSnapshotVirtualDirectoryAccessEnabled());
     }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void listSharePaidBursting() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        String shareName = generateShareName();
+
+        ShareAsyncClient shareClient = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+
+        Flux<ShareItem> response = shareClient.createWithResponse(options)
+            .thenMany(premiumFileServiceAsyncClient.listShares());
+
+        List<ShareItem> shares = new ArrayList<>();
+
+        StepVerifier.create(response)
+            .thenConsumeWhile(shares::add)
+            .verifyComplete();
+
+        ShareItem share = shares.stream().filter(r -> r.getName().equals(shareName)).findFirst().get();
+
+        assertTrue(share.getProperties().isPaidBurstingEnabled());
+        assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
+        assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
+    }
 }

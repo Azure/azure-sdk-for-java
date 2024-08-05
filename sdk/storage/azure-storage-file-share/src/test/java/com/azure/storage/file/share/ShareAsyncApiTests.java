@@ -17,6 +17,7 @@ import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
+import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareRootSquash;
@@ -967,6 +968,60 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 } else {
                     assertFalse(r.isSnapshotVirtualDirectoryAccessEnabled());
                 }
+            })
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBursting() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        Mono<ShareProperties> response = premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options)
+                .then(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertTrue(r.isPaidBurstingEnabled());
+                assertEquals(5000L, r.getPaidBurstingMaxIops());
+                assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
+            })
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBurstingInvalidOptions() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(false)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options))
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.fromString("InvalidHeaderValue")));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesSharePaidBursting() {
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        Mono<ShareProperties> response = premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(null)
+            .then(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).setProperties(options))
+            .then(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertTrue(r.isPaidBurstingEnabled());
+                assertEquals(5000L, r.getPaidBurstingMaxIops());
+                assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
             })
             .verifyComplete();
     }

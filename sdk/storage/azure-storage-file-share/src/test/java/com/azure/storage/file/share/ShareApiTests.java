@@ -1435,4 +1435,54 @@ public class ShareApiTests extends FileShareTestBase {
             assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
         }
     }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBursting() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+
+        assertTrue(response.isPaidBurstingEnabled());
+        assertEquals(5000L, response.getPaidBurstingMaxIops());
+        assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBurstingInvalidOptions() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setPaidBurstingEnabled(false)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null));
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.fromString(
+            "InvalidHeaderValue"));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesSharePaidBursting() {
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(null, null, null);
+
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setPaidBurstingEnabled(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        premiumFileServiceClient.getShareClient(shareName).setProperties(options);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+
+        assertTrue(response.isPaidBurstingEnabled());
+        assertEquals(5000L, response.getPaidBurstingMaxIops());
+        assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+    }
 }
