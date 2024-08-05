@@ -28,7 +28,7 @@ spec:
       command: ['sh', '-c']
       args:
         - |
-          set -exa;
+          set -xa;
           set -o pipefail;
           keytool -import -alias test -file /mnt/outputs/dev-cert.pfx -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit;
           mkdir -p "$DEBUG_SHARE";
