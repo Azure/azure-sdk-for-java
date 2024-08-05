@@ -153,7 +153,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.cloud.starter.data.cosmos</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.redis</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
