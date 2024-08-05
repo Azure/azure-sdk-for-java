@@ -1618,6 +1618,29 @@ public final class EasmAsyncClient {
     }
 
     /**
+     * Create a discovery group with a given groupName.
+     *
+     * @param groupName The caller provided unique name for the resource.
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
+        // Generated convenience method for createOrReplaceDiscoGroupWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
+    }
+
+    /**
      * Run a discovery group with a given groupName.
      *
      * @param groupName The caller provided unique name for the resource.
@@ -2107,28 +2130,5 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return cancelTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
-    }
-
-    /**
-     * Create a discovery group with a given groupName.
-     *
-     * @param groupName The caller provided unique name for the resource.
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
-        // Generated convenience method for createOrReplaceDiscoGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
     }
 }

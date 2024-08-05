@@ -7,5 +7,4 @@ module com.azure.analytics.defender.easm {
     exports com.azure.analytics.defender.easm;
     exports com.azure.analytics.defender.easm.models;
     opens com.azure.analytics.defender.easm.models to com.azure.core;
-    opens com.azure.analytics.defender.easm.implementation.models to com.azure.core;
 }

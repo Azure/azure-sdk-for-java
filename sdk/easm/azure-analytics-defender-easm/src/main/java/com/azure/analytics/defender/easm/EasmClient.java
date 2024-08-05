@@ -1532,6 +1532,28 @@ public final class EasmClient {
     }
 
     /**
+     * Create a discovery group with a given groupName.
+     *
+     * @param groupName The caller provided unique name for the resource.
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DiscoGroup createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
+        // Generated convenience method for createOrReplaceDiscoGroupWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(DiscoGroup.class);
+    }
+
+    /**
      * Run a discovery group with a given groupName.
      *
      * @param groupName The caller provided unique name for the resource.
@@ -1923,27 +1945,5 @@ public final class EasmClient {
         // Generated convenience method for cancelTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
-    }
-
-    /**
-     * Create a discovery group with a given groupName.
-     *
-     * @param groupName The caller provided unique name for the resource.
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiscoGroup createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
-        // Generated convenience method for createOrReplaceDiscoGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(DiscoGroup.class);
     }
 }
