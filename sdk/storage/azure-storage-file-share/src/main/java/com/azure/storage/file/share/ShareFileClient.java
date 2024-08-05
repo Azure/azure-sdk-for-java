@@ -84,6 +84,7 @@ import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOpti
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1227,8 +1228,9 @@ public class ShareFileClient {
                     return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(), null, headers));
                 } catch (Exception e) {
+                    Throwable t = Exceptions.unwrap(e);
                     System.out.println(e.getClass().getName());
-                    if (e instanceof IOException) {
+                    if (t instanceof IOException) {
                         System.out.println("inside the IOException");
                     }
                     System.out.println("inside the catch clause");

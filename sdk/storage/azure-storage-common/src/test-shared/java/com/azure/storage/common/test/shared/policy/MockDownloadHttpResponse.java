@@ -95,8 +95,8 @@ public class MockDownloadHttpResponse extends HttpResponse {
         //throw new UncheckedIOException(new IOException("Simulated IOException"));
         //return Mono.error(new UncheckedIOExceptionWrapper(new IOException("Simulated IOException")));
         //return Mono.just(new IOException("Simulated IOException")).map(UncheckedIOException::new);
-        return Mono.just(getBodyAsBinaryData().toStream());
-        //return Mono.just(new IOException());
+        //return Mono.just(getBodyAsBinaryData().toStream());
+        return Mono.error(new IOException());
     }
 }
 
