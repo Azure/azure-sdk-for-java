@@ -616,6 +616,11 @@
           "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
           "new" : "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
+        },
+        {
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.compute\\.batch\\.models.*",
+          "justification": "Removing Jackson annotations from Azure Batch in transition to stream-style."
         }
       ]
     }
