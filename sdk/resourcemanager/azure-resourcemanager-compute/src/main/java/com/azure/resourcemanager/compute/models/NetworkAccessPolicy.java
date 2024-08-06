@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class NetworkAccessPolicy extends ExpandableStringEnum<NetworkAcces
      * @param name a name to look for.
      * @return the corresponding NetworkAccessPolicy.
      */
-    @JsonCreator
     public static NetworkAccessPolicy fromString(String name) {
         return fromString(name, NetworkAccessPolicy.class);
     }

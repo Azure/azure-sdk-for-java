@@ -6,8 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,25 +21,21 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     /*
      * The virtual machine scale set sku.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The purchase plan when deploying a virtual machine scale set from VM Marketplace images.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * Describes the properties of a Virtual Machine Scale Set.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateProperties innerProperties;
 
     /*
      * The identity of the virtual machine scale set, if configured.
      */
-    @JsonProperty(value = "identity")
     private VirtualMachineScaleSetIdentity identity;
 
     /**
@@ -439,5 +438,55 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetUpdate.
+     */
+    public static VirtualMachineScaleSetUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdate deserializedVirtualMachineScaleSetUpdate = new VirtualMachineScaleSetUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetUpdate.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdate.sku = Sku.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdate.plan = Plan.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdate.innerProperties
+                        = VirtualMachineScaleSetUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdate.identity = VirtualMachineScaleSetIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdate;
+        });
     }
 }
