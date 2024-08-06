@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network Virtual Appliance NIC properties.
  */
 @Immutable
-public final class VirtualApplianceNicProperties {
+public final class VirtualApplianceNicProperties implements JsonSerializable<VirtualApplianceNicProperties> {
     /*
      * NIC type - PublicNic, PrivateNic, or AdditionalNic.
      */
-    @JsonProperty(value = "nicType", access = JsonProperty.Access.WRITE_ONLY)
     private NicTypeInResponse nicType;
 
     /*
      * NIC name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Public IP address.
      */
-    @JsonProperty(value = "publicIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIpAddress;
 
     /*
      * Private IP address.
      */
-    @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
      * Instance on which nic is attached.
      */
-    @JsonProperty(value = "instanceName", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceName;
 
     /**
@@ -99,5 +98,50 @@ public final class VirtualApplianceNicProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualApplianceNicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualApplianceNicProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualApplianceNicProperties.
+     */
+    public static VirtualApplianceNicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualApplianceNicProperties deserializedVirtualApplianceNicProperties
+                = new VirtualApplianceNicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicType".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.nicType
+                        = NicTypeInResponse.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.name = reader.getString();
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.publicIpAddress = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.privateIpAddress = reader.getString();
+                } else if ("instanceName".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.instanceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualApplianceNicProperties;
+        });
     }
 }

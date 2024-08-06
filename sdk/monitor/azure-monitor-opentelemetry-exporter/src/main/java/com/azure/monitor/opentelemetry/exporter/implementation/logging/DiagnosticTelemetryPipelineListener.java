@@ -4,23 +4,23 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.Response;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.INGESTION_ERROR;
-import static java.util.Collections.singleton;
 
 public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -117,23 +117,24 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
 
     public static String getErrorMessageFromCredentialRelatedResponse(
         int responseCode, String responseBody) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(responseBody);
-        } catch (JsonProcessingException e) {
+        String message = null;
+        try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
+            Response response = Response.fromJson(jsonReader);
+            if (response.getErrors() != null && !response.getErrors().isEmpty()) {
+                message = response.getErrors().get(0).getMessage();
+            }
+        } catch (IOException e) {
             return "Ingestion service returned "
                 + responseCode
                 + ", but could not parse response as json: "
                 + responseBody;
         }
+
         String action =
             responseCode == 401
                 ? ". Please provide Azure Active Directory credentials"
                 : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
-        List<JsonNode> errors = new ArrayList<>();
-        jsonNode.get("errors").forEach(errors::add);
-        return errors.get(0).get("message").asText()
-            + action
+        return message + action
             + " (telemetry will be stored to disk and retried)";
     }
 }

@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the cloud service role sku.
  */
 @Fluent
-public final class CloudServiceRoleSku {
+public final class CloudServiceRoleSku implements JsonSerializable<CloudServiceRoleSku> {
     /*
      * The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is currently on, you need
      * to delete and recreate the cloud service or move back to the old sku.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the tier of the cloud service. Possible Values are <br /><br /> **Standard** <br /><br /> **Basic**
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * Specifies the number of role instances in the cloud service.
      */
-    @JsonProperty(value = "capacity")
     private Long capacity;
 
     /**
@@ -107,5 +108,47 @@ public final class CloudServiceRoleSku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceRoleSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceRoleSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceRoleSku.
+     */
+    public static CloudServiceRoleSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceRoleSku deserializedCloudServiceRoleSku = new CloudServiceRoleSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCloudServiceRoleSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedCloudServiceRoleSku.tier = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedCloudServiceRoleSku.capacity = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceRoleSku;
+        });
     }
 }

@@ -21,10 +21,15 @@ public final class MonitoringSettingsUpdatePutSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void monitoringSettingsUpdatePut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getMonitoringSettings().updatePut("myResourceGroup",
-            "myservice",
-            new MonitoringSettingResourceInner().withProperties(new MonitoringSettingProperties().withTraceEnabled(true)
-                .withAppInsightsInstrumentationKey("fakeTokenPlaceholder").withAppInsightsSamplingRate(10.0D)),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getMonitoringSettings()
+            .updatePut("myResourceGroup", "myservice",
+                new MonitoringSettingResourceInner()
+                    .withProperties(new MonitoringSettingProperties().withTraceEnabled(true)
+                        .withAppInsightsInstrumentationKey("fakeTokenPlaceholder")
+                        .withAppInsightsSamplingRate(10.0D)),
+                com.azure.core.util.Context.NONE);
     }
 }

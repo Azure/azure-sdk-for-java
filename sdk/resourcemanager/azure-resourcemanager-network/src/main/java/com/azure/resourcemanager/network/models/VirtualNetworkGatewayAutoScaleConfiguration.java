@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Virtual Network Gateway Autoscale Configuration details.
  */
 @Fluent
-public final class VirtualNetworkGatewayAutoScaleConfiguration {
+public final class VirtualNetworkGatewayAutoScaleConfiguration
+    implements JsonSerializable<VirtualNetworkGatewayAutoScaleConfiguration> {
     /*
      * The bounds of the autoscale configuration
      */
-    @JsonProperty(value = "bounds")
     private VirtualNetworkGatewayAutoScaleBounds bounds;
 
     /**
@@ -53,5 +57,43 @@ public final class VirtualNetworkGatewayAutoScaleConfiguration {
         if (bounds() != null) {
             bounds().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("bounds", this.bounds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewayAutoScaleConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewayAutoScaleConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayAutoScaleConfiguration.
+     */
+    public static VirtualNetworkGatewayAutoScaleConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewayAutoScaleConfiguration deserializedVirtualNetworkGatewayAutoScaleConfiguration
+                = new VirtualNetworkGatewayAutoScaleConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bounds".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayAutoScaleConfiguration.bounds
+                        = VirtualNetworkGatewayAutoScaleBounds.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewayAutoScaleConfiguration;
+        });
     }
 }

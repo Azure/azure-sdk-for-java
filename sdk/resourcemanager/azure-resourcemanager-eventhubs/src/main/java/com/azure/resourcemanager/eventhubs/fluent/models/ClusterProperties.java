@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Event Hubs Cluster properties supplied in responses in List or Get operations.
  */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * The UTC time when the Event Hubs Cluster was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private String createdAt;
 
     /*
      * Provisioning state of the Cluster.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The UTC time when the Event Hubs Cluster was last updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private String updatedAt;
 
     /*
      * The metric ID of the cluster resource. Provided by the service and not modifiable by the user.
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
      * Status of the Cluster resource
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * A value that indicates whether Scaling is Supported.
      */
-    @JsonProperty(value = "supportsScaling")
     private Boolean supportsScaling;
 
     /**
@@ -127,5 +125,51 @@ public final class ClusterProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("supportsScaling", this.supportsScaling);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdAt".equals(fieldName)) {
+                    deserializedClusterProperties.createdAt = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedClusterProperties.updatedAt = reader.getString();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedClusterProperties.metricId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedClusterProperties.status = reader.getString();
+                } else if ("supportsScaling".equals(fieldName)) {
+                    deserializedClusterProperties.supportsScaling = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

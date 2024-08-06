@@ -21,8 +21,12 @@ public final class RegistriesCheckNameAvailabilitySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryCheckNameAvailable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries().checkNameAvailabilityWithResponse(
-            new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .checkNameAvailabilityWithResponse(new RegistryNameCheckRequest().withName("myRegistry"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +40,11 @@ public final class RegistriesCheckNameAvailabilitySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryCheckNameNotAvailable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries().checkNameAvailabilityWithResponse(
-            new RegistryNameCheckRequest().withName("myRegistry"), com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .checkNameAvailabilityWithResponse(new RegistryNameCheckRequest().withName("myRegistry"),
+                com.azure.core.util.Context.NONE);
     }
 }

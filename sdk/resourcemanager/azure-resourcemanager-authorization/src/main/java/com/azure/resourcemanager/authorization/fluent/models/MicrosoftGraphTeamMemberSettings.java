@@ -5,64 +5,63 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** teamMemberSettings. */
+/**
+ * teamMemberSettings.
+ */
 @Fluent
-public final class MicrosoftGraphTeamMemberSettings {
+public final class MicrosoftGraphTeamMemberSettings implements JsonSerializable<MicrosoftGraphTeamMemberSettings> {
     /*
      * If set to true, members can add and remove apps.
      */
-    @JsonProperty(value = "allowAddRemoveApps")
     private Boolean allowAddRemoveApps;
 
     /*
      * If set to true, members can add and update private channels.
      */
-    @JsonProperty(value = "allowCreatePrivateChannels")
     private Boolean allowCreatePrivateChannels;
 
     /*
      * If set to true, members can add and update channels.
      */
-    @JsonProperty(value = "allowCreateUpdateChannels")
     private Boolean allowCreateUpdateChannels;
 
     /*
      * If set to true, members can add, update, and remove connectors.
      */
-    @JsonProperty(value = "allowCreateUpdateRemoveConnectors")
     private Boolean allowCreateUpdateRemoveConnectors;
 
     /*
      * If set to true, members can add, update, and remove tabs.
      */
-    @JsonProperty(value = "allowCreateUpdateRemoveTabs")
     private Boolean allowCreateUpdateRemoveTabs;
 
     /*
      * If set to true, members can delete channels.
      */
-    @JsonProperty(value = "allowDeleteChannels")
     private Boolean allowDeleteChannels;
 
     /*
      * teamMemberSettings
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamMemberSettings class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamMemberSettings class.
+     */
     public MicrosoftGraphTeamMemberSettings() {
     }
 
     /**
      * Get the allowAddRemoveApps property: If set to true, members can add and remove apps.
-     *
+     * 
      * @return the allowAddRemoveApps value.
      */
     public Boolean allowAddRemoveApps() {
@@ -71,7 +70,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Set the allowAddRemoveApps property: If set to true, members can add and remove apps.
-     *
+     * 
      * @param allowAddRemoveApps the allowAddRemoveApps value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
@@ -82,7 +81,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Get the allowCreatePrivateChannels property: If set to true, members can add and update private channels.
-     *
+     * 
      * @return the allowCreatePrivateChannels value.
      */
     public Boolean allowCreatePrivateChannels() {
@@ -91,7 +90,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Set the allowCreatePrivateChannels property: If set to true, members can add and update private channels.
-     *
+     * 
      * @param allowCreatePrivateChannels the allowCreatePrivateChannels value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
@@ -102,7 +101,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Get the allowCreateUpdateChannels property: If set to true, members can add and update channels.
-     *
+     * 
      * @return the allowCreateUpdateChannels value.
      */
     public Boolean allowCreateUpdateChannels() {
@@ -111,7 +110,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Set the allowCreateUpdateChannels property: If set to true, members can add and update channels.
-     *
+     * 
      * @param allowCreateUpdateChannels the allowCreateUpdateChannels value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
@@ -123,7 +122,7 @@ public final class MicrosoftGraphTeamMemberSettings {
     /**
      * Get the allowCreateUpdateRemoveConnectors property: If set to true, members can add, update, and remove
      * connectors.
-     *
+     * 
      * @return the allowCreateUpdateRemoveConnectors value.
      */
     public Boolean allowCreateUpdateRemoveConnectors() {
@@ -133,19 +132,19 @@ public final class MicrosoftGraphTeamMemberSettings {
     /**
      * Set the allowCreateUpdateRemoveConnectors property: If set to true, members can add, update, and remove
      * connectors.
-     *
+     * 
      * @param allowCreateUpdateRemoveConnectors the allowCreateUpdateRemoveConnectors value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
-    public MicrosoftGraphTeamMemberSettings withAllowCreateUpdateRemoveConnectors(
-        Boolean allowCreateUpdateRemoveConnectors) {
+    public MicrosoftGraphTeamMemberSettings
+        withAllowCreateUpdateRemoveConnectors(Boolean allowCreateUpdateRemoveConnectors) {
         this.allowCreateUpdateRemoveConnectors = allowCreateUpdateRemoveConnectors;
         return this;
     }
 
     /**
      * Get the allowCreateUpdateRemoveTabs property: If set to true, members can add, update, and remove tabs.
-     *
+     * 
      * @return the allowCreateUpdateRemoveTabs value.
      */
     public Boolean allowCreateUpdateRemoveTabs() {
@@ -154,7 +153,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Set the allowCreateUpdateRemoveTabs property: If set to true, members can add, update, and remove tabs.
-     *
+     * 
      * @param allowCreateUpdateRemoveTabs the allowCreateUpdateRemoveTabs value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
@@ -165,7 +164,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Get the allowDeleteChannels property: If set to true, members can delete channels.
-     *
+     * 
      * @return the allowDeleteChannels value.
      */
     public Boolean allowDeleteChannels() {
@@ -174,7 +173,7 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Set the allowDeleteChannels property: If set to true, members can delete channels.
-     *
+     * 
      * @param allowDeleteChannels the allowDeleteChannels value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
@@ -185,17 +184,16 @@ public final class MicrosoftGraphTeamMemberSettings {
 
     /**
      * Get the additionalProperties property: teamMemberSettings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamMemberSettings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamMemberSettings object itself.
      */
@@ -204,19 +202,80 @@ public final class MicrosoftGraphTeamMemberSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowAddRemoveApps", this.allowAddRemoveApps);
+        jsonWriter.writeBooleanField("allowCreatePrivateChannels", this.allowCreatePrivateChannels);
+        jsonWriter.writeBooleanField("allowCreateUpdateChannels", this.allowCreateUpdateChannels);
+        jsonWriter.writeBooleanField("allowCreateUpdateRemoveConnectors", this.allowCreateUpdateRemoveConnectors);
+        jsonWriter.writeBooleanField("allowCreateUpdateRemoveTabs", this.allowCreateUpdateRemoveTabs);
+        jsonWriter.writeBooleanField("allowDeleteChannels", this.allowDeleteChannels);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamMemberSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamMemberSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamMemberSettings.
+     */
+    public static MicrosoftGraphTeamMemberSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamMemberSettings deserializedMicrosoftGraphTeamMemberSettings
+                = new MicrosoftGraphTeamMemberSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowAddRemoveApps".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMemberSettings.allowAddRemoveApps
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowCreatePrivateChannels".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMemberSettings.allowCreatePrivateChannels
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowCreateUpdateChannels".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMemberSettings.allowCreateUpdateChannels
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowCreateUpdateRemoveConnectors".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMemberSettings.allowCreateUpdateRemoveConnectors
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowCreateUpdateRemoveTabs".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMemberSettings.allowCreateUpdateRemoveTabs
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowDeleteChannels".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMemberSettings.allowDeleteChannels
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamMemberSettings.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamMemberSettings;
+        });
     }
 }

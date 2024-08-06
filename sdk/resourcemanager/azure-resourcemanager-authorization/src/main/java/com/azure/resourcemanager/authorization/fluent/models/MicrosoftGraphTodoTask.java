@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** todoTask. */
+/**
+ * todoTask.
+ */
 @Fluent
 public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
     /*
      * itemBody
      */
-    @JsonProperty(value = "body")
     private MicrosoftGraphItemBody body;
 
     /*
@@ -28,39 +31,33 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * in the request header. The property value uses ISO 8601 format and is always in UTC time. For example, midnight
      * UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
      */
-    @JsonProperty(value = "bodyLastModifiedDateTime")
     private OffsetDateTime bodyLastModifiedDateTime;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "completedDateTime")
     private MicrosoftGraphDateTimeZone completedDateTime;
 
     /*
      * The date and time when the task was created. By default, it is in UTC. You can provide a custom time zone in the
-     * request header. The property value uses ISO 8601 format. For example, midnight UTC on Jan 1, 2020 would look
-     * like this: '2020-01-01T00:00:00Z'.
+     * request header. The property value uses ISO 8601 format. For example, midnight UTC on Jan 1, 2020 would look like
+     * this: '2020-01-01T00:00:00Z'.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "dueDateTime")
     private MicrosoftGraphDateTimeZone dueDateTime;
 
     /*
      * importance
      */
-    @JsonProperty(value = "importance")
     private MicrosoftGraphImportance importance;
 
     /*
      * Set to true if an alert is set to remind the user of the task.
      */
-    @JsonProperty(value = "isReminderOn")
     private Boolean isReminderOn;
 
     /*
@@ -68,57 +65,52 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * in the request header. The property value uses ISO 8601 format and is always in UTC time. For example, midnight
      * UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * patternedRecurrence
      */
-    @JsonProperty(value = "recurrence")
     private MicrosoftGraphPatternedRecurrence recurrence;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "reminderDateTime")
     private MicrosoftGraphDateTimeZone reminderDateTime;
 
     /*
      * taskStatus
      */
-    @JsonProperty(value = "status")
     private MicrosoftGraphTaskStatus status;
 
     /*
      * A brief description of the task.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The collection of open extensions defined for the task. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * A collection of resources linked to the task.
      */
-    @JsonProperty(value = "linkedResources")
     private List<MicrosoftGraphLinkedResource> linkedResources;
 
     /*
      * todoTask
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTodoTask class. */
+    /**
+     * Creates an instance of MicrosoftGraphTodoTask class.
+     */
     public MicrosoftGraphTodoTask() {
     }
 
     /**
      * Get the body property: itemBody.
-     *
+     * 
      * @return the body value.
      */
     public MicrosoftGraphItemBody body() {
@@ -127,7 +119,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the body property: itemBody.
-     *
+     * 
      * @param body the body value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -140,7 +132,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * Get the bodyLastModifiedDateTime property: The date and time when the task was last modified. By default, it is
      * in UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format and is
      * always in UTC time. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
-     *
+     * 
      * @return the bodyLastModifiedDateTime value.
      */
     public OffsetDateTime bodyLastModifiedDateTime() {
@@ -151,7 +143,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * Set the bodyLastModifiedDateTime property: The date and time when the task was last modified. By default, it is
      * in UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format and is
      * always in UTC time. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
-     *
+     * 
      * @param bodyLastModifiedDateTime the bodyLastModifiedDateTime value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -162,7 +154,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the completedDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the completedDateTime value.
      */
     public MicrosoftGraphDateTimeZone completedDateTime() {
@@ -171,7 +163,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the completedDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param completedDateTime the completedDateTime value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -184,7 +176,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * Get the createdDateTime property: The date and time when the task was created. By default, it is in UTC. You can
      * provide a custom time zone in the request header. The property value uses ISO 8601 format. For example, midnight
      * UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -195,7 +187,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * Set the createdDateTime property: The date and time when the task was created. By default, it is in UTC. You can
      * provide a custom time zone in the request header. The property value uses ISO 8601 format. For example, midnight
      * UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -206,7 +198,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the dueDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the dueDateTime value.
      */
     public MicrosoftGraphDateTimeZone dueDateTime() {
@@ -215,7 +207,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the dueDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param dueDateTime the dueDateTime value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -226,7 +218,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the importance property: importance.
-     *
+     * 
      * @return the importance value.
      */
     public MicrosoftGraphImportance importance() {
@@ -235,7 +227,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the importance property: importance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -246,7 +238,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the isReminderOn property: Set to true if an alert is set to remind the user of the task.
-     *
+     * 
      * @return the isReminderOn value.
      */
     public Boolean isReminderOn() {
@@ -255,7 +247,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the isReminderOn property: Set to true if an alert is set to remind the user of the task.
-     *
+     * 
      * @param isReminderOn the isReminderOn value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -268,7 +260,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * Get the lastModifiedDateTime property: The date and time when the task was last modified. By default, it is in
      * UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format and is
      * always in UTC time. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -279,7 +271,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      * Set the lastModifiedDateTime property: The date and time when the task was last modified. By default, it is in
      * UTC. You can provide a custom time zone in the request header. The property value uses ISO 8601 format and is
      * always in UTC time. For example, midnight UTC on Jan 1, 2020 would look like this: '2020-01-01T00:00:00Z'.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -290,7 +282,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the recurrence property: patternedRecurrence.
-     *
+     * 
      * @return the recurrence value.
      */
     public MicrosoftGraphPatternedRecurrence recurrence() {
@@ -299,7 +291,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the recurrence property: patternedRecurrence.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -310,7 +302,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the reminderDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the reminderDateTime value.
      */
     public MicrosoftGraphDateTimeZone reminderDateTime() {
@@ -319,7 +311,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the reminderDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param reminderDateTime the reminderDateTime value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -330,7 +322,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the status property: taskStatus.
-     *
+     * 
      * @return the status value.
      */
     public MicrosoftGraphTaskStatus status() {
@@ -339,7 +331,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the status property: taskStatus.
-     *
+     * 
      * @param status the status value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -350,7 +342,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the title property: A brief description of the task.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -359,7 +351,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the title property: A brief description of the task.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -370,7 +362,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the extensions property: The collection of open extensions defined for the task. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -379,7 +371,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the extensions property: The collection of open extensions defined for the task. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -390,7 +382,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the linkedResources property: A collection of resources linked to the task.
-     *
+     * 
      * @return the linkedResources value.
      */
     public List<MicrosoftGraphLinkedResource> linkedResources() {
@@ -399,7 +391,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Set the linkedResources property: A collection of resources linked to the task.
-     *
+     * 
      * @param linkedResources the linkedResources value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -410,17 +402,16 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: todoTask.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: todoTask.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTodoTask object itself.
      */
@@ -429,15 +420,9 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTodoTask withId(String id) {
         super.withId(id);
@@ -446,7 +431,7 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -473,5 +458,110 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
         if (linkedResources() != null) {
             linkedResources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("bodyLastModifiedDateTime",
+            this.bodyLastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.bodyLastModifiedDateTime));
+        jsonWriter.writeJsonField("completedDateTime", this.completedDateTime);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeJsonField("dueDateTime", this.dueDateTime);
+        jsonWriter.writeStringField("importance", this.importance == null ? null : this.importance.toString());
+        jsonWriter.writeBooleanField("isReminderOn", this.isReminderOn);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeJsonField("recurrence", this.recurrence);
+        jsonWriter.writeJsonField("reminderDateTime", this.reminderDateTime);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedResources", this.linkedResources,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTodoTask from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTodoTask if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTodoTask.
+     */
+    public static MicrosoftGraphTodoTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTodoTask deserializedMicrosoftGraphTodoTask = new MicrosoftGraphTodoTask();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.withId(reader.getString());
+                } else if ("body".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.body = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("bodyLastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.bodyLastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.completedDateTime = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dueDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.dueDateTime = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("importance".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.importance
+                        = MicrosoftGraphImportance.fromString(reader.getString());
+                } else if ("isReminderOn".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.isReminderOn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recurrence".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.recurrence = MicrosoftGraphPatternedRecurrence.fromJson(reader);
+                } else if ("reminderDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.reminderDateTime = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.status = MicrosoftGraphTaskStatus.fromString(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTask.title = reader.getString();
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphTodoTask.extensions = extensions;
+                } else if ("linkedResources".equals(fieldName)) {
+                    List<MicrosoftGraphLinkedResource> linkedResources
+                        = reader.readArray(reader1 -> MicrosoftGraphLinkedResource.fromJson(reader1));
+                    deserializedMicrosoftGraphTodoTask.linkedResources = linkedResources;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTodoTask.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTodoTask;
+        });
     }
 }

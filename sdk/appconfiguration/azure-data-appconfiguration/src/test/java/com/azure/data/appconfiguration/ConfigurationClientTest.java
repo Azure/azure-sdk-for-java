@@ -20,6 +20,8 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -36,10 +38,12 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -1546,6 +1550,119 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                     .findAny()
                     .get();
             assertConfigurationEquals(updatedSetting, updatedSettingFromResponse);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        client.listConfigurationSettings(null)
+                .stream()
+                .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
+        // Prepare two settings with different labels
+        List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting -> assertConfigurationEquals(setting,
+                client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue()));
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+
+        // List only the first label var, 'label'
+        String label = setting.getLabel();
+        PagedIterable<SettingLabel> labels = client.listLabels(new SettingLabelSelector().setNameFilter(setting.getLabel()));
+        assertEquals(1, labels.stream().count());
+        assertEquals(label, labels.iterator().next().getName());
+        // List labels with wildcard label filter
+        String label2 = setting2.getLabel();
+        PagedIterable<SettingLabel> wildCardLabels = client.listLabels(new SettingLabelSelector().setNameFilter("label*"));
+        List<String> collect = wildCardLabels.stream().collect(Collectors.toList()).stream().map(SettingLabel::getName).collect(Collectors.toList());
+        assertTrue(collect.contains(label));
+        assertTrue(collect.contains(label2));
+        // List all labels
+        PagedIterable<SettingLabel> allLabels = client.listLabels();
+        assertTrue(allLabels.stream().count() >= 2);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)  {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        client.listConfigurationSettings(null)
+                .stream()
+                .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
+        // Prepare two settings with different tags
+        List<ConfigurationSetting> preparedSettings = listSettingByTagsFilterRunner(setting ->
+                assertConfigurationEquals(setting,
+                        client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue()));
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+
+        // List setting by first tags filter, it should return all settings
+        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(
+                new SettingSelector().setTagsFilter(getTagsFilterInString(setting.getTags())));
+        Iterator<ConfigurationSetting> iterator = configurationSettings.iterator();
+        assertConfigurationEquals(setting, iterator.next());
+        assertConfigurationEquals(setting2, iterator.next());
+        // List setting by second tags filter, it should return only one setting
+        PagedIterable<ConfigurationSetting> configurationSettings2 = client.listConfigurationSettings(
+                new SettingSelector().setTagsFilter(getTagsFilterInString(setting2.getTags())));
+        assertEquals(1, configurationSettings2.stream().count());
+        assertConfigurationEquals(setting2, configurationSettings2.iterator().next());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Create 3 revisions of the same key.
+        List<ConfigurationSetting> configurationSettings = listRevisionsWithTagsFilterRunner(setting -> {
+            assertConfigurationEquals(setting, client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
+        });
+        ConfigurationSetting original = configurationSettings.get(0);
+        // Get all revisions for a key with tags filter, they are listed in descending order.
+        List<ConfigurationSetting> revisions = client.listRevisions(
+                new SettingSelector()
+                        .setKeyFilter(original.getKey())
+                        .setTagsFilter(getTagsFilterInString(original.getTags())))
+                .stream().collect(Collectors.toList());
+        assertEquals(1, revisions.size());
+        assertConfigurationEquals(original, revisions.get(0));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        client.listConfigurationSettings(null)
+                .stream()
+                .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
+        // Prepare settings before creating a snapshot
+        List<ConfigurationSetting> settings = createSnapshotWithTagsFilterPrepareRunner(setting ->
+                assertConfigurationEquals(setting, client.addConfigurationSetting(setting)));
+        ConfigurationSetting setting = settings.get(0);
+        ConfigurationSetting settingWithTag = settings.get(1);
+        assertTrue(setting.getTags().isEmpty());
+        assertFalse(settingWithTag.getTags().isEmpty());
+
+        createSnapshotWithTagsFilterRunner((name, filters) -> {
+            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
+                    .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
+                    client.beginCreateSnapshot(name, snapshot, Context.NONE);
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSnapshot snapshotResult = poller.getFinalResult();
+            assertEquals(name, snapshotResult.getName());
+            // The snapshot should only contain the setting with tags
+            PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettingsForSnapshot(
+                    name, null, Context.NONE);
+            List<ConfigurationSetting> list = configurationSettings.stream().collect(Collectors.toList());
+            assertEquals(settingWithTag.getTags(), list.get(0).getTags());
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            assertEquals(ConfigurationSnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
         });
     }
 

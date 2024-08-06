@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The role management policy approval rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("RoleManagementPolicyApprovalRule")
+/**
+ * The role management policy approval rule.
+ */
 @Fluent
 public final class RoleManagementPolicyApprovalRule extends RoleManagementPolicyRule {
     /*
+     * The type of rule
+     */
+    private RoleManagementPolicyRuleType ruleType = RoleManagementPolicyRuleType.ROLE_MANAGEMENT_POLICY_APPROVAL_RULE;
+
+    /*
      * The approval setting
      */
-    @JsonProperty(value = "setting")
     private ApprovalSettings setting;
 
-    /** Creates an instance of RoleManagementPolicyApprovalRule class. */
+    /**
+     * Creates an instance of RoleManagementPolicyApprovalRule class.
+     */
     public RoleManagementPolicyApprovalRule() {
     }
 
     /**
+     * Get the ruleType property: The type of rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public RoleManagementPolicyRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the setting property: The approval setting.
-     *
+     * 
      * @return the setting value.
      */
     public ApprovalSettings setting() {
@@ -35,7 +52,7 @@ public final class RoleManagementPolicyApprovalRule extends RoleManagementPolicy
 
     /**
      * Set the setting property: The approval setting.
-     *
+     * 
      * @param setting the setting value to set.
      * @return the RoleManagementPolicyApprovalRule object itself.
      */
@@ -44,14 +61,18 @@ public final class RoleManagementPolicyApprovalRule extends RoleManagementPolicy
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyApprovalRule withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyApprovalRule withTarget(RoleManagementPolicyRuleTarget target) {
         super.withTarget(target);
@@ -60,7 +81,7 @@ public final class RoleManagementPolicyApprovalRule extends RoleManagementPolicy
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -69,5 +90,53 @@ public final class RoleManagementPolicyApprovalRule extends RoleManagementPolicy
         if (setting() != null) {
             setting().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("target", target());
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeJsonField("setting", this.setting);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyApprovalRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyApprovalRule if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyApprovalRule.
+     */
+    public static RoleManagementPolicyApprovalRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyApprovalRule deserializedRoleManagementPolicyApprovalRule
+                = new RoleManagementPolicyApprovalRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyApprovalRule.withId(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedRoleManagementPolicyApprovalRule
+                        .withTarget(RoleManagementPolicyRuleTarget.fromJson(reader));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyApprovalRule.ruleType
+                        = RoleManagementPolicyRuleType.fromString(reader.getString());
+                } else if ("setting".equals(fieldName)) {
+                    deserializedRoleManagementPolicyApprovalRule.setting = ApprovalSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyApprovalRule;
+        });
     }
 }

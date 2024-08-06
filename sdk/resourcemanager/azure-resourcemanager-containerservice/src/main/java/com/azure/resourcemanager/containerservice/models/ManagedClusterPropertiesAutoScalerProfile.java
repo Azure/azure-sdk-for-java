@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters to be applied to the cluster-autoscaler when enabled.
  */
 @Fluent
-public final class ManagedClusterPropertiesAutoScalerProfile {
+public final class ManagedClusterPropertiesAutoScalerProfile
+    implements JsonSerializable<ManagedClusterPropertiesAutoScalerProfile> {
     /*
      * Valid values are 'true' and 'false'
      */
-    @JsonProperty(value = "balance-similar-node-groups")
     private String balanceSimilarNodeGroups;
 
     /*
@@ -23,7 +27,6 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
      * pod cannot be evicted another node will be chosen for scaling. If set to false, the node will be deleted without
      * ensuring that daemonset pods are deleted or evicted.
      */
-    @JsonProperty(value = "daemonset-eviction-for-empty-nodes")
     private Boolean daemonsetEvictionForEmptyNodes;
 
     /*
@@ -31,13 +34,11 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
      * daemonset pod cannot be evicted another node will be chosen for scaling. If set to false, the node will be
      * deleted without ensuring that daemonset pods are deleted or evicted.
      */
-    @JsonProperty(value = "daemonset-eviction-for-occupied-nodes")
     private Boolean daemonsetEvictionForOccupiedNodes;
 
     /*
      * If set to true, the resources used by daemonset will be taken into account when making scaling down decisions.
      */
-    @JsonProperty(value = "ignore-daemonsets-utilization")
     private Boolean ignoreDaemonsetsUtilization;
 
     /*
@@ -45,32 +46,27 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
      * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders)
      * for more information.
      */
-    @JsonProperty(value = "expander")
     private Expander expander;
 
     /*
      * The default is 10.
      */
-    @JsonProperty(value = "max-empty-bulk-delete")
     private String maxEmptyBulkDelete;
 
     /*
      * The default is 600.
      */
-    @JsonProperty(value = "max-graceful-termination-sec")
     private String maxGracefulTerminationSec;
 
     /*
      * The default is '15m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is
      * supported.
      */
-    @JsonProperty(value = "max-node-provision-time")
     private String maxNodeProvisionTime;
 
     /*
      * The default is 45. The maximum is 100 and the minimum is 0.
      */
-    @JsonProperty(value = "max-total-unready-percentage")
     private String maxTotalUnreadyPercentage;
 
     /*
@@ -78,72 +74,61 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
      * schedule all the pods, you can tell CA to ignore unscheduled pods before they're a certain age. The default is
      * '0s'. Values must be an integer followed by a unit ('s' for seconds, 'm' for minutes, 'h' for hours, etc).
      */
-    @JsonProperty(value = "new-pod-scale-up-delay")
     private String newPodScaleUpDelay;
 
     /*
      * This must be an integer. The default is 3.
      */
-    @JsonProperty(value = "ok-total-unready-count")
     private String okTotalUnreadyCount;
 
     /*
      * The default is '10'. Values must be an integer number of seconds.
      */
-    @JsonProperty(value = "scan-interval")
     private String scanInterval;
 
     /*
      * The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is
      * supported.
      */
-    @JsonProperty(value = "scale-down-delay-after-add")
     private String scaleDownDelayAfterAdd;
 
     /*
      * The default is the scan-interval. Values must be an integer followed by an 'm'. No unit of time other than
      * minutes (m) is supported.
      */
-    @JsonProperty(value = "scale-down-delay-after-delete")
     private String scaleDownDelayAfterDelete;
 
     /*
      * The default is '3m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is
      * supported.
      */
-    @JsonProperty(value = "scale-down-delay-after-failure")
     private String scaleDownDelayAfterFailure;
 
     /*
      * The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is
      * supported.
      */
-    @JsonProperty(value = "scale-down-unneeded-time")
     private String scaleDownUnneededTime;
 
     /*
      * The default is '20m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is
      * supported.
      */
-    @JsonProperty(value = "scale-down-unready-time")
     private String scaleDownUnreadyTime;
 
     /*
      * The default is '0.5'.
      */
-    @JsonProperty(value = "scale-down-utilization-threshold")
     private String scaleDownUtilizationThreshold;
 
     /*
      * The default is true.
      */
-    @JsonProperty(value = "skip-nodes-with-local-storage")
     private String skipNodesWithLocalStorage;
 
     /*
      * The default is true.
      */
-    @JsonProperty(value = "skip-nodes-with-system-pods")
     private String skipNodesWithSystemPods;
 
     /**
@@ -594,5 +579,109 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("balance-similar-node-groups", this.balanceSimilarNodeGroups);
+        jsonWriter.writeBooleanField("daemonset-eviction-for-empty-nodes", this.daemonsetEvictionForEmptyNodes);
+        jsonWriter.writeBooleanField("daemonset-eviction-for-occupied-nodes", this.daemonsetEvictionForOccupiedNodes);
+        jsonWriter.writeBooleanField("ignore-daemonsets-utilization", this.ignoreDaemonsetsUtilization);
+        jsonWriter.writeStringField("expander", this.expander == null ? null : this.expander.toString());
+        jsonWriter.writeStringField("max-empty-bulk-delete", this.maxEmptyBulkDelete);
+        jsonWriter.writeStringField("max-graceful-termination-sec", this.maxGracefulTerminationSec);
+        jsonWriter.writeStringField("max-node-provision-time", this.maxNodeProvisionTime);
+        jsonWriter.writeStringField("max-total-unready-percentage", this.maxTotalUnreadyPercentage);
+        jsonWriter.writeStringField("new-pod-scale-up-delay", this.newPodScaleUpDelay);
+        jsonWriter.writeStringField("ok-total-unready-count", this.okTotalUnreadyCount);
+        jsonWriter.writeStringField("scan-interval", this.scanInterval);
+        jsonWriter.writeStringField("scale-down-delay-after-add", this.scaleDownDelayAfterAdd);
+        jsonWriter.writeStringField("scale-down-delay-after-delete", this.scaleDownDelayAfterDelete);
+        jsonWriter.writeStringField("scale-down-delay-after-failure", this.scaleDownDelayAfterFailure);
+        jsonWriter.writeStringField("scale-down-unneeded-time", this.scaleDownUnneededTime);
+        jsonWriter.writeStringField("scale-down-unready-time", this.scaleDownUnreadyTime);
+        jsonWriter.writeStringField("scale-down-utilization-threshold", this.scaleDownUtilizationThreshold);
+        jsonWriter.writeStringField("skip-nodes-with-local-storage", this.skipNodesWithLocalStorage);
+        jsonWriter.writeStringField("skip-nodes-with-system-pods", this.skipNodesWithSystemPods);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterPropertiesAutoScalerProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterPropertiesAutoScalerProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterPropertiesAutoScalerProfile.
+     */
+    public static ManagedClusterPropertiesAutoScalerProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterPropertiesAutoScalerProfile deserializedManagedClusterPropertiesAutoScalerProfile
+                = new ManagedClusterPropertiesAutoScalerProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("balance-similar-node-groups".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.balanceSimilarNodeGroups = reader.getString();
+                } else if ("daemonset-eviction-for-empty-nodes".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.daemonsetEvictionForEmptyNodes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("daemonset-eviction-for-occupied-nodes".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.daemonsetEvictionForOccupiedNodes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ignore-daemonsets-utilization".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.ignoreDaemonsetsUtilization
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("expander".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.expander
+                        = Expander.fromString(reader.getString());
+                } else if ("max-empty-bulk-delete".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.maxEmptyBulkDelete = reader.getString();
+                } else if ("max-graceful-termination-sec".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.maxGracefulTerminationSec
+                        = reader.getString();
+                } else if ("max-node-provision-time".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.maxNodeProvisionTime = reader.getString();
+                } else if ("max-total-unready-percentage".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.maxTotalUnreadyPercentage
+                        = reader.getString();
+                } else if ("new-pod-scale-up-delay".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.newPodScaleUpDelay = reader.getString();
+                } else if ("ok-total-unready-count".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.okTotalUnreadyCount = reader.getString();
+                } else if ("scan-interval".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scanInterval = reader.getString();
+                } else if ("scale-down-delay-after-add".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scaleDownDelayAfterAdd = reader.getString();
+                } else if ("scale-down-delay-after-delete".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scaleDownDelayAfterDelete
+                        = reader.getString();
+                } else if ("scale-down-delay-after-failure".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scaleDownDelayAfterFailure
+                        = reader.getString();
+                } else if ("scale-down-unneeded-time".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scaleDownUnneededTime = reader.getString();
+                } else if ("scale-down-unready-time".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scaleDownUnreadyTime = reader.getString();
+                } else if ("scale-down-utilization-threshold".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.scaleDownUtilizationThreshold
+                        = reader.getString();
+                } else if ("skip-nodes-with-local-storage".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.skipNodesWithLocalStorage
+                        = reader.getString();
+                } else if ("skip-nodes-with-system-pods".equals(fieldName)) {
+                    deserializedManagedClusterPropertiesAutoScalerProfile.skipNodesWithSystemPods = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterPropertiesAutoScalerProfile;
+        });
     }
 }

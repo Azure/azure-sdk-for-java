@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class which is a sparse representation of a Traffic Manager endpoint. */
+/**
+ * Class which is a sparse representation of a Traffic Manager endpoint.
+ */
 @Fluent
-public final class HeatMapEndpoint {
+public final class HeatMapEndpoint implements JsonSerializable<HeatMapEndpoint> {
     /*
      * The ARM Resource ID of this Traffic Manager endpoint.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * A number uniquely identifying this endpoint in query experiences.
      */
-    @JsonProperty(value = "endpointId")
     private Integer endpointId;
 
-    /** Creates an instance of HeatMapEndpoint class. */
+    /**
+     * Creates an instance of HeatMapEndpoint class.
+     */
     public HeatMapEndpoint() {
     }
 
     /**
      * Get the resourceId property: The ARM Resource ID of this Traffic Manager endpoint.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +43,7 @@ public final class HeatMapEndpoint {
 
     /**
      * Set the resourceId property: The ARM Resource ID of this Traffic Manager endpoint.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the HeatMapEndpoint object itself.
      */
@@ -48,7 +54,7 @@ public final class HeatMapEndpoint {
 
     /**
      * Get the endpointId property: A number uniquely identifying this endpoint in query experiences.
-     *
+     * 
      * @return the endpointId value.
      */
     public Integer endpointId() {
@@ -57,7 +63,7 @@ public final class HeatMapEndpoint {
 
     /**
      * Set the endpointId property: A number uniquely identifying this endpoint in query experiences.
-     *
+     * 
      * @param endpointId the endpointId value to set.
      * @return the HeatMapEndpoint object itself.
      */
@@ -68,9 +74,48 @@ public final class HeatMapEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeNumberField("endpointId", this.endpointId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HeatMapEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HeatMapEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HeatMapEndpoint.
+     */
+    public static HeatMapEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HeatMapEndpoint deserializedHeatMapEndpoint = new HeatMapEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedHeatMapEndpoint.resourceId = reader.getString();
+                } else if ("endpointId".equals(fieldName)) {
+                    deserializedHeatMapEndpoint.endpointId = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHeatMapEndpoint;
+        });
     }
 }

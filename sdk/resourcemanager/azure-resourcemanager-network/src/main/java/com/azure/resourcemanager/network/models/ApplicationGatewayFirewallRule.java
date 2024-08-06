@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A web application firewall rule.
  */
 @Fluent
-public final class ApplicationGatewayFirewallRule {
+public final class ApplicationGatewayFirewallRule implements JsonSerializable<ApplicationGatewayFirewallRule> {
     /*
      * The identifier of the web application firewall rule.
      */
-    @JsonProperty(value = "ruleId", required = true)
     private int ruleId;
 
     /*
      * The string representation of the web application firewall rule identifier.
      */
-    @JsonProperty(value = "ruleIdString")
     private String ruleIdString;
 
     /*
      * The string representation of the web application firewall rule state.
      */
-    @JsonProperty(value = "state")
     private ApplicationGatewayWafRuleStateTypes state;
 
     /*
      * The string representation of the web application firewall rule action.
      */
-    @JsonProperty(value = "action")
     private ApplicationGatewayWafRuleActionTypes action;
 
     /*
      * The description of the web application firewall rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -154,5 +153,57 @@ public final class ApplicationGatewayFirewallRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("ruleId", this.ruleId);
+        jsonWriter.writeStringField("ruleIdString", this.ruleIdString);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayFirewallRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayFirewallRule if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayFirewallRule.
+     */
+    public static ApplicationGatewayFirewallRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayFirewallRule deserializedApplicationGatewayFirewallRule
+                = new ApplicationGatewayFirewallRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleId".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.ruleId = reader.getInt();
+                } else if ("ruleIdString".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.ruleIdString = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.state
+                        = ApplicationGatewayWafRuleStateTypes.fromString(reader.getString());
+                } else if ("action".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.action
+                        = ApplicationGatewayWafRuleActionTypes.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayFirewallRule;
+        });
     }
 }

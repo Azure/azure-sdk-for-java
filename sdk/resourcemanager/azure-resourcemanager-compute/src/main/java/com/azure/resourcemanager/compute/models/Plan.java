@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies information about the marketplace image used to create the virtual machine. This element is only used for
@@ -14,30 +18,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * programmatically, Get Started -&gt;**. Enter any required information and then click **Save**.
  */
 @Fluent
-public final class Plan {
+public final class Plan implements JsonSerializable<Plan> {
     /*
      * The plan ID.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The publisher ID.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference
      * element.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * The promotion code.
      */
-    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /**
@@ -134,5 +134,50 @@ public final class Plan {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("promotionCode", this.promotionCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Plan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Plan if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Plan.
+     */
+    public static Plan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Plan deserializedPlan = new Plan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPlan.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedPlan.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPlan.product = reader.getString();
+                } else if ("promotionCode".equals(fieldName)) {
+                    deserializedPlan.promotionCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlan;
+        });
     }
 }

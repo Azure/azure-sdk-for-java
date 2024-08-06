@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationPolicyGroupInner;
 import com.azure.resourcemanager.network.models.VpnPolicyMemberAttributeType;
 import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGroupMember;
-
 import java.util.Arrays;
 
 /**
@@ -21,7 +20,7 @@ public final class ConfigurationPolicyGroupsCreateOrUpdateSamples {
      */
     /**
      * Sample code: ConfigurationPolicyGroupPut.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configurationPolicyGroupPut(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Source information for a deployment.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = UserSourceInfo.class)
-@JsonTypeName("UserSourceInfo")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "UploadedUserSourceInfo", value = UploadedUserSourceInfo.class),
-    @JsonSubTypes.Type(name = "BuildResult", value = BuildResultUserSourceInfo.class),
-    @JsonSubTypes.Type(name = "Container", value = CustomContainerUserSourceInfo.class) })
 @Fluent
-public class UserSourceInfo {
+public class UserSourceInfo implements JsonSerializable<UserSourceInfo> {
+    /*
+     * Type of the source uploaded
+     */
+    private String type = "UserSourceInfo";
+
     /*
      * Version of the source
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
      * Creates an instance of UserSourceInfo class.
      */
     public UserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -63,5 +67,81 @@ public class UserSourceInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserSourceInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserSourceInfo.
+     */
+    public static UserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("UploadedUserSourceInfo".equals(discriminatorValue)) {
+                    return UploadedUserSourceInfo.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("Jar".equals(discriminatorValue)) {
+                    return JarUploadedUserSourceInfo.fromJson(readerToUse.reset());
+                } else if ("War".equals(discriminatorValue)) {
+                    return WarUploadedUserSourceInfo.fromJson(readerToUse.reset());
+                } else if ("Source".equals(discriminatorValue)) {
+                    return SourceUploadedUserSourceInfo.fromJson(readerToUse.reset());
+                } else if ("NetCoreZip".equals(discriminatorValue)) {
+                    return NetCoreZipUploadedUserSourceInfo.fromJson(readerToUse.reset());
+                } else if ("BuildResult".equals(discriminatorValue)) {
+                    return BuildResultUserSourceInfo.fromJson(readerToUse.reset());
+                } else if ("Container".equals(discriminatorValue)) {
+                    return CustomContainerUserSourceInfo.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static UserSourceInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserSourceInfo deserializedUserSourceInfo = new UserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedUserSourceInfo.type = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedUserSourceInfo.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserSourceInfo;
+        });
     }
 }

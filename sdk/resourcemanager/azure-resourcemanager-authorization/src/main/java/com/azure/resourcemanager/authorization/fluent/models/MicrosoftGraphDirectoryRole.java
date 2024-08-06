@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * directoryRole
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -25,13 +27,11 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     /*
      * The description for the directory role. Read-only.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name for the directory role. Read-only.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
@@ -39,34 +39,33 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
      * directory role in a tenant with a POST operation. After the directory role has been activated, the property is
      * read only.
      */
-    @JsonProperty(value = "roleTemplateId")
     private String roleTemplateId;
 
     /*
      * Users that are members of this directory role. HTTP Methods: GET, POST, DELETE. Read-only. Nullable.
      */
-    @JsonProperty(value = "members")
     private List<MicrosoftGraphDirectoryObjectInner> members;
 
     /*
      * The scopedMembers property.
      */
-    @JsonProperty(value = "scopedMembers")
     private List<MicrosoftGraphScopedRoleMembership> scopedMembers;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDirectoryRole class. */
+    /**
+     * Creates an instance of MicrosoftGraphDirectoryRole class.
+     */
     public MicrosoftGraphDirectoryRole() {
     }
 
     /**
      * Get the description property: The description for the directory role. Read-only.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -75,7 +74,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
 
     /**
      * Set the description property: The description for the directory role. Read-only.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphDirectoryRole object itself.
      */
@@ -86,7 +85,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
 
     /**
      * Get the displayName property: The display name for the directory role. Read-only.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -95,7 +94,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
 
     /**
      * Set the displayName property: The display name for the directory role. Read-only.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphDirectoryRole object itself.
      */
@@ -108,7 +107,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
      * Get the roleTemplateId property: The id of the directoryRoleTemplate that this role is based on. The property
      * must be specified when activating a directory role in a tenant with a POST operation. After the directory role
      * has been activated, the property is read only.
-     *
+     * 
      * @return the roleTemplateId value.
      */
     public String roleTemplateId() {
@@ -119,7 +118,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
      * Set the roleTemplateId property: The id of the directoryRoleTemplate that this role is based on. The property
      * must be specified when activating a directory role in a tenant with a POST operation. After the directory role
      * has been activated, the property is read only.
-     *
+     * 
      * @param roleTemplateId the roleTemplateId value to set.
      * @return the MicrosoftGraphDirectoryRole object itself.
      */
@@ -131,7 +130,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     /**
      * Get the members property: Users that are members of this directory role. HTTP Methods: GET, POST, DELETE.
      * Read-only. Nullable.
-     *
+     * 
      * @return the members value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> members() {
@@ -141,7 +140,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     /**
      * Set the members property: Users that are members of this directory role. HTTP Methods: GET, POST, DELETE.
      * Read-only. Nullable.
-     *
+     * 
      * @param members the members value to set.
      * @return the MicrosoftGraphDirectoryRole object itself.
      */
@@ -152,7 +151,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
 
     /**
      * Get the scopedMembers property: The scopedMembers property.
-     *
+     * 
      * @return the scopedMembers value.
      */
     public List<MicrosoftGraphScopedRoleMembership> scopedMembers() {
@@ -161,7 +160,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
 
     /**
      * Set the scopedMembers property: The scopedMembers property.
-     *
+     * 
      * @param scopedMembers the scopedMembers value to set.
      * @return the MicrosoftGraphDirectoryRole object itself.
      */
@@ -173,10 +172,9 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -184,7 +182,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDirectoryRole object itself.
      */
@@ -193,22 +191,18 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDirectoryRole withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDirectoryRole withId(String id) {
         super.withId(id);
@@ -217,7 +211,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -229,5 +223,76 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
         if (scopedMembers() != null) {
             scopedMembers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("roleTemplateId", this.roleTemplateId);
+        jsonWriter.writeArrayField("members", this.members, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("scopedMembers", this.scopedMembers, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDirectoryRole from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDirectoryRole if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDirectoryRole.
+     */
+    public static MicrosoftGraphDirectoryRole fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDirectoryRole deserializedMicrosoftGraphDirectoryRole = new MicrosoftGraphDirectoryRole();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDirectoryRole.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDirectoryRole.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphDirectoryRole.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphDirectoryRole.displayName = reader.getString();
+                } else if ("roleTemplateId".equals(fieldName)) {
+                    deserializedMicrosoftGraphDirectoryRole.roleTemplateId = reader.getString();
+                } else if ("members".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> members
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDirectoryRole.members = members;
+                } else if ("scopedMembers".equals(fieldName)) {
+                    List<MicrosoftGraphScopedRoleMembership> scopedMembers
+                        = reader.readArray(reader1 -> MicrosoftGraphScopedRoleMembership.fromJson(reader1));
+                    deserializedMicrosoftGraphDirectoryRole.scopedMembers = scopedMembers;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDirectoryRole.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDirectoryRole;
+        });
     }
 }

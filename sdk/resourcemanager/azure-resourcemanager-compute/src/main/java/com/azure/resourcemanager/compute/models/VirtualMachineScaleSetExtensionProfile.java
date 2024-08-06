@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set extension profile.
  */
 @Fluent
-public final class VirtualMachineScaleSetExtensionProfile {
+public final class VirtualMachineScaleSetExtensionProfile
+    implements JsonSerializable<VirtualMachineScaleSetExtensionProfile> {
     /*
      * The virtual machine scale set child extension resources.
      */
-    @JsonProperty(value = "extensions")
     private List<VirtualMachineScaleSetExtensionInner> extensions;
 
     /*
@@ -25,7 +29,6 @@ public final class VirtualMachineScaleSetExtensionProfile {
      * minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
      * Minimum api-version: 2020-06-01.
      */
-    @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
 
     /**
@@ -88,5 +91,47 @@ public final class VirtualMachineScaleSetExtensionProfile {
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("extensionsTimeBudget", this.extensionsTimeBudget);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetExtensionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetExtensionProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetExtensionProfile.
+     */
+    public static VirtualMachineScaleSetExtensionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetExtensionProfile deserializedVirtualMachineScaleSetExtensionProfile
+                = new VirtualMachineScaleSetExtensionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensions".equals(fieldName)) {
+                    List<VirtualMachineScaleSetExtensionInner> extensions
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetExtensionProfile.extensions = extensions;
+                } else if ("extensionsTimeBudget".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProfile.extensionsTimeBudget = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetExtensionProfile;
+        });
     }
 }

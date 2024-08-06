@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbDatabasePropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * An Azure Cosmos DB MongoDB database event.
  */
 @Fluent
-public final class RestorableMongodbDatabaseGetResultInner {
+public final class RestorableMongodbDatabaseGetResultInner
+    implements JsonSerializable<RestorableMongodbDatabaseGetResultInner> {
     /*
      * The properties of a MongoDB database event.
      */
-    @JsonProperty(value = "properties")
     private RestorableMongodbDatabaseProperties innerProperties;
 
     /*
      * The unique resource Identifier of the ARM resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the ARM resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of Azure resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -111,5 +112,49 @@ public final class RestorableMongodbDatabaseGetResultInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableMongodbDatabaseGetResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableMongodbDatabaseGetResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableMongodbDatabaseGetResultInner.
+     */
+    public static RestorableMongodbDatabaseGetResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableMongodbDatabaseGetResultInner deserializedRestorableMongodbDatabaseGetResultInner
+                = new RestorableMongodbDatabaseGetResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRestorableMongodbDatabaseGetResultInner.innerProperties
+                        = RestorableMongodbDatabaseProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedRestorableMongodbDatabaseGetResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableMongodbDatabaseGetResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableMongodbDatabaseGetResultInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableMongodbDatabaseGetResultInner;
+        });
     }
 }

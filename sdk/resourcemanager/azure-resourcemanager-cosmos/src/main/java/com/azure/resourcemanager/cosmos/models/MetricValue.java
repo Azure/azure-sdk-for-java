@@ -5,48 +5,47 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Represents metrics values.
  */
 @Immutable
-public class MetricValue {
+public class MetricValue implements JsonSerializable<MetricValue> {
     /*
      * The number of values for the metric.
      */
-    @JsonProperty(value = "_count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
     /*
      * The average value of the metric.
      */
-    @JsonProperty(value = "average", access = JsonProperty.Access.WRITE_ONLY)
     private Double average;
 
     /*
      * The max value of the metric.
      */
-    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Double maximum;
 
     /*
      * The min value of the metric.
      */
-    @JsonProperty(value = "minimum", access = JsonProperty.Access.WRITE_ONLY)
     private Double minimum;
 
     /*
      * The metric timestamp (ISO-8601 format).
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * The total value of the metric.
      */
-    @JsonProperty(value = "total", access = JsonProperty.Access.WRITE_ONLY)
     private Double total;
 
     /**
@@ -65,12 +64,34 @@ public class MetricValue {
     }
 
     /**
+     * Set the count property: The number of values for the metric.
+     * 
+     * @param count the count value to set.
+     * @return the MetricValue object itself.
+     */
+    MetricValue withCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
      * Get the average property: The average value of the metric.
      * 
      * @return the average value.
      */
     public Double average() {
         return this.average;
+    }
+
+    /**
+     * Set the average property: The average value of the metric.
+     * 
+     * @param average the average value to set.
+     * @return the MetricValue object itself.
+     */
+    MetricValue withAverage(Double average) {
+        this.average = average;
+        return this;
     }
 
     /**
@@ -83,12 +104,34 @@ public class MetricValue {
     }
 
     /**
+     * Set the maximum property: The max value of the metric.
+     * 
+     * @param maximum the maximum value to set.
+     * @return the MetricValue object itself.
+     */
+    MetricValue withMaximum(Double maximum) {
+        this.maximum = maximum;
+        return this;
+    }
+
+    /**
      * Get the minimum property: The min value of the metric.
      * 
      * @return the minimum value.
      */
     public Double minimum() {
         return this.minimum;
+    }
+
+    /**
+     * Set the minimum property: The min value of the metric.
+     * 
+     * @param minimum the minimum value to set.
+     * @return the MetricValue object itself.
+     */
+    MetricValue withMinimum(Double minimum) {
+        this.minimum = minimum;
+        return this;
     }
 
     /**
@@ -101,6 +144,17 @@ public class MetricValue {
     }
 
     /**
+     * Set the timestamp property: The metric timestamp (ISO-8601 format).
+     * 
+     * @param timestamp the timestamp value to set.
+     * @return the MetricValue object itself.
+     */
+    MetricValue withTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
+    /**
      * Get the total property: The total value of the metric.
      * 
      * @return the total value.
@@ -110,10 +164,67 @@ public class MetricValue {
     }
 
     /**
+     * Set the total property: The total value of the metric.
+     * 
+     * @param total the total value to set.
+     * @return the MetricValue object itself.
+     */
+    MetricValue withTotal(Double total) {
+        this.total = total;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricValue.
+     */
+    public static MetricValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricValue deserializedMetricValue = new MetricValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_count".equals(fieldName)) {
+                    deserializedMetricValue.count = reader.getNullable(JsonReader::getInt);
+                } else if ("average".equals(fieldName)) {
+                    deserializedMetricValue.average = reader.getNullable(JsonReader::getDouble);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedMetricValue.maximum = reader.getNullable(JsonReader::getDouble);
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedMetricValue.minimum = reader.getNullable(JsonReader::getDouble);
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedMetricValue.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("total".equals(fieldName)) {
+                    deserializedMetricValue.total = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricValue;
+        });
     }
 }

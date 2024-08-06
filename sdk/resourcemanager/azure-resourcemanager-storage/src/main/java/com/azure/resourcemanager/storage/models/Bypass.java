@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class Bypass extends ExpandableStringEnum<Bypass> {
      * @param name a name to look for.
      * @return the corresponding Bypass.
      */
-    @JsonCreator
     public static Bypass fromString(String name) {
         return fromString(name, Bypass.class);
     }

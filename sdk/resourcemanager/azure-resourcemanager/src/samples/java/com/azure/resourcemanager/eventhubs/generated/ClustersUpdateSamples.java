@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterInner;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public final class ClustersUpdateSamples {
      */
     /**
      * Sample code: ClusterPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void clusterPatch(com.azure.resourcemanager.AzureResourceManager azure) {

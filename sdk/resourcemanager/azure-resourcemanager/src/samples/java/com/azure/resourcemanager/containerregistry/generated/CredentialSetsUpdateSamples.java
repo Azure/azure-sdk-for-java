@@ -24,11 +24,15 @@ public final class CredentialSetsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void credentialSetUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getCredentialSets().update("myResourceGroup",
-            "myRegistry", "myCredentialSet",
-            new CredentialSetUpdateParameters().withAuthCredentials(Arrays.asList(new AuthCredential()
-                .withName(CredentialName.CREDENTIAL1).withUsernameSecretIdentifier("fakeTokenPlaceholder")
-                .withPasswordSecretIdentifier("fakeTokenPlaceholder"))),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getCredentialSets()
+            .update("myResourceGroup", "myRegistry", "myCredentialSet",
+                new CredentialSetUpdateParameters()
+                    .withAuthCredentials(Arrays.asList(new AuthCredential().withName(CredentialName.CREDENTIAL1)
+                        .withUsernameSecretIdentifier("fakeTokenPlaceholder")
+                        .withPasswordSecretIdentifier("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 }

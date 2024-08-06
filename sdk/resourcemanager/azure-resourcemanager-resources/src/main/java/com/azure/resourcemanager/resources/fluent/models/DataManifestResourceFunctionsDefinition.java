@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.DataManifestCustomResourceFunctionDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The resource functions supported by a manifest.
  */
 @Fluent
-public final class DataManifestResourceFunctionsDefinition {
+public final class DataManifestResourceFunctionsDefinition
+    implements JsonSerializable<DataManifestResourceFunctionsDefinition> {
     /*
      * The standard resource functions (subscription and/or resourceGroup).
      */
-    @JsonProperty(value = "standard")
     private List<String> standard;
 
     /*
      * An array of data manifest custom resource definition.
      */
-    @JsonProperty(value = "custom")
     private List<DataManifestCustomResourceFunctionDefinition> custom;
 
     /**
@@ -82,5 +85,48 @@ public final class DataManifestResourceFunctionsDefinition {
         if (custom() != null) {
             custom().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("standard", this.standard, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("custom", this.custom, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataManifestResourceFunctionsDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataManifestResourceFunctionsDefinition if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataManifestResourceFunctionsDefinition.
+     */
+    public static DataManifestResourceFunctionsDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataManifestResourceFunctionsDefinition deserializedDataManifestResourceFunctionsDefinition
+                = new DataManifestResourceFunctionsDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("standard".equals(fieldName)) {
+                    List<String> standard = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataManifestResourceFunctionsDefinition.standard = standard;
+                } else if ("custom".equals(fieldName)) {
+                    List<DataManifestCustomResourceFunctionDefinition> custom
+                        = reader.readArray(reader1 -> DataManifestCustomResourceFunctionDefinition.fromJson(reader1));
+                    deserializedDataManifestResourceFunctionsDefinition.custom = custom;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataManifestResourceFunctionsDefinition;
+        });
     }
 }

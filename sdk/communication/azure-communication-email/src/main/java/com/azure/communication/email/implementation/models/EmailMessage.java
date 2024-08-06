@@ -6,70 +6,65 @@ package com.azure.communication.email.implementation.models;
 
 import com.azure.communication.email.models.EmailAddress;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** Message payload for sending an email. */
+/**
+ * Message payload for sending an email.
+ */
 @Fluent
-public final class EmailMessage {
+public final class EmailMessage implements JsonSerializable<EmailMessage> {
     /*
      * Custom email headers to be passed.
      */
-    @JsonProperty(value = "headers")
     private Map<String, String> headers;
 
     /*
      * Sender email address from a verified domain.
      */
-    @JsonProperty(value = "senderAddress", required = true)
-    private String senderAddress;
+    private final String senderAddress;
 
     /*
      * Email content to be sent.
      */
-    @JsonProperty(value = "content", required = true)
-    private EmailContent content;
+    private final EmailContent content;
 
     /*
      * Recipients for the email.
      */
-    @JsonProperty(value = "recipients", required = true)
-    private EmailRecipients recipients;
+    private final EmailRecipients recipients;
 
     /*
-     * List of attachments. Please note that we limit the total size of an email request (which includes attachments)
-     * to 10MB.
+     * List of attachments. Please note that we limit the total size of an email request (which includes attachments) to
+     * 10MB.
      */
-    @JsonProperty(value = "attachments")
     private List<EmailAttachment> attachments;
 
     /*
      * Email addresses where recipients' replies will be sent to.
      */
-    @JsonProperty(value = "replyTo")
     private List<EmailAddress> replyTo;
 
     /*
      * Indicates whether user engagement tracking should be disabled for this request if the resource-level user
      * engagement tracking setting was already enabled in the control plane.
      */
-    @JsonProperty(value = "userEngagementTrackingDisabled")
     private Boolean userEngagementTrackingDisabled;
 
     /**
      * Creates an instance of EmailMessage class.
-     *
+     * 
      * @param senderAddress the senderAddress value to set.
      * @param content the content value to set.
      * @param recipients the recipients value to set.
      */
-    @JsonCreator
-    public EmailMessage(
-            @JsonProperty(value = "senderAddress", required = true) String senderAddress,
-            @JsonProperty(value = "content", required = true) EmailContent content,
-            @JsonProperty(value = "recipients", required = true) EmailRecipients recipients) {
+    public EmailMessage(String senderAddress, EmailContent content, EmailRecipients recipients) {
         this.senderAddress = senderAddress;
         this.content = content;
         this.recipients = recipients;
@@ -77,7 +72,7 @@ public final class EmailMessage {
 
     /**
      * Get the headers property: Custom email headers to be passed.
-     *
+     * 
      * @return the headers value.
      */
     public Map<String, String> getHeaders() {
@@ -86,7 +81,7 @@ public final class EmailMessage {
 
     /**
      * Set the headers property: Custom email headers to be passed.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the EmailMessage object itself.
      */
@@ -97,7 +92,7 @@ public final class EmailMessage {
 
     /**
      * Get the senderAddress property: Sender email address from a verified domain.
-     *
+     * 
      * @return the senderAddress value.
      */
     public String getSenderAddress() {
@@ -106,7 +101,7 @@ public final class EmailMessage {
 
     /**
      * Get the content property: Email content to be sent.
-     *
+     * 
      * @return the content value.
      */
     public EmailContent getContent() {
@@ -115,7 +110,7 @@ public final class EmailMessage {
 
     /**
      * Get the recipients property: Recipients for the email.
-     *
+     * 
      * @return the recipients value.
      */
     public EmailRecipients getRecipients() {
@@ -125,7 +120,7 @@ public final class EmailMessage {
     /**
      * Get the attachments property: List of attachments. Please note that we limit the total size of an email request
      * (which includes attachments) to 10MB.
-     *
+     * 
      * @return the attachments value.
      */
     public List<EmailAttachment> getAttachments() {
@@ -135,7 +130,7 @@ public final class EmailMessage {
     /**
      * Set the attachments property: List of attachments. Please note that we limit the total size of an email request
      * (which includes attachments) to 10MB.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the EmailMessage object itself.
      */
@@ -146,7 +141,7 @@ public final class EmailMessage {
 
     /**
      * Get the replyTo property: Email addresses where recipients' replies will be sent to.
-     *
+     * 
      * @return the replyTo value.
      */
     public List<EmailAddress> getReplyTo() {
@@ -155,7 +150,7 @@ public final class EmailMessage {
 
     /**
      * Set the replyTo property: Email addresses where recipients' replies will be sent to.
-     *
+     * 
      * @param replyTo the replyTo value to set.
      * @return the EmailMessage object itself.
      */
@@ -167,7 +162,7 @@ public final class EmailMessage {
     /**
      * Get the userEngagementTrackingDisabled property: Indicates whether user engagement tracking should be disabled
      * for this request if the resource-level user engagement tracking setting was already enabled in the control plane.
-     *
+     * 
      * @return the userEngagementTrackingDisabled value.
      */
     public Boolean isUserEngagementTrackingDisabled() {
@@ -177,12 +172,99 @@ public final class EmailMessage {
     /**
      * Set the userEngagementTrackingDisabled property: Indicates whether user engagement tracking should be disabled
      * for this request if the resource-level user engagement tracking setting was already enabled in the control plane.
-     *
+     * 
      * @param userEngagementTrackingDisabled the userEngagementTrackingDisabled value to set.
      * @return the EmailMessage object itself.
      */
     public EmailMessage setUserEngagementTrackingDisabled(Boolean userEngagementTrackingDisabled) {
         this.userEngagementTrackingDisabled = userEngagementTrackingDisabled;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("senderAddress", this.senderAddress);
+        jsonWriter.writeJsonField("content", this.content);
+        jsonWriter.writeJsonField("recipients", this.recipients);
+        jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("replyTo", this.replyTo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("userEngagementTrackingDisabled", this.userEngagementTrackingDisabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailMessage.
+     */
+    public static EmailMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean senderAddressFound = false;
+            String senderAddress = null;
+            boolean contentFound = false;
+            EmailContent content = null;
+            boolean recipientsFound = false;
+            EmailRecipients recipients = null;
+            Map<String, String> headers = null;
+            List<EmailAttachment> attachments = null;
+            List<EmailAddress> replyTo = null;
+            Boolean userEngagementTrackingDisabled = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("senderAddress".equals(fieldName)) {
+                    senderAddress = reader.getString();
+                    senderAddressFound = true;
+                } else if ("content".equals(fieldName)) {
+                    content = EmailContent.fromJson(reader);
+                    contentFound = true;
+                } else if ("recipients".equals(fieldName)) {
+                    recipients = EmailRecipients.fromJson(reader);
+                    recipientsFound = true;
+                } else if ("headers".equals(fieldName)) {
+                    headers = reader.readMap(reader1 -> reader1.getString());
+                } else if ("attachments".equals(fieldName)) {
+                    attachments = reader.readArray(reader1 -> EmailAttachment.fromJson(reader1));
+                } else if ("replyTo".equals(fieldName)) {
+                    replyTo = reader.readArray(reader1 -> EmailAddress.fromJson(reader1));
+                } else if ("userEngagementTrackingDisabled".equals(fieldName)) {
+                    userEngagementTrackingDisabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (senderAddressFound && contentFound && recipientsFound) {
+                EmailMessage deserializedEmailMessage = new EmailMessage(senderAddress, content, recipients);
+                deserializedEmailMessage.headers = headers;
+                deserializedEmailMessage.attachments = attachments;
+                deserializedEmailMessage.replyTo = replyTo;
+                deserializedEmailMessage.userEngagementTrackingDisabled = userEngagementTrackingDisabled;
+
+                return deserializedEmailMessage;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!senderAddressFound) {
+                missingProperties.add("senderAddress");
+            }
+            if (!contentFound) {
+                missingProperties.add("content");
+            }
+            if (!recipientsFound) {
+                missingProperties.add("recipients");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

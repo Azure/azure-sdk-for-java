@@ -6,26 +6,33 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Role assignment create parameters. */
+/**
+ * Role assignment create parameters.
+ */
 @Fluent
-public final class RoleAssignmentCreateParameters {
+public final class RoleAssignmentCreateParameters implements JsonSerializable<RoleAssignmentCreateParameters> {
     /*
      * Role assignment properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private RoleAssignmentProperties innerProperties = new RoleAssignmentProperties();
 
-    /** Creates an instance of RoleAssignmentCreateParameters class. */
+    /**
+     * Creates an instance of RoleAssignmentCreateParameters class.
+     */
     public RoleAssignmentCreateParameters() {
     }
 
     /**
      * Get the innerProperties property: Role assignment properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleAssignmentProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the scope property: The role assignment scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -43,7 +50,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -52,7 +59,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -66,7 +73,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the principalId property: The principal ID.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -75,7 +82,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the principalId property: The principal ID.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -89,7 +96,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -98,7 +105,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -112,7 +119,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the description property: Description of role assignment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -121,7 +128,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the description property: Description of role assignment.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -135,9 +142,9 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -146,9 +153,9 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -162,7 +169,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -171,7 +178,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -185,7 +192,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the createdOn property: Time it was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -194,7 +201,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the updatedOn property: Time it was updated.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -203,7 +210,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the createdBy property: Id of the user who created the assignment.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -212,7 +219,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the updatedBy property: Id of the user who updated the assignment.
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -221,7 +228,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the delegatedManagedIdentityResourceId property: Id of the delegated managed identity resource.
-     *
+     * 
      * @return the delegatedManagedIdentityResourceId value.
      */
     public String delegatedManagedIdentityResourceId() {
@@ -230,12 +237,12 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Set the delegatedManagedIdentityResourceId property: Id of the delegated managed identity resource.
-     *
+     * 
      * @param delegatedManagedIdentityResourceId the delegatedManagedIdentityResourceId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
-    public RoleAssignmentCreateParameters withDelegatedManagedIdentityResourceId(
-        String delegatedManagedIdentityResourceId) {
+    public RoleAssignmentCreateParameters
+        withDelegatedManagedIdentityResourceId(String delegatedManagedIdentityResourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RoleAssignmentProperties();
         }
@@ -245,19 +252,57 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RoleAssignmentCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model RoleAssignmentCreateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentCreateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentCreateParameters.
+     */
+    public static RoleAssignmentCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentCreateParameters deserializedRoleAssignmentCreateParameters
+                = new RoleAssignmentCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRoleAssignmentCreateParameters.innerProperties
+                        = RoleAssignmentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentCreateParameters;
+        });
+    }
 }

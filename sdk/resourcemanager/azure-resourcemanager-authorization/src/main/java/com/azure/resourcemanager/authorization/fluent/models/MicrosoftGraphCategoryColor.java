@@ -5,92 +5,145 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** categoryColor. */
+/**
+ * categoryColor.
+ */
 public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<MicrosoftGraphCategoryColor> {
-    /** Static value none for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value none for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor NONE = fromString("none");
 
-    /** Static value preset0 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset0 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET0 = fromString("preset0");
 
-    /** Static value preset1 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset1 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET1 = fromString("preset1");
 
-    /** Static value preset2 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset2 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET2 = fromString("preset2");
 
-    /** Static value preset3 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset3 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET3 = fromString("preset3");
 
-    /** Static value preset4 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset4 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET4 = fromString("preset4");
 
-    /** Static value preset5 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset5 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET5 = fromString("preset5");
 
-    /** Static value preset6 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset6 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET6 = fromString("preset6");
 
-    /** Static value preset7 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset7 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET7 = fromString("preset7");
 
-    /** Static value preset8 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset8 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET8 = fromString("preset8");
 
-    /** Static value preset9 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset9 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET9 = fromString("preset9");
 
-    /** Static value preset10 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset10 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET10 = fromString("preset10");
 
-    /** Static value preset11 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset11 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET11 = fromString("preset11");
 
-    /** Static value preset12 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset12 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET12 = fromString("preset12");
 
-    /** Static value preset13 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset13 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET13 = fromString("preset13");
 
-    /** Static value preset14 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset14 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET14 = fromString("preset14");
 
-    /** Static value preset15 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset15 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET15 = fromString("preset15");
 
-    /** Static value preset16 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset16 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET16 = fromString("preset16");
 
-    /** Static value preset17 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset17 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET17 = fromString("preset17");
 
-    /** Static value preset18 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset18 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET18 = fromString("preset18");
 
-    /** Static value preset19 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset19 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET19 = fromString("preset19");
 
-    /** Static value preset20 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset20 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET20 = fromString("preset20");
 
-    /** Static value preset21 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset21 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET21 = fromString("preset21");
 
-    /** Static value preset22 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset22 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET22 = fromString("preset22");
 
-    /** Static value preset23 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset23 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET23 = fromString("preset23");
 
-    /** Static value preset24 for MicrosoftGraphCategoryColor. */
+    /**
+     * Static value preset24 for MicrosoftGraphCategoryColor.
+     */
     public static final MicrosoftGraphCategoryColor PRESET24 = fromString("preset24");
 
     /**
      * Creates a new instance of MicrosoftGraphCategoryColor value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -99,18 +152,17 @@ public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<Micr
 
     /**
      * Creates or finds a MicrosoftGraphCategoryColor from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphCategoryColor.
      */
-    @JsonCreator
     public static MicrosoftGraphCategoryColor fromString(String name) {
         return fromString(name, MicrosoftGraphCategoryColor.class);
     }
 
     /**
      * Gets known MicrosoftGraphCategoryColor values.
-     *
+     * 
      * @return known MicrosoftGraphCategoryColor values.
      */
     public static Collection<MicrosoftGraphCategoryColor> values() {

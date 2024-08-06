@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** chatInfo. */
+/**
+ * chatInfo.
+ */
 @Fluent
-public final class MicrosoftGraphChatInfo {
+public final class MicrosoftGraphChatInfo implements JsonSerializable<MicrosoftGraphChatInfo> {
     /*
      * The unique identifier of a message in a Microsoft Teams channel.
      */
-    @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
      * The ID of the reply message.
      */
-    @JsonProperty(value = "replyChainMessageId")
     private String replyChainMessageId;
 
     /*
      * The unique identifier for a thread in Microsoft Teams.
      */
-    @JsonProperty(value = "threadId")
     private String threadId;
 
     /*
      * chatInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChatInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphChatInfo class.
+     */
     public MicrosoftGraphChatInfo() {
     }
 
     /**
      * Get the messageId property: The unique identifier of a message in a Microsoft Teams channel.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -53,7 +55,7 @@ public final class MicrosoftGraphChatInfo {
 
     /**
      * Set the messageId property: The unique identifier of a message in a Microsoft Teams channel.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the MicrosoftGraphChatInfo object itself.
      */
@@ -64,7 +66,7 @@ public final class MicrosoftGraphChatInfo {
 
     /**
      * Get the replyChainMessageId property: The ID of the reply message.
-     *
+     * 
      * @return the replyChainMessageId value.
      */
     public String replyChainMessageId() {
@@ -73,7 +75,7 @@ public final class MicrosoftGraphChatInfo {
 
     /**
      * Set the replyChainMessageId property: The ID of the reply message.
-     *
+     * 
      * @param replyChainMessageId the replyChainMessageId value to set.
      * @return the MicrosoftGraphChatInfo object itself.
      */
@@ -84,7 +86,7 @@ public final class MicrosoftGraphChatInfo {
 
     /**
      * Get the threadId property: The unique identifier for a thread in Microsoft Teams.
-     *
+     * 
      * @return the threadId value.
      */
     public String threadId() {
@@ -93,7 +95,7 @@ public final class MicrosoftGraphChatInfo {
 
     /**
      * Set the threadId property: The unique identifier for a thread in Microsoft Teams.
-     *
+     * 
      * @param threadId the threadId value to set.
      * @return the MicrosoftGraphChatInfo object itself.
      */
@@ -104,17 +106,16 @@ public final class MicrosoftGraphChatInfo {
 
     /**
      * Get the additionalProperties property: chatInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: chatInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChatInfo object itself.
      */
@@ -123,19 +124,64 @@ public final class MicrosoftGraphChatInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("replyChainMessageId", this.replyChainMessageId);
+        jsonWriter.writeStringField("threadId", this.threadId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChatInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChatInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChatInfo.
+     */
+    public static MicrosoftGraphChatInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChatInfo deserializedMicrosoftGraphChatInfo = new MicrosoftGraphChatInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatInfo.messageId = reader.getString();
+                } else if ("replyChainMessageId".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatInfo.replyChainMessageId = reader.getString();
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatInfo.threadId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChatInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChatInfo;
+        });
     }
 }
