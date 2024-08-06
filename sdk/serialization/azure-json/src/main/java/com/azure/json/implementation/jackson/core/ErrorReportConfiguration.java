@@ -65,11 +65,6 @@ public class ErrorReportConfiguration implements Serializable {
             this.maxRawContentLength = maxRawContentLength;
         }
 
-        Builder(ErrorReportConfiguration src) {
-            this.maxErrorTokenLength = src._maxErrorTokenLength;
-            this.maxRawContentLength = src._maxRawContentLength;
-        }
-
         public ErrorReportConfiguration build() {
             return new ErrorReportConfiguration(maxErrorTokenLength, maxRawContentLength);
         }

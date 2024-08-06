@@ -130,7 +130,7 @@ public class UTF32Reader extends Reader {
                     if (left == 0) {
                         return -1;
                     }
-                    reportUnexpectedEOF(_length - _ptr, 4);
+                    reportUnexpectedEOF(_length - _ptr);
                 }
             }
         }
@@ -181,11 +181,11 @@ public class UTF32Reader extends Reader {
     /**********************************************************
      */
 
-    private void reportUnexpectedEOF(int gotBytes, int needed) throws IOException {
+    private void reportUnexpectedEOF(int gotBytes) throws IOException {
         int bytePos = _byteCount + gotBytes, charPos = _charCount;
 
         throw new CharConversionException("Unexpected EOF in the middle of a 4-byte UTF-32 char: got " + gotBytes
-            + ", needed " + needed + ", at char #" + charPos + ", byte #" + bytePos + ")");
+            + ", needed " + 4 + ", at char #" + charPos + ", byte #" + bytePos + ")");
     }
 
     private void reportInvalid(int value, int offset, String msg) throws IOException {
@@ -246,7 +246,7 @@ public class UTF32Reader extends Reader {
                     if (_managedBuffers) {
                         freeBuffers(); // to help GC?
                     }
-                    reportUnexpectedEOF(_length, 4);
+                    reportUnexpectedEOF(_length);
                 }
                 // 0 count is no good; let's err out
                 reportStrangeStream();
@@ -271,7 +271,7 @@ public class UTF32Reader extends Reader {
         }
     }
 
-    private void reportBounds(char[] cbuf, int start, int len) throws IOException {
+    private void reportBounds(char[] cbuf, int start, int len) {
         throw new ArrayIndexOutOfBoundsException(String.format("read(buf,%d,%d), cbuf[%d]", start, len, cbuf.length));
     }
 

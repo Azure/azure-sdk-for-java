@@ -174,10 +174,6 @@ public enum JsonToken {
         return _serialized;
     }
 
-    public final char[] asCharArray() {
-        return _serializedChars;
-    }
-
     /**
      * @return {@code True} if this token is {@code VALUE_NUMBER_INT} or {@code VALUE_NUMBER_FLOAT},
      *   {@code false} otherwise

@@ -55,13 +55,6 @@ public final class ByteSourceJsonBootstrapper {
     /**********************************************************
      */
 
-    /**
-     * Current number of input units (bytes or chars) that were processed in
-     * previous blocks,
-     * before contents of current input buffer.
-     *<p>
-     * Note: includes possible BOMs, if those were part of the input.
-     */
     //    private int _inputProcessed;
 
     /*
@@ -181,38 +174,6 @@ public final class ByteSourceJsonBootstrapper {
         return enc;
     }
 
-    /**
-     * Helper method that may be called to see if given {@link DataInput}
-     * has BOM marker, and if so, to skip it.
-     *
-     * @param input DataInput to read content from
-     *
-     * @return Byte (as unsigned {@code int}) read after possible UTF-8 BOM
-     *
-     * @throws IOException If read from underlying input source fails
-     *
-     * @since 2.8
-     */
-    public static int skipUTF8BOM(DataInput input) throws IOException {
-        int b = input.readUnsignedByte();
-        if (b != 0xEF) {
-            return b;
-        }
-        // since this is not legal byte in JSON otherwise, except
-        // that we do get BOM; if not, report error
-        b = input.readUnsignedByte();
-        if (b != 0xBB) {
-            throw new IOException("Unexpected byte 0x" + Integer.toHexString(b)
-                + " following 0xEF; should get 0xBB as part of UTF-8 BOM");
-        }
-        b = input.readUnsignedByte();
-        if (b != 0xBF) {
-            throw new IOException("Unexpected byte 0x" + Integer.toHexString(b)
-                + " following 0xEF 0xBB; should get 0xBF as part of UTF-8 BOM");
-        }
-        return input.readUnsignedByte();
-    }
-
     /*
     /**********************************************************
     /* Constructing a Reader
@@ -265,8 +226,8 @@ public final class ByteSourceJsonBootstrapper {
             // (which is ok for larger input; not so hot for smaller; but this is not a common case)
             if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
                 ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
-                return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr,
-                    _inputEnd, bytesProcessed, _bufferRecyclable);
+                return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr, _inputEnd,
+                    bytesProcessed, _bufferRecyclable);
             }
         }
         return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), rootCharSymbols.makeChild());

@@ -32,19 +32,8 @@ public class JsonGenerationException extends StreamWriteException {
     }
 
     // @since 2.7
-    public JsonGenerationException(Throwable rootCause, JsonGenerator g) {
-        super(rootCause, g);
-    }
-
-    // @since 2.7
     public JsonGenerationException(String msg, JsonGenerator g) {
         super(msg, g);
-        _processor = g;
-    }
-
-    // @since 2.7
-    public JsonGenerationException(String msg, Throwable rootCause, JsonGenerator g) {
-        super(msg, rootCause, g);
         _processor = g;
     }
 

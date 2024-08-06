@@ -35,6 +35,7 @@ import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
  *
  * @since 2.8
  */
+@SuppressWarnings("fallthrough")
 public class UTF8DataInputJsonParser extends JsonParserBase {
     /*
     /**********************************************************
@@ -90,7 +91,8 @@ public class UTF8DataInputJsonParser extends JsonParserBase {
     /**********************************************************
      */
 
-    public UTF8DataInputJsonParser(IOContext ctxt, int features, DataInput inputData, ByteQuadsCanonicalizer sym, int firstByte) {
+    public UTF8DataInputJsonParser(IOContext ctxt, int features, DataInput inputData, ByteQuadsCanonicalizer sym,
+        int firstByte) {
         super(ctxt, features);
         _symbols = sym;
         _inputData = inputData;
@@ -144,32 +146,6 @@ public class UTF8DataInputJsonParser extends JsonParserBase {
         return _getText2(_currToken);
     }
 
-    @Override
-    public int getText(Writer writer) throws IOException {
-        JsonToken t = _currToken;
-        if (t == JsonToken.VALUE_STRING) {
-            if (_tokenIncomplete) {
-                _tokenIncomplete = false;
-                _finishString(); // only strings can be incomplete
-            }
-            return _textBuffer.contentsToWriter(writer);
-        }
-        if (t == JsonToken.FIELD_NAME) {
-            String n = _parsingContext.getCurrentName();
-            writer.write(n);
-            return n.length();
-        }
-        if (t != null) {
-            if (t.isNumeric()) {
-                return _textBuffer.contentsToWriter(writer);
-            }
-            char[] ch = t.asCharArray();
-            writer.write(ch);
-            return ch.length;
-        }
-        return 0;
-    }
-
     // // // Let's override default impls for improved performance
     @Override
     public String getValueAsString() throws IOException {
@@ -201,24 +177,6 @@ public class UTF8DataInputJsonParser extends JsonParserBase {
         return super.getValueAsString(defValue);
     }
 
-    @Override
-    public int getValueAsInt(int defValue) throws IOException {
-        JsonToken t = _currToken;
-        if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
-            // inlined 'getIntValue()'
-            if ((_numTypesValid & NR_INT) == 0) {
-                if (_numTypesValid == NR_UNKNOWN) {
-                    return _parseIntValue();
-                }
-                if ((_numTypesValid & NR_INT) == 0) {
-                    convertNumberToInt();
-                }
-            }
-            return _numberInt;
-        }
-        return super.getValueAsInt(defValue);
-    }
-
     protected final String _getText2(JsonToken t) throws IOException {
         if (t == null) {
             return null;
@@ -236,87 +194,6 @@ public class UTF8DataInputJsonParser extends JsonParserBase {
             default:
                 return t.asString();
         }
-    }
-
-    @Override
-    public char[] getTextCharacters() throws IOException {
-        if (_currToken != null) { // null only before/after document
-            switch (_currToken.id()) {
-
-                case ID_FIELD_NAME:
-                    if (!_nameCopied) {
-                        String name = _parsingContext.getCurrentName();
-                        int nameLen = name.length();
-                        if (_nameCopyBuffer == null) {
-                            _nameCopyBuffer = _ioContext.allocNameCopyBuffer(nameLen);
-                        } else if (_nameCopyBuffer.length < nameLen) {
-                            _nameCopyBuffer = new char[nameLen];
-                        }
-                        name.getChars(0, nameLen, _nameCopyBuffer, 0);
-                        _nameCopied = true;
-                    }
-                    return _nameCopyBuffer;
-
-                case ID_STRING:
-                    if (_tokenIncomplete) {
-                        _tokenIncomplete = false;
-                        _finishString(); // only strings can be incomplete
-                    }
-                    // fall through
-                case ID_NUMBER_INT:
-                case ID_NUMBER_FLOAT:
-                    return _textBuffer.getTextBuffer();
-
-                default:
-                    return _currToken.asCharArray();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public int getTextLength() throws IOException {
-        if (_currToken == JsonToken.VALUE_STRING) {
-            if (_tokenIncomplete) {
-                _tokenIncomplete = false;
-                _finishString(); // only strings can be incomplete
-            }
-            return _textBuffer.size();
-        }
-        if (_currToken == JsonToken.FIELD_NAME) {
-            return _parsingContext.getCurrentName().length();
-        }
-        if (_currToken != null) { // null only before/after document
-            if (_currToken.isNumeric()) {
-                return _textBuffer.size();
-            }
-            return _currToken.asCharArray().length;
-        }
-        return 0;
-    }
-
-    @Override
-    public int getTextOffset() throws IOException {
-        // Most have offset of 0, only some may have other values:
-        if (_currToken != null) {
-            switch (_currToken.id()) {
-                case ID_FIELD_NAME:
-                    return 0;
-
-                case ID_STRING:
-                    if (_tokenIncomplete) {
-                        _tokenIncomplete = false;
-                        _finishString(); // only strings can be incomplete
-                    }
-                    // fall through
-                case ID_NUMBER_INT:
-                case ID_NUMBER_FLOAT:
-                    return _textBuffer.getTextOffset();
-
-                default:
-            }
-        }
-        return 0;
     }
 
     @Override
@@ -1329,8 +1206,7 @@ public class UTF8DataInputJsonParser extends JsonParserBase {
         return addName(_quadBuffer, 1, lastQuadBytes);
     }
 
-    private String findName(int q1, int q2, int lastQuadBytes)
-        throws JsonParseException, StreamConstraintsException {
+    private String findName(int q1, int q2, int lastQuadBytes) throws JsonParseException, StreamConstraintsException {
         q2 = pad(q2, lastQuadBytes);
         // Usually we'll find it from the canonical symbol table already
         String name = _symbols.findName(q1, q2);
@@ -1540,7 +1416,7 @@ public class UTF8DataInputJsonParser extends JsonParserBase {
         final int[] codes = INPUT_CODES_UTF8;
         int outEnd = outBuf.length;
 
-        for (; ; c = _inputData.readUnsignedByte()) {
+        for (;; c = _inputData.readUnsignedByte()) {
             // Then the tight ASCII non-funny-char loop:
             while (codes[c] == 0) {
                 if (outPtr >= outEnd) {

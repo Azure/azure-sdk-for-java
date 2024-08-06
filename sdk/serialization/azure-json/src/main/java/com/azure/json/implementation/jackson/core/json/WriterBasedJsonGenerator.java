@@ -112,12 +112,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
 
     /*
     /**********************************************************
-    /* Overridden configuration, introspection methods
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
     /* Overridden methods
     /**********************************************************
      */
@@ -125,16 +119,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
     @Override
     public void writeFieldName(String name) throws IOException {
         int status = _writeContext.writeFieldName(name);
-        if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
-            _reportError("Can not write a field name, expecting a value");
-        }
-        _writeFieldName(name, (status == JsonWriteContext.STATUS_OK_AFTER_COMMA));
-    }
-
-    @Override
-    public void writeFieldName(SerializableString name) throws IOException {
-        // Object is a value, need to verify it's allowed
-        int status = _writeContext.writeFieldName(name.getValue());
         if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
             _reportError("Can not write a field name, expecting a value");
         }
@@ -159,45 +143,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         // The beef:
         _writeString(name);
         // and closing quotes; need room for one more char:
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    protected final void _writeFieldName(SerializableString name, boolean commaBefore) throws IOException {
-        // for fast+std case, need to output up to 2 chars, comma, dquote
-        if ((_outputTail + 1) >= _outputEnd) {
-            _flushBuffer();
-        }
-        if (commaBefore) {
-            _outputBuffer[_outputTail++] = ',';
-        }
-        // Alternate mode, in which quoting of field names disabled?
-        if (_cfgUnqNames) {
-            final char[] ch = name.asQuotedChars();
-            writeRaw(ch, 0, ch.length);
-            return;
-        }
-        // we know there's room for at least one more char
-        _outputBuffer[_outputTail++] = _quoteChar;
-        // The beef:
-
-        int len = name.appendQuoted(_outputBuffer, _outputTail);
-        if (len < 0) {
-            _writeFieldNameTail(name);
-            return;
-        }
-        _outputTail += len;
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    private void _writeFieldNameTail(SerializableString name) throws IOException {
-        final char[] quoted = name.asQuotedChars();
-        writeRaw(quoted, 0, quoted.length);
         if (_outputTail >= _outputEnd) {
             _flushBuffer();
         }
@@ -244,23 +189,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         _outputBuffer[_outputTail++] = '{';
     }
 
-    @Override // since 2.8
-    public void writeStartObject(Object forValue) throws IOException {
-        _verifyValueWrite("start an object");
-        JsonWriteContext ctxt = _writeContext.createChildObjectContext(forValue);
-        streamWriteConstraints().validateNestingDepth(_writeContext.getNestingDepth());
-        _writeContext = ctxt;
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = '{';
-    }
-
-    @Override // since 2.14
-    public void writeStartObject(Object forValue, int size) throws IOException {
-        writeStartObject(forValue);
-    }
-
     @Override
     public void writeEndObject() throws IOException {
         if (!_writeContext.inObject()) {
@@ -292,96 +220,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         _outputBuffer[_outputTail++] = _quoteChar;
         _writeString(text);
         // And finally, closing quotes
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    @Override
-    public void writeString(Reader reader, final int len) throws IOException {
-        _verifyValueWrite(WRITE_STRING);
-        if (reader == null) {
-            _reportError("null reader");
-            return; // just to block warnings by lgtm.com
-        }
-        int toRead = (len >= 0) ? len : Integer.MAX_VALUE;
-        // Add leading quote
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-
-        final char[] buf = _allocateCopyBuffer();
-        while (toRead > 0) {
-            int toReadNow = Math.min(toRead, buf.length);
-            int numRead = reader.read(buf, 0, toReadNow);
-            if (numRead <= 0) {
-                break;
-            }
-            _writeString(buf, 0, numRead);
-            toRead -= numRead;
-        }
-        // Add trailing quote
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-
-        if (toRead > 0 && len >= 0) {
-            _reportError("Didn't read enough from reader");
-        }
-    }
-
-    @Override
-    public void writeString(char[] text, int offset, int len) throws IOException {
-        _verifyValueWrite(WRITE_STRING);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        _writeString(text, offset, len);
-        // And finally, closing quotes
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    @Override
-    public void writeString(SerializableString sstr) throws IOException {
-        _verifyValueWrite(WRITE_STRING);
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        int len = sstr.appendQuoted(_outputBuffer, _outputTail);
-        if (len < 0) {
-            _writeString2(sstr);
-            return;
-        }
-        _outputTail += len;
-        if (_outputTail >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
-    private void _writeString2(SerializableString sstr) throws IOException {
-        // Note: copied from writeRaw:
-        char[] text = sstr.asQuotedChars();
-        final int len = text.length;
-        if (len < SHORT_WRITE) {
-            int room = _outputEnd - _outputTail;
-            if (len > room) {
-                _flushBuffer();
-            }
-            System.arraycopy(text, 0, _outputBuffer, _outputTail, len);
-            _outputTail += len;
-        } else {
-            _flushBuffer();
-            _writer.write(text, 0, len);
-        }
         if (_outputTail >= _outputEnd) {
             _flushBuffer();
         }
@@ -431,17 +269,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         } else {
             writeRawLong(text.substring(offset, offset + len));
         }
-    }
-
-    // @since 2.1
-    @Override
-    public void writeRaw(SerializableString text) throws IOException {
-        int len = text.appendUnquoted(_outputBuffer, _outputTail);
-        if (len < 0) {
-            writeRaw(text.getValue());
-            return;
-        }
-        _outputTail += len;
     }
 
     @Override
@@ -494,8 +321,7 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
      */
 
     @Override
-    public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len)
-        throws IOException {
+    public void writeBinary(Base64Variant b64variant, byte[] data, int offset, int len) throws IOException {
         _checkRangeBoundsForByteArray(data, offset, len);
 
         _verifyValueWrite(WRITE_BINARY);
@@ -883,64 +709,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         }
     }
 
-    /**
-     * This method called when the string content is already in
-     * a char buffer, and need not be copied for processing.
-     */
-    private void _writeString(char[] text, int offset, int len) throws IOException {
-        if (_characterEscapes != null) {
-            _writeStringCustom(text, offset, len);
-            return;
-        }
-        if (_maximumNonEscapedChar != 0) {
-            _writeStringASCII(text, offset, len, _maximumNonEscapedChar);
-            return;
-        }
-
-        // Let's just find longest spans of non-escapable content, and for
-        // each see if it makes sense to copy them, or write through
-
-        len += offset; // -> len marks the end from now on
-        final int[] escCodes = _outputEscapes;
-        final int escLen = escCodes.length;
-        while (offset < len) {
-            int start = offset;
-
-            while (true) {
-                char c = text[offset];
-                if (c < escLen && escCodes[c] != 0) {
-                    break;
-                }
-                if (++offset >= len) {
-                    break;
-                }
-            }
-
-            // Short span? Better just copy it to buffer first:
-            int newAmount = offset - start;
-            if (newAmount < SHORT_WRITE) {
-                // Note: let's reserve room for escaped char (up to 6 chars)
-                if ((_outputTail + newAmount) > _outputEnd) {
-                    _flushBuffer();
-                }
-                if (newAmount > 0) {
-                    System.arraycopy(text, start, _outputBuffer, _outputTail, newAmount);
-                    _outputTail += newAmount;
-                }
-            } else { // Nope: better just write through
-                _flushBuffer();
-                _writer.write(text, start, newAmount);
-            }
-            // Was this the end?
-            if (offset >= len) { // yup
-                break;
-            }
-            // Nope, need to escape the char.
-            char c = text[offset++];
-            _appendCharacterEscape(c, escCodes[c]);
-        }
-    }
-
     /*
     /**********************************************************
     /* Internal methods, low-level writing, text segment
@@ -1020,59 +788,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
             }
             ++ptr;
             start = _prependOrWriteCharacterEscape(_outputBuffer, ptr, end, c, escCode);
-        }
-    }
-
-    private void _writeStringASCII(char[] text, int offset, int len, final int maxNonEscaped)
-        throws IOException {
-        len += offset; // -> len marks the end from now on
-        final int[] escCodes = _outputEscapes;
-        final int escLimit = Math.min(escCodes.length, maxNonEscaped + 1);
-
-        int escCode = 0;
-
-        while (offset < len) {
-            int start = offset;
-            char c;
-
-            while (true) {
-                c = text[offset];
-                if (c < escLimit) {
-                    escCode = escCodes[c];
-                    if (escCode != 0) {
-                        break;
-                    }
-                } else if (c > maxNonEscaped) {
-                    escCode = CharacterEscapes.ESCAPE_STANDARD;
-                    break;
-                }
-                if (++offset >= len) {
-                    break;
-                }
-            }
-
-            // Short span? Better just copy it to buffer first:
-            int newAmount = offset - start;
-            if (newAmount < SHORT_WRITE) {
-                // Note: let's reserve room for escaped char (up to 6 chars)
-                if ((_outputTail + newAmount) > _outputEnd) {
-                    _flushBuffer();
-                }
-                if (newAmount > 0) {
-                    System.arraycopy(text, start, _outputBuffer, _outputTail, newAmount);
-                    _outputTail += newAmount;
-                }
-            } else { // Nope: better just write through
-                _flushBuffer();
-                _writer.write(text, start, newAmount);
-            }
-            // Was this the end?
-            if (offset >= len) { // yup
-                break;
-            }
-            // Nope, need to escape the char.
-            ++offset;
-            _appendCharacterEscape(c, escCode);
         }
     }
 
@@ -1169,65 +884,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
             }
             ++ptr;
             start = _prependOrWriteCharacterEscape(_outputBuffer, ptr, end, c, escCode);
-        }
-    }
-
-    private void _writeStringCustom(char[] text, int offset, int len) throws IOException {
-        len += offset; // -> len marks the end from now on
-        final int[] escCodes = _outputEscapes;
-        final int maxNonEscaped = (_maximumNonEscapedChar < 1) ? 0xFFFF : _maximumNonEscapedChar;
-        final int escLimit = Math.min(escCodes.length, maxNonEscaped + 1);
-        final CharacterEscapes customEscapes = _characterEscapes;
-
-        int escCode = 0;
-
-        while (offset < len) {
-            int start = offset;
-            char c;
-
-            while (true) {
-                c = text[offset];
-                if (c < escLimit) {
-                    escCode = escCodes[c];
-                    if (escCode != 0) {
-                        break;
-                    }
-                } else if (c > maxNonEscaped) {
-                    escCode = CharacterEscapes.ESCAPE_STANDARD;
-                    break;
-                } else {
-                    if ((_currentEscape = customEscapes.getEscapeSequence(c)) != null) {
-                        escCode = CharacterEscapes.ESCAPE_CUSTOM;
-                        break;
-                    }
-                }
-                if (++offset >= len) {
-                    break;
-                }
-            }
-
-            // Short span? Better just copy it to buffer first:
-            int newAmount = offset - start;
-            if (newAmount < SHORT_WRITE) {
-                // Note: let's reserve room for escaped char (up to 6 chars)
-                if ((_outputTail + newAmount) > _outputEnd) {
-                    _flushBuffer();
-                }
-                if (newAmount > 0) {
-                    System.arraycopy(text, start, _outputBuffer, _outputTail, newAmount);
-                    _outputTail += newAmount;
-                }
-            } else { // Nope: better just write through
-                _flushBuffer();
-                _writer.write(text, start, newAmount);
-            }
-            // Was this the end?
-            if (offset >= len) { // yup
-                break;
-            }
-            // Nope, need to escape the char.
-            ++offset;
-            _appendCharacterEscape(c, escCode);
         }
     }
 
@@ -1472,62 +1128,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         return ptr;
     }
 
-    /**
-     * Method called to append escape sequence for given character, at the
-     * end of standard output buffer; or if not possible, write out directly.
-     */
-    private void _appendCharacterEscape(char ch, int escCode) throws IOException {
-        if (escCode >= 0) { // \\N (2 char)
-            if ((_outputTail + 2) > _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = '\\';
-            _outputBuffer[_outputTail++] = (char) escCode;
-            return;
-        }
-        if (escCode != CharacterEscapes.ESCAPE_CUSTOM) { // std, \\uXXXX
-            if ((_outputTail + 5) >= _outputEnd) {
-                _flushBuffer();
-            }
-            int ptr = _outputTail;
-            char[] buf = _outputBuffer;
-            char[] HEX_CHARS = getHexChars();
-            buf[ptr++] = '\\';
-            buf[ptr++] = 'u';
-            // We know it's a control char, so only the last 2 chars are non-0
-            if (ch > 0xFF) { // beyond 8 bytes
-                int hi = (ch >> 8) & 0xFF;
-                buf[ptr++] = HEX_CHARS[hi >> 4];
-                buf[ptr++] = HEX_CHARS[hi & 0xF];
-                ch &= 0xFF;
-            } else {
-                buf[ptr++] = '0';
-                buf[ptr++] = '0';
-            }
-            buf[ptr++] = HEX_CHARS[ch >> 4];
-            buf[ptr++] = HEX_CHARS[ch & 0xF];
-            _outputTail = ptr;
-            return;
-        }
-        String escape;
-        if (_currentEscape == null) {
-            escape = _characterEscapes.getEscapeSequence(ch).getValue();
-        } else {
-            escape = _currentEscape.getValue();
-            _currentEscape = null;
-        }
-        int len = escape.length();
-        if ((_outputTail + len) > _outputEnd) {
-            _flushBuffer();
-            if (len > _outputEnd) { // very very long escape; unlikely but theoretically possible
-                _writer.write(escape);
-                return;
-            }
-        }
-        escape.getChars(0, len, _outputBuffer, _outputTail);
-        _outputTail += len;
-    }
-
     private char[] _allocateEntityBuffer() {
         char[] buf = new char[14];
         // first 2 chars, non-numeric escapes (like \n)
@@ -1542,16 +1142,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
         buf[9] = 'u';
         _entityBuffer = buf;
         return buf;
-    }
-
-    /**
-     * @since 2.9
-     */
-    private char[] _allocateCopyBuffer() {
-        if (_copyBuffer == null) {
-            _copyBuffer = _ioContext.allocNameCopyBuffer(2000);
-        }
-        return _copyBuffer;
     }
 
     protected void _flushBuffer() throws IOException {

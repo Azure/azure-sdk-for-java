@@ -744,8 +744,9 @@ public final class CharsToNameCanonicalizer {
      * @since 2.1
      */
     private void _reportTooManyCollisions() throws StreamConstraintsException {
-        throw new StreamConstraintsException("Longest collision chain in symbol table (of size " + _size
-            + ") now exceeds maximum, " + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH + " -- suspect a DoS attack based on hash collisions");
+        throw new StreamConstraintsException(
+            "Longest collision chain in symbol table (of size " + _size + ") now exceeds maximum, "
+                + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH + " -- suspect a DoS attack based on hash collisions");
     }
 
     // since 2.10, for tests only
@@ -760,7 +761,7 @@ public final class CharsToNameCanonicalizer {
         for (String s : _symbols) {
             if (s != null) ++primaryCount;
         }
-
+    
         sb.append("[BytesToNameCanonicalizer, size: ");
         sb.append(_size);
         sb.append('/');
@@ -770,7 +771,7 @@ public final class CharsToNameCanonicalizer {
         sb.append('/');
         sb.append(_size - primaryCount);
         sb.append(" coll; avg length: ");
-
+    
         // Average length: minimum of 1 for all (1 == primary hit);
         // and then 1 per each traversal for collisions/buckets
         //int maxDist = 1;
@@ -784,7 +785,7 @@ public final class CharsToNameCanonicalizer {
             }
         }
         double avgLength;
-
+    
         if (_size == 0) {
             avgLength = 0.0;
         } else {
@@ -792,7 +793,7 @@ public final class CharsToNameCanonicalizer {
         }
         // let's round up a bit (two 2 decimal places)
         //avgLength -= (avgLength % 0.01);
-
+    
         sb.append(avgLength);
         sb.append(']');
         return sb.toString();

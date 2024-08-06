@@ -27,34 +27,6 @@ public final class JacksonFeatureSet<F extends JacksonFeature> implements java.i
     }
 
     /**
-     * "Default" factory which will calculate settings based on default-enabled
-     * status of all features.
-     *
-     * @param <F> Self-reference type for convenience
-     *
-     * @param allFeatures Set of all features (enabled or disabled): usually from
-     * {@code Enum.values()}
-     *
-     * @return Feature set instance constructed
-     */
-    public static <F extends JacksonFeature> JacksonFeatureSet<F> fromDefaults(F[] allFeatures) {
-        // first sanity check
-        if (allFeatures.length > 31) {
-            final String desc = allFeatures[0].getClass().getName();
-            throw new IllegalArgumentException(String.format(
-                "Can not use type `%s` with JacksonFeatureSet: too many entries (%d > 31)", desc, allFeatures.length));
-        }
-
-        int flags = 0;
-        for (F f : allFeatures) {
-            if (f.enabledByDefault()) {
-                flags |= f.getMask();
-            }
-        }
-        return new JacksonFeatureSet<>(flags);
-    }
-
-    /**
      * Mutant factory for getting a set in which specified feature is enabled:
      * will either return this instance (if no change), or newly created set (if there
      * is change).

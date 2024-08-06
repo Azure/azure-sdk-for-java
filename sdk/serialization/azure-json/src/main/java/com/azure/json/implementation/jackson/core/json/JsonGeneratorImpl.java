@@ -1,14 +1,14 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.json;
 
-import java.io.IOException;
-
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.JsonGenerator;
+import com.azure.json.implementation.jackson.core.StreamWriteConstraints;
 import com.azure.json.implementation.jackson.core.base.GeneratorBase;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
-import com.azure.json.implementation.jackson.core.util.VersionUtil;
+
+import java.io.IOException;
 
 /**
  * Intermediate base class shared by JSON-backed generators
@@ -109,17 +109,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
         }
         _cfgWriteHexUppercase = Feature.WRITE_HEX_UPPER_CASE.enabledIn(features);
         _cfgUnqNames = !Feature.QUOTE_FIELD_NAMES.enabledIn(features);
-    }
-
-    /*
-    /**********************************************************
-    /* Versioned
-    /**********************************************************
-     */
-
-    @Override
-    public Version version() {
-        return VersionUtil.versionFor(getClass());
     }
 
     /*

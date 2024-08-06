@@ -63,14 +63,6 @@ public class StreamReadConstraints implements java.io.Serializable {
      */
     public static final int DEFAULT_MAX_NAME_LEN = 50_000;
 
-    /**
-     * Limit for the maximum magnitude of Scale of {@link java.math.BigDecimal} that can be
-     * converted to {@link java.math.BigInteger}.
-     *<p>
-     * "100k digits ought to be enough for anybody!"
-     */
-    private static final int MAX_BIGINT_SCALE_MAGNITUDE = 100_000;
-
     protected final int _maxNestingDepth;
     protected final long _maxDocLen;
 
@@ -78,8 +70,8 @@ public class StreamReadConstraints implements java.io.Serializable {
     protected final int _maxStringLen;
     protected final int _maxNameLen;
 
-    private static final StreamReadConstraints DEFAULT = new StreamReadConstraints(DEFAULT_MAX_DEPTH, DEFAULT_MAX_DOC_LEN,
-        DEFAULT_MAX_NUM_LEN, DEFAULT_MAX_STRING_LEN, DEFAULT_MAX_NAME_LEN);
+    private static final StreamReadConstraints DEFAULT = new StreamReadConstraints(DEFAULT_MAX_DEPTH,
+        DEFAULT_MAX_DOC_LEN, DEFAULT_MAX_NUM_LEN, DEFAULT_MAX_STRING_LEN, DEFAULT_MAX_NAME_LEN);
 
     public static final class Builder {
         private final long maxDocLen;
@@ -179,16 +171,6 @@ public class StreamReadConstraints implements java.io.Serializable {
     /* Accessors
     /**********************************************************************
      */
-
-    /**
-     * Accessor for maximum length of names to decode.
-     * see {@link Builder#maxNameLength(int)} for details.
-     *
-     * @return Maximum allowed name length
-     */
-    public int getMaxNameLength() {
-        return _maxNameLen;
-    }
 
     /*
     /**********************************************************************
@@ -319,26 +301,6 @@ public class StreamReadConstraints implements java.io.Serializable {
     /* Convenience methods for validation, other
     /**********************************************************************
      */
-
-    /**
-     * Convenience method that can be used to verify that a conversion to
-     * {@link java.math.BigInteger}
-     * {@link StreamConstraintsException}
-     * is thrown.
-     *
-     * @param scale Scale (possibly negative) of {@link java.math.BigDecimal} to convert
-     *
-     * @throws StreamConstraintsException If magnitude (absolute value) of scale exceeds maximum
-     *    allowed
-     */
-    public void validateBigIntegerScale(int scale) throws StreamConstraintsException {
-        final int absScale = Math.abs(scale);
-        final int limit = MAX_BIGINT_SCALE_MAGNITUDE;
-
-        if (absScale > limit) {
-            throw _constructException("BigDecimal scale (%d) magnitude exceeds the maximum allowed (%d)", scale, limit);
-        }
-    }
 
     /*
     /**********************************************************************

@@ -177,47 +177,6 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * Method that may be called to verify whether this context has valid index:
-     * will return `false` before the first entry of Object context or before
-     * first element of Array context; otherwise returns `true`.
-     *
-     * @return {@code True} if this context has value index to access, {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasCurrentIndex() {
-        return _index >= 0;
-    }
-
-    /**
-     * Method that may be called to check if this context is either:
-     *<ul>
-     * <li>Object, with at least one entry written (partially or completely)
-     *  </li>
-     * <li>Array, with at least one entry written (partially or completely)
-     *  </li>
-     *</ul>
-     * and if so, return `true`; otherwise return `false`. Latter case includes
-     * Root context (always), and Object/Array contexts before any entries/elements
-     * have been read or written.
-     *<p>
-     * Method is mostly used to determine whether this context should be used for
-     * constructing {@code JsonPointer}
-     *
-     * @return {@code True} if this context has value path segment to access, {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasPathSegment() {
-        if (_type == TYPE_OBJECT) {
-            return hasCurrentName();
-        } else if (_type == TYPE_ARRAY) {
-            return hasCurrentIndex();
-        }
-        return false;
-    }
-
-    /**
      * Method for accessing name associated with the current location.
      * Non-null for <code>FIELD_NAME</code> and value events that directly
      * follow field names; null for root level and array values.
@@ -225,16 +184,6 @@ public abstract class JsonStreamContext {
      * @return Current field name within context, if any; {@code null} if none
      */
     public abstract String getCurrentName();
-
-    /**
-     * @return {@code True} if a call to {@link #getCurrentName()} would return non-{@code null}
-     *    name; {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasCurrentName() {
-        return getCurrentName() != null;
-    }
 
     /**
      * Method for accessing currently active value being used by data-binding
@@ -256,7 +205,7 @@ public abstract class JsonStreamContext {
 
     /**
      * Method to call to pass value to be returned via {@link #getCurrentValue}; typically
-     * called indirectly through {@link JsonParser#setCurrentValue}
+     * called indirectly through {@code JsonParser#setCurrentValue}
      * or {@link JsonGenerator#setCurrentValue}).
      *
      * @param v Current value to assign to this context

@@ -16,6 +16,7 @@ import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
  * based on a {@link java.io.Reader} to handle low-level character
  * conversion tasks.
  */
+@SuppressWarnings("fallthrough")
 public class ReaderBasedJsonParser extends JsonParserBase {
     /*
     /**********************************************************
@@ -275,32 +276,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         return _getText2(_currToken);
     }
 
-    @Override // since 2.8
-    public int getText(Writer writer) throws IOException {
-        JsonToken t = _currToken;
-        if (t == JsonToken.VALUE_STRING) {
-            if (_tokenIncomplete) {
-                _tokenIncomplete = false;
-                _finishString(); // only strings can be incomplete
-            }
-            return _textBuffer.contentsToWriter(writer);
-        }
-        if (t == JsonToken.FIELD_NAME) {
-            String n = _parsingContext.getCurrentName();
-            writer.write(n);
-            return n.length();
-        }
-        if (t != null) {
-            if (t.isNumeric()) {
-                return _textBuffer.contentsToWriter(writer);
-            }
-            char[] ch = t.asCharArray();
-            writer.write(ch);
-            return ch.length;
-        }
-        return 0;
-    }
-
     // // // Let's override default impls for improved performance
 
     // @since 2.1
@@ -352,89 +327,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
             default:
                 return t.asString();
         }
-    }
-
-    @Override
-    public final char[] getTextCharacters() throws IOException {
-        if (_currToken != null) { // null only before/after document
-            switch (_currToken.id()) {
-                case ID_FIELD_NAME:
-                    if (!_nameCopied) {
-                        String name = _parsingContext.getCurrentName();
-                        int nameLen = name.length();
-                        if (_nameCopyBuffer == null) {
-                            _nameCopyBuffer = _ioContext.allocNameCopyBuffer(nameLen);
-                        } else if (_nameCopyBuffer.length < nameLen) {
-                            _nameCopyBuffer = new char[nameLen];
-                        }
-                        name.getChars(0, nameLen, _nameCopyBuffer, 0);
-                        _nameCopied = true;
-                    }
-                    return _nameCopyBuffer;
-
-                case ID_STRING:
-                    if (_tokenIncomplete) {
-                        _tokenIncomplete = false;
-                        _finishString(); // only strings can be incomplete
-                    }
-                    // fall through
-                case ID_NUMBER_INT:
-                case ID_NUMBER_FLOAT:
-                    return _textBuffer.getTextBuffer();
-
-                default:
-                    return _currToken.asCharArray();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public final int getTextLength() throws IOException {
-        if (_currToken != null) { // null only before/after document
-            switch (_currToken.id()) {
-                case ID_FIELD_NAME:
-                    return _parsingContext.getCurrentName().length();
-
-                case ID_STRING:
-                    if (_tokenIncomplete) {
-                        _tokenIncomplete = false;
-                        _finishString(); // only strings can be incomplete
-                    }
-                    // fall through
-                case ID_NUMBER_INT:
-                case ID_NUMBER_FLOAT:
-                    return _textBuffer.size();
-
-                default:
-                    return _currToken.asCharArray().length;
-            }
-        }
-        return 0;
-    }
-
-    @Override
-    public final int getTextOffset() throws IOException {
-        // Most have offset of 0, only some may have other values:
-        if (_currToken != null) {
-            switch (_currToken.id()) {
-                case ID_FIELD_NAME:
-                    return 0;
-
-                case ID_STRING:
-                    if (_tokenIncomplete) {
-                        _tokenIncomplete = false;
-                        _finishString(); // only strings can be incomplete
-                    }
-                    // fall through
-                case ID_NUMBER_INT:
-                case ID_NUMBER_FLOAT:
-                    return _textBuffer.getTextOffset();
-
-                default:
-            }
-        }
-        return 0;
     }
 
     @Override

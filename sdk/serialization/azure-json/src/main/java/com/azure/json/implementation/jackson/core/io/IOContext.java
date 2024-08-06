@@ -202,9 +202,8 @@ public class IOContext implements AutoCloseable {
      *
      * @since 2.17
      */
-    public IOContext markBufferRecyclerReleased() {
+    public void markBufferRecyclerReleased() {
         _releaseRecycler = false;
-        return this;
     }
 
     /*
@@ -322,11 +321,6 @@ public class IOContext implements AutoCloseable {
     public char[] allocConcatBuffer() {
         _verifyAlloc(_concatCBuffer);
         return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
-    }
-
-    public char[] allocNameCopyBuffer(int minSize) {
-        _verifyAlloc(_nameCopyBuffer);
-        return (_nameCopyBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, minSize));
     }
 
     /**

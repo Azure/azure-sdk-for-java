@@ -29,34 +29,10 @@ public class StreamWriteConstraints implements java.io.Serializable {
 
     protected final int _maxNestingDepth;
 
-    private static StreamWriteConstraints DEFAULT = new StreamWriteConstraints(DEFAULT_MAX_DEPTH);
-
-    /**
-     * Override the default StreamWriteConstraints. These defaults are only used when {@link JsonFactory}
-     * instances are not configured with their own StreamWriteConstraints.
-     * <p>
-     * Library maintainers should not set this as it will affect other code that uses Jackson.
-     * Library maintainers who want to configure StreamWriteConstraints for the Jackson usage within their
-     * lib should create <code>ObjectMapper</code> instances that have a {@link JsonFactory} instance with
-     * the required StreamWriteConstraints.
-     * <p>
-     * This method is meant for users delivering applications. If they use this, they set it when they start
-     * their application to avoid having other code initialize their mappers before the defaults are overridden.
-     *
-     * @param streamWriteConstraints new default for StreamWriteConstraints (a null value will reset to built-in default)
-     * @see #defaults()
-     * @see #builder()
-     */
-    public static void overrideDefaultStreamWriteConstraints(final StreamWriteConstraints streamWriteConstraints) {
-        if (streamWriteConstraints == null) {
-            DEFAULT = new StreamWriteConstraints(DEFAULT_MAX_DEPTH);
-        } else {
-            DEFAULT = streamWriteConstraints;
-        }
-    }
+    private static final StreamWriteConstraints DEFAULT = new StreamWriteConstraints(DEFAULT_MAX_DEPTH);
 
     public static final class Builder {
-        private int maxNestingDepth;
+        private final int maxNestingDepth;
 
         Builder() {
             this(DEFAULT_MAX_DEPTH);
@@ -87,7 +63,6 @@ public class StreamWriteConstraints implements java.io.Serializable {
 
     /**
      * @return the default {@link StreamWriteConstraints} (when none is set on the {@link JsonFactory} explicitly)
-     * @see #overrideDefaultStreamWriteConstraints(StreamWriteConstraints)
      */
     public static StreamWriteConstraints defaults() {
         return DEFAULT;
@@ -118,8 +93,7 @@ public class StreamWriteConstraints implements java.io.Serializable {
      */
     public void validateNestingDepth(int depth) throws StreamConstraintsException {
         if (depth > _maxNestingDepth) {
-            throw _constructException("Document nesting depth (%d) exceeds the maximum allowed (%d, from %s)", depth,
-                _maxNestingDepth, _constrainRef("getMaxNestingDepth"));
+            throw _constructException(depth, _maxNestingDepth, _constrainRef());
         }
     }
 
@@ -130,13 +104,13 @@ public class StreamWriteConstraints implements java.io.Serializable {
      */
 
     // @since 2.16
-    protected StreamConstraintsException _constructException(String msgTemplate, Object... args)
-        throws StreamConstraintsException {
-        throw new StreamConstraintsException(String.format(msgTemplate, args));
+    protected StreamConstraintsException _constructException(Object... args) throws StreamConstraintsException {
+        throw new StreamConstraintsException(
+            String.format("Document nesting depth (%d) exceeds the maximum allowed (%d, from %s)", args));
     }
 
     // @since 2.16
-    protected String _constrainRef(String method) {
-        return "`StreamWriteConstraints." + method + "()`";
+    protected String _constrainRef() {
+        return "`StreamWriteConstraints." + "getMaxNestingDepth" + "()`";
     }
 }

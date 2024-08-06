@@ -7,17 +7,12 @@
 package com.azure.json.implementation.jackson.core;
 
 import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 import com.azure.json.implementation.jackson.core.util.RequestPayload;
-import com.azure.json.implementation.jackson.core.util.TextBuffer;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * Base class that defines public API for reading JSON content.
@@ -26,25 +21,7 @@ import java.math.BigInteger;
  *
  * @author Tatu Saloranta
  */
-public abstract class JsonParser implements Closeable, Versioned {
-
-    /**
-     * Enumeration of possible "native" (optimal) types that can be
-     * used for numbers.
-     */
-    public enum NumberType {
-        INT, LONG, BIG_INTEGER, FLOAT, DOUBLE, BIG_DECIMAL
-    }
-
-    /**
-     * Default set of {@link StreamReadCapability}ies that may be used as
-     * basis for format-specific readers (or as bogus instance if non-null
-     * set needs to be passed).
-     *
-     * @since 2.12
-     */
-    protected final static JacksonFeatureSet<StreamReadCapability> DEFAULT_READ_CAPABILITIES
-        = JacksonFeatureSet.fromDefaults(StreamReadCapability.values());
+public abstract class JsonParser implements Closeable {
 
     /**
      * Enumeration that defines all on/off features for parsers.
@@ -268,24 +245,6 @@ public abstract class JsonParser implements Closeable, Versioned {
         // // // Validity checks
 
         /**
-         * Feature that determines whether {@link JsonParser} will explicitly
-         * check that no duplicate JSON Object field names are encountered.
-         * If enabled, parser will check all names within context and report
-         * duplicates by throwing a {@link JsonParseException}; if disabled,
-         * parser will not do such checking. Assumption in latter case is
-         * that caller takes care of handling duplicates at a higher level:
-         * data-binding, for example, has features to specify detection to
-         * be done there.
-         *<p>
-         * Note that enabling this feature will incur performance overhead
-         * due to having to store and check additional information: this typically
-         * adds 20-30% to execution time for basic parsing.
-         *
-         * @since 2.3
-         */
-        STRICT_DUPLICATE_DETECTION(false),
-
-        /**
          * Feature that determines what to do if the underlying data format requires knowledge
          * of all properties to decode (usually via a Schema), and if no definition is
          * found for a property that input content contains.
@@ -453,34 +412,6 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /*
     /**********************************************************
-    /* Format support
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
-    /* Capability introspection
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
-    /* Versioned
-    /**********************************************************
-     */
-
-    /**
-     * Accessor for getting version of the core package, given a parser instance.
-     * Left for sub-classes to implement.
-     *
-     * @return Version of this generator (derived from version declared for
-     *   {@code jackson-core} jar that contains the class
-     */
-    @Override
-    public abstract Version version();
-
-    /*
-    /**********************************************************
     /* Closeable implementation
     /**********************************************************
      */
@@ -597,69 +528,6 @@ public abstract class JsonParser implements Closeable, Versioned {
     @Deprecated // since 2.17
     public abstract JsonLocation getTokenLocation();
 
-    /**
-     * Helper method, usually equivalent to:
-     *<code>
-     *   getParsingContext().getCurrentValue();
-     *</code>
-     *<p>
-     * Note that "current value" is NOT populated (or used) by Streaming parser;
-     * it is only used by higher-level data-binding functionality.
-     * The reason it is included here is that it can be stored and accessed hierarchically,
-     * and gets passed through data-binding.
-     *
-     * @return "Current value" associated with the current input context (state) of this parser
-     *
-     * @since 2.13 (added as replacement for older {@link #getCurrentValue()}
-     */
-    public Object currentValue() {
-        // Note: implemented directly in 2.17, no longer delegating to getCurrentValue()
-        JsonStreamContext ctxt = getParsingContext();
-        return (ctxt == null) ? null : ctxt.getCurrentValue();
-    }
-
-    /**
-     * Deprecated alias for {@link #currentValue()} (removed from Jackson 3.0).
-     *
-     * @return Location of the last processed input unit (byte or character)
-     *
-     * @deprecated Since 2.17 use {@link #currentValue()} instead
-     */
-    @Deprecated // since 2.17
-    public Object getCurrentValue() {
-        return currentValue();
-    }
-
-    /**
-     * Helper method, usually equivalent to:
-     *<code>
-     *   getParsingContext().setCurrentValue(v);
-     *</code>
-     *
-     * @param v Current value to assign for the current input context of this parser
-     *
-     * @since 2.13 (added as replacement for older {@link #setCurrentValue}
-     */
-    public void assignCurrentValue(Object v) {
-        // Note: implemented directly in 2.17, no longer delegating to setCurrentValue()
-        JsonStreamContext ctxt = getParsingContext();
-        if (ctxt != null) {
-            ctxt.setCurrentValue(v);
-        }
-    }
-
-    /**
-     * Deprecated alias for {@link #assignCurrentValue(Object)} (removed from Jackson 3.0).
-     *
-     * @param v Current value to assign for the current input context of this parser
-     *
-     * @deprecated Since 2.17 use {@link #assignCurrentValue} instead
-     */
-    @Deprecated // since 2.17
-    public void setCurrentValue(Object v) {
-        assignCurrentValue(v);
-    }
-
     /*
     /**********************************************************
     /* Buffer handling
@@ -739,22 +607,6 @@ public abstract class JsonParser implements Closeable, Versioned {
         return f.mappedFeature().enabledIn(_features);
     }
 
-    /**
-     * Bulk set method for (re)setting states of all standard {@link Feature}s
-     *
-     * @param mask Bit mask that defines set of features to enable
-     *
-     * @return This parser, to allow call chaining
-     *
-     * @since 2.3
-     * @deprecated Since 2.7, use {@link #overrideStdFeatures(int, int)} instead
-     */
-    @Deprecated
-    public JsonParser setFeatureMask(int mask) {
-        _features = mask;
-        return this;
-    }
-
     /*
     /**********************************************************
     /* Public API, traversal
@@ -830,36 +682,6 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public abstract JsonToken getCurrentToken();
 
-    /**
-     * Deprecated alias for {@link #currentTokenId()}.
-     *
-     * @return {@code int} matching one of constants from {@link JsonTokenId}.
-     *
-     * @deprecated Since 2.12 use {@link #currentTokenId} instead
-     */
-    @Deprecated
-    public abstract int getCurrentTokenId();
-
-    /*
-    /**********************************************************
-    /* Public API, token state overrides
-    /**********************************************************
-     */
-
-    /**
-     * Method called to "consume" the current token by effectively
-     * removing it so that {@link #hasCurrentToken} returns false, and
-     * {@link #getCurrentToken} null).
-     * Cleared token value can still be accessed by calling
-     * {@link #getLastClearedToken} (if absolutely needed), but
-     * usually isn't.
-     *<p>
-     * Method was added to be used by the optional data binder, since
-     * it has to be able to consume last token used for binding (so that
-     * it will not be used again).
-     */
-    public abstract void clearCurrentToken();
-
     /*
     /**********************************************************
     /* Public API, access to token information, text
@@ -913,178 +735,11 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public abstract String getText() throws IOException;
 
-    /**
-     * Method to read the textual representation of the current token in chunks and
-     * pass it to the given Writer.
-     * Conceptually same as calling:
-     *<pre>
-     *  writer.write(parser.getText());
-     *</pre>
-     * but should typically be more efficient as longer content does need to
-     * be combined into a single <code>String</code> to return, and write
-     * can occur directly from intermediate buffers Jackson uses.
-     *<p>
-     * NOTE: textual content <b>will</b> still be buffered (usually
-     * using {@link TextBuffer}) and <b>will</b> be accessible with
-     * other {@code getText()} calls (that is, it will not be consumed).
-     * So this accessor only avoids construction of {@link java.lang.String}
-     * compared to plain {@link #getText()} method.
-     *
-     * @param writer Writer to write textual content to
-     *
-     * @return The number of characters written to the Writer
-     *
-     * @throws IOException for low-level read issues or writes using passed
-     *   {@code writer}, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.8
-     */
-    public int getText(Writer writer) throws IOException, UnsupportedOperationException {
-        String str = getText();
-        if (str == null) {
-            return 0;
-        }
-        writer.write(str);
-        return str.length();
-    }
-
-    /**
-     * Method similar to {@link #getText}, but that will return
-     * underlying (unmodifiable) character array that contains
-     * textual value, instead of constructing a String object
-     * to contain this information.
-     * Note, however, that:
-     *<ul>
-     * <li>Textual contents are not guaranteed to start at
-     *   index 0 (rather, call {@link #getTextOffset}) to
-     *   know the actual offset
-     *  </li>
-     * <li>Length of textual contents may be less than the
-     *  length of returned buffer: call {@link #getTextLength}
-     *  for actual length of returned content.
-     *  </li>
-     * </ul>
-     *<p>
-     * Note that caller <b>MUST NOT</b> modify the returned
-     * character array in any way -- doing so may corrupt
-     * current parser state and render parser instance useless.
-     *<p>
-     * The only reason to call this method (over {@link #getText})
-     * is to avoid construction of a String object (which
-     * will make a copy of contents).
-     *
-     * @return Buffer that contains the current textual value (but not necessarily
-     *    at offset 0, and not necessarily until the end of buffer)
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems, including if the text is too large,
-     *   see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
-     */
-    public abstract char[] getTextCharacters() throws IOException;
-
-    /**
-     * Accessor used with {@link #getTextCharacters}, to know length
-     * of String stored in returned buffer.
-     *
-     * @return Number of characters within buffer returned
-     *   by {@link #getTextCharacters} that are part of
-     *   textual content of the current token.
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract int getTextLength() throws IOException;
-
-    /**
-     * Accessor used with {@link #getTextCharacters}, to know offset
-     * of the first text content character within buffer.
-     *
-     * @return Offset of the first character within buffer returned
-     *   by {@link #getTextCharacters} that is part of
-     *   textual content of the current token.
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract int getTextOffset() throws IOException;
-
-    /**
-     * Method that can be used to determine whether calling of
-     * {@link #getTextCharacters} would be the most efficient
-     * way to access textual content for the event parser currently
-     * points to.
-     *<p>
-     * Default implementation simply returns false since only actual
-     * implementation class has knowledge of its internal buffering
-     * state.
-     * Implementations are strongly encouraged to properly override
-     * this method, to allow efficient copying of content by other
-     * code.
-     *
-     * @return True if parser currently has character array that can
-     *   be efficiently returned via {@link #getTextCharacters}; false
-     *   means that it may or may not exist
-     */
-    public abstract boolean hasTextCharacters();
-
     /*
     /**********************************************************
     /* Public API, access to token information, numeric
     /**********************************************************
      */
-
-    /**
-     * Generic number value accessor method that will work for
-     * all kinds of numeric values. It will return the optimal
-     * (simplest/smallest possible) wrapper object that can
-     * express the numeric value just parsed.
-     *
-     * @return Numeric value of the current token in its most optimal
-     *   representation
-     *
-     * @throws IOException Problem with access: {@link JsonParseException} if
-     *    the current token is not numeric, or if decoding of the value fails
-     *    (invalid format for numbers); plain {@link IOException} if underlying
-     *    content read fails (possible if values are extracted lazily)
-     */
-    public abstract Number getNumberValue() throws IOException;
-
-    /**
-     * Method similar to {@link #getNumberValue} with the difference that
-     * for floating-point numbers value returned may be {@link BigDecimal}
-     * if the underlying format does not store floating-point numbers using
-     * native representation: for example, textual formats represent numbers
-     * as Strings (which are 10-based), and conversion to {@link java.lang.Double}
-     * is potentially lossy operation.
-     *<p>
-     * Default implementation simply returns {@link #getNumberValue()}
-     *
-     * @return Numeric value of the current token using most accurate representation
-     *
-     * @throws IOException Problem with access: {@link JsonParseException} if
-     *    the current token is not numeric, or if decoding of the value fails
-     *    (invalid format for numbers); plain {@link IOException} if underlying
-     *    content read fails (possible if values are extracted lazily)
-     *
-     * @since 2.12
-     */
-    public Number getNumberValueExact() throws IOException {
-        return getNumberValue();
-    }
-
-    /**
-     * If current token is of type
-     * {@link JsonToken#VALUE_NUMBER_INT} or
-     * {@link JsonToken#VALUE_NUMBER_FLOAT}, returns
-     * one of {@link NumberType} constants; otherwise returns {@code null}.
-     *
-     * @return Type of current number, if parser points to numeric token; {@code null} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract NumberType getNumberType() throws IOException;
 
     /**
      * Numeric accessor that can be called when the current
@@ -1130,23 +785,6 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /**
      * Numeric accessor that can be called when the current
-     * token is of type {@link JsonToken#VALUE_NUMBER_INT} and
-     * it can not be used as a Java long primitive type due to its
-     * magnitude.
-     * It can also be called for {@link JsonToken#VALUE_NUMBER_FLOAT};
-     * if so, it is equivalent to calling {@link #getDecimalValue}
-     * and then constructing a {@link BigInteger} from that value.
-     *
-     * @return Current number value as {@link BigInteger} (if numeric token);
-     *     otherwise exception thrown
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract BigInteger getBigIntegerValue() throws IOException;
-
-    /**
-     * Numeric accessor that can be called when the current
      * token is of type {@link JsonToken#VALUE_NUMBER_FLOAT} and
      * it can be expressed as a Java float primitive type.
      * It can also be called for {@link JsonToken#VALUE_NUMBER_INT};
@@ -1187,20 +825,6 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public abstract double getDoubleValue() throws IOException;
 
-    /**
-     * Numeric accessor that can be called when the current
-     * token is of type {@link JsonToken#VALUE_NUMBER_FLOAT} or
-     * {@link JsonToken#VALUE_NUMBER_INT}. No under/overflow exceptions
-     * are ever thrown.
-     *
-     * @return Current number value as {@link BigDecimal} (if numeric token);
-     *   otherwise exception thrown
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract BigDecimal getDecimalValue() throws IOException;
-
     /*
     /**********************************************************
     /* Public API, access to token information, other
@@ -1230,28 +854,6 @@ public abstract class JsonParser implements Closeable, Versioned {
             return false;
         throw new JsonParseException(this, String.format("Current token (%s) not of boolean type", t))
             .withRequestPayload(_requestPayload);
-    }
-
-    /**
-     * Accessor that can be called if (and only if) the current token
-     * is {@link JsonToken#VALUE_EMBEDDED_OBJECT}. For other token types,
-     * null is returned.
-     *<p>
-     * Note: only some specialized parser implementations support
-     * embedding of objects (usually ones that are facades on top
-     * of non-streaming sources, such as object trees). One exception
-     * is access to binary content (whether via base64 encoding or not)
-     * which typically is accessible using this method, as well as
-     * {@link #getBinaryValue()}.
-     *
-     * @return Embedded value (usually of "native" type supported by format)
-     *   for the current token, if any; {@code null otherwise}
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public Object getEmbeddedObject() throws IOException {
-        return null;
     }
 
     /*
@@ -1309,28 +911,6 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /**
      * Method that will try to convert value of current token to a
-     * <b>int</b>.
-     * Numbers are coerced using default Java rules; booleans convert to 0 (false)
-     * and 1 (true), and Strings are parsed using default Java language integer
-     * parsing rules.
-     *<p>
-     * If representation can not be converted to an int (including structured type
-     * markers like start/end Object/Array)
-     * specified <b>def</b> will be returned; no exceptions are thrown.
-     *
-     * @param def Default value to return if conversion to {@code int} is not possible
-     *
-     * @return {@code int} value current token is converted to, if possible; {@code def} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public int getValueAsInt(int def) throws IOException {
-        return def;
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
      * {@link java.lang.String}.
      * JSON Strings map naturally; scalar values get converted to
      * their textual representation.
@@ -1368,18 +948,6 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @since 2.1
      */
     public abstract String getValueAsString(String def) throws IOException;
-
-    /*
-    /**********************************************************
-    /* Public API, Native Ids (type, object)
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
-    /* Public API, optional data binding functionality
-    /**********************************************************
-     */
 
     /*
     /**********************************************************

@@ -33,22 +33,6 @@ public enum StreamReadFeature implements JacksonFeature // since 2.12
     // // // Validity checks
 
     /**
-     * Feature that determines whether {@link JsonParser} will explicitly
-     * check that no duplicate JSON Object field names are encountered.
-     * If enabled, parser will check all names within context and report
-     * duplicates by throwing a {@link JsonParseException}; if disabled,
-     * parser will not do such checking. Assumption in latter case is
-     * that caller takes care of handling duplicates at a higher level:
-     * data-binding, for example, has features to specify detection to
-     * be done there.
-     *<p>
-     * Note that enabling this feature will incur performance overhead
-     * due to having to store and check additional information: this typically
-     * adds 20-30% to execution time for basic parsing.
-     */
-    STRICT_DUPLICATE_DETECTION(JsonParser.Feature.STRICT_DUPLICATE_DETECTION),
-
-    /**
      * Feature that determines what to do if the underlying data format requires knowledge
      * of all properties to decode (usually via a Schema), and if no definition is
      * found for a property that input content contains.

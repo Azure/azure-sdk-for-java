@@ -96,20 +96,6 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
      */
     void releasePooled(P pooled);
 
-    /**
-     * Optional method that may allow dropping of all pooled Objects; mostly
-     * useful for unbounded pool implementations that may retain significant
-     * memory and that may then be cleared regularly.
-     *
-     * @since 2.17
-     *
-     * @return {@code true} If pool supports operation and dropped all pooled
-     *    Objects; {@code false} otherwise.
-     */
-    default boolean clear() {
-        return false;
-    }
-
     /*
     /**********************************************************************
     /* Partial/base RecyclerPool implementations
@@ -149,11 +135,6 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
             // nothing to do, relies on ThreadLocal
         }
 
-        // Due to use of ThreadLocal no tracking available; cannot clear
-        @Override
-        public boolean clear() {
-            return false;
-        }
     }
 
     /**
@@ -179,16 +160,6 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
             // nothing to do, there is no underlying pool
         }
 
-        /**
-         * Although no pooling occurs, we consider clearing to succeed,
-         * so returns always {@code true}.
-         *
-         * @return Always returns {@code true}
-         */
-        @Override
-        public boolean clear() {
-            return true;
-        }
     }
 
     /**
@@ -245,11 +216,6 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
             pool.offerLast(pooled);
         }
 
-        @Override
-        public boolean clear() {
-            pool.clear();
-            return true;
-        }
     }
 
     /**
@@ -303,13 +269,6 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
             }
         }
 
-        // Yes, we can clear it
-        @Override
-        public boolean clear() {
-            head.set(null);
-            return true;
-        }
-
         protected static class Node<P> {
             final P value;
             Node<P> next;
@@ -338,13 +297,11 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
 
         private final transient ArrayBlockingQueue<P> pool;
 
-        private final transient int capacity;
-
         // // // Life-cycle (constructors, factory methods)
 
         protected BoundedPoolBase(int capacityAsId) {
             super(capacityAsId);
-            capacity = (capacityAsId <= 0) ? DEFAULT_CAPACITY : capacityAsId;
+            int capacity = (capacityAsId <= 0) ? DEFAULT_CAPACITY : capacityAsId;
             pool = new ArrayBlockingQueue<>(capacity);
         }
 
@@ -364,16 +321,7 @@ public interface RecyclerPool<P extends RecyclerPool.WithPool<P>> extends Serial
             pool.offer(pooled);
         }
 
-        @Override
-        public boolean clear() {
-            pool.clear();
-            return true;
-        }
-
         // // // Other methods
 
-        public int capacity() {
-            return capacity;
-        }
     }
 }

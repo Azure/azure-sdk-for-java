@@ -1,21 +1,26 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.base;
 
-import java.io.*;
+import com.azure.json.implementation.jackson.core.Base64Variant;
+import com.azure.json.implementation.jackson.core.JsonLocation;
+import com.azure.json.implementation.jackson.core.JsonParseException;
+import com.azure.json.implementation.jackson.core.JsonParser;
+import com.azure.json.implementation.jackson.core.JsonProcessingException;
+import com.azure.json.implementation.jackson.core.JsonToken;
+import com.azure.json.implementation.jackson.core.StreamReadConstraints;
+import com.azure.json.implementation.jackson.core.StreamReadFeature;
+import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
+import com.azure.json.implementation.jackson.core.io.ContentReference;
+import com.azure.json.implementation.jackson.core.io.IOContext;
+import com.azure.json.implementation.jackson.core.io.NumberInput;
+import com.azure.json.implementation.jackson.core.json.JsonReadContext;
+import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
+import com.azure.json.implementation.jackson.core.util.TextBuffer;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
-
-import com.azure.json.implementation.jackson.core.*;
-import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
-import com.azure.json.implementation.jackson.core.io.IOContext;
-import com.azure.json.implementation.jackson.core.io.ContentReference;
-import com.azure.json.implementation.jackson.core.io.NumberInput;
-import com.azure.json.implementation.jackson.core.json.DupDetector;
-import com.azure.json.implementation.jackson.core.json.JsonReadContext;
-import com.azure.json.implementation.jackson.core.json.PackageVersion;
-import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
-import com.azure.json.implementation.jackson.core.util.TextBuffer;
 
 /**
  * Intermediate base class used by all Jackson {@link JsonParser}
@@ -153,7 +158,7 @@ public abstract class ParserBase extends ParserMinimalBase {
 
     /**
      * Temporary buffer that is needed if field name is accessed
-     * using {@link #getTextCharacters} method (instead of String
+     * using {@code #getTextCharacters} method (instead of String
      * returning alternatives)
      */
     protected char[] _nameCopyBuffer;
@@ -268,91 +273,8 @@ public abstract class ParserBase extends ParserMinimalBase {
         _streamReadConstraints
             = streamReadConstraints == null ? StreamReadConstraints.defaults() : streamReadConstraints;
         _textBuffer = ctxt.constructReadConstrainedTextBuffer();
-        DupDetector dups
-            = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
-        _parsingContext = JsonReadContext.createRootContext(dups);
+        _parsingContext = JsonReadContext.createRootContext();
     }
-
-    @Override
-    public Version version() {
-        return PackageVersion.VERSION;
-    }
-
-    @Override
-    public Object currentValue() {
-        return _parsingContext.getCurrentValue();
-    }
-
-    @Override
-    public void assignCurrentValue(Object v) {
-        _parsingContext.setCurrentValue(v);
-    }
-
-    /*
-    /**********************************************************
-    /* Overrides for Feature handling
-    /**********************************************************
-     */
-
-    @Override
-    public JsonParser enable(Feature f) {
-        _features |= f.getMask();
-        if (f == Feature.STRICT_DUPLICATE_DETECTION) { // enabling dup detection?
-            if (_parsingContext.getDupDetector() == null) { // but only if disabled currently
-                _parsingContext = _parsingContext.withDupDetector(DupDetector.rootDetector(this));
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public JsonParser disable(Feature f) {
-        _features &= ~f.getMask();
-        if (f == Feature.STRICT_DUPLICATE_DETECTION) {
-            _parsingContext = _parsingContext.withDupDetector(null);
-        }
-        return this;
-    }
-
-    @Override
-    @Deprecated
-    public JsonParser setFeatureMask(int newMask) {
-        int changes = (_features ^ newMask);
-        if (changes != 0) {
-            _features = newMask;
-            _checkStdFeatureChanges(newMask, changes);
-        }
-        return this;
-    }
-
-    /**
-     * Helper method called to verify changes to standard features.
-     *
-     * @param newFeatureFlags Bitflag of standard features after they were changed
-     * @param changedFeatures Bitflag of standard features for which setting
-     *    did change
-     *
-     * @since 2.7
-     */
-    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
-        int f = Feature.STRICT_DUPLICATE_DETECTION.getMask();
-
-        if ((changedFeatures & f) != 0) {
-            if ((newFeatureFlags & f) != 0) {
-                if (_parsingContext.getDupDetector() == null) {
-                    _parsingContext = _parsingContext.withDupDetector(DupDetector.rootDetector(this));
-                } else { // disabling
-                    _parsingContext = _parsingContext.withDupDetector(null);
-                }
-            }
-        }
-    }
-
-    /*
-    /**********************************************************
-    /* JsonParser impl
-    /**********************************************************
-     */
 
     /**
      * Method that can be called to get the name associated with
@@ -360,7 +282,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
     @Deprecated // since 2.17
     @Override
-    public String getCurrentName() throws IOException {
+    public String getCurrentName() {
         // [JACKSON-395]: start markers require information from parent
         if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
             JsonReadContext parent = _parsingContext.getParent();
@@ -427,17 +349,6 @@ public abstract class ParserBase extends ParserMinimalBase {
     /* Public API, access to token information, text and similar
     /**********************************************************
      */
-
-    @Override
-    public boolean hasTextCharacters() {
-        if (_currToken == JsonToken.VALUE_STRING) {
-            return true;
-        } // usually true
-        if (_currToken == JsonToken.FIELD_NAME) {
-            return _nameCopied;
-        }
-        return false;
-    }
 
     @SuppressWarnings("resource")
     @Override // since 2.7
@@ -601,103 +512,6 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
 
     @Override
-    public Number getNumberValue() throws IOException {
-        if (_numTypesValid == NR_UNKNOWN) {
-            _parseNumericValue(NR_UNKNOWN); // will also check event type
-        }
-        // Separate types for int types
-        if (_currToken == JsonToken.VALUE_NUMBER_INT) {
-            if ((_numTypesValid & NR_INT) != 0) {
-                return _numberInt;
-            }
-            if ((_numTypesValid & NR_LONG) != 0) {
-                return _numberLong;
-            }
-            if ((_numTypesValid & NR_BIGINT) != 0) {
-                return _getBigInteger();
-            }
-            _throwInternal();
-        }
-
-        // And then floating point types. But here optimal type
-        // needs to be big decimal, to avoid losing any data?
-        if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            return _getBigDecimal();
-        }
-        if ((_numTypesValid & NR_FLOAT) != 0) {
-            return _getNumberFloat();
-        }
-        if ((_numTypesValid & NR_DOUBLE) == 0) { // sanity check
-            _throwInternal();
-        }
-        return _getNumberDouble();
-    }
-
-    // NOTE: mostly copied from above
-    @Override
-    public Number getNumberValueExact() throws IOException {
-        if (_currToken == JsonToken.VALUE_NUMBER_INT) {
-            if (_numTypesValid == NR_UNKNOWN) {
-                _parseNumericValue(NR_UNKNOWN);
-            }
-            if ((_numTypesValid & NR_INT) != 0) {
-                return _numberInt;
-            }
-            if ((_numTypesValid & NR_LONG) != 0) {
-                return _numberLong;
-            }
-            if ((_numTypesValid & NR_BIGINT) != 0) {
-                return _getBigInteger();
-            }
-            _throwInternal();
-        }
-        // 09-Jul-2020, tatu: [databind#2644] requires we will retain accuracy, so:
-        if (_numTypesValid == NR_UNKNOWN) {
-            _parseNumericValue(NR_BIGDECIMAL);
-        }
-        if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            return _getBigDecimal();
-        }
-        if ((_numTypesValid & NR_FLOAT) != 0) {
-            return _getNumberFloat();
-        }
-        if ((_numTypesValid & NR_DOUBLE) == 0) { // sanity check
-            _throwInternal();
-        }
-        return _getNumberDouble();
-    }
-
-    @Override
-    public NumberType getNumberType() throws IOException {
-        if (_numTypesValid == NR_UNKNOWN) {
-            _parseNumericValue(NR_UNKNOWN); // will also check event type
-        }
-        if (_currToken == JsonToken.VALUE_NUMBER_INT) {
-            if ((_numTypesValid & NR_INT) != 0) {
-                return NumberType.INT;
-            }
-            if ((_numTypesValid & NR_LONG) != 0) {
-                return NumberType.LONG;
-            }
-            return NumberType.BIG_INTEGER;
-        }
-
-        /* And then floating point types. Here optimal type
-         * needs to be big decimal, to avoid losing any data?
-         * However... using BD is slow, so let's allow returning
-         * double as type if no explicit call has been made to access
-         * data as BD?
-         */
-        if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            return NumberType.BIG_DECIMAL;
-        }
-        if ((_numTypesValid & NR_FLOAT) != 0) {
-            return NumberType.FLOAT;
-        }
-        return NumberType.DOUBLE;
-    }
-
-    @Override
     public int getIntValue() throws IOException {
         if ((_numTypesValid & NR_INT) == 0) {
             if (_numTypesValid == NR_UNKNOWN) { // not parsed at all
@@ -721,19 +535,6 @@ public abstract class ParserBase extends ParserMinimalBase {
             }
         }
         return _numberLong;
-    }
-
-    @Override
-    public BigInteger getBigIntegerValue() throws IOException {
-        if ((_numTypesValid & NR_BIGINT) == 0) {
-            if (_numTypesValid == NR_UNKNOWN) {
-                _parseNumericValue(NR_BIGINT);
-            }
-            if ((_numTypesValid & NR_BIGINT) == 0) {
-                convertNumberToBigInteger();
-            }
-        }
-        return _getBigInteger();
     }
 
     @Override
@@ -768,19 +569,6 @@ public abstract class ParserBase extends ParserMinimalBase {
             }
         }
         return _getNumberDouble();
-    }
-
-    @Override
-    public BigDecimal getDecimalValue() throws IOException {
-        if ((_numTypesValid & NR_BIGDECIMAL) == 0) {
-            if (_numTypesValid == NR_UNKNOWN) {
-                _parseNumericValue(NR_BIGDECIMAL);
-            }
-            if ((_numTypesValid & NR_BIGDECIMAL) == 0) {
-                convertNumberToBigDecimal();
-            }
-        }
-        return _getBigDecimal();
     }
 
     @Override // @since 2.15
@@ -1016,26 +804,6 @@ public abstract class ParserBase extends ParserMinimalBase {
         _numTypesValid |= NR_LONG;
     }
 
-    protected void convertNumberToBigInteger() throws IOException {
-        if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            // here it'll just get truncated, no exceptions thrown
-            _numberBigInt = _convertBigDecimalToBigInteger(_getBigDecimal());
-        } else if ((_numTypesValid & NR_LONG) != 0) {
-            _numberBigInt = BigInteger.valueOf(_numberLong);
-        } else if ((_numTypesValid & NR_INT) != 0) {
-            _numberBigInt = BigInteger.valueOf(_numberInt);
-        } else if ((_numTypesValid & NR_DOUBLE) != 0) {
-            if (_numberString != null) {
-                _numberBigInt = _convertBigDecimalToBigInteger(_getBigDecimal());
-            } else {
-                _numberBigInt = _convertBigDecimalToBigInteger(BigDecimal.valueOf(_getNumberDouble()));
-            }
-        } else {
-            _throwInternal();
-        }
-        _numTypesValid |= NR_BIGINT;
-    }
-
     protected void convertNumberToDouble() throws IOException {
         /* 05-Aug-2008, tatus: Important note: this MUST start with
          *   more accurate representations, since we don't know which
@@ -1104,39 +872,6 @@ public abstract class ParserBase extends ParserMinimalBase {
             _throwInternal();
         }
         _numTypesValid |= NR_FLOAT;
-    }
-
-    protected void convertNumberToBigDecimal() throws IOException {
-        /* 05-Aug-2008, tatus: Important note: this MUST start with
-         *   more accurate representations, since we don't know which
-         *   value is the original one (others get generated when
-         *   requested)
-         */
-
-        if ((_numTypesValid & NR_DOUBLE) != 0) {
-            // Let's actually parse from String representation, to avoid
-            // rounding errors that non-decimal floating operations could incur
-            final String numStr = _numberString == null ? getText() : _numberString;
-            _numberBigDecimal
-                = NumberInput.parseBigDecimal(numStr, isEnabled(StreamReadFeature.USE_FAST_BIG_NUMBER_PARSER));
-        } else if ((_numTypesValid & NR_BIGINT) != 0) {
-            _numberBigDecimal = new BigDecimal(_getBigInteger());
-        } else if ((_numTypesValid & NR_LONG) != 0) {
-            _numberBigDecimal = BigDecimal.valueOf(_numberLong);
-        } else if ((_numTypesValid & NR_INT) != 0) {
-            _numberBigDecimal = BigDecimal.valueOf(_numberInt);
-        } else {
-            _throwInternal();
-        }
-        _numTypesValid |= NR_BIGDECIMAL;
-    }
-
-    // @since 2.15
-    protected BigInteger _convertBigDecimalToBigInteger(BigDecimal bigDec) throws IOException {
-        // 04-Apr-2022, tatu: wrt [core#968] Need to limit max scale magnitude
-        //   (may throw StreamConstraintsException)
-        _streamReadConstraints.validateBigIntegerScale(bigDec.scale());
-        return bigDec.toBigInteger();
     }
 
     /**

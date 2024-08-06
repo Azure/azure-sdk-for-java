@@ -5,18 +5,38 @@
  */
 package com.azure.json.implementation.jackson.core;
 
-import java.io.*;
+import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
+import com.azure.json.implementation.jackson.core.io.ContentReference;
+import com.azure.json.implementation.jackson.core.io.IOContext;
+import com.azure.json.implementation.jackson.core.io.InputDecorator;
+import com.azure.json.implementation.jackson.core.io.OutputDecorator;
+import com.azure.json.implementation.jackson.core.io.UTF8Writer;
+import com.azure.json.implementation.jackson.core.json.ByteSourceJsonBootstrapper;
+import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
+import com.azure.json.implementation.jackson.core.json.ReaderBasedJsonParser;
+import com.azure.json.implementation.jackson.core.json.UTF8JsonGenerator;
+import com.azure.json.implementation.jackson.core.json.WriterBasedJsonGenerator;
+import com.azure.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
+import com.azure.json.implementation.jackson.core.sym.CharsToNameCanonicalizer;
+import com.azure.json.implementation.jackson.core.util.BufferRecycler;
+import com.azure.json.implementation.jackson.core.util.JacksonFeature;
+import com.azure.json.implementation.jackson.core.util.JsonGeneratorDecorator;
+import com.azure.json.implementation.jackson.core.util.JsonRecyclerPools;
+import com.azure.json.implementation.jackson.core.util.RecyclerPool;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import com.azure.json.implementation.jackson.core.io.*;
-import com.azure.json.implementation.jackson.core.json.*;
-import com.azure.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
-import com.azure.json.implementation.jackson.core.sym.CharsToNameCanonicalizer;
-import com.azure.json.implementation.jackson.core.util.*;
 
 /**
  * The main factory class of Jackson package, used to configure and
@@ -526,17 +546,6 @@ public class JsonFactory extends TokenStreamFactory implements java.io.Serializa
 
     /*
     /**********************************************************
-    /* Versioned
-    /**********************************************************
-     */
-
-    @Override
-    public Version version() {
-        return PackageVersion.VERSION;
-    }
-
-    /*
-    /**********************************************************
     /* Configuration, factory features
     /**********************************************************
      */
@@ -772,16 +781,6 @@ public class JsonFactory extends TokenStreamFactory implements java.io.Serializa
     @Override
     public final boolean isEnabled(StreamWriteFeature f) {
         return (_generatorFeatures & f.mappedFeature().getMask()) != 0;
-    }
-
-    /**
-     * Method for accessing custom escapes factory uses for {@link JsonGenerator}s
-     * it creates.
-     *
-     * @return Configured {@code CharacterEscapes}, if any; {@code null} if none
-     */
-    public CharacterEscapes getCharacterEscapes() {
-        return _characterEscapes;
     }
 
     /**
@@ -1323,7 +1322,8 @@ public class JsonFactory extends TokenStreamFactory implements java.io.Serializa
      */
     protected JsonParser _createParser(InputStream in, IOContext ctxt) throws IOException {
         try {
-            return new ByteSourceJsonBootstrapper(ctxt, in).constructParser(_parserFeatures, _byteSymbolCanonicalizer, _rootCharSymbols, _factoryFeatures);
+            return new ByteSourceJsonBootstrapper(ctxt, in).constructParser(_parserFeatures, _byteSymbolCanonicalizer,
+                _rootCharSymbols, _factoryFeatures);
         } catch (IOException | RuntimeException e) {
             // 10-Jun-2022, tatu: For [core#763] may need to close InputStream here
             if (ctxt.isResourceManaged()) {
@@ -1374,8 +1374,8 @@ public class JsonFactory extends TokenStreamFactory implements java.io.Serializa
      * @since 2.4
      */
     protected JsonParser _createParser(char[] data, int offset, int len, IOContext ctxt, boolean recyclable) {
-        return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _rootCharSymbols.makeChild(), data,
-            offset, offset + len, recyclable);
+        return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _rootCharSymbols.makeChild(), data, offset,
+            offset + len, recyclable);
     }
 
     /**
@@ -1427,8 +1427,7 @@ public class JsonFactory extends TokenStreamFactory implements java.io.Serializa
      *
      */
     protected JsonGenerator _createGenerator(Writer out, IOContext ctxt) {
-        WriterBasedJsonGenerator gen
-            = new WriterBasedJsonGenerator(ctxt, _generatorFeatures, out, _quoteChar);
+        WriterBasedJsonGenerator gen = new WriterBasedJsonGenerator(ctxt, _generatorFeatures, out, _quoteChar);
         if (_maximumNonEscapedChar > 0) {
             gen.setHighestNonEscapedChar(_maximumNonEscapedChar);
         }

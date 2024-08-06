@@ -16,7 +16,7 @@ import java.net.URL;
  *
  * @since 2.10
  */
-public abstract class TokenStreamFactory implements Versioned, java.io.Serializable {
+public abstract class TokenStreamFactory implements java.io.Serializable {
     private static final long serialVersionUID = 2;
 
     /*

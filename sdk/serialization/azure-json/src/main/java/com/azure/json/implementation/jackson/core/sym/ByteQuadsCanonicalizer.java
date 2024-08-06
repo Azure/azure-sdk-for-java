@@ -28,6 +28,7 @@ import com.azure.json.implementation.jackson.core.util.InternCache;
  *
  * @since 2.6
  */
+@SuppressWarnings("fallthrough")
 public final class ByteQuadsCanonicalizer {
     /**
      * Initial size of the primary hash area. Each entry consumes 4 ints (16 bytes),
@@ -278,47 +279,6 @@ public final class ByteQuadsCanonicalizer {
         _hashShared = true;
     }
 
-    /**
-     * Alternate constructor used in cases where a "placeholder" child
-     * instance is needed when symbol table is not really used, but
-     * caller needs a non-null placeholder to keep code functioning
-     * with minimal awareness of distinction (all lookups fail to match
-     * any name without error; add methods should NOT be called).
-     *
-     * @since 2.13
-     */
-    private ByteQuadsCanonicalizer(TableInfo state) {
-        _parent = null;
-        _seed = 0;
-        _interner = null;
-        _failOnDoS = true;
-        _tableInfo = null; // not used by child tables
-
-        // Then copy minimal pieces of shared state; only enough to guarantee
-        // we will neither find anything nor fail -- primary hash is enough
-        // for that purpose
-
-        _count = -1;
-
-        _hashArea = state.mainHash;
-        _names = state.names;
-
-        _hashSize = state.size;
-
-        // But otherwise can just use markers towards end of table to
-        // indicate error if access was attempted
-        final int end = _hashArea.length;
-        _secondaryStart = end;
-        _tertiaryStart = end;
-        _tertiaryShift = 1; //  bogus
-
-        _spilloverEnd = end;
-        _longNameOffset = end;
-
-        // just in case something failed, to ensure copying would be done
-        _hashShared = true;
-    }
-
     /*
     /**********************************************************
     /* Life-cycle: factory methods, merging
@@ -358,28 +318,6 @@ public final class ByteQuadsCanonicalizer {
         return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(),
             JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
             JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
-    }
-
-    /**
-     * Method similar to {@link #makeChild} but one that only creates real
-     * instance of {@link com.azure.json.implementation.jackson.core.JsonFactory.Feature#CANONICALIZE_FIELD_NAMES} is
-     * enabled: otherwise a "bogus" instance is created.
-     *
-     * @param flags Bit flags of active {@link com.azure.json.implementation.jackson.core.JsonFactory.Feature}s enabled.
-     *
-     * @return Actual canonicalizer instance that can be used by a parser if (and only if)
-     *    canonicalization is enabled; otherwise a non-null "placeholder" instance.
-     *
-     * @since 2.13
-     */
-    public ByteQuadsCanonicalizer makeChildOrPlaceholder(int flags) {
-        if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(flags)) {
-            // inlined "makeChild()"
-            return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(),
-                JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
-                JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
-        }
-        return new ByteQuadsCanonicalizer(_tableInfo.get());
     }
 
     /**

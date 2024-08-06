@@ -3,13 +3,9 @@ package com.azure.json.implementation.jackson.core.base;
 
 import com.azure.json.implementation.jackson.core.JsonGenerator;
 import com.azure.json.implementation.jackson.core.JsonStreamContext;
-import com.azure.json.implementation.jackson.core.SerializableString;
-import com.azure.json.implementation.jackson.core.Version;
 import com.azure.json.implementation.jackson.core.io.IOContext;
 import com.azure.json.implementation.jackson.core.io.UTF8Writer;
-import com.azure.json.implementation.jackson.core.json.DupDetector;
 import com.azure.json.implementation.jackson.core.json.JsonWriteContext;
-import com.azure.json.implementation.jackson.core.json.PackageVersion;
 
 import java.io.IOException;
 
@@ -31,8 +27,8 @@ public abstract class GeneratorBase extends JsonGenerator {
      * @since 2.5
      */
     @SuppressWarnings("deprecation")
-    protected final static int DERIVED_FEATURES_MASK = Feature.WRITE_NUMBERS_AS_STRINGS.getMask()
-        | Feature.ESCAPE_NON_ASCII.getMask() | Feature.STRICT_DUPLICATE_DETECTION.getMask();
+    protected final static int DERIVED_FEATURES_MASK
+        = Feature.WRITE_NUMBERS_AS_STRINGS.getMask() | Feature.ESCAPE_NON_ASCII.getMask();
 
     // // // Constants for validation messages (since 2.6)
 
@@ -40,7 +36,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected final static String WRITE_BOOLEAN = "write a boolean value";
     protected final static String WRITE_NULL = "write a null";
     protected final static String WRITE_NUMBER = "write a number";
-    protected final static String WRITE_RAW = "write a raw (unencoded) value";
     protected final static String WRITE_STRING = "write a string";
 
     /*
@@ -102,9 +97,7 @@ public abstract class GeneratorBase extends JsonGenerator {
         super();
         _features = features;
         _ioContext = ioContext;
-        DupDetector dups
-            = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
-        _writeContext = JsonWriteContext.createRootContext(dups);
+        _writeContext = JsonWriteContext.createRootContext();
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
     }
 
@@ -122,19 +115,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         _ioContext = ioContext;
         _writeContext = jsonWriteContext;
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
-    }
-
-    /**
-     * Implemented with standard version number detection algorithm, typically using
-     * a simple generated class, with information extracted from Maven project file
-     * during build.
-     *
-     * @return Version number of the generator (version of the jar that contains
-     *     generator implementation class)
-     */
-    @Override
-    public Version version() {
-        return PackageVersion.VERSION;
     }
 
     // Overridden from JsonGenerator for direct context access:
@@ -175,10 +155,6 @@ public abstract class GeneratorBase extends JsonGenerator {
                 _cfgNumbersAsStrings = true;
             } else if (f == Feature.ESCAPE_NON_ASCII) {
                 setHighestNonEscapedChar(127);
-            } else if (f == Feature.STRICT_DUPLICATE_DETECTION) {
-                if (_writeContext.getDupDetector() == null) { // but only if disabled currently
-                    _writeContext = _writeContext.withDupDetector(DupDetector.rootDetector(this));
-                }
             }
         }
         return this;
@@ -194,8 +170,6 @@ public abstract class GeneratorBase extends JsonGenerator {
                 _cfgNumbersAsStrings = false;
             } else if (f == Feature.ESCAPE_NON_ASCII) {
                 setHighestNonEscapedChar(0);
-            } else if (f == Feature.STRICT_DUPLICATE_DETECTION) {
-                _writeContext = _writeContext.withDupDetector(null);
             }
         }
         return this;
@@ -234,15 +208,6 @@ public abstract class GeneratorBase extends JsonGenerator {
                 setHighestNonEscapedChar(0);
             }
         }
-        if (Feature.STRICT_DUPLICATE_DETECTION.enabledIn(changedFeatures)) {
-            if (Feature.STRICT_DUPLICATE_DETECTION.enabledIn(newFeatureFlags)) { // enabling
-                if (_writeContext.getDupDetector() == null) { // but only if disabled currently
-                    _writeContext = _writeContext.withDupDetector(DupDetector.rootDetector(this));
-                }
-            } else { // disabling
-                _writeContext = _writeContext.withDupDetector(null);
-            }
-        }
     }
 
     /*
@@ -261,71 +226,8 @@ public abstract class GeneratorBase extends JsonGenerator {
         return _writeContext;
     }
 
-    /*
-    /**********************************************************
-    /* Public API, write methods, structural
-    /**********************************************************
-     */
-
-    //public void writeStartArray() throws IOException
-    //public void writeEndArray() throws IOException
-    //public void writeStartObject() throws IOException
-    //public void writeEndObject() throws IOException
-
-    @Override // since 2.8
-    public void writeStartObject(Object forValue) throws IOException {
-        writeStartObject();
-        if (forValue != null) {
-            assignCurrentValue(forValue);
-        }
-    }
-
-    /*
-    /**********************************************************
-    /* Public API, write methods, textual
-    /**********************************************************
-     */
-
-    @Override
-    public void writeFieldName(SerializableString name) throws IOException {
-        writeFieldName(name.getValue());
-    }
-
-    //public abstract void writeString(String text) throws IOException;
-
-    //public abstract void writeString(char[] text, int offset, int len) throws IOException;
-
-    //public abstract void writeString(Reader reader, int len) throws IOException;
-
-    //public abstract void writeRaw(String text) throws IOException,;
-
-    //public abstract void writeRaw(char[] text, int offset, int len) throws IOException;
-
-    @Override
-    public void writeString(SerializableString text) throws IOException {
-        writeString(text.getValue());
-    }
-
     @Override
     public void writeRawValue(String text) throws IOException {
-        _verifyValueWrite("write raw value");
-        writeRaw(text);
-    }
-
-    @Override
-    public void writeRawValue(String text, int offset, int len) throws IOException {
-        _verifyValueWrite("write raw value");
-        writeRaw(text, offset, len);
-    }
-
-    @Override
-    public void writeRawValue(char[] text, int offset, int len) throws IOException {
-        _verifyValueWrite("write raw value");
-        writeRaw(text, offset, len);
-    }
-
-    @Override
-    public void writeRawValue(SerializableString text) throws IOException {
         _verifyValueWrite("write raw value");
         writeRaw(text);
     }

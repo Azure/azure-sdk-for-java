@@ -104,22 +104,6 @@ public class JsonLocation implements java.io.Serializable {
      */
 
     /**
-     * Accessor for information about the original input source content is being
-     * read from. Returned reference is never {@code null} but may not contain
-     * useful information.
-     *<p>
-     * NOTE: not getter, on purpose, to avoid inlusion if serialized using
-     * default Jackson serializer.
-     *
-     * @return Object with information about input source.
-     *
-     * @since 2.13 (to replace {@code getSourceRef})
-     */
-    public ContentReference contentReference() {
-        return _contentReference;
-    }
-
-    /**
      * Reference to the original resource being read, if one available.
      * For example, when a parser has been constructed by passing
      * a {@link java.io.File} instance, this method would return
@@ -134,48 +118,6 @@ public class JsonLocation implements java.io.Serializable {
     @Deprecated
     public Object getSourceRef() {
         return _contentReference.getRawContent();
-    }
-
-    /**
-     * Access for getting line number of this location, if available.
-     * Note that line number is typically not available for binary formats.
-     *
-     * @return Line number of the location (1-based), if available; {@code -1} if not.
-     */
-    public int getLineNr() {
-        return _lineNr;
-    }
-
-    /**
-     * Access for getting column offset of this location, if available.
-     * Note that column position is typically not available for binary formats.
-     * Note: this returns an offset that is in units of input, so for {@code byte}-based
-     * input sources (like {@link java.io.InputStream}) this does not take into
-     * account multi-byte characters: one logical character can be 1, 2 or 3 bytes long.
-     * To calculate column position in characters either {@code char}-based input
-     * source (like {@link java.io.Reader}) needs to be used, or content needs to be
-     * explicitly decoded.
-     *
-     * @return Column offset of the location (1-based), if available; {@code -1} if not.
-     */
-    public int getColumnNr() {
-        return _columnNr;
-    }
-
-    /**
-     * @return Character offset within underlying stream, reader or writer,
-     *   if available; {@code -1} if not.
-     */
-    public long getCharOffset() {
-        return _totalChars;
-    }
-
-    /**
-     * @return Byte offset within underlying stream, reader or writer,
-     *   if available; {@code -1} if not.
-     */
-    public long getByteOffset() {
-        return _totalBytes;
     }
 
     /**
@@ -198,19 +140,6 @@ public class JsonLocation implements java.io.Serializable {
             _sourceDescription = _contentReference.buildSourceDescription();
         }
         return _sourceDescription;
-    }
-
-    /**
-     * Accessor for a brief summary of Location offsets (line number, column position,
-     * or byte offset, if available).
-     *
-     * @return Description of available relevant location offsets; combination of
-     *    line number and column position or byte offset
-     *
-     * @since 2.13
-     */
-    public String offsetDescription() {
-        return appendOffsetDescription(new StringBuilder(40)).toString();
     }
 
     // @since 2.13

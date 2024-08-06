@@ -9,11 +9,8 @@ import java.nio.charset.StandardCharsets;
 import com.azure.json.implementation.jackson.core.*;
 import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
 import com.azure.json.implementation.jackson.core.io.JsonEOFException;
-import com.azure.json.implementation.jackson.core.io.NumberInput;
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
 import com.azure.json.implementation.jackson.core.util.VersionUtil;
-
-import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
 
 /**
  * Intermediate base class used by all Jackson {@link JsonParser}
@@ -138,12 +135,6 @@ public abstract class ParserMinimalBase extends JsonParser {
      */
     protected JsonToken _currToken;
 
-    /**
-     * Last cleared token, if any: that is, value that was in
-     * effect when {@link #clearCurrentToken} was called.
-     */
-    protected JsonToken _lastClearedToken;
-
     /*
     /**********************************************************
     /* Life-cycle
@@ -187,13 +178,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     @Override
     public JsonToken getCurrentToken() {
         return _currToken;
-    }
-
-    @Deprecated
-    @Override
-    public int getCurrentTokenId() {
-        final JsonToken t = _currToken;
-        return (t == null) ? JsonTokenId.ID_NO_TOKEN : t.id();
     }
 
     @Override
@@ -266,14 +250,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     /**********************************************************
      */
 
-    @Override
-    public void clearCurrentToken() {
-        if (_currToken != null) {
-            _lastClearedToken = _currToken;
-            _currToken = null;
-        }
-    }
-
     /*
     /**********************************************************
     /* Public API, access to token information, text
@@ -282,18 +258,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     @Override
     public abstract String getText() throws IOException;
-
-    @Override
-    public abstract char[] getTextCharacters() throws IOException;
-
-    @Override
-    public abstract boolean hasTextCharacters();
-
-    @Override
-    public abstract int getTextLength() throws IOException;
-
-    @Override
-    public abstract int getTextOffset() throws IOException;
 
     /*
     /**********************************************************
@@ -309,40 +273,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     /* Public API, access with conversion/coercion
     /**********************************************************
      */
-
-    @Override
-    public int getValueAsInt(int defaultValue) throws IOException {
-        JsonToken t = _currToken;
-        if ((t == JsonToken.VALUE_NUMBER_INT) || (t == JsonToken.VALUE_NUMBER_FLOAT)) {
-            return getIntValue();
-        }
-        if (t != null) {
-            switch (t.id()) {
-                case ID_STRING:
-                    final String str = getText();
-                    if (_hasTextualNull(str)) {
-                        return 0;
-                    }
-                    return NumberInput.parseAsInt(str, defaultValue);
-
-                case ID_TRUE:
-                    return 1;
-
-                case ID_FALSE:
-                    return 0;
-
-                case ID_NULL:
-                    return 0;
-
-                case ID_EMBEDDED_OBJECT:
-                    Object value = getEmbeddedObject();
-                    if (value instanceof Number) {
-                        return ((Number) value).intValue();
-                    }
-            }
-        }
-        return defaultValue;
-    }
 
     @Override
     public String getValueAsString() throws IOException {
@@ -394,24 +324,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     /* Coercion helper methods (overridable)
     /**********************************************************
      */
-
-    /**
-     * Helper method used to determine whether we are currently pointing to
-     * a String value of "null" (NOT a null token); and, if so, that parser
-     * is to recognize and return it similar to if it was real null token.
-     *<p>
-     * Default implementation accepts exact string {@code "null"} and nothing else
-     *
-     * @param value String value to check
-     *
-     * @return True if given value contains "null equivalent" String value (for
-     *   content this parser handles).
-     *
-     * @since 2.3
-     */
-    protected boolean _hasTextualNull(String value) {
-        return "null".equals(value);
-    }
 
     /*
     /**********************************************************

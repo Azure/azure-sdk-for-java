@@ -1,9 +1,7 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.azure.json.implementation.jackson.core.io.InputDecorator;
 import com.azure.json.implementation.jackson.core.io.OutputDecorator;
@@ -125,16 +123,6 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
         this(DEFAULT_FACTORY_FEATURE_FLAGS, DEFAULT_PARSER_FEATURE_FLAGS, DEFAULT_GENERATOR_FEATURE_FLAGS);
     }
 
-    protected TSFBuilder(JsonFactory base) {
-        this(base._factoryFeatures, base._parserFeatures, base._generatorFeatures);
-        _inputDecorator = base._inputDecorator;
-        _outputDecorator = base._outputDecorator;
-        _streamReadConstraints = base._streamReadConstraints;
-        _streamWriteConstraints = base._streamWriteConstraints;
-        _errorReportConfiguration = base._errorReportConfiguration;
-        _generatorDecorators = _copy(base._generatorDecorators);
-    }
-
     protected TSFBuilder(int factoryFeatures, int parserFeatures, int generatorFeatures) {
         _recyclerPool = JsonRecyclerPools.defaultPool();
 
@@ -148,14 +136,6 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
         _streamWriteConstraints = StreamWriteConstraints.defaults();
         _errorReportConfiguration = ErrorReportConfiguration.defaults();
         _generatorDecorators = null;
-    }
-
-    // @since 2.16
-    protected static <T> List<T> _copy(List<T> src) {
-        if (src == null) {
-            return src;
-        }
-        return new ArrayList<>(src);
     }
 
     // // // Accessors
@@ -270,8 +250,8 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     }
 
     private B _failNonJSON(Object feature) {
-        throw new IllegalArgumentException("Feature " + feature.getClass().getName() + "#" + feature
-            + " not supported for non-JSON backend");
+        throw new IllegalArgumentException(
+            "Feature " + feature.getClass().getName() + "#" + feature + " not supported for non-JSON backend");
     }
 
     // // // JSON-specific, writes
@@ -311,42 +291,6 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     }
 
     // // // Other configuration, constraints
-
-    /**
-     * Sets the constraints for streaming reads.
-     *
-     * @param streamReadConstraints constraints for streaming reads
-     * @return this builder (for call chaining)
-     * @since 2.15
-     */
-    public B streamReadConstraints(StreamReadConstraints streamReadConstraints) {
-        _streamReadConstraints = Objects.requireNonNull(streamReadConstraints);
-        return _this();
-    }
-
-    /**
-     * Sets the constraints for streaming writes.
-     *
-     * @param streamWriteConstraints constraints for streaming reads
-     * @return this builder (for call chaining)
-     * @since 2.16
-     */
-    public B streamWriteConstraints(StreamWriteConstraints streamWriteConstraints) {
-        _streamWriteConstraints = Objects.requireNonNull(streamWriteConstraints);
-        return _this();
-    }
-
-    /**
-     * Sets the configuration for error reporting.
-     *
-     * @param errorReportConfiguration configuration values used for handling erroneous token inputs.
-     * @return this builder (for call chaining)
-     * @since 2.16
-     */
-    public B errorReportConfiguration(ErrorReportConfiguration errorReportConfiguration) {
-        _errorReportConfiguration = Objects.requireNonNull(errorReportConfiguration);
-        return _this();
-    }
 
     // // // Other methods
 

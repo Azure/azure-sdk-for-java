@@ -40,14 +40,14 @@ import static java.lang.Integer.numberOfLeadingZeros;
 final public class FloatToDecimal {
     /*
     For full details about this code see the following references:
-
+    
     [1] Giulietti, "The Schubfach way to render doubles",
         https://drive.google.com/open?id=1luHhyQF9zKlM8yJ1nebU0OgVYhfC6CBN
-
+    
     [2] IEEE Computer Society, "IEEE Standard for Floating-Point Arithmetic"
-
+    
     [3] Bouvier & Zimmermann, "Division-Free Binary-to-Decimal Conversion"
-
+    
     Divisions are avoided altogether for the benefit of those architectures
     that do not provide specific machine instructions or where they are slow.
     This is discussed in section 10 of [1].
@@ -273,7 +273,7 @@ final public class FloatToDecimal {
     private int toDecimal(float v) {
         /*
         For full details see references [2] and [1].
-
+        
         For finite v != 0, determine integers c and q such that
             |v| = c 2^q    and
             Q_MIN <= q <= Q_MAX    and
@@ -318,18 +318,18 @@ final public class FloatToDecimal {
         The skeleton corresponds to figure 4 of [1].
         The efficient computations are those summarized in figure 7.
         Also check the appendix.
-
+        
         Here's a correspondence between Java names and names in [1],
         expressed as approximate LaTeX source code and informally.
         Other names are identical.
         cb:     \bar{c}     "c-bar"
         cbr:    \bar{c}_r   "c-bar-r"
         cbl:    \bar{c}_l   "c-bar-l"
-
+        
         vb:     \bar{v}     "v-bar"
         vbr:    \bar{v}_r   "v-bar-r"
         vbl:    \bar{v}_l   "v-bar-l"
-
+        
         rop:    r_o'        "r-o-prime"
          */
         int out = c & 0x1;
@@ -365,7 +365,7 @@ final public class FloatToDecimal {
             /*
             For n = 9, m = 1 the table in section 10 of [1] shows
                 s' = floor(s / 10) = floor(s 1_717_986_919 / 2^34)
-
+            
             sp10 = 10 s'
             tp10 = 10 t'
             upin    iff    u' = sp10 10^k in Rv
@@ -418,7 +418,7 @@ final public class FloatToDecimal {
     private int toChars(int f, int e) {
         /*
         For details not discussed here see section 10 of [1].
-
+        
         Determine len such that
             10^(len-1) <= f < 10^len
          */
@@ -433,7 +433,7 @@ final public class FloatToDecimal {
             10^(H-1) <= f < 10^H
             fp 10^ep = f 10^(e-H) = 0.f 10^e
          */
-        f *= pow10(H - len);
+        f *= (int) pow10(H - len);
         e += len;
 
         /*
@@ -442,7 +442,7 @@ final public class FloatToDecimal {
         Therefore, split the H = 9 digits of f into:
             h = the most significant digit of f
             l = the last 8, least significant digits of f
-
+        
         For n = 9, m = 8 the table in section 10 of [1] shows
             floor(f / 10^8) = floor(1_441_151_881 f / 2^57)
          */

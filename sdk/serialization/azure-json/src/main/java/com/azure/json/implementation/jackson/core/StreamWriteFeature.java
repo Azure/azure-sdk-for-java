@@ -77,21 +77,6 @@ public enum StreamWriteFeature implements JacksonFeature // since 2.12
     // // Schema/Validity support features
 
     /**
-     * Feature that determines whether {@link JsonGenerator} will explicitly
-     * check that no duplicate JSON Object field names are written.
-     * If enabled, generator will check all names within context and report
-     * duplicates by throwing a {@link JsonGenerationException}; if disabled,
-     * no such checking will be done. Assumption in latter case is
-     * that caller takes care of not trying to write duplicate names.
-     *<p>
-     * Note that enabling this feature will incur performance overhead
-     * due to having to store and check additional information.
-     *<p>
-     * Feature is disabled by default.
-     */
-    STRICT_DUPLICATE_DETECTION(JsonGenerator.Feature.STRICT_DUPLICATE_DETECTION),
-
-    /**
      * Feature that determines what to do if the underlying data format requires knowledge
      * of all properties to output, and if no definition is found for a property that
      * caller tries to write. If enabled, such properties will be quietly ignored;

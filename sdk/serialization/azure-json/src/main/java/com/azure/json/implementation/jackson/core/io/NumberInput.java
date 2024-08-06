@@ -10,6 +10,7 @@ import java.math.BigInteger;
  * NOTE! Does NOT validate against maximum length limits: caller must
  * do that if and as necessary.
  */
+@SuppressWarnings("fallthrough")
 public final class NumberInput {
     /**
      * Formerly used constant for a value that was problematic on certain
@@ -220,45 +221,6 @@ public final class NumberInput {
         return true;
     }
 
-    public static int parseAsInt(String s, int def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        // One more thing: use integer parsing for 'simple'
-        int i = 0;
-        // skip leading sign, if any
-        final char sign = s.charAt(0);
-        if (sign == '+') { // for plus, actually physically remove
-            s = s.substring(1);
-            len = s.length();
-        } else if (sign == '-') { // minus, just skip for checks, must retain
-            i = 1;
-        }
-        for (; i < len; ++i) {
-            char c = s.charAt(i);
-            // if other symbols, parse as Double, coerce
-            if (c > '9' || c < '0') {
-                try {
-                    //useFastParser=true is used because there is a lot less risk that small changes in result will have an affect
-                    //and performance benefit is useful
-                    return (int) parseDouble(s, true);
-                } catch (NumberFormatException e) {
-                    return def;
-                }
-            }
-        }
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException ignored) {
-        }
-        return def;
-    }
-
     /**
      * @param s a string representing a number to parse
      * @return closest matching double
@@ -345,7 +307,6 @@ public final class NumberInput {
         throws NumberFormatException {
         return BigDecimalParser.parse(ch, off, len);
     }
-
 
     /**
      * @param ch a char array with text that makes up a number

@@ -561,51 +561,6 @@ public class TextBuffer {
         return NumberInput.parseLong(_currentSegment, 0, _currentSize);
     }
 
-    /**
-     * Accessor that will write buffered contents using given {@link Writer}.
-     *
-     * @param w Writer to use for writing out buffered content
-     *
-     * @return Number of characters written (same as {@link #size()})
-     *
-     * @throws IOException If write using {@link Writer} parameter fails
-     *
-     * @since 2.8
-     */
-    public int contentsToWriter(Writer w) throws IOException {
-        if (_resultArray != null) {
-            w.write(_resultArray);
-            return _resultArray.length;
-        }
-        if (_resultString != null) { // Can take a shortcut...
-            w.write(_resultString);
-            return _resultString.length();
-        }
-        // Do we use shared array?
-        if (_inputStart >= 0) {
-            final int len = _inputLen;
-            if (len > 0) {
-                w.write(_inputBuffer, _inputStart, len);
-            }
-            return len;
-        }
-        // nope, not shared
-        int total = 0;
-        if (_segments != null) {
-            for (char[] curr : _segments) {
-                int currLen = curr.length;
-                total += currLen;
-                w.write(curr, 0, currLen);
-            }
-        }
-        int len = _currentSize;
-        if (len > 0) {
-            total += len;
-            w.write(_currentSegment, 0, len);
-        }
-        return total;
-    }
-
     /*
     /**********************************************************
     /* Public mutators:
