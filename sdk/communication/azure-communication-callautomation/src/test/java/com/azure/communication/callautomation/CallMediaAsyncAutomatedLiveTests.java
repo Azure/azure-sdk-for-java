@@ -261,7 +261,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
