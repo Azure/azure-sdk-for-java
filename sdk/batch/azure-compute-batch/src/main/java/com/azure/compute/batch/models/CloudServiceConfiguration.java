@@ -140,11 +140,7 @@ public final class CloudServiceConfiguration implements JsonSerializable<CloudSe
                 }
             }
 
-            if (family != null) {
-                return new CloudServiceConfiguration(family).setOsVersion(version);
-            } else {
-                return null;
-            }
+            return new CloudServiceConfiguration(family).setOsVersion(version);
         });
     }
 }
