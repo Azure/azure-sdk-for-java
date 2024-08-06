@@ -6,31 +6,32 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.ImageStorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes the properties of an Image.
  */
 @Fluent
-public final class ImageProperties {
+public final class ImageProperties implements JsonSerializable<ImageProperties> {
     /*
      * The source virtual machine from which Image is created.
      */
-    @JsonProperty(value = "sourceVirtualMachine")
     private SubResource sourceVirtualMachine;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
-    @JsonProperty(value = "storageProfile")
     private ImageStorageProfile storageProfile;
 
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
@@ -39,7 +40,6 @@ public final class ImageProperties {
      * disk or snapshot, we may require the user to specify the property if we cannot deduce it from the source managed
      * resource.
      */
-    @JsonProperty(value = "hyperVGeneration")
     private HyperVGenerationTypes hyperVGeneration;
 
     /**
@@ -132,5 +132,50 @@ public final class ImageProperties {
         if (storageProfile() != null) {
             storageProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceVirtualMachine", this.sourceVirtualMachine);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeStringField("hyperVGeneration",
+            this.hyperVGeneration == null ? null : this.hyperVGeneration.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageProperties.
+     */
+    public static ImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageProperties deserializedImageProperties = new ImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceVirtualMachine".equals(fieldName)) {
+                    deserializedImageProperties.sourceVirtualMachine = SubResource.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedImageProperties.storageProfile = ImageStorageProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedImageProperties.provisioningState = reader.getString();
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedImageProperties.hyperVGeneration = HyperVGenerationTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageProperties;
+        });
     }
 }

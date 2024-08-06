@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The object representing the state of the migration between the backup policies.
  */
 @Fluent
-public final class BackupPolicyMigrationState {
+public final class BackupPolicyMigrationState implements JsonSerializable<BackupPolicyMigrationState> {
     /*
      * Describes the status of migration between backup policy types.
      */
-    @JsonProperty(value = "status")
     private BackupPolicyMigrationStatus status;
 
     /*
      * Describes the target backup policy type of the backup policy migration.
      */
-    @JsonProperty(value = "targetType")
     private BackupPolicyType targetType;
 
     /*
      * Time at which the backup policy migration started (ISO-8601 format).
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /**
@@ -103,5 +106,50 @@ public final class BackupPolicyMigrationState {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("targetType", this.targetType == null ? null : this.targetType.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPolicyMigrationState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPolicyMigrationState if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupPolicyMigrationState.
+     */
+    public static BackupPolicyMigrationState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPolicyMigrationState deserializedBackupPolicyMigrationState = new BackupPolicyMigrationState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedBackupPolicyMigrationState.status
+                        = BackupPolicyMigrationStatus.fromString(reader.getString());
+                } else if ("targetType".equals(fieldName)) {
+                    deserializedBackupPolicyMigrationState.targetType = BackupPolicyType.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedBackupPolicyMigrationState.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPolicyMigrationState;
+        });
     }
 }

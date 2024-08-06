@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of a Proximity Placement Group.
  */
 @Fluent
-public final class ProximityPlacementGroupProperties {
+public final class ProximityPlacementGroupProperties implements JsonSerializable<ProximityPlacementGroupProperties> {
     /*
      * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources
      * within an Azure region or Availability Zone. **Ultra** : For future use.
      */
-    @JsonProperty(value = "proximityPlacementGroupType")
     private ProximityPlacementGroupType proximityPlacementGroupType;
 
     /*
      * A list of references to all virtual machines in the proximity placement group.
      */
-    @JsonProperty(value = "virtualMachines", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> virtualMachines;
 
     /*
      * A list of references to all virtual machine scale sets in the proximity placement group.
      */
-    @JsonProperty(value = "virtualMachineScaleSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> virtualMachineScaleSets;
 
     /*
      * A list of references to all availability sets in the proximity placement group.
      */
-    @JsonProperty(value = "availabilitySets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> availabilitySets;
 
     /*
      * Describes colocation status of the Proximity Placement Group.
      */
-    @JsonProperty(value = "colocationStatus")
     private InstanceViewStatus colocationStatus;
 
     /*
      * Specifies the user intent of the proximity placement group.
      */
-    @JsonProperty(value = "intent")
     private ProximityPlacementGroupPropertiesIntent intent;
 
     /**
@@ -175,5 +173,64 @@ public final class ProximityPlacementGroupProperties {
         if (intent() != null) {
             intent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("proximityPlacementGroupType",
+            this.proximityPlacementGroupType == null ? null : this.proximityPlacementGroupType.toString());
+        jsonWriter.writeJsonField("colocationStatus", this.colocationStatus);
+        jsonWriter.writeJsonField("intent", this.intent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProximityPlacementGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProximityPlacementGroupProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProximityPlacementGroupProperties.
+     */
+    public static ProximityPlacementGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProximityPlacementGroupProperties deserializedProximityPlacementGroupProperties
+                = new ProximityPlacementGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("proximityPlacementGroupType".equals(fieldName)) {
+                    deserializedProximityPlacementGroupProperties.proximityPlacementGroupType
+                        = ProximityPlacementGroupType.fromString(reader.getString());
+                } else if ("virtualMachines".equals(fieldName)) {
+                    List<SubResourceWithColocationStatus> virtualMachines
+                        = reader.readArray(reader1 -> SubResourceWithColocationStatus.fromJson(reader1));
+                    deserializedProximityPlacementGroupProperties.virtualMachines = virtualMachines;
+                } else if ("virtualMachineScaleSets".equals(fieldName)) {
+                    List<SubResourceWithColocationStatus> virtualMachineScaleSets
+                        = reader.readArray(reader1 -> SubResourceWithColocationStatus.fromJson(reader1));
+                    deserializedProximityPlacementGroupProperties.virtualMachineScaleSets = virtualMachineScaleSets;
+                } else if ("availabilitySets".equals(fieldName)) {
+                    List<SubResourceWithColocationStatus> availabilitySets
+                        = reader.readArray(reader1 -> SubResourceWithColocationStatus.fromJson(reader1));
+                    deserializedProximityPlacementGroupProperties.availabilitySets = availabilitySets;
+                } else if ("colocationStatus".equals(fieldName)) {
+                    deserializedProximityPlacementGroupProperties.colocationStatus
+                        = InstanceViewStatus.fromJson(reader);
+                } else if ("intent".equals(fieldName)) {
+                    deserializedProximityPlacementGroupProperties.intent
+                        = ProximityPlacementGroupPropertiesIntent.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProximityPlacementGroupProperties;
+        });
     }
 }

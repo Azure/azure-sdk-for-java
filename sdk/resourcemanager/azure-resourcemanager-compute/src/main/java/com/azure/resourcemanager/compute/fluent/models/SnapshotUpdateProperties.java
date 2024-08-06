@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
@@ -12,17 +16,16 @@ import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.azure.resourcemanager.compute.models.SupportedCapabilities;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Snapshot resource update properties.
  */
 @Fluent
-public final class SnapshotUpdateProperties {
+public final class SnapshotUpdateProperties implements JsonSerializable<SnapshotUpdateProperties> {
     /*
      * the Operating System type.
      */
-    @JsonProperty(value = "osType")
     private OperatingSystemTypes osType;
 
     /*
@@ -30,56 +33,47 @@ public final class SnapshotUpdateProperties {
      * If this field is present for updates or creation with other options, it indicates a resize. Resizes are only
      * allowed if the disk is not attached to a running VM, and can only increase the disk's size.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk
      * or snapshot.
      */
-    @JsonProperty(value = "encryptionSettingsCollection")
     private EncryptionSettingsCollection encryptionSettingsCollection;
 
     /*
      * Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * Policy for accessing the disk via network.
      */
-    @JsonProperty(value = "networkAccessPolicy")
     private NetworkAccessPolicy networkAccessPolicy;
 
     /*
      * ARM id of the DiskAccess resource for using private endpoints on disks.
      */
-    @JsonProperty(value = "diskAccessId")
     private String diskAccessId;
 
     /*
      * Indicates the OS on a snapshot supports hibernation.
      */
-    @JsonProperty(value = "supportsHibernation")
     private Boolean supportsHibernation;
 
     /*
      * Policy for controlling export on the disk.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Additional authentication requirements when exporting or uploading to a disk or snapshot.
      */
-    @JsonProperty(value = "dataAccessAuthMode")
     private DataAccessAuthMode dataAccessAuthMode;
 
     /*
      * List of supported capabilities for the image from which the OS disk was created.
      */
-    @JsonProperty(value = "supportedCapabilities")
     private SupportedCapabilities supportedCapabilities;
 
     /**
@@ -318,5 +312,76 @@ public final class SnapshotUpdateProperties {
         if (supportedCapabilities() != null) {
             supportedCapabilities().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeJsonField("encryptionSettingsCollection", this.encryptionSettingsCollection);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("networkAccessPolicy",
+            this.networkAccessPolicy == null ? null : this.networkAccessPolicy.toString());
+        jsonWriter.writeStringField("diskAccessId", this.diskAccessId);
+        jsonWriter.writeBooleanField("supportsHibernation", this.supportsHibernation);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("dataAccessAuthMode",
+            this.dataAccessAuthMode == null ? null : this.dataAccessAuthMode.toString());
+        jsonWriter.writeJsonField("supportedCapabilities", this.supportedCapabilities);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotUpdateProperties.
+     */
+    public static SnapshotUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotUpdateProperties deserializedSnapshotUpdateProperties = new SnapshotUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.osType = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("encryptionSettingsCollection".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.encryptionSettingsCollection
+                        = EncryptionSettingsCollection.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.encryption = Encryption.fromJson(reader);
+                } else if ("networkAccessPolicy".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.networkAccessPolicy
+                        = NetworkAccessPolicy.fromString(reader.getString());
+                } else if ("diskAccessId".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.diskAccessId = reader.getString();
+                } else if ("supportsHibernation".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.supportsHibernation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("dataAccessAuthMode".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.dataAccessAuthMode
+                        = DataAccessAuthMode.fromString(reader.getString());
+                } else if ("supportedCapabilities".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.supportedCapabilities = SupportedCapabilities.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotUpdateProperties;
+        });
     }
 }
