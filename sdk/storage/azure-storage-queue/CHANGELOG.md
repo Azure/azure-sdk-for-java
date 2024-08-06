@@ -3,6 +3,7 @@
 ## 12.23.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
 
 ### Breaking Changes
 

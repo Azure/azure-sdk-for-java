@@ -3,6 +3,10 @@
 ## 12.24.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for token-based authentication for all APIs.
+- Added support for paid bursting on premium file share accounts.
+- Added support for binary format for file permissions.
+- Added ability to retrieve SAS string to sign for debugging purposes.
 
 ### Breaking Changes
 
