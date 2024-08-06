@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.PolicyExemptionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The policy exemption for Patch request.
  */
 @Fluent
-public final class PolicyExemptionUpdate {
+public final class PolicyExemptionUpdate implements JsonSerializable<PolicyExemptionUpdate> {
     /*
      * The policy exemption properties for Patch request.
      */
-    @JsonProperty(value = "properties")
     private PolicyExemptionUpdateProperties innerProperties;
 
     /**
@@ -92,5 +95,42 @@ public final class PolicyExemptionUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyExemptionUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyExemptionUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyExemptionUpdate.
+     */
+    public static PolicyExemptionUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyExemptionUpdate deserializedPolicyExemptionUpdate = new PolicyExemptionUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPolicyExemptionUpdate.innerProperties
+                        = PolicyExemptionUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyExemptionUpdate;
+        });
     }
 }

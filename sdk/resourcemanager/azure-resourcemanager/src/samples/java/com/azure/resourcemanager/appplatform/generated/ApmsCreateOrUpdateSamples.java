@@ -24,13 +24,16 @@ public final class ApmsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apmsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApms().createOrUpdate("myResourceGroup", "myservice",
-            "myappinsights",
-            new ApmResourceInner().withProperties(new ApmProperties().withType("ApplicationInsights")
-                .withProperties(mapOf("any-string", "any-string", "sampling-rate", "12.0"))
-                .withSecrets(mapOf("connection-string",
-                    "XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXX;XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXXXXXXXX"))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApms()
+            .createOrUpdate("myResourceGroup", "myservice", "myappinsights",
+                new ApmResourceInner().withProperties(new ApmProperties().withType("ApplicationInsights")
+                    .withProperties(mapOf("any-string", "any-string", "sampling-rate", "12.0"))
+                    .withSecrets(mapOf("connection-string",
+                        "XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXX;XXXXXXXXXXXXXXXXX=XXXXXXXXXXXXXXXXXXX"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

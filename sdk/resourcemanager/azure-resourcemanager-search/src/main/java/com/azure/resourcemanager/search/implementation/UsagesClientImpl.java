@@ -31,17 +31,23 @@ import com.azure.resourcemanager.search.models.QuotaUsagesListResult;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsagesClient.
+ */
 public final class UsagesClientImpl implements UsagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UsagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchManagementClientImpl client;
 
     /**
      * Initializes an instance of UsagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UsagesClientImpl(SearchManagementClientImpl client) {
@@ -56,145 +62,102 @@ public final class UsagesClientImpl implements UsagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "SearchManagementClie")
     public interface UsagesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Search/locations/{location}/usages")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaUsagesListResult>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaUsagesListResult>> listBySubscription(@HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QuotaUsagesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search quota usages in the given subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionSinglePageAsync(
-        String location, UUID clientRequestId) {
+    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionSinglePageAsync(String location,
+        UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            clientRequestId,
-                            location,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<QuotaUsageResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(), clientRequestId, location,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<QuotaUsageResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search quota usages in the given subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionSinglePageAsync(
-        String location, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionSinglePageAsync(String location,
+        UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                clientRequestId,
-                location,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySubscription(this.client.getEndpoint(), clientRequestId, location, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,14 +165,13 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location, UUID clientRequestId) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(location, clientRequestId),
+        return new PagedFlux<>(() -> listBySubscriptionSinglePageAsync(location, clientRequestId),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -219,17 +181,16 @@ public final class UsagesClientImpl implements UsagesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location) {
         final UUID clientRequestId = null;
-        return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(location, clientRequestId),
+        return new PagedFlux<>(() -> listBySubscriptionSinglePageAsync(location, clientRequestId),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -237,22 +198,21 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return a list of all Search quota usages in the given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(
-        String location, UUID clientRequestId, Context context) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(location, clientRequestId, context),
+    private PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location, UUID clientRequestId,
+        Context context) {
+        return new PagedFlux<>(() -> listBySubscriptionSinglePageAsync(location, clientRequestId, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, clientRequestId, context));
     }
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Search quota usages in the given subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaUsageResultInner> listBySubscription(String location) {
@@ -262,104 +222,81 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Gets a list of all Search quota usages in the given subscription.
-     *
+     * 
      * @param location The unique location name for a Microsoft Azure geographic region.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search quota usages in the given subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Search quota usages in the given subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QuotaUsageResultInner> listBySubscription(
-        String location, UUID clientRequestId, Context context) {
+    public PagedIterable<QuotaUsageResultInner> listBySubscription(String location, UUID clientRequestId,
+        Context context) {
         return new PagedIterable<>(listBySubscriptionAsync(location, clientRequestId, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the quota usage information for all the supported SKUs of Azure AI Search along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, UUID clientRequestId) {
+    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        UUID clientRequestId) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
-            .<PagedResponse<QuotaUsageResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId,
+                accept, context))
+            .<PagedResponse<QuotaUsageResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the quota usage information for all the supported SKUs of Azure AI Search along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<QuotaUsageResultInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        UUID clientRequestId, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

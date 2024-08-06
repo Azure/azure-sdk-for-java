@@ -6,49 +6,48 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Parameters for HubVirtualNetworkConnection.
  */
 @Fluent
-public final class HubVirtualNetworkConnectionProperties {
+public final class HubVirtualNetworkConnectionProperties
+    implements JsonSerializable<HubVirtualNetworkConnectionProperties> {
     /*
      * Reference to the remote virtual network.
      */
-    @JsonProperty(value = "remoteVirtualNetwork")
     private SubResource remoteVirtualNetwork;
 
     /*
      * Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
      */
-    @JsonProperty(value = "allowHubToRemoteVnetTransit")
     private Boolean allowHubToRemoteVnetTransit;
 
     /*
      * Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
      */
-    @JsonProperty(value = "allowRemoteVnetToUseHubVnetGateways")
     private Boolean allowRemoteVnetToUseHubVnetGateways;
 
     /*
      * Enable internet security.
      */
-    @JsonProperty(value = "enableInternetSecurity")
     private Boolean enableInternetSecurity;
 
     /*
      * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
-    @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
 
     /*
      * The provisioning state of the hub virtual network connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -178,5 +177,62 @@ public final class HubVirtualNetworkConnectionProperties {
         if (routingConfiguration() != null) {
             routingConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("remoteVirtualNetwork", this.remoteVirtualNetwork);
+        jsonWriter.writeBooleanField("allowHubToRemoteVnetTransit", this.allowHubToRemoteVnetTransit);
+        jsonWriter.writeBooleanField("allowRemoteVnetToUseHubVnetGateways", this.allowRemoteVnetToUseHubVnetGateways);
+        jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
+        jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubVirtualNetworkConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubVirtualNetworkConnectionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubVirtualNetworkConnectionProperties.
+     */
+    public static HubVirtualNetworkConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubVirtualNetworkConnectionProperties deserializedHubVirtualNetworkConnectionProperties
+                = new HubVirtualNetworkConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("remoteVirtualNetwork".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.remoteVirtualNetwork
+                        = SubResource.fromJson(reader);
+                } else if ("allowHubToRemoteVnetTransit".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.allowHubToRemoteVnetTransit
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowRemoteVnetToUseHubVnetGateways".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.allowRemoteVnetToUseHubVnetGateways
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableInternetSecurity".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.enableInternetSecurity
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("routingConfiguration".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.routingConfiguration
+                        = RoutingConfiguration.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubVirtualNetworkConnectionProperties;
+        });
     }
 }

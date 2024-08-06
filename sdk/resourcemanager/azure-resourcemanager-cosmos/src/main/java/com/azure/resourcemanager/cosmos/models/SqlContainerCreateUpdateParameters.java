@@ -6,9 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerCreateUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -19,8 +21,22 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     /*
      * Properties to create and update Azure Cosmos DB container.
      */
-    @JsonProperty(value = "properties", required = true)
     private SqlContainerCreateUpdateProperties innerProperties = new SqlContainerCreateUpdateProperties();
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of SqlContainerCreateUpdateParameters class.
@@ -30,11 +46,41 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB container.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlContainerCreateUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -57,7 +103,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Get the resource property: The standard JSON format of a container.
-     *
+     * 
      * @return the resource value.
      */
     public SqlContainerResource resource() {
@@ -66,7 +112,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Set the resource property: The standard JSON format of a container.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlContainerCreateUpdateParameters object itself.
      */
@@ -81,7 +127,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -91,7 +137,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlContainerCreateUpdateParameters object itself.
      */
@@ -105,7 +151,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -121,4 +167,56 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlContainerCreateUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlContainerCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlContainerCreateUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlContainerCreateUpdateParameters.
+     */
+    public static SqlContainerCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlContainerCreateUpdateParameters deserializedSqlContainerCreateUpdateParameters
+                = new SqlContainerCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlContainerCreateUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlContainerCreateUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlContainerCreateUpdateParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSqlContainerCreateUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlContainerCreateUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlContainerCreateUpdateParameters.innerProperties
+                        = SqlContainerCreateUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlContainerCreateUpdateParameters;
+        });
+    }
 }

@@ -52,12 +52,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.26.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.27.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.22.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <dependency>

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The pass name. Currently, the only allowable value is OobeSystem.
  */
@@ -31,7 +28,6 @@ public enum PassNames {
      * @param value the serialized value to parse.
      * @return the parsed PassNames object, or null if unable to parse.
      */
-    @JsonCreator
     public static PassNames fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum PassNames {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

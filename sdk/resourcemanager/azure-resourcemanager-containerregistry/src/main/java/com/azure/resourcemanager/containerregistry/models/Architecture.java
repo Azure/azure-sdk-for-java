@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
      * @param name a name to look for.
      * @return the corresponding Architecture.
      */
-    @JsonCreator
     public static Architecture fromString(String name) {
         return fromString(name, Architecture.class);
     }

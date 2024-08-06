@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RuntimeVersion. */
@@ -27,7 +26,6 @@ public final class RuntimeVersion extends ExpandableStringEnum<RuntimeVersion> {
      * @param name a name to look for.
      * @return the corresponding RuntimeVersion.
      */
-    @JsonCreator
     public static RuntimeVersion fromString(String name) {
         return fromString(name, RuntimeVersion.class);
     }

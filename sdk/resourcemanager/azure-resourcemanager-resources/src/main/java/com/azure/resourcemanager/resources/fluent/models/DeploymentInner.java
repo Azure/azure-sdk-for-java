@@ -6,33 +6,32 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Deployment operation parameters.
  */
 @Fluent
-public final class DeploymentInner {
+public final class DeploymentInner implements JsonSerializable<DeploymentInner> {
     /*
      * The location to store the deployment data.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The deployment properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
 
     /*
      * Deployment tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -116,4 +115,48 @@ public final class DeploymentInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeploymentInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeploymentInner.
+     */
+    public static DeploymentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentInner deserializedDeploymentInner = new DeploymentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDeploymentInner.properties = DeploymentProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeploymentInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeploymentInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentInner;
+        });
+    }
 }

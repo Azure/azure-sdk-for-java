@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerHealth;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Application gateway backendhealth http settings.
  */
 @Fluent
-public final class ApplicationGatewayBackendHealthServerInner {
+public final class ApplicationGatewayBackendHealthServerInner
+    implements JsonSerializable<ApplicationGatewayBackendHealthServerInner> {
     /*
      * IP address or FQDN of backend server.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * Reference to IP configuration of backend server.
      */
-    @JsonProperty(value = "ipConfiguration")
     private NetworkInterfaceIpConfigurationInner ipConfiguration;
 
     /*
      * Health of backend server.
      */
-    @JsonProperty(value = "health")
     private ApplicationGatewayBackendHealthServerHealth health;
 
     /*
      * Health Probe Log.
      */
-    @JsonProperty(value = "healthProbeLog")
     private String healthProbeLog;
 
     /**
@@ -133,5 +134,53 @@ public final class ApplicationGatewayBackendHealthServerInner {
         if (ipConfiguration() != null) {
             ipConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeJsonField("ipConfiguration", this.ipConfiguration);
+        jsonWriter.writeStringField("health", this.health == null ? null : this.health.toString());
+        jsonWriter.writeStringField("healthProbeLog", this.healthProbeLog);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayBackendHealthServerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayBackendHealthServerInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayBackendHealthServerInner.
+     */
+    public static ApplicationGatewayBackendHealthServerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayBackendHealthServerInner deserializedApplicationGatewayBackendHealthServerInner
+                = new ApplicationGatewayBackendHealthServerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.address = reader.getString();
+                } else if ("ipConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.ipConfiguration
+                        = NetworkInterfaceIpConfigurationInner.fromJson(reader);
+                } else if ("health".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.health
+                        = ApplicationGatewayBackendHealthServerHealth.fromString(reader.getString());
+                } else if ("healthProbeLog".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.healthProbeLog = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayBackendHealthServerInner;
+        });
     }
 }

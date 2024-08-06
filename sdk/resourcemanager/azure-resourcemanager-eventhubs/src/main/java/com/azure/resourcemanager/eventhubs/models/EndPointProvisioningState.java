@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -45,7 +43,7 @@ public final class EndPointProvisioningState extends ExpandableStringEnum<EndPoi
 
     /**
      * Creates a new instance of EndPointProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,18 +52,17 @@ public final class EndPointProvisioningState extends ExpandableStringEnum<EndPoi
 
     /**
      * Creates or finds a EndPointProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndPointProvisioningState.
      */
-    @JsonCreator
     public static EndPointProvisioningState fromString(String name) {
         return fromString(name, EndPointProvisioningState.class);
     }
 
     /**
      * Gets known EndPointProvisioningState values.
-     *
+     * 
      * @return known EndPointProvisioningState values.
      */
     public static Collection<EndPointProvisioningState> values() {

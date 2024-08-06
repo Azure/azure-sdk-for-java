@@ -5,50 +5,49 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of private link service IP configuration.
  */
 @Fluent
-public final class PrivateLinkServiceIpConfigurationPropertiesInner {
+public final class PrivateLinkServiceIpConfigurationPropertiesInner
+    implements JsonSerializable<PrivateLinkServiceIpConfigurationPropertiesInner> {
     /*
      * The private IP address of the IP configuration.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * The reference to the subnet resource.
      */
-    @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
      * Whether the ip configuration is primary or not.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * The provisioning state of the private link service IP configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      */
-    @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /**
@@ -177,5 +176,62 @@ public final class PrivateLinkServiceIpConfigurationPropertiesInner {
         if (subnet() != null) {
             subnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceIpConfigurationPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceIpConfigurationPropertiesInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceIpConfigurationPropertiesInner.
+     */
+    public static PrivateLinkServiceIpConfigurationPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceIpConfigurationPropertiesInner deserializedPrivateLinkServiceIpConfigurationPropertiesInner
+                = new PrivateLinkServiceIpConfigurationPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateIPAddress".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationPropertiesInner.privateIpAddress = reader.getString();
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationPropertiesInner.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationPropertiesInner.subnet = SubnetInner.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationPropertiesInner.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationPropertiesInner.privateIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceIpConfigurationPropertiesInner;
+        });
     }
 }

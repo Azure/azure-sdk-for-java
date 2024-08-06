@@ -9,7 +9,6 @@ import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.IpRule;
-
 import java.util.Arrays;
 
 /**
@@ -22,7 +21,7 @@ public final class BastionHostsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Developer Bastion Host.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createDeveloperBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -45,7 +44,7 @@ public final class BastionHostsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Bastion Host.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -69,7 +68,7 @@ public final class BastionHostsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Bastion Host With Zones.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createBastionHostWithZones(com.azure.resourcemanager.AzureResourceManager azure) {

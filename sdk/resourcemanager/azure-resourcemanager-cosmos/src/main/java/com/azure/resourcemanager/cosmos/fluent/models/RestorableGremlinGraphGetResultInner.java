@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.RestorableGremlinGraphPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * An Azure Cosmos DB Gremlin graph event.
  */
 @Fluent
-public final class RestorableGremlinGraphGetResultInner {
+public final class RestorableGremlinGraphGetResultInner
+    implements JsonSerializable<RestorableGremlinGraphGetResultInner> {
     /*
      * The properties of a Gremlin graph event.
      */
-    @JsonProperty(value = "properties")
     private RestorableGremlinGraphProperties innerProperties;
 
     /*
      * The unique resource Identifier of the ARM resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the ARM resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of Azure resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -111,5 +112,49 @@ public final class RestorableGremlinGraphGetResultInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableGremlinGraphGetResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableGremlinGraphGetResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableGremlinGraphGetResultInner.
+     */
+    public static RestorableGremlinGraphGetResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableGremlinGraphGetResultInner deserializedRestorableGremlinGraphGetResultInner
+                = new RestorableGremlinGraphGetResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphGetResultInner.innerProperties
+                        = RestorableGremlinGraphProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphGetResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphGetResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableGremlinGraphGetResultInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableGremlinGraphGetResultInner;
+        });
     }
 }

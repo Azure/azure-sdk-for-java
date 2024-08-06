@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.TrustedAccessRoleBindingInner;
-
 import java.util.Arrays;
 
 /**
@@ -19,7 +18,7 @@ public final class TrustedAccessRoleBindingsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create or update a trusted access role binding.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateATrustedAccessRoleBinding(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
 
     /**
      * Creates a new instance of DefaultAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
 
     /**
      * Creates or finds a DefaultAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DefaultAction.
      */
-    @JsonCreator
     public static DefaultAction fromString(String name) {
         return fromString(name, DefaultAction.class);
     }
 
     /**
      * Gets known DefaultAction values.
-     *
+     * 
      * @return known DefaultAction values.
      */
     public static Collection<DefaultAction> values() {

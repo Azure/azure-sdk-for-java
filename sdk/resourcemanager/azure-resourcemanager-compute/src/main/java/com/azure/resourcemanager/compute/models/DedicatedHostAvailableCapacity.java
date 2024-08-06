@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Dedicated host unutilized capacity.
  */
 @Fluent
-public final class DedicatedHostAvailableCapacity {
+public final class DedicatedHostAvailableCapacity implements JsonSerializable<DedicatedHostAvailableCapacity> {
     /*
      * The unutilized capacity of the dedicated host represented in terms of each VM size that is allowed to be deployed
      * to the dedicated host.
      */
-    @JsonProperty(value = "allocatableVMs")
     private List<DedicatedHostAllocatableVM> allocatableVMs;
 
     /**
@@ -57,5 +60,45 @@ public final class DedicatedHostAvailableCapacity {
         if (allocatableVMs() != null) {
             allocatableVMs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allocatableVMs", this.allocatableVMs,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostAvailableCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostAvailableCapacity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHostAvailableCapacity.
+     */
+    public static DedicatedHostAvailableCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostAvailableCapacity deserializedDedicatedHostAvailableCapacity
+                = new DedicatedHostAvailableCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allocatableVMs".equals(fieldName)) {
+                    List<DedicatedHostAllocatableVM> allocatableVMs
+                        = reader.readArray(reader1 -> DedicatedHostAllocatableVM.fromJson(reader1));
+                    deserializedDedicatedHostAvailableCapacity.allocatableVMs = allocatableVMs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostAvailableCapacity;
+        });
     }
 }

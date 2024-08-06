@@ -5,40 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** inferenceClassificationOverride. */
+/**
+ * inferenceClassificationOverride.
+ */
 @Fluent
 public final class MicrosoftGraphInferenceClassificationOverride extends MicrosoftGraphEntity {
     /*
      * inferenceClassificationType
      */
-    @JsonProperty(value = "classifyAs")
     private MicrosoftGraphInferenceClassificationType classifyAs;
 
     /*
      * emailAddress
      */
-    @JsonProperty(value = "senderEmailAddress")
     private MicrosoftGraphEmailAddress senderEmailAddress;
 
     /*
      * inferenceClassificationOverride
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphInferenceClassificationOverride class. */
+    /**
+     * Creates an instance of MicrosoftGraphInferenceClassificationOverride class.
+     */
     public MicrosoftGraphInferenceClassificationOverride() {
     }
 
     /**
      * Get the classifyAs property: inferenceClassificationType.
-     *
+     * 
      * @return the classifyAs value.
      */
     public MicrosoftGraphInferenceClassificationType classifyAs() {
@@ -47,19 +49,19 @@ public final class MicrosoftGraphInferenceClassificationOverride extends Microso
 
     /**
      * Set the classifyAs property: inferenceClassificationType.
-     *
+     * 
      * @param classifyAs the classifyAs value to set.
      * @return the MicrosoftGraphInferenceClassificationOverride object itself.
      */
-    public MicrosoftGraphInferenceClassificationOverride withClassifyAs(
-        MicrosoftGraphInferenceClassificationType classifyAs) {
+    public MicrosoftGraphInferenceClassificationOverride
+        withClassifyAs(MicrosoftGraphInferenceClassificationType classifyAs) {
         this.classifyAs = classifyAs;
         return this;
     }
 
     /**
      * Get the senderEmailAddress property: emailAddress.
-     *
+     * 
      * @return the senderEmailAddress value.
      */
     public MicrosoftGraphEmailAddress senderEmailAddress() {
@@ -68,47 +70,40 @@ public final class MicrosoftGraphInferenceClassificationOverride extends Microso
 
     /**
      * Set the senderEmailAddress property: emailAddress.
-     *
+     * 
      * @param senderEmailAddress the senderEmailAddress value to set.
      * @return the MicrosoftGraphInferenceClassificationOverride object itself.
      */
-    public MicrosoftGraphInferenceClassificationOverride withSenderEmailAddress(
-        MicrosoftGraphEmailAddress senderEmailAddress) {
+    public MicrosoftGraphInferenceClassificationOverride
+        withSenderEmailAddress(MicrosoftGraphEmailAddress senderEmailAddress) {
         this.senderEmailAddress = senderEmailAddress;
         return this;
     }
 
     /**
      * Get the additionalProperties property: inferenceClassificationOverride.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: inferenceClassificationOverride.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphInferenceClassificationOverride object itself.
      */
-    public MicrosoftGraphInferenceClassificationOverride withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphInferenceClassificationOverride
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphInferenceClassificationOverride withId(String id) {
         super.withId(id);
@@ -117,7 +112,7 @@ public final class MicrosoftGraphInferenceClassificationOverride extends Microso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -126,5 +121,61 @@ public final class MicrosoftGraphInferenceClassificationOverride extends Microso
         if (senderEmailAddress() != null) {
             senderEmailAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("classifyAs", this.classifyAs == null ? null : this.classifyAs.toString());
+        jsonWriter.writeJsonField("senderEmailAddress", this.senderEmailAddress);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphInferenceClassificationOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphInferenceClassificationOverride if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphInferenceClassificationOverride.
+     */
+    public static MicrosoftGraphInferenceClassificationOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphInferenceClassificationOverride deserializedMicrosoftGraphInferenceClassificationOverride
+                = new MicrosoftGraphInferenceClassificationOverride();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphInferenceClassificationOverride.withId(reader.getString());
+                } else if ("classifyAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphInferenceClassificationOverride.classifyAs
+                        = MicrosoftGraphInferenceClassificationType.fromString(reader.getString());
+                } else if ("senderEmailAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphInferenceClassificationOverride.senderEmailAddress
+                        = MicrosoftGraphEmailAddress.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphInferenceClassificationOverride.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphInferenceClassificationOverride;
+        });
     }
 }

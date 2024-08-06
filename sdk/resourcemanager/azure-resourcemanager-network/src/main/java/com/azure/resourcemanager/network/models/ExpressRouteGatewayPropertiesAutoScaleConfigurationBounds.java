@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Minimum and maximum number of scale units to deploy.
  */
 @Fluent
-public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
+public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds
+    implements JsonSerializable<ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds> {
     /*
      * Minimum number of scale units deployed for ExpressRoute gateway.
      */
-    @JsonProperty(value = "min")
     private Integer min;
 
     /*
      * Maximum number of scale units deployed for ExpressRoute gateway.
      */
-    @JsonProperty(value = "max")
     private Integer max;
 
     /**
@@ -76,5 +79,49 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("min", this.min);
+        jsonWriter.writeNumberField("max", this.max);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.
+     */
+    public static ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds deserializedExpressRouteGatewayPropertiesAutoScaleConfigurationBounds
+                = new ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("min".equals(fieldName)) {
+                    deserializedExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.min
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("max".equals(fieldName)) {
+                    deserializedExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.max
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteGatewayPropertiesAutoScaleConfigurationBounds;
+        });
     }
 }

@@ -18,8 +18,11 @@ public final class DeploymentsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().getWithResponse("myResourceGroup",
-            "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -32,7 +35,10 @@ public final class DeploymentsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsGetCustomContainer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().getWithResponse("myResourceGroup",
-            "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .getWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }

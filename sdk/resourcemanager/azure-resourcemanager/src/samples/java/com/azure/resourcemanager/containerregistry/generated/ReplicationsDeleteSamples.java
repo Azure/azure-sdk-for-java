@@ -19,7 +19,10 @@ public final class ReplicationsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getReplications().delete("myResourceGroup", "myRegistry",
-            "myReplication", com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getReplications()
+            .delete("myResourceGroup", "myRegistry", "myReplication", com.azure.core.util.Context.NONE);
     }
 }

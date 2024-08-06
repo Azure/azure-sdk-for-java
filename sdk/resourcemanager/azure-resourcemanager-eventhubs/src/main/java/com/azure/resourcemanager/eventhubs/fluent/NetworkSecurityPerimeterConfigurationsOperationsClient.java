@@ -11,10 +11,9 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -23,7 +22,7 @@ import java.nio.ByteBuffer;
 public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -38,7 +37,7 @@ public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -53,7 +52,7 @@ public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -68,7 +67,7 @@ public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -84,7 +83,7 @@ public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -98,7 +97,7 @@ public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -111,7 +110,7 @@ public interface NetworkSecurityPerimeterConfigurationsOperationsClient {
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.51.0-beta.1 (Unreleased)
+## 1.52.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,10 +8,29 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.51.0 (2024-07-31)
+
+### Features Added
+
+- Added more HTTP header name constants to `HttpHeaderName`. ([#41354](https://github.com/Azure/azure-sdk-for-java/pull/41354))
+- Added support for "refresh on" in `SimpleTokenCache`. ([#41315](https://github.com/Azure/azure-sdk-for-java/pull/41315))
+
+### Bugs Fixed
+
+- Fixed a bug where `XmlMapperFactory` was incorrectly reflectively calling an API on `XmlMapper`. ([#41252](https://github.com/Azure/azure-sdk-for-java/pull/41252))
 - Fixed a bug where adding configuration properties with `ConfigurationBuilder.putProperty` did not work when retrieving 
   them as system properties. ([#41362](https://github.com/Azure/azure-sdk-for-java/pull/41362))
+- Fixed a bug where datetime strings without a `:` in the offset would fail to parse. ([#41166](https://github.com/Azure/azure-sdk-for-java/pull/41166))
 
 ### Other Changes
+
+- Reduced thread switching / thread parking in `RetryPolicy` by checking if the backoff delay was greater than zero. ([#41351](https://github.com/Azure/azure-sdk-for-java/pull/41351))
+
+#### Dependency Updates
+
+- Updated Jackson from `2.13.5` to `2.17.2`.
 
 ## 1.50.0 (2024-07-12)
 
