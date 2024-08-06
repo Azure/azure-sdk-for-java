@@ -6,10 +6,8 @@ package com.azure.ai.inference.implementation;
 import com.azure.ai.inference.implementation.models.CompleteOptions;
 import com.azure.ai.inference.models.ChatRequestMessage;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.StringReader;
@@ -31,7 +29,7 @@ public final class ChatCompletionsUtils {
         List<ChatRequestMessage> messages = new ArrayList<>();
         String jsonPrompt = "{"
             + "\"role\":\"user\","
-            + "\"content\":\"%s\","
+            + "\"content\":\"%s\""
             + "}";
         String contentString = String.format(jsonPrompt, prompt);
         try {

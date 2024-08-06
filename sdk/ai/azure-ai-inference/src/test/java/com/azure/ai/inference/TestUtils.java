@@ -4,12 +4,9 @@
 package com.azure.ai.inference;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
