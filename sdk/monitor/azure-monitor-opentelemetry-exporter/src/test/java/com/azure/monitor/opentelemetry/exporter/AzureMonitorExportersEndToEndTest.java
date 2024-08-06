@@ -26,6 +26,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toMessageData;
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toMetricsData;
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toRemoteDependencyData;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -42,20 +45,24 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
     @Test
     public void testBuildTraceExporter() throws Exception {
         // create the OpenTelemetry SDK
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        final int numberOfSpans = 10;
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfSpans);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         HttpPipeline httpPipeline = getHttpPipeline(customValidationPolicy);
         OpenTelemetry openTelemetry =
             TestUtils.createOpenTelemetrySdk(httpPipeline, getConfiguration());
 
-        // generate a span
-        generateSpan(openTelemetry);
+        // generate spans
+        for (int i = 0; i < numberOfSpans; i++) {
+            generateSpan(openTelemetry);
+        }
 
         // wait for export
-        countDownLatch.await(10, SECONDS);
+        countDownLatch.await(numberOfSpans, SECONDS);
+        Thread.sleep(1000); // wait for the last span to be processed. macOS test kept failing on CI due to URL is null.
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(numberOfSpans);
 
         // validate span
         TelemetryItem spanTelemetryItem =
@@ -201,10 +208,10 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("RemoteDependencyData");
-        RemoteDependencyData actualData = (RemoteDependencyData) telemetryItem.getData().getBaseData();
+
+        RemoteDependencyData actualData = toRemoteDependencyData(telemetryItem.getData().getBaseData());
         assertThat(actualData.getName()).isEqualTo("test");
-        assertThat(actualData.getProperties())
-            .containsExactly(entry("color", "red"), entry("name", "apple"));
+        assertThat(actualData.getProperties()).containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
     private static void validateMetric(TelemetryItem telemetryItem) {
@@ -213,11 +220,12 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
-        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
-        assertThat(actualMetricsData.getMetrics().get(0).getValue()).isEqualTo(1);
-        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("test");
-        assertThat(actualMetricsData.getProperties())
-            .containsExactly(entry("color", "red"), entry("name", "apple"));
+
+        MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("test");
+        assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(1.0);
+        assertThat(metricsData.getProperties()).containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
     private static void validateLog(TelemetryItem telemetryItem) {
@@ -227,9 +235,10 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getTags())
             .hasEntrySatisfying("ai.internal.sdkVersion", v -> assertThat(v).contains("otel"));
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MessageData");
-        MessageData actualData = (MessageData) telemetryItem.getData().getBaseData();
-        assertThat(actualData.getMessage()).isEqualTo("test body");
-        assertThat(actualData.getProperties())
+
+        MessageData messageData = toMessageData(telemetryItem.getData().getBaseData());
+        assertThat(messageData.getMessage()).isEqualTo("test body");
+        assertThat(messageData.getProperties())
             .containsOnly(
                 entry("LoggerName", "Sample"),
                 entry("SourceType", "Logger"),

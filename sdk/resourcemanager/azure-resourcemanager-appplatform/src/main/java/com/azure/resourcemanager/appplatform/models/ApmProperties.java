@@ -6,39 +6,36 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Properties of an APM.
  */
 @Fluent
-public final class ApmProperties {
+public final class ApmProperties implements JsonSerializable<ApmProperties> {
     /*
      * APM Type
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * State of the APM.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ApmProvisioningState provisioningState;
 
     /*
      * Non-sensitive properties for the APM
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * Sensitive properties for the APM
      */
-    @JsonProperty(value = "secrets")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> secrets;
 
     /**
@@ -123,10 +120,57 @@ public final class ApmProperties {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ApmProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ApmProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApmProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("secrets", this.secrets, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApmProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApmProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApmProperties.
+     */
+    public static ApmProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApmProperties deserializedApmProperties = new ApmProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedApmProperties.type = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApmProperties.provisioningState = ApmProvisioningState.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApmProperties.properties = properties;
+                } else if ("secrets".equals(fieldName)) {
+                    Map<String, String> secrets = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApmProperties.secrets = secrets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApmProperties;
+        });
+    }
 }

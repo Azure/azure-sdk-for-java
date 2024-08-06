@@ -7,6 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
@@ -21,7 +24,7 @@ import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,6 @@ public final class VirtualMachineScaleSetInner extends Resource {
     /*
      * The virtual machine scale set sku.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
@@ -43,39 +45,48 @@ public final class VirtualMachineScaleSetInner extends Resource {
      * programmatic use. In the Azure portal, find the marketplace image that you want to use and then click **Want to
      * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * Describes the properties of a Virtual Machine Scale Set.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetProperties innerProperties;
 
     /*
      * The identity of the virtual machine scale set, if configured.
      */
-    @JsonProperty(value = "identity")
     private VirtualMachineScaleSetIdentity identity;
 
     /*
      * The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The extended location of the Virtual Machine Scale Set.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
-     * Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the
-     * header to ensure optimistic updates
+     * Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the header
+     * to ensure optimistic updates
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VirtualMachineScaleSetInner class.
@@ -104,10 +115,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @return the plan value.
@@ -117,10 +128,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @param plan the plan value to set.
@@ -210,6 +221,36 @@ public final class VirtualMachineScaleSetInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -618,8 +659,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @return the priorityMixPolicy value.
      */
@@ -628,8 +669,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @param priorityMixPolicy the priorityMixPolicy value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -719,5 +760,74 @@ public final class VirtualMachineScaleSetInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetInner.
+     */
+    public static VirtualMachineScaleSetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetInner deserializedVirtualMachineScaleSetInner = new VirtualMachineScaleSetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.sku = Sku.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.plan = Plan.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.innerProperties
+                        = VirtualMachineScaleSetProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.identity = VirtualMachineScaleSetIdentity.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetInner.zones = zones;
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetInner;
+        });
     }
 }

@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollection;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the rule collection group draft.
  */
 @Fluent
-public final class FirewallPolicyRuleCollectionGroupDraftProperties {
+public final class FirewallPolicyRuleCollectionGroupDraftProperties
+    implements JsonSerializable<FirewallPolicyRuleCollectionGroupDraftProperties> {
     /*
      * A read-only string that represents the size of the FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB)
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * Priority of the Firewall Policy Rule Collection Group resource.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Group of Firewall Policy rule collections.
      */
-    @JsonProperty(value = "ruleCollections")
     private List<FirewallPolicyRuleCollection> ruleCollections;
 
     /**
@@ -42,7 +43,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftProperties {
     /**
      * Get the size property: A read-only string that represents the size of the
      * FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB).
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -51,7 +52,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftProperties {
 
     /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -60,7 +61,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftProperties {
 
     /**
      * Set the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the FirewallPolicyRuleCollectionGroupDraftProperties object itself.
      */
@@ -71,7 +72,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftProperties {
 
     /**
      * Get the ruleCollections property: Group of Firewall Policy rule collections.
-     *
+     * 
      * @return the ruleCollections value.
      */
     public List<FirewallPolicyRuleCollection> ruleCollections() {
@@ -80,7 +81,7 @@ public final class FirewallPolicyRuleCollectionGroupDraftProperties {
 
     /**
      * Set the ruleCollections property: Group of Firewall Policy rule collections.
-     *
+     * 
      * @param ruleCollections the ruleCollections value to set.
      * @return the FirewallPolicyRuleCollectionGroupDraftProperties object itself.
      */
@@ -92,12 +93,58 @@ public final class FirewallPolicyRuleCollectionGroupDraftProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleCollections() != null) {
             ruleCollections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeArrayField("ruleCollections", this.ruleCollections,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyRuleCollectionGroupDraftProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyRuleCollectionGroupDraftProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyRuleCollectionGroupDraftProperties.
+     */
+    public static FirewallPolicyRuleCollectionGroupDraftProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyRuleCollectionGroupDraftProperties deserializedFirewallPolicyRuleCollectionGroupDraftProperties
+                = new FirewallPolicyRuleCollectionGroupDraftProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedFirewallPolicyRuleCollectionGroupDraftProperties.size = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedFirewallPolicyRuleCollectionGroupDraftProperties.priority
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("ruleCollections".equals(fieldName)) {
+                    List<FirewallPolicyRuleCollection> ruleCollections
+                        = reader.readArray(reader1 -> FirewallPolicyRuleCollection.fromJson(reader1));
+                    deserializedFirewallPolicyRuleCollectionGroupDraftProperties.ruleCollections = ruleCollections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyRuleCollectionGroupDraftProperties;
+        });
     }
 }

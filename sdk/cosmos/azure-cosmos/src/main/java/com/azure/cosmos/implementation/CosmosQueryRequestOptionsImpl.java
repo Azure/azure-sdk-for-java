@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private String queryName;
     private Integer maxItemCountForVectorSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+    private String collectionRid;
 
     /**
      * Instantiates a new query request options.
@@ -68,6 +69,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
+        this.collectionRid = options.collectionRid;
     }
 
     /**
@@ -379,12 +381,20 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     }
 
     @Override
-    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        super.override(readOnlyRequestOptions);
-        this.scanInQueryEnabled = overrideOption(readOnlyRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
-        this.maxDegreeOfParallelism = overrideOption(readOnlyRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
-        this.maxBufferedItemCount = overrideOption(readOnlyRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
-        this.maxItemCount = overrideOption(readOnlyRequestOptions.getMaxItemCount(), this.maxItemCount);
-        this.queryName = overrideOption(readOnlyRequestOptions.getQueryNameOrDefault(""), this.queryName);
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        super.override(cosmosRequestOptions);
+        this.scanInQueryEnabled = overrideOption(cosmosRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
+        this.maxDegreeOfParallelism = overrideOption(cosmosRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
+        this.maxBufferedItemCount = overrideOption(cosmosRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.queryName = overrideOption(cosmosRequestOptions.getQueryName(), this.queryName);
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
     }
 }

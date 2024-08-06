@@ -13,14 +13,16 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.Beta;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -42,23 +44,29 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String collectionRid;
+    private Set<String> keywordIdentifiers;
 
-    public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl topBeCloned) {
-        this.continuationState = topBeCloned.continuationState;
-        this.feedRangeInternal = topBeCloned.feedRangeInternal;
-        this.properties = topBeCloned.properties;
-        this.maxItemCount = topBeCloned.maxItemCount;
-        this.maxPrefetchPageCount = topBeCloned.maxPrefetchPageCount;
-        this.mode = topBeCloned.mode;
-        this.startFromInternal = topBeCloned.startFromInternal;
-        this.isSplitHandlingDisabled = topBeCloned.isSplitHandlingDisabled;
-        this.quotaInfoEnabled = topBeCloned.quotaInfoEnabled;
-        this.throughputControlGroupName = topBeCloned.throughputControlGroupName;
-        this.customOptions = topBeCloned.customOptions;
-        this.operationContextAndListenerTuple = topBeCloned.operationContextAndListenerTuple;
-        this.thresholds = topBeCloned.thresholds;
-        this.excludeRegions = topBeCloned.excludeRegions;
-        this.customSerializer = topBeCloned.customSerializer;
+    public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
+        this.continuationState = toBeCloned.continuationState;
+        this.feedRangeInternal = toBeCloned.feedRangeInternal;
+        this.properties = toBeCloned.properties;
+        this.maxItemCount = toBeCloned.maxItemCount;
+        this.maxPrefetchPageCount = toBeCloned.maxPrefetchPageCount;
+        this.mode = toBeCloned.mode;
+        this.startFromInternal = toBeCloned.startFromInternal;
+        this.isSplitHandlingDisabled = toBeCloned.isSplitHandlingDisabled;
+        this.quotaInfoEnabled = toBeCloned.quotaInfoEnabled;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
+        this.customOptions = toBeCloned.customOptions;
+        this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
+        this.thresholds = toBeCloned.thresholds;
+        this.excludeRegions = toBeCloned.excludeRegions;
+        this.customSerializer = toBeCloned.customSerializer;
+        this.collectionRid = toBeCloned.collectionRid;
+        this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
+        this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -326,13 +334,39 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
     }
 
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return partitionKeyDefinition;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
+    }
+
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
     @Override
-    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        this.maxItemCount = overrideOption(readOnlyRequestOptions.getMaxItemCount(), this.maxItemCount);
-        this.maxPrefetchPageCount = overrideOption(readOnlyRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
-        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.thresholds = overrideOption(readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.maxPrefetchPageCount = overrideOption(cosmosRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
+        this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
 }

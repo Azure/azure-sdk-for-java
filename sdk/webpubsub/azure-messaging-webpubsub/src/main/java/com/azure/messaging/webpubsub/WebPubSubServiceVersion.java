@@ -18,7 +18,12 @@ public enum WebPubSubServiceVersion implements ServiceVersion {
     /**
      * Enum value 2022-11-01.
      */
-    V2022_11_01("2022-11-01");
+    V2022_11_01("2022-11-01"),
+
+    /**
+     * Enum value 2024-01-01.
+     */
+    V2024_01_01("2024-01-01");
 
     private final String version;
 
@@ -40,6 +45,6 @@ public enum WebPubSubServiceVersion implements ServiceVersion {
      * @return The latest {@link WebPubSubServiceVersion}.
      */
     public static WebPubSubServiceVersion getLatest() {
-        return V2022_11_01;
+        return V2024_01_01;
     }
 }

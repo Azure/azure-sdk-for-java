@@ -4,16 +4,18 @@
 package com.azure.storage.blob.changefeed.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -22,24 +24,12 @@ import java.util.Objects;
  * Represents a cursor for BlobChangefeed.
  */
 @Fluent
-public class ChangefeedCursor {
-
+public class ChangefeedCursor implements JsonSerializable<ChangefeedCursor> {
     private static final ClientLogger LOGGER = new ClientLogger(ChangefeedCursor.class);
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-        .registerModule(new JavaTimeModule());
 
-    @JsonProperty("CursorVersion")
     private int cursorVersion;
-
-    @JsonProperty("UrlHost")
     private String urlHost;
-
-    @JsonProperty("EndTime")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private OffsetDateTime endTime;
-
-    @JsonProperty("CurrentSegmentCursor")
     private SegmentCursor currentSegmentCursor;
 
     /**
@@ -174,9 +164,11 @@ public class ChangefeedCursor {
      * @return The resulting serialized cursor.
      */
     public String serialize() {
-        try {
-            return MAPPER.writer().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeJson(this).flush();
+            return outputStream.toString(StandardCharsets.UTF_8.name());
+        } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
@@ -188,11 +180,53 @@ public class ChangefeedCursor {
      * @return The resulting {@link ChangefeedCursor cursor}.
      */
     public static ChangefeedCursor deserialize(String cursor, ClientLogger logger) {
-        try {
-            return MAPPER.readerFor(ChangefeedCursor.class).readValue(cursor);
+        try (JsonReader jsonReader = JsonProviders.createReader(cursor)) {
+            return fromJson(jsonReader);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeIntField("CursorVersion", cursorVersion)
+            .writeStringField("UrlHost", urlHost)
+            .writeStringField("EndTime", endTime == null ? null : endTime.toString())
+            .writeJsonField("CurrentSegmentCursor", currentSegmentCursor)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserialize a SegmentCursor from JSON.
+     *
+     * @param jsonReader The JSON reader to deserialize from.
+     * @return The deserialized SegmentCursor.
+     * @throws IOException If the JSON object cannot be properly deserialized.
+     */
+    public static ChangefeedCursor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangefeedCursor changefeedCursor = new ChangefeedCursor();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("CursorVersion".equals(fieldName)) {
+                    changefeedCursor.cursorVersion = reader.getInt();
+                } else if ("UrlHost".equals(fieldName)) {
+                    changefeedCursor.urlHost = reader.getString();
+                } else if ("EndTime".equals(fieldName)) {
+                    changefeedCursor.endTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                }  else if ("CurrentSegmentCursor".equals(fieldName)) {
+                    changefeedCursor.currentSegmentCursor = SegmentCursor.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return changefeedCursor;
+        });
     }
 
     @Override

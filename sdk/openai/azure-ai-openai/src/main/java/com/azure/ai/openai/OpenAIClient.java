@@ -1317,6 +1317,39 @@ public final class OpenAIClient {
 
     /**
      * Creates an image given a prompt.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     *
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024/1792x1024/1024x1792) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
+     *     quality: String(standard/hd) (Optional)
+     *     style: String(natural/vivid) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     *
+     * <pre>{@code
+     * {
+     *     created: long (Required)
+     *     data (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             b64_json: String (Optional)
+     *             revised_prompt: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1329,7 +1362,7 @@ public final class OpenAIClient {
      * @return the result of a successful image generation operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
+    public Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
         Response<BinaryData> response = getImageGenerationsWithResponse(deploymentOrModelName,
             BinaryData.fromObject(imageGenerationOptions), requestOptions);

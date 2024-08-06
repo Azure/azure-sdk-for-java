@@ -13,8 +13,7 @@ import java.util.Arrays;
 public final class CloudVmClustersRemoveVmsSamples {
     /*
      * x-ms-original-file:
-     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/vmClusters_removeVms.
-     * json
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/vmClusters_removeVms.json
      */
     /**
      * Sample code: Remove VMs from VM Cluster.

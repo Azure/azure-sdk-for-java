@@ -5,33 +5,45 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Uploaded Jar binary for a deployment.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("NetCoreZip")
 @Fluent
 public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceInfo {
     /*
+     * Type of the source uploaded
+     */
+    private String type = "NetCoreZip";
+
+    /*
      * The path to the .NET executable relative to zip root
      */
-    @JsonProperty(value = "netCoreMainEntryPath")
     private String netCoreMainEntryPath;
 
     /*
      * Runtime version of the .Net file
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /**
      * Creates an instance of NetCoreZipUploadedUserSourceInfo class.
      */
     public NetCoreZipUploadedUserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -100,5 +112,54 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("relativePath", relativePath());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("netCoreMainEntryPath", this.netCoreMainEntryPath);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetCoreZipUploadedUserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetCoreZipUploadedUserSourceInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetCoreZipUploadedUserSourceInfo.
+     */
+    public static NetCoreZipUploadedUserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetCoreZipUploadedUserSourceInfo deserializedNetCoreZipUploadedUserSourceInfo
+                = new NetCoreZipUploadedUserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedNetCoreZipUploadedUserSourceInfo.withVersion(reader.getString());
+                } else if ("relativePath".equals(fieldName)) {
+                    deserializedNetCoreZipUploadedUserSourceInfo.withRelativePath(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetCoreZipUploadedUserSourceInfo.type = reader.getString();
+                } else if ("netCoreMainEntryPath".equals(fieldName)) {
+                    deserializedNetCoreZipUploadedUserSourceInfo.netCoreMainEntryPath = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedNetCoreZipUploadedUserSourceInfo.runtimeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetCoreZipUploadedUserSourceInfo;
+        });
     }
 }

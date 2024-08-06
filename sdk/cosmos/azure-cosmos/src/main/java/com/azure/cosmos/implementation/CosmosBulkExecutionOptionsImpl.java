@@ -11,17 +11,18 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -49,6 +50,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     private List<String> excludeRegions;
     private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
     private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
     private Scheduler schedulerOverride = null;
 
     public CosmosBulkExecutionOptionsImpl(CosmosBulkExecutionOptionsImpl toBeCloned) {
@@ -70,6 +72,9 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+        if (toBeCloned.keywordIdentifiers != null) {
+            this.keywordIdentifiers = new HashSet<>(toBeCloned.keywordIdentifiers);
         }
     }
 
@@ -312,10 +317,20 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         return this.diagnosticsTracker;
     }
 
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
     @Override
-    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
 }

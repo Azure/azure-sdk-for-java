@@ -30,6 +30,9 @@ import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompare
 
 /**
  * Repository class for simple Cosmos operation
+ *
+ * @param <T> domain type.
+ * @param <ID> id type.
  */
 public class SimpleCosmosRepository<T, ID extends Serializable> implements CosmosRepository<T, ID> {
 

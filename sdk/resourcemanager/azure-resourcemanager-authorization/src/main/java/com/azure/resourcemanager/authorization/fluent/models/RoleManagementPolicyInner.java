@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.PolicyProperties;
 import com.azure.resourcemanager.authorization.models.Principal;
 import com.azure.resourcemanager.authorization.models.RoleManagementPolicyRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Role management policy. */
+/**
+ * Role management policy.
+ */
 @Fluent
-public final class RoleManagementPolicyInner {
+public final class RoleManagementPolicyInner implements JsonSerializable<RoleManagementPolicyInner> {
     /*
      * The role management policy Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The role management policy name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The role management policy type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Role management policy properties.
      */
-    @JsonProperty(value = "properties")
     private RoleManagementPolicyProperties innerProperties;
 
-    /** Creates an instance of RoleManagementPolicyInner class. */
+    /**
+     * Creates an instance of RoleManagementPolicyInner class.
+     */
     public RoleManagementPolicyInner() {
     }
 
     /**
      * Get the id property: The role management policy Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -54,7 +58,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the name property: The role management policy name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the type property: The role management policy type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -72,7 +76,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the innerProperties property: Role management policy properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleManagementPolicyProperties innerProperties() {
@@ -81,7 +85,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the scope property: The role management policy scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -90,7 +94,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Set the scope property: The role management policy scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleManagementPolicyInner object itself.
      */
@@ -104,7 +108,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the displayName property: The role management policy display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -113,7 +117,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Set the displayName property: The role management policy display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RoleManagementPolicyInner object itself.
      */
@@ -127,7 +131,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the description property: The role management policy description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -136,7 +140,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Set the description property: The role management policy description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleManagementPolicyInner object itself.
      */
@@ -150,7 +154,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the isOrganizationDefault property: The role management policy is default policy.
-     *
+     * 
      * @return the isOrganizationDefault value.
      */
     public Boolean isOrganizationDefault() {
@@ -159,7 +163,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Set the isOrganizationDefault property: The role management policy is default policy.
-     *
+     * 
      * @param isOrganizationDefault the isOrganizationDefault value to set.
      * @return the RoleManagementPolicyInner object itself.
      */
@@ -173,7 +177,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the lastModifiedBy property: The name of the entity last modified it.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public Principal lastModifiedBy() {
@@ -182,7 +186,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the lastModifiedDateTime property: The last modified date time.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -191,7 +195,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the rules property: The rule applied to the policy.
-     *
+     * 
      * @return the rules value.
      */
     public List<RoleManagementPolicyRule> rules() {
@@ -200,7 +204,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Set the rules property: The rule applied to the policy.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RoleManagementPolicyInner object itself.
      */
@@ -214,7 +218,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the effectiveRules property: The readonly computed rule applied to the policy.
-     *
+     * 
      * @return the effectiveRules value.
      */
     public List<RoleManagementPolicyRule> effectiveRules() {
@@ -223,7 +227,7 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Get the policyProperties property: Additional properties of scope.
-     *
+     * 
      * @return the policyProperties value.
      */
     public PolicyProperties policyProperties() {
@@ -232,12 +236,55 @@ public final class RoleManagementPolicyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyInner.
+     */
+    public static RoleManagementPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyInner deserializedRoleManagementPolicyInner = new RoleManagementPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleManagementPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleManagementPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleManagementPolicyInner.innerProperties
+                        = RoleManagementPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyInner;
+        });
     }
 }

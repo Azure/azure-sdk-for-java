@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class DotNetComponentsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/DotNetComponents_Delete.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/DotNetComponents_Delete.json
      */
     /**
      * Sample code: Delete .NET Component.
@@ -18,7 +18,7 @@ public final class DotNetComponentsDeleteSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void deleteNETComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.dotNetComponents().delete("examplerg", "myenvironment", "mydotnetcomponent",
-            com.azure.core.util.Context.NONE);
+        manager.dotNetComponents()
+            .delete("examplerg", "myenvironment", "mydotnetcomponent", com.azure.core.util.Context.NONE);
     }
 }

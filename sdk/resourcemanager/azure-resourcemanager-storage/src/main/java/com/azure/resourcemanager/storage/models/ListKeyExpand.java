@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for ListKeyExpand.
  */
@@ -31,7 +28,6 @@ public enum ListKeyExpand {
      * @param value the serialized value to parse.
      * @return the parsed ListKeyExpand object, or null if unable to parse.
      */
-    @JsonCreator
     public static ListKeyExpand fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum ListKeyExpand {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

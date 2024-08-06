@@ -23,7 +23,7 @@ import java.util.Arrays;
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * MaintenanceConfigurationsCreate_Update.json
      */
     /**
@@ -32,7 +32,10 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateMaintenanceConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations()
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
             .createOrUpdateWithResponse("rg1", "clustername1", "default", new MaintenanceConfigurationInner()
                 .withTimeInWeek(
                     Arrays.asList(new TimeInWeek().withDay(WeekDay.MONDAY).withHourSlots(Arrays.asList(1, 2))))
@@ -43,7 +46,7 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
@@ -53,16 +56,23 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
      */
     public static void createUpdateMaintenanceConfigurationWithMaintenanceWindow(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations().createOrUpdateWithResponse(
-            "rg1", "clustername1", "aksManagedAutoUpgradeSchedule",
-            new MaintenanceConfigurationInner().withMaintenanceWindow(new MaintenanceWindow()
-                .withSchedule(new Schedule().withRelativeMonthly(new RelativeMonthlySchedule().withIntervalMonths(3)
-                    .withWeekIndex(Type.FIRST).withDayOfWeek(WeekDay.MONDAY)))
-                .withDurationHours(10).withUtcOffset("+05:30").withStartDate(LocalDate.parse("2023-01-01"))
-                .withStartTime("08:30")
-                .withNotAllowedDates(Arrays.asList(
-                    new DateSpan().withStart(LocalDate.parse("2023-02-18")).withEnd(LocalDate.parse("2023-02-25")),
-                    new DateSpan().withStart(LocalDate.parse("2023-12-23")).withEnd(LocalDate.parse("2024-01-05"))))),
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .createOrUpdateWithResponse("rg1", "clustername1", "aksManagedAutoUpgradeSchedule",
+                new MaintenanceConfigurationInner().withMaintenanceWindow(new MaintenanceWindow()
+                    .withSchedule(new Schedule().withRelativeMonthly(new RelativeMonthlySchedule().withIntervalMonths(3)
+                        .withWeekIndex(Type.FIRST)
+                        .withDayOfWeek(WeekDay.MONDAY)))
+                    .withDurationHours(10)
+                    .withUtcOffset("+05:30")
+                    .withStartDate(LocalDate.parse("2023-01-01"))
+                    .withStartTime("08:30")
+                    .withNotAllowedDates(Arrays.asList(
+                        new DateSpan().withStart(LocalDate.parse("2023-02-18")).withEnd(LocalDate.parse("2023-02-25")),
+                        new DateSpan().withStart(LocalDate.parse("2023-12-23"))
+                            .withEnd(LocalDate.parse("2024-01-05"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

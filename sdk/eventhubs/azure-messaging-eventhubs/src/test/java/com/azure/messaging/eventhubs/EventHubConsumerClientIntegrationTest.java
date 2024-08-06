@@ -40,9 +40,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        consumer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .retry(RETRY_OPTIONS)
+        consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .buildConsumerClient());
 

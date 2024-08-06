@@ -24,10 +24,16 @@ public final class ServicesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().update("myResourceGroup", "myservice",
-            new ServiceResourceInner().withLocation("eastus").withTags(mapOf("key1", "fakeTokenPlaceholder"))
-                .withProperties(new ClusterResourceProperties()).withSku(new Sku().withName("S0").withTier("Standard")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .update("myResourceGroup", "myservice",
+                new ServiceResourceInner().withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withProperties(new ClusterResourceProperties())
+                    .withSku(new Sku().withName("S0").withTier("Standard")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

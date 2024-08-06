@@ -5,20 +5,22 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request for creating liveness session.
  */
 @Fluent
-public final class CreateLivenessSessionContent {
+public final class CreateLivenessSessionContent implements JsonSerializable<CreateLivenessSessionContent> {
 
     /*
      * Type of liveness mode the client should follow.
      */
     @Generated
-    @JsonProperty(value = "livenessOperationMode")
     private final LivenessOperationMode livenessOperationMode;
 
     /*
@@ -28,7 +30,6 @@ public final class CreateLivenessSessionContent {
      * implemented.
      */
     @Generated
-    @JsonProperty(value = "sendResultsToClient")
     private Boolean sendResultsToClient;
 
     /*
@@ -36,7 +37,6 @@ public final class CreateLivenessSessionContent {
      * 'deviceCorrelationId' must be set in this request body.
      */
     @Generated
-    @JsonProperty(value = "deviceCorrelationIdSetInClient")
     private Boolean deviceCorrelationIdSetInClient;
 
     /*
@@ -44,14 +44,12 @@ public final class CreateLivenessSessionContent {
      * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
     @Generated
-    @JsonProperty(value = "deviceCorrelationId")
     private String deviceCorrelationId;
 
     /*
      * Seconds the session should last for. Range is 60 to 86400 seconds. Default value is 600.
      */
     @Generated
-    @JsonProperty(value = "authTokenTimeToLiveInSeconds")
     private Integer authTokenTimeToLiveInSeconds;
 
     /**
@@ -60,9 +58,7 @@ public final class CreateLivenessSessionContent {
      * @param livenessOperationMode the livenessOperationMode value to set.
      */
     @Generated
-    @JsonCreator
-    public CreateLivenessSessionContent(
-        @JsonProperty(value = "livenessOperationMode") LivenessOperationMode livenessOperationMode) {
+    public CreateLivenessSessionContent(LivenessOperationMode livenessOperationMode) {
         this.livenessOperationMode = livenessOperationMode;
     }
 
@@ -178,5 +174,65 @@ public final class CreateLivenessSessionContent {
     public CreateLivenessSessionContent setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
         this.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("livenessOperationMode",
+            this.livenessOperationMode == null ? null : this.livenessOperationMode.toString());
+        jsonWriter.writeBooleanField("sendResultsToClient", this.sendResultsToClient);
+        jsonWriter.writeBooleanField("deviceCorrelationIdSetInClient", this.deviceCorrelationIdSetInClient);
+        jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
+        jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateLivenessSessionContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateLivenessSessionContent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateLivenessSessionContent.
+     */
+    @Generated
+    public static CreateLivenessSessionContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LivenessOperationMode livenessOperationMode = null;
+            Boolean sendResultsToClient = null;
+            Boolean deviceCorrelationIdSetInClient = null;
+            String deviceCorrelationId = null;
+            Integer authTokenTimeToLiveInSeconds = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("livenessOperationMode".equals(fieldName)) {
+                    livenessOperationMode = LivenessOperationMode.fromString(reader.getString());
+                } else if ("sendResultsToClient".equals(fieldName)) {
+                    sendResultsToClient = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deviceCorrelationIdSetInClient".equals(fieldName)) {
+                    deviceCorrelationIdSetInClient = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deviceCorrelationId".equals(fieldName)) {
+                    deviceCorrelationId = reader.getString();
+                } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
+                    authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreateLivenessSessionContent deserializedCreateLivenessSessionContent
+                = new CreateLivenessSessionContent(livenessOperationMode);
+            deserializedCreateLivenessSessionContent.sendResultsToClient = sendResultsToClient;
+            deserializedCreateLivenessSessionContent.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
+            deserializedCreateLivenessSessionContent.deviceCorrelationId = deviceCorrelationId;
+            deserializedCreateLivenessSessionContent.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
+            return deserializedCreateLivenessSessionContent;
+        });
     }
 }

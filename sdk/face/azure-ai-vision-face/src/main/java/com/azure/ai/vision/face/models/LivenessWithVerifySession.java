@@ -5,42 +5,43 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Session result of detect liveness with verify.
  */
 @Immutable
-public final class LivenessWithVerifySession {
+public final class LivenessWithVerifySession implements JsonSerializable<LivenessWithVerifySession> {
 
     /*
      * The unique ID to reference this session.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * DateTime when this session was created.
      */
     @Generated
-    @JsonProperty(value = "createdDateTime")
     private final OffsetDateTime createdDateTime;
 
     /*
      * DateTime when this session was started by the client.
      */
     @Generated
-    @JsonProperty(value = "sessionStartDateTime")
     private OffsetDateTime sessionStartDateTime;
 
     /*
      * Whether or not the session is expired.
      */
     @Generated
-    @JsonProperty(value = "sessionExpired")
     private final boolean sessionExpired;
 
     /*
@@ -48,28 +49,24 @@ public final class LivenessWithVerifySession {
      * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
     @Generated
-    @JsonProperty(value = "deviceCorrelationId")
     private String deviceCorrelationId;
 
     /*
      * Seconds the session should last for. Range is 60 to 86400 seconds. Default value is 600.
      */
     @Generated
-    @JsonProperty(value = "authTokenTimeToLiveInSeconds")
     private Integer authTokenTimeToLiveInSeconds;
 
     /*
      * The current status of the session.
      */
     @Generated
-    @JsonProperty(value = "status")
     private final FaceSessionStatus status;
 
     /*
      * The latest session audit result only populated if status == 'ResultAvailable'.
      */
     @Generated
-    @JsonProperty(value = "result")
     private LivenessSessionAuditEntry result;
 
     /**
@@ -80,10 +77,8 @@ public final class LivenessWithVerifySession {
      * @param status the status value to set.
      */
     @Generated
-    @JsonCreator
-    private LivenessWithVerifySession(@JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty(value = "sessionExpired") boolean sessionExpired,
-        @JsonProperty(value = "status") FaceSessionStatus status) {
+    private LivenessWithVerifySession(OffsetDateTime createdDateTime, boolean sessionExpired,
+        FaceSessionStatus status) {
         this.createdDateTime = createdDateTime;
         this.sessionExpired = sessionExpired;
         this.status = status;
@@ -170,5 +165,82 @@ public final class LivenessWithVerifySession {
     @Generated
     public LivenessSessionAuditEntry getResult() {
         return this.result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeBooleanField("sessionExpired", this.sessionExpired);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("sessionStartDateTime",
+            this.sessionStartDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sessionStartDateTime));
+        jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
+        jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
+        jsonWriter.writeJsonField("result", this.result);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivenessWithVerifySession from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivenessWithVerifySession if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LivenessWithVerifySession.
+     */
+    @Generated
+    public static LivenessWithVerifySession fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            OffsetDateTime createdDateTime = null;
+            boolean sessionExpired = false;
+            FaceSessionStatus status = null;
+            OffsetDateTime sessionStartDateTime = null;
+            String deviceCorrelationId = null;
+            Integer authTokenTimeToLiveInSeconds = null;
+            LivenessSessionAuditEntry result = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sessionExpired".equals(fieldName)) {
+                    sessionExpired = reader.getBoolean();
+                } else if ("status".equals(fieldName)) {
+                    status = FaceSessionStatus.fromString(reader.getString());
+                } else if ("sessionStartDateTime".equals(fieldName)) {
+                    sessionStartDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deviceCorrelationId".equals(fieldName)) {
+                    deviceCorrelationId = reader.getString();
+                } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
+                    authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("result".equals(fieldName)) {
+                    result = LivenessSessionAuditEntry.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            LivenessWithVerifySession deserializedLivenessWithVerifySession
+                = new LivenessWithVerifySession(createdDateTime, sessionExpired, status);
+            deserializedLivenessWithVerifySession.id = id;
+            deserializedLivenessWithVerifySession.sessionStartDateTime = sessionStartDateTime;
+            deserializedLivenessWithVerifySession.deviceCorrelationId = deviceCorrelationId;
+            deserializedLivenessWithVerifySession.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
+            deserializedLivenessWithVerifySession.result = result;
+            return deserializedLivenessWithVerifySession;
+        });
     }
 }

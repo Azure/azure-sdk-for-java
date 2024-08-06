@@ -1,11 +1,35 @@
 ## Release History
 
-### 4.62.0-beta.1 (Unreleased)
+### 4.64.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added support for changing some request options dynamically without the need of restarting the application. -See [PR 40061](https://github.com/Azure/azure-sdk-for-java/pull/40061)
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.63.0 (2024-07-26)
+
+#### Features Added
+* Added optional id validation to prevent documents with invalid char '/' in id property to be created. - See [PR 41108](https://github.com/Azure/azure-sdk-for-java/pull/41108)
+* Added support for specifying a set of custom diagnostic correlation ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
+* Added support for client-driven partition-level failover for multi-write CosmosDB accounts. - See [PR 39265](https://github.com/Azure/azure-sdk-for-java/pull/39265)
+
+#### Bugs Fixed
+* Fixed an issue where `contactedRegions` shows the wrong region in a multi region account if no preferred regions are specified. - See [PR 41045](https://github.com/Azure/azure-sdk-for-java/pull/41045)
+* Changed meters for client telemetry to always include all tags to respect this requirement from prometheus - See [PR 41213](https://github.com/Azure/azure-sdk-for-java/pull/41213)
+* Fixed an issue where customer provided session token is not honored for the `readMany` operation. - See [PR 39265](https://github.com/Azure/azure-sdk-for-java/pull/39265)
+
+#### Other Changes
+* Added metrics and tracing for ReadMany operations. - See [PR 41042](https://github.com/Azure/azure-sdk-for-java/pull/41042)
+* Added a `warn`-level log to capture when the `pkRangeId` in the user-passed session token and the `resolvedPartitionKeyRangeId` in the request doesn't match. - See [PR 41268](https://github.com/Azure/azure-sdk-for-java/pull/41268)
+
+### 4.62.0 (2024-07-02)
+
+#### Features Added
+* Added support for changing some request options dynamically without the need of restarting the application. - See [PR 40061](https://github.com/Azure/azure-sdk-for-java/pull/40061)
 
 #### Bugs Fixed
 * Fixed a possible `NullPointerException` in the ctor of `FeedOperationState`. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
@@ -15,6 +39,7 @@
 * Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
 * Ensured that exceptions thrown in custom serializers are being wrapped as a CosmosException with StatusCode 400. - See [PR 40797](https://github.com/Azure/azure-sdk-for-java/pull/40797) and [PR 40913](https://github.com/Azure/azure-sdk-for-java/pull/40913)
 * Reduced number of logs emitted in the success case for cross partition queries. - See [PR 40932](https://github.com/Azure/azure-sdk-for-java/pull/40932)
+* Reduced noisy logs about the value of the ` AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` environment variable. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
 
 ### 4.61.1 (2024-05-31)
 

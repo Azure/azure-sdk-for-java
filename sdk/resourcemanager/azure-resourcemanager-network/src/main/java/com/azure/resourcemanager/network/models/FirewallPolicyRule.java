@@ -5,47 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of a rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = FirewallPolicyRule.class, visible = true)
-@JsonTypeName("FirewallPolicyRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ApplicationRule", value = ApplicationRule.class),
-    @JsonSubTypes.Type(name = "NatRule", value = NatRule.class),
-    @JsonSubTypes.Type(name = "NetworkRule", value = NetworkRule.class) })
 @Fluent
-public class FirewallPolicyRule {
+public class FirewallPolicyRule implements JsonSerializable<FirewallPolicyRule> {
     /*
      * Rule Type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
-    private FirewallPolicyRuleType ruleType;
+    private FirewallPolicyRuleType ruleType = FirewallPolicyRuleType.fromString("FirewallPolicyRule");
 
     /*
      * Name of the rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of the rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
      * Creates an instance of FirewallPolicyRule class.
      */
     public FirewallPolicyRule() {
-        this.ruleType = FirewallPolicyRuleType.fromString("FirewallPolicyRule");
     }
 
     /**
@@ -103,5 +92,76 @@ public class FirewallPolicyRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyRule.
+     */
+    public static FirewallPolicyRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ApplicationRule".equals(discriminatorValue)) {
+                    return ApplicationRule.fromJson(readerToUse.reset());
+                } else if ("NatRule".equals(discriminatorValue)) {
+                    return NatRule.fromJson(readerToUse.reset());
+                } else if ("NetworkRule".equals(discriminatorValue)) {
+                    return NetworkRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FirewallPolicyRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyRule deserializedFirewallPolicyRule = new FirewallPolicyRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleType".equals(fieldName)) {
+                    deserializedFirewallPolicyRule.ruleType = FirewallPolicyRuleType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedFirewallPolicyRule.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFirewallPolicyRule.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyRule;
+        });
     }
 }

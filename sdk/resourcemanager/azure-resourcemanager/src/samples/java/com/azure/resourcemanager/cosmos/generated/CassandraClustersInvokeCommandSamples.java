@@ -11,7 +11,8 @@ import com.azure.resourcemanager.cosmos.models.CommandPostBody;
  */
 public final class CassandraClustersInvokeCommandSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBManagedCassandraCommand.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBManagedCassandraCommand.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraCommand.

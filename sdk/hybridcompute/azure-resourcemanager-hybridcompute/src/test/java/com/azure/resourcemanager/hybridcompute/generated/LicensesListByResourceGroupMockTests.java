@@ -28,7 +28,7 @@ public final class LicensesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"tenantId\":\"gxdbeesmie\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":343253872,\"assignedLicenses\":891454353,\"immutableId\":\"qfby\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 1\",\"invoiceId\":\"agt\"}]}},\"location\":\"jocqwogfnzjvusf\",\"tags\":{\"kadpysown\":\"mozuxylfsb\",\"isofieypefojyqd\":\"tgkbugrjqctojc\"},\"id\":\"cuplcplcwkhih\",\"name\":\"hlhzdsqtzbsrgno\",\"type\":\"cjhfgmvecactxmw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"tenantId\":\"sjjxundxgketw\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"pCore\",\"processors\":956016489,\"assignedLicenses\":1913497059,\"immutableId\":\"mun\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 2\",\"invoiceId\":\"hfbuzjyihsasbhud\"}]}},\"location\":\"ohyuemslynsq\",\"tags\":{\"nygq\":\"foobrlttyms\",\"hqlyvijo\":\"nfwqzdzgtilaxhn\"},\"id\":\"wivkxo\",\"name\":\"zunbixx\",\"type\":\"ti\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,21 +38,21 @@ public final class LicensesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<License> response
-            = manager.licenses().listByResourceGroup("zqlqhyc", com.azure.core.util.Context.NONE);
+            = manager.licenses().listByResourceGroup("uzhyrmewipmvekdx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jocqwogfnzjvusf", response.iterator().next().location());
-        Assertions.assertEquals("mozuxylfsb", response.iterator().next().tags().get("kadpysown"));
-        Assertions.assertEquals("gxdbeesmie", response.iterator().next().tenantId());
+        Assertions.assertEquals("ohyuemslynsq", response.iterator().next().location());
+        Assertions.assertEquals("foobrlttyms", response.iterator().next().tags().get("nygq"));
+        Assertions.assertEquals("sjjxundxgketw", response.iterator().next().tenantId());
         Assertions.assertEquals(LicenseType.ESU, response.iterator().next().licenseType());
         Assertions.assertEquals(LicenseState.ACTIVATED, response.iterator().next().licenseDetails().state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2,
             response.iterator().next().licenseDetails().target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, response.iterator().next().licenseDetails().edition());
-        Assertions.assertEquals(LicenseCoreType.V_CORE, response.iterator().next().licenseDetails().type());
-        Assertions.assertEquals(343253872, response.iterator().next().licenseDetails().processors());
-        Assertions.assertEquals(ProgramYear.YEAR_1,
+        Assertions.assertEquals(LicenseCoreType.P_CORE, response.iterator().next().licenseDetails().type());
+        Assertions.assertEquals(956016489, response.iterator().next().licenseDetails().processors());
+        Assertions.assertEquals(ProgramYear.YEAR_2,
             response.iterator().next().licenseDetails().volumeLicenseDetails().get(0).programYear());
-        Assertions.assertEquals("agt",
+        Assertions.assertEquals("hfbuzjyihsasbhud",
             response.iterator().next().licenseDetails().volumeLicenseDetails().get(0).invoiceId());
     }
 }

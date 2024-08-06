@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ContainerAppsSourceControlsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * SourceControls_CreateOrUpdate.json
      */
     /**
@@ -25,15 +25,22 @@ public final class ContainerAppsSourceControlsCreateOrUpdateSamples {
      */
     public static void createOrUpdateContainerAppSourceControl(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsSourceControls().define("current")
+        manager.containerAppsSourceControls()
+            .define("current")
             .withExistingContainerApp("workerapps-rg-xj", "testcanadacentral")
-            .withRepoUrl("https://github.com/xwang971/ghatest").withBranch("master")
+            .withRepoUrl("https://github.com/xwang971/ghatest")
+            .withBranch("master")
             .withGithubActionConfiguration(new GithubActionConfiguration()
                 .withRegistryInfo(new RegistryInfo().withRegistryUrl("test-registry.azurecr.io")
-                    .withRegistryUsername("test-registry").withRegistryPassword("fakeTokenPlaceholder"))
+                    .withRegistryUsername("test-registry")
+                    .withRegistryPassword("fakeTokenPlaceholder"))
                 .withAzureCredentials(new AzureCredentials().withClientId("<clientid>")
-                    .withClientSecret("fakeTokenPlaceholder").withTenantId("<tenantid>").withKind("feaderated"))
-                .withContextPath("./").withGithubPersonalAccessToken("fakeTokenPlaceholder").withImage("image/tag")
+                    .withClientSecret("fakeTokenPlaceholder")
+                    .withTenantId("<tenantid>")
+                    .withKind("feaderated"))
+                .withContextPath("./")
+                .withGithubPersonalAccessToken("fakeTokenPlaceholder")
+                .withImage("image/tag")
                 .withBuildEnvironmentVariables(
                     Arrays.asList(new EnvironmentVariable().withName("foo1").withValue("bar1"),
                         new EnvironmentVariable().withName("foo2").withValue("bar2"))))

@@ -3,23 +3,20 @@
 
 package com.azure.digitaltwins.core;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -27,15 +24,6 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
     private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
     private boolean sanitizersRemoved = false;
-
-    protected static final String TENANT_ID = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_TENANT_ID", "tenantId");
-
-    protected static final String CLIENT_SECRET = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_CLIENT_SECRET", "clientSecret");
-
-    protected static final String CLIENT_ID = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_CLIENT_ID", "clientId");
 
     protected static final String DIGITALTWINS_URL = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_URL", PLAYBACK_ENDPOINT);
@@ -53,28 +41,21 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-            // Use fake credentials for playback mode.
-            builder.credential(new FakeCredentials());
-            // Connect to a special host when running tests in playback mode.
+            builder.credential(new MockTokenCredential());
             builder.endpoint(PLAYBACK_ENDPOINT);
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
-            return builder;
-        }
 
-        if (interceptorManager.isRecordMode()) {
+            return builder;
+        } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        } else {
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
 
         builder.httpClient(httpClient);
         builder.endpoint(DIGITALTWINS_URL);
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        // Only get valid live token when running live tests.
-        builder.credential(new ClientSecretCredentialBuilder()
-            .tenantId(TENANT_ID)
-            .clientId(CLIENT_ID)
-            .clientSecret(CLIENT_SECRET)
-            .build());
 
         return builder;
     }
@@ -127,15 +108,6 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
 
     public Function<Integer, String> getRandomIntegerStringGenerator() {
         return randomIntegerStringGenerator;
-    }
-
-    // This should only be used when running tests in playback mode. Our client library requires that some token provider
-    // is provided, but the actual value of the token is irrelevant when running playback tests.
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
     }
 
     // Used for converting json strings into BasicDigitalTwins, BasicRelationships, etc.

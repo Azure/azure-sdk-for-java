@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Dedicated Host Group with resource group response.
  */
 @Fluent
-public final class DedicatedHostGroupListResult {
+public final class DedicatedHostGroupListResult implements JsonSerializable<DedicatedHostGroupListResult> {
     /*
      * The list of dedicated host groups
      */
-    @JsonProperty(value = "value", required = true)
     private List<DedicatedHostGroupInner> value;
 
     /*
      * The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI to fetch the next page of
      * Dedicated Host Groups.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -55,8 +57,8 @@ public final class DedicatedHostGroupListResult {
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this
-     * URI to fetch the next page of Dedicated Host Groups.
+     * Get the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI
+     * to fetch the next page of Dedicated Host Groups.
      * 
      * @return the nextLink value.
      */
@@ -65,8 +67,8 @@ public final class DedicatedHostGroupListResult {
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this
-     * URI to fetch the next page of Dedicated Host Groups.
+     * Set the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI
+     * to fetch the next page of Dedicated Host Groups.
      * 
      * @param nextLink the nextLink value to set.
      * @return the DedicatedHostGroupListResult object itself.
@@ -83,12 +85,55 @@ public final class DedicatedHostGroupListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model DedicatedHostGroupListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model DedicatedHostGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedHostGroupListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostGroupListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostGroupListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedHostGroupListResult.
+     */
+    public static DedicatedHostGroupListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostGroupListResult deserializedDedicatedHostGroupListResult = new DedicatedHostGroupListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DedicatedHostGroupInner> value
+                        = reader.readArray(reader1 -> DedicatedHostGroupInner.fromJson(reader1));
+                    deserializedDedicatedHostGroupListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDedicatedHostGroupListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostGroupListResult;
+        });
+    }
 }

@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesListByCloudVmClusterMockTests {
     @Test
     public void testListByCloudVmCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ipAddress\":\"dviauogp\",\"vmOcid\":\"artvti\",\"ocid\":\"yefchnm\",\"domain\":\"hmnxhkxjqi\",\"lifecycleDetails\":\"rweooxffifhx\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-07-05T01:58:34Z\"},\"id\":\"zqvbubqm\",\"name\":\"m\",\"type\":\"sycxhxzgaz\"}]}";
+            = "{\"value\":[{\"properties\":{\"ipAddress\":\"bchaqd\",\"vmOcid\":\"qecrqctmxx\",\"ocid\":\"ddm\",\"domain\":\"huytxzvtzn\",\"lifecycleDetails\":\"xbannovvoxc\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2020-12-31T13:23:28Z\"},\"id\":\"vroevytlyo\",\"name\":\"rrrouuxvnsa\",\"type\":\"bcrymodizrx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class VirtualNetworkAddressesListByCloudVmClusterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VirtualNetworkAddress> response = manager.virtualNetworkAddresses()
-            .listByCloudVmCluster("yjwpfilkmkkh", "l", com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualNetworkAddress> response
+            = manager.virtualNetworkAddresses().listByCloudVmCluster("bdxxe", "unin", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dviauogp", response.iterator().next().properties().ipAddress());
-        Assertions.assertEquals("artvti", response.iterator().next().properties().vmOcid());
+        Assertions.assertEquals("bchaqd", response.iterator().next().properties().ipAddress());
+        Assertions.assertEquals("qecrqctmxx", response.iterator().next().properties().vmOcid());
     }
 }

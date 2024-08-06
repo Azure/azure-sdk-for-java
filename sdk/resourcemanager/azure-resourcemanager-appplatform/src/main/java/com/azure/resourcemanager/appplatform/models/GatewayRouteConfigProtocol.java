@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class GatewayRouteConfigProtocol extends ExpandableStringEnum<Gatew
      * @param name a name to look for.
      * @return the corresponding GatewayRouteConfigProtocol.
      */
-    @JsonCreator
     public static GatewayRouteConfigProtocol fromString(String name) {
         return fromString(name, GatewayRouteConfigProtocol.class);
     }

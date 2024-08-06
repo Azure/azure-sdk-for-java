@@ -10,13 +10,16 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -42,6 +45,8 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * Instantiates a new query request options.
@@ -73,6 +78,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.excludeRegions = options.excludeRegions;
         this.properties = options.properties;
         this.customSerializer = options.customSerializer;
+        this.keywordIdentifiers = options.keywordIdentifiers;
     }
 
     public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -456,17 +462,31 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         return (T)this;
     }
 
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        } else {
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
+        }
+    }
+
     @Override
-    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
-        this.consistencyLevel = overrideOption(readOnlyRequestOptions.getConsistencyLevel(), this.consistencyLevel);
-        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.dedicatedGatewayRequestOptions = overrideOption(readOnlyRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
-        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(readOnlyRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
-        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.thresholds = overrideOption(readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
-        this.indexMetricsEnabled = overrideOption(readOnlyRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
-        this.queryMetricsEnabled = overrideOption(readOnlyRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
-        this.responseContinuationTokenLimitInKb = overrideOption(readOnlyRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        this.consistencyLevel = overrideOption(cosmosRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.dedicatedGatewayRequestOptions = overrideOption(cosmosRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(cosmosRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
+        this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.indexMetricsEnabled = overrideOption(cosmosRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
+        this.queryMetricsEnabled = overrideOption(cosmosRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
+        this.responseContinuationTokenLimitInKb = overrideOption(cosmosRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+        this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-07-29)
+### Other Changes
+
+- Removed remaining `jackson-databind` usages and dependency from the project.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+## 1.1.26 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 
 
 ## 1.1.25 (2024-05-28)

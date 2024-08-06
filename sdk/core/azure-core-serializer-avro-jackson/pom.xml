@@ -70,18 +70,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.52</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.53</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-avro</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -120,7 +120,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

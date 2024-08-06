@@ -6,7 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * TriggerBackupRequest
@@ -14,13 +18,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Trigger backup request.
  */
 @Fluent
-public final class TriggerBackupRequest {
+public final class TriggerBackupRequest implements JsonSerializable<TriggerBackupRequest> {
     /*
-     * AdHocBackupRuleOptions
-     * 
      * Name for the Rule of the Policy which needs to be applied for this backup
      */
-    @JsonProperty(value = "backupRuleOptions", required = true)
     private AdHocBackupRuleOptions backupRuleOptions;
 
     /**
@@ -30,9 +31,7 @@ public final class TriggerBackupRequest {
     }
 
     /**
-     * Get the backupRuleOptions property: AdHocBackupRuleOptions
-     * 
-     * Name for the Rule of the Policy which needs to be applied for this backup.
+     * Get the backupRuleOptions property: Name for the Rule of the Policy which needs to be applied for this backup.
      * 
      * @return the backupRuleOptions value.
      */
@@ -41,9 +40,7 @@ public final class TriggerBackupRequest {
     }
 
     /**
-     * Set the backupRuleOptions property: AdHocBackupRuleOptions
-     * 
-     * Name for the Rule of the Policy which needs to be applied for this backup.
+     * Set the backupRuleOptions property: Name for the Rule of the Policy which needs to be applied for this backup.
      * 
      * @param backupRuleOptions the backupRuleOptions value to set.
      * @return the TriggerBackupRequest object itself.
@@ -60,12 +57,50 @@ public final class TriggerBackupRequest {
      */
     public void validate() {
         if (backupRuleOptions() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property backupRuleOptions in model TriggerBackupRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupRuleOptions in model TriggerBackupRequest"));
         } else {
             backupRuleOptions().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TriggerBackupRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("backupRuleOptions", this.backupRuleOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerBackupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerBackupRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TriggerBackupRequest.
+     */
+    public static TriggerBackupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerBackupRequest deserializedTriggerBackupRequest = new TriggerBackupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupRuleOptions".equals(fieldName)) {
+                    deserializedTriggerBackupRequest.backupRuleOptions = AdHocBackupRuleOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerBackupRequest;
+        });
+    }
 }

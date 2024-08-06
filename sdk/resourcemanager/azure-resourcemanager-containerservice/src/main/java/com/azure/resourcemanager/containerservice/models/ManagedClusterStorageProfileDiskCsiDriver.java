@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * AzureDisk CSI Driver settings for the storage profile.
  */
 @Fluent
-public final class ManagedClusterStorageProfileDiskCsiDriver {
+public final class ManagedClusterStorageProfileDiskCsiDriver
+    implements JsonSerializable<ManagedClusterStorageProfileDiskCsiDriver> {
     /*
      * Whether to enable AzureDisk CSI Driver. The default value is true.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -50,5 +54,43 @@ public final class ManagedClusterStorageProfileDiskCsiDriver {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterStorageProfileDiskCsiDriver from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterStorageProfileDiskCsiDriver if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterStorageProfileDiskCsiDriver.
+     */
+    public static ManagedClusterStorageProfileDiskCsiDriver fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterStorageProfileDiskCsiDriver deserializedManagedClusterStorageProfileDiskCsiDriver
+                = new ManagedClusterStorageProfileDiskCsiDriver();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterStorageProfileDiskCsiDriver.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterStorageProfileDiskCsiDriver;
+        });
     }
 }

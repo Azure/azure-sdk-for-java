@@ -3,19 +3,15 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
@@ -28,7 +24,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -61,33 +56,25 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     private String resourceId;
 
+    private TokenCredential credential;
+
     @BeforeEach
     public void setup() {
         workspaceId = getLogWorkspaceId(interceptorManager.isPlaybackMode());
         additionalWorkspaceId = getAdditionalLogWorkspaceId(interceptorManager.isPlaybackMode());
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
-                .retryPolicy(new RetryPolicy(new RetryStrategy() {
-                    @Override
-                    public int getMaxRetries() {
-                        return 0;
-                    }
 
-                    @Override
-                    public Duration calculateRetryDelay(int i) {
-                        return null;
-                    }
-                }));
+        credential = TestUtil.getTestTokenCredential(interceptorManager);
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .credential(credential);
+
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
-                    .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
                     .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getCredential());
+                    .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
 
@@ -105,10 +92,6 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
                 .assertAsync()
                 .skipRequest((request, context) -> false)
                 .build();
-    }
-
-    private TokenCredential getCredential() {
-        return new DefaultAzureCredentialBuilder().build();
     }
 
     @Test
@@ -191,17 +174,15 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     @Test
     public void testLogsQueryBatchWithServerTimeout() {
 
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder();
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
                 .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
         LogsQueryAsyncClient client = clientBuilder
@@ -349,17 +330,15 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         // Server timeout is not readily reproducible and because the service caches query results, the queries that require extended time
         // to complete if run the first time can return immediately if a cached result is available. So, instead of testing the server behavior,
         // this test validates that the request is sent with the correct timeout value in the Prefer header.
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder();
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
                 .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
         LogsQueryAsyncClient client = clientBuilder

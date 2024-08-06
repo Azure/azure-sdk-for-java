@@ -1,5 +1,20 @@
 # Release History
 
+## 1.2.26 (2024-07-30)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.25 (2024-07-02)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-messaging-eventgrid-namespaces`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.24 (2024-05-29)
 
 ### Dependency Updates

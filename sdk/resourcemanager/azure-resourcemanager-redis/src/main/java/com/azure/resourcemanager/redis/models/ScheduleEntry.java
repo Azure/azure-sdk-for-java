@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Patch schedule entry for a Premium Redis Cache. */
+/**
+ * Patch schedule entry for a Premium Redis Cache.
+ */
 @Fluent
 public final class ScheduleEntry {
     /*
@@ -30,13 +32,15 @@ public final class ScheduleEntry {
     @JsonProperty(value = "maintenanceWindow")
     private Duration maintenanceWindow;
 
-    /** Creates an instance of ScheduleEntry class. */
+    /**
+     * Creates an instance of ScheduleEntry class.
+     */
     public ScheduleEntry() {
     }
 
     /**
      * Get the dayOfWeek property: Day of the week when a cache can be patched.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public DayOfWeek dayOfWeek() {
@@ -45,7 +49,7 @@ public final class ScheduleEntry {
 
     /**
      * Set the dayOfWeek property: Day of the week when a cache can be patched.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the ScheduleEntry object itself.
      */
@@ -56,7 +60,7 @@ public final class ScheduleEntry {
 
     /**
      * Get the startHourUtc property: Start hour after which cache patching can start.
-     *
+     * 
      * @return the startHourUtc value.
      */
     public int startHourUtc() {
@@ -65,7 +69,7 @@ public final class ScheduleEntry {
 
     /**
      * Set the startHourUtc property: Start hour after which cache patching can start.
-     *
+     * 
      * @param startHourUtc the startHourUtc value to set.
      * @return the ScheduleEntry object itself.
      */
@@ -76,7 +80,7 @@ public final class ScheduleEntry {
 
     /**
      * Get the maintenanceWindow property: ISO8601 timespan specifying how much time cache patching can take.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public Duration maintenanceWindow() {
@@ -85,7 +89,7 @@ public final class ScheduleEntry {
 
     /**
      * Set the maintenanceWindow property: ISO8601 timespan specifying how much time cache patching can take.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ScheduleEntry object itself.
      */
@@ -96,14 +100,13 @@ public final class ScheduleEntry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dayOfWeek() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dayOfWeek in model ScheduleEntry"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dayOfWeek in model ScheduleEntry"));
         }
     }
 

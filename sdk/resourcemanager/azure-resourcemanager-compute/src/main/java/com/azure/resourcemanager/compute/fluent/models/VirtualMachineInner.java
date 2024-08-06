@@ -7,6 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -24,7 +27,7 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -40,52 +43,59 @@ public final class VirtualMachineInner extends Resource {
      * programmatic use. In the Azure portal, find the marketplace image that you want to use and then click **Want to
      * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * Describes the properties of a Virtual Machine.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachinePropertiesInner innerProperties;
 
     /*
      * The virtual machine child extension resources.
      */
-    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
 
     /*
      * The identity of the virtual machine, if configured.
      */
-    @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
 
     /*
      * The virtual machine zones.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The extended location of the Virtual Machine.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * ManagedBy is set to Virtual Machine Scale Set(VMSS) flex ARM resourceID, if the VM is part of the VMSS. This
      * property is used by platform for internal resource group delete optimization.
      */
-    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
     /*
      * Etag is property returned in Create/Update/Get response of the VM, so that customer can supply it in the header
      * to ensure optimistic updates.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VirtualMachineInner class.
@@ -94,10 +104,10 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @return the plan value.
@@ -107,10 +117,10 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @param plan the plan value to set.
@@ -200,8 +210,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the managedBy property: ManagedBy is set to Virtual Machine Scale Set(VMSS) flex ARM resourceID, if the VM
-     * is part of the VMSS. This property is used by platform for internal resource group delete optimization.
+     * Get the managedBy property: ManagedBy is set to Virtual Machine Scale Set(VMSS) flex ARM resourceID, if the VM is
+     * part of the VMSS. This property is used by platform for internal resource group delete optimization.
      * 
      * @return the managedBy value.
      */
@@ -217,6 +227,36 @@ public final class VirtualMachineInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -261,8 +301,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and
-     * ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
      * 
      * @return the scheduledEventsPolicy value.
      */
@@ -271,8 +311,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and
-     * ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
      * 
      * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
      * @return the VirtualMachineInner object itself.
@@ -334,8 +374,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @return the osProfile value.
      */
@@ -344,8 +384,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineInner object itself.
@@ -471,9 +511,9 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Get the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @return the virtualMachineScaleSet value.
      */
@@ -484,9 +524,9 @@ public final class VirtualMachineInner extends Resource {
     /**
      * Set the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @param virtualMachineScaleSet the virtualMachineScaleSet value to set.
      * @return the VirtualMachineInner object itself.
@@ -627,8 +667,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @return the hostGroup value.
      */
@@ -637,8 +677,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachineInner object itself.
@@ -671,10 +711,10 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -688,10 +728,10 @@ public final class VirtualMachineInner extends Resource {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -746,9 +786,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
@@ -760,9 +800,9 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
@@ -907,5 +947,76 @@ public final class VirtualMachineInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInner.
+     */
+    public static VirtualMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInner deserializedVirtualMachineInner = new VirtualMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineInner.withTags(tags);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineInner.plan = Plan.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineInner.innerProperties = VirtualMachinePropertiesInner.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    List<VirtualMachineExtensionInner> resources
+                        = reader.readArray(reader1 -> VirtualMachineExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineInner.resources = resources;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineInner.identity = VirtualMachineIdentity.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineInner.zones = zones;
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedVirtualMachineInner.managedBy = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualMachineInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInner;
+        });
     }
 }

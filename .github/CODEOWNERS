@@ -6,10 +6,7 @@
 ################
 # As of 1/30/2023 these paths have no owners:
 
-# /**
 # /.devcontainer/
-# /.vscode/
-# /common/perf-test-score/
 # /doc/
 # /samples/
 
@@ -18,6 +15,7 @@
 ###########
 
 # Catch all
+/**                                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 /sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
@@ -343,7 +341,7 @@
 # ServiceOwners:                                     @kushagraThapar @TheovanKraay @pjohari-ms
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
+/sdk/cosmos/                                         @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                     @ccmbpxpcrew
@@ -455,8 +453,16 @@
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-extensions/ @sjkwak
 
+# ServiceLabel: %Health Deidentification
+# PRLabel: %Health Deidentification
+/sdk/healthdataaiservices/                           @GrahamMThomas @danielszaniszlo @billwert
+
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
+
+# ServiceLabel: %Cognitive - Face
+# PRLabel: %Cognitive - Face
+/sdk/face/azure-ai-vision-face/               @leareai
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
@@ -512,8 +518,6 @@
 
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @prativen
-
-/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
 # ServiceLabel: %Logic App
 # ServiceOwners:                                     @Azure/azure-logicapps-team
@@ -654,6 +658,10 @@
 # ServiceLabel: %PostgreSQL
 # ServiceOwners:                                     @sunilagarwal @lfittl-msft @sr-msft @niklarin
 
+# ServiceLabel: %Purview
+# PRLabel: %Purview
+/sdk/purview/                                        @yifan-zhou922
+
 # PRLabel: %Azure Quantum
 /sdk/quantum/                                        @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
 
@@ -720,8 +728,15 @@
 # ServiceLabel:  %Service Fabric
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
 
+# PRLabel: %WebPubSub
+/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy
+/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy
+
+# ServiceLabel:  %WebPubSub
+# ServiceOwners:                                     @vicancy
+
 # ServiceLabel:  %SignalR
-# ServiceOwners:                                     @sffamily @chenkennt
+# ServiceOwners:                                     @vicancy
 
 # ServiceLabel:  %SQL
 # ServiceOwners:                                     @azureSQLGitHub
@@ -834,7 +849,7 @@
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @rujche @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
+/sdk/spring/azure-spring-data-cosmos/                @rujche @netyyyy @saragluna @moarychan @Azure/azure-cosmos-java-sdk-connectors
 
 # ######## End-to-end tests ########
 
@@ -843,6 +858,12 @@
 
 # PRLabel: %common
 /common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey
+
+# PRLabel: %common
+/common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay
+
+# PRLabel: %common
+/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                    @alzimmermsft @srnagar
@@ -864,13 +885,15 @@
 # ######## Eng Sys ########
 
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
+/eng/automation/                                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar
 /eng/common/                                         @Azure/azure-sdk-eng
-/eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
+/.github/CODEOWNERS                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
+/.github/workflows/                                  @Azure/azure-sdk-eng
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
@@ -879,3 +902,6 @@
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
 /eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
+
+# Add Cosmos source owners as the owners of their specialized matrix
+/eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors

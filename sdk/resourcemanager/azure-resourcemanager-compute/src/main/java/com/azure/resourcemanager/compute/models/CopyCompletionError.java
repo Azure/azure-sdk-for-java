@@ -6,23 +6,25 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Indicates the error details if the background copy of a resource created via the CopyStart operation fails.
  */
 @Fluent
-public final class CopyCompletionError {
+public final class CopyCompletionError implements JsonSerializable<CopyCompletionError> {
     /*
      * Indicates the error code if the background copy of a resource created via the CopyStart operation fails.
      */
-    @JsonProperty(value = "errorCode", required = true)
     private CopyCompletionErrorReason errorCode;
 
     /*
      * Indicates the error message if the background copy of a resource created via the CopyStart operation fails.
      */
-    @JsonProperty(value = "errorMessage", required = true)
     private String errorMessage;
 
     /**
@@ -82,14 +84,56 @@ public final class CopyCompletionError {
      */
     public void validate() {
         if (errorCode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property errorCode in model CopyCompletionError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property errorCode in model CopyCompletionError"));
         }
         if (errorMessage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property errorMessage in model CopyCompletionError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorMessage in model CopyCompletionError"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CopyCompletionError.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorCode", this.errorCode == null ? null : this.errorCode.toString());
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyCompletionError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyCompletionError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CopyCompletionError.
+     */
+    public static CopyCompletionError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyCompletionError deserializedCopyCompletionError = new CopyCompletionError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedCopyCompletionError.errorCode
+                        = CopyCompletionErrorReason.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedCopyCompletionError.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyCompletionError;
+        });
+    }
 }

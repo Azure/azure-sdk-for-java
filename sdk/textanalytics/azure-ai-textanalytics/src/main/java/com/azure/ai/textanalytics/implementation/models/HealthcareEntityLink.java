@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The HealthcareEntityLink model. */
+/**
+ * The HealthcareEntityLink model.
+ */
 @Fluent
 public final class HealthcareEntityLink implements JsonSerializable<HealthcareEntityLink> {
     /*
@@ -24,12 +26,15 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
      */
     private String id;
 
-    /** Creates an instance of HealthcareEntityLink class. */
-    public HealthcareEntityLink() {}
+    /**
+     * Creates an instance of HealthcareEntityLink class.
+     */
+    public HealthcareEntityLink() {
+    }
 
     /**
      * Get the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
-     *
+     * 
      * @return the dataSource value.
      */
     public String getDataSource() {
@@ -38,7 +43,7 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
 
     /**
      * Set the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
-     *
+     * 
      * @param dataSource the dataSource value to set.
      * @return the HealthcareEntityLink object itself.
      */
@@ -49,7 +54,7 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
 
     /**
      * Get the id property: Entity id in the given source catalog.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -58,7 +63,7 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
 
     /**
      * Set the id property: Entity id in the given source catalog.
-     *
+     * 
      * @param id the id value to set.
      * @return the HealthcareEntityLink object itself.
      */
@@ -67,6 +72,9 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,31 +85,30 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
 
     /**
      * Reads an instance of HealthcareEntityLink from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of HealthcareEntityLink if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareEntityLink.
      */
     public static HealthcareEntityLink fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HealthcareEntityLink deserializedHealthcareEntityLink = new HealthcareEntityLink();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            HealthcareEntityLink deserializedHealthcareEntityLink = new HealthcareEntityLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("dataSource".equals(fieldName)) {
-                            deserializedHealthcareEntityLink.dataSource = reader.getString();
-                        } else if ("id".equals(fieldName)) {
-                            deserializedHealthcareEntityLink.id = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("dataSource".equals(fieldName)) {
+                    deserializedHealthcareEntityLink.dataSource = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedHealthcareEntityLink.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHealthcareEntityLink;
-                });
+            return deserializedHealthcareEntityLink;
+        });
     }
 }

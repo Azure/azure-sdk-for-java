@@ -182,7 +182,7 @@ public final class DiscoveryClient {
      * }
      * </pre>
      * 
-     * @param queryOptions The search query of advanced search request.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -192,8 +192,8 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponse(BinaryData queryOptions, RequestOptions requestOptions) {
-        return this.serviceClient.queryWithResponse(queryOptions, requestOptions);
+    public Response<BinaryData> queryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.queryWithResponse(body, requestOptions);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class DiscoveryClient {
      * }
      * </pre>
      * 
-     * @param suggestOptions The payload of suggest request.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -273,8 +273,8 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestWithResponse(BinaryData suggestOptions, RequestOptions requestOptions) {
-        return this.serviceClient.suggestWithResponse(suggestOptions, requestOptions);
+    public Response<BinaryData> suggestWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.suggestWithResponse(body, requestOptions);
     }
 
     /**
@@ -302,7 +302,7 @@ public final class DiscoveryClient {
      * }
      * }</pre>
      * 
-     * @param autoCompleteOptions The payload of autocomplete request.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -312,15 +312,14 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> autoCompleteWithResponse(BinaryData autoCompleteOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.autoCompleteWithResponse(autoCompleteOptions, requestOptions);
+    public Response<BinaryData> autoCompleteWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.autoCompleteWithResponse(body, requestOptions);
     }
 
     /**
      * Get data using search.
      * 
-     * @param queryOptions The search query of advanced search request.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -331,17 +330,16 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResult query(QueryOptions queryOptions) {
+    public QueryResult query(QueryOptions body) {
         // Generated convenience method for queryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return queryWithResponse(BinaryData.fromObject(queryOptions), requestOptions).getValue()
-            .toObject(QueryResult.class);
+        return queryWithResponse(BinaryData.fromObject(body), requestOptions).getValue().toObject(QueryResult.class);
     }
 
     /**
      * Get search suggestions by query criteria.
      * 
-     * @param suggestOptions The payload of suggest request.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -352,17 +350,17 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SuggestResult suggest(SuggestOptions suggestOptions) {
+    public SuggestResult suggest(SuggestOptions body) {
         // Generated convenience method for suggestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return suggestWithResponse(BinaryData.fromObject(suggestOptions), requestOptions).getValue()
+        return suggestWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(SuggestResult.class);
     }
 
     /**
      * Get auto complete options.
      * 
-     * @param autoCompleteOptions The payload of autocomplete request.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -373,10 +371,10 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoCompleteResult autoComplete(AutoCompleteOptions autoCompleteOptions) {
+    public AutoCompleteResult autoComplete(AutoCompleteOptions body) {
         // Generated convenience method for autoCompleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return autoCompleteWithResponse(BinaryData.fromObject(autoCompleteOptions), requestOptions).getValue()
+        return autoCompleteWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AutoCompleteResult.class);
     }
 }

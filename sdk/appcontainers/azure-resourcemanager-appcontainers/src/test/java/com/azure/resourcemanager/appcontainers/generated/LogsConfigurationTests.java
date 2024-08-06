@@ -13,14 +13,16 @@ public final class LogsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogsConfiguration model
-            = BinaryData.fromString("{\"destinations\":[\"ebwtswb\"]}").toObject(LogsConfiguration.class);
-        Assertions.assertEquals("ebwtswb", model.destinations().get(0));
+            = BinaryData.fromString("{\"destinations\":[\"uxvnsasbcrymodi\",\"rxklobdxnazpmk\",\"lmv\"]}")
+                .toObject(LogsConfiguration.class);
+        Assertions.assertEquals("uxvnsasbcrymodi", model.destinations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogsConfiguration model = new LogsConfiguration().withDestinations(Arrays.asList("ebwtswb"));
+        LogsConfiguration model
+            = new LogsConfiguration().withDestinations(Arrays.asList("uxvnsasbcrymodi", "rxklobdxnazpmk", "lmv"));
         model = BinaryData.fromObject(model).toObject(LogsConfiguration.class);
-        Assertions.assertEquals("ebwtswb", model.destinations().get(0));
+        Assertions.assertEquals("uxvnsasbcrymodi", model.destinations().get(0));
     }
 }

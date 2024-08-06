@@ -20,7 +20,10 @@ public final class RestorePointCollectionsListSamples {
      */
     public static void
         getsTheListOfRestorePointCollectionsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
             .list(com.azure.core.util.Context.NONE);
     }
 }

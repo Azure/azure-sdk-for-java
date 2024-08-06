@@ -25,30 +25,31 @@
     }
   },
   "variables": {
-    "apiVersion": "2020-05-01",
-    "asaAccountName": "[concat(parameters('baseName'), '-asa-account')]"
+    "arrApiVersion": "2021-03-01-preview",
+    "arrAccountName": "[concat(parameters('baseName'), '-arr-account')]"
   },
   "resources": [
     {
-      "type": "Microsoft.MixedReality/spatialAnchorsAccounts",
-      "name": "[variables('asaAccountName')]",
-      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.MixedReality/remoteRenderingAccounts",
+      "name": "[variables('arrAccountName')]",
+      "apiVersion": "[variables('arrApiVersion')]",
       "location": "[parameters('location')]",
-      "properties": {}
+      "properties": {},
+      "identity": { "type": "systemAssigned" }
     }
   ],
   "outputs": {
     "MIXEDREALITY_ACCOUNT_ID": {
       "type": "string",
-      "value": "[reference(variables('asaAccountName')).accountId]"
+      "value": "[reference(variables('arrAccountName')).accountId]"
     },
     "MIXEDREALITY_ACCOUNT_DOMAIN": {
       "type": "string",
-      "value": "[reference(variables('asaAccountName')).accountDomain]"
+      "value": "[reference(variables('arrAccountName')).accountDomain]"
     },
     "MIXEDREALITY_ACCOUNT_KEY": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.MixedReality/spatialAnchorsAccounts', variables('asaAccountName')), variables('apiVersion')).primaryKey]"
+      "value": "[listKeys(resourceId('Microsoft.MixedReality/remoteRenderingAccounts', variables('arrAccountName')), variables('arrApiVersion')).primaryKey]"
     }
   }
 }

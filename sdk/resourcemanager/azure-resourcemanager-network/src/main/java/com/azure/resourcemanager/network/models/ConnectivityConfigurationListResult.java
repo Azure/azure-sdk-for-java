@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ConnectivityConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,17 +18,16 @@ import java.util.List;
  * link to get the next set of results.
  */
 @Fluent
-public final class ConnectivityConfigurationListResult {
+public final class ConnectivityConfigurationListResult
+    implements JsonSerializable<ConnectivityConfigurationListResult> {
     /*
      * Gets a page of Connectivity Configurations
      */
-    @JsonProperty(value = "value")
     private List<ConnectivityConfigurationInner> value;
 
     /*
      * Gets the URL to get the next page of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -36,7 +38,7 @@ public final class ConnectivityConfigurationListResult {
 
     /**
      * Get the value property: Gets a page of Connectivity Configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ConnectivityConfigurationInner> value() {
@@ -45,7 +47,7 @@ public final class ConnectivityConfigurationListResult {
 
     /**
      * Set the value property: Gets a page of Connectivity Configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConnectivityConfigurationListResult object itself.
      */
@@ -56,7 +58,7 @@ public final class ConnectivityConfigurationListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +67,7 @@ public final class ConnectivityConfigurationListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConnectivityConfigurationListResult object itself.
      */
@@ -76,12 +78,54 @@ public final class ConnectivityConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityConfigurationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityConfigurationListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityConfigurationListResult.
+     */
+    public static ConnectivityConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityConfigurationListResult deserializedConnectivityConfigurationListResult
+                = new ConnectivityConfigurationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConnectivityConfigurationInner> value
+                        = reader.readArray(reader1 -> ConnectivityConfigurationInner.fromJson(reader1));
+                    deserializedConnectivityConfigurationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConnectivityConfigurationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityConfigurationListResult;
+        });
     }
 }

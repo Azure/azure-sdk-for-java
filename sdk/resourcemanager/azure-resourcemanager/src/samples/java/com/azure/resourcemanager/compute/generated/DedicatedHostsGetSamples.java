@@ -21,7 +21,11 @@ public final class DedicatedHostsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getADedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().getWithResponse("myResourceGroup",
-            "myDedicatedHostGroup", "myHost", InstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .getWithResponse("myResourceGroup", "myDedicatedHostGroup", "myHost", InstanceViewTypes.INSTANCE_VIEW,
+                com.azure.core.util.Context.NONE);
     }
 }

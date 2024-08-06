@@ -4,6 +4,9 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
@@ -43,13 +46,13 @@ public interface IDocumentQueryClient {
 
     /**
      * TODO: this should be async returning observable
-     * @return 
+     * @return
      */
     ConsistencyLevel getDefaultConsistencyLevelAsync();
 
     /**
      * TODO: this should be async returning observable
-     * @return 
+     * @return
      */
     ConsistencyLevel getDesiredConsistencyLevelAsync();
 
@@ -62,7 +65,8 @@ public interface IDocumentQueryClient {
         final OperationType operationType,
         final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
         final RxDocumentServiceRequest req,
-        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation);
+        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation,
+        final String collectionLink);
 
     <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions);
 
@@ -89,4 +93,12 @@ public interface IDocumentQueryClient {
     }
 
     Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request);
+
+    Mono<RxDocumentServiceRequest> populateFeedRangeHeader(RxDocumentServiceRequest request);
+
+    Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions);
+
+    GlobalEndpointManager getGlobalEndpointManager();
+
+    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
 }

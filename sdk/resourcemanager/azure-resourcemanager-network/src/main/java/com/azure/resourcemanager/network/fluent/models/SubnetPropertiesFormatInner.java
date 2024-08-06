@@ -6,6 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
@@ -14,138 +18,120 @@ import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
 import com.azure.resourcemanager.network.models.SharingScope;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the subnet.
  */
 @Fluent
-public final class SubnetPropertiesFormatInner {
+public final class SubnetPropertiesFormatInner implements JsonSerializable<SubnetPropertiesFormatInner> {
     /*
      * The address prefix for the subnet.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /*
      * List of address prefixes for the subnet.
      */
-    @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
     /*
      * The reference to the NetworkSecurityGroup resource.
      */
-    @JsonProperty(value = "networkSecurityGroup")
     private NetworkSecurityGroupInner networkSecurityGroup;
 
     /*
      * The reference to the RouteTable resource.
      */
-    @JsonProperty(value = "routeTable")
     private RouteTableInner routeTable;
 
     /*
      * Nat gateway associated with this subnet.
      */
-    @JsonProperty(value = "natGateway")
     private SubResource natGateway;
 
     /*
      * An array of service endpoints.
      */
-    @JsonProperty(value = "serviceEndpoints")
     private List<ServiceEndpointPropertiesFormat> serviceEndpoints;
 
     /*
      * An array of service endpoint policies.
      */
-    @JsonProperty(value = "serviceEndpointPolicies")
     private List<ServiceEndpointPolicyInner> serviceEndpointPolicies;
 
     /*
      * An array of references to private endpoints.
      */
-    @JsonProperty(value = "privateEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointInner> privateEndpoints;
 
     /*
      * An array of references to the network interface IP configurations using subnet.
      */
-    @JsonProperty(value = "ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IpConfigurationInner> ipConfigurations;
 
     /*
      * Array of IP configuration profiles which reference this subnet.
      */
-    @JsonProperty(value = "ipConfigurationProfiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<IpConfigurationProfileInner> ipConfigurationProfiles;
 
     /*
      * Array of IpAllocation which reference this subnet.
      */
-    @JsonProperty(value = "ipAllocations")
     private List<SubResource> ipAllocations;
 
     /*
      * An array of references to the external resources using subnet.
      */
-    @JsonProperty(value = "resourceNavigationLinks", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceNavigationLink> resourceNavigationLinks;
 
     /*
      * An array of references to services injecting into this subnet.
      */
-    @JsonProperty(value = "serviceAssociationLinks", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceAssociationLink> serviceAssociationLinks;
 
     /*
      * An array of references to the delegations on the subnet.
      */
-    @JsonProperty(value = "delegations")
     private List<Delegation> delegations;
 
     /*
-     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties.
+     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined
+     * properties.
      */
-    @JsonProperty(value = "purpose", access = JsonProperty.Access.WRITE_ONLY)
     private String purpose;
 
     /*
      * The provisioning state of the subnet resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Enable or Disable apply network policies on private end point in the subnet.
      */
-    @JsonProperty(value = "privateEndpointNetworkPolicies")
     private VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies;
 
     /*
      * Enable or Disable apply network policies on private link service in the subnet.
      */
-    @JsonProperty(value = "privateLinkServiceNetworkPolicies")
     private VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies;
 
     /*
      * Application gateway IP configurations of virtual network resource.
      */
-    @JsonProperty(value = "applicationGatewayIPConfigurations")
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
 
     /*
-     * Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only be set if subnet is empty.
+     * Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property
+     * can only be set if defaultOutboundAccess is set to false, both properties can only be set if subnet is empty.
      */
-    @JsonProperty(value = "sharingScope")
     private SharingScope sharingScope;
 
     /*
-     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
+     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
      */
-    @JsonProperty(value = "defaultOutboundAccess")
     private Boolean defaultOutboundAccess;
 
     /**
@@ -556,5 +542,125 @@ public final class SubnetPropertiesFormatInner {
         if (applicationGatewayIpConfigurations() != null) {
             applicationGatewayIpConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("networkSecurityGroup", this.networkSecurityGroup);
+        jsonWriter.writeJsonField("routeTable", this.routeTable);
+        jsonWriter.writeJsonField("natGateway", this.natGateway);
+        jsonWriter.writeArrayField("serviceEndpoints", this.serviceEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceEndpointPolicies", this.serviceEndpointPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipAllocations", this.ipAllocations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("delegations", this.delegations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("privateEndpointNetworkPolicies",
+            this.privateEndpointNetworkPolicies == null ? null : this.privateEndpointNetworkPolicies.toString());
+        jsonWriter.writeStringField("privateLinkServiceNetworkPolicies",
+            this.privateLinkServiceNetworkPolicies == null ? null : this.privateLinkServiceNetworkPolicies.toString());
+        jsonWriter.writeArrayField("applicationGatewayIPConfigurations", this.applicationGatewayIpConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("sharingScope", this.sharingScope == null ? null : this.sharingScope.toString());
+        jsonWriter.writeBooleanField("defaultOutboundAccess", this.defaultOutboundAccess);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubnetPropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubnetPropertiesFormatInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubnetPropertiesFormatInner.
+     */
+    public static SubnetPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubnetPropertiesFormatInner deserializedSubnetPropertiesFormatInner = new SubnetPropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressPrefix".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.addressPrefix = reader.getString();
+                } else if ("addressPrefixes".equals(fieldName)) {
+                    List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubnetPropertiesFormatInner.addressPrefixes = addressPrefixes;
+                } else if ("networkSecurityGroup".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.networkSecurityGroup
+                        = NetworkSecurityGroupInner.fromJson(reader);
+                } else if ("routeTable".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.routeTable = RouteTableInner.fromJson(reader);
+                } else if ("natGateway".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.natGateway = SubResource.fromJson(reader);
+                } else if ("serviceEndpoints".equals(fieldName)) {
+                    List<ServiceEndpointPropertiesFormat> serviceEndpoints
+                        = reader.readArray(reader1 -> ServiceEndpointPropertiesFormat.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.serviceEndpoints = serviceEndpoints;
+                } else if ("serviceEndpointPolicies".equals(fieldName)) {
+                    List<ServiceEndpointPolicyInner> serviceEndpointPolicies
+                        = reader.readArray(reader1 -> ServiceEndpointPolicyInner.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.serviceEndpointPolicies = serviceEndpointPolicies;
+                } else if ("privateEndpoints".equals(fieldName)) {
+                    List<PrivateEndpointInner> privateEndpoints
+                        = reader.readArray(reader1 -> PrivateEndpointInner.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.privateEndpoints = privateEndpoints;
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<IpConfigurationInner> ipConfigurations
+                        = reader.readArray(reader1 -> IpConfigurationInner.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.ipConfigurations = ipConfigurations;
+                } else if ("ipConfigurationProfiles".equals(fieldName)) {
+                    List<IpConfigurationProfileInner> ipConfigurationProfiles
+                        = reader.readArray(reader1 -> IpConfigurationProfileInner.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.ipConfigurationProfiles = ipConfigurationProfiles;
+                } else if ("ipAllocations".equals(fieldName)) {
+                    List<SubResource> ipAllocations = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.ipAllocations = ipAllocations;
+                } else if ("resourceNavigationLinks".equals(fieldName)) {
+                    List<ResourceNavigationLink> resourceNavigationLinks
+                        = reader.readArray(reader1 -> ResourceNavigationLink.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.resourceNavigationLinks = resourceNavigationLinks;
+                } else if ("serviceAssociationLinks".equals(fieldName)) {
+                    List<ServiceAssociationLink> serviceAssociationLinks
+                        = reader.readArray(reader1 -> ServiceAssociationLink.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.serviceAssociationLinks = serviceAssociationLinks;
+                } else if ("delegations".equals(fieldName)) {
+                    List<Delegation> delegations = reader.readArray(reader1 -> Delegation.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.delegations = delegations;
+                } else if ("purpose".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.purpose = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateEndpointNetworkPolicies".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.privateEndpointNetworkPolicies
+                        = VirtualNetworkPrivateEndpointNetworkPolicies.fromString(reader.getString());
+                } else if ("privateLinkServiceNetworkPolicies".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.privateLinkServiceNetworkPolicies
+                        = VirtualNetworkPrivateLinkServiceNetworkPolicies.fromString(reader.getString());
+                } else if ("applicationGatewayIPConfigurations".equals(fieldName)) {
+                    List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations
+                        = reader.readArray(reader1 -> ApplicationGatewayIpConfigurationInner.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.applicationGatewayIpConfigurations
+                        = applicationGatewayIpConfigurations;
+                } else if ("sharingScope".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.sharingScope = SharingScope.fromString(reader.getString());
+                } else if ("defaultOutboundAccess".equals(fieldName)) {
+                    deserializedSubnetPropertiesFormatInner.defaultOutboundAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubnetPropertiesFormatInner;
+        });
     }
 }

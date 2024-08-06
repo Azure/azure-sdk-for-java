@@ -8,7 +8,6 @@ import com.azure.resourcemanager.network.models.FilterItems;
 import com.azure.resourcemanager.network.models.FirewallPolicyIdpsQuerySortOrder;
 import com.azure.resourcemanager.network.models.IdpsQueryObject;
 import com.azure.resourcemanager.network.models.OrderBy;
-
 import java.util.Arrays;
 
 /**
@@ -16,11 +15,12 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyIdpsSignaturesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyQuerySignatureOverrides.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyQuerySignatureOverrides.json
      */
     /**
      * Sample code: query signature overrides.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void querySignatureOverrides(com.azure.resourcemanager.AzureResourceManager azure) {

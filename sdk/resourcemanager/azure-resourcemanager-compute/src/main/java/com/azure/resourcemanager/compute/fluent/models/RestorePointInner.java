@@ -6,11 +6,14 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
 import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -22,8 +25,22 @@ public final class RestorePointInner extends ProxyResource {
     /*
      * The restore point properties.
      */
-    @JsonProperty(value = "properties")
     private RestorePointProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of RestorePointInner class.
@@ -38,6 +55,36 @@ public final class RestorePointInner extends ProxyResource {
      */
     private RestorePointProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -190,5 +237,48 @@ public final class RestorePointInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestorePointInner.
+     */
+    public static RestorePointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointInner deserializedRestorePointInner = new RestorePointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorePointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorePointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorePointInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRestorePointInner.innerProperties = RestorePointProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointInner;
+        });
     }
 }

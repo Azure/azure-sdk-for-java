@@ -26,7 +26,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 public final class DisksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromImportSecure.json
      */
     /**
@@ -36,20 +36,25 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskFromImportSecureCreateOption(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS).withCreationData(
-                new CreationData().withCreateOption(DiskCreateOption.IMPORT_SECURE).withStorageAccountId(
-                    "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withOsType(OperatingSystemTypes.WINDOWS)
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.IMPORT_SECURE)
+                    .withStorageAccountId(
+                        "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
                     .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")
                     .withSecurityDataUri("https://mystorageaccount.blob.core.windows.net/osimages/vmgs.vhd"))
                 .withSecurityProfile(new DiskSecurityProfile().withSecurityType(
                     DiskSecurityTypes.CONFIDENTIAL_VM_VMGUEST_STATE_ONLY_ENCRYPTED_WITH_PLATFORM_KEY)),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithDiskEncryptionSet.json
      */
     /**
@@ -59,17 +64,21 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskAndAssociateWithDiskEncryptionSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                .withDiskSizeGB(200)
                 .withEncryption(new Encryption().withDiskEncryptionSetId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromAnExistingManagedDisk.json
      */
     /**
@@ -79,16 +88,20 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAManagedDiskFromAnExistingManagedDiskInTheSameOrDifferentSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk2",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.COPY).withSourceResourceId(
-                    "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk2", new DiskInner().withLocation("West US")
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.COPY)
+                    .withSourceResourceId(
+                        "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk1")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithLogicalSectorSize.json
      */
     /**
@@ -98,18 +111,22 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAnUltraManagedDiskWithLogicalSectorSize512E(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withSku(new DiskSku().withName(DiskStorageAccountTypes.ULTRA_SSD_LRS))
-                .withCreationData(
-                    new CreationData().withCreateOption(DiskCreateOption.EMPTY).withLogicalSectorSize(512))
-                .withDiskSizeGB(200),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withSku(new DiskSku().withName(DiskStorageAccountTypes.ULTRA_SSD_LRS))
+                    .withCreationData(
+                        new CreationData().withCreateOption(DiskCreateOption.EMPTY).withLogicalSectorSize(512))
+                    .withDiskSizeGB(200),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_Empty.json
      */
     /**
@@ -118,15 +135,20 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAnEmptyManagedDisk(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithOptimizedForFrequentAttach.json
      */
     /**
@@ -136,16 +158,21 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskWithOptimizedForFrequentAttach(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200)
-                .withOptimizedForFrequentAttach(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200)
+                    .withOptimizedForFrequentAttach(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_ByCopyingASnapshot.json
      */
     /**
@@ -154,16 +181,20 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedDiskByCopyingASnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.COPY).withSourceResourceId(
-                    "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.COPY)
+                    .withSourceResourceId(
+                        "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithUltraSSD_ReadOnly.json
      */
     /**
@@ -173,20 +204,25 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAManagedDiskWithUltraAccountTypeWithReadOnlyPropertySet(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup",
-            "myUltraReadOnlyDisk",
-            new DiskInner().withLocation("West US")
-                .withSku(new DiskSku().withName(DiskStorageAccountTypes.ULTRA_SSD_LRS))
-                .withCreationData(
-                    new CreationData().withCreateOption(DiskCreateOption.EMPTY).withLogicalSectorSize(4096))
-                .withDiskSizeGB(200).withDiskIopsReadWrite(125L).withDiskMBpsReadWrite(3000L)
-                .withEncryption(new Encryption().withType(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myUltraReadOnlyDisk",
+                new DiskInner().withLocation("West US")
+                    .withSku(new DiskSku().withName(DiskStorageAccountTypes.ULTRA_SSD_LRS))
+                    .withCreationData(
+                        new CreationData().withCreateOption(DiskCreateOption.EMPTY).withLogicalSectorSize(4096))
+                    .withDiskSizeGB(200)
+                    .withDiskIopsReadWrite(125L)
+                    .withDiskMBpsReadWrite(3000L)
+                    .withEncryption(new Encryption().withType(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_InExtendedLocation.json
      */
     /**
@@ -196,17 +232,22 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAnEmptyManagedDiskInExtendedLocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withExtendedLocation(
-                    new ExtendedLocation().withName("{edge-zone-id}").withType(ExtendedLocationTypes.EDGE_ZONE))
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withExtendedLocation(
+                        new ExtendedLocation().withName("{edge-zone-id}").withType(ExtendedLocationTypes.EDGE_ZONE))
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromAnAzureComputeGalleryCommunityImage.json
      */
     /**
@@ -216,17 +257,21 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAManagedDiskFromAnAzureComputeGalleryCommunityImage(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withOsType(OperatingSystemTypes.WINDOWS)
                 .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
                     .withGalleryImageReference(new ImageDiskReference().withCommunityGalleryImageId(
                         "/CommunityGalleries/{communityGalleryPublicGalleryName}/Images/{imageName}/Versions/1.0.0"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_UploadDisk.json
      */
     /**
@@ -235,15 +280,20 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedUploadDisk(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withCreationData(
-                new CreationData().withCreateOption(DiskCreateOption.UPLOAD).withUploadSizeBytes(10737418752L)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withCreationData(
+                        new CreationData().withCreateOption(DiskCreateOption.UPLOAD).withUploadSizeBytes(10737418752L)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithDataAccessAuthMode.json
      */
     /**
@@ -252,16 +302,21 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedDiskWithDataAccessAuthMode(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200)
-                .withDataAccessAuthMode(DataAccessAuthMode.AZURE_ACTIVE_DIRECTORY),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200)
+                    .withDataAccessAuthMode(DataAccessAuthMode.AZURE_ACTIVE_DIRECTORY),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromAnElasticSanVolumeSnapshot.json
      */
     /**
@@ -271,16 +326,20 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskFromElasticSanVolumeSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withCreationData(
-                new CreationData().withCreateOption(DiskCreateOption.COPY_FROM_SAN_SNAPSHOT).withElasticSanResourceId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.ElasticSan/elasticSans/myElasticSan/volumegroups/myElasticSanVolumeGroup/snapshots/myElasticSanVolumeSnapshot")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.COPY_FROM_SAN_SNAPSHOT)
+                    .withElasticSanResourceId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.ElasticSan/elasticSans/myElasticSan/volumegroups/myElasticSanVolumeGroup/snapshots/myElasticSanVolumeSnapshot")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_ByImportingBlobFromADifferentSubscription.json
      */
     /**
@@ -290,17 +349,21 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAManagedDiskByImportingAnUnmanagedBlobFromADifferentSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.IMPORT).withStorageAccountId(
-                    "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.IMPORT)
+                    .withStorageAccountId(
+                        "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
                     .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithDiskAccess.json
      */
     /**
@@ -310,17 +373,22 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskAndAssociateWithDiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200)
-                .withNetworkAccessPolicy(NetworkAccessPolicy.ALLOW_PRIVATE).withDiskAccessId(
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                .withDiskSizeGB(200)
+                .withNetworkAccessPolicy(NetworkAccessPolicy.ALLOW_PRIVATE)
+                .withDiskAccessId(
                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/{existing-diskAccess-name}"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_PerformancePlus.json
      */
     /**
@@ -329,15 +397,20 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedDiskWithPerformancePlus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withCreationData(
-                new CreationData().withCreateOption(DiskCreateOption.UPLOAD).withPerformancePlus(true)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withCreationData(
+                        new CreationData().withCreateOption(DiskCreateOption.UPLOAD).withPerformancePlus(true)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithPremiumV2_LRSAccountType.json
      */
     /**
@@ -347,18 +420,23 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskWithPremiumV2AccountType(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup",
-            "myPremiumV2Disk",
-            new DiskInner().withLocation("West US")
-                .withSku(new DiskSku().withName(DiskStorageAccountTypes.PREMIUM_V2_LRS))
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200)
-                .withDiskIopsReadWrite(125L).withDiskMBpsReadWrite(3000L),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myPremiumV2Disk",
+                new DiskInner().withLocation("West US")
+                    .withSku(new DiskSku().withName(DiskStorageAccountTypes.PREMIUM_V2_LRS))
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200)
+                    .withDiskIopsReadWrite(125L)
+                    .withDiskMBpsReadWrite(3000L),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithSecurityProfile.json
      */
     /**
@@ -367,18 +445,22 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedDiskWithSecurityProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("North Central US").withOsType(OperatingSystemTypes.WINDOWS)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("North Central US")
+                .withOsType(OperatingSystemTypes.WINDOWS)
                 .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
                     .withImageReference(new ImageDiskReference().withId(
                         "/Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}")))
                 .withSecurityProfile(new DiskSecurityProfile().withSecurityType(DiskSecurityTypes.TRUSTED_LAUNCH)),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromAPlatformImage.json
      */
     /**
@@ -387,17 +469,21 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedDiskFromAPlatformImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withOsType(OperatingSystemTypes.WINDOWS)
                 .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
                     .withImageReference(new ImageDiskReference().withId(
                         "/Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/westus/Publishers/{publisher}/ArtifactTypes/VMImage/Offers/{offer}/Skus/{sku}/Versions/1.0.0"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromAnAzureComputeGalleryDirectSharedImage.json
      */
     /**
@@ -407,17 +493,22 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAManagedDiskFromAnAzureComputeGalleryDirectSharedImage(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS)
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
-                    .withGalleryImageReference(new ImageDiskReference().withSharedGalleryImageId(
-                        "/SharedGalleries/{sharedGalleryUniqueName}/Images/{imageName}/Versions/1.0.0"))),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withOsType(OperatingSystemTypes.WINDOWS)
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
+                        .withGalleryImageReference(new ImageDiskReference().withSharedGalleryImageId(
+                            "/SharedGalleries/{sharedGalleryUniqueName}/Images/{imageName}/Versions/1.0.0"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_ByImportingBlobFromTheSameSubscription.json
      */
     /**
@@ -427,16 +518,20 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAManagedDiskByImportingAnUnmanagedBlobFromTheSameSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US")
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.IMPORT)
-                    .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.IMPORT)
+                        .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromUploadPreparedSecure.json
      */
     /**
@@ -446,17 +541,22 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskFromUploadPreparedSecureCreateOption(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS)
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.UPLOAD_PREPARED_SECURE)
-                    .withUploadSizeBytes(10737418752L))
-                .withSecurityProfile(new DiskSecurityProfile().withSecurityType(DiskSecurityTypes.TRUSTED_LAUNCH)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withOsType(OperatingSystemTypes.WINDOWS)
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.UPLOAD_PREPARED_SECURE)
+                        .withUploadSizeBytes(10737418752L))
+                    .withSecurityProfile(new DiskSecurityProfile().withSecurityType(DiskSecurityTypes.TRUSTED_LAUNCH)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_ConfidentialVMSupportedDiskEncryptedWithCMK.json
      */
     /**
@@ -466,8 +566,12 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void createAConfidentialVMSupportedDiskEncryptedWithCustomerManagedKey(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withOsType(OperatingSystemTypes.WINDOWS)
                 .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
                     .withImageReference(new ImageDiskReference().withId(
                         "/Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/westus/Publishers/{publisher}/ArtifactTypes/VMImage/Offers/{offer}/Skus/{sku}/Versions/1.0.0")))
@@ -475,12 +579,12 @@ public final class DisksCreateOrUpdateSamples {
                     .withSecurityType(DiskSecurityTypes.CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_CUSTOMER_KEY)
                     .withSecureVMDiskEncryptionSetId(
                         "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_WithSSDZRSAccountType.json
      */
     /**
@@ -489,15 +593,21 @@ public final class DisksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAManagedDiskWithSsdZrsAccountType(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withSku(new DiskSku().withName(DiskStorageAccountTypes.PREMIUM_ZRS))
-                .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY)).withDiskSizeGB(200),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk",
+                new DiskInner().withLocation("West US")
+                    .withSku(new DiskSku().withName(DiskStorageAccountTypes.PREMIUM_ZRS))
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
      * Disk_Create_FromAnAzureComputeGalleryImage.json
      */
     /**
@@ -507,11 +617,15 @@ public final class DisksCreateOrUpdateSamples {
      */
     public static void
         createAManagedDiskFromAnAzureComputeGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().createOrUpdate("myResourceGroup", "myDisk",
-            new DiskInner().withLocation("West US").withOsType(OperatingSystemTypes.WINDOWS)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate("myResourceGroup", "myDisk", new DiskInner().withLocation("West US")
+                .withOsType(OperatingSystemTypes.WINDOWS)
                 .withCreationData(new CreationData().withCreateOption(DiskCreateOption.FROM_IMAGE)
                     .withGalleryImageReference(new ImageDiskReference().withId(
                         "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Providers/Microsoft.Compute/Galleries/{galleryName}/Images/{imageName}/Versions/1.0.0"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

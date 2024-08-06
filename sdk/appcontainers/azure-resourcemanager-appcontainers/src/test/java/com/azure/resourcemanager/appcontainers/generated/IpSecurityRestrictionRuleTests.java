@@ -13,22 +13,24 @@ public final class IpSecurityRestrictionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpSecurityRestrictionRule model = BinaryData.fromString(
-            "{\"name\":\"lfzxiavrmbzonoki\",\"description\":\"jq\",\"ipAddressRange\":\"irgzp\",\"action\":\"Deny\"}")
+            "{\"name\":\"hbotzingamvppho\",\"description\":\"qzudphq\",\"ipAddressRange\":\"mvdk\",\"action\":\"Deny\"}")
             .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("lfzxiavrmbzonoki", model.name());
-        Assertions.assertEquals("jq", model.description());
-        Assertions.assertEquals("irgzp", model.ipAddressRange());
+        Assertions.assertEquals("hbotzingamvppho", model.name());
+        Assertions.assertEquals("qzudphq", model.description());
+        Assertions.assertEquals("mvdk", model.ipAddressRange());
         Assertions.assertEquals(Action.DENY, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("lfzxiavrmbzonoki")
-            .withDescription("jq").withIpAddressRange("irgzp").withAction(Action.DENY);
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("hbotzingamvppho")
+            .withDescription("qzudphq")
+            .withIpAddressRange("mvdk")
+            .withAction(Action.DENY);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("lfzxiavrmbzonoki", model.name());
-        Assertions.assertEquals("jq", model.description());
-        Assertions.assertEquals("irgzp", model.ipAddressRange());
+        Assertions.assertEquals("hbotzingamvppho", model.name());
+        Assertions.assertEquals("qzudphq", model.description());
+        Assertions.assertEquals("mvdk", model.ipAddressRange());
         Assertions.assertEquals(Action.DENY, model.action());
     }
 }

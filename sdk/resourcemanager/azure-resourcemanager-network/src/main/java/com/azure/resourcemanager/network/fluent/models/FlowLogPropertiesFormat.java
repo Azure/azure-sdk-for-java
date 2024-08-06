@@ -6,63 +6,59 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Parameters that define the configuration of flow log.
  */
 @Fluent
-public final class FlowLogPropertiesFormat {
+public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPropertiesFormat> {
     /*
      * ID of network security group to which flow log will be applied.
      */
-    @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
      * Guid of network security group to which flow log will be applied.
      */
-    @JsonProperty(value = "targetResourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceGuid;
 
     /*
      * ID of the storage account which is used to store the flow log.
      */
-    @JsonProperty(value = "storageId", required = true)
     private String storageId;
 
     /*
      * Flag to enable/disable flow logging.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Parameters that define the retention policy for flow log.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicyParameters retentionPolicy;
 
     /*
      * Parameters that define the flow log format.
      */
-    @JsonProperty(value = "format")
     private FlowLogFormatParameters format;
 
     /*
      * Parameters that define the configuration of traffic analytics.
      */
-    @JsonProperty(value = "flowAnalyticsConfiguration")
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
 
     /*
      * The provisioning state of the flow log.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -238,4 +234,62 @@ public final class FlowLogPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FlowLogPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("storageId", this.storageId);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("flowAnalyticsConfiguration", this.flowAnalyticsConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlowLogPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlowLogPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FlowLogPropertiesFormat.
+     */
+    public static FlowLogPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlowLogPropertiesFormat deserializedFlowLogPropertiesFormat = new FlowLogPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.targetResourceId = reader.getString();
+                } else if ("storageId".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.storageId = reader.getString();
+                } else if ("targetResourceGuid".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.targetResourceGuid = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.retentionPolicy = RetentionPolicyParameters.fromJson(reader);
+                } else if ("format".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.format = FlowLogFormatParameters.fromJson(reader);
+                } else if ("flowAnalyticsConfiguration".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.flowAnalyticsConfiguration
+                        = TrafficAnalyticsProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlowLogPropertiesFormat;
+        });
+    }
 }

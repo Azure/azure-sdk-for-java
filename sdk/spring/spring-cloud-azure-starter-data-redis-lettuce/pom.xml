@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-data-redis-lettuce</artifactId>
+  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-data-redis-lettuce;current} -->
+
+  <name>Spring Cloud Azure Starter Data Redis with Lettuce</name>
+  <description>Spring Cloud Azure Starter Data Redis with Lettuce</description>
+  <url>https://microsoft.github.io/spring-cloud-azure</url>
+  <developers>
+    <developer>
+      <name>Spring Cloud Azure</name>
+      <email>SpringIntegSupport@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+  </properties>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/</url>
+    </site>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter</artifactId>
+      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+      <version>6.3.2.RELEASE</version> <!-- {x-version-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity-extensions</artifactId>
+      <version>1.1.18</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.data.cosmos</Automatic-Module-Name>
+            </manifestEntries>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+        <!-- START: Empty Java Doc & Sources -->
+        <!-- The following code will generate an empty javadoc/sources with just a README.md. This is necessary
+             to pass the required checks on Maven. The way this works is by setting the classesDirectory
+             to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+             is set to the root, where the README.md lives, it still won't have javadocs/sources but the jar file
+             will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+             and recreated with the README.md being copied every time to guarantee that, when building locally,
+             it'll have the latest copy of the README.md file.
+        -->
+        <executions>
+          <execution>
+            <id>empty-javadoc-jar-with-readme</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>javadoc</classifier>
+              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>empty-source-jar-with-readme</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>sources</classifier>
+              <classesDirectory>${project.basedir}/sourceTemp</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-readme-to-javadocTemp-and-sourceTemp</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <echo>Deleting existing ${project.basedir}/javadocTemp and
+                  ${project.basedir}/sourceTemp</echo>
+                <delete includeEmptyDirs="true" quiet="true">
+                  <fileset dir="${project.basedir}/javadocTemp"/>
+                  <fileset dir="${project.basedir}/sourceTemp"/>
+                </delete>
+                <echo>Copying ${project.basedir}/../README.md to
+                  ${project.basedir}/javadocTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/javadocTemp/README.md" failonerror="false"/>
+                <echo>Copying ${project.basedir}/../README.md to
+                  ${project.basedir}/sourceTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/sourceTemp/README.md" failonerror="false"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+        <!-- END: Empty Java Doc & Sources -->
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

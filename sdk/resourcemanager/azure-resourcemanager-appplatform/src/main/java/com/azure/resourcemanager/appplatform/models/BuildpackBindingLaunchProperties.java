@@ -5,27 +5,26 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Buildpack Binding Launch Properties.
  */
 @Fluent
-public final class BuildpackBindingLaunchProperties {
+public final class BuildpackBindingLaunchProperties implements JsonSerializable<BuildpackBindingLaunchProperties> {
     /*
      * Non-sensitive properties for launchProperties
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * Sensitive properties for launchProperties
      */
-    @JsonProperty(value = "secrets")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> secrets;
 
     /**
@@ -80,5 +79,47 @@ public final class BuildpackBindingLaunchProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("secrets", this.secrets, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildpackBindingLaunchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildpackBindingLaunchProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildpackBindingLaunchProperties.
+     */
+    public static BuildpackBindingLaunchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildpackBindingLaunchProperties deserializedBuildpackBindingLaunchProperties
+                = new BuildpackBindingLaunchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBuildpackBindingLaunchProperties.properties = properties;
+                } else if ("secrets".equals(fieldName)) {
+                    Map<String, String> secrets = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBuildpackBindingLaunchProperties.secrets = secrets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildpackBindingLaunchProperties;
+        });
     }
 }

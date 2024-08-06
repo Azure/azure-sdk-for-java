@@ -6,107 +6,95 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CommissionedState;
 import com.azure.resourcemanager.network.models.CustomIpPrefixType;
 import com.azure.resourcemanager.network.models.Geo;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Custom IP prefix properties.
  */
 @Fluent
-public final class CustomIpPrefixPropertiesFormat {
+public final class CustomIpPrefixPropertiesFormat implements JsonSerializable<CustomIpPrefixPropertiesFormat> {
     /*
      * The ASN for CIDR advertising. Should be an integer as string.
      */
-    @JsonProperty(value = "asn")
     private String asn;
 
     /*
      * The prefix range in CIDR notation. Should include the start address and the prefix length.
      */
-    @JsonProperty(value = "cidr")
     private String cidr;
 
     /*
      * Signed message for WAN validation.
      */
-    @JsonProperty(value = "signedMessage")
     private String signedMessage;
 
     /*
      * Authorization message for WAN validation.
      */
-    @JsonProperty(value = "authorizationMessage")
     private String authorizationMessage;
 
     /*
      * The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
      */
-    @JsonProperty(value = "customIpPrefixParent")
     private SubResource customIpPrefixParent;
 
     /*
      * The list of all Children for IPv6 /48 CustomIpPrefix.
      */
-    @JsonProperty(value = "childCustomIpPrefixes", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> childCustomIpPrefixes;
 
     /*
      * The commissioned state of the Custom IP Prefix.
      */
-    @JsonProperty(value = "commissionedState")
     private CommissionedState commissionedState;
 
     /*
      * Whether to do express route advertise.
      */
-    @JsonProperty(value = "expressRouteAdvertise")
     private Boolean expressRouteAdvertise;
 
     /*
      * The Geo for CIDR advertising. Should be an Geo code.
      */
-    @JsonProperty(value = "geo")
     private Geo geo;
 
     /*
      * Whether to Advertise the range to Internet.
      */
-    @JsonProperty(value = "noInternetAdvertise")
     private Boolean noInternetAdvertise;
 
     /*
      * Type of custom IP prefix. Should be Singular, Parent, or Child.
      */
-    @JsonProperty(value = "prefixType")
     private CustomIpPrefixType prefixType;
 
     /*
      * The list of all referenced PublicIpPrefixes.
      */
-    @JsonProperty(value = "publicIpPrefixes", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> publicIpPrefixes;
 
     /*
      * The resource GUID property of the custom IP prefix resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The reason why resource is in failed state.
      */
-    @JsonProperty(value = "failedReason", access = JsonProperty.Access.WRITE_ONLY)
     private String failedReason;
 
     /*
      * The provisioning state of the custom IP prefix resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -117,7 +105,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the asn property: The ASN for CIDR advertising. Should be an integer as string.
-     *
+     * 
      * @return the asn value.
      */
     public String asn() {
@@ -126,7 +114,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the asn property: The ASN for CIDR advertising. Should be an integer as string.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -137,7 +125,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     *
+     * 
      * @return the cidr value.
      */
     public String cidr() {
@@ -146,7 +134,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     *
+     * 
      * @param cidr the cidr value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -157,7 +145,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the signedMessage property: Signed message for WAN validation.
-     *
+     * 
      * @return the signedMessage value.
      */
     public String signedMessage() {
@@ -166,7 +154,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the signedMessage property: Signed message for WAN validation.
-     *
+     * 
      * @param signedMessage the signedMessage value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -177,7 +165,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the authorizationMessage property: Authorization message for WAN validation.
-     *
+     * 
      * @return the authorizationMessage value.
      */
     public String authorizationMessage() {
@@ -186,7 +174,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the authorizationMessage property: Authorization message for WAN validation.
-     *
+     * 
      * @param authorizationMessage the authorizationMessage value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -197,7 +185,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
-     *
+     * 
      * @return the customIpPrefixParent value.
      */
     public SubResource customIpPrefixParent() {
@@ -206,7 +194,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
-     *
+     * 
      * @param customIpPrefixParent the customIpPrefixParent value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -217,7 +205,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the childCustomIpPrefixes property: The list of all Children for IPv6 /48 CustomIpPrefix.
-     *
+     * 
      * @return the childCustomIpPrefixes value.
      */
     public List<SubResource> childCustomIpPrefixes() {
@@ -226,7 +214,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the commissionedState property: The commissioned state of the Custom IP Prefix.
-     *
+     * 
      * @return the commissionedState value.
      */
     public CommissionedState commissionedState() {
@@ -235,7 +223,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the commissionedState property: The commissioned state of the Custom IP Prefix.
-     *
+     * 
      * @param commissionedState the commissionedState value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -246,7 +234,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the expressRouteAdvertise property: Whether to do express route advertise.
-     *
+     * 
      * @return the expressRouteAdvertise value.
      */
     public Boolean expressRouteAdvertise() {
@@ -255,7 +243,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the expressRouteAdvertise property: Whether to do express route advertise.
-     *
+     * 
      * @param expressRouteAdvertise the expressRouteAdvertise value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -266,7 +254,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the geo property: The Geo for CIDR advertising. Should be an Geo code.
-     *
+     * 
      * @return the geo value.
      */
     public Geo geo() {
@@ -275,7 +263,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the geo property: The Geo for CIDR advertising. Should be an Geo code.
-     *
+     * 
      * @param geo the geo value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -286,7 +274,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
-     *
+     * 
      * @return the noInternetAdvertise value.
      */
     public Boolean noInternetAdvertise() {
@@ -295,7 +283,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
-     *
+     * 
      * @param noInternetAdvertise the noInternetAdvertise value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -306,7 +294,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
-     *
+     * 
      * @return the prefixType value.
      */
     public CustomIpPrefixType prefixType() {
@@ -315,7 +303,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Set the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
-     *
+     * 
      * @param prefixType the prefixType value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.
      */
@@ -326,7 +314,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the publicIpPrefixes property: The list of all referenced PublicIpPrefixes.
-     *
+     * 
      * @return the publicIpPrefixes value.
      */
     public List<SubResource> publicIpPrefixes() {
@@ -335,7 +323,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the custom IP prefix resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -344,7 +332,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the failedReason property: The reason why resource is in failed state.
-     *
+     * 
      * @return the failedReason value.
      */
     public String failedReason() {
@@ -353,7 +341,7 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the custom IP prefix resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -362,9 +350,92 @@ public final class CustomIpPrefixPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("asn", this.asn);
+        jsonWriter.writeStringField("cidr", this.cidr);
+        jsonWriter.writeStringField("signedMessage", this.signedMessage);
+        jsonWriter.writeStringField("authorizationMessage", this.authorizationMessage);
+        jsonWriter.writeJsonField("customIpPrefixParent", this.customIpPrefixParent);
+        jsonWriter.writeStringField("commissionedState",
+            this.commissionedState == null ? null : this.commissionedState.toString());
+        jsonWriter.writeBooleanField("expressRouteAdvertise", this.expressRouteAdvertise);
+        jsonWriter.writeStringField("geo", this.geo == null ? null : this.geo.toString());
+        jsonWriter.writeBooleanField("noInternetAdvertise", this.noInternetAdvertise);
+        jsonWriter.writeStringField("prefixType", this.prefixType == null ? null : this.prefixType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomIpPrefixPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomIpPrefixPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomIpPrefixPropertiesFormat.
+     */
+    public static CustomIpPrefixPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomIpPrefixPropertiesFormat deserializedCustomIpPrefixPropertiesFormat
+                = new CustomIpPrefixPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("asn".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.asn = reader.getString();
+                } else if ("cidr".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.cidr = reader.getString();
+                } else if ("signedMessage".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.signedMessage = reader.getString();
+                } else if ("authorizationMessage".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.authorizationMessage = reader.getString();
+                } else if ("customIpPrefixParent".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.customIpPrefixParent = SubResource.fromJson(reader);
+                } else if ("childCustomIpPrefixes".equals(fieldName)) {
+                    List<SubResource> childCustomIpPrefixes
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedCustomIpPrefixPropertiesFormat.childCustomIpPrefixes = childCustomIpPrefixes;
+                } else if ("commissionedState".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.commissionedState
+                        = CommissionedState.fromString(reader.getString());
+                } else if ("expressRouteAdvertise".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.expressRouteAdvertise
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("geo".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.geo = Geo.fromString(reader.getString());
+                } else if ("noInternetAdvertise".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.noInternetAdvertise
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("prefixType".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.prefixType
+                        = CustomIpPrefixType.fromString(reader.getString());
+                } else if ("publicIpPrefixes".equals(fieldName)) {
+                    List<SubResource> publicIpPrefixes = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedCustomIpPrefixPropertiesFormat.publicIpPrefixes = publicIpPrefixes;
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("failedReason".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.failedReason = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomIpPrefixPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomIpPrefixPropertiesFormat;
+        });
     }
 }

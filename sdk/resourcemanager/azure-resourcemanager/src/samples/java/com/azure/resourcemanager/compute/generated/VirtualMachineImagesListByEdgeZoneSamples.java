@@ -20,8 +20,11 @@ public final class VirtualMachineImagesListByEdgeZoneSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListByEdgeZoneMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listByEdgeZoneWithResponse("WestUS",
-            "microsoftlosangeles1", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listByEdgeZoneWithResponse("WestUS", "microsoftlosangeles1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class VirtualMachineImagesListByEdgeZoneSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListByEdgeZoneMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listByEdgeZoneWithResponse("WestUS",
-            "microsoftlosangeles1", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listByEdgeZoneWithResponse("WestUS", "microsoftlosangeles1", com.azure.core.util.Context.NONE);
     }
 }

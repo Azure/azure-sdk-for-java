@@ -5,50 +5,48 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ProviderAuthorizationConsentState;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Resource provider information.
  */
 @Fluent
-public final class ProviderInner {
+public final class ProviderInner implements JsonSerializable<ProviderInner> {
     /*
      * The provider ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The namespace of the resource provider.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The registration state of the resource provider.
      */
-    @JsonProperty(value = "registrationState", access = JsonProperty.Access.WRITE_ONLY)
     private String registrationState;
 
     /*
      * The registration policy of the resource provider.
      */
-    @JsonProperty(value = "registrationPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private String registrationPolicy;
 
     /*
      * The collection of provider resource types.
      */
-    @JsonProperty(value = "resourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderResourceType> resourceTypes;
 
     /*
      * The provider authorization consent state.
      */
-    @JsonProperty(value = "providerAuthorizationConsentState")
     private ProviderAuthorizationConsentState providerAuthorizationConsentState;
 
     /**
@@ -143,5 +141,56 @@ public final class ProviderInner {
         if (resourceTypes() != null) {
             resourceTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("providerAuthorizationConsentState",
+            this.providerAuthorizationConsentState == null ? null : this.providerAuthorizationConsentState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderInner.
+     */
+    public static ProviderInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderInner deserializedProviderInner = new ProviderInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProviderInner.id = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedProviderInner.namespace = reader.getString();
+                } else if ("registrationState".equals(fieldName)) {
+                    deserializedProviderInner.registrationState = reader.getString();
+                } else if ("registrationPolicy".equals(fieldName)) {
+                    deserializedProviderInner.registrationPolicy = reader.getString();
+                } else if ("resourceTypes".equals(fieldName)) {
+                    List<ProviderResourceType> resourceTypes
+                        = reader.readArray(reader1 -> ProviderResourceType.fromJson(reader1));
+                    deserializedProviderInner.resourceTypes = resourceTypes;
+                } else if ("providerAuthorizationConsentState".equals(fieldName)) {
+                    deserializedProviderInner.providerAuthorizationConsentState
+                        = ProviderAuthorizationConsentState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderInner;
+        });
     }
 }

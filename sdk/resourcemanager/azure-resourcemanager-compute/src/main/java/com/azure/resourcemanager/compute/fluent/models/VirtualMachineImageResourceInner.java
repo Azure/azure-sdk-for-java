@@ -7,9 +7,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -20,13 +22,11 @@ public class VirtualMachineImageResourceInner extends SubResource {
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The supported Azure location of the resource.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
@@ -34,14 +34,11 @@ public class VirtualMachineImageResourceInner extends SubResource {
      * tags to organize your Azure
      * resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The extended location of the Virtual Machine.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /**
@@ -150,12 +147,14 @@ public class VirtualMachineImageResourceInner extends SubResource {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model VirtualMachineImageResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VirtualMachineImageResourceInner"));
         }
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model VirtualMachineImageResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model VirtualMachineImageResourceInner"));
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();
@@ -163,4 +162,55 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineImageResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineImageResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineImageResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineImageResourceInner.
+     */
+    public static VirtualMachineImageResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineImageResourceInner deserializedVirtualMachineImageResourceInner
+                = new VirtualMachineImageResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineImageResourceInner.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineImageResourceInner.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineImageResourceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineImageResourceInner.tags = tags;
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineImageResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineImageResourceInner;
+        });
+    }
 }

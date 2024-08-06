@@ -11,7 +11,7 @@ public final class DnsPrivateViewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewProperties model = BinaryData.fromString(
-            "{\"ocid\":\"moizpos\",\"displayName\":\"grcfb\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"fqjhhkxbpvjymj\",\"timeCreated\":\"2021-09-20T17:06:07Z\",\"timeUpdated\":\"2021-07-29T03:03:57Z\",\"provisioningState\":\"Succeeded\"}")
+            "{\"ocid\":\"gycdu\",\"displayName\":\"r\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"vaolpsslqlf\",\"timeCreated\":\"2021-06-04T22:42Z\",\"timeUpdated\":\"2021-07-12T23:59:17Z\",\"provisioningState\":\"Canceled\"}")
             .toObject(DnsPrivateViewProperties.class);
     }
 

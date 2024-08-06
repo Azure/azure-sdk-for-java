@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.TagsObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +13,12 @@ import java.util.Map;
  */
 public final class AzureFirewallsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AzureFirewallUpdateTags.json
      */
     /**
      * Sample code: Update Azure Firewall Tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAzureFirewallTags(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,50 +18,43 @@ import java.util.List;
  * Any changes to this section Will result in a new revision being created.
  */
 @Fluent
-public final class Template {
+public final class Template implements JsonSerializable<Template> {
     /*
      * User friendly suffix that is appended to the revision name
      */
-    @JsonProperty(value = "revisionSuffix")
     private String revisionSuffix;
 
     /*
-     * Optional duration in seconds the Container App Instance needs to terminate gracefully. Value must be
-     * non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut
-     * down). If this value is nil, the default grace period will be used instead. Set this value longer than the
-     * expected cleanup time for your process. Defaults to 30 seconds.
+     * Optional duration in seconds the Container App Instance needs to terminate gracefully. Value must be non-negative
+     * integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). If this
+     * value is nil, the default grace period will be used instead. Set this value longer than the expected cleanup time
+     * for your process. Defaults to 30 seconds.
      */
-    @JsonProperty(value = "terminationGracePeriodSeconds")
     private Long terminationGracePeriodSeconds;
 
     /*
      * List of specialized containers that run before app containers.
      */
-    @JsonProperty(value = "initContainers")
     private List<InitContainer> initContainers;
 
     /*
      * List of container definitions for the Container App.
      */
-    @JsonProperty(value = "containers")
     private List<Container> containers;
 
     /*
      * Scaling properties for the Container App.
      */
-    @JsonProperty(value = "scale")
     private Scale scale;
 
     /*
      * List of volume definitions for the Container App.
      */
-    @JsonProperty(value = "volumes")
     private List<Volume> volumes;
 
     /*
      * List of container app services bound to the app
      */
-    @JsonProperty(value = "serviceBinds")
     private List<ServiceBind> serviceBinds;
 
     /**
@@ -233,5 +230,64 @@ public final class Template {
         if (serviceBinds() != null) {
             serviceBinds().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("revisionSuffix", this.revisionSuffix);
+        jsonWriter.writeNumberField("terminationGracePeriodSeconds", this.terminationGracePeriodSeconds);
+        jsonWriter.writeArrayField("initContainers", this.initContainers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("containers", this.containers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("scale", this.scale);
+        jsonWriter.writeArrayField("volumes", this.volumes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceBinds", this.serviceBinds, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Template from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Template if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Template.
+     */
+    public static Template fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Template deserializedTemplate = new Template();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("revisionSuffix".equals(fieldName)) {
+                    deserializedTemplate.revisionSuffix = reader.getString();
+                } else if ("terminationGracePeriodSeconds".equals(fieldName)) {
+                    deserializedTemplate.terminationGracePeriodSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("initContainers".equals(fieldName)) {
+                    List<InitContainer> initContainers = reader.readArray(reader1 -> InitContainer.fromJson(reader1));
+                    deserializedTemplate.initContainers = initContainers;
+                } else if ("containers".equals(fieldName)) {
+                    List<Container> containers = reader.readArray(reader1 -> Container.fromJson(reader1));
+                    deserializedTemplate.containers = containers;
+                } else if ("scale".equals(fieldName)) {
+                    deserializedTemplate.scale = Scale.fromJson(reader);
+                } else if ("volumes".equals(fieldName)) {
+                    List<Volume> volumes = reader.readArray(reader1 -> Volume.fromJson(reader1));
+                    deserializedTemplate.volumes = volumes;
+                } else if ("serviceBinds".equals(fieldName)) {
+                    List<ServiceBind> serviceBinds = reader.readArray(reader1 -> ServiceBind.fromJson(reader1));
+                    deserializedTemplate.serviceBinds = serviceBinds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTemplate;
+        });
     }
 }

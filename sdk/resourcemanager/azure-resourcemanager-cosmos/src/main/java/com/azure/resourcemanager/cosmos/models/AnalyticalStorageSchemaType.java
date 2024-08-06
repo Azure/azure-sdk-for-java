@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AnalyticalStorageSchemaType extends ExpandableStringEnum<Anal
      * @param name a name to look for.
      * @return the corresponding AnalyticalStorageSchemaType.
      */
-    @JsonCreator
     public static AnalyticalStorageSchemaType fromString(String name) {
         return fromString(name, AnalyticalStorageSchemaType.class);
     }

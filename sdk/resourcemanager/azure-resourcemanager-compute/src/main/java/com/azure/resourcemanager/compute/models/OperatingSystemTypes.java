@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * This property allows you to specify the supported type of the OS that application is built for. Possible values are:
  * **Windows,** **Linux.**.
@@ -37,7 +34,6 @@ public enum OperatingSystemTypes {
      * @param value the serialized value to parse.
      * @return the parsed OperatingSystemTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static OperatingSystemTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -54,7 +50,6 @@ public enum OperatingSystemTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("integration")
 class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSenderAsyncClientIntegrationTest.class);
-    
+
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
     private final AtomicInteger messagesPending = new AtomicInteger();
@@ -93,7 +93,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, 0);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
@@ -111,7 +111,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
         int count = 4;
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
@@ -130,7 +130,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);
@@ -156,7 +156,6 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void viaQueueMessageSendTest() {
         // Arrange
-        final boolean useCredentials = false;
         final Duration shortTimeout = Duration.ofSeconds(15);
         final int viaIntermediateEntity = TestUtils.USE_CASE_TXN_1;
         final int destinationEntity = TestUtils.USE_CASE_TXN_2;
@@ -169,13 +168,13 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
         final String viaQueueName = getQueueName(viaIntermediateEntity);
 
-        setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
+        setSenderAndReceiver(entityType, viaIntermediateEntity);
 
-        final ServiceBusSenderAsyncClient destination1ViaSender = toClose(getSenderBuilder(useCredentials, entityType,
+        final ServiceBusSenderAsyncClient destination1ViaSender = toClose(getSenderBuilder(entityType,
             destinationEntity, false, shareConnection)
             //.viaQueueName(viaQueueName)
             .buildAsyncClient());
-        final ServiceBusReceiverAsyncClient destination1Receiver = toClose(getReceiverBuilder(useCredentials, entityType,
+        final ServiceBusReceiverAsyncClient destination1Receiver = toClose(getReceiverBuilder(entityType,
             destinationEntity, shareConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
@@ -245,7 +244,6 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void viaTopicMessageSendTest() {
         // Arrange
-        final boolean useCredentials = false;
         final Duration shortTimeout = Duration.ofSeconds(15);
         final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_1;
         final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_TOPIC_2;
@@ -258,16 +256,16 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
         final String viaTopicName = getTopicName(viaIntermediateEntity);
 
-        setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
+        setSenderAndReceiver(entityType, viaIntermediateEntity);
         final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
         final ServiceBusSenderAsyncClient intermediateSender = sender;
 
-        final ServiceBusSenderAsyncClient destination1ViaSender = toClose(getSenderBuilder(useCredentials, entityType,
+        final ServiceBusSenderAsyncClient destination1ViaSender = toClose(getSenderBuilder(entityType,
             destinationEntity, false, shareConnection)
             //.viaTopicName(viaTopicName)
             .buildAsyncClient());
 
-        final ServiceBusReceiverAsyncClient destination1Receiver = toClose(getReceiverBuilder(useCredentials, entityType,
+        final ServiceBusReceiverAsyncClient destination1Receiver = toClose(getReceiverBuilder(entityType,
             destinationEntity, shareConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
@@ -334,7 +332,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
         // Arrange
         Duration shortTimeout = Duration.ofSeconds(15);
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SEND_READ_BACK_MESSAGES, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SEND_READ_BACK_MESSAGES);
         final boolean isSessionEnabled = false;
         final String messageId = UUID.randomUUID().toString();
         final int total = 3;
@@ -393,7 +391,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, true);
+        setSenderAndReceiver(entityType, 0);
 
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId, CONTENTS_BYTES);
@@ -418,7 +416,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Arrange
         boolean isSessionEnabled = false;
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, 0);
         final Duration scheduleDuration = Duration.ofSeconds(3);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -464,7 +462,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final int total = 2;
         final Duration shortWait = Duration.ofSeconds(3);
 
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_MESSAGES, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_MESSAGES);
 
         final Duration scheduleDuration = Duration.ofSeconds(5);
         final String messageId = UUID.randomUUID().toString();
@@ -519,7 +517,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionEnabled = false;
         final Duration shortWaitTime = Duration.ofSeconds(5);
         final int total = 2;
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_CANCEL_MESSAGES, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_CANCEL_MESSAGES);
         final Duration scheduleDuration = Duration.ofSeconds(15);
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = new ArrayList<>();
@@ -544,13 +542,13 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials) {
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex) {
         final boolean isSessionAware = false;
         final boolean sharedConnection = true;
 
-        this.sender = toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
+        this.sender = toClose(getSenderBuilder(entityType, entityIndex, isSessionAware, sharedConnection)
             .buildAsyncClient());
-        this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
+        this.receiver = toClose(getReceiverBuilder(entityType, entityIndex, sharedConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
             .buildAsyncClient());

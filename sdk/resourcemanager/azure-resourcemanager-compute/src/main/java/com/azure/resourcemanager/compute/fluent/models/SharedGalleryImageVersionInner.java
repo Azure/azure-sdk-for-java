@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 import com.azure.resourcemanager.compute.models.SharedGalleryImageVersionStorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -19,8 +22,22 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
     /*
      * Describes the properties of a gallery image version.
      */
-    @JsonProperty(value = "properties")
     private SharedGalleryImageVersionProperties innerProperties;
+
+    /*
+     * Resource name
+     */
+    private String name;
+
+    /*
+     * Resource location
+     */
+    private String location;
+
+    /*
+     * The identifier information of shared gallery.
+     */
+    private SharedGalleryIdentifier innerIdentifier;
 
     /**
      * Creates an instance of SharedGalleryImageVersionInner class.
@@ -38,11 +55,54 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
      */
     @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the innerIdentifier property: The identifier information of shared gallery.
+     * 
+     * @return the innerIdentifier value.
+     */
+    private SharedGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
+    }
+
+    /**
+     * Get the uniqueId property: The unique id of this shared gallery.
+     * 
+     * @return the uniqueId value.
+     */
+    public String uniqueId() {
+        return this.innerIdentifier() == null ? null : this.innerIdentifier().uniqueId();
+    }
+
+    /**
+     * Set the uniqueId property: The unique id of this shared gallery.
+     * 
+     * @param uniqueId the uniqueId value to set.
+     * @return the SharedGalleryImageVersionInner object itself.
+     */
     public SharedGalleryImageVersionInner withUniqueId(String uniqueId) {
-        super.withUniqueId(uniqueId);
+        if (this.innerIdentifier() == null) {
+            this.innerIdentifier = new SharedGalleryIdentifier();
+        }
+        this.innerIdentifier().withUniqueId(uniqueId);
         return this;
     }
 
@@ -178,5 +238,51 @@ public final class SharedGalleryImageVersionInner extends PirSharedGalleryResour
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identifier", innerIdentifier());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedGalleryImageVersionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedGalleryImageVersionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedGalleryImageVersionInner.
+     */
+    public static SharedGalleryImageVersionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedGalleryImageVersionInner deserializedSharedGalleryImageVersionInner
+                = new SharedGalleryImageVersionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSharedGalleryImageVersionInner.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSharedGalleryImageVersionInner.location = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedSharedGalleryImageVersionInner.innerIdentifier
+                        = SharedGalleryIdentifier.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSharedGalleryImageVersionInner.innerProperties
+                        = SharedGalleryImageVersionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedGalleryImageVersionInner;
+        });
     }
 }

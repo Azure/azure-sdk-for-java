@@ -29,13 +29,17 @@ public final class ImagesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVirtualMachineImageFromASnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(new ImageStorageProfile()
-                .withOsDisk(new ImageOSDisk().withSnapshot(new SubResource().withId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))
-                .withZoneResilient(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withStorageProfile(new ImageStorageProfile().withOsDisk(new ImageOSDisk()
+                    .withSnapshot(new SubResource().withId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
+                    .withOsType(OperatingSystemTypes.LINUX)
+                    .withOsState(OperatingSystemStateTypes.GENERALIZED)).withZoneResilient(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -50,13 +54,17 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void
         createAVirtualMachineImageFromAManagedDisk(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(new ImageStorageProfile()
-                .withOsDisk(new ImageOSDisk().withManagedDisk(new SubResource().withId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))
-                .withZoneResilient(true)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withStorageProfile(new ImageStorageProfile().withOsDisk(new ImageOSDisk()
+                    .withManagedDisk(new SubResource().withId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
+                    .withOsType(OperatingSystemTypes.LINUX)
+                    .withOsState(OperatingSystemStateTypes.GENERALIZED)).withZoneResilient(true)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -71,14 +79,18 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void createAVirtualMachineImageFromABlobWithDiskEncryptionSetResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US")
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
                 .withStorageProfile(new ImageStorageProfile().withOsDisk(new ImageOSDisk()
                     .withBlobUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")
                     .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))),
-            com.azure.core.util.Context.NONE);
+                    .withOsType(OperatingSystemTypes.LINUX)
+                    .withOsState(OperatingSystemStateTypes.GENERALIZED))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -93,14 +105,19 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void createAVirtualMachineImageFromAManagedDiskWithDiskEncryptionSetResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(
-                new ImageStorageProfile().withOsDisk(new ImageOSDisk().withSnapshot(new SubResource().withId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withStorageProfile(new ImageStorageProfile().withOsDisk(new ImageOSDisk()
+                    .withSnapshot(new SubResource().withId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
                     .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))),
-            com.azure.core.util.Context.NONE);
+                    .withOsType(OperatingSystemTypes.LINUX)
+                    .withOsState(OperatingSystemStateTypes.GENERALIZED))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -115,15 +132,22 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void
         createAVirtualMachineImageThatIncludesADataDiskFromABlob(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(new ImageStorageProfile()
-                .withOsDisk(
-                    new ImageOSDisk().withBlobUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")
-                        .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))
-                .withDataDisks(Arrays.asList(new ImageDataDisk()
-                    .withBlobUri("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd").withLun(1)))
-                .withZoneResilient(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage",
+                new ImageInner().withLocation("West US")
+                    .withStorageProfile(new ImageStorageProfile()
+                        .withOsDisk(new ImageOSDisk()
+                            .withBlobUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")
+                            .withOsType(OperatingSystemTypes.LINUX)
+                            .withOsState(OperatingSystemStateTypes.GENERALIZED))
+                        .withDataDisks(Arrays.asList(new ImageDataDisk()
+                            .withBlobUri("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd")
+                            .withLun(1)))
+                        .withZoneResilient(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -138,14 +162,19 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void createAVirtualMachineImageFromASnapshotWithDiskEncryptionSetResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(
-                new ImageStorageProfile().withOsDisk(new ImageOSDisk().withManagedDisk(new SubResource().withId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withStorageProfile(new ImageStorageProfile().withOsDisk(new ImageOSDisk()
+                    .withManagedDisk(new SubResource().withId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
                     .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(
                         "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))),
-            com.azure.core.util.Context.NONE);
+                    .withOsType(OperatingSystemTypes.LINUX)
+                    .withOsState(OperatingSystemStateTypes.GENERALIZED))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -160,16 +189,21 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void createAVirtualMachineImageThatIncludesADataDiskFromASnapshot(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(new ImageStorageProfile()
-                .withOsDisk(new ImageOSDisk().withSnapshot(new SubResource().withId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))
-                .withDataDisks(Arrays.asList(new ImageDataDisk().withSnapshot(new SubResource().withId(
-                    "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"))
-                    .withLun(1)))
-                .withZoneResilient(true)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withStorageProfile(new ImageStorageProfile()
+                    .withOsDisk(new ImageOSDisk().withSnapshot(new SubResource().withId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
+                        .withOsType(OperatingSystemTypes.LINUX)
+                        .withOsState(OperatingSystemStateTypes.GENERALIZED))
+                    .withDataDisks(Arrays.asList(new ImageDataDisk().withSnapshot(new SubResource().withId(
+                        "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"))
+                        .withLun(1)))
+                    .withZoneResilient(true)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -183,13 +217,17 @@ public final class ImagesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVirtualMachineImageFromABlob(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(new ImageStorageProfile()
-                .withOsDisk(
-                    new ImageOSDisk().withBlobUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")
-                        .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))
-                .withZoneResilient(true)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage",
+                new ImageInner().withLocation("West US")
+                    .withStorageProfile(new ImageStorageProfile().withOsDisk(new ImageOSDisk()
+                        .withBlobUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")
+                        .withOsType(OperatingSystemTypes.LINUX)
+                        .withOsState(OperatingSystemStateTypes.GENERALIZED)).withZoneResilient(true)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -204,10 +242,14 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void
         createAVirtualMachineImageFromAnExistingVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withSourceVirtualMachine(new SubResource().withId(
-                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withSourceVirtualMachine(new SubResource().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -222,15 +264,20 @@ public final class ImagesCreateOrUpdateSamples {
      */
     public static void createAVirtualMachineImageThatIncludesADataDiskFromAManagedDisk(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().createOrUpdate("myResourceGroup", "myImage",
-            new ImageInner().withLocation("West US").withStorageProfile(new ImageStorageProfile()
-                .withOsDisk(new ImageOSDisk().withManagedDisk(new SubResource().withId(
-                    "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
-                    .withOsType(OperatingSystemTypes.LINUX).withOsState(OperatingSystemStateTypes.GENERALIZED))
-                .withDataDisks(Arrays.asList(new ImageDataDisk().withManagedDisk(new SubResource().withId(
-                    "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"))
-                    .withLun(1)))
-                .withZoneResilient(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .createOrUpdate("myResourceGroup", "myImage", new ImageInner().withLocation("West US")
+                .withStorageProfile(new ImageStorageProfile()
+                    .withOsDisk(new ImageOSDisk().withManagedDisk(new SubResource().withId(
+                        "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
+                        .withOsType(OperatingSystemTypes.LINUX)
+                        .withOsState(OperatingSystemStateTypes.GENERALIZED))
+                    .withDataDisks(Arrays.asList(new ImageDataDisk().withManagedDisk(new SubResource().withId(
+                        "subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"))
+                        .withLun(1)))
+                    .withZoneResilient(false)),
+                com.azure.core.util.Context.NONE);
     }
 }
