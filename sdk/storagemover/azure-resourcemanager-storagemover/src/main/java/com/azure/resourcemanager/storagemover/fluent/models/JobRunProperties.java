@@ -12,7 +12,9 @@ import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Job run properties. */
+/**
+ * Job run properties.
+ */
 @Immutable
 public final class JobRunProperties {
     /*
@@ -183,13 +185,15 @@ public final class JobRunProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of JobRunProperties class. */
+    /**
+     * Creates an instance of JobRunProperties class.
+     */
     public JobRunProperties() {
     }
 
     /**
      * Get the status property: The state of the job execution.
-     *
+     * 
      * @return the status value.
      */
     public JobRunStatus status() {
@@ -198,7 +202,7 @@ public final class JobRunProperties {
 
     /**
      * Get the scanStatus property: The status of Agent's scanning of source.
-     *
+     * 
      * @return the scanStatus value.
      */
     public JobRunScanStatus scanStatus() {
@@ -207,7 +211,7 @@ public final class JobRunProperties {
 
     /**
      * Get the agentName property: Name of the Agent assigned to this run.
-     *
+     * 
      * @return the agentName value.
      */
     public String agentName() {
@@ -216,7 +220,7 @@ public final class JobRunProperties {
 
     /**
      * Get the agentResourceId property: Fully qualified resource id of the Agent assigned to this run.
-     *
+     * 
      * @return the agentResourceId value.
      */
     public String agentResourceId() {
@@ -225,7 +229,7 @@ public final class JobRunProperties {
 
     /**
      * Get the executionStartTime property: Start time of the run. Null if no Agent reported that the job has started.
-     *
+     * 
      * @return the executionStartTime value.
      */
     public OffsetDateTime executionStartTime() {
@@ -234,7 +238,7 @@ public final class JobRunProperties {
 
     /**
      * Get the executionEndTime property: End time of the run. Null if Agent has not reported that the job has ended.
-     *
+     * 
      * @return the executionEndTime value.
      */
     public OffsetDateTime executionEndTime() {
@@ -243,7 +247,7 @@ public final class JobRunProperties {
 
     /**
      * Get the lastStatusUpdate property: The last updated time of the Job Run.
-     *
+     * 
      * @return the lastStatusUpdate value.
      */
     public OffsetDateTime lastStatusUpdate() {
@@ -252,7 +256,7 @@ public final class JobRunProperties {
 
     /**
      * Get the itemsScanned property: Number of items scanned so far in source.
-     *
+     * 
      * @return the itemsScanned value.
      */
     public Long itemsScanned() {
@@ -262,7 +266,7 @@ public final class JobRunProperties {
     /**
      * Get the itemsExcluded property: Number of items that will not be transferred, as they are excluded by user
      * configuration.
-     *
+     * 
      * @return the itemsExcluded value.
      */
     public Long itemsExcluded() {
@@ -272,7 +276,7 @@ public final class JobRunProperties {
     /**
      * Get the itemsUnsupported property: Number of items that will not be transferred, as they are unsupported on
      * target.
-     *
+     * 
      * @return the itemsUnsupported value.
      */
     public Long itemsUnsupported() {
@@ -282,7 +286,7 @@ public final class JobRunProperties {
     /**
      * Get the itemsNoTransferNeeded property: Number of items that will not be transferred, as they are already found
      * on target (e.g. mirror mode).
-     *
+     * 
      * @return the itemsNoTransferNeeded value.
      */
     public Long itemsNoTransferNeeded() {
@@ -291,7 +295,7 @@ public final class JobRunProperties {
 
     /**
      * Get the itemsFailed property: Number of items that were attempted to transfer and failed.
-     *
+     * 
      * @return the itemsFailed value.
      */
     public Long itemsFailed() {
@@ -300,7 +304,7 @@ public final class JobRunProperties {
 
     /**
      * Get the itemsTransferred property: Number of items successfully transferred to target.
-     *
+     * 
      * @return the itemsTransferred value.
      */
     public Long itemsTransferred() {
@@ -309,7 +313,7 @@ public final class JobRunProperties {
 
     /**
      * Get the bytesScanned property: Bytes of data scanned so far in source.
-     *
+     * 
      * @return the bytesScanned value.
      */
     public Long bytesScanned() {
@@ -319,7 +323,7 @@ public final class JobRunProperties {
     /**
      * Get the bytesExcluded property: Bytes of data that will not be transferred, as they are excluded by user
      * configuration.
-     *
+     * 
      * @return the bytesExcluded value.
      */
     public Long bytesExcluded() {
@@ -328,7 +332,7 @@ public final class JobRunProperties {
 
     /**
      * Get the bytesUnsupported property: Bytes of data that will not be transferred, as they are unsupported on target.
-     *
+     * 
      * @return the bytesUnsupported value.
      */
     public Long bytesUnsupported() {
@@ -338,7 +342,7 @@ public final class JobRunProperties {
     /**
      * Get the bytesNoTransferNeeded property: Bytes of data that will not be transferred, as they are already found on
      * target (e.g. mirror mode).
-     *
+     * 
      * @return the bytesNoTransferNeeded value.
      */
     public Long bytesNoTransferNeeded() {
@@ -347,7 +351,7 @@ public final class JobRunProperties {
 
     /**
      * Get the bytesFailed property: Bytes of data that were attempted to transfer and failed.
-     *
+     * 
      * @return the bytesFailed value.
      */
     public Long bytesFailed() {
@@ -356,7 +360,7 @@ public final class JobRunProperties {
 
     /**
      * Get the bytesTransferred property: Bytes of data successfully transferred to target.
-     *
+     * 
      * @return the bytesTransferred value.
      */
     public Long bytesTransferred() {
@@ -365,7 +369,7 @@ public final class JobRunProperties {
 
     /**
      * Get the sourceName property: Name of source Endpoint resource. This resource may no longer exist.
-     *
+     * 
      * @return the sourceName value.
      */
     public String sourceName() {
@@ -374,7 +378,7 @@ public final class JobRunProperties {
 
     /**
      * Get the sourceResourceId property: Fully qualified resource id of source Endpoint. This id may no longer exist.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -383,7 +387,7 @@ public final class JobRunProperties {
 
     /**
      * Get the sourceProperties property: Copy of source Endpoint resource's properties at time of Job Run creation.
-     *
+     * 
      * @return the sourceProperties value.
      */
     public Object sourceProperties() {
@@ -392,7 +396,7 @@ public final class JobRunProperties {
 
     /**
      * Get the targetName property: Name of target Endpoint resource. This resource may no longer exist.
-     *
+     * 
      * @return the targetName value.
      */
     public String targetName() {
@@ -401,7 +405,7 @@ public final class JobRunProperties {
 
     /**
      * Get the targetResourceId property: Fully qualified resource id of of Endpoint. This id may no longer exist.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -410,7 +414,7 @@ public final class JobRunProperties {
 
     /**
      * Get the targetProperties property: Copy of Endpoint resource's properties at time of Job Run creation.
-     *
+     * 
      * @return the targetProperties value.
      */
     public Object targetProperties() {
@@ -419,7 +423,7 @@ public final class JobRunProperties {
 
     /**
      * Get the jobDefinitionProperties property: Copy of parent Job Definition's properties at time of Job Run creation.
-     *
+     * 
      * @return the jobDefinitionProperties value.
      */
     public Object jobDefinitionProperties() {
@@ -428,7 +432,7 @@ public final class JobRunProperties {
 
     /**
      * Get the error property: Error details.
-     *
+     * 
      * @return the error value.
      */
     public JobRunError error() {
@@ -437,7 +441,7 @@ public final class JobRunProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -446,7 +450,7 @@ public final class JobRunProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

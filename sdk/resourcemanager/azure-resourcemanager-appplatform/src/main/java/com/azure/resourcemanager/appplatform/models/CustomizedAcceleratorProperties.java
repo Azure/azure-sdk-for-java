@@ -6,60 +6,56 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Customized accelerator properties payload.
  */
 @Fluent
-public final class CustomizedAcceleratorProperties {
+public final class CustomizedAcceleratorProperties implements JsonSerializable<CustomizedAcceleratorProperties> {
     /*
      * State of the customized accelerator.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomizedAcceleratorProvisioningState provisioningState;
 
     /*
      * Type of the customized accelerator.
      */
-    @JsonProperty(value = "acceleratorType")
     private CustomizedAcceleratorType acceleratorType;
 
     /*
      * The displayName property.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description property.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The iconUrl property.
      */
-    @JsonProperty(value = "iconUrl")
     private String iconUrl;
 
     /*
      * The acceleratorTags property.
      */
-    @JsonProperty(value = "acceleratorTags")
     private List<String> acceleratorTags;
 
     /*
      * Imports references all imports that this accelerator/fragment depends upon.
      */
-    @JsonProperty(value = "imports", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> imports;
 
     /*
      * The gitRepository property.
      */
-    @JsonProperty(value = "gitRepository", required = true)
     private AcceleratorGitRepository gitRepository;
 
     /**
@@ -213,12 +209,77 @@ public final class CustomizedAcceleratorProperties {
      */
     public void validate() {
         if (gitRepository() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property gitRepository in model CustomizedAcceleratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property gitRepository in model CustomizedAcceleratorProperties"));
         } else {
             gitRepository().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomizedAcceleratorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gitRepository", this.gitRepository);
+        jsonWriter.writeStringField("acceleratorType",
+            this.acceleratorType == null ? null : this.acceleratorType.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("iconUrl", this.iconUrl);
+        jsonWriter.writeArrayField("acceleratorTags", this.acceleratorTags,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizedAcceleratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizedAcceleratorProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomizedAcceleratorProperties.
+     */
+    public static CustomizedAcceleratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizedAcceleratorProperties deserializedCustomizedAcceleratorProperties
+                = new CustomizedAcceleratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitRepository".equals(fieldName)) {
+                    deserializedCustomizedAcceleratorProperties.gitRepository
+                        = AcceleratorGitRepository.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomizedAcceleratorProperties.provisioningState
+                        = CustomizedAcceleratorProvisioningState.fromString(reader.getString());
+                } else if ("acceleratorType".equals(fieldName)) {
+                    deserializedCustomizedAcceleratorProperties.acceleratorType
+                        = CustomizedAcceleratorType.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCustomizedAcceleratorProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCustomizedAcceleratorProperties.description = reader.getString();
+                } else if ("iconUrl".equals(fieldName)) {
+                    deserializedCustomizedAcceleratorProperties.iconUrl = reader.getString();
+                } else if ("acceleratorTags".equals(fieldName)) {
+                    List<String> acceleratorTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomizedAcceleratorProperties.acceleratorTags = acceleratorTags;
+                } else if ("imports".equals(fieldName)) {
+                    List<String> imports = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomizedAcceleratorProperties.imports = imports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizedAcceleratorProperties;
+        });
+    }
 }

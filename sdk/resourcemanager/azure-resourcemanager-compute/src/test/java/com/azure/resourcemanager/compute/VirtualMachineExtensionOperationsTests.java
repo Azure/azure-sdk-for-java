@@ -7,12 +7,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +70,12 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         final InputStream embeddedJsonConfig =
             VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/linux_diagnostics_public_config.json");
-        String jsonConfig = ((new ObjectMapper()).readTree(embeddedJsonConfig)).toString();
+        String jsonConfig = SerializerFactory.createDefaultManagementSerializerAdapter()
+            .serialize(
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(embeddedJsonConfig, Object.class, SerializerEncoding.JSON),
+                SerializerEncoding.JSON
+            );
         jsonConfig = jsonConfig.replace("%VirtualMachineResourceId%", vm.id());
 
         // Update Linux VM to enable Diagnostics

@@ -6,8 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAgentPoolProfileProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +20,25 @@ import java.util.Map;
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
-     * 
      * Windows agent pool names must be 6 characters or less.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
+
+    /*
+     * If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it.
+     * If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used.
+     */
+    private String currentOrchestratorVersion;
+
+    /*
+     * The version of node image
+     */
+    private String nodeImageVersion;
+
+    /*
+     * The current deployment or provisioning state.
+     */
+    private String provisioningState;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfile class.
@@ -31,10 +47,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
-     * 
-     * Windows agent pool names must be 6 characters or less.
+     * Get the name property: Windows agent pool names must be 6 characters or less.
      * 
      * @return the name value.
      */
@@ -43,10 +56,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
-     * 
-     * Windows agent pool names must be 6 characters or less.
+     * Set the name property: Windows agent pool names must be 6 characters or less.
      * 
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -54,6 +64,38 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     public ManagedClusterAgentPoolProfile withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the currentOrchestratorVersion property: If orchestratorVersion is a fully specified version
+     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If orchestratorVersion is &lt;major.minor&gt;,
+     * this field will contain the full &lt;major.minor.patch&gt; version being used.
+     * 
+     * @return the currentOrchestratorVersion value.
+     */
+    @Override
+    public String currentOrchestratorVersion() {
+        return this.currentOrchestratorVersion;
+    }
+
+    /**
+     * Get the nodeImageVersion property: The version of node image.
+     * 
+     * @return the nodeImageVersion value.
+     */
+    @Override
+    public String nodeImageVersion() {
+        return this.nodeImageVersion;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -434,10 +476,202 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ManagedClusterAgentPoolProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ManagedClusterAgentPoolProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", count());
+        jsonWriter.writeStringField("vmSize", vmSize());
+        jsonWriter.writeNumberField("osDiskSizeGB", osDiskSizeGB());
+        jsonWriter.writeStringField("osDiskType", osDiskType() == null ? null : osDiskType().toString());
+        jsonWriter.writeStringField("kubeletDiskType", kubeletDiskType() == null ? null : kubeletDiskType().toString());
+        jsonWriter.writeStringField("workloadRuntime", workloadRuntime() == null ? null : workloadRuntime().toString());
+        jsonWriter.writeStringField("vnetSubnetID", vnetSubnetId());
+        jsonWriter.writeStringField("podSubnetID", podSubnetId());
+        jsonWriter.writeNumberField("maxPods", maxPods());
+        jsonWriter.writeStringField("osType", osType() == null ? null : osType().toString());
+        jsonWriter.writeStringField("osSKU", osSku() == null ? null : osSku().toString());
+        jsonWriter.writeNumberField("maxCount", maxCount());
+        jsonWriter.writeNumberField("minCount", minCount());
+        jsonWriter.writeBooleanField("enableAutoScaling", enableAutoScaling());
+        jsonWriter.writeStringField("scaleDownMode", scaleDownMode() == null ? null : scaleDownMode().toString());
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
+        jsonWriter.writeStringField("orchestratorVersion", orchestratorVersion());
+        jsonWriter.writeJsonField("upgradeSettings", upgradeSettings());
+        jsonWriter.writeJsonField("powerState", powerState());
+        jsonWriter.writeArrayField("availabilityZones", availabilityZones(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("enableNodePublicIP", enableNodePublicIp());
+        jsonWriter.writeStringField("nodePublicIPPrefixID", nodePublicIpPrefixId());
+        jsonWriter.writeStringField("scaleSetPriority",
+            scaleSetPriority() == null ? null : scaleSetPriority().toString());
+        jsonWriter.writeStringField("scaleSetEvictionPolicy",
+            scaleSetEvictionPolicy() == null ? null : scaleSetEvictionPolicy().toString());
+        jsonWriter.writeNumberField("spotMaxPrice", spotMaxPrice());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("nodeLabels", nodeLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeTaints", nodeTaints(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("proximityPlacementGroupID", proximityPlacementGroupId());
+        jsonWriter.writeJsonField("kubeletConfig", kubeletConfig());
+        jsonWriter.writeJsonField("linuxOSConfig", linuxOSConfig());
+        jsonWriter.writeBooleanField("enableEncryptionAtHost", enableEncryptionAtHost());
+        jsonWriter.writeBooleanField("enableUltraSSD", enableUltraSsd());
+        jsonWriter.writeBooleanField("enableFIPS", enableFips());
+        jsonWriter.writeStringField("gpuInstanceProfile",
+            gpuInstanceProfile() == null ? null : gpuInstanceProfile().toString());
+        jsonWriter.writeJsonField("creationData", creationData());
+        jsonWriter.writeStringField("capacityReservationGroupID", capacityReservationGroupId());
+        jsonWriter.writeStringField("hostGroupID", hostGroupId());
+        jsonWriter.writeJsonField("networkProfile", networkProfile());
+        jsonWriter.writeJsonField("windowsProfile", windowsProfile());
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterAgentPoolProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterAgentPoolProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterAgentPoolProfile.
+     */
+    public static ManagedClusterAgentPoolProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterAgentPoolProfile deserializedManagedClusterAgentPoolProfile
+                = new ManagedClusterAgentPoolProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withCount(reader.getNullable(JsonReader::getInt));
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withVmSize(reader.getString());
+                } else if ("osDiskSizeGB".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withOsDiskSizeGB(reader.getNullable(JsonReader::getInt));
+                } else if ("osDiskType".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withOsDiskType(OSDiskType.fromString(reader.getString()));
+                } else if ("kubeletDiskType".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withKubeletDiskType(KubeletDiskType.fromString(reader.getString()));
+                } else if ("workloadRuntime".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withWorkloadRuntime(WorkloadRuntime.fromString(reader.getString()));
+                } else if ("vnetSubnetID".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withVnetSubnetId(reader.getString());
+                } else if ("podSubnetID".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withPodSubnetId(reader.getString());
+                } else if ("maxPods".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withMaxPods(reader.getNullable(JsonReader::getInt));
+                } else if ("osType".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withOsType(OSType.fromString(reader.getString()));
+                } else if ("osSKU".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withOsSku(OSSku.fromString(reader.getString()));
+                } else if ("maxCount".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withMaxCount(reader.getNullable(JsonReader::getInt));
+                } else if ("minCount".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withMinCount(reader.getNullable(JsonReader::getInt));
+                } else if ("enableAutoScaling".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withEnableAutoScaling(reader.getNullable(JsonReader::getBoolean));
+                } else if ("scaleDownMode".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withScaleDownMode(ScaleDownMode.fromString(reader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withType(AgentPoolType.fromString(reader.getString()));
+                } else if ("mode".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withMode(AgentPoolMode.fromString(reader.getString()));
+                } else if ("orchestratorVersion".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withOrchestratorVersion(reader.getString());
+                } else if ("currentOrchestratorVersion".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.currentOrchestratorVersion = reader.getString();
+                } else if ("nodeImageVersion".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.nodeImageVersion = reader.getString();
+                } else if ("upgradeSettings".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withUpgradeSettings(AgentPoolUpgradeSettings.fromJson(reader));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.provisioningState = reader.getString();
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withPowerState(PowerState.fromJson(reader));
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterAgentPoolProfile.withAvailabilityZones(availabilityZones);
+                } else if ("enableNodePublicIP".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withEnableNodePublicIp(reader.getNullable(JsonReader::getBoolean));
+                } else if ("nodePublicIPPrefixID".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withNodePublicIpPrefixId(reader.getString());
+                } else if ("scaleSetPriority".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withScaleSetPriority(ScaleSetPriority.fromString(reader.getString()));
+                } else if ("scaleSetEvictionPolicy".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withScaleSetEvictionPolicy(ScaleSetEvictionPolicy.fromString(reader.getString()));
+                } else if ("spotMaxPrice".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withSpotMaxPrice(reader.getNullable(JsonReader::getFloat));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedClusterAgentPoolProfile.withTags(tags);
+                } else if ("nodeLabels".equals(fieldName)) {
+                    Map<String, String> nodeLabels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedClusterAgentPoolProfile.withNodeLabels(nodeLabels);
+                } else if ("nodeTaints".equals(fieldName)) {
+                    List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterAgentPoolProfile.withNodeTaints(nodeTaints);
+                } else if ("proximityPlacementGroupID".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withProximityPlacementGroupId(reader.getString());
+                } else if ("kubeletConfig".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withKubeletConfig(KubeletConfig.fromJson(reader));
+                } else if ("linuxOSConfig".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withLinuxOSConfig(LinuxOSConfig.fromJson(reader));
+                } else if ("enableEncryptionAtHost".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withEnableEncryptionAtHost(reader.getNullable(JsonReader::getBoolean));
+                } else if ("enableUltraSSD".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withEnableUltraSsd(reader.getNullable(JsonReader::getBoolean));
+                } else if ("enableFIPS".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withEnableFips(reader.getNullable(JsonReader::getBoolean));
+                } else if ("gpuInstanceProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withGpuInstanceProfile(GpuInstanceProfile.fromString(reader.getString()));
+                } else if ("creationData".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withCreationData(CreationData.fromJson(reader));
+                } else if ("capacityReservationGroupID".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withCapacityReservationGroupId(reader.getString());
+                } else if ("hostGroupID".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withHostGroupId(reader.getString());
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withNetworkProfile(AgentPoolNetworkProfile.fromJson(reader));
+                } else if ("windowsProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withWindowsProfile(AgentPoolWindowsProfile.fromJson(reader));
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterAgentPoolProfile;
+        });
+    }
 }

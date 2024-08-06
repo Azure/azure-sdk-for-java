@@ -21,7 +21,8 @@ public final class BillingMeterPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingMeterProperties model = new BillingMeterProperties().withCategory("fkbey").withMeterType("wrmjmwvvjektc")
+        BillingMeterProperties model = new BillingMeterProperties().withCategory("fkbey")
+            .withMeterType("wrmjmwvvjektc")
             .withDisplayName("enhwlrs");
         model = BinaryData.fromObject(model).toObject(BillingMeterProperties.class);
         Assertions.assertEquals("fkbey", model.category());

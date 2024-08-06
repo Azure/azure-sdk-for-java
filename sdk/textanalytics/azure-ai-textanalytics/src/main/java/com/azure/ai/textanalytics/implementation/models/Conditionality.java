@@ -4,15 +4,23 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-/** Describes any conditionality on the entity. */
+/**
+ * Describes any conditionality on the entity.
+ */
 public enum Conditionality {
-    /** Enum value hypothetical. */
+    /**
+     * Enum value hypothetical.
+     */
     HYPOTHETICAL("hypothetical"),
 
-    /** Enum value conditional. */
+    /**
+     * Enum value conditional.
+     */
     CONDITIONAL("conditional");
 
-    /** The actual serialized value for a Conditionality instance. */
+    /**
+     * The actual serialized value for a Conditionality instance.
+     */
     private final String value;
 
     Conditionality(String value) {
@@ -21,7 +29,7 @@ public enum Conditionality {
 
     /**
      * Parses a serialized value to a Conditionality instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Conditionality object, or null if unable to parse.
      */
@@ -38,7 +46,9 @@ public enum Conditionality {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

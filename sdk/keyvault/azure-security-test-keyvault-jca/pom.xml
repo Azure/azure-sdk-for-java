@@ -25,7 +25,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-jca</artifactId>
-      <version>2.9.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+      <version>2.9.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     </dependency>
 
     <!-- Apache HttpClient -->
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -20,6 +20,9 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -63,6 +66,8 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -253,7 +258,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert response != null;
-        return toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(response.getItem(), transientFieldValuesMap));
+        return toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
+            response.getItem(), transientFieldValuesMap));
     }
 
     /**
@@ -270,6 +276,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(entities, "entities to be inserted should not be null");
         String containerName = information.getContainerName();
         Class<T> domainType = information.getJavaType();
+
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         Map<String, Map<Field, Object>> mapOfTransientFieldValuesMaps = new HashMap<>();
         entities.forEach(entity -> {
@@ -284,7 +291,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             } else {
                 originalItem = mappingCosmosConverter.writeJsonNode(entity);
             }
-            PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
+            PartitionKey partitionKey = getPartitionKeyFromValue(information, entity);
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
@@ -510,6 +517,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(object, "Upsert object should not be null");
         containerName = getContainerName(object.getClass());
         markAuditedIfConfigured(object);
+
         List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
         Map<Field, Object> transientFieldValuesMap = new HashMap<>();
         JsonNode originalItem;
@@ -542,7 +550,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert cosmosItemResponse != null;
-        return toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(cosmosItemResponse.getItem(), transientFieldValuesMap));
+        return toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
+            cosmosItemResponse.getItem(), transientFieldValuesMap));
     }
 
     /**
@@ -669,8 +678,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
 
-                final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), information.getPartitionKeyPath());
+                final CosmosContainerProperties cosmosContainerProperties = getCosmosContainerPropertiesWithPartitionKeyPath(information);
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
                 final UniqueKeyPolicy uniqueKeyPolicy = information.getUniqueKeyPolicy();
@@ -794,7 +802,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(String.valueOf(information.getId(entity)),
-                new PartitionKey(information.getPartitionKeyFieldValue(entity)), options));
+                getPartitionKeyFromValue(information, entity), options));
         });
 
         // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
@@ -921,7 +929,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
                 applyBulkVersioning(domainType, item, options);
                 return CosmosBulkOperations.getDeleteItemOperation(idString,
-                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)), options);
+                    getPartitionKeyFromValue(entityInfo, object), options);
             });
 
             // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
@@ -1310,6 +1318,41 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T, ?> information, S entity) {
+        Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
+        PartitionKey partitionKey;
+        if (pkFieldValue instanceof Collection<?>) {
+            ArrayList<Object> valueArray = ((ArrayList<Object>) pkFieldValue);
+            Object[] objectArray = new Object[valueArray.size()];
+            for (int i = 0; i < valueArray.size(); i++) {
+                objectArray[i] = valueArray.get(i);
+            }
+            partitionKey = PartitionKey.fromObjectArray(objectArray, false);
+        } else {
+            partitionKey = new PartitionKey(pkFieldValue);
+        }
+        return partitionKey;
+    }
+
+    private <T> CosmosContainerProperties getCosmosContainerPropertiesWithPartitionKeyPath(CosmosEntityInformation<T, ?> information) {
+        String pkPath = information.getPartitionKeyPath();
+        if (pkPath.contains(",")) {
+            PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+            partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+            partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+            ArrayList<String> pkDefPaths = new ArrayList<>();
+            List<String> paths = Arrays.stream(pkPath.split(",")).collect(Collectors.toList());
+            paths.forEach(path -> {
+                pkDefPaths.add(path.trim());
+            });
+            partitionKeyDef.setPaths(pkDefPaths);
+            return new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), partitionKeyDef);
+        } else {
+            return new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), pkPath);
         }
     }
 

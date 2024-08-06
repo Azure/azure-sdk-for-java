@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.PatchOperationStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineSoftwarePatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,56 +21,49 @@ import java.util.List;
  * Describes the properties of an AssessPatches result.
  */
 @Immutable
-public final class VirtualMachineAssessPatchesResultInner {
+public final class VirtualMachineAssessPatchesResultInner
+    implements JsonSerializable<VirtualMachineAssessPatchesResultInner> {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
      * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
      * logs.
      */
-    @JsonProperty(value = "assessmentActivityId", access = JsonProperty.Access.WRITE_ONLY)
     private String assessmentActivityId;
 
     /*
      * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to
      * complete installation but the reboot has not yet occurred.
      */
-    @JsonProperty(value = "rebootPending", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean rebootPending;
 
     /*
      * The number of critical or security patches that have been detected as available and not yet installed.
      */
-    @JsonProperty(value = "criticalAndSecurityPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer criticalAndSecurityPatchCount;
 
     /*
      * The number of all available patches excluding critical and security.
      */
-    @JsonProperty(value = "otherPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer otherPatchCount;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTime;
 
     /*
      * The list of patches that have been detected as available for installation.
      */
-    @JsonProperty(value = "availablePatches", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineSoftwarePatchProperties> availablePatches;
 
     /*
      * The errors that were encountered during execution of the operation. The details array contains the list of them.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
     /**
@@ -164,5 +162,62 @@ public final class VirtualMachineAssessPatchesResultInner {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineAssessPatchesResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineAssessPatchesResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineAssessPatchesResultInner.
+     */
+    public static VirtualMachineAssessPatchesResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineAssessPatchesResultInner deserializedVirtualMachineAssessPatchesResultInner
+                = new VirtualMachineAssessPatchesResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.status
+                        = PatchOperationStatus.fromString(reader.getString());
+                } else if ("assessmentActivityId".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.assessmentActivityId = reader.getString();
+                } else if ("rebootPending".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.rebootPending
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("criticalAndSecurityPatchCount".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.criticalAndSecurityPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("otherPatchCount".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.otherPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("availablePatches".equals(fieldName)) {
+                    List<VirtualMachineSoftwarePatchProperties> availablePatches
+                        = reader.readArray(reader1 -> VirtualMachineSoftwarePatchProperties.fromJson(reader1));
+                    deserializedVirtualMachineAssessPatchesResultInner.availablePatches = availablePatches;
+                } else if ("error".equals(fieldName)) {
+                    deserializedVirtualMachineAssessPatchesResultInner.error = ApiError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineAssessPatchesResultInner;
+        });
     }
 }

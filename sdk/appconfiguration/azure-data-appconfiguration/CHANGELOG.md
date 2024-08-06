@@ -4,9 +4,33 @@
 
 ### Features Added
 
+- Added a new service API support: `2023-11-01`.
+- Added a new method `listLabels` to support listing labels capabilities.
+- Added new class `SettingLabel` and `SettingLabelSelector`, and a new enum `SettingLabelFields`.
+- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
+- Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+
+## 1.6.3 (2024-07-26)
+
+### Bugs Fixed
+
+Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the feature flag prefix `.appconfig.featureflag/` before the input key. ([#33332](https://github.com/Azure/azure-sdk-for-java/issues/33332))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+## 1.6.2 (2024-06-25)
 
 ### Other Changes
 
@@ -253,7 +277,7 @@ Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 ## 1.4.0 (2023-01-11)
 
 ### Features Added
-- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
+- Added `getEndpoint()` method to both App Configuration synchronous and asynchronous clients.
 
 ### Other Changes
 
@@ -488,7 +512,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
-- Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
+- Fixed a explored bug that ConfigurationClientCredential is already package-private. Using connection String instead.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -511,7 +535,7 @@ demonstrate the new API.
 
 ## 1.0.0-preview.3 (2019-09-10)
 - Removed dependency on Netty.
-- Added logging when throwing `RutimeException`s.
+- Added logging when throwing `RuntimeException`s.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 

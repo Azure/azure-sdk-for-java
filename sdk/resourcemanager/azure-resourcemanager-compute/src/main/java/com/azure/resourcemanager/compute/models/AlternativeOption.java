@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the alternative option specified by the Publisher for this image when this image is deprecated.
  */
 @Fluent
-public final class AlternativeOption {
+public final class AlternativeOption implements JsonSerializable<AlternativeOption> {
     /*
      * Describes the type of the alternative option.
      */
-    @JsonProperty(value = "type")
     private AlternativeType type;
 
     /*
      * Indicates the alternative option value specified by the Publisher. This is the Offer name when the type is Offer
      * or the Plan name when the type is Plan.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -52,8 +54,8 @@ public final class AlternativeOption {
     }
 
     /**
-     * Get the value property: Indicates the alternative option value specified by the Publisher. This is the Offer
-     * name when the type is Offer or the Plan name when the type is Plan.
+     * Get the value property: Indicates the alternative option value specified by the Publisher. This is the Offer name
+     * when the type is Offer or the Plan name when the type is Plan.
      * 
      * @return the value value.
      */
@@ -62,8 +64,8 @@ public final class AlternativeOption {
     }
 
     /**
-     * Set the value property: Indicates the alternative option value specified by the Publisher. This is the Offer
-     * name when the type is Offer or the Plan name when the type is Plan.
+     * Set the value property: Indicates the alternative option value specified by the Publisher. This is the Offer name
+     * when the type is Offer or the Plan name when the type is Plan.
      * 
      * @param value the value value to set.
      * @return the AlternativeOption object itself.
@@ -79,5 +81,44 @@ public final class AlternativeOption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlternativeOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlternativeOption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlternativeOption.
+     */
+    public static AlternativeOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlternativeOption deserializedAlternativeOption = new AlternativeOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAlternativeOption.type = AlternativeType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedAlternativeOption.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlternativeOption;
+        });
     }
 }

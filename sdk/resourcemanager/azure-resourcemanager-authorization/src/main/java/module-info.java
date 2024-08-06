@@ -11,11 +11,7 @@ module com.azure.resourcemanager.authorization {
     exports com.azure.resourcemanager.authorization.models;
     exports com.azure.resourcemanager.authorization.utils;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.authorization.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.authorization.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.authorization.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.authorization.models to com.azure.core;
 }

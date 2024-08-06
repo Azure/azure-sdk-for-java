@@ -6,118 +6,105 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of ExpressRouteCircuit.
  */
 @Fluent
-public final class ExpressRouteCircuitPropertiesFormat {
+public final class ExpressRouteCircuitPropertiesFormat
+    implements JsonSerializable<ExpressRouteCircuitPropertiesFormat> {
     /*
      * Allow classic operations.
      */
-    @JsonProperty(value = "allowClassicOperations")
     private Boolean allowClassicOperations;
 
     /*
      * The CircuitProvisioningState state of the resource.
      */
-    @JsonProperty(value = "circuitProvisioningState")
     private String circuitProvisioningState;
 
     /*
      * The ServiceProviderProvisioningState state of the resource.
      */
-    @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
 
     /*
      * The list of authorizations.
      */
-    @JsonProperty(value = "authorizations")
     private List<ExpressRouteCircuitAuthorizationInner> authorizations;
 
     /*
      * The list of peerings.
      */
-    @JsonProperty(value = "peerings")
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /*
      * The ServiceKey.
      */
-    @JsonProperty(value = "serviceKey")
     private String serviceKey;
 
     /*
      * The ServiceProviderNotes.
      */
-    @JsonProperty(value = "serviceProviderNotes")
     private String serviceProviderNotes;
 
     /*
      * The ServiceProviderProperties.
      */
-    @JsonProperty(value = "serviceProviderProperties")
     private ExpressRouteCircuitServiceProviderProperties serviceProviderProperties;
 
     /*
      * The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.
      */
-    @JsonProperty(value = "expressRoutePort")
     private SubResource expressRoutePort;
 
     /*
      * The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.
      */
-    @JsonProperty(value = "bandwidthInGbps")
     private Float bandwidthInGbps;
 
     /*
      * The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
      */
-    @JsonProperty(value = "stag", access = JsonProperty.Access.WRITE_ONLY)
     private Integer stag;
 
     /*
      * The provisioning state of the express route circuit resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The GatewayManager Etag.
      */
-    @JsonProperty(value = "gatewayManagerEtag")
     private String gatewayManagerEtag;
 
     /*
      * Flag denoting global reach status.
      */
-    @JsonProperty(value = "globalReachEnabled")
     private Boolean globalReachEnabled;
 
     /*
      * The authorizationKey.
      */
-    @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
     /*
      * The authorization status of the Circuit.
      */
-    @JsonProperty(value = "authorizationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String authorizationStatus;
 
     /*
      * Flag denoting rate-limiting status of the ExpressRoute direct-port circuit.
      */
-    @JsonProperty(value = "enableDirectPortRateLimit")
     private Boolean enableDirectPortRateLimit;
 
     /**
@@ -128,7 +115,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the allowClassicOperations property: Allow classic operations.
-     *
+     * 
      * @return the allowClassicOperations value.
      */
     public Boolean allowClassicOperations() {
@@ -137,7 +124,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the allowClassicOperations property: Allow classic operations.
-     *
+     * 
      * @param allowClassicOperations the allowClassicOperations value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -148,7 +135,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the circuitProvisioningState property: The CircuitProvisioningState state of the resource.
-     *
+     * 
      * @return the circuitProvisioningState value.
      */
     public String circuitProvisioningState() {
@@ -157,7 +144,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the circuitProvisioningState property: The CircuitProvisioningState state of the resource.
-     *
+     * 
      * @param circuitProvisioningState the circuitProvisioningState value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -168,7 +155,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
-     *
+     * 
      * @return the serviceProviderProvisioningState value.
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
@@ -177,7 +164,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
-     *
+     * 
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -189,7 +176,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the authorizations property: The list of authorizations.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<ExpressRouteCircuitAuthorizationInner> authorizations() {
@@ -198,7 +185,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the authorizations property: The list of authorizations.
-     *
+     * 
      * @param authorizations the authorizations value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -210,7 +197,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the peerings property: The list of peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -219,7 +206,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the peerings property: The list of peerings.
-     *
+     * 
      * @param peerings the peerings value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -230,7 +217,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceKey property: The ServiceKey.
-     *
+     * 
      * @return the serviceKey value.
      */
     public String serviceKey() {
@@ -239,7 +226,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceKey property: The ServiceKey.
-     *
+     * 
      * @param serviceKey the serviceKey value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -250,7 +237,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceProviderNotes property: The ServiceProviderNotes.
-     *
+     * 
      * @return the serviceProviderNotes value.
      */
     public String serviceProviderNotes() {
@@ -259,7 +246,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceProviderNotes property: The ServiceProviderNotes.
-     *
+     * 
      * @param serviceProviderNotes the serviceProviderNotes value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -270,7 +257,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceProviderProperties property: The ServiceProviderProperties.
-     *
+     * 
      * @return the serviceProviderProperties value.
      */
     public ExpressRouteCircuitServiceProviderProperties serviceProviderProperties() {
@@ -279,7 +266,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceProviderProperties property: The ServiceProviderProperties.
-     *
+     * 
      * @param serviceProviderProperties the serviceProviderProperties value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -292,7 +279,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     /**
      * Get the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
      * on an ExpressRoutePort resource.
-     *
+     * 
      * @return the expressRoutePort value.
      */
     public SubResource expressRoutePort() {
@@ -302,7 +289,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     /**
      * Set the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
      * on an ExpressRoutePort resource.
-     *
+     * 
      * @param expressRoutePort the expressRoutePort value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -314,7 +301,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     /**
      * Get the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
-     *
+     * 
      * @return the bandwidthInGbps value.
      */
     public Float bandwidthInGbps() {
@@ -324,7 +311,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     /**
      * Set the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
-     *
+     * 
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -335,7 +322,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the stag property: The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
-     *
+     * 
      * @return the stag value.
      */
     public Integer stag() {
@@ -344,7 +331,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route circuit resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -353,7 +340,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the gatewayManagerEtag property: The GatewayManager Etag.
-     *
+     * 
      * @return the gatewayManagerEtag value.
      */
     public String gatewayManagerEtag() {
@@ -362,7 +349,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the gatewayManagerEtag property: The GatewayManager Etag.
-     *
+     * 
      * @param gatewayManagerEtag the gatewayManagerEtag value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -373,7 +360,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the globalReachEnabled property: Flag denoting global reach status.
-     *
+     * 
      * @return the globalReachEnabled value.
      */
     public Boolean globalReachEnabled() {
@@ -382,7 +369,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the globalReachEnabled property: Flag denoting global reach status.
-     *
+     * 
      * @param globalReachEnabled the globalReachEnabled value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -393,7 +380,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the authorizationKey property: The authorizationKey.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -402,7 +389,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the authorizationKey property: The authorizationKey.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -413,7 +400,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the authorizationStatus property: The authorization status of the Circuit.
-     *
+     * 
      * @return the authorizationStatus value.
      */
     public String authorizationStatus() {
@@ -423,7 +410,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     /**
      * Get the enableDirectPortRateLimit property: Flag denoting rate-limiting status of the ExpressRoute direct-port
      * circuit.
-     *
+     * 
      * @return the enableDirectPortRateLimit value.
      */
     public Boolean enableDirectPortRateLimit() {
@@ -433,7 +420,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     /**
      * Set the enableDirectPortRateLimit property: Flag denoting rate-limiting status of the ExpressRoute direct-port
      * circuit.
-     *
+     * 
      * @param enableDirectPortRateLimit the enableDirectPortRateLimit value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -444,7 +431,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -457,5 +444,100 @@ public final class ExpressRouteCircuitPropertiesFormat {
         if (serviceProviderProperties() != null) {
             serviceProviderProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowClassicOperations", this.allowClassicOperations);
+        jsonWriter.writeStringField("circuitProvisioningState", this.circuitProvisioningState);
+        jsonWriter.writeStringField("serviceProviderProvisioningState",
+            this.serviceProviderProvisioningState == null ? null : this.serviceProviderProvisioningState.toString());
+        jsonWriter.writeArrayField("authorizations", this.authorizations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("peerings", this.peerings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("serviceKey", this.serviceKey);
+        jsonWriter.writeStringField("serviceProviderNotes", this.serviceProviderNotes);
+        jsonWriter.writeJsonField("serviceProviderProperties", this.serviceProviderProperties);
+        jsonWriter.writeJsonField("expressRoutePort", this.expressRoutePort);
+        jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
+        jsonWriter.writeStringField("gatewayManagerEtag", this.gatewayManagerEtag);
+        jsonWriter.writeBooleanField("globalReachEnabled", this.globalReachEnabled);
+        jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
+        jsonWriter.writeBooleanField("enableDirectPortRateLimit", this.enableDirectPortRateLimit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitPropertiesFormat.
+     */
+    public static ExpressRouteCircuitPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitPropertiesFormat deserializedExpressRouteCircuitPropertiesFormat
+                = new ExpressRouteCircuitPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowClassicOperations".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.allowClassicOperations
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("circuitProvisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.circuitProvisioningState = reader.getString();
+                } else if ("serviceProviderProvisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.serviceProviderProvisioningState
+                        = ServiceProviderProvisioningState.fromString(reader.getString());
+                } else if ("authorizations".equals(fieldName)) {
+                    List<ExpressRouteCircuitAuthorizationInner> authorizations
+                        = reader.readArray(reader1 -> ExpressRouteCircuitAuthorizationInner.fromJson(reader1));
+                    deserializedExpressRouteCircuitPropertiesFormat.authorizations = authorizations;
+                } else if ("peerings".equals(fieldName)) {
+                    List<ExpressRouteCircuitPeeringInner> peerings
+                        = reader.readArray(reader1 -> ExpressRouteCircuitPeeringInner.fromJson(reader1));
+                    deserializedExpressRouteCircuitPropertiesFormat.peerings = peerings;
+                } else if ("serviceKey".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.serviceKey = reader.getString();
+                } else if ("serviceProviderNotes".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.serviceProviderNotes = reader.getString();
+                } else if ("serviceProviderProperties".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.serviceProviderProperties
+                        = ExpressRouteCircuitServiceProviderProperties.fromJson(reader);
+                } else if ("expressRoutePort".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.expressRoutePort = SubResource.fromJson(reader);
+                } else if ("bandwidthInGbps".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.bandwidthInGbps
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("stag".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.stag = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("gatewayManagerEtag".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.gatewayManagerEtag = reader.getString();
+                } else if ("globalReachEnabled".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.globalReachEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authorizationKey".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.authorizationKey = reader.getString();
+                } else if ("authorizationStatus".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.authorizationStatus = reader.getString();
+                } else if ("enableDirectPortRateLimit".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.enableDirectPortRateLimit
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitPropertiesFormat;
+        });
     }
 }

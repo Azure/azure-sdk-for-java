@@ -5,14 +5,18 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration options and list of validations to be performed on the resulting image.
  */
 @Fluent
-public final class ImageTemplatePropertiesValidate {
+public final class ImageTemplatePropertiesValidate implements JsonSerializable<ImageTemplatePropertiesValidate> {
     /*
      * If validation fails and this field is set to false, output image(s) will not be distributed. This is the default
      * behavior. If validation fails and this field is set to true, output image(s) will still be distributed. Please
@@ -20,20 +24,17 @@ public final class ImageTemplatePropertiesValidate {
      * false), the end to end image run will be reported as having failed in case of a validation failure. [Note: This
      * field has no effect if validation succeeds.]
      */
-    @JsonProperty(value = "continueDistributeOnFailure")
     private Boolean continueDistributeOnFailure;
 
     /*
-     * If this field is set to true, the image specified in the 'source' section will directly be validated. No
-     * separate build will be run to generate and then validate a customized image.
+     * If this field is set to true, the image specified in the 'source' section will directly be validated. No separate
+     * build will be run to generate and then validate a customized image.
      */
-    @JsonProperty(value = "sourceValidationOnly")
     private Boolean sourceValidationOnly;
 
     /*
      * List of validations to be performed.
      */
-    @JsonProperty(value = "inVMValidations")
     private List<ImageTemplateInVMValidator> inVMValidations;
 
     /**
@@ -43,11 +44,11 @@ public final class ImageTemplatePropertiesValidate {
     }
 
     /**
-     * Get the continueDistributeOnFailure property: If validation fails and this field is set to false, output
-     * image(s) will not be distributed. This is the default behavior. If validation fails and this field is set to
-     * true, output image(s) will still be distributed. Please use this option with caution as it may result in bad
-     * images being distributed for use. In either case (true or false), the end to end image run will be reported as
-     * having failed in case of a validation failure. [Note: This field has no effect if validation succeeds.].
+     * Get the continueDistributeOnFailure property: If validation fails and this field is set to false, output image(s)
+     * will not be distributed. This is the default behavior. If validation fails and this field is set to true, output
+     * image(s) will still be distributed. Please use this option with caution as it may result in bad images being
+     * distributed for use. In either case (true or false), the end to end image run will be reported as having failed
+     * in case of a validation failure. [Note: This field has no effect if validation succeeds.].
      * 
      * @return the continueDistributeOnFailure value.
      */
@@ -56,11 +57,11 @@ public final class ImageTemplatePropertiesValidate {
     }
 
     /**
-     * Set the continueDistributeOnFailure property: If validation fails and this field is set to false, output
-     * image(s) will not be distributed. This is the default behavior. If validation fails and this field is set to
-     * true, output image(s) will still be distributed. Please use this option with caution as it may result in bad
-     * images being distributed for use. In either case (true or false), the end to end image run will be reported as
-     * having failed in case of a validation failure. [Note: This field has no effect if validation succeeds.].
+     * Set the continueDistributeOnFailure property: If validation fails and this field is set to false, output image(s)
+     * will not be distributed. This is the default behavior. If validation fails and this field is set to true, output
+     * image(s) will still be distributed. Please use this option with caution as it may result in bad images being
+     * distributed for use. In either case (true or false), the end to end image run will be reported as having failed
+     * in case of a validation failure. [Note: This field has no effect if validation succeeds.].
      * 
      * @param continueDistributeOnFailure the continueDistributeOnFailure value to set.
      * @return the ImageTemplatePropertiesValidate object itself.
@@ -121,5 +122,53 @@ public final class ImageTemplatePropertiesValidate {
         if (inVMValidations() != null) {
             inVMValidations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("continueDistributeOnFailure", this.continueDistributeOnFailure);
+        jsonWriter.writeBooleanField("sourceValidationOnly", this.sourceValidationOnly);
+        jsonWriter.writeArrayField("inVMValidations", this.inVMValidations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplatePropertiesValidate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplatePropertiesValidate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplatePropertiesValidate.
+     */
+    public static ImageTemplatePropertiesValidate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplatePropertiesValidate deserializedImageTemplatePropertiesValidate
+                = new ImageTemplatePropertiesValidate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("continueDistributeOnFailure".equals(fieldName)) {
+                    deserializedImageTemplatePropertiesValidate.continueDistributeOnFailure
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceValidationOnly".equals(fieldName)) {
+                    deserializedImageTemplatePropertiesValidate.sourceValidationOnly
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inVMValidations".equals(fieldName)) {
+                    List<ImageTemplateInVMValidator> inVMValidations
+                        = reader.readArray(reader1 -> ImageTemplateInVMValidator.fromJson(reader1));
+                    deserializedImageTemplatePropertiesValidate.inVMValidations = inVMValidations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplatePropertiesValidate;
+        });
     }
 }

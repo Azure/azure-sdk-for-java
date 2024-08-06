@@ -34,7 +34,7 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
     protected AzureResourceManager azureResourceManager;
 
     protected String rgName = "";
-    protected final Region region = Region.US_EAST;
+    protected final Region region = Region.US_WEST2;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -98,7 +98,7 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
         }
     }
 
-    protected VaultAndKey createVaultAndKey(String name, String clientId) {
+    protected VaultAndKey createVaultAndKey(String name, String userPrincipalName) {
         // create vault
         Vault vault = azureResourceManager.vaults().define(name)
             .withRegion(region)
@@ -110,7 +110,7 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
         // RBAC for this app
         String rbacName = generateRandomUuid();
         azureResourceManager.accessManagement().roleAssignments().define(rbacName)
-            .forServicePrincipal(clientId)
+            .forUser(userPrincipalName)
             .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
             .withResourceScope(vault)
             .create();

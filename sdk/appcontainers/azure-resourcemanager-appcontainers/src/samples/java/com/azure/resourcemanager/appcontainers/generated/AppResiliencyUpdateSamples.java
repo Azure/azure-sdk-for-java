@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appcontainers.models.TimeoutPolicy;
 public final class AppResiliencyUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AppResiliency_Patch.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/AppResiliency_Patch.json
      */
     /**
      * Sample code: Update App Resiliency.

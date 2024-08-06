@@ -21,7 +21,7 @@ public final class AutonomousDatabaseVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"udchxgsrboldforo\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"vvacqpb\",\"name\":\"uodxesza\",\"type\":\"belawumuaslzkwr\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"fusfzsvtuikzhajq\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"y\",\"name\":\"qnzrd\",\"type\":\"sovwxznptgoeiyb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AutonomousDatabaseVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AutonomousDbVersion> response
-            = manager.autonomousDatabaseVersions().listByLocation("lyhb", com.azure.core.util.Context.NONE);
+            = manager.autonomousDatabaseVersions().listByLocation("jw", com.azure.core.util.Context.NONE);
 
     }
 }

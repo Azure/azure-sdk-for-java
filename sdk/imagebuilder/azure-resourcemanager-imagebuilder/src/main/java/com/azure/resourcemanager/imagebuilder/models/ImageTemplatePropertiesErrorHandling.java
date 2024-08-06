@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Error handling options upon a build failure.
  */
 @Fluent
-public final class ImageTemplatePropertiesErrorHandling {
+public final class ImageTemplatePropertiesErrorHandling
+    implements JsonSerializable<ImageTemplatePropertiesErrorHandling> {
     /*
      * If there is a customizer error and this field is set to 'cleanup', the build VM and associated network resources
      * will be cleaned up. This is the default behavior. If there is a customizer error and this field is set to
      * 'abort', the build VM will be preserved.
      */
-    @JsonProperty(value = "onCustomizerError")
     private OnBuildError onCustomizerError;
 
     /*
@@ -25,7 +29,6 @@ public final class ImageTemplatePropertiesErrorHandling {
      * will be cleaned up. This is the default behavior. If there is a validation error and this field is set to
      * 'abort', the build VM will be preserved.
      */
-    @JsonProperty(value = "onValidationError")
     private OnBuildError onValidationError;
 
     /**
@@ -88,5 +91,49 @@ public final class ImageTemplatePropertiesErrorHandling {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("onCustomizerError",
+            this.onCustomizerError == null ? null : this.onCustomizerError.toString());
+        jsonWriter.writeStringField("onValidationError",
+            this.onValidationError == null ? null : this.onValidationError.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplatePropertiesErrorHandling from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplatePropertiesErrorHandling if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplatePropertiesErrorHandling.
+     */
+    public static ImageTemplatePropertiesErrorHandling fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplatePropertiesErrorHandling deserializedImageTemplatePropertiesErrorHandling
+                = new ImageTemplatePropertiesErrorHandling();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("onCustomizerError".equals(fieldName)) {
+                    deserializedImageTemplatePropertiesErrorHandling.onCustomizerError
+                        = OnBuildError.fromString(reader.getString());
+                } else if ("onValidationError".equals(fieldName)) {
+                    deserializedImageTemplatePropertiesErrorHandling.onValidationError
+                        = OnBuildError.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplatePropertiesErrorHandling;
+        });
     }
 }

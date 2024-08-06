@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Dapr Component Resiliency Policy Circuit Breaker Policy Configuration.
  */
 @Fluent
-public final class DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration {
+public final class DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration
+    implements JsonSerializable<DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration> {
     /*
      * The number of consecutive errors before the circuit is opened.
      */
-    @JsonProperty(value = "consecutiveErrors")
     private Integer consecutiveErrors;
 
     /*
      * The interval in seconds until a retry attempt is made after the circuit is opened.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Integer timeoutInSeconds;
 
     /*
      * The optional interval in seconds after which the error count resets to 0. An interval of 0 will never reset. If
      * not specified, the timeoutInSeconds value will be used.
      */
-    @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
     /**
@@ -110,5 +112,53 @@ public final class DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguratio
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("consecutiveErrors", this.consecutiveErrors);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration.
+     */
+    public static DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration deserializedDaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration
+                = new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("consecutiveErrors".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration.consecutiveErrors
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration.timeoutInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("intervalInSeconds".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration.intervalInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration;
+        });
     }
 }

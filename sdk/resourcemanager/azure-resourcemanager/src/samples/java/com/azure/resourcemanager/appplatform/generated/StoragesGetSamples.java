@@ -18,7 +18,10 @@ public final class StoragesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storagesGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getStorages().getWithResponse("myResourceGroup", "myservice",
-            "mystorage", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getStorages()
+            .getWithResponse("myResourceGroup", "myservice", "mystorage", com.azure.core.util.Context.NONE);
     }
 }

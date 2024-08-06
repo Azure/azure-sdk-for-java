@@ -18,7 +18,10 @@ public final class GatewaysGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewaysGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGateways().getWithResponse("myResourceGroup", "myservice",
-            "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGateways()
+            .getWithResponse("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -25,16 +25,21 @@ public final class GatewayRouteConfigsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewayRouteConfigsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGatewayRouteConfigs().createOrUpdate("myResourceGroup",
-            "myservice", "default", "myRouteConfig",
-            new GatewayRouteConfigResourceInner().withProperties(new GatewayRouteConfigProperties().withAppResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myApp")
-                .withOpenApi(new GatewayRouteConfigOpenApiProperties().withUri(
-                    "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json"))
-                .withProtocol(GatewayRouteConfigProtocol.HTTPS)
-                .withRoutes(Arrays.asList(new GatewayApiRoute().withTitle("myApp route config").withSsoEnabled(true)
-                    .withPredicates(Arrays.asList("Path=/api5/customer/**"))
-                    .withFilters(Arrays.asList("StripPrefix=2", "RateLimit=1,1s"))))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGatewayRouteConfigs()
+            .createOrUpdate("myResourceGroup", "myservice", "default", "myRouteConfig",
+                new GatewayRouteConfigResourceInner().withProperties(new GatewayRouteConfigProperties()
+                    .withAppResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myApp")
+                    .withOpenApi(new GatewayRouteConfigOpenApiProperties().withUri(
+                        "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json"))
+                    .withProtocol(GatewayRouteConfigProtocol.HTTPS)
+                    .withRoutes(Arrays.asList(new GatewayApiRoute().withTitle("myApp route config")
+                        .withSsoEnabled(true)
+                        .withPredicates(Arrays.asList("Path=/api5/customer/**"))
+                        .withFilters(Arrays.asList("StripPrefix=2", "RateLimit=1,1s"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

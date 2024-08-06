@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SKU of a public IP prefix.
  */
 @Fluent
-public final class PublicIpPrefixSku {
+public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixSku> {
     /*
      * Name of a public IP prefix SKU.
      */
-    @JsonProperty(value = "name")
     private PublicIpPrefixSkuName name;
 
     /*
      * Tier of a public IP prefix SKU.
      */
-    @JsonProperty(value = "tier")
     private PublicIpPrefixSkuTier tier;
 
     /**
@@ -76,5 +78,44 @@ public final class PublicIpPrefixSku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicIpPrefixSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicIpPrefixSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicIpPrefixSku.
+     */
+    public static PublicIpPrefixSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicIpPrefixSku deserializedPublicIpPrefixSku = new PublicIpPrefixSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPublicIpPrefixSku.name = PublicIpPrefixSkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedPublicIpPrefixSku.tier = PublicIpPrefixSkuTier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicIpPrefixSku;
+        });
     }
 }

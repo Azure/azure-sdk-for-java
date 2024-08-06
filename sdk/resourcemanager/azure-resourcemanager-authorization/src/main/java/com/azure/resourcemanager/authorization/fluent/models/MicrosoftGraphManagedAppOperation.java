@@ -5,57 +5,57 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * managedAppOperation
- *
- * <p>Represents an operation applied against an app registration.
+ * 
+ * Represents an operation applied against an app registration.
  */
 @Fluent
 public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntity {
     /*
      * The operation name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The last time the app operation was modified.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * The current state of the operation
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Version of the entity.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Represents an operation applied against an app registration.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphManagedAppOperation class. */
+    /**
+     * Creates an instance of MicrosoftGraphManagedAppOperation class.
+     */
     public MicrosoftGraphManagedAppOperation() {
     }
 
     /**
      * Get the displayName property: The operation name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -64,7 +64,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Set the displayName property: The operation name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphManagedAppOperation object itself.
      */
@@ -75,7 +75,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Get the lastModifiedDateTime property: The last time the app operation was modified.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -84,7 +84,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Set the lastModifiedDateTime property: The last time the app operation was modified.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphManagedAppOperation object itself.
      */
@@ -95,7 +95,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Get the state property: The current state of the operation.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -104,7 +104,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Set the state property: The current state of the operation.
-     *
+     * 
      * @param state the state value to set.
      * @return the MicrosoftGraphManagedAppOperation object itself.
      */
@@ -115,7 +115,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Get the version property: Version of the entity.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -124,7 +124,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Set the version property: Version of the entity.
-     *
+     * 
      * @param version the version value to set.
      * @return the MicrosoftGraphManagedAppOperation object itself.
      */
@@ -135,17 +135,16 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Get the additionalProperties property: Represents an operation applied against an app registration.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Represents an operation applied against an app registration.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphManagedAppOperation object itself.
      */
@@ -154,15 +153,9 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphManagedAppOperation withId(String id) {
         super.withId(id);
@@ -171,11 +164,75 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("version", this.version);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphManagedAppOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphManagedAppOperation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphManagedAppOperation.
+     */
+    public static MicrosoftGraphManagedAppOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphManagedAppOperation deserializedMicrosoftGraphManagedAppOperation
+                = new MicrosoftGraphManagedAppOperation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppOperation.withId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppOperation.displayName = reader.getString();
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppOperation.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppOperation.state = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppOperation.version = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphManagedAppOperation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphManagedAppOperation;
+        });
     }
 }

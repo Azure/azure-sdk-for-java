@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class NodeState extends ExpandableStringEnum<NodeState> {
      * @param name a name to look for.
      * @return the corresponding NodeState.
      */
-    @JsonCreator
     public static NodeState fromString(String name) {
         return fromString(name, NodeState.class);
     }

@@ -11,74 +11,70 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 
-/** An instance of this class provides access to all the operations defined in ScriptCmdletsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScriptCmdletsClient.
+ */
 public interface ScriptCmdletsClient {
     /**
-     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
-     * cloud.
-     *
+     * List ScriptCmdlet resources by ScriptPackage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param scriptPackageName Name of the script package.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of scripts/cmdlets as paginated response with {@link PagedIterable}.
+     * @return the response of a ScriptCmdlet list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScriptCmdletInner> list(String resourceGroupName, String privateCloudName, String scriptPackageName);
 
     /**
-     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
-     * cloud.
-     *
+     * List ScriptCmdlet resources by ScriptPackage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param scriptPackageName Name of the script package.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of scripts/cmdlets as paginated response with {@link PagedIterable}.
+     * @return the response of a ScriptCmdlet list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScriptCmdletInner> list(
-        String resourceGroupName, String privateCloudName, String scriptPackageName, Context context);
-
-    /**
-     * Return information about a script cmdlet resource in a specific package on a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
-     * @param scriptCmdletName Name of the script cmdlet resource in the script package in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cmdlet available for script execution along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScriptCmdletInner> getWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptPackageName,
-        String scriptCmdletName,
+    PagedIterable<ScriptCmdletInner> list(String resourceGroupName, String privateCloudName, String scriptPackageName,
         Context context);
 
     /**
-     * Return information about a script cmdlet resource in a specific package on a private cloud.
-     *
+     * Get a ScriptCmdlet.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
-     * @param scriptCmdletName Name of the script cmdlet resource in the script package in the private cloud.
+     * @param scriptPackageName Name of the script package.
+     * @param scriptCmdletName Name of the script cmdlet.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cmdlet available for script execution.
+     * @return a ScriptCmdlet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScriptCmdletInner get(
-        String resourceGroupName, String privateCloudName, String scriptPackageName, String scriptCmdletName);
+    Response<ScriptCmdletInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptPackageName, String scriptCmdletName, Context context);
+
+    /**
+     * Get a ScriptCmdlet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptPackageName Name of the script package.
+     * @param scriptCmdletName Name of the script cmdlet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a ScriptCmdlet.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScriptCmdletInner get(String resourceGroupName, String privateCloudName, String scriptPackageName,
+        String scriptCmdletName);
 }

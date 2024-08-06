@@ -6,59 +6,56 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a connection monitor test configuration.
  */
 @Fluent
-public final class ConnectionMonitorTestConfiguration {
+public final class ConnectionMonitorTestConfiguration implements JsonSerializable<ConnectionMonitorTestConfiguration> {
     /*
      * The name of the connection monitor test configuration.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The frequency of test evaluation, in seconds.
      */
-    @JsonProperty(value = "testFrequencySec")
     private Integer testFrequencySec;
 
     /*
      * The protocol to use in test evaluation.
      */
-    @JsonProperty(value = "protocol", required = true)
     private ConnectionMonitorTestConfigurationProtocol protocol;
 
     /*
-     * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version depending on other parameters.
+     * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
+     * depending on other parameters.
      */
-    @JsonProperty(value = "preferredIPVersion")
     private PreferredIpVersion preferredIpVersion;
 
     /*
      * The parameters used to perform test evaluation over HTTP.
      */
-    @JsonProperty(value = "httpConfiguration")
     private ConnectionMonitorHttpConfiguration httpConfiguration;
 
     /*
      * The parameters used to perform test evaluation over TCP.
      */
-    @JsonProperty(value = "tcpConfiguration")
     private ConnectionMonitorTcpConfiguration tcpConfiguration;
 
     /*
      * The parameters used to perform test evaluation over ICMP.
      */
-    @JsonProperty(value = "icmpConfiguration")
     private ConnectionMonitorIcmpConfiguration icmpConfiguration;
 
     /*
      * The threshold for declaring a test successful.
      */
-    @JsonProperty(value = "successThreshold")
     private ConnectionMonitorSuccessThreshold successThreshold;
 
     /**
@@ -262,4 +259,71 @@ public final class ConnectionMonitorTestConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorTestConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeNumberField("testFrequencySec", this.testFrequencySec);
+        jsonWriter.writeStringField("preferredIPVersion",
+            this.preferredIpVersion == null ? null : this.preferredIpVersion.toString());
+        jsonWriter.writeJsonField("httpConfiguration", this.httpConfiguration);
+        jsonWriter.writeJsonField("tcpConfiguration", this.tcpConfiguration);
+        jsonWriter.writeJsonField("icmpConfiguration", this.icmpConfiguration);
+        jsonWriter.writeJsonField("successThreshold", this.successThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorTestConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorTestConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorTestConfiguration.
+     */
+    public static ConnectionMonitorTestConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorTestConfiguration deserializedConnectionMonitorTestConfiguration
+                = new ConnectionMonitorTestConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.protocol
+                        = ConnectionMonitorTestConfigurationProtocol.fromString(reader.getString());
+                } else if ("testFrequencySec".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.testFrequencySec
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("preferredIPVersion".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.preferredIpVersion
+                        = PreferredIpVersion.fromString(reader.getString());
+                } else if ("httpConfiguration".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.httpConfiguration
+                        = ConnectionMonitorHttpConfiguration.fromJson(reader);
+                } else if ("tcpConfiguration".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.tcpConfiguration
+                        = ConnectionMonitorTcpConfiguration.fromJson(reader);
+                } else if ("icmpConfiguration".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.icmpConfiguration
+                        = ConnectionMonitorIcmpConfiguration.fromJson(reader);
+                } else if ("successThreshold".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.successThreshold
+                        = ConnectionMonitorSuccessThreshold.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorTestConfiguration;
+        });
+    }
 }

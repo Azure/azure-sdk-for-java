@@ -20,8 +20,12 @@ public final class VirtualMachineImagesEdgeZoneListSkusSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListSkusMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones().listSkusWithResponse(
-            "aaaaaaaaaaaa", "aaaaa", "aaaaaaaaaaaa", "aaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
+            .listSkusWithResponse("aaaaaaaaaaaa", "aaaaa", "aaaaaaaaaaaa", "aaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,8 +40,11 @@ public final class VirtualMachineImagesEdgeZoneListSkusSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListSkusMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones().listSkusWithResponse(
-            "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaa", "aaaaaaaaaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
+            .listSkusWithResponse("aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaa", "aaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

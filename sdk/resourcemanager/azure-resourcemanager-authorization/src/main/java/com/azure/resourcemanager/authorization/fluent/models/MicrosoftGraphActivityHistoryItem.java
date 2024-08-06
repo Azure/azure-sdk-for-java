@@ -5,87 +5,84 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** activityHistoryItem. */
+/**
+ * activityHistoryItem.
+ */
 @Fluent
 public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntity {
     /*
      * Optional. The duration of active user engagement. if not supplied, this is calculated from the startedDateTime
      * and lastActiveDateTime.
      */
-    @JsonProperty(value = "activeDurationSeconds")
     private Integer activeDurationSeconds;
 
     /*
      * Set by the server. DateTime in UTC when the object was created on the server.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * Optional. UTC DateTime when the historyItem will undergo hard-delete. Can be set by the client.
      */
-    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
      * Optional. UTC DateTime when the historyItem (activity session) was last understood as active or finished - if
      * null, historyItem status should be Ongoing.
      */
-    @JsonProperty(value = "lastActiveDateTime")
     private OffsetDateTime lastActiveDateTime;
 
     /*
      * Set by the server. DateTime in UTC when the object was modified on the server.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Required. UTC DateTime when the historyItem (activity session) was started. Required for timeline history.
      */
-    @JsonProperty(value = "startedDateTime")
     private OffsetDateTime startedDateTime;
 
     /*
      * status
      */
-    @JsonProperty(value = "status")
     private MicrosoftGraphStatus status;
 
     /*
      * Optional. The timezone in which the user's device used to generate the activity was located at activity creation
      * time. Values supplied as Olson IDs in order to support cross-platform representation.
      */
-    @JsonProperty(value = "userTimezone")
     private String userTimezone;
 
     /*
      * userActivity
      */
-    @JsonProperty(value = "activity")
     private MicrosoftGraphUserActivity activity;
 
     /*
      * activityHistoryItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphActivityHistoryItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphActivityHistoryItem class.
+     */
     public MicrosoftGraphActivityHistoryItem() {
     }
 
     /**
      * Get the activeDurationSeconds property: Optional. The duration of active user engagement. if not supplied, this
      * is calculated from the startedDateTime and lastActiveDateTime.
-     *
+     * 
      * @return the activeDurationSeconds value.
      */
     public Integer activeDurationSeconds() {
@@ -95,7 +92,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Set the activeDurationSeconds property: Optional. The duration of active user engagement. if not supplied, this
      * is calculated from the startedDateTime and lastActiveDateTime.
-     *
+     * 
      * @param activeDurationSeconds the activeDurationSeconds value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -106,7 +103,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Get the createdDateTime property: Set by the server. DateTime in UTC when the object was created on the server.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -115,7 +112,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Set the createdDateTime property: Set by the server. DateTime in UTC when the object was created on the server.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -127,7 +124,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Get the expirationDateTime property: Optional. UTC DateTime when the historyItem will undergo hard-delete. Can be
      * set by the client.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     public OffsetDateTime expirationDateTime() {
@@ -137,7 +134,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Set the expirationDateTime property: Optional. UTC DateTime when the historyItem will undergo hard-delete. Can be
      * set by the client.
-     *
+     * 
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -149,7 +146,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Get the lastActiveDateTime property: Optional. UTC DateTime when the historyItem (activity session) was last
      * understood as active or finished - if null, historyItem status should be Ongoing.
-     *
+     * 
      * @return the lastActiveDateTime value.
      */
     public OffsetDateTime lastActiveDateTime() {
@@ -159,7 +156,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Set the lastActiveDateTime property: Optional. UTC DateTime when the historyItem (activity session) was last
      * understood as active or finished - if null, historyItem status should be Ongoing.
-     *
+     * 
      * @param lastActiveDateTime the lastActiveDateTime value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -171,7 +168,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Get the lastModifiedDateTime property: Set by the server. DateTime in UTC when the object was modified on the
      * server.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -181,7 +178,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Set the lastModifiedDateTime property: Set by the server. DateTime in UTC when the object was modified on the
      * server.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -193,7 +190,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Get the startedDateTime property: Required. UTC DateTime when the historyItem (activity session) was started.
      * Required for timeline history.
-     *
+     * 
      * @return the startedDateTime value.
      */
     public OffsetDateTime startedDateTime() {
@@ -203,7 +200,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     /**
      * Set the startedDateTime property: Required. UTC DateTime when the historyItem (activity session) was started.
      * Required for timeline history.
-     *
+     * 
      * @param startedDateTime the startedDateTime value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -214,7 +211,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Get the status property: status.
-     *
+     * 
      * @return the status value.
      */
     public MicrosoftGraphStatus status() {
@@ -223,7 +220,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Set the status property: status.
-     *
+     * 
      * @param status the status value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -236,7 +233,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
      * Get the userTimezone property: Optional. The timezone in which the user's device used to generate the activity
      * was located at activity creation time. Values supplied as Olson IDs in order to support cross-platform
      * representation.
-     *
+     * 
      * @return the userTimezone value.
      */
     public String userTimezone() {
@@ -247,7 +244,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
      * Set the userTimezone property: Optional. The timezone in which the user's device used to generate the activity
      * was located at activity creation time. Values supplied as Olson IDs in order to support cross-platform
      * representation.
-     *
+     * 
      * @param userTimezone the userTimezone value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -258,7 +255,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Get the activity property: userActivity.
-     *
+     * 
      * @return the activity value.
      */
     public MicrosoftGraphUserActivity activity() {
@@ -267,7 +264,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Set the activity property: userActivity.
-     *
+     * 
      * @param activity the activity value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -278,17 +275,16 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Get the additionalProperties property: activityHistoryItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: activityHistoryItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphActivityHistoryItem object itself.
      */
@@ -297,15 +293,9 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphActivityHistoryItem withId(String id) {
         super.withId(id);
@@ -314,7 +304,7 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -323,5 +313,99 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
         if (activity() != null) {
             activity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeNumberField("activeDurationSeconds", this.activeDurationSeconds);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("lastActiveDateTime",
+            this.lastActiveDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActiveDateTime));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("startedDateTime",
+            this.startedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedDateTime));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("userTimezone", this.userTimezone);
+        jsonWriter.writeJsonField("activity", this.activity);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphActivityHistoryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphActivityHistoryItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphActivityHistoryItem.
+     */
+    public static MicrosoftGraphActivityHistoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphActivityHistoryItem deserializedMicrosoftGraphActivityHistoryItem
+                = new MicrosoftGraphActivityHistoryItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.withId(reader.getString());
+                } else if ("activeDurationSeconds".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.activeDurationSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastActiveDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.lastActiveDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.startedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.status
+                        = MicrosoftGraphStatus.fromString(reader.getString());
+                } else if ("userTimezone".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.userTimezone = reader.getString();
+                } else if ("activity".equals(fieldName)) {
+                    deserializedMicrosoftGraphActivityHistoryItem.activity
+                        = MicrosoftGraphUserActivity.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphActivityHistoryItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphActivityHistoryItem;
+        });
     }
 }

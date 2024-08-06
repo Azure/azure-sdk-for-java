@@ -5,15 +5,17 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** domain. */
+/**
+ * domain.
+ */
 @Fluent
 public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /*
@@ -22,7 +24,6 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * is federated with an identity provider such as the tenant's on-premises Active Directory via Active Directory
      * Federation Services. This property is read-only and is not nullable.
      */
-    @JsonProperty(value = "authenticationType")
     private String authenticationType;
 
     /*
@@ -30,73 +31,62 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * entity is returned in the response. The availabilityStatus property of the domain entity in the response is
      * either AvailableImmediately or EmailVerifiedDomainTakeoverScheduled.
      */
-    @JsonProperty(value = "availabilityStatus")
     private String availabilityStatus;
 
     /*
      * The value of the property is false if the DNS record management of the domain has been delegated to Microsoft
      * 365. Otherwise, the value is true. Not nullable
      */
-    @JsonProperty(value = "isAdminManaged")
     private Boolean isAdminManaged;
 
     /*
      * True if this is the default domain that is used for user creation. There is only one default domain per company.
      * Not nullable
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * True if this is the initial domain created by Microsoft Online Services (companyname.onmicrosoft.com). There is
      * only one initial domain per company. Not nullable
      */
-    @JsonProperty(value = "isInitial")
     private Boolean isInitial;
 
     /*
      * True if the domain is a verified root domain. Otherwise, false if the domain is a subdomain or unverified. Not
      * nullable
      */
-    @JsonProperty(value = "isRoot")
     private Boolean isRoot;
 
     /*
      * True if the domain has completed domain ownership verification. Not nullable
      */
-    @JsonProperty(value = "isVerified")
     private Boolean isVerified;
 
     /*
      * The manufacturer property.
      */
-    @JsonProperty(value = "manufacturer")
     private String manufacturer;
 
     /*
      * The model property.
      */
-    @JsonProperty(value = "model")
     private String model;
 
     /*
-     * Specifies the number of days before a user receives notification that their password will expire. If the
-     * property is not set, a default value of 14 days will be used.
+     * Specifies the number of days before a user receives notification that their password will expire. If the property
+     * is not set, a default value of 14 days will be used.
      */
-    @JsonProperty(value = "passwordNotificationWindowInDays")
     private Integer passwordNotificationWindowInDays;
 
     /*
      * Specifies the length of time that a password is valid before it must be changed. If the property is not set, a
      * default value of 90 days will be used.
      */
-    @JsonProperty(value = "passwordValidityPeriodInDays")
     private Integer passwordValidityPeriodInDays;
 
     /*
      * domainState
      */
-    @JsonProperty(value = "state")
     private MicrosoftGraphDomainState state;
 
     /*
@@ -105,35 +95,33 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * OrgIdAuthentication, Yammer, Intune The values which you can add/remove using Graph API include: Email,
      * OfficeCommunicationsOnline, YammerNot nullable
      */
-    @JsonProperty(value = "supportedServices")
     private List<String> supportedServices;
 
     /*
      * Read-only, Nullable
      */
-    @JsonProperty(value = "domainNameReferences")
     private List<MicrosoftGraphDirectoryObjectInner> domainNameReferences;
 
     /*
      * DNS records the customer adds to the DNS zone file of the domain before the domain can be used by Microsoft
      * Online services.Read-only, Nullable
      */
-    @JsonProperty(value = "serviceConfigurationRecords")
     private List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords;
 
     /*
      * DNS records that the customer adds to the DNS zone file of the domain before the customer can complete domain
      * ownership verification with Azure AD.Read-only, Nullable
      */
-    @JsonProperty(value = "verificationDnsRecords")
     private List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords;
 
     /*
      * domain
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDomainInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphDomainInner class.
+     */
     public MicrosoftGraphDomainInner() {
     }
 
@@ -143,7 +131,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * authentication.Federated indicates authentication is federated with an identity provider such as the tenant's
      * on-premises Active Directory via Active Directory Federation Services. This property is read-only and is not
      * nullable.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -156,7 +144,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * authentication.Federated indicates authentication is federated with an identity provider such as the tenant's
      * on-premises Active Directory via Active Directory Federation Services. This property is read-only and is not
      * nullable.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -169,7 +157,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * Get the availabilityStatus property: This property is always null except when the verify action is used. When the
      * verify action is used, a domain entity is returned in the response. The availabilityStatus property of the domain
      * entity in the response is either AvailableImmediately or EmailVerifiedDomainTakeoverScheduled.
-     *
+     * 
      * @return the availabilityStatus value.
      */
     public String availabilityStatus() {
@@ -180,7 +168,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * Set the availabilityStatus property: This property is always null except when the verify action is used. When the
      * verify action is used, a domain entity is returned in the response. The availabilityStatus property of the domain
      * entity in the response is either AvailableImmediately or EmailVerifiedDomainTakeoverScheduled.
-     *
+     * 
      * @param availabilityStatus the availabilityStatus value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -192,7 +180,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the isAdminManaged property: The value of the property is false if the DNS record management of the domain
      * has been delegated to Microsoft 365. Otherwise, the value is true. Not nullable.
-     *
+     * 
      * @return the isAdminManaged value.
      */
     public Boolean isAdminManaged() {
@@ -202,7 +190,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the isAdminManaged property: The value of the property is false if the DNS record management of the domain
      * has been delegated to Microsoft 365. Otherwise, the value is true. Not nullable.
-     *
+     * 
      * @param isAdminManaged the isAdminManaged value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -214,7 +202,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the isDefault property: True if this is the default domain that is used for user creation. There is only one
      * default domain per company. Not nullable.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -224,7 +212,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the isDefault property: True if this is the default domain that is used for user creation. There is only one
      * default domain per company. Not nullable.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -236,7 +224,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the isInitial property: True if this is the initial domain created by Microsoft Online Services
      * (companyname.onmicrosoft.com). There is only one initial domain per company. Not nullable.
-     *
+     * 
      * @return the isInitial value.
      */
     public Boolean isInitial() {
@@ -246,7 +234,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the isInitial property: True if this is the initial domain created by Microsoft Online Services
      * (companyname.onmicrosoft.com). There is only one initial domain per company. Not nullable.
-     *
+     * 
      * @param isInitial the isInitial value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -258,7 +246,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the isRoot property: True if the domain is a verified root domain. Otherwise, false if the domain is a
      * subdomain or unverified. Not nullable.
-     *
+     * 
      * @return the isRoot value.
      */
     public Boolean isRoot() {
@@ -268,7 +256,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the isRoot property: True if the domain is a verified root domain. Otherwise, false if the domain is a
      * subdomain or unverified. Not nullable.
-     *
+     * 
      * @param isRoot the isRoot value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -279,7 +267,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Get the isVerified property: True if the domain has completed domain ownership verification. Not nullable.
-     *
+     * 
      * @return the isVerified value.
      */
     public Boolean isVerified() {
@@ -288,7 +276,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Set the isVerified property: True if the domain has completed domain ownership verification. Not nullable.
-     *
+     * 
      * @param isVerified the isVerified value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -299,7 +287,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Get the manufacturer property: The manufacturer property.
-     *
+     * 
      * @return the manufacturer value.
      */
     public String manufacturer() {
@@ -308,7 +296,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Set the manufacturer property: The manufacturer property.
-     *
+     * 
      * @param manufacturer the manufacturer value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -319,7 +307,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Get the model property: The model property.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -328,7 +316,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Set the model property: The model property.
-     *
+     * 
      * @param model the model value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -341,7 +329,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * Get the passwordNotificationWindowInDays property: Specifies the number of days before a user receives
      * notification that their password will expire. If the property is not set, a default value of 14 days will be
      * used.
-     *
+     * 
      * @return the passwordNotificationWindowInDays value.
      */
     public Integer passwordNotificationWindowInDays() {
@@ -352,7 +340,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * Set the passwordNotificationWindowInDays property: Specifies the number of days before a user receives
      * notification that their password will expire. If the property is not set, a default value of 14 days will be
      * used.
-     *
+     * 
      * @param passwordNotificationWindowInDays the passwordNotificationWindowInDays value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -364,7 +352,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the passwordValidityPeriodInDays property: Specifies the length of time that a password is valid before it
      * must be changed. If the property is not set, a default value of 90 days will be used.
-     *
+     * 
      * @return the passwordValidityPeriodInDays value.
      */
     public Integer passwordValidityPeriodInDays() {
@@ -374,7 +362,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the passwordValidityPeriodInDays property: Specifies the length of time that a password is valid before it
      * must be changed. If the property is not set, a default value of 90 days will be used.
-     *
+     * 
      * @param passwordValidityPeriodInDays the passwordValidityPeriodInDays value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -385,7 +373,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Get the state property: domainState.
-     *
+     * 
      * @return the state value.
      */
     public MicrosoftGraphDomainState state() {
@@ -394,7 +382,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Set the state property: domainState.
-     *
+     * 
      * @param state the state value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -408,7 +396,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * values: Email, Sharepoint, EmailInternalRelayOnly, OfficeCommunicationsOnline, SharePointDefaultDomain,
      * FullRedelegation, SharePointPublic, OrgIdAuthentication, Yammer, Intune The values which you can add/remove using
      * Graph API include: Email, OfficeCommunicationsOnline, YammerNot nullable.
-     *
+     * 
      * @return the supportedServices value.
      */
     public List<String> supportedServices() {
@@ -420,7 +408,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * values: Email, Sharepoint, EmailInternalRelayOnly, OfficeCommunicationsOnline, SharePointDefaultDomain,
      * FullRedelegation, SharePointPublic, OrgIdAuthentication, Yammer, Intune The values which you can add/remove using
      * Graph API include: Email, OfficeCommunicationsOnline, YammerNot nullable.
-     *
+     * 
      * @param supportedServices the supportedServices value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -431,7 +419,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Get the domainNameReferences property: Read-only, Nullable.
-     *
+     * 
      * @return the domainNameReferences value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> domainNameReferences() {
@@ -440,12 +428,12 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Set the domainNameReferences property: Read-only, Nullable.
-     *
+     * 
      * @param domainNameReferences the domainNameReferences value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
-    public MicrosoftGraphDomainInner withDomainNameReferences(
-        List<MicrosoftGraphDirectoryObjectInner> domainNameReferences) {
+    public MicrosoftGraphDomainInner
+        withDomainNameReferences(List<MicrosoftGraphDirectoryObjectInner> domainNameReferences) {
         this.domainNameReferences = domainNameReferences;
         return this;
     }
@@ -453,7 +441,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the serviceConfigurationRecords property: DNS records the customer adds to the DNS zone file of the domain
      * before the domain can be used by Microsoft Online services.Read-only, Nullable.
-     *
+     * 
      * @return the serviceConfigurationRecords value.
      */
     public List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords() {
@@ -463,12 +451,12 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the serviceConfigurationRecords property: DNS records the customer adds to the DNS zone file of the domain
      * before the domain can be used by Microsoft Online services.Read-only, Nullable.
-     *
+     * 
      * @param serviceConfigurationRecords the serviceConfigurationRecords value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
-    public MicrosoftGraphDomainInner withServiceConfigurationRecords(
-        List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords) {
+    public MicrosoftGraphDomainInner
+        withServiceConfigurationRecords(List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords) {
         this.serviceConfigurationRecords = serviceConfigurationRecords;
         return this;
     }
@@ -476,7 +464,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Get the verificationDnsRecords property: DNS records that the customer adds to the DNS zone file of the domain
      * before the customer can complete domain ownership verification with Azure AD.Read-only, Nullable.
-     *
+     * 
      * @return the verificationDnsRecords value.
      */
     public List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords() {
@@ -486,29 +474,28 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
     /**
      * Set the verificationDnsRecords property: DNS records that the customer adds to the DNS zone file of the domain
      * before the customer can complete domain ownership verification with Azure AD.Read-only, Nullable.
-     *
+     * 
      * @param verificationDnsRecords the verificationDnsRecords value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
-    public MicrosoftGraphDomainInner withVerificationDnsRecords(
-        List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords) {
+    public MicrosoftGraphDomainInner
+        withVerificationDnsRecords(List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords) {
         this.verificationDnsRecords = verificationDnsRecords;
         return this;
     }
 
     /**
      * Get the additionalProperties property: domain.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: domain.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDomainInner object itself.
      */
@@ -517,15 +504,9 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDomainInner withId(String id) {
         super.withId(id);
@@ -534,7 +515,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -552,5 +533,113 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
         if (verificationDnsRecords() != null) {
             verificationDnsRecords().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("authenticationType", this.authenticationType);
+        jsonWriter.writeStringField("availabilityStatus", this.availabilityStatus);
+        jsonWriter.writeBooleanField("isAdminManaged", this.isAdminManaged);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeBooleanField("isInitial", this.isInitial);
+        jsonWriter.writeBooleanField("isRoot", this.isRoot);
+        jsonWriter.writeBooleanField("isVerified", this.isVerified);
+        jsonWriter.writeStringField("manufacturer", this.manufacturer);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeNumberField("passwordNotificationWindowInDays", this.passwordNotificationWindowInDays);
+        jsonWriter.writeNumberField("passwordValidityPeriodInDays", this.passwordValidityPeriodInDays);
+        jsonWriter.writeJsonField("state", this.state);
+        jsonWriter.writeArrayField("supportedServices", this.supportedServices,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("domainNameReferences", this.domainNameReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceConfigurationRecords", this.serviceConfigurationRecords,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("verificationDnsRecords", this.verificationDnsRecords,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDomainInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDomainInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDomainInner.
+     */
+    public static MicrosoftGraphDomainInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDomainInner deserializedMicrosoftGraphDomainInner = new MicrosoftGraphDomainInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.withId(reader.getString());
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.authenticationType = reader.getString();
+                } else if ("availabilityStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.availabilityStatus = reader.getString();
+                } else if ("isAdminManaged".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.isAdminManaged = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isInitial".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.isInitial = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRoot".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.isRoot = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isVerified".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.isVerified = reader.getNullable(JsonReader::getBoolean);
+                } else if ("manufacturer".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.manufacturer = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.model = reader.getString();
+                } else if ("passwordNotificationWindowInDays".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.passwordNotificationWindowInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("passwordValidityPeriodInDays".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.passwordValidityPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainInner.state = MicrosoftGraphDomainState.fromJson(reader);
+                } else if ("supportedServices".equals(fieldName)) {
+                    List<String> supportedServices = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphDomainInner.supportedServices = supportedServices;
+                } else if ("domainNameReferences".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> domainNameReferences
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDomainInner.domainNameReferences = domainNameReferences;
+                } else if ("serviceConfigurationRecords".equals(fieldName)) {
+                    List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords
+                        = reader.readArray(reader1 -> MicrosoftGraphDomainDnsRecord.fromJson(reader1));
+                    deserializedMicrosoftGraphDomainInner.serviceConfigurationRecords = serviceConfigurationRecords;
+                } else if ("verificationDnsRecords".equals(fieldName)) {
+                    List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords
+                        = reader.readArray(reader1 -> MicrosoftGraphDomainDnsRecord.fromJson(reader1));
+                    deserializedMicrosoftGraphDomainInner.verificationDnsRecords = verificationDnsRecords;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDomainInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDomainInner;
+        });
     }
 }

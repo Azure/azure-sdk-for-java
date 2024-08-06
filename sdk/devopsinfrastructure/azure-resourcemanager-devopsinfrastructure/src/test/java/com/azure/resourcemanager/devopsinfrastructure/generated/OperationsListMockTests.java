@@ -23,7 +23,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"fouyf\",\"isDataAction\":false,\"display\":{\"provider\":\"pwiyzvqtm\",\"resource\":\"bexkpzksmondj\",\"operation\":\"uxvypomgkopkwh\",\"description\":\"v\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"iexpbtgiwbwo\",\"isDataAction\":false,\"display\":{\"provider\":\"hrtdtk\",\"resource\":\"qxwbpokulpiu\",\"operation\":\"aasipqi\",\"description\":\"byuqerpqlp\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +34,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pwiyzvqtm", response.iterator().next().display().provider());
-        Assertions.assertEquals("bexkpzksmondj", response.iterator().next().display().resource());
-        Assertions.assertEquals("uxvypomgkopkwh", response.iterator().next().display().operation());
-        Assertions.assertEquals("v", response.iterator().next().display().description());
         Assertions.assertEquals(ActionType.INTERNAL, response.iterator().next().actionType());
     }
 }

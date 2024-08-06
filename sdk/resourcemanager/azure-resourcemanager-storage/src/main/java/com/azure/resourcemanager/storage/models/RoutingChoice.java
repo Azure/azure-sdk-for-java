@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
      * @param name a name to look for.
      * @return the corresponding RoutingChoice.
      */
-    @JsonCreator
     public static RoutingChoice fromString(String name) {
         return fromString(name, RoutingChoice.class);
     }

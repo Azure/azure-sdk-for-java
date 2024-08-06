@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list SSH public keys operation response.
  */
 @Fluent
-public final class SshPublicKeysGroupListResult {
+public final class SshPublicKeysGroupListResult implements JsonSerializable<SshPublicKeysGroupListResult> {
     /*
      * The list of SSH public keys
      */
-    @JsonProperty(value = "value", required = true)
     private List<SshPublicKeyResourceInner> value;
 
     /*
      * The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH
      * public keys.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,12 +85,55 @@ public final class SshPublicKeysGroupListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SshPublicKeysGroupListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SshPublicKeysGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SshPublicKeysGroupListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SshPublicKeysGroupListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SshPublicKeysGroupListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SshPublicKeysGroupListResult.
+     */
+    public static SshPublicKeysGroupListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SshPublicKeysGroupListResult deserializedSshPublicKeysGroupListResult = new SshPublicKeysGroupListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SshPublicKeyResourceInner> value
+                        = reader.readArray(reader1 -> SshPublicKeyResourceInner.fromJson(reader1));
+                    deserializedSshPublicKeysGroupListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSshPublicKeysGroupListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSshPublicKeysGroupListResult;
+        });
+    }
 }

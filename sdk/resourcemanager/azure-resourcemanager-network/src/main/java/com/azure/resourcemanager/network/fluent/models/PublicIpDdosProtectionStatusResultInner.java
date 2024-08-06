@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IsWorkloadProtected;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Response for GetPublicIpAddressDdosProtectionStatusOperation API service call.
  */
 @Fluent
-public final class PublicIpDdosProtectionStatusResultInner {
+public final class PublicIpDdosProtectionStatusResultInner
+    implements JsonSerializable<PublicIpDdosProtectionStatusResultInner> {
     /*
      * Public IP ARM resource ID
      */
-    @JsonProperty(value = "publicIpAddressId")
     private String publicIpAddressId;
 
     /*
      * IP Address of the Public IP Resource
      */
-    @JsonProperty(value = "publicIpAddress")
     private String publicIpAddress;
 
     /*
      * Value indicating whether the IP address is DDoS workload protected or not.
      */
-    @JsonProperty(value = "isWorkloadProtected")
     private IsWorkloadProtected isWorkloadProtected;
 
     /*
-     *  DDoS protection plan Resource Id of a if IP address is protected through a plan.
+     * DDoS protection plan Resource Id of a if IP address is protected through a plan.
      */
-    @JsonProperty(value = "ddosProtectionPlanId")
     private String ddosProtectionPlanId;
 
     /**
@@ -131,5 +132,53 @@ public final class PublicIpDdosProtectionStatusResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicIpAddressId", this.publicIpAddressId);
+        jsonWriter.writeStringField("publicIpAddress", this.publicIpAddress);
+        jsonWriter.writeStringField("isWorkloadProtected",
+            this.isWorkloadProtected == null ? null : this.isWorkloadProtected.toString());
+        jsonWriter.writeStringField("ddosProtectionPlanId", this.ddosProtectionPlanId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicIpDdosProtectionStatusResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicIpDdosProtectionStatusResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicIpDdosProtectionStatusResultInner.
+     */
+    public static PublicIpDdosProtectionStatusResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicIpDdosProtectionStatusResultInner deserializedPublicIpDdosProtectionStatusResultInner
+                = new PublicIpDdosProtectionStatusResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicIpAddressId".equals(fieldName)) {
+                    deserializedPublicIpDdosProtectionStatusResultInner.publicIpAddressId = reader.getString();
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedPublicIpDdosProtectionStatusResultInner.publicIpAddress = reader.getString();
+                } else if ("isWorkloadProtected".equals(fieldName)) {
+                    deserializedPublicIpDdosProtectionStatusResultInner.isWorkloadProtected
+                        = IsWorkloadProtected.fromString(reader.getString());
+                } else if ("ddosProtectionPlanId".equals(fieldName)) {
+                    deserializedPublicIpDdosProtectionStatusResultInner.ddosProtectionPlanId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicIpDdosProtectionStatusResultInner;
+        });
     }
 }

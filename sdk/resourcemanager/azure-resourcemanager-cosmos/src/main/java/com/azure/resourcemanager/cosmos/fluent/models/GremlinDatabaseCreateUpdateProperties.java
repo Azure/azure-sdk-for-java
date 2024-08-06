@@ -6,25 +6,28 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties to create and update Azure Cosmos DB Gremlin database.
  */
 @Fluent
-public final class GremlinDatabaseCreateUpdateProperties {
+public final class GremlinDatabaseCreateUpdateProperties
+    implements JsonSerializable<GremlinDatabaseCreateUpdateProperties> {
     /*
      * The standard JSON format of a Gremlin database
      */
-    @JsonProperty(value = "resource", required = true)
     private GremlinDatabaseResource resource;
 
     /*
      * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
-    @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
     /**
@@ -94,4 +97,46 @@ public final class GremlinDatabaseCreateUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GremlinDatabaseCreateUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GremlinDatabaseCreateUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GremlinDatabaseCreateUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GremlinDatabaseCreateUpdateProperties.
+     */
+    public static GremlinDatabaseCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GremlinDatabaseCreateUpdateProperties deserializedGremlinDatabaseCreateUpdateProperties
+                = new GremlinDatabaseCreateUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedGremlinDatabaseCreateUpdateProperties.resource
+                        = GremlinDatabaseResource.fromJson(reader);
+                } else if ("options".equals(fieldName)) {
+                    deserializedGremlinDatabaseCreateUpdateProperties.options = CreateUpdateOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGremlinDatabaseCreateUpdateProperties;
+        });
+    }
 }

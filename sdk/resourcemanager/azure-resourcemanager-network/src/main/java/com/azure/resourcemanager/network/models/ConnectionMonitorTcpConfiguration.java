@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the TCP configuration.
  */
 @Fluent
-public final class ConnectionMonitorTcpConfiguration {
+public final class ConnectionMonitorTcpConfiguration implements JsonSerializable<ConnectionMonitorTcpConfiguration> {
     /*
      * The port to connect to.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * Value indicating whether path evaluation with trace route should be disabled.
      */
-    @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
 
     /*
      * Destination port behavior.
      */
-    @JsonProperty(value = "destinationPortBehavior")
     private DestinationPortBehavior destinationPortBehavior;
 
     /**
@@ -103,5 +104,51 @@ public final class ConnectionMonitorTcpConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeBooleanField("disableTraceRoute", this.disableTraceRoute);
+        jsonWriter.writeStringField("destinationPortBehavior",
+            this.destinationPortBehavior == null ? null : this.destinationPortBehavior.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorTcpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorTcpConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorTcpConfiguration.
+     */
+    public static ConnectionMonitorTcpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorTcpConfiguration deserializedConnectionMonitorTcpConfiguration
+                = new ConnectionMonitorTcpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedConnectionMonitorTcpConfiguration.port = reader.getNullable(JsonReader::getInt);
+                } else if ("disableTraceRoute".equals(fieldName)) {
+                    deserializedConnectionMonitorTcpConfiguration.disableTraceRoute
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("destinationPortBehavior".equals(fieldName)) {
+                    deserializedConnectionMonitorTcpConfiguration.destinationPortBehavior
+                        = DestinationPortBehavior.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorTcpConfiguration;
+        });
     }
 }

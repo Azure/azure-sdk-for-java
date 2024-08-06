@@ -1,6 +1,35 @@
 # Release History
 
-## 1.0.0-beta.2 (2024-06-18)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2024-07-04)
+
+- Azure Resource Manager OracleDatabase client library for Java. This package contains Microsoft Azure SDK for OracleDatabase Management SDK.  Package tag package-2023-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DbSystemShapeProperties` was modified
+
+* `int availableCoreCount()` -> `java.lang.Integer availableCoreCount()`
+
+#### `models.DnsPrivateZoneProperties` was modified
+
+* `boolean isProtected()` -> `java.lang.Boolean isProtected()`
+* `int serial()` -> `java.lang.Integer serial()`
+
+#### `models.DnsPrivateViewProperties` was modified
+
+* `boolean isProtected()` -> `java.lang.Boolean isProtected()`
+
+## 1.0.0-beta.2 (2024-06-26)
 
 - Azure Resource Manager OracleDatabase client library for Java. This package contains Microsoft Azure SDK for OracleDatabase Management SDK.  Package tag package-2023-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,21 +37,81 @@
 
 * `models.ResourcePlanTypeUpdate` was removed
 
+#### `models.DnsPrivateZoneListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.GiVersionListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.VirtualNetworkAddressListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.DbServerListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.AutonomousDbVersionListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.AutonomousDatabaseListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
 #### `models.OracleSubscriptionUpdate` was modified
 
-* `models.ResourcePlanTypeUpdate plan()` -> `models.PlanUpdate plan()`
 * `withPlan(models.ResourcePlanTypeUpdate)` was removed
+* `models.ResourcePlanTypeUpdate plan()` -> `models.PlanUpdate plan()`
+
+#### `models.DbNodeListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.DnsPrivateViewListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.AutonomousDatabaseCharacterSetListResult` was modified
+
+* `withValue(java.util.List)` was removed
 
 #### `models.CloudExadataInfrastructureProperties` was modified
 
 * `java.lang.Integer dataStorageSizeInTbs()` -> `java.lang.Double dataStorageSizeInTbs()`
 
+#### `models.AutonomousDatabaseBackupListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.DbSystemShapeListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.CloudVmClusterListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.AutonomousDatabaseNationalCharacterSetListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.OracleSubscriptionListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.CloudExadataInfrastructureListResult` was modified
+
+* `withValue(java.util.List)` was removed
+
 #### `models.AutonomousDatabaseBackupProperties` was modified
 
-* `type()` was removed
 * `databaseSizeInTBs()` was removed
-* `autonomousDatabaseId()` was removed
 * `sizeInTBs()` was removed
+* `type()` was removed
+* `autonomousDatabaseId()` was removed
 
 ### Features Added
 
@@ -49,24 +138,24 @@
 
 #### `models.AllConnectionStringType` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DbNodeProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.CloudVmClusterProperties` was modified
 
+* `withSystemVersion(java.lang.String)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withSystemVersion(java.lang.String)` was added
 
 #### `models.DayOfWeek` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Month` was modified
 
@@ -75,8 +164,8 @@
 
 #### `models.DbServerProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.ProfileType` was modified
 
@@ -85,26 +174,23 @@
 
 #### `models.DnsPrivateZoneListResult` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withNextLink(java.lang.String)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.GiVersionListResult` was modified
 
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withNextLink(java.lang.String)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.VirtualNetworkAddressListResult` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
-* `withNextLink(java.lang.String)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.NsgCidr` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.AddRemoveDbNode` was modified
 
@@ -113,13 +199,13 @@
 
 #### `models.PeerDbDetails` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.DbSystemShapeProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.ApexDetailsType` was modified
 
@@ -128,21 +214,19 @@
 
 #### `models.AutonomousDatabase` was modified
 
+* `restore(models.RestoreAutonomousDatabaseDetails,com.azure.core.util.Context)` was added
+* `restore(models.RestoreAutonomousDatabaseDetails)` was added
 * `shrink()` was added
 * `shrink(com.azure.core.util.Context)` was added
-* `restore(models.RestoreAutonomousDatabaseDetails)` was added
-* `restore(models.RestoreAutonomousDatabaseDetails,com.azure.core.util.Context)` was added
 
 #### `models.DbServerListResult` was modified
 
-* `withNextLink(java.lang.String)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AutonomousDbVersionListResult` was modified
 
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withNextLink(java.lang.String)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.CloudExadataInfrastructureUpdateProperties` was modified
@@ -157,8 +241,8 @@
 
 #### `models.AutonomousDatabaseBackupUpdate` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.VirtualNetworkAddressProperties` was modified
 
@@ -167,8 +251,8 @@
 
 #### `models.CloudVmClusterUpdate` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.PortRange` was modified
 
@@ -177,72 +261,70 @@
 
 #### `models.AutonomousDatabaseCloneProperties` was modified
 
-* `timeMaintenanceBegin()` was added
-* `provisionableCpus()` was added
-* `availableUpgradeVersions()` was added
-* `timeReclamationOfFreeAutonomousDatabase()` was added
-* `failedDataRecoveryInSeconds()` was added
-* `lifecycleDetails()` was added
-* `localStandbyDb()` was added
-* `privateEndpoint()` was added
-* `operationsInsightsStatus()` was added
-* `timeOfLastSwitchover()` was added
-* `usedDataStorageSizeInTbs()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `timeLocalDataGuardEnabled()` was added
 * `peerDbIds()` was added
-* `actualUsedDataStorageSizeInTbs()` was added
-* `dataSafeStatus()` was added
-* `isRemoteDataGuardEnabled()` was added
-* `timeOfLastFailover()` was added
-* `connectionStrings()` was added
-* `timeOfLastRefreshPoint()` was added
-* `withLongTermBackupSchedule(models.LongTermBackUpScheduleDetails)` was added
-* `serviceConsoleUrl()` was added
+* `connectionUrls()` was added
+* `provisionableCpus()` was added
+* `failedDataRecoveryInSeconds()` was added
 * `ocid()` was added
-* `ociUrl()` was added
-* `nextLongTermBackupTimestamp()` was added
-* `inMemoryAreaInGbs()` was added
-* `supportedRegionsToCloneTo()` was added
-* `apexDetails()` was added
-* `localDisasterRecoveryType()` was added
-* `timeDeletionOfFreeAutonomousDatabase()` was added
-* `sqlWebDeveloperUrl()` was added
 * `allocatedStorageSizeInTbs()` was added
+* `isRemoteDataGuardEnabled()` was added
+* `timeReclamationOfFreeAutonomousDatabase()` was added
+* `withLongTermBackupSchedule(models.LongTermBackUpScheduleDetails)` was added
 * `memoryPerOracleComputeUnitInGbs()` was added
+* `inMemoryAreaInGbs()` was added
+* `actualUsedDataStorageSizeInTbs()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `ociUrl()` was added
+* `timeMaintenanceBegin()` was added
+* `lifecycleState()` was added
+* `nextLongTermBackupTimestamp()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `dataSafeStatus()` was added
+* `sqlWebDeveloperUrl()` was added
+* `timeCreated()` was added
+* `timeOfLastRefresh()` was added
+* `apexDetails()` was added
+* `operationsInsightsStatus()` was added
+* `serviceConsoleUrl()` was added
+* `timeLocalDataGuardEnabled()` was added
+* `usedDataStorageSizeInGbs()` was added
+* `usedDataStorageSizeInTbs()` was added
+* `localStandbyDb()` was added
+* `timeDeletionOfFreeAutonomousDatabase()` was added
+* `privateEndpoint()` was added
+* `isPreview()` was added
+* `timeOfLastSwitchover()` was added
+* `timeOfLastRefreshPoint()` was added
+* `timeDataGuardRoleChanged()` was added
+* `connectionStrings()` was added
+* `timeOfLastFailover()` was added
+* `localDisasterRecoveryType()` was added
 * `timeMaintenanceEnd()` was added
 * `provisioningState()` was added
-* `timeCreated()` was added
-* `usedDataStorageSizeInGbs()` was added
-* `connectionUrls()` was added
-* `timeDataGuardRoleChanged()` was added
-* `isPreview()` was added
-* `lifecycleState()` was added
-* `timeOfLastRefresh()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
+* `supportedRegionsToCloneTo()` was added
+* `availableUpgradeVersions()` was added
+* `lifecycleDetails()` was added
 
 #### `models.AutonomousDatabaseListResult` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
-* `withNextLink(java.lang.String)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.OracleSubscriptionUpdate` was modified
 
 * `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `withPlan(models.PlanUpdate)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.ExadataIormConfig` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DbNodeListResult` was modified
 
-* `withNextLink(java.lang.String)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DnsPrivateZoneProperties` was modified
 
@@ -251,15 +333,15 @@
 
 #### `models.AutonomousDatabaseUpdateProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `withLongTermBackupSchedule(models.LongTermBackUpScheduleDetails)` was added
 * `longTermBackupSchedule()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AutonomousDatabaseBackupUpdateProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.EstimatedPatchingTime` was modified
 
@@ -268,14 +350,13 @@
 
 #### `models.AutonomousDatabaseUpdate` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DnsPrivateViewListResult` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
-* `withNextLink(java.lang.String)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.CloudExadataInfrastructureUpdate` was modified
 
@@ -286,7 +367,6 @@
 
 * `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
-* `withNextLink(java.lang.String)` was added
 
 #### `OracleDatabaseManager` was modified
 
@@ -294,8 +374,8 @@
 
 #### `models.OperationDisplay` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.ScheduledOperationsType` was modified
 
@@ -319,20 +399,20 @@
 
 #### `models.AutonomousDbVersionProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.DayOfWeekUpdate` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AutonomousDatabases` was modified
 
 * `shrink(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `restore(java.lang.String,java.lang.String,models.RestoreAutonomousDatabaseDetails)` was added
-* `restore(java.lang.String,java.lang.String,models.RestoreAutonomousDatabaseDetails,com.azure.core.util.Context)` was added
 * `shrink(java.lang.String,java.lang.String)` was added
+* `restore(java.lang.String,java.lang.String,models.RestoreAutonomousDatabaseDetails,com.azure.core.util.Context)` was added
+* `restore(java.lang.String,java.lang.String,models.RestoreAutonomousDatabaseDetails)` was added
 
 #### `models.AutonomousDatabaseCharacterSetProperties` was modified
 
@@ -347,14 +427,12 @@
 #### `models.AutonomousDatabaseBackupListResult` was modified
 
 * `toJson(com.azure.json.JsonWriter)` was added
-* `withNextLink(java.lang.String)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.DbSystemShapeListResult` was modified
 
 * `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withNextLink(java.lang.String)` was added
 
 #### `models.Plan` was modified
 
@@ -365,9 +443,9 @@
 
 * `longTermBackupSchedule()` was added
 * `nextLongTermBackupTimestamp()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
 * `withLongTermBackupSchedule(models.LongTermBackUpScheduleDetails)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.DbIormConfig` was modified
 
@@ -376,19 +454,18 @@
 
 #### `models.CloudVmClusterListResult` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `withNextLink(java.lang.String)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.ConnectionUrlType` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DbServerPatchingDetails` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.CustomerContact` was modified
 
@@ -397,59 +474,59 @@
 
 #### `models.AutonomousDatabaseProperties` was modified
 
-* `provisioningState()` was added
-* `availableUpgradeVersions()` was added
-* `failedDataRecoveryInSeconds()` was added
-* `lifecycleDetails()` was added
-* `allocatedStorageSizeInTbs()` was added
-* `timeDeletionOfFreeAutonomousDatabase()` was added
-* `usedDataStorageSizeInTbs()` was added
-* `isRemoteDataGuardEnabled()` was added
-* `lifecycleState()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `timeCreated()` was added
-* `dataSafeStatus()` was added
-* `inMemoryAreaInGbs()` was added
-* `privateEndpoint()` was added
-* `timeOfLastRefresh()` was added
-* `actualUsedDataStorageSizeInTbs()` was added
-* `timeMaintenanceEnd()` was added
-* `nextLongTermBackupTimestamp()` was added
-* `peerDbIds()` was added
-* `timeOfLastSwitchover()` was added
-* `timeReclamationOfFreeAutonomousDatabase()` was added
-* `connectionUrls()` was added
-* `withLongTermBackupSchedule(models.LongTermBackUpScheduleDetails)` was added
-* `ociUrl()` was added
-* `ocid()` was added
-* `timeOfLastFailover()` was added
-* `apexDetails()` was added
-* `supportedRegionsToCloneTo()` was added
-* `timeDataGuardRoleChanged()` was added
-* `timeLocalDataGuardEnabled()` was added
-* `provisionableCpus()` was added
-* `sqlWebDeveloperUrl()` was added
-* `connectionStrings()` was added
-* `localDisasterRecoveryType()` was added
-* `usedDataStorageSizeInGbs()` was added
-* `serviceConsoleUrl()` was added
-* `timeMaintenanceBegin()` was added
-* `operationsInsightsStatus()` was added
 * `memoryPerOracleComputeUnitInGbs()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `localStandbyDb()` was added
+* `failedDataRecoveryInSeconds()` was added
+* `connectionStrings()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `timeOfLastFailover()` was added
+* `allocatedStorageSizeInTbs()` was added
+* `provisioningState()` was added
+* `peerDbIds()` was added
 * `timeOfLastRefreshPoint()` was added
 * `isPreview()` was added
+* `timeReclamationOfFreeAutonomousDatabase()` was added
+* `provisionableCpus()` was added
+* `usedDataStorageSizeInGbs()` was added
+* `lifecycleState()` was added
+* `serviceConsoleUrl()` was added
+* `operationsInsightsStatus()` was added
+* `ociUrl()` was added
+* `timeMaintenanceEnd()` was added
+* `actualUsedDataStorageSizeInTbs()` was added
+* `localDisasterRecoveryType()` was added
+* `timeCreated()` was added
+* `timeDataGuardRoleChanged()` was added
+* `lifecycleDetails()` was added
+* `nextLongTermBackupTimestamp()` was added
+* `timeMaintenanceBegin()` was added
+* `sqlWebDeveloperUrl()` was added
+* `connectionUrls()` was added
+* `timeLocalDataGuardEnabled()` was added
+* `apexDetails()` was added
+* `timeDeletionOfFreeAutonomousDatabase()` was added
+* `timeOfLastSwitchover()` was added
+* `ocid()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withLongTermBackupSchedule(models.LongTermBackUpScheduleDetails)` was added
+* `isRemoteDataGuardEnabled()` was added
+* `availableUpgradeVersions()` was added
+* `privateEndpoint()` was added
+* `inMemoryAreaInGbs()` was added
+* `dataSafeStatus()` was added
+* `timeOfLastRefresh()` was added
+* `usedDataStorageSizeInTbs()` was added
+* `supportedRegionsToCloneTo()` was added
+* `localStandbyDb()` was added
 
 #### `models.DnsPrivateViewProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AutonomousDatabaseStandbySummary` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.ConnectionStringType` was modified
 
@@ -458,9 +535,8 @@
 
 #### `models.AutonomousDatabaseNationalCharacterSetListResult` was modified
 
-* `withNextLink(java.lang.String)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.CloudVmClusterUpdateProperties` was modified
 
@@ -474,9 +550,8 @@
 
 #### `models.OracleSubscriptionListResult` was modified
 
-* `withNextLink(java.lang.String)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.PrivateIpAddressesFilter` was modified
 
@@ -489,8 +564,8 @@
 
 #### `models.DataCollectionOptions` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.MaintenanceWindow` was modified
 
@@ -500,18 +575,17 @@
 #### `models.CloudExadataInfrastructureListResult` was modified
 
 * `toJson(com.azure.json.JsonWriter)` was added
-* `withNextLink(java.lang.String)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AutonomousDatabaseBackupProperties` was modified
 
 * `databaseSizeInTbs()` was added
 * `timeStarted()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `autonomousDatabaseOcid()` was added
 * `sizeInTbs()` was added
 * `backupType()` was added
-* `autonomousDatabaseOcid()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.ScheduledOperationsTypeUpdate` was modified
 
@@ -520,8 +594,8 @@
 
 #### `models.GiVersionProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.0.0-beta.1 (2024-05-28)
 

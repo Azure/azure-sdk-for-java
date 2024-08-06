@@ -6,18 +6,22 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a virtual machines network configuration's DNS settings.
  */
 @Fluent
-public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
+public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration
+    implements JsonSerializable<VirtualMachinePublicIpAddressDnsSettingsConfiguration> {
     /*
      * The Domain name label prefix of the PublicIPAddress resources that will be created. The generated name label is
      * the concatenation of the domain name label and vm network profile unique ID.
      */
-    @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
 
     /*
@@ -25,7 +29,6 @@ public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
      * the concatenation of the hashed domain name label with policy according to the domain name label scope and vm
      * network profile unique ID.
      */
-    @JsonProperty(value = "domainNameLabelScope")
     private DomainNameLabelScopeTypes domainNameLabelScope;
 
     /**
@@ -36,8 +39,7 @@ public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
 
     /**
      * Get the domainNameLabel property: The Domain name label prefix of the PublicIPAddress resources that will be
-     * created. The generated name label is the concatenation of the domain name label and vm network profile unique
-     * ID.
+     * created. The generated name label is the concatenation of the domain name label and vm network profile unique ID.
      * 
      * @return the domainNameLabel value.
      */
@@ -47,8 +49,7 @@ public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
 
     /**
      * Set the domainNameLabel property: The Domain name label prefix of the PublicIPAddress resources that will be
-     * created. The generated name label is the concatenation of the domain name label and vm network profile unique
-     * ID.
+     * created. The generated name label is the concatenation of the domain name label and vm network profile unique ID.
      * 
      * @param domainNameLabel the domainNameLabel value to set.
      * @return the VirtualMachinePublicIpAddressDnsSettingsConfiguration object itself.
@@ -90,11 +91,57 @@ public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
      */
     public void validate() {
         if (domainNameLabel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property domainNameLabel in model VirtualMachinePublicIpAddressDnsSettingsConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainNameLabel in model VirtualMachinePublicIpAddressDnsSettingsConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER
         = new ClientLogger(VirtualMachinePublicIpAddressDnsSettingsConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domainNameLabel", this.domainNameLabel);
+        jsonWriter.writeStringField("domainNameLabelScope",
+            this.domainNameLabelScope == null ? null : this.domainNameLabelScope.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinePublicIpAddressDnsSettingsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinePublicIpAddressDnsSettingsConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachinePublicIpAddressDnsSettingsConfiguration.
+     */
+    public static VirtualMachinePublicIpAddressDnsSettingsConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinePublicIpAddressDnsSettingsConfiguration deserializedVirtualMachinePublicIpAddressDnsSettingsConfiguration
+                = new VirtualMachinePublicIpAddressDnsSettingsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainNameLabel".equals(fieldName)) {
+                    deserializedVirtualMachinePublicIpAddressDnsSettingsConfiguration.domainNameLabel
+                        = reader.getString();
+                } else if ("domainNameLabelScope".equals(fieldName)) {
+                    deserializedVirtualMachinePublicIpAddressDnsSettingsConfiguration.domainNameLabelScope
+                        = DomainNameLabelScopeTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinePublicIpAddressDnsSettingsConfiguration;
+        });
+    }
 }

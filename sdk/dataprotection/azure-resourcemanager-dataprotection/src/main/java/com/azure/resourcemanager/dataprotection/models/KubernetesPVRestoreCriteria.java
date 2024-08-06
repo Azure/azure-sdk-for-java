@@ -5,33 +5,45 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Item Level kubernetes persistent volume target info for restore operation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("KubernetesPVRestoreCriteria")
 @Fluent
 public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria {
     /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "KubernetesPVRestoreCriteria";
+
+    /*
      * Selected persistent volume claim name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Selected storage class name for restore operation
      */
-    @JsonProperty(value = "storageClassName")
     private String storageClassName;
 
     /**
      * Creates an instance of KubernetesPVRestoreCriteria class.
      */
     public KubernetesPVRestoreCriteria() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -82,5 +94,47 @@ public final class KubernetesPVRestoreCriteria extends ItemLevelRestoreCriteria 
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("storageClassName", this.storageClassName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesPVRestoreCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesPVRestoreCriteria if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesPVRestoreCriteria.
+     */
+    public static KubernetesPVRestoreCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesPVRestoreCriteria deserializedKubernetesPVRestoreCriteria = new KubernetesPVRestoreCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedKubernetesPVRestoreCriteria.objectType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKubernetesPVRestoreCriteria.name = reader.getString();
+                } else if ("storageClassName".equals(fieldName)) {
+                    deserializedKubernetesPVRestoreCriteria.storageClassName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesPVRestoreCriteria;
+        });
     }
 }

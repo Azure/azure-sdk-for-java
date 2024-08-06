@@ -10,7 +10,7 @@ package com.azure.resourcemanager.imagebuilder.generated;
 public final class TriggersGetSamples {
     /*
      * x-ms-original-file:
-     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetTrigger.
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/GetTrigger.
      * json
      */
     /**
@@ -19,7 +19,7 @@ public final class TriggersGetSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void getATriggerResource(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.triggers().getWithResponse("myResourceGroup", "myImageTemplate", "source",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getWithResponse("myResourceGroup", "myImageTemplate", "source", com.azure.core.util.Context.NONE);
     }
 }

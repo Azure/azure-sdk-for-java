@@ -6,59 +6,56 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of on demand test probe request.
  */
 @Fluent
-public final class ApplicationGatewayOnDemandProbe {
+public final class ApplicationGatewayOnDemandProbe implements JsonSerializable<ApplicationGatewayOnDemandProbe> {
     /*
      * The protocol used for the probe.
      */
-    @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
 
     /*
      * Host name to send the probe to.
      */
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * Relative path of probe. Valid path starts from '/'. Probe is sent to <Protocol>://<host>:<port><path>.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
-     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
+     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period.
+     * Acceptable values are from 1 second to 86400 seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * Whether the host header should be picked from the backend http settings. Default value is false.
      */
-    @JsonProperty(value = "pickHostNameFromBackendHttpSettings")
     private Boolean pickHostnameFromBackendHttpSettings;
 
     /*
      * Criterion for classifying a healthy probe response.
      */
-    @JsonProperty(value = "match")
     private ApplicationGatewayProbeHealthResponseMatch match;
 
     /*
      * Reference to backend pool of application gateway to which probe request will be sent.
      */
-    @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /*
      * Reference to backend http setting of application gateway to be used for test probe.
      */
-    @JsonProperty(value = "backendHttpSettings")
     private SubResource backendHttpSettings;
 
     /**
@@ -247,5 +244,66 @@ public final class ApplicationGatewayOnDemandProbe {
         if (match() != null) {
             match().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeBooleanField("pickHostNameFromBackendHttpSettings", this.pickHostnameFromBackendHttpSettings);
+        jsonWriter.writeJsonField("match", this.match);
+        jsonWriter.writeJsonField("backendAddressPool", this.backendAddressPool);
+        jsonWriter.writeJsonField("backendHttpSettings", this.backendHttpSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayOnDemandProbe from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayOnDemandProbe if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayOnDemandProbe.
+     */
+    public static ApplicationGatewayOnDemandProbe fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayOnDemandProbe deserializedApplicationGatewayOnDemandProbe
+                = new ApplicationGatewayOnDemandProbe();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.protocol
+                        = ApplicationGatewayProtocol.fromString(reader.getString());
+                } else if ("host".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.host = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.path = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("pickHostNameFromBackendHttpSettings".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.pickHostnameFromBackendHttpSettings
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("match".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.match
+                        = ApplicationGatewayProbeHealthResponseMatch.fromJson(reader);
+                } else if ("backendAddressPool".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.backendAddressPool = SubResource.fromJson(reader);
+                } else if ("backendHttpSettings".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.backendHttpSettings = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayOnDemandProbe;
+        });
     }
 }

@@ -11,7 +11,7 @@ public final class ProvisioningIssuePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisioningIssueProperties model = BinaryData.fromString(
-            "{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Error\",\"description\":\"ukokwbqplhlvn\",\"suggestedResourceIds\":[\"pzlrphw\"],\"suggestedAccessRules\":[{\"name\":\"dweyuqdunv\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"biorktal\",\"wjhhgdnhxmsivf\"]}},{\"name\":\"iloxggdufiq\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"ao\",\"jchvcyy\",\"s\"]}},{\"name\":\"dotcubiipuip\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"acjekni\",\"shqvcimpev\"]}}]}")
+            "{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Warning\",\"description\":\"gkxnyedabg\",\"suggestedResourceIds\":[\"dtj\",\"ewbcihxuuw\",\"c\"],\"suggestedAccessRules\":[{\"name\":\"cybvpayakkudzpxg\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"gstcyohpf\"]}},{\"name\":\"rkdbdgiogsjkmnwq\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"yhddvia\",\"egfnmntfpmvmemfn\"]}}]}")
             .toObject(ProvisioningIssueProperties.class);
     }
 

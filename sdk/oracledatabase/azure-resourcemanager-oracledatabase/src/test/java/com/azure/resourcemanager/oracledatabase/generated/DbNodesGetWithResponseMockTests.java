@@ -20,7 +20,7 @@ public final class DbNodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"vbgkcvkhpzv\",\"additionalDetails\":\"d\",\"backupIpId\":\"voniypfp\",\"backupVnic2Id\":\"cpzgpxtiv\",\"backupVnicId\":\"knidib\",\"cpuCoreCount\":1035678028,\"dbNodeStorageSizeInGbs\":2098514959,\"dbServerId\":\"n\",\"dbSystemId\":\"hgovfgp\",\"faultDomain\":\"qmhhaowj\",\"hostIpId\":\"zvuporqzdfuydz\",\"hostname\":\"fvxcnqmxqpswo\",\"lifecycleState\":\"Available\",\"lifecycleDetails\":\"hl\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":969740243,\"softwareStorageSizeInGb\":1094602244,\"timeCreated\":\"2021-03-07T23:36:35Z\",\"timeMaintenanceWindowEnd\":\"2021-02-27T20:56:42Z\",\"timeMaintenanceWindowStart\":\"2021-02-21T14:44:40Z\",\"vnic2Id\":\"wiwtglxxhl\",\"vnicId\":\"pg\",\"provisioningState\":\"Canceled\"},\"id\":\"mnzhrgmqg\",\"name\":\"sxvpqcbfrmbodths\",\"type\":\"qgvriibakcla\"}";
+            = "{\"properties\":{\"ocid\":\"tkbu\",\"additionalDetails\":\"ogsf\",\"backupIpId\":\"ayiansharujtji\",\"backupVnic2Id\":\"fzyjqt\",\"backupVnicId\":\"wkpqhjpenuygbq\",\"cpuCoreCount\":800808953,\"dbNodeStorageSizeInGbs\":1833474976,\"dbServerId\":\"wv\",\"dbSystemId\":\"vcdlg\",\"faultDomain\":\"ucmfdj\",\"hostIpId\":\"laxpunj\",\"hostname\":\"kczvvita\",\"lifecycleState\":\"Stopped\",\"lifecycleDetails\":\"fcsserxhtvsox\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1944109467,\"softwareStorageSizeInGb\":166425776,\"timeCreated\":\"2021-02-27T10:59:18Z\",\"timeMaintenanceWindowEnd\":\"2021-04-26T17:18:37Z\",\"timeMaintenanceWindowStart\":\"2021-09-18T03:06:41Z\",\"vnic2Id\":\"ruuuybnch\",\"vnicId\":\"zizoyuely\",\"provisioningState\":\"Succeeded\"},\"id\":\"nb\",\"name\":\"qyggagfl\",\"type\":\"lgmtrwahzjmucf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DbNodesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DbNode response = manager.dbNodes()
-            .getWithResponse("xrx", "unjdx", "glnkvxlxpagl", com.azure.core.util.Context.NONE)
+            .getWithResponse("gtuwkff", "jk", "sysidfvclglxnf", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

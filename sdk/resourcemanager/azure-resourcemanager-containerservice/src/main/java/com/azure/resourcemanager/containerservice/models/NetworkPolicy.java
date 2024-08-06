@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Network policy used for building the Kubernetes network.
  */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
+    /**
+     * Static value none for NetworkPolicy.
+     */
+    public static final NetworkPolicy NONE = fromString("none");
+
     /**
      * Static value calico for NetworkPolicy.
      */
@@ -42,7 +46,6 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
      * @param name a name to look for.
      * @return the corresponding NetworkPolicy.
      */
-    @JsonCreator
     public static NetworkPolicy fromString(String name) {
         return fromString(name, NetworkPolicy.class);
     }

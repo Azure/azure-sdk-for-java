@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class QuestionContentType extends ExpandableStringEnum<QuestionCont
      * @param name a name to look for.
      * @return the corresponding QuestionContentType.
      */
-    @JsonCreator
     public static QuestionContentType fromString(String name) {
         return fromString(name, QuestionContentType.class);
     }

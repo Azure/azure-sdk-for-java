@@ -5,64 +5,60 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties used to configure a node pool snapshot.
  */
 @Fluent
-public final class SnapshotProperties {
+public final class SnapshotProperties implements JsonSerializable<SnapshotProperties> {
     /*
      * CreationData to be used to specify the source agent pool resource ID to create this snapshot.
      */
-    @JsonProperty(value = "creationData")
     private CreationData creationData;
 
     /*
      * The type of a snapshot. The default is NodePool.
      */
-    @JsonProperty(value = "snapshotType")
     private SnapshotType snapshotType;
 
     /*
      * The version of Kubernetes.
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
      * The version of node image.
      */
-    @JsonProperty(value = "nodeImageVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeImageVersion;
 
     /*
      * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OSType osType;
 
     /*
-     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is
-     * Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
+     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+     * when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
      */
-    @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
     private OSSku osSku;
 
     /*
      * The size of the VM.
      */
-    @JsonProperty(value = "vmSize", access = JsonProperty.Access.WRITE_ONLY)
     private String vmSize;
 
     /*
      * Whether to use a FIPS-enabled OS.
      */
-    @JsonProperty(value = "enableFIPS", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enableFips;
 
     /**
@@ -178,5 +174,56 @@ public final class SnapshotProperties {
         if (creationData() != null) {
             creationData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("creationData", this.creationData);
+        jsonWriter.writeStringField("snapshotType", this.snapshotType == null ? null : this.snapshotType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotProperties.
+     */
+    public static SnapshotProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotProperties deserializedSnapshotProperties = new SnapshotProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationData".equals(fieldName)) {
+                    deserializedSnapshotProperties.creationData = CreationData.fromJson(reader);
+                } else if ("snapshotType".equals(fieldName)) {
+                    deserializedSnapshotProperties.snapshotType = SnapshotType.fromString(reader.getString());
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedSnapshotProperties.kubernetesVersion = reader.getString();
+                } else if ("nodeImageVersion".equals(fieldName)) {
+                    deserializedSnapshotProperties.nodeImageVersion = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedSnapshotProperties.osType = OSType.fromString(reader.getString());
+                } else if ("osSku".equals(fieldName)) {
+                    deserializedSnapshotProperties.osSku = OSSku.fromString(reader.getString());
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedSnapshotProperties.vmSize = reader.getString();
+                } else if ("enableFIPS".equals(fieldName)) {
+                    deserializedSnapshotProperties.enableFips = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotProperties;
+        });
     }
 }

@@ -6,24 +6,26 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.TroubleshootingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Parameters that define the resource to troubleshoot.
  */
 @Fluent
-public final class TroubleshootingParameters {
+public final class TroubleshootingParameters implements JsonSerializable<TroubleshootingParameters> {
     /*
      * The target resource to troubleshoot.
      */
-    @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
      * Properties of the troubleshooting resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private TroubleshootingProperties innerProperties = new TroubleshootingProperties();
 
     /**
@@ -128,4 +130,44 @@ public final class TroubleshootingParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TroubleshootingParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TroubleshootingParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TroubleshootingParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TroubleshootingParameters.
+     */
+    public static TroubleshootingParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TroubleshootingParameters deserializedTroubleshootingParameters = new TroubleshootingParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedTroubleshootingParameters.targetResourceId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTroubleshootingParameters.innerProperties = TroubleshootingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTroubleshootingParameters;
+        });
+    }
 }

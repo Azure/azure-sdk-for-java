@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: hybridcontainerservice
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-hybridcontainerservice
         groupId: com.azure.resourcemanager

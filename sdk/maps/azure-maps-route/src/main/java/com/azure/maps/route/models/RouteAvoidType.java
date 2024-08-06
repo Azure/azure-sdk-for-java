@@ -5,46 +5,69 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouteAvoidType. */
+/**
+ * Defines values for RouteAvoidType.
+ */
 public final class RouteAvoidType extends ExpandableStringEnum<RouteAvoidType> {
-    /** Static value tollRoads for RouteAvoidType. */
+    /**
+     * Avoids toll roads.
+     */
     public static final RouteAvoidType TOLL_ROADS = fromString("tollRoads");
 
-    /** Static value motorways for RouteAvoidType. */
+    /**
+     * Avoids motorways.
+     */
     public static final RouteAvoidType MOTORWAYS = fromString("motorways");
 
-    /** Static value ferries for RouteAvoidType. */
+    /**
+     * Avoids ferries.
+     */
     public static final RouteAvoidType FERRIES = fromString("ferries");
 
-    /** Static value unpavedRoads for RouteAvoidType. */
+    /**
+     * Avoids unpaved roads.
+     */
     public static final RouteAvoidType UNPAVED_ROADS = fromString("unpavedRoads");
 
-    /** Static value carpools for RouteAvoidType. */
+    /**
+     * Avoids routes that require the use of carpool (HOV/High Occupancy Vehicle) lanes.
+     */
     public static final RouteAvoidType CARPOOLS = fromString("carpools");
 
-    /** Static value alreadyUsedRoads for RouteAvoidType. */
+    /**
+     * Avoids using the same road multiple times. Most useful in conjunction with `routeType`=thrilling.
+     */
     public static final RouteAvoidType ALREADY_USED_ROADS = fromString("alreadyUsedRoads");
 
-    /** Static value borderCrossings for RouteAvoidType. */
+    /**
+     * Avoids border crossings in route calculation.
+     */
     public static final RouteAvoidType BORDER_CROSSINGS = fromString("borderCrossings");
 
     /**
+     * Creates a new instance of RouteAvoidType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteAvoidType() {
+    }
+
+    /**
      * Creates or finds a RouteAvoidType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RouteAvoidType.
      */
-    @JsonCreator
     public static RouteAvoidType fromString(String name) {
         return fromString(name, RouteAvoidType.class);
     }
 
     /**
      * Gets known RouteAvoidType values.
-     *
+     * 
      * @return known RouteAvoidType values.
      */
     public static Collection<RouteAvoidType> values() {

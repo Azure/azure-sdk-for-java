@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -84,7 +82,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             assertNotNull(sessionId, "'sessionId' should have been set.");
             AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
                 .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
-            processor = toClose(getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
+            processor = toClose(getSessionProcessorBuilder(entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -92,7 +90,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 .buildProcessorClient());
 
         } else {
-            processor = toClose(getProcessorBuilder(false, entityType, entityIndex, false)
+            processor = toClose(getProcessorBuilder(entityType, entityIndex, false)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -117,7 +115,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
 
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(false, entityType, entityIndex, false, RETRY_OPTIONS)
+            getSessionProcessorBuilder(entityType, entityIndex, false, RETRY_OPTIONS)
                 .sessionIdleTimeout(sessionIdleTimeout)
                 .disableAutoComplete();
 
@@ -132,7 +130,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
-            getSessionProcessorBuilder(false, entityType, entityIndex, false,
+            getSessionProcessorBuilder(entityType, entityIndex, false,
                     new AmqpRetryOptions().setTryTimeout(tryTimeout))
                 .disableAutoComplete();
 
@@ -198,10 +196,10 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             context.getFullyQualifiedNamespace(), context.getEntityPath());
     }
 
-    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection) {
+    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(MessagingEntityType entityType,
+        int entityIndex, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName(entityIndex);
@@ -216,14 +214,14 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
                 return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
             default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    protected ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
+    private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(MessagingEntityType entityType,
+        int entityIndex, boolean sharedConnection, AmqpRetryOptions amqpRetryOptions) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         builder.retryOptions(amqpRetryOptions);
 
         switch (entityType) {
@@ -242,24 +240,13 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 return builder.sessionProcessor()
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
-    }
-
-    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
-        return new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler)
-            .configuration(v1OrV2(true));
     }
 
     private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
         final boolean shareConnection = false;
-        final boolean useCredentials = false;
-        return toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+        return toClose(getSenderBuilder(entityType, entityIndex, isSessionEnabled, shareConnection)
             .buildAsyncClient());
     }
 

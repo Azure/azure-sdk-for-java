@@ -20,7 +20,7 @@ public final class SystemVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"systemVersion\":\"fapaqtfer\"},\"id\":\"wexjkmfxapjwogq\",\"name\":\"nobpudcdabtqwpw\",\"type\":\"awbzasqb\"}";
+            = "{\"properties\":{\"systemVersion\":\"hndvnoamldsehao\"},\"id\":\"jhhflzokxcoxpel\",\"name\":\"jetagltsxoatft\",\"type\":\"zpnpbswv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SystemVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SystemVersion response = manager.systemVersions()
-            .getWithResponse("ndbnwieh", "lewjwiuubwef", com.azure.core.util.Context.NONE)
+            .getWithResponse("ycjsx", "wwixzvumw", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

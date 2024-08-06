@@ -51,6 +51,7 @@ import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
@@ -108,6 +109,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -130,6 +132,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -152,6 +155,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -174,6 +178,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -327,6 +332,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -349,6 +355,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -371,6 +378,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -393,6 +401,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -1124,6 +1133,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1148,6 +1158,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1172,6 +1183,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1196,6 +1208,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1221,6 +1234,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1236,8 +1254,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1274,8 +1293,8 @@ public final class FilesImpl {
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
+            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1294,6 +1313,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1310,8 +1334,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1348,8 +1373,8 @@ public final class FilesImpl {
         return service.create(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
             this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
             contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
-            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.getFileRequestIntent(), accept, context);
+            filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1368,6 +1393,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1382,12 +1412,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, String fileName, long fileContentLength, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
-            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1406,6 +1436,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1421,12 +1456,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, String fileName, long fileContentLength, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
-            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1445,6 +1480,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1460,8 +1500,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1498,8 +1539,8 @@ public final class FilesImpl {
         return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
+            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1518,6 +1559,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1534,8 +1580,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1572,8 +1619,8 @@ public final class FilesImpl {
         return service.createNoCustomHeaders(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
+            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1592,6 +1639,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1608,8 +1660,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesCreateHeaders, Void> createWithResponse(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1646,8 +1699,8 @@ public final class FilesImpl {
         return service.createSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
             this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
             contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
-            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.getFileRequestIntent(), accept, context);
+            filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1666,6 +1719,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1679,12 +1737,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String shareName, String fileName, long fileContentLength, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         createWithResponse(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata, filePermission,
-            filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders,
-            Context.NONE);
+            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            shareFileHttpHeaders, Context.NONE);
     }
 
     /**
@@ -1703,6 +1761,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1719,8 +1782,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, String fileName, long fileContentLength,
         String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1757,8 +1821,8 @@ public final class FilesImpl {
         return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
+            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2438,6 +2502,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2453,8 +2522,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeadersWithResponseAsync(String shareName,
         String fileName, String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2490,9 +2559,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return FluxUtil.withContext(context -> service.setHttpHeaders(this.client.getUrl(), shareName, fileName, comp,
             timeout, this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
-            cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context));
+            cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2511,6 +2580,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2527,8 +2601,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeadersWithResponseAsync(String shareName,
         String fileName, String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2564,9 +2639,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2585,6 +2660,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2599,11 +2679,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeadersAsync(String shareName, String fileName, String fileAttributes, Integer timeout,
-        Long fileContentLength, String filePermission, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        Long fileContentLength, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
-            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2622,6 +2703,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2637,12 +2723,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeadersAsync(String shareName, String fileName, String fileAttributes, Integer timeout,
-        Long fileContentLength, String filePermission, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
-        Context context) {
+        Long fileContentLength, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
-            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2661,6 +2747,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2675,9 +2766,9 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2711,11 +2802,12 @@ public final class FilesImpl {
         }
         String contentDisposition = contentDispositionInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return FluxUtil.withContext(context -> service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName,
-            fileName, comp, timeout, this.client.getVersion(), fileContentLength, contentType, contentEncoding,
-            contentLanguage, cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionKey,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context));
+        return FluxUtil.withContext(
+            context -> service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
+                this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
+                cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
+                filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2734,6 +2826,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2749,9 +2846,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2787,9 +2885,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2808,6 +2906,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2823,9 +2926,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesSetHttpHeadersHeaders, Void> setHttpHeadersWithResponse(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2861,9 +2965,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2882,6 +2986,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2895,11 +3004,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setHttpHeaders(String shareName, String fileName, String fileAttributes, Integer timeout,
-        Long fileContentLength, String filePermission, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        Long fileContentLength, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         setHttpHeadersWithResponse(shareName, fileName, fileAttributes, timeout, fileContentLength, filePermission,
-            filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders,
-            Context.NONE);
+            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            shareFileHttpHeaders, Context.NONE);
     }
 
     /**
@@ -2918,6 +3028,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2933,9 +3048,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setHttpHeadersNoCustomHeadersWithResponse(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2971,9 +3087,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -6981,6 +7097,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -6996,7 +7117,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesRenameHeaders, Void>> renameWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "rename";
@@ -7038,9 +7160,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return FluxUtil.withContext(context -> service.rename(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
-            metadata, contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context));
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
+            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -7064,6 +7186,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7080,7 +7207,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesRenameHeaders, Void>> renameWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7122,9 +7250,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.rename(this.client.getUrl(), shareName, fileName, comp, timeout, this.client.getVersion(),
             renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey, metadata,
-            contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
+            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -7148,6 +7276,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7162,13 +7295,14 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameAsync(String shareName, String fileName, String renameSource, Integer timeout,
-        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission, String filePermissionKey,
-        Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
-            filePermission, filePermissionKey, metadata, sourceLeaseAccessConditions, destinationLeaseAccessConditions,
-            copyFileSmbInfo, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
+            destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7192,6 +7326,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7207,13 +7346,15 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameAsync(String shareName, String fileName, String renameSource, Integer timeout,
-        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission, String filePermissionKey,
-        Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
-            filePermission, filePermissionKey, metadata, sourceLeaseAccessConditions, destinationLeaseAccessConditions,
-            copyFileSmbInfo, shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
+            destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders, context)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7237,6 +7378,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7252,7 +7398,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "rename";
@@ -7295,7 +7442,7 @@ public final class FilesImpl {
         return FluxUtil.withContext(context -> service.renameNoCustomHeaders(this.client.getUrl(), shareName, fileName,
             comp, timeout, this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
             destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
-            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            filePermissionFormat, filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
             this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context));
     }
 
@@ -7320,6 +7467,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7336,7 +7488,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7378,9 +7531,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.renameNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
-            metadata, contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
+            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -7404,6 +7557,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7420,7 +7578,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesRenameHeaders, Void> renameWithResponse(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7462,9 +7621,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.renameSync(this.client.getUrl(), shareName, fileName, comp, timeout, this.client.getVersion(),
             renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey, metadata,
-            contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
+            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -7488,6 +7647,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7501,13 +7665,13 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rename(String shareName, String fileName, String renameSource, Integer timeout, Boolean replaceIfExists,
-        Boolean ignoreReadOnly, String filePermission, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        Boolean ignoreReadOnly, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         renameWithResponse(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly, filePermission,
-            filePermissionKey, metadata, sourceLeaseAccessConditions, destinationLeaseAccessConditions, copyFileSmbInfo,
-            shareFileHttpHeaders, Context.NONE);
+            filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
+            destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders, Context.NONE);
     }
 
     /**
@@ -7531,6 +7695,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7547,7 +7716,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameNoCustomHeadersWithResponse(String shareName, String fileName, String renameSource,
         Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7589,8 +7759,8 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.renameNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
-            metadata, contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-            this.client.getFileRequestIntent(), accept, context);
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
+            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
     }
 }

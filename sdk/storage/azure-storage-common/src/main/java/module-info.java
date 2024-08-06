@@ -4,8 +4,6 @@
 module com.azure.storage.common {
     requires transitive com.azure.core;
 
-    requires com.fasterxml.jackson.dataformat.xml;
-
     exports com.azure.storage.common;
     exports com.azure.storage.common.sas;
     exports com.azure.storage.common.policy;

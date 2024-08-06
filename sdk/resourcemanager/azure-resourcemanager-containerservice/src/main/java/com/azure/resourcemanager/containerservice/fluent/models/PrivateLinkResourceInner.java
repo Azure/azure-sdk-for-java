@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A private link resource.
  */
 @Fluent
-public final class PrivateLinkResourceInner {
+public final class PrivateLinkResourceInner implements JsonSerializable<PrivateLinkResourceInner> {
     /*
      * The ID of the private link resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the private link resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The group ID of the resource.
      */
-    @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
      * The RequiredMembers of the resource
      */
-    @JsonProperty(value = "requiredMembers")
     private List<String> requiredMembers;
 
     /*
      * The private link service ID of the resource, this field is exposed only to NRP internally.
      */
-    @JsonProperty(value = "privateLinkServiceID", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkServiceId;
 
     /**
@@ -156,8 +154,8 @@ public final class PrivateLinkResourceInner {
     }
 
     /**
-     * Get the privateLinkServiceId property: The private link service ID of the resource, this field is exposed only
-     * to NRP internally.
+     * Get the privateLinkServiceId property: The private link service ID of the resource, this field is exposed only to
+     * NRP internally.
      * 
      * @return the privateLinkServiceId value.
      */
@@ -171,5 +169,57 @@ public final class PrivateLinkResourceInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("groupId", this.groupId);
+        jsonWriter.writeArrayField("requiredMembers", this.requiredMembers,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourceInner.
+     */
+    public static PrivateLinkResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourceInner deserializedPrivateLinkResourceInner = new PrivateLinkResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.type = reader.getString();
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.groupId = reader.getString();
+                } else if ("requiredMembers".equals(fieldName)) {
+                    List<String> requiredMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResourceInner.requiredMembers = requiredMembers;
+                } else if ("privateLinkServiceID".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.privateLinkServiceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourceInner;
+        });
     }
 }

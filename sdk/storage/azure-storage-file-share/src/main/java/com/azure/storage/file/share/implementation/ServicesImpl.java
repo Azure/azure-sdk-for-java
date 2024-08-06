@@ -35,6 +35,7 @@ import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesH
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -77,6 +78,7 @@ public final class ServicesImpl {
         Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareServiceProperties shareServiceProperties,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -86,6 +88,7 @@ public final class ServicesImpl {
         Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareServiceProperties shareServiceProperties,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -95,6 +98,7 @@ public final class ServicesImpl {
         ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesSync(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareServiceProperties shareServiceProperties,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -104,6 +108,7 @@ public final class ServicesImpl {
         Response<Void> setPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareServiceProperties shareServiceProperties,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -113,6 +118,7 @@ public final class ServicesImpl {
         Mono<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>> getProperties(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
@@ -121,6 +127,7 @@ public final class ServicesImpl {
         Mono<Response<ShareServiceProperties>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
@@ -129,6 +136,7 @@ public final class ServicesImpl {
         ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties> getPropertiesSync(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
@@ -137,6 +145,7 @@ public final class ServicesImpl {
         Response<ShareServiceProperties> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
@@ -146,7 +155,9 @@ public final class ServicesImpl {
             @HostParam("url") String url, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
             @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
         @ExpectedResponses({ 200 })
@@ -155,6 +166,7 @@ public final class ServicesImpl {
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
@@ -164,7 +176,9 @@ public final class ServicesImpl {
             @HostParam("url") String url, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
             @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
         @ExpectedResponses({ 200 })
@@ -173,6 +187,7 @@ public final class ServicesImpl {
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
@@ -180,28 +195,36 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse>> listSharesSegmentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<ListSharesResponse>> listSharesSegmentNextNoCustomHeaders(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> listSharesSegmentNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<ListSharesResponse> listSharesSegmentNextNoCustomHeadersSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -224,7 +247,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setProperties(this.client.getUrl(), restype, comp, timeout,
-            this.client.getVersion(), shareServiceProperties, accept, context));
+            this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context));
     }
 
     /**
@@ -248,7 +271,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
-            shareServiceProperties, accept, context);
+            this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
     }
 
     /**
@@ -309,8 +332,9 @@ public final class ServicesImpl {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp,
-            timeout, this.client.getVersion(), shareServiceProperties, accept, context));
+        return FluxUtil
+            .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
+                this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context));
     }
 
     /**
@@ -334,7 +358,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-            this.client.getVersion(), shareServiceProperties, accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
     }
 
     /**
@@ -358,7 +382,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
-            shareServiceProperties, accept, context);
+            this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
     }
 
     /**
@@ -399,7 +423,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
-            this.client.getVersion(), shareServiceProperties, accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
     }
 
     /**
@@ -423,7 +447,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(), restype, comp, timeout,
-            this.client.getVersion(), accept, context));
+            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -447,8 +471,8 @@ public final class ServicesImpl {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), accept,
-            context);
+        return service.getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -508,7 +532,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp,
-            timeout, this.client.getVersion(), accept, context));
+            timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -533,7 +557,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-            this.client.getVersion(), accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -556,8 +580,8 @@ public final class ServicesImpl {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), accept,
-            context);
+        return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -598,7 +622,7 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
-            this.client.getVersion(), accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -632,7 +656,8 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.listSharesSegment(this.client.getUrl(), comp, prefix, marker, maxresults,
-                includeConverted, timeout, this.client.getVersion(), accept, context))
+                includeConverted, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+                context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -669,7 +694,7 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         return service
             .listSharesSegment(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
-                this.client.getVersion(), accept, context)
+                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -759,7 +784,8 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.listSharesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker,
-                maxresults, includeConverted, timeout, this.client.getVersion(), accept, context))
+                maxresults, includeConverted, timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
+                accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -796,7 +822,7 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         return service
             .listSharesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), accept, context)
+                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -886,7 +912,7 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
             = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), accept, Context.NONE);
+                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
     }
@@ -923,7 +949,7 @@ public final class ServicesImpl {
                 .collect(Collectors.joining(","));
         ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
             = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), accept, context);
+                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
     }
@@ -1013,7 +1039,8 @@ public final class ServicesImpl {
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
         Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
-            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), accept, Context.NONE);
+            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
     }
@@ -1049,7 +1076,8 @@ public final class ServicesImpl {
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
         Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
-            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), accept, context);
+            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
     }
@@ -1124,7 +1152,7 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listSharesSegmentNext(nextLink, this.client.getUrl(),
-                this.client.getVersion(), accept, context))
+                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1145,7 +1173,9 @@ public final class ServicesImpl {
     public Mono<PagedResponse<ShareItemInternal>> listSharesSegmentNextSinglePageAsync(String nextLink,
         Context context) {
         final String accept = "application/xml";
-        return service.listSharesSegmentNext(nextLink, this.client.getUrl(), this.client.getVersion(), accept, context)
+        return service
+            .listSharesSegmentNext(nextLink, this.client.getUrl(), this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1166,7 +1196,7 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.listSharesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(),
-                this.client.getVersion(), accept, context))
+                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -1188,8 +1218,8 @@ public final class ServicesImpl {
         Context context) {
         final String accept = "application/xml";
         return service
-            .listSharesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(), this.client.getVersion(), accept,
-                context)
+            .listSharesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(), this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -1208,8 +1238,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextSinglePage(String nextLink) {
         final String accept = "application/xml";
-        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res = service
-            .listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(), accept, Context.NONE);
+        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
+            = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
     }
@@ -1229,8 +1260,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextSinglePage(String nextLink, Context context) {
         final String accept = "application/xml";
-        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res = service
-            .listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(), accept, context);
+        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
+            = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
     }
@@ -1250,7 +1282,7 @@ public final class ServicesImpl {
     public PagedResponse<ShareItemInternal> listSharesSegmentNextNoCustomHeadersSinglePage(String nextLink) {
         final String accept = "application/xml";
         Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), accept, Context.NONE);
+            this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
     }
@@ -1272,7 +1304,7 @@ public final class ServicesImpl {
         Context context) {
         final String accept = "application/xml";
         Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), accept, context);
+            this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
     }

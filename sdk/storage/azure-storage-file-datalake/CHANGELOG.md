@@ -1,14 +1,28 @@
 # Release History
 
-## 12.20.0-beta.2 (Unreleased)
+## 12.21.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.20.0 (2024-07-18)
+
+### Features Added
+- Added support for bearer token challenges.
+- Added support for service version 2024-08-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-blob` from `12.26.1` to version `12.27.0`.
 
 ## 12.20.0-beta.1 (2024-06-11)
 

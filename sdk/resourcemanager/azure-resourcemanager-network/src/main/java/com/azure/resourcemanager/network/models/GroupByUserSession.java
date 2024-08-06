@@ -6,19 +6,21 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Define user session identifier group by clauses.
  */
 @Fluent
-public final class GroupByUserSession {
+public final class GroupByUserSession implements JsonSerializable<GroupByUserSession> {
     /*
      * List of group by clause variables.
      */
-    @JsonProperty(value = "groupByVariables", required = true)
     private List<GroupByVariable> groupByVariables;
 
     /**
@@ -29,7 +31,7 @@ public final class GroupByUserSession {
 
     /**
      * Get the groupByVariables property: List of group by clause variables.
-     *
+     * 
      * @return the groupByVariables value.
      */
     public List<GroupByVariable> groupByVariables() {
@@ -38,7 +40,7 @@ public final class GroupByUserSession {
 
     /**
      * Set the groupByVariables property: List of group by clause variables.
-     *
+     * 
      * @param groupByVariables the groupByVariables value to set.
      * @return the GroupByUserSession object itself.
      */
@@ -49,7 +51,7 @@ public final class GroupByUserSession {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -63,4 +65,44 @@ public final class GroupByUserSession {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GroupByUserSession.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("groupByVariables", this.groupByVariables,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupByUserSession from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupByUserSession if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupByUserSession.
+     */
+    public static GroupByUserSession fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupByUserSession deserializedGroupByUserSession = new GroupByUserSession();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupByVariables".equals(fieldName)) {
+                    List<GroupByVariable> groupByVariables
+                        = reader.readArray(reader1 -> GroupByVariable.fromJson(reader1));
+                    deserializedGroupByUserSession.groupByVariables = groupByVariables;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupByUserSession;
+        });
+    }
 }

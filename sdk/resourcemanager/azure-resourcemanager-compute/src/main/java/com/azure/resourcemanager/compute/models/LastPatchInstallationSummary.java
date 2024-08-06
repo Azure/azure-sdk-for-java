@@ -5,82 +5,75 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of the last installed patch summary.
  */
 @Immutable
-public final class LastPatchInstallationSummary {
+public final class LastPatchInstallationSummary implements JsonSerializable<LastPatchInstallationSummary> {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
      * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
      * logs.
      */
-    @JsonProperty(value = "installationActivityId", access = JsonProperty.Access.WRITE_ONLY)
     private String installationActivityId;
 
     /*
      * Describes whether the operation ran out of time before it completed all its intended actions
      */
-    @JsonProperty(value = "maintenanceWindowExceeded", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean maintenanceWindowExceeded;
 
     /*
      * The number of all available patches but not going to be installed because it didn't match a classification or
      * inclusion list entry.
      */
-    @JsonProperty(value = "notSelectedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer notSelectedPatchCount;
 
     /*
      * The number of all available patches but excluded explicitly by a customer-specified exclusion list match.
      */
-    @JsonProperty(value = "excludedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer excludedPatchCount;
 
     /*
-     * The number of all available patches expected to be installed over the course of the patch installation
-     * operation.
+     * The number of all available patches expected to be installed over the course of the patch installation operation.
      */
-    @JsonProperty(value = "pendingPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingPatchCount;
 
     /*
      * The count of patches that successfully installed.
      */
-    @JsonProperty(value = "installedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer installedPatchCount;
 
     /*
      * The count of patches that failed installation.
      */
-    @JsonProperty(value = "failedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedPatchCount;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The errors that were encountered during execution of the operation. The details array contains the list of them.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
     /**
@@ -121,8 +114,8 @@ public final class LastPatchInstallationSummary {
     }
 
     /**
-     * Get the notSelectedPatchCount property: The number of all available patches but not going to be installed
-     * because it didn't match a classification or inclusion list entry.
+     * Get the notSelectedPatchCount property: The number of all available patches but not going to be installed because
+     * it didn't match a classification or inclusion list entry.
      * 
      * @return the notSelectedPatchCount value.
      */
@@ -205,5 +198,67 @@ public final class LastPatchInstallationSummary {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LastPatchInstallationSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LastPatchInstallationSummary if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LastPatchInstallationSummary.
+     */
+    public static LastPatchInstallationSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LastPatchInstallationSummary deserializedLastPatchInstallationSummary = new LastPatchInstallationSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.status
+                        = PatchOperationStatus.fromString(reader.getString());
+                } else if ("installationActivityId".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.installationActivityId = reader.getString();
+                } else if ("maintenanceWindowExceeded".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.maintenanceWindowExceeded
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("notSelectedPatchCount".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.notSelectedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("excludedPatchCount".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.excludedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("pendingPatchCount".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.pendingPatchCount = reader.getNullable(JsonReader::getInt);
+                } else if ("installedPatchCount".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.installedPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedPatchCount".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.failedPatchCount = reader.getNullable(JsonReader::getInt);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedLastPatchInstallationSummary.error = ApiError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLastPatchInstallationSummary;
+        });
     }
 }

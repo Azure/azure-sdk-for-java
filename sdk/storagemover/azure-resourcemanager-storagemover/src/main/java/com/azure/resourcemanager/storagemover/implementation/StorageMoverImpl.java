@@ -88,22 +88,18 @@ public final class StorageMoverImpl implements StorageMover, StorageMover.Defini
     }
 
     public StorageMover create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageMovers()
-                .createOrUpdateWithResponse(resourceGroupName, storageMoverName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageMovers()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageMover create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageMovers()
-                .createOrUpdateWithResponse(resourceGroupName, storageMoverName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageMovers()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -119,50 +115,42 @@ public final class StorageMoverImpl implements StorageMover, StorageMover.Defini
     }
 
     public StorageMover apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageMovers()
-                .updateWithResponse(resourceGroupName, storageMoverName, updateStorageMover, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageMovers()
+            .updateWithResponse(resourceGroupName, storageMoverName, updateStorageMover, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageMover apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageMovers()
-                .updateWithResponse(resourceGroupName, storageMoverName, updateStorageMover, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageMovers()
+            .updateWithResponse(resourceGroupName, storageMoverName, updateStorageMover, context)
+            .getValue();
         return this;
     }
 
-    StorageMoverImpl(
-        StorageMoverInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
+    StorageMoverImpl(StorageMoverInner innerObject,
+        com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = Utils.getValueFromIdByName(innerObject.id(), "storageMovers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
     }
 
     public StorageMover refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageMovers()
-                .getByResourceGroupWithResponse(resourceGroupName, storageMoverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageMovers()
+            .getByResourceGroupWithResponse(resourceGroupName, storageMoverName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageMover refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getStorageMovers()
-                .getByResourceGroupWithResponse(resourceGroupName, storageMoverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageMovers()
+            .getByResourceGroupWithResponse(resourceGroupName, storageMoverName, context)
+            .getValue();
         return this;
     }
 

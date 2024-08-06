@@ -67,24 +67,19 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, storageMoverName, projectName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, storageMoverName, projectName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -100,50 +95,42 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .updateWithResponse(resourceGroupName, storageMoverName, projectName, updateProject, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .updateWithResponse(resourceGroupName, storageMoverName, projectName, updateProject, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .updateWithResponse(resourceGroupName, storageMoverName, projectName, updateProject, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .updateWithResponse(resourceGroupName, storageMoverName, projectName, updateProject, context)
+            .getValue();
         return this;
     }
 
     ProjectImpl(ProjectInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = Utils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
     }
 
     public Project refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .getWithResponse(resourceGroupName, storageMoverName, projectName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .getWithResponse(resourceGroupName, storageMoverName, projectName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Project refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProjects()
-                .getWithResponse(resourceGroupName, storageMoverName, projectName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjects()
+            .getWithResponse(resourceGroupName, storageMoverName, projectName, context)
+            .getValue();
         return this;
     }
 

@@ -15,8 +15,8 @@ import com.azure.maps.timezone.models.TimeZoneWindows;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,43 +31,40 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        TestBase.getHttpClients()
-            .forEach(httpClient -> Arrays.stream(TimeZoneServiceVersion.values())
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
-        return argumentsList.stream();
+        return TestBase.getHttpClients()
+            .flatMap(httpClient -> Arrays.stream(TimeZoneServiceVersion.values())
+                .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
-    static TimeZoneResult getExpectedTimezoneById() throws IOException {
+    static TimeZoneResult getExpectedTimezoneById() {
         return deserialize("gettimezonebyid.json", TimeZoneResult::fromJson);
     }
 
-    static TimeZoneResult getExpectedTimezoneByCoordinates() throws IOException {
+    static TimeZoneResult getExpectedTimezoneByCoordinates() {
         return deserialize("gettimezonebycoordinates.json", TimeZoneResult::fromJson);
     }
 
-    static List<TimeZoneWindows> getExpectedWindowsTimezoneIds() throws IOException {
+    static List<TimeZoneWindows> getExpectedWindowsTimezoneIds() {
         return deserialize("getwindowstimezonesids.json", reader -> reader.readArray(TimeZoneWindows::fromJson));
     }
 
-    static List<IanaId> getExpectedIanaTimezoneIds() throws IOException {
+    static List<IanaId> getExpectedIanaTimezoneIds() {
         return deserialize("getianatimezoneids.json", reader -> reader.readArray(IanaId::fromJson));
     }
 
-    static TimeZoneIanaVersionResult getExpectedIanaVersion() throws IOException {
+    static TimeZoneIanaVersionResult getExpectedIanaVersion() {
         return deserialize("gettimezoneianaversionresult.json", TimeZoneIanaVersionResult::fromJson);
     }
 
-    static List<IanaId> getExpectedConvertWindowsTimezoneToIana() throws IOException {
+    static List<IanaId> getExpectedConvertWindowsTimezoneToIana() {
         return deserialize("getconvertwindowstimezonetoiana.json", reader -> reader.readArray(IanaId::fromJson));
     }
 
-    private static <T> T deserialize(String resourceName, ReadValueCallback<JsonReader, T> deserializer)
-        throws IOException {
+    private static <T> T deserialize(String resourceName, ReadValueCallback<JsonReader, T> deserializer) {
         try (JsonReader jsonReader = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream(resourceName))) {
             return deserializer.read(jsonReader);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 }

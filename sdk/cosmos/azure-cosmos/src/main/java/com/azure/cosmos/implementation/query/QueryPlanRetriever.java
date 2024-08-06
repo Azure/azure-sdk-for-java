@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -99,7 +100,7 @@ class QueryPlanRetriever {
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
             .getImpl(nonNullRequestOptions)
-            .getEndToEndOperationLatencyConfig();
+            .getCosmosEndToEndLatencyPolicyConfig();
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
         }
@@ -125,7 +126,7 @@ class QueryPlanRetriever {
             OperationType.QueryPlan,
             () -> queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext),
             queryPlanRequest,
-            executeFunc
-        );
+            executeFunc,
+            PathsHelper.getCollectionPath(resourceLink));
     }
 }

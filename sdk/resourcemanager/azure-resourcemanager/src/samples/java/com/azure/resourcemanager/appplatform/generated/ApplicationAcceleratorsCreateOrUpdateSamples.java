@@ -22,7 +22,10 @@ public final class ApplicationAcceleratorsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void applicationAcceleratorsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApplicationAccelerators()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApplicationAccelerators()
             .createOrUpdate("myResourceGroup", "myservice", "default",
                 new ApplicationAcceleratorResourceInner().withProperties(new ApplicationAcceleratorProperties())
                     .withSku(new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),

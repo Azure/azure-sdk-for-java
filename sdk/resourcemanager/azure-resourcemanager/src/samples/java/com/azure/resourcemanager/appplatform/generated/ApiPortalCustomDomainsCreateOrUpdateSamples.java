@@ -21,9 +21,13 @@ public final class ApiPortalCustomDomainsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apiPortalCustomDomainsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApiPortalCustomDomains().createOrUpdate(
-            "myResourceGroup", "myservice", "default", "myDomainName", new ApiPortalCustomDomainResourceInner()
-                .withProperties(new ApiPortalCustomDomainProperties().withThumbprint("*")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApiPortalCustomDomains()
+            .createOrUpdate(
+                "myResourceGroup", "myservice", "default", "myDomainName", new ApiPortalCustomDomainResourceInner()
+                    .withProperties(new ApiPortalCustomDomainProperties().withThumbprint("*")),
+                com.azure.core.util.Context.NONE);
     }
 }

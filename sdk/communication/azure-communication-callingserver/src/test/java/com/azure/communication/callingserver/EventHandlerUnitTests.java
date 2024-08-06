@@ -10,6 +10,7 @@ import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEv
 import com.azure.communication.callingserver.models.events.PlayCompleted;
 import com.azure.communication.callingserver.models.events.PlayFailed;
 import com.azure.communication.callingserver.models.events.RecordingStateChangedEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class EventHandlerUnitTests {
     static final String EVENT_CALL_CONNECTED = "{\"id\":\"46116fb7-27e0-4a99-9478-a659c8fd4815\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\",\"type\":\"Microsoft.Communication.CallConnected\",\"data\":{\"type\":\"callConnected\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.8174402+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\"}";
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void parseEvent() {
         CallAutomationEventBase callAutomationEventBase = EventHandler.parseEvent(EVENT_PARTICIPANT_UPDATED);
 
@@ -31,6 +33,7 @@ public class EventHandlerUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void parseEventList() {
         List<CallAutomationEventBase> callAutomationEventBaseList = EventHandler.parseEventList("["
             + EVENT_CALL_CONNECTED + "," + EVENT_PARTICIPANT_UPDATED + "]");
@@ -42,6 +45,7 @@ public class EventHandlerUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void parseRecordingStateChangedEvent() {
         String receivedEvent = "[\n"
             + "    {\n"
@@ -73,6 +77,7 @@ public class EventHandlerUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void parsePlayCompletedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
@@ -103,6 +108,7 @@ public class EventHandlerUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void parsePlayFailedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"

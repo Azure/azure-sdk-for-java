@@ -38,12 +38,14 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
 com.azure:azure-messaging-eventgrid # Tests owner: billwert
+com.azure:azure-messaging-eventgrid-namespaces # Tests owner: billwert
 com.azure:azure-messaging-eventhubs # Tests owner: conniey
 com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729

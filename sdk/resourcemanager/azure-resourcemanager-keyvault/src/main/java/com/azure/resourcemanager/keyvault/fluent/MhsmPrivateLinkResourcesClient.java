@@ -11,26 +11,28 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.MhsmPrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MhsmPrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MhsmPrivateLinkResourcesClient.
+ */
 public interface MhsmPrivateLinkResourcesClient {
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources supported for the managed hsm pool along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MhsmPrivateLinkResourceListResultInner>> listByMhsmResourceWithResponseAsync(
-        String resourceGroupName, String name);
+    Mono<Response<MhsmPrivateLinkResourceListResultInner>> listByMhsmResourceWithResponseAsync(String resourceGroupName,
+        String name);
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface MhsmPrivateLinkResourcesClient {
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param context The context to associate with this operation.
@@ -53,12 +55,12 @@ public interface MhsmPrivateLinkResourcesClient {
      * @return the private link resources supported for the managed hsm pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceWithResponse(
-        String resourceGroupName, String name, Context context);
+    Response<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceWithResponse(String resourceGroupName,
+        String name, Context context);
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

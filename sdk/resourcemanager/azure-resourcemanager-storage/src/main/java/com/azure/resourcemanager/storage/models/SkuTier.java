@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The SKU tier. This is based on the SKU name.
  */
@@ -36,7 +33,6 @@ public enum SkuTier {
      * @param value the serialized value to parse.
      * @return the parsed SkuTier object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuTier fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum SkuTier {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

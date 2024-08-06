@@ -22,6 +22,7 @@ Use the client library for Azure Event Grid to:
 ### Prerequisites
 
 - [Java Development Kit (JDK) with version 8 or above][jdk]
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - An [Azure subscription][azure_subscription]
 - An [Event Grid][eventgrid] topic or domain. To create the resource, you can use [Azure portal][portal] or
   [Azure CLI][cli]
@@ -81,7 +82,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.22.0</version>
+    <version>4.23.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

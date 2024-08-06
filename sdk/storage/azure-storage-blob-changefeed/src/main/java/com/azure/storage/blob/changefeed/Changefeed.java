@@ -23,12 +23,12 @@ import java.util.Objects;
 
 /**
  * A class that represents a Changefeed.
- *
+ * <p>
  * The changefeed is a log of changes that are organized into hourly segments.
  * The listing of the $blobchangefeed/idx/segments/ virtual directory shows these segments ordered by time.
  * The path of the segment describes the start of the hourly time-range that the segment represents.
  * This list can be used to filter out the segments of logs that are interest.
- *
+ * <p>
  * Note: The time represented by the segment is approximate with bounds of 15 minutes. So to ensure consumption of
  * all records within a specified time, consume the consecutive previous and next hour segment.
  */
@@ -56,7 +56,7 @@ class Changefeed {
         this.endTime = TimeUtils.roundUpToNearestHour(endTime);
         this.userCursor = userCursor;
         this.segmentFactory = segmentFactory;
-        String urlHost = null;
+        String urlHost;
         try {
             urlHost = new URL(client.getBlobContainerUrl()).getHost();
         } catch (MalformedURLException e) {
@@ -120,11 +120,11 @@ class Changefeed {
             /* Parse JSON for last consumable. */
             .flatMap(jsonNode -> {
                 /* Last consumable time. The latest time the changefeed can safely be read from.*/
-                OffsetDateTime lastConsumableTime = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
+                OffsetDateTime lastConsumableTime = OffsetDateTime.parse(String.valueOf(jsonNode.get("lastConsumable")));
                 /* Soonest time between lastConsumable and endTime. */
                 OffsetDateTime safeEndTime = this.endTime;
                 if (lastConsumableTime.isBefore(endTime)) {
-                    safeEndTime = lastConsumableTime.plusHours(1); /* Add an hour since end time is non inclusive. */
+                    safeEndTime = lastConsumableTime.plusHours(1); /* Add an hour since end time is non-inclusive. */
                 }
                 return Mono.just(safeEndTime);
             });

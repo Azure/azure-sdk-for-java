@@ -6,57 +6,40 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.BuilderResource;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BuildersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"environmentId\":\"fwxudgnhg\",\"containerRegistries\":[{\"containerRegistryServer\":\"rtalvnbw\",\"identityResourceId\":\"pbeme\"},{\"containerRegistryServer\":\"uclvdjj\",\"identityResourceId\":\"kyrdnqodx\"}]},\"identity\":{\"principalId\":\"bd9b5d66-1857-47d4-96d2-da4b481c35dd\",\"tenantId\":\"84cd9d11-7fea-4e15-ac57-bda25c53edac\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"nvzoqgyipemch\":{\"principalId\":\"16827f64-00c8-404f-aeea-4da9cde3c89b\",\"clientId\":\"c5ce0006-6d24-445d-92b4-833a2c7a7490\"},\"sczuejdtxptlghwz\":{\"principalId\":\"b8d8b831-a0f2-47f3-8a51-4a61f7514391\",\"clientId\":\"cc54e4b5-cc4c-4b96-8585-53dc03fcb8e8\"}}},\"location\":\"mewjjstliuhq\",\"tags\":{\"blxydkxr\":\"oaiancznvodrrs\",\"hychocokuleh\":\"vvbxiwkgfbqljnq\"},\"id\":\"rqlrqffawe\",\"name\":\"urkphyjdxravju\",\"type\":\"dbrxmrgc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"mmdqgmihzpimc\",\"containerRegistries\":[{\"containerRegistryServer\":\"nxtminklog\",\"identityResourceId\":\"svtzarhzv\"},{\"containerRegistryServer\":\"nsqktc\",\"identityResourceId\":\"bjwzzos\"}]},\"identity\":{\"principalId\":\"ecbafe51-5827-42fa-803e-a2a601daca48\",\"tenantId\":\"2385d766-3557-4f60-ab1d-2a310e25758f\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"kzpgaj\":{\"principalId\":\"7bf2593e-4857-4036-9980-3d3e1610b95b\",\"clientId\":\"898a5c3c-9b19-4c0f-b9c2-1ace3214e886\"},\"cemqbmfuvqarwz\":{\"principalId\":\"60849fea-dfe8-444c-9689-6c84785be827\",\"clientId\":\"6de53dcc-2ec1-4498-b925-1f410b0ac3e0\"},\"rebluimmbwxsf\":{\"principalId\":\"0efebb13-9413-433a-8f55-506bf6ec83ef\",\"clientId\":\"e8f467ae-401d-4f07-851b-fa138c836fcf\"}}},\"location\":\"dmbvxekraok\",\"tags\":{\"twaokb\":\"ud\",\"sm\":\"vlyttaaknwfrke\"},\"id\":\"p\",\"name\":\"ujd\",\"type\":\"gatolekscbctnan\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BuilderResource response = manager.builders()
-            .getByResourceGroupWithResponse("ftabenbbklqp", "zucafeddww", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rlhgenuze", "gvkvebaqszll", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("mewjjstliuhq", response.location());
-        Assertions.assertEquals("oaiancznvodrrs", response.tags().get("blxydkxr"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("fwxudgnhg", response.environmentId());
-        Assertions.assertEquals("rtalvnbw", response.containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("pbeme", response.containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("dmbvxekraok", response.location());
+        Assertions.assertEquals("ud", response.tags().get("twaokb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("mmdqgmihzpimc", response.environmentId());
+        Assertions.assertEquals("nxtminklog", response.containerRegistries().get(0).containerRegistryServer());
+        Assertions.assertEquals("svtzarhzv", response.containerRegistries().get(0).identityResourceId());
     }
 }

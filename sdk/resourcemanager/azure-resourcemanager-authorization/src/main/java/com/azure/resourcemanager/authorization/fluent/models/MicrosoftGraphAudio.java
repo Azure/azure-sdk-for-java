@@ -5,124 +5,113 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** audio. */
+/**
+ * audio.
+ */
 @Fluent
-public final class MicrosoftGraphAudio {
+public final class MicrosoftGraphAudio implements JsonSerializable<MicrosoftGraphAudio> {
     /*
      * The title of the album for this audio file.
      */
-    @JsonProperty(value = "album")
     private String album;
 
     /*
      * The artist named on the album for the audio file.
      */
-    @JsonProperty(value = "albumArtist")
     private String albumArtist;
 
     /*
      * The performing artist for the audio file.
      */
-    @JsonProperty(value = "artist")
     private String artist;
 
     /*
      * Bitrate expressed in kbps.
      */
-    @JsonProperty(value = "bitrate")
     private Long bitrate;
 
     /*
      * The name of the composer of the audio file.
      */
-    @JsonProperty(value = "composers")
     private String composers;
 
     /*
      * Copyright information for the audio file.
      */
-    @JsonProperty(value = "copyright")
     private String copyright;
 
     /*
      * The number of the disc this audio file came from.
      */
-    @JsonProperty(value = "disc")
     private Integer disc;
 
     /*
      * The total number of discs in this album.
      */
-    @JsonProperty(value = "discCount")
     private Integer discCount;
 
     /*
      * Duration of the audio file, expressed in milliseconds
      */
-    @JsonProperty(value = "duration")
     private Long duration;
 
     /*
      * The genre of this audio file.
      */
-    @JsonProperty(value = "genre")
     private String genre;
 
     /*
      * Indicates if the file is protected with digital rights management.
      */
-    @JsonProperty(value = "hasDrm")
     private Boolean hasDrm;
 
     /*
      * Indicates if the file is encoded with a variable bitrate.
      */
-    @JsonProperty(value = "isVariableBitrate")
     private Boolean isVariableBitrate;
 
     /*
      * The title of the audio file.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The number of the track on the original disc for this audio file.
      */
-    @JsonProperty(value = "track")
     private Integer track;
 
     /*
      * The total number of tracks on the original disc for this audio file.
      */
-    @JsonProperty(value = "trackCount")
     private Integer trackCount;
 
     /*
      * The year the audio file was recorded.
      */
-    @JsonProperty(value = "year")
     private Integer year;
 
     /*
      * audio
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAudio class. */
+    /**
+     * Creates an instance of MicrosoftGraphAudio class.
+     */
     public MicrosoftGraphAudio() {
     }
 
     /**
      * Get the album property: The title of the album for this audio file.
-     *
+     * 
      * @return the album value.
      */
     public String album() {
@@ -131,7 +120,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the album property: The title of the album for this audio file.
-     *
+     * 
      * @param album the album value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -142,7 +131,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the albumArtist property: The artist named on the album for the audio file.
-     *
+     * 
      * @return the albumArtist value.
      */
     public String albumArtist() {
@@ -151,7 +140,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the albumArtist property: The artist named on the album for the audio file.
-     *
+     * 
      * @param albumArtist the albumArtist value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -162,7 +151,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the artist property: The performing artist for the audio file.
-     *
+     * 
      * @return the artist value.
      */
     public String artist() {
@@ -171,7 +160,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the artist property: The performing artist for the audio file.
-     *
+     * 
      * @param artist the artist value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -182,7 +171,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the bitrate property: Bitrate expressed in kbps.
-     *
+     * 
      * @return the bitrate value.
      */
     public Long bitrate() {
@@ -191,7 +180,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the bitrate property: Bitrate expressed in kbps.
-     *
+     * 
      * @param bitrate the bitrate value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -202,7 +191,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the composers property: The name of the composer of the audio file.
-     *
+     * 
      * @return the composers value.
      */
     public String composers() {
@@ -211,7 +200,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the composers property: The name of the composer of the audio file.
-     *
+     * 
      * @param composers the composers value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -222,7 +211,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the copyright property: Copyright information for the audio file.
-     *
+     * 
      * @return the copyright value.
      */
     public String copyright() {
@@ -231,7 +220,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the copyright property: Copyright information for the audio file.
-     *
+     * 
      * @param copyright the copyright value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -242,7 +231,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the disc property: The number of the disc this audio file came from.
-     *
+     * 
      * @return the disc value.
      */
     public Integer disc() {
@@ -251,7 +240,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the disc property: The number of the disc this audio file came from.
-     *
+     * 
      * @param disc the disc value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -262,7 +251,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the discCount property: The total number of discs in this album.
-     *
+     * 
      * @return the discCount value.
      */
     public Integer discCount() {
@@ -271,7 +260,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the discCount property: The total number of discs in this album.
-     *
+     * 
      * @param discCount the discCount value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -282,7 +271,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the duration property: Duration of the audio file, expressed in milliseconds.
-     *
+     * 
      * @return the duration value.
      */
     public Long duration() {
@@ -291,7 +280,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the duration property: Duration of the audio file, expressed in milliseconds.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -302,7 +291,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the genre property: The genre of this audio file.
-     *
+     * 
      * @return the genre value.
      */
     public String genre() {
@@ -311,7 +300,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the genre property: The genre of this audio file.
-     *
+     * 
      * @param genre the genre value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -322,7 +311,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the hasDrm property: Indicates if the file is protected with digital rights management.
-     *
+     * 
      * @return the hasDrm value.
      */
     public Boolean hasDrm() {
@@ -331,7 +320,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the hasDrm property: Indicates if the file is protected with digital rights management.
-     *
+     * 
      * @param hasDrm the hasDrm value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -342,7 +331,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the isVariableBitrate property: Indicates if the file is encoded with a variable bitrate.
-     *
+     * 
      * @return the isVariableBitrate value.
      */
     public Boolean isVariableBitrate() {
@@ -351,7 +340,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the isVariableBitrate property: Indicates if the file is encoded with a variable bitrate.
-     *
+     * 
      * @param isVariableBitrate the isVariableBitrate value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -362,7 +351,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the title property: The title of the audio file.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -371,7 +360,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the title property: The title of the audio file.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -382,7 +371,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the track property: The number of the track on the original disc for this audio file.
-     *
+     * 
      * @return the track value.
      */
     public Integer track() {
@@ -391,7 +380,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the track property: The number of the track on the original disc for this audio file.
-     *
+     * 
      * @param track the track value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -402,7 +391,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the trackCount property: The total number of tracks on the original disc for this audio file.
-     *
+     * 
      * @return the trackCount value.
      */
     public Integer trackCount() {
@@ -411,7 +400,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the trackCount property: The total number of tracks on the original disc for this audio file.
-     *
+     * 
      * @param trackCount the trackCount value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -422,7 +411,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the year property: The year the audio file was recorded.
-     *
+     * 
      * @return the year value.
      */
     public Integer year() {
@@ -431,7 +420,7 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Set the year property: The year the audio file was recorded.
-     *
+     * 
      * @param year the year value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -442,17 +431,16 @@ public final class MicrosoftGraphAudio {
 
     /**
      * Get the additionalProperties property: audio.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: audio.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAudio object itself.
      */
@@ -461,19 +449,103 @@ public final class MicrosoftGraphAudio {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("album", this.album);
+        jsonWriter.writeStringField("albumArtist", this.albumArtist);
+        jsonWriter.writeStringField("artist", this.artist);
+        jsonWriter.writeNumberField("bitrate", this.bitrate);
+        jsonWriter.writeStringField("composers", this.composers);
+        jsonWriter.writeStringField("copyright", this.copyright);
+        jsonWriter.writeNumberField("disc", this.disc);
+        jsonWriter.writeNumberField("discCount", this.discCount);
+        jsonWriter.writeNumberField("duration", this.duration);
+        jsonWriter.writeStringField("genre", this.genre);
+        jsonWriter.writeBooleanField("hasDrm", this.hasDrm);
+        jsonWriter.writeBooleanField("isVariableBitrate", this.isVariableBitrate);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeNumberField("track", this.track);
+        jsonWriter.writeNumberField("trackCount", this.trackCount);
+        jsonWriter.writeNumberField("year", this.year);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAudio from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAudio if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAudio.
+     */
+    public static MicrosoftGraphAudio fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAudio deserializedMicrosoftGraphAudio = new MicrosoftGraphAudio();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("album".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.album = reader.getString();
+                } else if ("albumArtist".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.albumArtist = reader.getString();
+                } else if ("artist".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.artist = reader.getString();
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.bitrate = reader.getNullable(JsonReader::getLong);
+                } else if ("composers".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.composers = reader.getString();
+                } else if ("copyright".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.copyright = reader.getString();
+                } else if ("disc".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.disc = reader.getNullable(JsonReader::getInt);
+                } else if ("discCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.discCount = reader.getNullable(JsonReader::getInt);
+                } else if ("duration".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.duration = reader.getNullable(JsonReader::getLong);
+                } else if ("genre".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.genre = reader.getString();
+                } else if ("hasDrm".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.hasDrm = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isVariableBitrate".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.isVariableBitrate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.title = reader.getString();
+                } else if ("track".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.track = reader.getNullable(JsonReader::getInt);
+                } else if ("trackCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.trackCount = reader.getNullable(JsonReader::getInt);
+                } else if ("year".equals(fieldName)) {
+                    deserializedMicrosoftGraphAudio.year = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAudio.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAudio;
+        });
     }
 }

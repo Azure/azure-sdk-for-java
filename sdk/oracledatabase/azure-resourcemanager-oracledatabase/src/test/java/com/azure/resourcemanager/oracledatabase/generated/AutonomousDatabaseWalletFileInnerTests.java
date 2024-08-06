@@ -12,14 +12,7 @@ public final class AutonomousDatabaseWalletFileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseWalletFileInner model
-            = BinaryData.fromString("{\"walletFiles\":\"lyls\"}").toObject(AutonomousDatabaseWalletFileInner.class);
-        Assertions.assertEquals("lyls", model.walletFiles());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        AutonomousDatabaseWalletFileInner model = new AutonomousDatabaseWalletFileInner().withWalletFiles("lyls");
-        model = BinaryData.fromObject(model).toObject(AutonomousDatabaseWalletFileInner.class);
-        Assertions.assertEquals("lyls", model.walletFiles());
+            = BinaryData.fromString("{\"walletFiles\":\"uqlcvydy\"}").toObject(AutonomousDatabaseWalletFileInner.class);
+        Assertions.assertEquals("uqlcvydy", model.walletFiles());
     }
 }

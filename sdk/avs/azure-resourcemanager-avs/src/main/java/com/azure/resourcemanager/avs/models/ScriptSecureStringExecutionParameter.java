@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** a plain text value execution parameter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SecureValue")
+/**
+ * a plain text value execution parameter.
+ */
 @Fluent
 public final class ScriptSecureStringExecutionParameter extends ScriptExecutionParameter {
     /*
+     * script execution parameter type
+     */
+    private ScriptExecutionParameterType type = ScriptExecutionParameterType.SECURE_VALUE;
+
+    /*
      * A secure value for the passed parameter, not to be stored in logs
      */
-    @JsonProperty(value = "secureValue")
     private String secureValue;
 
-    /** Creates an instance of ScriptSecureStringExecutionParameter class. */
+    /**
+     * Creates an instance of ScriptSecureStringExecutionParameter class.
+     */
     public ScriptSecureStringExecutionParameter() {
     }
 
     /**
+     * Get the type property: script execution parameter type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public ScriptExecutionParameterType type() {
+        return this.type;
+    }
+
+    /**
      * Get the secureValue property: A secure value for the passed parameter, not to be stored in logs.
-     *
+     * 
      * @return the secureValue value.
      */
     public String secureValue() {
@@ -35,7 +52,7 @@ public final class ScriptSecureStringExecutionParameter extends ScriptExecutionP
 
     /**
      * Set the secureValue property: A secure value for the passed parameter, not to be stored in logs.
-     *
+     * 
      * @param secureValue the secureValue value to set.
      * @return the ScriptSecureStringExecutionParameter object itself.
      */
@@ -44,7 +61,9 @@ public final class ScriptSecureStringExecutionParameter extends ScriptExecutionP
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptSecureStringExecutionParameter withName(String name) {
         super.withName(name);
@@ -53,11 +72,56 @@ public final class ScriptSecureStringExecutionParameter extends ScriptExecutionP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("secureValue", this.secureValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptSecureStringExecutionParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptSecureStringExecutionParameter if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptSecureStringExecutionParameter.
+     */
+    public static ScriptSecureStringExecutionParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptSecureStringExecutionParameter deserializedScriptSecureStringExecutionParameter
+                = new ScriptSecureStringExecutionParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScriptSecureStringExecutionParameter.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptSecureStringExecutionParameter.type
+                        = ScriptExecutionParameterType.fromString(reader.getString());
+                } else if ("secureValue".equals(fieldName)) {
+                    deserializedScriptSecureStringExecutionParameter.secureValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptSecureStringExecutionParameter;
+        });
     }
 }

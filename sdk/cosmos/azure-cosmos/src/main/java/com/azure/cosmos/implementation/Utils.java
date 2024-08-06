@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -46,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -79,12 +81,30 @@ public class Utils {
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
+    private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
+        new AtomicReference<>(null);
+
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
     // so Thu, 04 Jan 2018 00:30:37 GMT is accepted by the cosmos db service,
     // but Thu, 4 Jan 2018 00:30:37 GMT is not.
     // Therefore, we need a custom date time formatter.
     private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor ensureItemSerializerAccessor() {
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor snapshot = itemSerializerAccessor.get();
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor newInstance =
+            ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+        if (itemSerializerAccessor.compareAndSet(null, newInstance)) {
+            return newInstance;
+        }
+
+        return itemSerializerAccessor.get();
+    }
 
     private static ObjectMapper createAndInitializeObjectMapper(boolean allowDuplicateProperties) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -593,7 +613,8 @@ public class Utils {
                     ? itemSerializer
                     : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
-                T result = effectiveSerializer.deserialize(
+                T result = ensureItemSerializerAccessor().deserializeSafe(
+                    effectiveSerializer,
                     getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
                     itemClassType);
                 return result;
@@ -610,17 +631,47 @@ public class Utils {
         CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
                 CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return effectiveItemSerializer.deserialize(new ObjectNodeMap(jsonNode), itemClassType);
+        return ensureItemSerializerAccessor().deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
+    }
+
+    public static void validateIdValue(Object itemIdValue) {
+        if (!(itemIdValue instanceof String)) {
+            return;
+        }
+
+        String itemId = (String)itemIdValue;
+        if (itemId != null
+            && Configs.isIdValueValidationEnabled()
+            && itemId.contains("/")) {
+
+            BadRequestException exception = new BadRequestException(
+                "The id value '" + itemId + "' contains the invalid character '/'. To stop the client-side validation "
+                    + "set the environment variable '" + Configs.PREVENT_INVALID_ID_CHARS + "' or the system property '"
+                    + Configs.PREVENT_INVALID_ID_CHARS_VARIABLE + "' to 'true'.");
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.INVALID_ID_VALUE);
+
+            throw exception;
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object, Consumer<Map<String, Object>> onAfterSerialization) {
+    public static ByteBuffer serializeJsonToByteBuffer(
+        CosmosItemSerializer serializer,
+        Object object,
+        Consumer<Map<String, Object>> onAfterSerialization,
+        boolean isIdValidationEnabled) {
+
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
                 ? (Map<String, Object>) object
-                : serializer.serialize(object);
+                : ensureItemSerializerAccessor().serializeSafe(serializer, object);
+
+            if (isIdValidationEnabled) {
+                validateIdValue(jsonTreeMap.get(Constants.Properties.ID));
+            }
 
             if (onAfterSerialization != null) {
                 onAfterSerialization.accept(jsonTreeMap);

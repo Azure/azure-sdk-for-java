@@ -6,11 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,31 +23,27 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /*
      * Properties of the load balancer probe.
      */
-    @JsonProperty(value = "properties")
     private FrontendIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
+     * This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**
@@ -56,7 +54,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of the load balancer probe.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FrontendIpConfigurationPropertiesFormatInner innerProperties() {
@@ -66,7 +64,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within the set of frontend IP configurations used
      * by the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +74,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within the set of frontend IP configurations used
      * by the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -87,7 +85,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -96,7 +94,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -106,7 +104,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /**
      * Get the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
      * from.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -116,7 +114,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /**
      * Set the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
      * from.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -136,7 +134,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the inboundNatRules property: An array of references to inbound rules that use this frontend IP.
-     *
+     * 
      * @return the inboundNatRules value.
      */
     public List<SubResource> inboundNatRules() {
@@ -145,7 +143,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the inboundNatPools property: An array of references to inbound pools that use this frontend IP.
-     *
+     * 
      * @return the inboundNatPools value.
      */
     public List<SubResource> inboundNatPools() {
@@ -154,7 +152,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the outboundRules property: An array of references to outbound rules that use this frontend IP.
-     *
+     * 
      * @return the outboundRules value.
      */
     public List<SubResource> outboundRules() {
@@ -163,7 +161,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the loadBalancingRules property: An array of references to load balancing rules that use this frontend IP.
-     *
+     * 
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -172,7 +170,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -181,7 +179,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -195,7 +193,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAllocationMethod property: The Private IP allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -204,7 +202,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAllocationMethod property: The Private IP allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -219,7 +217,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /**
      * Get the privateIpAddressVersion property: Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken
      * as IPv4.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
@@ -229,7 +227,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /**
      * Set the privateIpAddressVersion property: Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken
      * as IPv4.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -243,7 +241,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -252,7 +250,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Set the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -266,7 +264,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the publicIpAddress property: The reference to the Public IP resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
@@ -275,7 +273,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Set the publicIpAddress property: The reference to the Public IP resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -289,7 +287,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the publicIpPrefix property: The reference to the Public IP Prefix resource.
-     *
+     * 
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
@@ -298,7 +296,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Set the publicIpPrefix property: The reference to the Public IP Prefix resource.
-     *
+     * 
      * @param publicIpPrefix the publicIpPrefix value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -312,7 +310,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
-     *
+     * 
      * @return the gatewayLoadBalancer value.
      */
     public SubResource gatewayLoadBalancer() {
@@ -321,7 +319,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
-     *
+     * 
      * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
      * @return the FrontendIpConfigurationInner object itself.
      */
@@ -335,7 +333,7 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the frontend IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -344,12 +342,63 @@ public final class FrontendIpConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendIpConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendIpConfigurationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontendIpConfigurationInner.
+     */
+    public static FrontendIpConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendIpConfigurationInner deserializedFrontendIpConfigurationInner = new FrontendIpConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.innerProperties
+                        = FrontendIpConfigurationPropertiesFormatInner.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.type = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFrontendIpConfigurationInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendIpConfigurationInner;
+        });
     }
 }
