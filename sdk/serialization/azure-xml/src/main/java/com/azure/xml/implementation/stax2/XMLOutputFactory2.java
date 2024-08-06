@@ -4,8 +4,6 @@ package com.azure.xml.implementation.stax2;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter; // only for javadoc
 
-import com.azure.xml.implementation.stax2.io.EscapingWriterFactory;
-
 /**
  * Extension of {@link javax.xml.stream.XMLInputFactory} to add
  * missing functionality.
@@ -112,22 +110,20 @@ public abstract class XMLOutputFactory2 extends XMLOutputFactory implements XMLS
     /**
      * Property that can be set if a custom output escaping for textual
      * content is needed.
-     * The value set needs to be of type {@link EscapingWriterFactory}.
+     * The value set needs to be of type {@code EscapingWriterFactory}.
      * When set, the factory will be used to create a per-writer
      * instance used to escape all textual content written, both
-     * via explicit {@link XMLStreamWriter#writeCharacters} methods,
-     * and via copy methods ({@link XMLStreamWriter2#copyEventFromReader}).
+     * via explicit {@link XMLStreamWriter#writeCharacters} methods.
      */
     public final static String P_TEXT_ESCAPER = "com.azure.xml.implementation.stax2.textEscaper";
 
     /**
      * Property that can be set if a custom output escaping for attribute
      * value content is needed.
-     * The value set needs to be of type {@link EscapingWriterFactory}.
+     * The value set needs to be of type {@code EscapingWriterFactory}.
      * When set, the factory will be used to create a per-writer
      * instance used to escape all attribute values written, both
-     * via explicit {@link XMLStreamWriter#writeAttribute} methods,
-     * and via copy methods ({@link XMLStreamWriter2#copyEventFromReader}).
+     * via explicit {@link XMLStreamWriter#writeAttribute} methods.
      */
     public final static String P_ATTR_VALUE_ESCAPER = "com.azure.xml.implementation.stax2.attrValueEscaper";
 

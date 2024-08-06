@@ -169,10 +169,6 @@ public abstract class CommonConfig {
         return (_flags & flagMask) != 0;
     }
 
-    protected final boolean hasExplicitFlag(int flagMask) {
-        return hasFlag(flagMask) && hasFlagBeenModified(flagMask);
-    }
-
     protected final void setFlag(int flagMask, boolean state) {
         if (state) {
             _flags |= flagMask;
@@ -182,16 +178,4 @@ public abstract class CommonConfig {
         _flagMods |= flagMask;
     }
 
-    /**
-     * Method for checking whether specific configuration flag
-     * has been explicitly modified (set, clear; regardless of
-     * whether state actually changed), or is it the default
-     * value.
-     *
-     * @return False, if flag in question has its default value,
-     *   true if a call has been made that could have changed it.
-     */
-    protected final boolean hasFlagBeenModified(int flagMask) {
-        return (_flagMods & flagMask) != 0;
-    }
 }

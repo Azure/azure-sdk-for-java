@@ -16,30 +16,26 @@
 
 package com.azure.xml.implementation.aalto.out;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.*;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.*;
-
-import com.azure.xml.implementation.stax2.*;
-import com.azure.xml.implementation.stax2.validation.*;
-import com.azure.xml.implementation.stax2.ri.Stax2WriterImpl;
-
-import com.azure.xml.implementation.aalto.ValidationException;
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.impl.LocationImpl;
 import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
-import com.azure.xml.implementation.aalto.util.TextUtil;
 import com.azure.xml.implementation.aalto.util.XmlConsts;
+import com.azure.xml.implementation.stax2.ri.Stax2WriterImpl;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Iterator;
 
 /**
  * Base class for {@link XMLStreamReader} implementations.
  */
-public abstract class StreamWriterBase extends Stax2WriterImpl implements NamespaceContext, ValidationContext {
+public abstract class StreamWriterBase extends Stax2WriterImpl implements NamespaceContext {
     protected enum State {
         PROLOG, TREE, EPILOG
     }
@@ -94,31 +90,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     /*
     /**********************************************************************
-    /* Validation support
-    /**********************************************************************
-     */
-
-    /**
-     * Optional validator to use for validating output against
-     * one or more schemas, and/or for safe pretty-printing (indentation).
-     */
-    protected XMLValidator _validator = null;
-
-    /**
-     * State value used with validation, to track types of content
-     * that is allowed at this point in output stream. Only used if
-     * validation is enabled: if so, value is determined via validation
-     * callbacks.
-     */
-    protected int _vldContent = XMLValidator.CONTENT_ALLOW_ANY_TEXT;
-
-    /**
-     * Custom validation problem handler, if any.
-     */
-    protected ValidationProblemHandler _vldProblemHandler = null;
-
-    /*
-    /**********************************************************************
     /* State information
     /**********************************************************************
      */
@@ -160,7 +131,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     /**
      * Value passed as the expected root element, when using the multiple
-     * argument {@link #writeDTD} method. Will be used in structurally
+     * argument {@code #writeDTD} method. Will be used in structurally
      * validating mode (and in dtd-validating mode, since that automatically
      * enables structural validation as well, to pre-filter well-formedness
      * errors that validators might have trouble dealing with).
@@ -325,12 +296,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
 
         _verifyWriteCData();
-        // Also, do we do textual content validation?
-        if ((_vldContent == XMLValidator.CONTENT_ALLOW_VALIDATABLE_TEXT) && (_validator != null)) {
-            // Last arg is false, since we do not know if more text
-            // may be added with additional calls
-            _validator.validateText(data, false);
-        }
 
         try {
             int ix = _xmlWriter.writeCData(data);
@@ -356,22 +321,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             return;
         }
 
-        // Validator-based validation?
-        if (_vldContent <= XMLValidator.CONTENT_ALLOW_WS) {
-            if (_vldContent == XMLValidator.CONTENT_ALLOW_NONE) { // never ok
-                _reportInvalidContent(CHARACTERS);
-            } else { // all-ws is ok...
-                if (!TextUtil.isAllWhitespace(text, start, len, _config.isXml11())) {
-                    _reportInvalidContent(CHARACTERS);
-                }
-            }
-        } else if (_vldContent == XMLValidator.CONTENT_ALLOW_VALIDATABLE_TEXT) {
-            if (_validator != null) {
-                // Last arg is false, since we do not know if more text
-                // may be added with additional calls
-                _validator.validateText(text, start, len, false);
-            }
-        }
         if (len > 0) {
             try {
                 _xmlWriter.writeCharacters(text, start, len);
@@ -393,28 +342,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             return;
         }
 
-        // Validator-based validation?
-        /* Note: although it'd be good to check validity first, we
-         * do not know allowed textual content before actually writing
-         * pending start element (if any)... so can't call this earlier
-         */
-        if (_vldContent <= XMLValidator.CONTENT_ALLOW_WS) {
-            if (_vldContent == XMLValidator.CONTENT_ALLOW_NONE) { // never ok
-                _reportInvalidContent(CHARACTERS);
-            } else { // all-ws is ok...
-                if (!TextUtil.isAllWhitespace(text, _config.isXml11())) {
-                    _reportInvalidContent(CHARACTERS);
-                }
-            }
-        } else if (_vldContent == XMLValidator.CONTENT_ALLOW_VALIDATABLE_TEXT) {
-            if (_validator != null) {
-                /* Last arg is false, since we do not know if more text
-                 * may be added with additional calls
-                 */
-                _validator.validateText(text, false);
-            }
-        }
-
         try {
             _xmlWriter.writeCharacters(text);
         } catch (IOException ioe) {
@@ -427,9 +354,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         _stateAnyOutput = true;
         if (_stateStartElementOpen) {
             _closeStartElement(_stateEmptyElement);
-        }
-        if (_vldContent == XMLValidator.CONTENT_ALLOW_NONE) { // from DTD, EMPTY
-            _reportInvalidContent(COMMENT);
         }
 
         /* No structural validation needed per se, for comments; they are
@@ -470,9 +394,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     public void writeEmptyElement(String localName) throws XMLStreamException {
         _verifyStartElement(null, localName);
         WName name = _symbols.findSymbol(localName);
-        if (_validator != null) {
-            _validator.validateElementStart(localName, "", "");
-        }
         _writeStartTag(name, true);
     }
 
@@ -530,12 +451,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         if (_currElem.isRoot()) { // (note: we have dummy placeholder elem that contains doc)
             _state = State.EPILOG;
         }
-
-        // Time to validate?
-        if (_validator != null) {
-            _vldContent = _validator.validateElementEnd(thisElem.getLocalName(), thisElem.getNonNullPrefix(),
-                thisElem.getNonNullNamespaceURI());
-        }
     }
 
     @Override
@@ -550,11 +465,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             if (inPrologOrEpilog()) {
                 _reportNwfStructure(ErrorConsts.WERR_PROLOG_ENTITY);
             }
-        }
-        // Validator-based validation?
-        if (_vldContent == XMLValidator.CONTENT_ALLOW_NONE) {
-            // Char entity, general entity; whatever it is it's invalid...
-            _reportInvalidContent(ENTITY_REFERENCE);
         }
         try {
             _xmlWriter.writeEntityReference(_symbols.findSymbol(name));
@@ -576,13 +486,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         _stateAnyOutput = true;
         if (_stateStartElementOpen) {
             _closeStartElement(_stateEmptyElement);
-        }
-
-        /* Structurally, PIs are always ok (content might not be)...
-         * except in empty content models...
-         */
-        if (_vldContent == XMLValidator.CONTENT_ALLOW_NONE) {
-            _reportInvalidContent(PROCESSING_INSTRUCTION);
         }
 
         try {
@@ -625,9 +528,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     public void writeStartElement(String localName) throws XMLStreamException {
         _verifyStartElement(null, localName);
         WName name = _symbols.findSymbol(localName);
-        if (_validator != null) {
-            _validator.validateElementStart(localName, "", "");
-        }
         _writeStartTag(name, false);
     }
 
@@ -722,87 +622,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     // NOTE: getProperty() defined in Stax 1.0 interface
 
-    @Override
-    public boolean isPropertySupported(String name) {
-        // !!! TBI: not all these properties are really supported
-        return _config.isPropertySupported(name);
-    }
-
-    /**
-     * @param name Name of the property to set
-     * @param value Value to set property to.
-     *
-     * @return True, if the specified property was <b>succesfully</b>
-     *    set to specified value; false if its value was not changed
-     */
-    @Override
-    public boolean setProperty(String name, Object value) {
-        /* Note: can not call local method, since it'll return false for
-         * recognized but non-mutable properties
-         */
-        return _config.setProperty(name, value);
-    }
-
-    @Override
-    public XMLValidator validateAgainst(XMLValidationSchema schema) throws XMLStreamException {
-        XMLValidator vld = schema.createValidator(this);
-
-        if (_validator == null) {
-            /* Need to enable other validation modes? Structural validation
-             * should always be done when we have other validators as well,
-             * as well as attribute uniqueness checks.
-             */
-            _cfgCheckStructure = true;
-            _cfgCheckAttrs = true;
-            _validator = vld;
-        } else {
-            _validator = new ValidatorPair(_validator, vld);
-        }
-        return vld;
-    }
-
-    @Override
-    public XMLValidator stopValidatingAgainst(XMLValidationSchema schema) throws XMLStreamException {
-        XMLValidator[] results = new XMLValidator[2];
-        XMLValidator found = null;
-        if (ValidatorPair.removeValidator(_validator, schema, results)) { // found
-            found = results[0];
-            _validator = results[1];
-            found.validationCompleted(false);
-            if (_validator == null) {
-                resetValidationFlags();
-            }
-        }
-        return found;
-    }
-
-    @Override
-    public XMLValidator stopValidatingAgainst(XMLValidator validator) throws XMLStreamException {
-        XMLValidator[] results = new XMLValidator[2];
-        XMLValidator found = null;
-        if (ValidatorPair.removeValidator(_validator, validator, results)) { // found
-            found = results[0];
-            _validator = results[1];
-            found.validationCompleted(false);
-            if (_validator == null) {
-                resetValidationFlags();
-            }
-        }
-        return found;
-    }
-
-    @Override
-    public ValidationProblemHandler setValidationProblemHandler(ValidationProblemHandler h) {
-        ValidationProblemHandler oldH = _vldProblemHandler;
-        _vldProblemHandler = h;
-        return oldH;
-    }
-
-    private void resetValidationFlags() {
-        _cfgCheckStructure = _config.willCheckStructure();
-        _cfgCheckAttrs = _config.willCheckAttributes();
-    }
-
     /*
     /**********************************************************************
     /* Stax2, other accessors, mutators
@@ -810,14 +629,9 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
      */
 
     @Override
-    public XMLStreamLocation2 getLocation() {
+    public Location getLocation() {
         return new LocationImpl(null, null, // pub/sys ids not yet known
             _xmlWriter.getAbsOffset(), _xmlWriter.getRow(), _xmlWriter.getColumn());
-    }
-
-    @Override
-    public String getEncoding() {
-        return _config.getActualEncoding();
     }
 
     /*
@@ -825,46 +639,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /* StAX2, output methods
     /**********************************************************************
      */
-
-    @Override
-    public void writeCData(char[] cbuf, int start, int len) throws XMLStreamException {
-        if (_cfgCDataAsText) {
-            writeCharacters(cbuf, start, len);
-            return;
-        }
-
-        _verifyWriteCData();
-        int ix;
-        try {
-            ix = _xmlWriter.writeCData(cbuf, start, len);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
-        if (ix >= 0) { // problems that could not to be fixed?
-            _reportNwfContent(ErrorConsts.WERR_CDATA_CONTENT, ix);
-        }
-    }
-
-    public void writeDTD(DTDInfo info) throws XMLStreamException {
-        writeDTD(info.getDTDRootName(), info.getDTDSystemId(), info.getDTDPublicId(), info.getDTDInternalSubset());
-    }
-
-    @Override
-    public void writeDTD(String rootName, String systemId, String publicId, String internalSubset)
-        throws XMLStreamException {
-        _verifyWriteDTD();
-        _dtdRootElemName = rootName;
-        try {
-            _xmlWriter.writeDTD(_symbols.findSymbol(rootName), systemId, publicId, internalSubset);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
-    }
-
-    @Override
-    public void writeStartDocument(String version, String encoding, boolean standAlone) throws XMLStreamException {
-        _writeStartDocument(version, encoding, standAlone ? "yes" : "no");
-    }
 
     @Override
     public void writeRaw(String text) throws XMLStreamException {
@@ -913,25 +687,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     // already part of NamespaceContext impl above...
     //public String getNamespaceURI(String prefix)
-
-    @Override
-    public Location getValidationLocation() {
-        return getLocation();
-    }
-
-    @Override
-    public void reportProblem(XMLValidationProblem prob) throws XMLStreamException {
-        // Custom handler set? If so, it'll take care of it:
-        if (_vldProblemHandler != null) {
-            _vldProblemHandler.reportProblem(prob);
-            return;
-        }
-
-        // Let's throw an exception for fatal and non-fatal errors:
-        if (prob.getSeverity() >= XMLValidationProblem.SEVERITY_ERROR) {
-            throw ValidationException.create(prob);
-        }
-    }
 
     // // // Notation/entity access: not (yet?) implemented
 
@@ -1213,41 +968,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     protected static void _reportNwfContent(String msg, Object arg) throws XMLStreamException {
         throwOutputError(msg, arg);
-    }
-
-    /*
-    /**********************************************************************
-    /* Package methods, output validation problem reporting
-    /**********************************************************************
-     */
-
-    protected void _reportInvalidContent(int evtType) throws XMLStreamException {
-        switch (_vldContent) {
-            case XMLValidator.CONTENT_ALLOW_NONE:
-                _reportValidationProblem(MessageFormat.format(ErrorConsts.VERR_EMPTY, _currElem.getNameDesc(),
-                    ErrorConsts.tokenTypeDesc(evtType)));
-                break;
-
-            case XMLValidator.CONTENT_ALLOW_WS:
-                _reportValidationProblem(MessageFormat.format(ErrorConsts.VERR_NON_MIXED, _currElem.getNameDesc()));
-                break;
-
-            case XMLValidator.CONTENT_ALLOW_VALIDATABLE_TEXT:
-            case XMLValidator.CONTENT_ALLOW_ANY_TEXT:
-                /* Not 100% sure if this should ever happen... depends on
-                 * interpretation of 'any' content model?
-                 */
-                _reportValidationProblem(MessageFormat.format(ErrorConsts.VERR_ANY, _currElem.getNameDesc(),
-                    ErrorConsts.tokenTypeDesc(evtType)));
-                break;
-
-            default: // should never occur:
-                _reportValidationProblem("Internal error: trying to report invalid content for " + evtType);
-        }
-    }
-
-    public void _reportValidationProblem(String msg) throws XMLStreamException {
-        reportProblem(new XMLValidationProblem(getValidationLocation(), msg, XMLValidationProblem.SEVERITY_ERROR));
     }
 
     /*

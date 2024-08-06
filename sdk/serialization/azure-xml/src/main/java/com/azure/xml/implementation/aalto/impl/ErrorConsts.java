@@ -20,19 +20,11 @@ public final class ErrorConsts {
 
     public static String ERR_NULL_ARG = "Illegal to pass null as argument";
 
-    // // // Error, validation:
-
-    public static String VERR_EMPTY = "Element <{0}> has EMPTY content specification; can not contain {1}";
-    public static String VERR_NON_MIXED
-        = "Element <{0}> has non-mixed content specification; can not contain non-white space text, or any CDATA sections";
-    public static String VERR_ANY = "Element <{0}> has ANY content specification; can not contain {1}";
-
     // // // Wrong reader state:
 
     public static String ERR_STATE_NOT_STELEM = "Current state not START_ELEMENT";
     public static String ERR_STATE_NOT_ELEM = "Current state not START_ELEMENT or END_ELEMENT";
     public static String ERR_STATE_NOT_PI = "Current state not PROCESSING_INSTRUCTION";
-    public static String ERR_STATE_NOT_STELEM_OR_TEXT = "Current state not START_ELEMENT, CHARACTERS or CDATA";
 
     // // // Error messaging, reader
 

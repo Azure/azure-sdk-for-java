@@ -170,12 +170,12 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
      * @return Normalized encoding name
      */
     private String verifyXmlEncoding(String enc) throws XMLStreamException {
-        enc = CharsetNames.normalize(enc);
+        String charset = CharsetNames.normalize(enc);
 
         // Probably no point in comparing at all... is there?
         // But we can report a possible problem?
         String extEnc = _config.getExternalEncoding();
-        if (extEnc != null && enc != null && !extEnc.equalsIgnoreCase(enc)) {
+        if (extEnc != null && charset != null && !extEnc.equalsIgnoreCase(charset)) {
             XMLReporter rep = _config.getXMLReporter();
             if (rep != null) {
                 Location loc = getLocation();
@@ -246,16 +246,12 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
     }
 
     @Override
-    protected int getNextAfterWs(boolean reqWs) throws IOException, XMLStreamException {
-        int count = 0;
+    protected int getNextAfterWs() throws IOException, XMLStreamException {
 
         while (true) {
             char c = (_inputPtr < _inputLast) ? _inputBuffer[_inputPtr++] : nextChar();
 
             if (c > CHAR_SPACE) {
-                if (reqWs && count == 0) {
-                    reportUnexpectedChar(c, ERR_XMLDECL_EXP_SPACE);
-                }
                 return c;
             }
             if (c == CHAR_CR || c == CHAR_LF) {
@@ -263,7 +259,6 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
             } else if (c == CHAR_NULL) {
                 reportNull();
             }
-            ++count;
         }
     }
 

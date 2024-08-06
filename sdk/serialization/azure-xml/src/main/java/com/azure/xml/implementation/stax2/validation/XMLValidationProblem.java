@@ -9,7 +9,6 @@ import javax.xml.stream.Location;
  * a validation exception.
  */
 public class XMLValidationProblem {
-    public final static int SEVERITY_ERROR = 2;
 
     /**
      * Location within validated xml stream where the problem occured.
@@ -26,10 +25,6 @@ public class XMLValidationProblem {
      * @since 3.0
      */
     protected String mType;
-
-    public XMLValidationProblem(Location loc, String msg, int severity) {
-        this(loc, msg, severity, null);
-    }
 
     public XMLValidationProblem(Location loc, String msg, int severity, String type) {
         mLocation = loc;
@@ -64,14 +59,6 @@ public class XMLValidationProblem {
      */
     public String getMessage() {
         return mMessage;
-    }
-
-    /**
-     * @return One of <code>SEVERITY_</code> constants
-     *   (such as {@link #SEVERITY_WARNING}
-     */
-    public int getSeverity() {
-        return mSeverity;
     }
 
     /**

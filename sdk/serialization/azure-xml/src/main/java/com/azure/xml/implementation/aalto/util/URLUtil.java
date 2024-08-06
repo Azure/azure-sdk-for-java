@@ -29,6 +29,7 @@ public final class URLUtil {
      * id, without additional contextual information. We could perhaps use
      * java.net.URI class in future?
      */
+    @SuppressWarnings("deprecation")
     public static URL urlFromSystemId(String sysId) throws IOException {
         try {
             /* Ok, does it look like a full URL? For one, you need a colon.
@@ -96,6 +97,7 @@ public final class URLUtil {
      * Now, for our use cases this is irrelevant, so we can optimize
      * out that expensive part.
      */
+    @SuppressWarnings("deprecation")
     public static URL fileToURL(File f) throws IOException {
         /* Based on earlier experiences, looked like using
          * File.toURL() is rather expensive (at least on jdk1.4/1.5),

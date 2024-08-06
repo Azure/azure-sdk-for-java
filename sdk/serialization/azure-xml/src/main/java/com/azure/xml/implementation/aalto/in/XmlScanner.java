@@ -1,11 +1,14 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.in;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Objects;
+import com.azure.xml.implementation.aalto.WFCException;
+import com.azure.xml.implementation.aalto.impl.ErrorConsts;
+import com.azure.xml.implementation.aalto.impl.IoStreamException;
+import com.azure.xml.implementation.aalto.impl.LocationImpl;
+import com.azure.xml.implementation.aalto.util.DataUtil;
+import com.azure.xml.implementation.aalto.util.TextBuilder;
+import com.azure.xml.implementation.aalto.util.XmlChars;
+import com.azure.xml.implementation.aalto.util.XmlConsts;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
@@ -13,17 +16,11 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.stax2.XMLStreamLocation2;
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedValueDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-import com.azure.xml.implementation.stax2.ri.typed.CharArrayBase64Decoder;
-
-import com.azure.xml.implementation.aalto.WFCException;
-import com.azure.xml.implementation.aalto.impl.*;
-import com.azure.xml.implementation.aalto.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * This is the abstract base class for all scanner implementations,
@@ -239,13 +236,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     /**********************************************************************
      */
 
-    /**
-     * Last returned {@link NamespaceContext}, created for a call
-     * to {@link #getNonTransientNamespaceContext}, iff this would
-     * still be a valid context.
-     */
-    protected FixedNsContext _lastNsContext = FixedNsContext.EMPTY_CONTEXT;
-
     /*
     /**********************************************************************
     /* Attribute info
@@ -444,9 +434,9 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     /**
      * @return Current input location
      */
-    public abstract XMLStreamLocation2 getCurrentLocation();
+    public abstract Location getCurrentLocation();
 
-    public final XMLStreamLocation2 getStartLocation() {
+    public final Location getStartLocation() {
         // !!! TODO: deal with impedance wrt int/long (flaw in Stax API)
         int row = (int) _startRow;
         int col = (int) _startColumn;
@@ -463,14 +453,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return (_depth == 0);
     }
 
-    public final int getDepth() {
-        return _depth;
-    }
-
-    public final boolean isEmptyTag() {
-        return _isEmptyTag;
-    }
-
     /*
     /**********************************************************************
     /* Data accessors, names:
@@ -483,14 +465,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
     public final QName getQName() {
         return _tokenName.constructQName(_defaultNs);
-    }
-
-    public final String getDTDPublicId() {
-        return _publicId;
-    }
-
-    public final String getDTDSystemId() {
-        return _systemId;
     }
 
     /*
@@ -528,60 +502,11 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         return _textBuilder.contentsToArray(srcStart, target, targetStart, len);
     }
 
-    public final int getText(Writer w) throws XMLStreamException {
-        if (_tokenIncomplete) {
-            finishToken();
-        }
-        /* !!! Preserve or not, we'll hold the contents in memory.
-         *   Could be improved if necessary.
-         */
-        try {
-            return _textBuilder.rawContentsTo(w);
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
-    }
-
     public final boolean isTextWhitespace() throws XMLStreamException {
         if (_tokenIncomplete) {
             finishToken();
         }
         return _textBuilder.isAllWhitespace();
-    }
-
-    /**
-     * Method called by the stream reader to decode space-separated tokens
-     * that are part of the current text event, using given decoder.
-     *
-     * @param reset If true, need to tell text buffer to reset its decoding
-     *   state; if false, shouldn't
-     */
-    public final int decodeElements(TypedArrayDecoder tad, boolean reset) throws XMLStreamException {
-        if (_tokenIncomplete) {
-            finishToken();
-        }
-
-        try {
-            return _textBuilder.decodeElements(tad, reset);
-        } catch (TypedXMLStreamException tex) {
-            // Need to add location?
-            Location loc = getCurrentLocation();
-            String lexical = tex.getLexical();
-            IllegalArgumentException iae = (IllegalArgumentException) tex.getCause();
-            throw new TypedXMLStreamException(lexical, tex.getMessage(), loc, iae);
-        }
-    }
-
-    /**
-     * Method called by the stream reader to reset given base64 decoder
-     * with data from the current text event.
-     */
-    public final void resetForDecoding(Base64Variant v, CharArrayBase64Decoder dec, boolean firstChunk)
-        throws XMLStreamException {
-        if (_tokenIncomplete) {
-            finishToken();
-        }
-        _textBuilder.resetForBinaryDecode(v, dec, firstChunk);
     }
 
     /*
@@ -633,35 +558,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             return null;
         }
         return _attrCollector.getValue(nsURI, localName);
-    }
-
-    public final void decodeAttrValue(int index, TypedValueDecoder tvd) {
-        _attrCollector.decodeValue(index, tvd);
-    }
-
-    /**
-     * Method called to decode the attribute value that consists of
-     * zero or more space-separated tokens.
-     * Decoding is done using the decoder provided.
-     * @return Number of tokens decoded
-     */
-    public final int decodeAttrValues(int index, TypedArrayDecoder tad) throws XMLStreamException {
-        return _attrCollector.decodeValues(index, tad, this);
-    }
-
-    public final byte[] decodeAttrBinaryValue(int index, Base64Variant v, CharArrayBase64Decoder dec)
-        throws XMLStreamException {
-        return _attrCollector.decodeBinaryValue(index, v, dec, this);
-    }
-
-    public final int findAttrIndex(String nsURI, String localName) {
-        /* Collector may not be reset if there are no attributes,
-         * need to check if any could be found first:
-         */
-        if (_attrCount < 1) {
-            return -1;
-        }
-        return _attrCollector.findIndex(nsURI, localName);
     }
 
     public final String getAttrType() {
@@ -731,11 +627,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         String uri = _tokenName.getNsUri();
         // Null means it uses the default ns:
         return (uri == null) ? _defaultNs.mURI : uri;
-    }
-
-    public final NamespaceContext getNonTransientNamespaceContext() {
-        _lastNsContext = _lastNsContext.reuseOrCreate(_lastNsDecl);
-        return _lastNsContext;
     }
 
     /*
@@ -1264,12 +1155,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
     }
 
     protected char handleInvalidXmlChar(int i) throws XMLStreamException {
-        final IllegalCharHandler iHandler = _config.getIllegalCharHandler();
-
-        if (iHandler != null) {
-            return iHandler.convertIllegalChar(i);
-        }
-
         char c = (char) i;
         if (c == CHAR_NULL) {
             throwNullChar();

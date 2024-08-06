@@ -46,21 +46,6 @@ public interface LocationInfo {
      *   of the following event, if any, or EOF if not), or null (if
      *   implementation does not track locations).
      */
-    XMLStreamLocation2 getStartLocation();
-
-    /**
-     * A method that returns the current location of the stream reader
-     * at the input source. This is somewhere between the start
-     * and end locations (inclusive), depending on how parser does it
-     * parsing (for non-lazy implementations it's always the end location;
-     * for others something else).
-     *<p>
-     * Since this location information should always be accessible, no
-     * further parsing is to be done, and no exceptions can be thrown.
-     *
-     * @return Location of the next character reader will parse in the
-     *   input source.
-     */
-    XMLStreamLocation2 getCurrentLocation();
+    Location getStartLocation();
 
 }

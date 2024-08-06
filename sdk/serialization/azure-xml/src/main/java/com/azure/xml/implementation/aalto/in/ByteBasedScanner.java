@@ -18,9 +18,8 @@ package com.azure.xml.implementation.aalto.in;
 
 import java.io.IOException;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.stax2.XMLStreamLocation2;
 
 import com.azure.xml.implementation.aalto.impl.LocationImpl;
 import com.azure.xml.implementation.aalto.util.DataUtil;
@@ -130,7 +129,7 @@ public abstract class ByteBasedScanner extends XmlScanner {
      */
 
     @Override
-    public XMLStreamLocation2 getCurrentLocation() {
+    public Location getCurrentLocation() {
         return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _pastBytesOrChars + _inputPtr,
             _currRow, _inputPtr - _rowStartOffset);
     }

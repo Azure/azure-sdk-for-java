@@ -20,8 +20,6 @@ import java.io.*;
 
 import javax.xml.stream.*;
 
-import com.azure.xml.implementation.stax2.ri.typed.AsciiValueEncoder;
-
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 import com.azure.xml.implementation.aalto.util.XmlCharTypes;
 import com.azure.xml.implementation.aalto.util.XmlChars;
@@ -640,32 +638,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
         _outputPtr = ptr;
     }
 
-    private void writeAttrNameEqQ(WName name) throws IOException {
-        if (_surrogate != 0) {
-            throwUnpairedSurrogate();
-        }
-        // Enough room for ' attr="' part?
-        int nlen = name.serializedLength();
-        int ptr = _outputPtr;
-        if ((ptr + nlen + 3) >= _outputBufferLen) {
-            flushBuffer();
-            ptr = _outputPtr;
-            // Still won't fit in buffer? Let's output pieces separately
-            if ((ptr + nlen + 3) >= _outputBufferLen) {
-                writeName(BYTE_SPACE, name);
-                writeRaw(BYTE_EQ);
-                writeRaw(BYTE_QUOT);
-                return;
-            }
-        }
-        byte[] bbuf = _outputBuffer;
-        bbuf[ptr++] = BYTE_SPACE;
-        ptr += name.appendBytes(bbuf, ptr);
-        bbuf[ptr++] = BYTE_EQ;
-        bbuf[ptr++] = BYTE_QUOT;
-        _outputPtr = ptr;
-    }
-
     /*
     /**********************************************************************
     /* Write methods, textual content
@@ -701,16 +673,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
         }
         writeCDataEnd(); // will check surrogates
         return -1;
-    }
-
-    @Override
-    public int writeCData(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
-        writeCDataStart(); // will check surrogates
-        int ix = writeCDataContents(cbuf, offset, len);
-        if (ix < 0) {
-            writeCDataEnd(); // will check surrogates
-        }
-        return ix;
     }
 
     protected int writeCDataContents(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
@@ -1026,50 +988,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
     /**********************************************************************
      */
 
-    @Override
-    public void writeTypedValue(AsciiValueEncoder enc) throws IOException {
-        if (_surrogate != 0) {
-            throwUnpairedSurrogate();
-        }
-        int free = _outputBufferLen - _outputPtr;
-        if (enc.bufferNeedsFlush(free)) {
-            flush();
-        }
-        while (true) {
-            _outputPtr = enc.encodeMore(_outputBuffer, _outputPtr, _outputBufferLen);
-            if (enc.isCompleted()) {
-                break;
-            }
-            flushBuffer();
-        }
-    }
-
-    @Override
-    public final void writeAttribute(WName name, AsciiValueEncoder enc) throws IOException, XMLStreamException {
-        writeAttrNameEqQ(name);
-
-        // (inlined writeTypedVAlue()...)
-
-        int free = _outputBufferLen - _outputPtr;
-        if (enc.bufferNeedsFlush(free)) {
-            flush();
-        }
-        while (true) {
-            _outputPtr = enc.encodeMore(_outputBuffer, _outputPtr, _outputBufferLen);
-            if (enc.isCompleted()) {
-                break;
-            }
-            flushBuffer();
-        }
-
-        // (end of inlined writeTypedVAlue()...)
-
-        if (_outputPtr >= _outputBufferLen) {
-            flushBuffer();
-        }
-        _outputBuffer[_outputPtr++] = BYTE_QUOT;
-    }
-
     /*
     /**********************************************************************
     /* Write methods, other
@@ -1190,13 +1108,6 @@ public abstract class ByteXmlWriter extends XmlWriter {
     public void writeDTD(String data) throws IOException, XMLStreamException {
         // !!! TBI: Check for char validity, similar to other methods?
         writeRaw(data, 0, data.length());
-    }
-
-    @Override
-    public void writeDTD(WName rootName, String systemId, String publicId, String internalSubset)
-        throws IOException, XMLStreamException {
-        // !!! TBI
-        //if (true) throw new RuntimeException("DTD not implemented yet");
     }
 
     protected int writePIData(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {

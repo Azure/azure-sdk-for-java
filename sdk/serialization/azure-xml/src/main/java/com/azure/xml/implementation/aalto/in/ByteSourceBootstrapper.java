@@ -347,39 +347,39 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
      * @return Normalized encoding name
      */
     private String verifyXmlEncoding(String enc) throws XMLStreamException {
-        enc = CharsetNames.normalize(enc);
+        String charset = CharsetNames.normalize(enc);
 
         // Let's actually verify we got matching information:
-        if (enc.equals(CharsetNames.CS_UTF8)) {
-            verifyEncoding(enc, 1);
-        } else if (enc.equals(CharsetNames.CS_ISO_LATIN1)) {
-            verifyEncoding(enc, 1);
-        } else if (enc.equals(CharsetNames.CS_US_ASCII)) {
-            verifyEncoding(enc, 1);
-        } else if (enc.equals(CharsetNames.CS_UTF16)) {
+        if (charset.equals(CharsetNames.CS_UTF8)) {
+            verifyEncoding(charset, 1);
+        } else if (charset.equals(CharsetNames.CS_ISO_LATIN1)) {
+            verifyEncoding(charset, 1);
+        } else if (charset.equals(CharsetNames.CS_US_ASCII)) {
+            verifyEncoding(charset, 1);
+        } else if (charset.equals(CharsetNames.CS_UTF16)) {
             // BOM should be obligatory, to know the ordering?
             // For now, let's not enforce that though.
             //if (!mHadBOM) {
             //reportMissingBOM(enc);
             //}
-            verifyEncoding(enc, 2);
-        } else if (enc.equals(CharsetNames.CS_UTF16LE)) {
-            verifyEncoding(enc, 2, false);
-        } else if (enc.equals(CharsetNames.CS_UTF16BE)) {
-            verifyEncoding(enc, 2, true);
+            verifyEncoding(charset, 2);
+        } else if (charset.equals(CharsetNames.CS_UTF16LE)) {
+            verifyEncoding(charset, 2, false);
+        } else if (charset.equals(CharsetNames.CS_UTF16BE)) {
+            verifyEncoding(charset, 2, true);
 
-        } else if (enc.equals(CharsetNames.CS_UTF32)) {
+        } else if (charset.equals(CharsetNames.CS_UTF32)) {
             // Do we require a BOM here? we can live without it...
             //if (!mHadBOM) {
             //    reportMissingBOM(enc);
             //}
-            verifyEncoding(enc, 4);
-        } else if (enc.equals(CharsetNames.CS_UTF32LE)) {
-            verifyEncoding(enc, 4, false);
-        } else if (enc.equals(CharsetNames.CS_UTF32BE)) {
-            verifyEncoding(enc, 4, true);
+            verifyEncoding(charset, 4);
+        } else if (charset.equals(CharsetNames.CS_UTF32LE)) {
+            verifyEncoding(charset, 4, false);
+        } else if (charset.equals(CharsetNames.CS_UTF32BE)) {
+            verifyEncoding(charset, 4, true);
         }
-        return enc;
+        return charset;
     }
 
     /*
@@ -446,17 +446,12 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
     }
 
     @Override
-    protected int getNextAfterWs(boolean reqWs) throws IOException, XMLStreamException {
-        int count;
+    protected int getNextAfterWs() throws IOException, XMLStreamException {
 
         if (mBytesPerChar > 1) { // multi-byte
-            count = skipMbWs();
+            skipMbWs();
         } else {
-            count = skipSbWs();
-        }
-
-        if (reqWs && count == 0) {
-            reportUnexpectedChar(getNext(), ERR_XMLDECL_EXP_SPACE);
+            skipSbWs();
         }
 
         // inlined getNext()
@@ -547,8 +542,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         return _inputBuffer[_inputPtr++];
     }
 
-    private int skipSbWs() throws IOException, XMLStreamException {
-        int count = 0;
+    private void skipSbWs() throws IOException, XMLStreamException {
 
         while (true) {
             byte b = (_inputPtr < _inputLen) ? _inputBuffer[_inputPtr++] : nextByte();
@@ -562,9 +556,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             } else if (b == BYTE_NULL) {
                 reportNull();
             }
-            ++count;
         }
-        return count;
     }
 
     private void skipSbLF(byte lfByte) throws IOException, XMLStreamException {
@@ -635,8 +627,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         return c;
     }
 
-    private int skipMbWs() throws IOException, XMLStreamException {
-        int count = 0;
+    private void skipMbWs() throws IOException, XMLStreamException {
 
         while (true) {
             int c = nextMultiByte();
@@ -650,9 +641,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             } else if (c == CHAR_NULL) {
                 reportNull();
             }
-            ++count;
         }
-        return count;
     }
 
     private void skipMbLF(int lf) throws IOException, XMLStreamException {

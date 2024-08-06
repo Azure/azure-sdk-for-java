@@ -94,8 +94,6 @@ public final class NonRepairingStreamWriter extends StreamWriterBase {
         setDefaultNamespace(nsURI);
     }
 
-    //public void writeDTD(String dtd)
-
     //public void writeEmptyElement(String localName)
 
     @Override

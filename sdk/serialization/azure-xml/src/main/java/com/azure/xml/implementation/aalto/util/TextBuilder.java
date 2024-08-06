@@ -1,15 +1,7 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.util;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
-
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-
-import com.azure.xml.implementation.stax2.ri.typed.CharArrayBase64Decoder;
 
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
 
@@ -30,8 +22,6 @@ public final class TextBuilder {
     final static int DEF_INITIAL_BUFFER_SIZE = 500; // 1k
 
     final static int MAX_SEGMENT_LENGTH = 256 * 1024;
-
-    final static int INT_SPACE = 0x0020;
 
     // // // Configuration:
 
@@ -73,18 +63,6 @@ public final class TextBuilder {
      * the primary indicator (_currentSize) is invalid (-1).
      */
     private int _resultLen;
-
-    /*
-    /**********************************************************************
-    /* Support for decoding, for Typed Access API
-    /**********************************************************************
-     */
-
-    private char[] _decodeBuffer;
-
-    private int _decodePtr;
-
-    private int _decodeEnd;
 
     /*
     /**********************************************************************
@@ -345,36 +323,6 @@ public final class TextBuilder {
         return totalAmount;
     }
 
-    /**
-     * Method that will stream contents of this buffer into specified
-     * Writer.
-     */
-    public int rawContentsTo(Writer w) throws IOException {
-        // Let's first see if we have created helper objects:
-        if (_resultArray != null) {
-            w.write(_resultArray);
-            return _resultArray.length;
-        }
-        if (_resultString != null) {
-            w.write(_resultString);
-            return _resultString.length();
-        }
-
-        // Nope, need to do full segmented output
-        int rlen = 0;
-        if (_segments != null) {
-            for (char[] segment : _segments) {
-                w.write(segment);
-                rlen += segment.length;
-            }
-        }
-        if (_currentSize > 0) {
-            w.write(_currentSegment, 0, _currentSize);
-            rlen += _currentSize;
-        }
-        return rlen;
-    }
-
     public boolean isAllWhitespace() {
         if (_isIndentation) {
             return true;
@@ -558,100 +506,6 @@ public final class TextBuilder {
         int size = latestSize + incr;
         // but let's not create too big chunks
         return Math.min(size, MAX_SEGMENT_LENGTH);
-    }
-
-    /*
-    /**********************************************************************
-    /* Methods for implementing Typed Access API
-    /**********************************************************************
-     */
-
-    /**
-     * Method called by the stream reader to decode space-separated tokens
-     * that are part of the current text event (contents of which
-     * are stored within this buffer), using given decoder.
-     */
-    public int decodeElements(TypedArrayDecoder tad, boolean reset) throws TypedXMLStreamException {
-        if (reset) {
-            resetForDecode();
-        }
-
-        int ptr = _decodePtr;
-        final char[] buf = _decodeBuffer;
-
-        int count = 0;
-
-        // And then let's decode
-        int start = ptr;
-
-        try {
-            final int end = _decodeEnd;
-
-            decode_loop: while (ptr < end) {
-                // First, any space to skip?
-                while (buf[ptr] <= INT_SPACE) {
-                    if (++ptr >= end) {
-                        break decode_loop;
-                    }
-                }
-                // Then let's figure out non-space char (token)
-                start = ptr;
-                ++ptr;
-                while (ptr < end && buf[ptr] > INT_SPACE) {
-                    ++ptr;
-                }
-                ++count;
-                int tokenEnd = ptr;
-                ++ptr; // to skip trailing space (or, beyond end)
-                // And there we have it
-                if (tad.decodeValue(buf, start, tokenEnd)) {
-                    break;
-                }
-                _decodePtr = ptr;
-            }
-            _decodePtr = ptr;
-        } catch (IllegalArgumentException iae) {
-            // Need to convert to a checked stream exception to return lexical
-            // -1 to move it back after being advanced earlier (to skip trailing space)
-            String lexical = new String(buf, start, (ptr - start - 1));
-            throw new TypedXMLStreamException(lexical, iae.getMessage(), iae);
-        }
-        return count;
-    }
-
-    /**
-     * Method called to initialize given base64 decoder with data
-     * contained in this text buffer (for the current event).
-     */
-    public void resetForBinaryDecode(Base64Variant v, CharArrayBase64Decoder dec, boolean firstChunk) {
-        // just one special case, indentation...
-        if (_segments == null || _segments.isEmpty()) { // single segment
-            if (_isIndentation) { // but special one, indent/ws
-                dec.init(v, firstChunk, _resultArray, 0, _resultArray.length, null);
-                return;
-            }
-        }
-        dec.init(v, firstChunk, _currentSegment, 0, _currentSize, _segments);
-    }
-
-    private void resetForDecode() {
-        /* This is very similar to getTextBuffer(), except
-         * for assignment to _decodeXxx fields
-         */
-        _decodePtr = 0;
-        if (_segments == null || _segments.isEmpty()) { // single segment
-            if (_isIndentation) { // but special one, indent/ws
-                _decodeBuffer = _resultArray;
-                _decodeEnd = _resultArray.length;
-            } else { // nope, just a regular buffer
-                _decodeBuffer = _currentSegment;
-                _decodeEnd = _currentSize;
-            }
-        } else {
-            // Nope, need to have/create a non-segmented array and return it
-            _decodeBuffer = contentsAsArray();
-            _decodeEnd = _decodeBuffer.length;
-        }
     }
 
     /*

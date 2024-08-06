@@ -1,13 +1,13 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.impl;
 
-import com.azure.xml.implementation.stax2.XMLStreamLocation2;
+import javax.xml.stream.Location;
 
 /**
- * Basic implementation of {@link XMLStreamLocation2}, used by stream
+ * Basic implementation of {@link Location}, used by stream
  * readers and writers.
  */
-public class LocationImpl implements XMLStreamLocation2 {
+public class LocationImpl implements Location {
 
     final protected String _publicId, _systemId;
 
@@ -61,18 +61,6 @@ public class LocationImpl implements XMLStreamLocation2 {
     @Override
     public String getSystemId() {
         return _systemId;
-    }
-
-    /*
-    /**********************************************************************
-    /* Stax2 API
-    /**********************************************************************
-     */
-
-    @Override
-    public XMLStreamLocation2 getContext() {
-        // !!! TBI
-        return null;
     }
 
     /*

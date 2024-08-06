@@ -90,7 +90,7 @@ public final class WriterConfig extends CommonConfig {
      */
 
     /**
-     * This <code>ThreadLocal</code> contains a {@link SoftRerefence}
+     * This <code>ThreadLocal</code> contains a {@link SoftReference}
      * to a {@link BufferRecycler} used to provide a low-cost
      * buffer recycling between Reader instances.
      */
@@ -258,10 +258,6 @@ public final class WriterConfig extends CommonConfig {
 
     // // // Configuration, Stax std props:
 
-    public boolean willRepairNamespaces() {
-        return hasFlag(F_NS_REPAIRING);
-    }
-
     public boolean isNamespaceAware() {
         // !!! TBI
         return hasFlag(F_NS_AWARE);
@@ -272,21 +268,6 @@ public final class WriterConfig extends CommonConfig {
     public boolean willAutoCloseOutput() {
         return hasFlag(F_AUTO_CLOSE_OUTPUT);
     }
-
-    /**
-     * @return Prefix to use as the base for automatically generated
-     *   namespace prefixes ("namespace prefix prefix", so to speak).
-     *   Defaults to "axns".
-     */
-    public String getAutomaticNsPrefix() {
-        return _propAutoNsPrefix;
-    }
-
-    /*
-    /**********************************************************************
-    /* Stax2 additions
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************

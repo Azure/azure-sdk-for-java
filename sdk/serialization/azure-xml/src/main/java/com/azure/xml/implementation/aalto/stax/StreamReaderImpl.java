@@ -16,9 +16,6 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -29,18 +26,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.azure.xml.implementation.stax2.*;
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.Base64Variants;
-import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedValueDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-import com.azure.xml.implementation.stax2.validation.XMLValidator;
-import com.azure.xml.implementation.stax2.validation.XMLValidationSchema;
-import com.azure.xml.implementation.stax2.validation.ValidationProblemHandler;
-
-import com.azure.xml.implementation.stax2.ri.Stax2Util;
-import com.azure.xml.implementation.stax2.ri.typed.CharArrayBase64Decoder;
-import com.azure.xml.implementation.stax2.ri.typed.ValueDecoderFactory;
 
 import com.azure.xml.implementation.aalto.UncheckedStreamException;
 import com.azure.xml.implementation.aalto.WFCException;
@@ -50,14 +35,13 @@ import com.azure.xml.implementation.aalto.in.PName;
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
 import com.azure.xml.implementation.aalto.in.XmlScanner;
 import com.azure.xml.implementation.aalto.util.TextAccumulator;
-import com.azure.xml.implementation.aalto.util.XmlNames;
 
 /**
  * Basic backend-independent {@link XMLStreamReader} implementation.
  * While the read implements Stax API, most of real work is delegated
  * to input (and thereby, encoding) specific backend implementations.
  */
-public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInfo, LocationInfo {
+public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
     // // // Main state constants
 
     final static int STATE_PROLOG = 0; // Before root element
@@ -107,17 +91,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      * access methods simpler.
      */
     protected int _attrCount;
-
-    /**
-     * Factory used for constructing decoders we need for typed access
-     */
-    protected ValueDecoderFactory _decoderFactory;
-
-    /**
-     * Lazily-constructed decoder object for decoding base64 encoded
-     * element binary content.
-     */
-    protected CharArrayBase64Decoder _base64Decoder = null;
 
     /*
     /**********************************************************************
@@ -177,23 +150,8 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      */
     final private static int MASK_GET_TEXT_XXX = (1 << CHARACTERS) | (1 << CDATA) | (1 << SPACE) | (1 << COMMENT);
 
-    /**
-     * This mask is used with Stax2 getText() method (one that takes
-     * Writer as an argument): accepts even wider range of event types.
-     */
-    final private static int MASK_GET_TEXT_WITH_WRITER = (1 << CHARACTERS) | (1 << CDATA) | (1 << SPACE)
-        | (1 << COMMENT) | (1 << DTD) | (1 << ENTITY_REFERENCE) | (1 << PROCESSING_INSTRUCTION);
-
     final private static int MASK_GET_ELEMENT_TEXT
         = (1 << CHARACTERS) | (1 << CDATA) | (1 << SPACE) | (1 << ENTITY_REFERENCE);
-
-    final private static int MASK_TYPED_ACCESS_ARRAY = (1 << START_ELEMENT) | (1 << END_ELEMENT) // for convenience
-        | (1 << CHARACTERS) | (1 << CDATA) | (1 << SPACE)
-    // Not ok for PI or COMMENT? Let's assume so
-    ;
-
-    final private static int MASK_TYPED_ACCESS_BINARY = (1 << START_ELEMENT) //  note: END_ELEMENT handled separately
-        | (1 << CHARACTERS) | (1 << CDATA) | (1 << SPACE);
 
     /*
     /**********************************************************************
@@ -790,7 +748,7 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      */
     @Override
     public final void close() throws XMLStreamException {
-        _closeScanner(false);
+        _closeScanner();
     }
 
     @Override
@@ -800,693 +758,25 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
 
     /*
     /**********************************************************************
-    /* TypedXMLStreamReader2 implementation
-    /**********************************************************************
-     */
-
-    @Override
-    public final boolean getElementAsBoolean() throws XMLStreamException {
-        ValueDecoderFactory.BooleanDecoder dec = _decoderFactory().getBooleanDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final int getElementAsInt() throws XMLStreamException {
-        ValueDecoderFactory.IntDecoder dec = _decoderFactory().getIntDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final long getElementAsLong() throws XMLStreamException {
-        ValueDecoderFactory.LongDecoder dec = _decoderFactory().getLongDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final float getElementAsFloat() throws XMLStreamException {
-        ValueDecoderFactory.FloatDecoder dec = _decoderFactory().getFloatDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final double getElementAsDouble() throws XMLStreamException {
-        ValueDecoderFactory.DoubleDecoder dec = _decoderFactory().getDoubleDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final BigInteger getElementAsInteger() throws XMLStreamException {
-        ValueDecoderFactory.IntegerDecoder dec = _decoderFactory().getIntegerDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final BigDecimal getElementAsDecimal() throws XMLStreamException {
-        ValueDecoderFactory.DecimalDecoder dec = _decoderFactory().getDecimalDecoder();
-        getElementAs(dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final QName getElementAsQName() throws XMLStreamException {
-        ValueDecoderFactory.QNameDecoder dec = _decoderFactory().getQNameDecoder(getNamespaceContext());
-        getElementAs(dec);
-        return verifyQName(dec.getValue());
-    }
-
-    @Override
-    public final byte[] getElementAsBinary() throws XMLStreamException {
-        return getElementAsBinary(Base64Variants.getDefaultVariant());
-    }
-
-    @Override
-    public final void getElementAs(TypedValueDecoder tvd) throws XMLStreamException {
-        // !!! TODO: optimize
-        String value = getElementText();
-        value = value.trim();
-        if (value.isEmpty()) {
-            _handleEmptyValue(tvd);
-            return;
-        }
-        try {
-            tvd.decode(value);
-        } catch (IllegalArgumentException iae) {
-            throw _constructTypeException(iae, value);
-        }
-    }
-
-    @Override
-    public final byte[] getElementAsBinary(Base64Variant v) throws XMLStreamException {
-        // note: code here is similar to Base64DecoderBase.aggregateAll(), see comments there
-        Stax2Util.ByteAggregator aggr = _base64Decoder().getByteAggregator();
-        byte[] buffer = aggr.startAggregation();
-        while (true) {
-            int offset = 0;
-            int len = buffer.length;
-
-            do {
-                int readCount = readElementAsBinary(buffer, offset, len, v);
-                if (readCount < 1) { // all done!
-                    return aggr.aggregateAll(buffer, offset);
-                }
-                offset += readCount;
-                len -= readCount;
-            } while (len > 0);
-            buffer = aggr.addFullBlock(buffer);
-        }
-    }
-
-    /*
-    /**********************************************************************
-    /* TypedXMLStreamReader2 implementation, array elements
-    /**********************************************************************
-     */
-
-    @Override
-    public final int readElementAsIntArray(int[] value, int from, int length) throws XMLStreamException {
-        return readElementAsArray(_decoderFactory().getIntArrayDecoder(value, from, length));
-    }
-
-    @Override
-    public final int readElementAsLongArray(long[] value, int from, int length) throws XMLStreamException {
-        return readElementAsArray(_decoderFactory().getLongArrayDecoder(value, from, length));
-    }
-
-    @Override
-    public final int readElementAsFloatArray(float[] value, int from, int length) throws XMLStreamException {
-        return readElementAsArray(_decoderFactory().getFloatArrayDecoder(value, from, length));
-    }
-
-    @Override
-    public final int readElementAsDoubleArray(double[] value, int from, int length) throws XMLStreamException {
-        return readElementAsArray(_decoderFactory().getDoubleArrayDecoder(value, from, length));
-    }
-
-    @Override
-    public final int readElementAsArray(TypedArrayDecoder dec) throws XMLStreamException {
-        int type = _currToken;
-        // First things first: must be acceptable start state:
-        if (((1 << type) & MASK_TYPED_ACCESS_ARRAY) == 0) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM_OR_TEXT);
-        }
-
-        // need to keep track of when we move to a new token:
-        boolean reset;
-
-        // Are we just starting (START_ELEMENT)?
-        if (type == START_ELEMENT) {
-            // Empty? Not common, but can short-cut handling if occurs
-            if (_scanner.isEmptyTag()) {
-                // might be possible to optimize, but for now this'll do:
-                next();
-                return -1;
-            }
-            // Otherwise let's just find the first text segment
-            while (true) {
-                type = next();
-                if (type == END_ELEMENT) { // Simple, no textual content
-                    return -1;
-                }
-                if (type == COMMENT || type == PROCESSING_INSTRUCTION) {
-                    continue;
-                }
-                if (type == CHARACTERS || type == CDATA) {
-                    break;
-                }
-                // otherwise just not legal (how about SPACE, unexpanded entities?)
-                throw _constructUnexpectedInTyped(type);
-            }
-            reset = true; // yes, we'll be getting a new text segment
-        } else {
-            reset = false; // may have an existing text segment
-        }
-
-        int count = 0;
-        while (type != END_ELEMENT) {
-            /* Ok then: we will now have a valid textual type. Just need to
-             * ensure current segment is completed etc.
-             */
-            if (type == CHARACTERS || type == CDATA || type == SPACE) {
-                count += _scanner.decodeElements(dec, reset);
-                if (!dec.hasRoom()) {
-                    break;
-                }
-            } else if (type == COMMENT || type == PROCESSING_INSTRUCTION) {
-            } else {
-                throw _constructUnexpectedInTyped(type);
-            }
-            reset = true;
-            type = next();
-        }
-
-        // If nothing was found, needs to be indicated via -1, not 0
-        return (count > 0) ? count : -1;
-    }
-
-    /*
-    /**********************************************************************
-    /* TypedXMLStreamReader2 implementation, binary data
-    /**********************************************************************
-     */
-
-    @Override
-    public final int readElementAsBinary(byte[] resultBuffer, int offset, int maxLength) throws XMLStreamException {
-        return readElementAsBinary(resultBuffer, offset, maxLength, Base64Variants.getDefaultVariant());
-    }
-
-    @Override
-    public final int readElementAsBinary(byte[] resultBuffer, int offset, int maxLength, Base64Variant v)
-        throws XMLStreamException {
-        if (resultBuffer == null) {
-            throw new IllegalArgumentException("resultBuffer is null");
-        }
-        if (offset < 0) {
-            throw new IllegalArgumentException(
-                "Illegal offset (" + offset + "), must be [0, " + resultBuffer.length + "[");
-        }
-        if (maxLength < 1 || (offset + maxLength) > resultBuffer.length) {
-            if (maxLength == 0) { // special case, allowed, but won't do anything
-                return 0;
-            }
-            throw new IllegalArgumentException("Illegal maxLength (" + maxLength
-                + "), has to be positive number, and offset+maxLength can not exceed" + resultBuffer.length);
-        }
-
-        final CharArrayBase64Decoder dec = _base64Decoder();
-        int type = _currToken;
-        // First things first: must be acceptable start state:
-        if (((1 << type) & MASK_TYPED_ACCESS_BINARY) == 0) {
-            if (type == END_ELEMENT) {
-                // Minor complication: may have unflushed stuff (non-padded versions)
-                if (!dec.hasData()) {
-                    return -1;
-                }
-            } else {
-                throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM_OR_TEXT);
-            }
-        } else if (type == START_ELEMENT) { // just starting (START_ELEMENT)?
-            if (_scanner.isEmptyTag()) {
-                // might be possible to optimize, but for now this'll do:
-                next();
-                return -1;
-            }
-            // Otherwise let's just find the first text segment
-            while (true) {
-                type = next();
-                if (type == END_ELEMENT) { // Simple, no textual content
-                    return -1;
-                }
-                if (type == COMMENT || type == PROCESSING_INSTRUCTION) {
-                    continue;
-                }
-                if (type == CHARACTERS || type == CDATA) {
-                    break;
-                }
-                // otherwise just not legal (how about SPACE, unexpanded entities?)
-                throw _constructUnexpectedInTyped(type);
-            }
-            _scanner.resetForDecoding(v, dec, true); // true -> first segment
-        }
-
-        int totalCount = 0;
-
-        main_loop: while (true) {
-            // Ok, decode:
-            int count;
-            try {
-                count = dec.decode(resultBuffer, offset, maxLength);
-            } catch (IllegalArgumentException iae) {
-                // !!! 26-Sep-2008, tatus: should try to figure out which char (etc) triggered problem to pass with typed exception
-                throw _constructTypeException(iae.getMessage(), "");
-            }
-            offset += count;
-            totalCount += count;
-            maxLength -= count;
-
-            /* And if we filled the buffer we are done. Or, an edge
-             * case: reached END_ELEMENT (for non-padded variant)
-             */
-            if (maxLength < 1 || _currToken == END_ELEMENT) {
-                break;
-            }
-            // Otherwise need to advance to the next event
-            while (true) {
-                type = next();
-                if (type == COMMENT || type == PROCESSING_INSTRUCTION || type == SPACE) { // space is ignorable too
-                    continue;
-                }
-                if (type == END_ELEMENT) {
-                    /* Just need to verify we don't have partial stuff
-                     * (missing one to three characters of a full quartet
-                     * that encodes 1 - 3 bytes). Also: non-padding
-                     * variants can be in incomplete state, from which
-                     * data may need to be flushed...
-                     */
-                    int left = dec.endOfContent();
-                    if (left < 0) { // incomplete, error
-                        throw _constructTypeException("Incomplete base64 triplet at the end of decoded content", "");
-                    } else if (left > 0) { // 1 or 2 more bytes of data, loop some more
-                        continue main_loop;
-                    }
-                    // Otherwise, no more data, we are done
-                    break main_loop;
-                }
-                _scanner.resetForDecoding(v, dec, false); // false -> not first segment
-                break;
-            }
-        }
-
-        // If nothing was found, needs to be indicated via -1, not 0
-        return (totalCount > 0) ? totalCount : -1;
-    }
-
-    /*
-    /**********************************************************************
-    /* TypedXMLStreamReader2 implementation, scalar attributes
-    /**********************************************************************
-     */
-
-    @Override
-    public final int getAttributeIndex(String namespaceURI, String localName) {
-        if (_currToken != START_ELEMENT) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
-        }
-        // Note: this method does not check for START_ELEMENT
-        return findAttributeIndex(namespaceURI, localName);
-    }
-
-    @Override
-    public final boolean getAttributeAsBoolean(int index) throws XMLStreamException {
-        ValueDecoderFactory.BooleanDecoder dec = _decoderFactory().getBooleanDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final int getAttributeAsInt(int index) throws XMLStreamException {
-        ValueDecoderFactory.IntDecoder dec = _decoderFactory().getIntDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final long getAttributeAsLong(int index) throws XMLStreamException {
-        ValueDecoderFactory.LongDecoder dec = _decoderFactory().getLongDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final float getAttributeAsFloat(int index) throws XMLStreamException {
-        ValueDecoderFactory.FloatDecoder dec = _decoderFactory().getFloatDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final double getAttributeAsDouble(int index) throws XMLStreamException {
-        ValueDecoderFactory.DoubleDecoder dec = _decoderFactory().getDoubleDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final BigInteger getAttributeAsInteger(int index) throws XMLStreamException {
-        ValueDecoderFactory.IntegerDecoder dec = _decoderFactory().getIntegerDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final BigDecimal getAttributeAsDecimal(int index) throws XMLStreamException {
-        ValueDecoderFactory.DecimalDecoder dec = _decoderFactory().getDecimalDecoder();
-        getAttributeAs(index, dec);
-        return dec.getValue();
-    }
-
-    @Override
-    public final QName getAttributeAsQName(int index) throws XMLStreamException {
-        ValueDecoderFactory.QNameDecoder dec = _decoderFactory().getQNameDecoder(getNamespaceContext());
-        getAttributeAs(index, dec);
-        return verifyQName(dec.getValue());
-    }
-
-    @Override
-    public final void getAttributeAs(int index, TypedValueDecoder tvd) throws XMLStreamException {
-        if (_currToken != START_ELEMENT) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
-        }
-        try {
-            _scanner.decodeAttrValue(index, tvd);
-        } catch (IllegalArgumentException iae) {
-            throw _constructTypeException(iae, getAttributeValue(index));
-        }
-    }
-
-    @Override
-    public final int[] getAttributeAsIntArray(int index) throws XMLStreamException {
-        ValueDecoderFactory.IntArrayDecoder dec = _decoderFactory().getIntArrayDecoder();
-        getAttributeAsArray(index, dec);
-        return dec.getValues();
-    }
-
-    @Override
-    public final long[] getAttributeAsLongArray(int index) throws XMLStreamException {
-        ValueDecoderFactory.LongArrayDecoder dec = _decoderFactory().getLongArrayDecoder();
-        getAttributeAsArray(index, dec);
-        return dec.getValues();
-    }
-
-    @Override
-    public final float[] getAttributeAsFloatArray(int index) throws XMLStreamException {
-        ValueDecoderFactory.FloatArrayDecoder dec = _decoderFactory().getFloatArrayDecoder();
-        getAttributeAsArray(index, dec);
-        return dec.getValues();
-    }
-
-    @Override
-    public final double[] getAttributeAsDoubleArray(int index) throws XMLStreamException {
-        ValueDecoderFactory.DoubleArrayDecoder dec = _decoderFactory().getDoubleArrayDecoder();
-        getAttributeAsArray(index, dec);
-        return dec.getValues();
-    }
-
-    /**
-     * Method that allows reading contents of an attribute as an array
-     * of whitespace-separate tokens, decoded using specified decoder.
-     *
-     * @return Number of tokens decoded, 0 if none found
-     */
-    @Override
-    public final int getAttributeAsArray(int index, TypedArrayDecoder tad) throws XMLStreamException {
-        if (_currToken != START_ELEMENT) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
-        }
-        return _scanner.decodeAttrValues(index, tad);
-    }
-
-    @Override
-    public final byte[] getAttributeAsBinary(int index) throws XMLStreamException {
-        return getAttributeAsBinary(index, Base64Variants.getDefaultVariant());
-    }
-
-    @Override
-    public final byte[] getAttributeAsBinary(int index, Base64Variant v) throws XMLStreamException {
-        if (_currToken != START_ELEMENT) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
-        }
-        return _scanner.decodeAttrBinaryValue(index, v, _base64Decoder());
-    }
-
-    protected QName verifyQName(QName n) throws TypedXMLStreamException {
-        String ln = n.getLocalPart();
-        int ix = XmlNames.findIllegalNameChar(ln, false);
-        if (ix >= 0) {
-            String prefix = n.getPrefix();
-            String pname = (prefix != null && !prefix.isEmpty()) ? (prefix + ":" + ln) : ln;
-            throw _constructTypeException("Invalid local name \"" + ln + "\" (character at #" + ix + " is invalid)",
-                pname);
-        }
-        return n;
-    }
-
-    /*
-    /**********************************************************************
     /* XMLStreamReader2 (Stax2) implementation
     /**********************************************************************
      */
 
-    // // // StAX2, per-reader configuration
-
-    @Deprecated // in base class
-    @Override
-    public final Object getFeature(String name) {
-        // !!! TBI
-        return null;
-    }
-
-    @Deprecated // in base class
-    @Override
-    public final void setFeature(String name, Object value) {
-        // !!! TBI
-    }
-
-    // NOTE: getProperty() defined in Stax 1.0 interface
-
-    @Override
-    public final boolean isPropertySupported(String name) {
-        // !!! TBI: not all these properties are really supported
-        return _scanner.getConfig().isPropertySupported(name);
-    }
-
-    /**
-     * @param name Name of the property to set
-     * @param value Value to set property to.
-     *
-     * @return True, if the specified property was <b>succesfully</b>
-     *    set to specified value; false if its value was not changed
-     */
-    @Override
-    public final boolean setProperty(String name, Object value) {
-        /* Note: can not call local method, since it'll return false for
-         * recognized but non-mutable properties
-         */
-        return _scanner.getConfig().setProperty(name, value);
-    }
-
-    // // // StAX2, additional traversal methods
-
-    @Override
-    public final void skipElement() throws XMLStreamException {
-        if (_currToken != START_ELEMENT) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
-        }
-        int nesting = 1; // need one more end elements than start elements
-
-        while (true) {
-            int type = next();
-            if (type == START_ELEMENT) {
-                ++nesting;
-            } else if (type == END_ELEMENT) {
-                if (--nesting == 0) {
-                    break;
-                }
-            }
-        }
-    }
-
     // // // StAX2, additional attribute access
-
-    @Override
-    public final AttributeInfo getAttributeInfo() {
-        if (_currToken != START_ELEMENT) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
-        }
-        return this;
-    }
 
     // // // StAX2, Additional DTD access
 
-    /**
-     * Since this class implements {@link DTDInfo}, method can just
-     * return <code>this</code>.
-     */
-    @Override
-    public final DTDInfo getDTDInfo() {
-        /* Let's not allow it to be accessed during other events -- that
-         * way callers won't count on it being available afterwards.
-         */
-        if (_currToken != DTD) {
-            return null;
-        }
-        return this;
-    }
-
     // // // StAX2, Additional location information
-
-    /**
-     * Location information is always accessible, for this reader.
-     */
-    @Override
-    public final LocationInfo getLocationInfo() {
-        return this;
-    }
 
     // // // StAX2, Pass-through text accessors
 
-    /**
-     * Method similar to {@link #getText()}, except
-     * that it just uses provided Writer to write all textual content.
-     * For further optimization, it may also be allowed to do true
-     * pass-through, thus possibly avoiding one temporary copy of the
-     * data.
-     *<p>
-     * TODO: try to optimize to allow completely streaming pass-through:
-     * currently will still read all data in memory buffers before
-     * outputting
-     *
-     * @param w Writer to use for writing textual contents
-     * @param preserveContents If true, reader has to preserve contents
-     *   so that further calls to <code>getText</code> will return
-     *   proper conntets. If false, reader is allowed to skip creation
-     *   of such copies: this can improve performance, but it also means
-     *   that further calls to <code>getText</code> is not guaranteed to
-     *   return meaningful data.
-     *
-     * @return Number of characters written to the reader
-     */
-    @Override
-    public final int getText(Writer w, boolean preserveContents) throws XMLStreamException {
-        if (((1 << _currToken) & MASK_GET_TEXT_WITH_WRITER) == 0) {
-            throwNotTextual();
-        }
-        return _scanner.getText(w);
-    }
-
     // // // StAX 2, Other accessors
-
-    /**
-     * @return Number of open elements in the stack; 0 when parser is in
-     *  prolog/epilog, 1 inside root element and so on.
-     */
-    @Override
-    public final int getDepth() {
-        /* 20-Mar-2008, tatus: Need to modify scanner's value since
-         *   it decrements depth early for END_ELEMENT
-         */
-        int d = _scanner.getDepth();
-        if (_currToken == END_ELEMENT) {
-            ++d; // to compensate for too early decrement
-        }
-        return d;
-    }
-
-    /**
-     * @return True, if cursor points to a start or end element that is
-     *    constructed from 'empty' element (ends with '/&gt;');
-     *    false otherwise.
-     */
-    @Override
-    public final boolean isEmptyElement() {
-        return _currToken == START_ELEMENT && _scanner.isEmptyTag();
-    }
-
-    @Override
-    public final NamespaceContext getNonTransientNamespaceContext() {
-        return _scanner.getNonTransientNamespaceContext();
-    }
-
-    @Override
-    public final String getPrefixedName() {
-        switch (_currToken) {
-            case START_ELEMENT:
-            case END_ELEMENT:
-                return _currName.getPrefixedName();
-
-            case ENTITY_REFERENCE:
-                return getLocalName();
-
-            case PROCESSING_INSTRUCTION:
-                return getPITarget();
-
-            case DTD:
-                return getDTDRootName();
-
-        }
-        throw new IllegalStateException(
-            "Current state not START_ELEMENT, END_ELEMENT, ENTITY_REFERENCE, PROCESSING_INSTRUCTION or DTD");
-    }
-
-    @Override
-    public final void closeCompletely() throws XMLStreamException {
-        _closeScanner(true);
-    }
 
     /*
     /**********************************************************************
     /* DTDInfo implementation (StAX 2)
     /**********************************************************************
      */
-
-    @Override
-    public final String getDTDRootName() {
-        if (_currToken != DTD) {
-            return null;
-        }
-        return (_currName == null) ? null : _currName.getPrefixedName();
-    }
-
-    @Override
-    public final String getDTDPublicId() {
-        return _scanner.getDTDPublicId();
-    }
-
-    @Override
-    public final String getDTDSystemId() {
-        return _scanner.getDTDSystemId();
-    }
-
-    /**
-     * @return Internal subset portion of the DOCTYPE declaration, if any;
-     *   empty String if none
-     */
-    @Override
-    public final String getDTDInternalSubset() {
-        if (_currToken != DTD) {
-            return null;
-        }
-        try {
-            return _scanner.getText();
-        } catch (XMLStreamException sex) {
-            throw UncheckedStreamException.createFrom(sex);
-        }
-    }
 
     // // StAX2, v2.0
 
@@ -1501,13 +791,8 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
     // // // and then the object-based access methods:
 
     @Override
-    public final XMLStreamLocation2 getStartLocation() {
+    public final Location getStartLocation() {
         return _scanner.getStartLocation();
-    }
-
-    @Override
-    public final XMLStreamLocation2 getCurrentLocation() {
-        return _scanner.getCurrentLocation();
     }
 
     /*
@@ -1518,40 +803,11 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
 
     //public final int getAttributeCount();
 
-    @Override
-    public final int findAttributeIndex(String nsURI, String localName) {
-        return _scanner.findAttrIndex(nsURI, localName);
-    }
-
     /*
     /**********************************************************************
     /* Stax2 validation
     /**********************************************************************
      */
-
-    @Override
-    public final XMLValidator validateAgainst(XMLValidationSchema schema) throws XMLStreamException {
-        // !!! TBI
-        return null;
-    }
-
-    @Override
-    public final XMLValidator stopValidatingAgainst(XMLValidationSchema schema) throws XMLStreamException {
-        // !!! TBI
-        return null;
-    }
-
-    @Override
-    public final XMLValidator stopValidatingAgainst(XMLValidator validator) throws XMLStreamException {
-        // !!! TBI
-        return null;
-    }
-
-    @Override
-    public final ValidationProblemHandler setValidationProblemHandler(ValidationProblemHandler h) {
-        // !!! TBI
-        return null;
-    }
 
     /*
     /**********************************************************************
@@ -1614,30 +870,6 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
         throwWfe("Unexpected End-of-input" + msg);
     }
 
-    protected XMLStreamException _constructUnexpectedInTyped(int nextToken) {
-        if (nextToken == START_ELEMENT) {
-            return _constructTypeException(
-                "Element content can not contain child START_ELEMENT when using Typed Access methods", null);
-        }
-        return _constructTypeException("Expected a text token, got " + ErrorConsts.tokenTypeDesc(nextToken), null);
-    }
-
-    /**
-     * Method called to wrap or convert given conversion-fail exception
-     * into a full {@link TypedXMLStreamException}.
-     *
-     * @param iae Problem as reported by converter
-     * @param lexicalValue Lexical value (element content, attribute value)
-     *    that could not be converted succesfully.
-     */
-    private TypedXMLStreamException _constructTypeException(IllegalArgumentException iae, String lexicalValue) {
-        return new TypedXMLStreamException(lexicalValue, iae.getMessage(), getStartLocation(), iae);
-    }
-
-    private TypedXMLStreamException _constructTypeException(String msg, String lexicalValue) {
-        return new TypedXMLStreamException(lexicalValue, msg, getStartLocation());
-    }
-
     protected void reportInvalidAttrIndex(int index) {
         /* 24-Jun-2006, tatus: Stax API doesn't specify what (if anything)
          *   should be thrown. Although RI throws IndexOutOfBounds
@@ -1658,48 +890,14 @@ public class StreamReaderImpl implements XMLStreamReader2, AttributeInfo, DTDInf
      * Method called to close scanner, by asking it to release resource
      * it has, and potentially also close the underlying stream.
      */
-    protected void _closeScanner(boolean forceStreamClose) throws XMLStreamException {
+    protected void _closeScanner() throws XMLStreamException {
         if (_parseState != STATE_CLOSED) {
             _parseState = STATE_CLOSED;
             if (_currToken != END_DOCUMENT) {
                 _currToken = END_DOCUMENT;
             }
         }
-        _scanner.close(forceStreamClose);
-    }
-
-    /*
-    /**********************************************************************
-    /* Internal methods, other
-    /**********************************************************************
-     */
-
-    protected final ValueDecoderFactory _decoderFactory() {
-        if (_decoderFactory == null) {
-            _decoderFactory = new ValueDecoderFactory();
-        }
-        return _decoderFactory;
-    }
-
-    protected CharArrayBase64Decoder _base64Decoder() {
-        if (_base64Decoder == null) {
-            _base64Decoder = new CharArrayBase64Decoder();
-        }
-        return _base64Decoder;
-    }
-
-    /**
-     * Method called to handle value that has empty String
-     * as representation. This will usually either lead to an
-     * exception, or parsing to the default value for the
-     * type in question (null for nullable types and so on).
-     */
-    private void _handleEmptyValue(TypedValueDecoder dec) throws XMLStreamException {
-        try { // default action is to throw an exception
-            dec.handleEmptyValue();
-        } catch (IllegalArgumentException iae) {
-            throw _constructTypeException(iae, "");
-        }
+        _scanner.close(false);
     }
 
     /*

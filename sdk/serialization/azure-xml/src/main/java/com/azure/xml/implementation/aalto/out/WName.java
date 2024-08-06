@@ -65,13 +65,6 @@ public abstract class WName {
         return _prefix;
     }
 
-    public final String getPrefixedName() {
-        if (_prefix == null) {
-            return _localName;
-        }
-        return _prefix + ":" + _localName;
-    }
-
     public final String getLocalName() {
         return _localName;
     }

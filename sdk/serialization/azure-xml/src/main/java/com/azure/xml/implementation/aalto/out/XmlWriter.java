@@ -22,8 +22,6 @@ import java.util.Objects;
 
 import javax.xml.stream.*;
 
-import com.azure.xml.implementation.stax2.ri.typed.AsciiValueEncoder;
-
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.util.CharsetNames;
@@ -189,8 +187,6 @@ public abstract class XmlWriter extends WNameFactory {
      */
     public abstract int writeCData(String data) throws IOException, XMLStreamException;
 
-    public abstract int writeCData(char[] cbuf, int offset, int len) throws IOException, XMLStreamException;
-
     public abstract void writeCharacters(String data) throws IOException, XMLStreamException;
 
     public abstract void writeCharacters(char[] cbuf, int offset, int len) throws IOException, XMLStreamException;
@@ -214,9 +210,6 @@ public abstract class XmlWriter extends WNameFactory {
      * declaration properly quoted.
      */
     public abstract void writeDTD(String data) throws IOException, XMLStreamException;
-
-    public abstract void writeDTD(WName rootName, String systemId, String publicId, String internalSubset)
-        throws IOException, XMLStreamException;
 
     public abstract void writeEntityReference(WName name) throws IOException, XMLStreamException;
 
@@ -267,16 +260,6 @@ public abstract class XmlWriter extends WNameFactory {
 
     public abstract void writeAttribute(WName name, char[] value, int offset, int len)
         throws IOException, XMLStreamException;
-
-    /*
-    /**********************************************************************
-    /* Write methods, Typed
-    /**********************************************************************
-     */
-
-    public abstract void writeTypedValue(AsciiValueEncoder enc) throws IOException, XMLStreamException;
-
-    public abstract void writeAttribute(WName name, AsciiValueEncoder enc) throws IOException, XMLStreamException;
 
     /*
     /**********************************************************************

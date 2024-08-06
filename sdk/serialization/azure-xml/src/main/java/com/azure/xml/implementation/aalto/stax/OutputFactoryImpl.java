@@ -15,7 +15,6 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import com.azure.xml.implementation.aalto.dom.DOMWriterImpl;
 import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
 import com.azure.xml.implementation.aalto.out.AsciiXmlWriter;
@@ -38,7 +37,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
@@ -271,8 +269,6 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
                     "Can not create a stream writer for a SAXResult that does not have System Id (support for using SAX input source not implemented)");
             }
             autoclose = true;
-        } else if (res instanceof DOMResult) {
-            return DOMWriterImpl.createFrom(_config.createNonShared(), (DOMResult) res);
         } else {
             throw new IllegalArgumentException(
                 "Can not create XMLStreamWriter for Result type " + res.getClass() + " (unrecognized type)");

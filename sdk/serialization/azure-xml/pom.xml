@@ -54,6 +54,8 @@
     <javadoc.excludePackageNames/>
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
 
+    <compiler.failondeprecatedstatus></compiler.failondeprecatedstatus>
+
     <!-- Ignore shaded code -->
     <checkstyle.excludes>**/aalto/**/*.java,**/stax2/**/*.java</checkstyle.excludes>
 
@@ -129,19 +131,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:-cast</arg>
-            <arg>-Xlint:-deprecation</arg>
-            <arg>-Xlint:-fallthrough</arg>
-          </compilerArgs>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
         <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
@@ -152,6 +141,27 @@
               <glob>**/*.java</glob>
             </additionalCodesnippet>
           </additionalCodesnippets>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <excludes>
+            <exclude>META-INF/**</exclude>
+            <exclude>**/com/azure/xml/implementation/aalto/**</exclude>
+            <exclude>**/com/azure/xml/implementation/stax2/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>7</source>
+          <target>7</target>
         </configuration>
       </plugin>
     </plugins>

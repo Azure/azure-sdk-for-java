@@ -1,16 +1,21 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.in;
 
-import java.lang.ref.SoftReference;
-import java.util.*;
-
-import javax.xml.stream.*;
-
 import com.azure.xml.implementation.aalto.AaltoInputProperties;
+import com.azure.xml.implementation.aalto.impl.CommonConfig;
+import com.azure.xml.implementation.aalto.util.BufferRecycler;
+import com.azure.xml.implementation.aalto.util.CharsetNames;
+import com.azure.xml.implementation.aalto.util.UriCanonicalizer;
+import com.azure.xml.implementation.aalto.util.XmlCharTypes;
+import com.azure.xml.implementation.aalto.util.XmlConsts;
 import com.azure.xml.implementation.stax2.XMLInputFactory2;
 
-import com.azure.xml.implementation.aalto.impl.CommonConfig;
-import com.azure.xml.implementation.aalto.util.*;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLReporter;
+import javax.xml.stream.XMLResolver;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * This is the shared configuration object passed by the factory to reader,
@@ -133,8 +138,6 @@ public final class ReaderConfig extends CommonConfig {
     private XMLReporter mReporter;
     private XMLResolver mResolver;
 
-    private IllegalCharHandler illegalCharHandler;
-
     /*
     /**********************************************************************
     /* Buffer recycling:
@@ -142,7 +145,7 @@ public final class ReaderConfig extends CommonConfig {
      */
 
     /**
-     * This <code>ThreadLocal</code> contains a {@link SoftRerefence}
+     * This <code>ThreadLocal</code> contains a {@link SoftReference}
      * to a {@link BufferRecycler} used to provide a low-cost
      * buffer recycling between Reader instances.
      */
@@ -231,18 +234,10 @@ public final class ReaderConfig extends CommonConfig {
 
     // // Stax2:
 
-    public void doCoalesceText(boolean state) {
-        setFlag(F_COALESCING, state);
-    }
-
     // // Stax1.0
 
     public void doAutoCloseInput(boolean state) {
         setFlag(F_AUTO_CLOSE_INPUT, state);
-    }
-
-    public void doPreserveLocation(boolean state) {
-        setFlag(F_PRESERVE_LOCATION, state);
     }
 
     public void doParseLazily(boolean state) {
@@ -352,22 +347,10 @@ public final class ReaderConfig extends CommonConfig {
         return hasFlag(F_COALESCING);
     }
 
-    public boolean willSupportNamespaces() {
-        return true;
-    }
-
     // // // Stax2 standard properties
 
     public boolean willParseLazily() {
         return hasFlag(F_LAZY_PARSING);
-    }
-
-    public boolean willInternNames() {
-        return hasFlag(F_INTERN_NAMES);
-    }
-
-    public boolean willInternNsURIs() {
-        return hasFlag(F_INTERN_NS_URIS);
     }
 
     public boolean willReportCData() {
@@ -379,14 +362,6 @@ public final class ReaderConfig extends CommonConfig {
     }
 
     // // // Support for things that must be explicitly enabled
-
-    public boolean hasInternNamesBeenEnabled() {
-        return hasExplicitFlag(F_INTERN_NAMES);
-    }
-
-    public boolean hasInternNsURIsBeenEnabled() {
-        return hasExplicitFlag(F_INTERN_NS_URIS);
-    }
 
     // // // Custom properties
 
@@ -430,95 +405,6 @@ public final class ReaderConfig extends CommonConfig {
 
     public int getXmlDeclStandalone() {
         return mXmlDeclStandalone;
-    }
-
-    /*
-    /**********************************************************************
-    /* Stax2 additions
-    /**********************************************************************
-     */
-
-    // // // Profile mutators:
-
-    /**
-     * Method to call to make Reader created conform as closely to XML
-     * standard as possible, doing all checks and transformations mandated
-     * (linefeed conversions, attr value normalizations).
-     * See {@link XMLInputFactory2#configureForXmlConformance} for
-     * required settings for standard StAX/StAX2 properties.
-     *<p>
-     * Notes: Does NOT change 'performance' settings (buffer sizes,
-     * DTD caching, coalescing, interning, accurate location info).
-     */
-    public void configureForXmlConformance() {
-        // // StAX 1.0 settings
-        //doSupportNamespaces(true);
-        //doSupportDTDs(true);
-        //doSupportExternalEntities(true);
-        //doReplaceEntityRefs(true);
-
-        // // Stax2 additional settings
-    }
-
-    /**
-     * Method to call to make Reader created be as "convenient" to use
-     * as possible; ie try to avoid having to deal with some of things
-     * like segmented text chunks. This may incur some slight performance
-     * penalties, but should not affect XML conformance.
-     * See {@link XMLInputFactory2#configureForConvenience} for
-     * required settings for standard StAX/StAX2 properties.
-     */
-    public void configureForConvenience() {
-        // StAX (1.0) settings:
-        doCoalesceText(true);
-        //doReplaceEntityRefs(true);
-
-        // StAX2:
-        //doReportCData(false);
-        //doReportPrologWhitespace(false);
-
-        /* Also, knowing exact locations is nice esp. for error
-         * reporting purposes
-         */
-        doPreserveLocation(true);
-    }
-
-    /**
-     * Method to call to make the Reader created be as fast as possible reading
-     * documents, especially for long-running processes where caching is
-     * likely to help.
-     *<p>
-     * See {@link XMLInputFactory2#configureForSpeed} for
-     * required settings for standard StAX/StAX2 properties.
-     */
-    public void configureForSpeed() {
-        // StAX (1.0):
-        doCoalesceText(false);
-
-        // StAX2:
-        doPreserveLocation(false);
-
-        //doReportPrologWhitespace(false);
-        //doInternNames(true); // this is a NOP
-        //doInternNsURIs(true);
-    }
-
-    /**
-     * Method to call to minimize the memory usage of the stream/event reader;
-     * both regarding Objects created, and the temporary memory usage during
-     * parsing.
-     * This generally incurs some performance penalties, due to using
-     * smaller input buffers.
-     *<p>
-     * See {@link XMLInputFactory2#configureForLowMemUsage} for
-     * required settings for standard StAX/StAX2 properties.
-     */
-    public void configureForLowMemUsage() {
-        // StAX (1.0)
-        doCoalesceText(false);
-
-        // StAX2:
-        doPreserveLocation(false); // can reduce temporary mem usage
     }
 
     /*
@@ -735,9 +621,5 @@ public final class ReaderConfig extends CommonConfig {
         public synchronized void updateSymbols(CharBasedPNameTable sym) {
             mGeneralTable.mergeFromChild(sym);
         }
-    }
-
-    public IllegalCharHandler getIllegalCharHandler() {
-        return this.illegalCharHandler;
     }
 }

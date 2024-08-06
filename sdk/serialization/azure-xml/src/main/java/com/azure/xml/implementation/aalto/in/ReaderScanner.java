@@ -3,9 +3,8 @@ package com.azure.xml.implementation.aalto.in;
 
 import java.io.*;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.stax2.XMLStreamLocation2;
 
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 import com.azure.xml.implementation.aalto.impl.IoStreamException;
@@ -299,7 +298,7 @@ public final class ReaderScanner extends XmlScanner {
             /* Need to expand; should indicate either text, or an unexpanded
              * entity reference
              */
-            int i = handleEntityInText(false);
+            int i = handleEntityInText();
             if (i == 0) { // general entity
                 return (_currToken = ENTITY_REFERENCE);
             }
@@ -880,7 +879,7 @@ public final class ReaderScanner extends XmlScanner {
                         throwUnexpectedChar(c, "'<' not allowed in attribute value");
                     case XmlCharTypes.CT_AMP: {
                         if (!_config.willRetainAttributeGeneralEntities()) {
-                            int d = handleEntityInText(false);
+                            int d = handleEntityInText();
                             if (d == 0) { // unexpanded general entity... not good
                                 reportUnexpandedEntityInAttr(false);
                             }
@@ -944,7 +943,7 @@ public final class ReaderScanner extends XmlScanner {
                 break;
             }
             if (c == '&') { // entity
-                int d = handleEntityInText(false);
+                int d = handleEntityInText();
                 if (d == 0) { // general entity; should never happen
                     reportUnexpandedEntityInAttr(true);
                 }
@@ -1034,7 +1033,7 @@ public final class ReaderScanner extends XmlScanner {
         return END_ELEMENT;
     }
 
-    private int handleEntityInText(boolean inAttr) throws XMLStreamException {
+    private int handleEntityInText() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -1236,10 +1235,6 @@ public final class ReaderScanner extends XmlScanner {
         if (_config.willExpandEntities()) {
             reportInputProblem("General entity reference (&" + pname
                 + ";) encountered in entity expanding mode: operation not (yet) implemented");
-        }
-        if (inAttr) {
-            reportInputProblem("General entity reference (&" + pname
-                + ";) encountered in attribute value, in non-entity-expanding mode: no way to handle it");
         }
         return 0;
     }
@@ -1813,7 +1808,7 @@ public final class ReaderScanner extends XmlScanner {
                         break main_loop;
 
                     case XmlCharTypes.CT_AMP: {
-                        int d = handleEntityInText(false);
+                        int d = handleEntityInText();
                         if (d == 0) { // unexpandable general parsed entity
                             // _inputPtr set by entity expansion method
                             _entityPending = true;
@@ -2229,7 +2224,7 @@ public final class ReaderScanner extends XmlScanner {
                         break main_loop;
 
                     case XmlCharTypes.CT_AMP: {
-                        int d = handleEntityInText(false);
+                        int d = handleEntityInText();
                         if (d == 0) { // unexpandable general parsed entity
                             // _inputPtr set by entity expansion method
                             _entityPending = true;
@@ -2567,7 +2562,7 @@ public final class ReaderScanner extends XmlScanner {
                         return false;
 
                     case XmlCharTypes.CT_AMP: {
-                        int d = handleEntityInText(false);
+                        int d = handleEntityInText();
                         if (d == 0) { // unexpandable general parsed entity
                             return true;
                         }
@@ -3196,7 +3191,7 @@ public final class ReaderScanner extends XmlScanner {
      */
 
     @Override
-    public XMLStreamLocation2 getCurrentLocation() {
+    public Location getCurrentLocation() {
         return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _pastBytesOrChars + _inputPtr,
             _currRow, _inputPtr - _rowStartOffset);
     }

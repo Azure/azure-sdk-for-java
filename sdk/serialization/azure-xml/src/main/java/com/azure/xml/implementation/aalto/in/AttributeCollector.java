@@ -19,16 +19,6 @@ package com.azure.xml.implementation.aalto.in;
 import java.text.MessageFormat;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
-import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.stax2.typed.Base64Variant;
-import com.azure.xml.implementation.stax2.typed.TypedArrayDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedValueDecoder;
-import com.azure.xml.implementation.stax2.typed.TypedXMLStreamException;
-
-import com.azure.xml.implementation.stax2.ri.typed.CharArrayBase64Decoder;
-import com.azure.xml.implementation.stax2.ri.typed.ValueDecoderFactory;
 
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 import com.azure.xml.implementation.aalto.util.DataUtil;
@@ -39,7 +29,6 @@ import com.azure.xml.implementation.aalto.util.DataUtil;
  *<p>
  */
 public final class AttributeCollector {
-    private final static int INT_SPACE = 0x0020;
 
     /**
      * Let's guess that most of the time there won't be more than
@@ -435,138 +424,6 @@ public final class AttributeCollector {
     /* Type-safe accessors to support TypedXMLStreamReader
     /**********************************************************************
      */
-
-    public void decodeValue(int index, TypedValueDecoder dec) throws IllegalArgumentException {
-        if (index < 0 || index >= _attrCount) {
-            throw new IllegalArgumentException(
-                "Invalid index " + index + "; current element has only " + _attrCount + " attributes");
-        }
-        // No cached String values, better just pass char array ref
-        int start, end;
-
-        if (index == 0) {
-            start = 0;
-            end = _valueOffsets[0];
-        } else {
-            start = _valueOffsets[index - 1];
-            end = _valueOffsets[index];
-        }
-        // Nonetheless, must trim before passing the value
-        final char[] buf = _valueBuffer;
-        while (true) {
-            if (start >= end) {
-                dec.handleEmptyValue();
-                return;
-            }
-            if (!isSpace(buf[start])) {
-                break;
-            }
-            ++start;
-        }
-        // Trailing space?
-        while (--end > start && isSpace(buf[end])) {
-        }
-        dec.decode(buf, start, end + 1);
-    }
-
-    public int decodeValues(int index, TypedArrayDecoder dec, XmlScanner scanner) throws XMLStreamException {
-        if (index < 0 || index >= _attrCount) {
-            throw new IllegalArgumentException(
-                "Invalid index " + index + "; current element has only " + _attrCount + " attributes");
-        }
-        int start, end;
-
-        if (index == 0) {
-            start = 0;
-            end = _valueOffsets[0];
-        } else {
-            start = _valueOffsets[index - 1];
-            end = _valueOffsets[index];
-        }
-        return decodeValues(dec, _valueBuffer, start, end, scanner);
-    }
-
-    private int decodeValues(TypedArrayDecoder dec, final char[] buf, int ptr, final int end, final XmlScanner scanner)
-        throws XMLStreamException {
-        int start = ptr;
-        int count = 0;
-
-        try {
-            decode_loop: while (ptr < end) {
-                // First, any space to skip?
-                while (buf[ptr] <= INT_SPACE) {
-                    if (++ptr >= end) {
-                        break decode_loop;
-                    }
-                }
-                // Then let's figure out non-space char (token)
-                start = ptr;
-                ++ptr;
-                while (ptr < end && buf[ptr] > INT_SPACE) {
-                    ++ptr;
-                }
-                int tokenEnd = ptr;
-                ++ptr; // to skip trailing space (or, beyond end)
-                // Ok, decode... any more room?
-                ++count;
-                if (dec.decodeValue(buf, start, tokenEnd)) {
-                    if (!checkExpand(dec)) {
-                        break;
-                    }
-                }
-            }
-        } catch (IllegalArgumentException iae) {
-            // Need to convert to a checked stream exception
-            Location loc = scanner.getCurrentLocation();
-            String lexical = new String(buf, start, (ptr - start));
-            throw new TypedXMLStreamException(lexical, iae.getMessage(), loc, iae);
-        }
-        return count;
-    }
-
-    public byte[] decodeBinaryValue(int index, Base64Variant v, CharArrayBase64Decoder dec, XmlScanner scanner)
-        throws XMLStreamException {
-        if (index < 0 || index >= _attrCount) {
-            throw new IllegalArgumentException(
-                "Invalid index " + index + "; current element has only " + _attrCount + " attributes");
-        }
-        int start, end;
-
-        if (index == 0) {
-            start = 0;
-            end = _valueOffsets[0];
-        } else {
-            start = _valueOffsets[index - 1];
-            end = _valueOffsets[index];
-        }
-        int len = end - start;
-        dec.init(v, true, _valueBuffer, start, end, /* addl segments */ null);
-        try {
-            return dec.decodeCompletely();
-        } catch (IllegalArgumentException iae) {
-            // Need to convert to a checked stream exception
-            String lexical = new String(_valueBuffer, start, len);
-            throw new TypedXMLStreamException(lexical, iae.getMessage(), scanner.getCurrentLocation(), iae);
-        }
-    }
-
-    private static boolean isSpace(char c) {
-        return ((int) c) <= INT_SPACE;
-    }
-
-    /**
-     * Internal method used to see if we can expand the buffer that
-     * the array decoder has. Bit messy, but simpler than having
-     * separately typed instances; and called rarely so that performance
-     * downside of instanceof is irrelevant.
-     */
-    private boolean checkExpand(TypedArrayDecoder tad) {
-        if (tad instanceof ValueDecoderFactory.BaseArrayDecoder) {
-            ((ValueDecoderFactory.BaseArrayDecoder) tad).expand();
-            return true;
-        }
-        return false;
-    }
 
     /*
     /**********************************************************************

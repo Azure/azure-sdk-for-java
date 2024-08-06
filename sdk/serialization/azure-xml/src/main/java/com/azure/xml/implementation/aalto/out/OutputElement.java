@@ -175,24 +175,6 @@ final class OutputElement {
         return _name.getLocalName();
     }
 
-    public String getNonNullPrefix() {
-        String p = _name.getPrefix();
-        return (p == null) ? "" : null;
-    }
-
-    /**
-     * @return String presentation of the fully-qualified name, in
-     *   "prefix:localName" format (no URI). Useful for error and
-     *   debugging messages.
-     */
-    public String getNameDesc() {
-        return _name.toString();
-    }
-
-    public String getNonNullNamespaceURI() {
-        return (_uri == null) ? "" : _uri;
-    }
-
     public QName getQName() {
         return new QName(_uri, _name.getLocalName(), _name.getPrefix());
     }

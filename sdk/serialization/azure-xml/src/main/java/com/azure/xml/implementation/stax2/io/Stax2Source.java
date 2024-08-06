@@ -65,10 +65,6 @@ public abstract class Stax2Source implements Source {
         return mPublicId;
     }
 
-    public void setPublicId(String id) {
-        mPublicId = id;
-    }
-
     public String getEncoding() {
         return mEncoding;
     }

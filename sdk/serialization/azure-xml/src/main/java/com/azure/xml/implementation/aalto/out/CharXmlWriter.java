@@ -20,8 +20,6 @@ import java.io.*;
 
 import javax.xml.stream.*;
 
-import com.azure.xml.implementation.stax2.ri.typed.AsciiValueEncoder;
-
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
 import com.azure.xml.implementation.aalto.io.UTF8Writer;
 import com.azure.xml.implementation.aalto.util.XmlCharTypes;
@@ -346,16 +344,6 @@ public final class CharXmlWriter extends XmlWriter {
         return -1;
     }
 
-    @Override
-    public int writeCData(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
-        writeCDataStart();
-        int ix = writeCDataContents(cbuf, offset, len);
-        if (ix < 0) { // means it went ok, so can close
-            writeCDataEnd();
-        }
-        return -1;
-    }
-
     private int writeCDataContents(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {
         len += offset;
 
@@ -670,41 +658,9 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeDTD(String data) throws IOException, XMLStreamException {
+    public void writeDTD(String data) throws IOException {
         // !!! TBI: Check for char validity, similar to other methods?
         writeRaw(data, 0, data.length());
-    }
-
-    @Override
-    public void writeDTD(WName rootName, String systemId, String publicId, String internalSubset)
-        throws IOException, XMLStreamException {
-        fastWriteRaw("<!DOCTYPE ");
-        /* Since the root name isn't reall namespace aware in
-         * any mode (could require it to have at most one colon,
-         * but besides that), let's claim there's no need to check
-         */
-        writeName(rootName);
-        if (systemId != null) {
-            if (publicId != null) {
-                fastWriteRaw(" PUBLIC \"");
-                // !!! TBI: verify public id
-                fastWriteRaw(publicId);
-                fastWriteRaw("\" \"");
-            } else {
-                fastWriteRaw(" SYSTEM \"");
-            }
-            // !!! TBI: verify system id
-            fastWriteRaw(systemId);
-            fastWriteRaw('"');
-        }
-        // Hmmh. Should we output empty internal subset?
-        if (internalSubset != null && !internalSubset.isEmpty()) {
-            fastWriteRaw(' ', '[');
-            // !!! TBI: verify validity
-            fastWriteRaw(internalSubset);
-            fastWriteRaw(']');
-        }
-        fastWriteRaw('>');
     }
 
     @Override
@@ -1090,38 +1046,11 @@ public final class CharXmlWriter extends XmlWriter {
     //////////////////////////////////////////////////
      */
 
-    @Override
-    public void writeTypedValue(AsciiValueEncoder enc) throws IOException {
-        int free = _outputBufferLen - _outputPtr;
-        if (enc.bufferNeedsFlush(free)) {
-            flush();
-        }
-        while (true) {
-            _outputPtr = enc.encodeMore(_outputBuffer, _outputPtr, _outputBufferLen);
-            if (enc.isCompleted()) {
-                break;
-            }
-            flushBuffer();
-        }
-    }
-
     /*
     ////////////////////////////////////////////////////
     // Write methods, attributes, Typed
     ////////////////////////////////////////////////////
      */
-
-    @Override
-    public void writeAttribute(WName name, AsciiValueEncoder enc) throws IOException, XMLStreamException {
-        if (_out == null) {
-            return;
-        }
-        fastWriteRaw(' ');
-        writeName(name);
-        fastWriteRaw('=', '"');
-        writeTypedValue(enc);
-        fastWriteRaw('"');
-    }
 
     /*
     ////////////////////////////////////////////////////

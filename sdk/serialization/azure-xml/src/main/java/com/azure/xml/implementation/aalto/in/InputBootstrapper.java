@@ -39,7 +39,6 @@ public abstract class InputBootstrapper implements XmlConsts {
 
     public final static String ERR_XMLDECL_END_MARKER = "; expected \"?>\" end marker";
 
-    public final static String ERR_XMLDECL_EXP_SPACE = "; expected a white space";
     public final static String ERR_XMLDECL_EXP_EQ = "; expected '=' after ";
     public final static String ERR_XMLDECL_EXP_ATTRVAL = "; expected a quote character enclosing value for ";
 
@@ -144,7 +143,7 @@ public abstract class InputBootstrapper implements XmlConsts {
      * known to exist.
      */
     protected void readXmlDeclaration() throws IOException, XMLStreamException {
-        int c = getNextAfterWs(false);
+        int c = getNextAfterWs();
 
         // First, version pseudo-attribute:
 
@@ -271,12 +270,12 @@ public abstract class InputBootstrapper implements XmlConsts {
     }
 
     private int handleEq(String attr) throws IOException, XMLStreamException {
-        int c = getNextAfterWs(false);
+        int c = getNextAfterWs();
         if (c != '=') {
             reportUnexpectedChar(c, ERR_XMLDECL_EXP_EQ + "'" + attr + "'");
         }
 
-        c = getNextAfterWs(false);
+        c = getNextAfterWs();
         if (c != '"' && c != '\'') {
             reportUnexpectedChar(c, ERR_XMLDECL_EXP_ATTRVAL + "'" + attr + "'");
         }
@@ -300,7 +299,7 @@ public abstract class InputBootstrapper implements XmlConsts {
             // Need to push it back to be processed properly
             pushback();
         }
-        return getNextAfterWs(false);
+        return getNextAfterWs();
     }
 
     /*
@@ -313,7 +312,7 @@ public abstract class InputBootstrapper implements XmlConsts {
 
     protected abstract int getNext() throws IOException, XMLStreamException;
 
-    protected abstract int getNextAfterWs(boolean reqWs) throws IOException, XMLStreamException;
+    protected abstract int getNextAfterWs() throws IOException, XMLStreamException;
 
     /**
      * @return First character that does not match expected, if any;

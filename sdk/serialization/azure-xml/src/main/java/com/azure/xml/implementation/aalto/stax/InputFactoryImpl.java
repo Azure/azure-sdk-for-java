@@ -16,14 +16,12 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import com.azure.xml.implementation.aalto.dom.DOMReaderImpl;
 import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.in.ByteSourceBootstrapper;
 import com.azure.xml.implementation.aalto.in.CharSourceBootstrapper;
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
 import com.azure.xml.implementation.aalto.util.URLUtil;
 import com.azure.xml.implementation.stax2.XMLInputFactory2;
-import com.azure.xml.implementation.stax2.XMLStreamReader2;
 import com.azure.xml.implementation.stax2.io.Stax2ByteArraySource;
 import com.azure.xml.implementation.stax2.io.Stax2CharArraySource;
 import com.azure.xml.implementation.stax2.io.Stax2Source;
@@ -38,7 +36,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.XMLEventAllocator;
 import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
@@ -222,40 +219,6 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
 
     /*
     /**********************************************************************
-    /* Stax2 implementation; additional factory methods
-    /**********************************************************************
-     */
-
-    // // // StAX2 "Profile" mutators
-
-    @Override
-    public void configureForXmlConformance() {
-        _config.configureForXmlConformance();
-    }
-
-    @Override
-    public void configureForConvenience() {
-        _config.configureForConvenience();
-    }
-
-    @Override
-    public void configureForSpeed() {
-        _config.configureForSpeed();
-    }
-
-    @Override
-    public void configureForLowMemUsage() {
-        _config.configureForLowMemUsage();
-    }
-
-    /*
-    /**********************************************************************
-    /* Non-blocking reader factories (AsyncXMLInputFactory)
-    /**********************************************************************
-     */
-
-    /*
-    /**********************************************************************
     /* Internal/package methods
     /**********************************************************************
      */
@@ -280,23 +243,23 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
         return cfg;
     }
 
-    private XMLStreamReader2 constructSR(InputStream in, String enc) throws XMLStreamException {
+    private XMLStreamReader constructSR(InputStream in, String enc) throws XMLStreamException {
         ReaderConfig cfg = getNonSharedConfig(null, null, enc, false, false);
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
-    private XMLStreamReader2 constructSR(String systemId, Reader r) throws XMLStreamException {
+    private XMLStreamReader constructSR(String systemId, Reader r) throws XMLStreamException {
         ReaderConfig cfg = getNonSharedConfig(null, systemId, null, false, false);
         return StreamReaderImpl.construct(CharSourceBootstrapper.construct(cfg, r));
     }
 
-    private XMLStreamReader2 constructSR(String systemId, InputStream in) throws XMLStreamException {
+    private XMLStreamReader constructSR(String systemId, InputStream in) throws XMLStreamException {
         ReaderConfig cfg = getNonSharedConfig(null, systemId, null, false, false);
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
     @SuppressWarnings("resource")
-    private XMLStreamReader2 constructSR(Source src) throws XMLStreamException {
+    private XMLStreamReader constructSR(Source src) throws XMLStreamException {
         if (src instanceof Stax2Source) {
             return constructSR2((Stax2Source) src);
         }
@@ -304,7 +267,7 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
         Reader r = null;
         InputStream in = null;
         String pubId = null;
-        String sysId = null;
+        String sysId;
         String encoding = null;
         boolean autoCloseInput;
 
@@ -338,10 +301,6 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
              * get system-id); no need to force auto-close here
              */
             autoCloseInput = false;
-        } else if (src instanceof DOMSource) {
-            autoCloseInput = false; // shouldn't matter
-            ReaderConfig cfg = getNonSharedConfig(pubId, sysId, encoding, false, autoCloseInput);
-            return DOMReaderImpl.createFrom((DOMSource) src, cfg);
         } else {
             throw new IllegalArgumentException(
                 "Can not instantiate StAX reader for XML source type " + src.getClass() + " (unrecognized type)");
@@ -372,7 +331,7 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
             "Can not create Stax reader for the Source passed -- neither reader, input stream nor system id was accessible; can not use other types of sources (like embedded SAX streams)");
     }
 
-    private XMLStreamReader2 constructSR2(Stax2Source ss) throws XMLStreamException {
+    private XMLStreamReader constructSR2(Stax2Source ss) throws XMLStreamException {
         /* Caller has no access to these input sources, so we must force
          * auto-close ('true' after 'forEventReader')
          */

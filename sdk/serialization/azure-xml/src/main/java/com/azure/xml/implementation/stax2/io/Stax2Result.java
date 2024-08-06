@@ -38,7 +38,6 @@ import javax.xml.transform.Result;
  */
 public abstract class Stax2Result implements Result {
     protected String mSystemId;
-    protected String mPublicId;
     protected String mEncoding;
 
     protected Stax2Result() {
@@ -58,14 +57,6 @@ public abstract class Stax2Result implements Result {
     @Override
     public void setSystemId(String id) {
         mSystemId = id;
-    }
-
-    public String getPublicId() {
-        return mPublicId;
-    }
-
-    public void setPublicId(String id) {
-        mPublicId = id;
     }
 
     public String getEncoding() {

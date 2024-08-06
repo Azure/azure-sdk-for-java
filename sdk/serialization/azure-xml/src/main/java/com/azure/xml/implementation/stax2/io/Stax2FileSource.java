@@ -26,6 +26,7 @@ public class Stax2FileSource extends Stax2ReferentialSource {
      *   of resolving a relative reference from content read from the
      *   resource.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public URL getReference() {
         /* !!! 13-May-2006, TSa: For Woodstox 4.0, consider converting
