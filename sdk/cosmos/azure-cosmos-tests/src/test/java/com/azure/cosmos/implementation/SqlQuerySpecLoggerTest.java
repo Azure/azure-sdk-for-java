@@ -53,7 +53,7 @@ public class SqlQuerySpecLoggerTest {
     @Test(groups = {"unit"})
     public void shouldNotLogIfDebugNotEnabled() {
         setupIsEnabled(false, false);
-        final SqlQuerySpec querySpec = createQuerySpec("select * from r");
+        final SqlQuerySpec querySpec = createQuerySpec("select * from c");
 
         sqlQuerySpecLogger.logQuery(querySpec);
         verifyFinalInteractions();
@@ -62,12 +62,12 @@ public class SqlQuerySpecLoggerTest {
     @Test(groups = {"unit"})
     public void shouldNotLogParametersIfTraceNotEnabled() {
         setupIsEnabled(false, true);
-        final SqlQuerySpec querySpec = createQuerySpec("select * from r");
+        final SqlQuerySpec querySpec = createQuerySpec("select * from c");
         querySpec.setParameters(Collections.singletonList(new SqlParameter("@id", "id")));
 
         sqlQuerySpecLogger.logQuery(querySpec);
 
-        verify(logger).debug("select * from r");
+        verify(logger).debug("select * from c");
         verifyFinalInteractions();
     }
 
