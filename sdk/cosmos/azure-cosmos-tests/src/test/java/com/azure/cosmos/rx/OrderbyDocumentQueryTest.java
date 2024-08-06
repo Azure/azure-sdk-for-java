@@ -86,7 +86,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             , expectedDocument.getInt("propInt"));
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-
+        //
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         List<String> expectedResourceIds = new ArrayList<>();
