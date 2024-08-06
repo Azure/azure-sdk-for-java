@@ -4,18 +4,17 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
+import java.util.Map;
 
 class JsonWebToken {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
     /**
      * Retrieves the expiration date from the specified JWT value.
      *
@@ -43,18 +42,17 @@ class JsonWebToken {
 
         byte[] jwtPayloadDecodedData = Base64.getDecoder().decode(jwtPayloadEncoded);
 
-        JsonNode rootNode;
-        try {
-            rootNode = MAPPER.readTree(jwtPayloadDecodedData);
+        try (JsonReader jsonReader = JsonProviders.createReader(jwtPayloadDecodedData)) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            Object exp = jsonTree.get("exp");
+
+            if (exp == null) {
+                return null;
+            } else {
+                return OffsetDateTime.ofInstant(Instant.ofEpochSecond((long) exp), ZoneOffset.UTC);
+            }
         } catch (IOException exception) {
             return null;
         }
-
-        if (!rootNode.has("exp")) {
-            return null;
-        }
-
-        long expirationValue = rootNode.get("exp").asLong();
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(expirationValue), ZoneOffset.UTC);
     }
 }
