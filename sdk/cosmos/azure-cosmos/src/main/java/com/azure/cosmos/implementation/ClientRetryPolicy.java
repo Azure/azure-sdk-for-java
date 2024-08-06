@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -54,13 +55,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private RxCollectionCache rxCollectionCache;
     private final FaultInjectionRequestContext faultInjectionRequestContext;
     private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions,
                              RxCollectionCache rxCollectionCache,
-                             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
+                             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
+                             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
@@ -77,6 +80,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.rxCollectionCache = rxCollectionCache;
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover = globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     }
 
     @Override
@@ -101,9 +105,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
-                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
-        {
+                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
+
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
             return this.shouldRetryOnEndpointFailureAsync(false, true, false);
         }
 

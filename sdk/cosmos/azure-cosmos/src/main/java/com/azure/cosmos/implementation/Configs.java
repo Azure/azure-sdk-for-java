@@ -202,8 +202,6 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
-
-
     // Metrics
     // Samples:
     //            System.setProperty(
@@ -244,6 +242,9 @@ public class Configs {
 
     private static final boolean DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = true;
     private static final String SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = "COSMOS.SHOULD_LOG_INCORRECTLY_MAPPED_USER_SESSION_TOKEN";
+
+    private static final boolean DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = false;
+    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -653,6 +654,17 @@ public class Configs {
                 firstNonNull(
                     emptyToNull(System.getenv().get(SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)),
                     String.valueOf(DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)));
+
+        return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static boolean isPerPartitionAutomaticFailoverEnabled() {
+        String shouldSystemExit =
+            System.getProperty(
+                IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
+                    String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
 
         return Boolean.parseBoolean(shouldSystemExit);
     }
