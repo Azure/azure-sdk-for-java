@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -271,10 +272,13 @@ public class ConsistencyWriter {
                     }
 
                     String errorMessage = "Unexpected exception " + unwrappedException.getMessage() + " received while reading from store.";
+
+                    int subsStatusCode = evaluateSubStatusCode(unwrappedException);
+
                     return Mono.error(new InternalServerErrorException(
                         com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
                         unwrappedException,
-                        HttpConstants.SubStatusCodes.INVALID_RESULT));
+                        subsStatusCode));
                 }
             }).flatMap(response -> {
                 storeReader.createAndRecordStoreResult(
@@ -473,5 +477,13 @@ public class ConsistencyWriter {
                                 e -> logger.warn(
                                     "Background refresh of the primary address failed with {}", e.getMessage(), e)
                             );
+    }
+
+    private static int evaluateSubStatusCode(Exception responseException) {
+        if (responseException instanceof ClosedClientTransportException) {
+            return HttpConstants.SubStatusCodes.CLOSED_CLIENT;
+        }
+
+        return HttpConstants.SubStatusCodes.INVALID_RESULT;
     }
 }

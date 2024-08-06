@@ -107,7 +107,7 @@ public class ClosedClientTests extends TestSuiteBase {
 
             assertThat(cosmosException).isNotNull();
             assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
-            assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_RESULT);
+            assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.CLOSED_CLIENT);
             assertThat(cosmosException.getCause() instanceof ClosedClientTransportException).isTrue();
 
             CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
