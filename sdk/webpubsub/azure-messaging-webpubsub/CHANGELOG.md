@@ -13,6 +13,14 @@
 
 - Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
 ## 1.2.17 (2024-07-26)
 
 ### Other Changes
