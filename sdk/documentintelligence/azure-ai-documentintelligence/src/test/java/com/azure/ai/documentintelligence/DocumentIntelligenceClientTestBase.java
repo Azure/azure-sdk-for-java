@@ -38,9 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBase {
-    static final String ENCODED_EMPTY_SPACE =
-        "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
-
     Duration durationTestMode;
     private boolean sanitizersRemoved = false;
 
@@ -111,10 +108,6 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
     }
     void dataRunner(BiConsumer<byte[], Long> testRunner, String fileName) {
         TestUtils.getDataRunnerHelper(testRunner, fileName);
-    }
-
-    void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {
-        TestUtils.getTestingContainerHelper(testRunner, fileName, interceptorManager.isPlaybackMode());
     }
 
     void buildModelRunner(Consumer<String> testRunner) {

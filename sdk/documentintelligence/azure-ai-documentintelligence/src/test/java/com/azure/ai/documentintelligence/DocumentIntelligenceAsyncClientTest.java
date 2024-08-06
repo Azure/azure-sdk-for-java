@@ -167,13 +167,12 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void analyzeGermanContentFromUrl(HttpClient httpClient,
                                             DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        testingContainerUrlRunner(sourceUrl -> {
+        dataRunner((data, dataLength) -> {
             SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", null, "de", null, null, null, null, null, new AnalyzeDocumentRequest().setUrlSource(sourceUrl))
+                = client.beginAnalyzeDocument("prebuilt-layout", null, "de", null, null, null, null, null, new AnalyzeDocumentRequest().setBase64Source(data))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
