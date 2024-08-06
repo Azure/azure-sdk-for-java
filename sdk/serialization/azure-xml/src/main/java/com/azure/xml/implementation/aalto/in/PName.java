@@ -51,17 +51,6 @@ public abstract class PName {
     public abstract PName createBoundName(NsBinding nsb);
 
     /*
-      // 26-Jun-2006, TSa: Doesn't seem to be needed any more...
-    protected void bind(NsBinding nsb)
-    {
-        if (mNsBinding != null) { // !!! Temporary assertion
-            throw new RuntimeException("Trying to re-set binding (for '"+getPrefixedName()+"'), was: "+mNsBinding+", new: "+nsb);
-        }
-        mNsBinding = nsb;
-    }
-    */
-
-    /*
     /**********************************************************************
     /* Accessors
     /**********************************************************************

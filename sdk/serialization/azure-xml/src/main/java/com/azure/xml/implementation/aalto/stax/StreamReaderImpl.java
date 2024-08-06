@@ -758,30 +758,6 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
 
     /*
     /**********************************************************************
-    /* XMLStreamReader2 (Stax2) implementation
-    /**********************************************************************
-     */
-
-    // // // StAX2, additional attribute access
-
-    // // // StAX2, Additional DTD access
-
-    // // // StAX2, Additional location information
-
-    // // // StAX2, Pass-through text accessors
-
-    // // // StAX 2, Other accessors
-
-    /*
-    /**********************************************************************
-    /* DTDInfo implementation (StAX 2)
-    /**********************************************************************
-     */
-
-    // // StAX2, v2.0
-
-    /*
-    /**********************************************************************
     /* LocationInfo implementation (StAX 2)
     /**********************************************************************
      */
@@ -794,20 +770,6 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
     public final Location getStartLocation() {
         return _scanner.getStartLocation();
     }
-
-    /*
-    /**********************************************************************
-    /* AttributeInfo implementation (StAX 2)
-    /**********************************************************************
-     */
-
-    //public final int getAttributeCount();
-
-    /*
-    /**********************************************************************
-    /* Stax2 validation
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************

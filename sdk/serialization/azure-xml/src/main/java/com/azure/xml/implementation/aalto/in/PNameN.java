@@ -99,20 +99,4 @@ public final class PNameN extends ByteBasedPName {
     public int sizeInQuads() {
         return mQuadLen;
     }
-
-    /* // for debugging
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append('[');
-        for (int i = 0; i < mQuadLen; ++i) {
-            if (i > 0) {
-                sb.append(',');
-            }
-            sb.append("0x");
-            sb.append(Integer.toHexString(mQuads[i]));
-        }
-        sb.append(']');
-        return sb.toString();
-    }
-    */
 }
