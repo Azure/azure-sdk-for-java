@@ -157,7 +157,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             // a Reader, and dispatch it to reader scanner?
 
             // let's augment with actual endianness info
-            Reader r = new Utf32Reader(_config, _in, _inputBuffer, _inputPtr, _inputLen, mBigEndian);
+            Reader r = new Utf32Reader(_config, mBigEndian);
             return new ReaderScanner(_config, r);
         }
 
@@ -526,7 +526,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             total /= mBytesPerChar;
             col /= mBytesPerChar;
         }
-        return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), total, _inputRow, col);
+        return LocationImpl.fromZeroBased(total, _inputRow, col);
     }
 
     /*

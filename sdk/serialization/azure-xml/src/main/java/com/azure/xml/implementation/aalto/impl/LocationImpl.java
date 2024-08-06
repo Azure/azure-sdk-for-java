@@ -8,17 +8,12 @@ import javax.xml.stream.Location;
  * readers and writers.
  */
 public class LocationImpl implements Location {
-
-    final protected String _publicId, _systemId;
-
     final protected int _charOffset;
     final protected int _col, _row;
 
     transient protected String _desc = null;
 
-    public LocationImpl(String pubId, String sysId, int charOffset, int row, int col) {
-        _publicId = pubId;
-        _systemId = sysId;
+    public LocationImpl(int charOffset, int row, int col) {
         /* Overflow? Can obviously only handle limited range of overflows,
          * but let's do that at least?
          */
@@ -31,11 +26,11 @@ public class LocationImpl implements Location {
      * Helper method that will adjust given internal zero-based values
      * to 1-based values that should be externally visible.
      */
-    public static LocationImpl fromZeroBased(String pubId, String sysId, long rawOffset, int rawRow, int rawCol) {
+    public static LocationImpl fromZeroBased(long rawOffset, int rawRow, int rawCol) {
         // row, column are 1-based, offset 0-based
         // TODO: handle overflow
         int offset = (int) rawOffset;
-        return new LocationImpl(pubId, sysId, offset, rawRow + 1, rawCol + 1);
+        return new LocationImpl(offset, rawRow + 1, rawCol + 1);
     }
 
     @Override
@@ -55,12 +50,12 @@ public class LocationImpl implements Location {
 
     @Override
     public String getPublicId() {
-        return _publicId;
+        return null;
     }
 
     @Override
     public String getSystemId() {
-        return _systemId;
+        return null;
     }
 
     /*
@@ -72,43 +67,8 @@ public class LocationImpl implements Location {
     @Override
     public String toString() {
         if (_desc == null) {
-            StringBuffer sb = new StringBuffer(100);
-            appendDesc(sb);
-            _desc = sb.toString();
+            _desc = "[row,col {unknown-source}]: [" + _row + ',' + _col + ']';
         }
         return _desc;
-    }
-
-    /*
-    /**********************************************************************
-    /* Internal methods
-    /**********************************************************************
-     */
-
-    private void appendDesc(StringBuffer sb) {
-        String srcId;
-
-        if (_systemId != null) {
-            sb.append("[row,col,system-id]: ");
-            srcId = _systemId;
-        } else if (_publicId != null) {
-            sb.append("[row,col,public-id]: ");
-            srcId = _publicId;
-        } else {
-            sb.append("[row,col {unknown-source}]: ");
-            srcId = null;
-        }
-        sb.append('[');
-        sb.append(_row);
-        sb.append(',');
-        sb.append(_col);
-
-        if (srcId != null) {
-            sb.append(',');
-            sb.append('"');
-            sb.append(srcId);
-            sb.append('"');
-        }
-        sb.append(']');
     }
 }

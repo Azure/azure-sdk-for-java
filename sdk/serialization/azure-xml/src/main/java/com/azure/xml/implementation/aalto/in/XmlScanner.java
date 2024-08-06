@@ -440,7 +440,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         // !!! TODO: deal with impedance wrt int/long (flaw in Stax API)
         int row = (int) _startRow;
         int col = (int) _startColumn;
-        return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _startRawOffset, row, col);
+        return LocationImpl.fromZeroBased(_startRawOffset, row, col);
     }
 
     /*

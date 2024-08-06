@@ -119,7 +119,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
     /**********************************************************************
      */
 
-    protected abstract int handleEntityInText(boolean inAttr) throws XMLStreamException;
+    protected abstract int handleEntityInText() throws XMLStreamException;
 
     protected abstract String parsePublicId(byte quoteChar) throws XMLStreamException;
 
@@ -262,7 +262,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
             /* Need to expand; should indicate either text, or an unexpanded
              * entity reference
              */
-            int i = handleEntityInText(false);
+            int i = handleEntityInText();
             if (i == 0) { // general entity
                 return (_currToken = ENTITY_REFERENCE);
             }

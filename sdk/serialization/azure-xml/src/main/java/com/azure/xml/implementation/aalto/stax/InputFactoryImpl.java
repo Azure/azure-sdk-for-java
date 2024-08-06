@@ -16,16 +16,10 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.in.ByteSourceBootstrapper;
 import com.azure.xml.implementation.aalto.in.CharSourceBootstrapper;
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
-import com.azure.xml.implementation.aalto.util.URLUtil;
 import com.azure.xml.implementation.stax2.XMLInputFactory2;
-import com.azure.xml.implementation.stax2.io.Stax2ByteArraySource;
-import com.azure.xml.implementation.stax2.io.Stax2CharArraySource;
-import com.azure.xml.implementation.stax2.io.Stax2Source;
-import org.xml.sax.InputSource;
 
 import javax.xml.stream.EventFilter;
 import javax.xml.stream.StreamFilter;
@@ -35,13 +29,8 @@ import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.XMLEventAllocator;
-import javax.xml.transform.Source;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.net.URL;
 
 /**
  * Aalto implementation of basic Stax factory (both
@@ -147,22 +136,22 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
 
     @Override
     public XMLStreamReader createXMLStreamReader(Reader r) throws XMLStreamException {
-        return constructSR(null, r);
+        return constructSR(r);
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, Reader r) throws XMLStreamException {
-        return constructSR(systemId, r);
+    public XMLStreamReader createXMLStreamReader(String systemId, Reader r) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(javax.xml.transform.Source src) throws XMLStreamException {
-        return constructSR(src);
+    public XMLStreamReader createXMLStreamReader(javax.xml.transform.Source src) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public XMLStreamReader createXMLStreamReader(String systemId, InputStream in) throws XMLStreamException {
-        return constructSR(systemId, in);
+    public XMLStreamReader createXMLStreamReader(String systemId, InputStream in) {
+        throw new UnsupportedOperationException();
     }
 
     /*
@@ -227,146 +216,18 @@ public final class InputFactoryImpl extends XMLInputFactory2 {
      * Method called when a non-shared copy of the current configuration
      * is needed. This is usually done when a new reader is constructed.
      */
-    public ReaderConfig getNonSharedConfig(String systemId, String publicId, String extEncoding, boolean forEventReader,
-        boolean forceAutoClose) {
-        ReaderConfig cfg = _config.createNonShared(publicId, systemId, extEncoding);
-        if (forEventReader) {
-            /* No point in lazy parsing for event readers: no more efficient
-             * (and possible less) since all data is needed, always; and
-             * exceptions also get lazily thrown after the fact.
-             */
-            cfg.doParseLazily(false);
-        }
-        if (forceAutoClose) {
-            cfg.doAutoCloseInput(true);
-        }
-        return cfg;
+    public ReaderConfig getNonSharedConfig(String extEncoding) {
+        return _config.createNonShared(extEncoding);
     }
 
     private XMLStreamReader constructSR(InputStream in, String enc) throws XMLStreamException {
-        ReaderConfig cfg = getNonSharedConfig(null, null, enc, false, false);
+        ReaderConfig cfg = getNonSharedConfig(enc);
         return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
     }
 
-    private XMLStreamReader constructSR(String systemId, Reader r) throws XMLStreamException {
-        ReaderConfig cfg = getNonSharedConfig(null, systemId, null, false, false);
+    private XMLStreamReader constructSR(Reader r) throws XMLStreamException {
+        ReaderConfig cfg = getNonSharedConfig(null);
         return StreamReaderImpl.construct(CharSourceBootstrapper.construct(cfg, r));
-    }
-
-    private XMLStreamReader constructSR(String systemId, InputStream in) throws XMLStreamException {
-        ReaderConfig cfg = getNonSharedConfig(null, systemId, null, false, false);
-        return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
-    }
-
-    @SuppressWarnings("resource")
-    private XMLStreamReader constructSR(Source src) throws XMLStreamException {
-        if (src instanceof Stax2Source) {
-            return constructSR2((Stax2Source) src);
-        }
-
-        Reader r = null;
-        InputStream in = null;
-        String pubId = null;
-        String sysId;
-        String encoding = null;
-        boolean autoCloseInput;
-
-        if (src instanceof StreamSource) {
-            StreamSource ss = (StreamSource) src;
-            sysId = ss.getSystemId();
-            pubId = ss.getPublicId();
-            in = ss.getInputStream();
-            if (in == null) {
-                r = ss.getReader();
-            }
-            /* Caller still has access to stream/reader (except if we only
-             * get system-id); no need to force auto-close here
-             */
-            autoCloseInput = false;
-        } else if (src instanceof SAXSource) {
-            SAXSource ss = (SAXSource) src;
-            // Not a complete implementation, but maybe it's enough?
-            sysId = ss.getSystemId();
-            InputSource isrc = ss.getInputSource();
-            if (isrc != null) {
-                sysId = isrc.getSystemId();
-                pubId = isrc.getPublicId();
-                encoding = isrc.getEncoding();
-                in = isrc.getByteStream();
-                if (in == null) {
-                    r = isrc.getCharacterStream();
-                }
-            }
-            /* Caller still has access to stream/reader (except if we only
-             * get system-id); no need to force auto-close here
-             */
-            autoCloseInput = false;
-        } else {
-            throw new IllegalArgumentException(
-                "Can not instantiate StAX reader for XML source type " + src.getClass() + " (unrecognized type)");
-        }
-        if (in != null) {
-            ReaderConfig cfg = getNonSharedConfig(pubId, sysId, encoding, false, autoCloseInput);
-            return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
-        }
-        if (r != null) {
-            ReaderConfig cfg = getNonSharedConfig(pubId, sysId, encoding, false, autoCloseInput);
-            return StreamReaderImpl.construct(CharSourceBootstrapper.construct(cfg, r));
-        }
-        if (sysId != null && !sysId.isEmpty()) {
-            /* If we must construct URL from system id, caller will not have
-             * access to resulting stream, need to force auto-closing.
-             */
-            autoCloseInput = true;
-            ReaderConfig cfg = getNonSharedConfig(pubId, sysId, encoding, false, autoCloseInput);
-            try {
-                URL url = URLUtil.urlFromSystemId(sysId);
-                in = URLUtil.inputStreamFromURL(url);
-                return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
-            } catch (IOException ioe) {
-                throw new IoStreamException(ioe);
-            }
-        }
-        throw new XMLStreamException(
-            "Can not create Stax reader for the Source passed -- neither reader, input stream nor system id was accessible; can not use other types of sources (like embedded SAX streams)");
-    }
-
-    private XMLStreamReader constructSR2(Stax2Source ss) throws XMLStreamException {
-        /* Caller has no access to these input sources, so we must force
-         * auto-close ('true' after 'forEventReader')
-         */
-        ReaderConfig cfg = getNonSharedConfig(ss.getPublicId(), ss.getSystemId(), ss.getEncoding(), false, true);
-
-        // Byte arrays can be accessed VERY efficiently...
-        if (ss instanceof Stax2ByteArraySource) {
-            Stax2ByteArraySource bs = (Stax2ByteArraySource) ss;
-            return StreamReaderImpl.construct(
-                ByteSourceBootstrapper.construct(cfg, bs.getBuffer(), bs.getBufferStart(), bs.getBufferLength()));
-        }
-        if (ss instanceof Stax2CharArraySource) {
-            Stax2CharArraySource cs = (Stax2CharArraySource) ss;
-            return StreamReaderImpl.construct(
-                CharSourceBootstrapper.construct(cfg, cs.getBuffer(), cs.getBufferStart(), cs.getBufferLength()));
-        }
-
-        /* Ok, and this is the default, if we don't know a better
-         * type-specific method:
-         */
-        try {
-            InputStream in = ss.constructInputStream();
-            if (in != null) {
-                return StreamReaderImpl.construct(ByteSourceBootstrapper.construct(cfg, in));
-            }
-            Reader r = ss.constructReader();
-            if (r != null) {
-                return StreamReaderImpl.construct(CharSourceBootstrapper.construct(cfg, r));
-            }
-        } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
-        }
-
-        throw new IllegalArgumentException(
-            "Can not create stream reader for given Stax2Source: neither InputStream nor Reader available");
     }
 
 }

@@ -140,10 +140,6 @@ public final class WriterConfig extends CommonConfig {
         }
     }
 
-    public void doAutoCloseOutput(boolean state) {
-        setFlag(F_AUTO_CLOSE_OUTPUT, state);
-    }
-
     public void enableXml11() {
         // !!! TBI
     }

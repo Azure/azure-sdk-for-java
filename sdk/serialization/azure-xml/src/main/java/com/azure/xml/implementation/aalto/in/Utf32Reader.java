@@ -61,7 +61,7 @@ public class Utf32Reader extends Reader {
     /**********************************************************************
      */
 
-    public Utf32Reader(ReaderConfig cfg, InputStream in, byte[] buf, int ptr, int len, boolean isBigEndian) {
+    public Utf32Reader(ReaderConfig cfg, boolean isBigEndian) {
         mConfig = cfg;
         mBigEndian = isBigEndian;
     }

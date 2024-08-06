@@ -130,8 +130,7 @@ public abstract class ByteBasedScanner extends XmlScanner {
 
     @Override
     public Location getCurrentLocation() {
-        return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _pastBytesOrChars + _inputPtr,
-            _currRow, _inputPtr - _rowStartOffset);
+        return LocationImpl.fromZeroBased(_pastBytesOrChars + _inputPtr, _currRow, _inputPtr - _rowStartOffset);
     }
 
     protected final void markLF(int offset) {

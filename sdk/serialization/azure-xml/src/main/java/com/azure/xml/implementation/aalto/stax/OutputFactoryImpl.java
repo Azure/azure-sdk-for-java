@@ -15,8 +15,6 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
-import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
 import com.azure.xml.implementation.aalto.out.AsciiXmlWriter;
 import com.azure.xml.implementation.aalto.out.CharXmlWriter;
 import com.azure.xml.implementation.aalto.out.Latin1XmlWriter;
@@ -26,19 +24,14 @@ import com.azure.xml.implementation.aalto.out.WNameTable;
 import com.azure.xml.implementation.aalto.out.WriterConfig;
 import com.azure.xml.implementation.aalto.out.XmlWriter;
 import com.azure.xml.implementation.aalto.util.CharsetNames;
-import com.azure.xml.implementation.aalto.util.URLUtil;
 import com.azure.xml.implementation.aalto.util.XmlConsts;
 import com.azure.xml.implementation.stax2.XMLOutputFactory2;
 import com.azure.xml.implementation.stax2.XMLStreamWriter2;
-import com.azure.xml.implementation.stax2.io.Stax2Result;
 
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.Result;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -101,17 +94,17 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
 
     @Override
     public XMLStreamWriter createXMLStreamWriter(OutputStream out, String enc) throws XMLStreamException {
-        return createSW(out, null, enc, false);
+        return createSW(out, null, enc);
     }
 
     @Override
-    public XMLStreamWriter createXMLStreamWriter(javax.xml.transform.Result result) throws XMLStreamException {
-        return createSW(result);
+    public XMLStreamWriter createXMLStreamWriter(javax.xml.transform.Result result) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public XMLStreamWriter createXMLStreamWriter(Writer w) throws XMLStreamException {
-        return createSW(null, w, null, false);
+        return createSW(null, w, null);
     }
 
     @Override
@@ -151,15 +144,11 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
     //
     // @param forceAutoClose Whether writer should automatically close the
     //   output stream or Writer, when close() is called on stream writer.
-    private XMLStreamWriter2 createSW(OutputStream out, Writer w, String enc, boolean forceAutoClose)
-        throws XMLStreamException {
+    private XMLStreamWriter2 createSW(OutputStream out, Writer w, String enc) throws XMLStreamException {
         // Need to ensure that the configuration object is not shared
         // any more; otherwise later changes via factory could be
         // visible half-way through output...
         WriterConfig cfg = _config.createNonShared();
-        if (forceAutoClose) {
-            cfg.doAutoCloseOutput(true);
-        }
         XmlWriter xw;
         WNameTable symbols;
 
@@ -235,65 +224,4 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
         return new NonRepairingStreamWriter(cfg, xw, symbols);
     }
 
-    private XMLStreamWriter2 createSW(Result res) throws XMLStreamException {
-        OutputStream out = null;
-        Writer w = null;
-        String encoding = null;
-        boolean autoclose;
-        String sysId = null;
-
-        if (res instanceof Stax2Result) {
-            Stax2Result sr = (Stax2Result) res;
-            try {
-                out = sr.constructOutputStream();
-                if (out == null) {
-                    w = sr.constructWriter();
-                }
-            } catch (IOException ioe) {
-                throw new StreamExceptionBase(ioe);
-            }
-            autoclose = true;
-        } else if (res instanceof StreamResult) {
-            StreamResult sr = (StreamResult) res;
-            sysId = sr.getSystemId();
-            out = sr.getOutputStream();
-            if (out == null) {
-                w = sr.getWriter();
-            }
-            autoclose = false; // caller still owns it, no automatic close
-        } else if (res instanceof SAXResult) {
-            SAXResult sr = (SAXResult) res;
-            sysId = sr.getSystemId();
-            if (sysId == null || sysId.isEmpty()) {
-                throw new StreamExceptionBase(
-                    "Can not create a stream writer for a SAXResult that does not have System Id (support for using SAX input source not implemented)");
-            }
-            autoclose = true;
-        } else {
-            throw new IllegalArgumentException(
-                "Can not create XMLStreamWriter for Result type " + res.getClass() + " (unrecognized type)");
-        }
-
-        if (out != null) {
-            return createSW(out, null, encoding, autoclose);
-        }
-        if (w != null) {
-            return createSW(null, w, encoding, autoclose);
-        }
-        if (sysId != null && !sysId.isEmpty()) {
-            /* 26-Dec-2008, tatu: If we must construct URL from system id,
-             *   it means caller will not have access to resulting
-             *   stream, thus we will force auto-closing.
-             */
-            autoclose = true;
-            try {
-                out = URLUtil.outputStreamFromURL(URLUtil.urlFromSystemId(sysId));
-            } catch (IOException ioe) {
-                throw new IoStreamException(ioe);
-            }
-            return createSW(out, null, encoding, autoclose);
-        }
-        throw new StreamExceptionBase(
-            "Can not create XMLStreamWriter for passed-in Result -- neither writer, output stream nor system id (to create one) was accessible");
-    }
 }

@@ -630,7 +630,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     @Override
     public Location getLocation() {
-        return new LocationImpl(null, null, // pub/sys ids not yet known
+        return new LocationImpl( // pub/sys ids not yet known
             _xmlWriter.getAbsOffset(), _xmlWriter.getRow(), _xmlWriter.getColumn());
     }
 

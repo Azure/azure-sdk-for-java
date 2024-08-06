@@ -308,8 +308,7 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
 
     @Override
     protected Location getLocation() {
-        return LocationImpl.fromZeroBased(_config.getPublicId(), _config.getSystemId(), _inputProcessed + _inputPtr,
-            _inputRow, _inputPtr - _inputRowStart);
+        return LocationImpl.fromZeroBased(_inputProcessed + _inputPtr, _inputRow, _inputPtr - _inputRowStart);
     }
 
     /*

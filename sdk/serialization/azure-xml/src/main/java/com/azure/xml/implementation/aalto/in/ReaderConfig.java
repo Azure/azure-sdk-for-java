@@ -115,9 +115,6 @@ public final class ReaderConfig extends CommonConfig {
      */
     private final UriCanonicalizer mCanonicalizer;
 
-    private final String mPublicId;
-    private final String mSystemId;
-
     /**
      * Encoding passed in as external information, possibly from source
      * from which xml content was gained from (for example, as an HTTP
@@ -165,11 +162,9 @@ public final class ReaderConfig extends CommonConfig {
     /**********************************************************************
      */
 
-    private ReaderConfig(String publicId, String systemId, String extEnc, EncodingContext encCtxt, int flags,
-        int flagMods, XMLReporter rep, XMLResolver res, UriCanonicalizer canonicalizer) {
+    private ReaderConfig(String extEnc, EncodingContext encCtxt, int flags, int flagMods, XMLReporter rep,
+        XMLResolver res, UriCanonicalizer canonicalizer) {
         super(flags, flagMods);
-        mPublicId = publicId;
-        mSystemId = systemId;
         mExtEncoding = extEnc;
 
         /* Ok, let's then see if we can find a buffer recycler. Since they
@@ -191,7 +186,7 @@ public final class ReaderConfig extends CommonConfig {
     }
 
     public ReaderConfig() {
-        this(null, null, null, new EncodingContext(), DEFAULT_FLAGS, 0, null, null, new UriCanonicalizer());
+        this(null, new EncodingContext(), DEFAULT_FLAGS, 0, null, null, new UriCanonicalizer());
     }
 
     public void setActualEncoding(String actualEnc) {
@@ -231,28 +226,14 @@ public final class ReaderConfig extends CommonConfig {
     public void setXMLResolver(XMLResolver r) {
         mResolver = r;
     }
-
-    // // Stax2:
-
-    // // Stax1.0
-
-    public void doAutoCloseInput(boolean state) {
-        setFlag(F_AUTO_CLOSE_INPUT, state);
-    }
-
-    public void doParseLazily(boolean state) {
-        setFlag(F_LAZY_PARSING, state);
-    }
-
     /*
     /**********************************************************************
     /* Common accessors from CommonConfig
     /**********************************************************************
      */
 
-    public ReaderConfig createNonShared(String publicId, String systemId, String extEnc) {
-        return new ReaderConfig(publicId, systemId, extEnc, mEncCtxt, _flags, _flagMods, mReporter, mResolver,
-            mCanonicalizer);
+    public ReaderConfig createNonShared(String extEnc) {
+        return new ReaderConfig(extEnc, mEncCtxt, _flags, _flagMods, mReporter, mResolver, mCanonicalizer);
     }
 
     @Override
@@ -269,12 +250,6 @@ public final class ReaderConfig extends CommonConfig {
     public boolean isXml11() {
         return false;
     }
-
-    /*
-    /**********************************************************************
-    /* Implementation of abstract methods
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************
@@ -382,16 +357,6 @@ public final class ReaderConfig extends CommonConfig {
     /* Accessors, detected properties
     /**********************************************************************
      */
-
-    // // // Input source information
-
-    public String getPublicId() {
-        return mPublicId;
-    }
-
-    public String getSystemId() {
-        return mSystemId;
-    }
 
     // // // XML declaration info
 

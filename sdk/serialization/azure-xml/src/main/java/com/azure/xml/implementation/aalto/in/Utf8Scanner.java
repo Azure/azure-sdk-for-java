@@ -363,7 +363,7 @@ public final class Utf8Scanner extends StreamScanner {
                 case XmlCharTypes.CT_LT:
                     throwUnexpectedChar(c, "'<' not allowed in attribute value");
                 case XmlCharTypes.CT_AMP:
-                    c = handleEntityInText(false);
+                    c = handleEntityInText();
                     if (c == 0) { // unexpanded general entity... not good
                         reportUnexpandedEntityInAttr(false);
                     }
@@ -411,7 +411,7 @@ public final class Utf8Scanner extends StreamScanner {
             }
             int c;
             if (b == BYTE_AMP) { // entity
-                c = handleEntityInText(false);
+                c = handleEntityInText();
                 if (c == 0) { // general entity; should never happen
                     reportUnexpandedEntityInAttr(true);
                 }
@@ -483,14 +483,11 @@ public final class Utf8Scanner extends StreamScanner {
      * entity (in which case it will most likely be returned as
      * ENTITY_REFERENCE event)
      *
-     * @param inAttr True, if reference is from attribute value; false
-     *   if from normal text content
-     *
      * @return 0 if a general parsed entity encountered; integer
-     *    value of a (valid) XML content character otherwise
+     * value of a (valid) XML content character otherwise
      */
     @Override
-    protected int handleEntityInText(boolean inAttr) throws XMLStreamException {
+    protected int handleEntityInText() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
             loadMoreGuaranteed();
         }
@@ -659,7 +656,7 @@ public final class Utf8Scanner extends StreamScanner {
             reportInputProblem("General entity reference (&" + pname
                 + ";) encountered in entity expanding mode: operation not (yet) implemented");
         }
-        if (inAttr) {
+        if (false) {
             reportInputProblem("General entity reference (&" + pname
                 + ";) encountered in attribute value, in non-entity-expanding mode: no way to handle it");
         }
@@ -861,7 +858,7 @@ public final class Utf8Scanner extends StreamScanner {
                     return false;
 
                 case XmlCharTypes.CT_AMP:
-                    c = handleEntityInText(false);
+                    c = handleEntityInText();
                     if (c == 0) { // unexpandable general parsed entity
                         return true;
                     }
@@ -1625,7 +1622,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break main_loop;
 
                 case XmlCharTypes.CT_AMP:
-                    c = handleEntityInText(false);
+                    c = handleEntityInText();
                     if (c == 0) { // unexpandable general parsed entity
                         // _inputPtr set by entity expansion method
                         _entityPending = true;
@@ -2273,7 +2270,7 @@ public final class Utf8Scanner extends StreamScanner {
                     break main_loop;
 
                 case XmlCharTypes.CT_AMP:
-                    c = handleEntityInText(false);
+                    c = handleEntityInText();
                     if (c == 0) { // unexpandable general parsed entity
                         // _inputPtr set by entity expansion method
                         _entityPending = true;
