@@ -12,21 +12,21 @@ public final class WorkloadProfileStatesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProfileStatesProperties model = BinaryData
-            .fromString("{\"minimumCount\":1064338012,\"maximumCount\":422626057,\"currentCount\":1747696995}")
+            .fromString("{\"minimumCount\":193344927,\"maximumCount\":2039990607,\"currentCount\":1842642996}")
             .toObject(WorkloadProfileStatesProperties.class);
-        Assertions.assertEquals(1064338012, model.minimumCount());
-        Assertions.assertEquals(422626057, model.maximumCount());
-        Assertions.assertEquals(1747696995, model.currentCount());
+        Assertions.assertEquals(193344927, model.minimumCount());
+        Assertions.assertEquals(2039990607, model.maximumCount());
+        Assertions.assertEquals(1842642996, model.currentCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProfileStatesProperties model = new WorkloadProfileStatesProperties().withMinimumCount(1064338012)
-            .withMaximumCount(422626057)
-            .withCurrentCount(1747696995);
+        WorkloadProfileStatesProperties model = new WorkloadProfileStatesProperties().withMinimumCount(193344927)
+            .withMaximumCount(2039990607)
+            .withCurrentCount(1842642996);
         model = BinaryData.fromObject(model).toObject(WorkloadProfileStatesProperties.class);
-        Assertions.assertEquals(1064338012, model.minimumCount());
-        Assertions.assertEquals(422626057, model.maximumCount());
-        Assertions.assertEquals(1747696995, model.currentCount());
+        Assertions.assertEquals(193344927, model.minimumCount());
+        Assertions.assertEquals(2039990607, model.maximumCount());
+        Assertions.assertEquals(1842642996, model.currentCount());
     }
 }
