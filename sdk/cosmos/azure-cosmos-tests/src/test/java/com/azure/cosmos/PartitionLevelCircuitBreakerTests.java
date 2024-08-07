@@ -1117,10 +1117,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 15,
                 15
             },
-            // 449 injected into first preferred region for QUERY_ITEM operation
-            // injected into all replicas of the faulty EPK range.
-            // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled & non-idempotent write retry policy enabled)
-            // and will have two regions contacted post circuit breaking (one for QueryPlan and the other for the data plane request).
+//             449 injected into first preferred region for QUERY_ITEM operation
+//             injected into all replicas of the faulty EPK range.
+//             Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled & non-idempotent write retry policy enabled)
+//             and will have two regions contacted post circuit breaking (one for QueryPlan and the other for the data plane request).
             new Object[]{
                 String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -1165,10 +1165,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 40,
                 15
             },
-            // 500 injected into all regions for READ_ITEM operation
-            // injected into all replicas of the faulty EPK range.
-            // Expectation is for the operation to see InternalServerError in all regions
-            // and will contact one region contacted post circuit breaking.
+//             500 injected into all regions for READ_ITEM operation
+//             injected into all replicas of the faulty EPK range.
+//             Expectation is for the operation to see InternalServerError in all regions
+//             and will contact one region contacted post circuit breaking.
             new Object[]{
                 String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -2659,12 +2659,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
                     if (!hasReachedCircuitBreakingThreshold) {
 
-                        hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold ==
+                        hasReachedCircuitBreakingThreshold = (expectedCircuitBreakingThreshold - 1) ==
                             getEstimatedFailureCountSeenPerRegionPerPartitionKeyRange(
                                 partitionKeyRangeWrapper,
                                 partitionKeyRangeToLocationSpecificUnavailabilityInfo,
                                 locationEndpointToLocationSpecificContextForPartitionField,
-                                expectedCircuitBreakingThreshold,
+                                expectedCircuitBreakingThreshold - 1,
                                 expectedRegionCountWithFailures);
                         validateResponseInPresenceOfFailures.accept(response);
                     } else {
