@@ -25,13 +25,15 @@ import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.IS_SYNTHETIC;
-import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.METRIC;
 import static com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper.getStableOrOldAttribute;
+import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.METRIC;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
@@ -43,56 +45,24 @@ public class MetricDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
+    private static final Set<String> OTEL_UNSTABLE_METRICS_TO_EXCLUDE = new HashSet<>();
     private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
+    private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights.internal.metric_name");
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
-    // Pre-aggregated standard metrics only have a few values, so we can use a simple check instead of a Set<String>.
-    // This is a performance improvement.
-    // Options are "http.server.request.duration", "http.client.request.duration", "rpc.client.duration",
-    // and "rpc.server.duration".
-    private static boolean isOtelPreAggregatedStandardMetric(String metricName) {
-        // If the name is null or doesn't have a length of either 19 or 26, it's not a pre-aggregated standard metric.
-        if (metricName == null || !(metricName.length() == 19 || metricName.length() == 28)) {
-            return false;
-        }
+    static {
+        // HTTP unstable metrics to be excluded via Otel auto instrumentation
+        OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.client.duration");
+        OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.server.duration");
 
-        // If the name is 19 characters long this is a pre-aggregated standard metric that is also an unstable metric,
-        // call into that method.
-        if (metricName.length() == 19) {
-            return isOtelUnstableMetricToExclude(metricName);
-        }
-
-        // The other options are "http.server.request.duration" and "http.client.request.duration".
-        // Check for starting with "http." and ending with ".request.duration".
-        if (!metricName.startsWith("http.") || !metricName.endsWith(".request.duration")) {
-            return false;
-        }
-
-        // Check for "client" or "server" in the middle of the metric name.
-        return metricName.regionMatches(5, "client", 0, 6) || metricName.regionMatches(5, "server", 0, 6);
-    }
-
-    // HTTP unstable metrics to be excluded via Otel auto instrumentation.
-    // This is an optimized method to check the 'metricName' as there is a limited set of unstable metrics,
-    // and using a Set<String> is overkill and has much worse performance metrics.
-    // Options are "rpc.client.duration" and "rpc.server.duration".
-    private static boolean isOtelUnstableMetricToExclude(String metricName) {
-        // If the name is null or doesn't have a length of 19, it's not an unstable metric.
-        if (metricName == null || metricName.length() != 19) {
-            return false;
-        }
-
-        // The only unstable metrics are "rpc.client.duration" and "rpc.server.duration".
-        // Check for starting with "rpc." and ending with ".duration".
-        if (!metricName.startsWith("rpc.") || !metricName.endsWith(".duration")) {
-            return false;
-        }
-
-        // Check for "client" or "server" in the middle of the metric name.
-        return metricName.regionMatches(4, "client", 0, 6) || metricName.regionMatches(4, "server", 0, 6);
+        // Application Insights pre-aggregated standard metrics
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.request.duration");
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.client.duration");
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration");
     }
 
     public MetricDataMapper(
@@ -109,20 +79,22 @@ public class MetricDataMapper {
             || type == LONG_SUM
             || type == LONG_GAUGE
             || type == HISTOGRAM) {
-            if (isOtelPreAggregatedStandardMetric(metricData.getName())) {
+            boolean isPreAggregatedStandardMetric =
+                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
+            if (isPreAggregatedStandardMetric) {
                 List<TelemetryItem> preAggregatedStandardMetrics =
                     convertOtelMetricToAzureMonitorMetric(metricData, true);
-                preAggregatedStandardMetrics.forEach(consumer);
+                preAggregatedStandardMetrics.forEach(consumer::accept);
             }
 
             // DO NOT emit unstable metrics from the OpenTelemetry auto instrumentation libraries
             // custom metrics are always emitted
-            if (isOtelUnstableMetricToExclude(metricData.getName())
+            if (OTEL_UNSTABLE_METRICS_TO_EXCLUDE.contains(metricData.getName())
                 && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
                 return;
             }
             List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
-            stableOtelMetrics.forEach(consumer);
+            stableOtelMetrics.forEach(consumer::accept);
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }
@@ -301,10 +273,10 @@ public class MetricDataMapper {
     }
 
     private static boolean isClient(String metricName) {
-       return metricName.contains(".client.");
+        return metricName.contains(".client.");
     }
 
     private static boolean isServer(String metricName) {
-       return metricName.contains(".server.");
+        return metricName.contains(".server.");
     }
 }
