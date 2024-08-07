@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
@@ -420,7 +421,7 @@ public class RntbdTransportClient extends TransportClient {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            throw new TransportException(lenientFormat("%s is closed", this), null);
+            throw new ClosedClientTransportException(lenientFormat("%s is closed", this), null);
         }
     }
 

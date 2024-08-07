@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -1016,12 +1017,15 @@ public class StoreReader {
             } else {
                 String errorMessage = "Unexpected exception " + responseException.getMessage() + " received while reading from store.";
                 logger.error(errorMessage, responseException);
+
+                int subStatusCode = evaluateSubStatusCode(responseException);
+
                 return new StoreResult(
                         /* storeResponse: */ null,
                         /* exception: */ new InternalServerErrorException(
                                             com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
                                             responseException,
-                                            HttpConstants.SubStatusCodes.INVALID_RESULT),
+                                            subStatusCode),
                         /* partitionKeyRangeId: */ (String) null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
@@ -1066,6 +1070,10 @@ public class StoreReader {
             throw ex;
         }
 
+        if (ex instanceof InternalServerErrorException && ex.getCause() instanceof ClosedClientTransportException) {
+            throw ex;
+        }
+
         String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE);
         if (Strings.isNullOrWhiteSpace(value)) {
             return;
@@ -1077,6 +1085,14 @@ public class StoreReader {
         }
 
         return;
+    }
+
+    private int evaluateSubStatusCode(Exception responseException) {
+        if (responseException instanceof ClosedClientTransportException) {
+            return HttpConstants.SubStatusCodes.CLOSED_CLIENT;
+        }
+
+        return HttpConstants.SubStatusCodes.INVALID_RESULT;
     }
 
     private static class ReadReplicaResult {

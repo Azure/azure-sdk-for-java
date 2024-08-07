@@ -451,6 +451,7 @@ public class HttpConstants {
         public static final int INVALID_BACKEND_RESPONSE = 20908;
         public static final int UNKNOWN_QUORUM_RESULT = 20909;
         public static final int INVALID_RESULT = 20910;
+        public static final int CLOSED_CLIENT = 20912;
 
         //SDK Codes (Server)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
