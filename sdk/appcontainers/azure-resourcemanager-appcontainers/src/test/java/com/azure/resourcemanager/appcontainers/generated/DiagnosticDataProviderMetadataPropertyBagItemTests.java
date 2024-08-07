@@ -12,18 +12,18 @@ public final class DiagnosticDataProviderMetadataPropertyBagItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticDataProviderMetadataPropertyBagItem model
-            = BinaryData.fromString("{\"name\":\"djwnlaxpunjqi\",\"value\":\"zvvitacgxmfcs\"}")
+            = BinaryData.fromString("{\"name\":\"vjlboxqvk\",\"value\":\"mxho\"}")
                 .toObject(DiagnosticDataProviderMetadataPropertyBagItem.class);
-        Assertions.assertEquals("djwnlaxpunjqi", model.name());
-        Assertions.assertEquals("zvvitacgxmfcs", model.value());
+        Assertions.assertEquals("vjlboxqvk", model.name());
+        Assertions.assertEquals("mxho", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticDataProviderMetadataPropertyBagItem model
-            = new DiagnosticDataProviderMetadataPropertyBagItem().withName("djwnlaxpunjqi").withValue("zvvitacgxmfcs");
+            = new DiagnosticDataProviderMetadataPropertyBagItem().withName("vjlboxqvk").withValue("mxho");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataProviderMetadataPropertyBagItem.class);
-        Assertions.assertEquals("djwnlaxpunjqi", model.name());
-        Assertions.assertEquals("zvvitacgxmfcs", model.value());
+        Assertions.assertEquals("vjlboxqvk", model.name());
+        Assertions.assertEquals("mxho", model.value());
     }
 }

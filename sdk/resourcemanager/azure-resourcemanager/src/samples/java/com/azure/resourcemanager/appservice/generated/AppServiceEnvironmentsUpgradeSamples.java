@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsUpgradeSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_Upgrade.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_Upgrade.json
      */
     /**
      * Sample code: Initiate an upgrade on an App Service Environment.

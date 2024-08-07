@@ -5,43 +5,43 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Static Site Database Connection overview.
  */
 @Immutable
-public final class DatabaseConnectionOverview {
+public final class DatabaseConnectionOverview implements JsonSerializable<DatabaseConnectionOverview> {
     /*
      * The resource id of the database.
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
-     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
+     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the
+     * system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned
+     * managed identity is indicated with the resource id of the managed identity resource.
      */
-    @JsonProperty(value = "connectionIdentity", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionIdentity;
 
     /*
      * The region of the database resource.
      */
-    @JsonProperty(value = "region", access = JsonProperty.Access.WRITE_ONLY)
     private String region;
 
     /*
      * A list of configuration files associated with this database connection.
      */
-    @JsonProperty(value = "configurationFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles;
 
     /*
      * If present, the name of this database connection resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
@@ -52,7 +52,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the resourceId property: The resource id of the database.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -64,7 +64,7 @@ public final class DatabaseConnectionOverview {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     *
+     * 
      * @return the connectionIdentity value.
      */
     public String connectionIdentity() {
@@ -73,7 +73,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the region property: The region of the database resource.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -82,7 +82,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the configurationFiles property: A list of configuration files associated with this database connection.
-     *
+     * 
      * @return the configurationFiles value.
      */
     public List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles() {
@@ -91,7 +91,7 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Get the name property: If present, the name of this database connection resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -100,12 +100,57 @@ public final class DatabaseConnectionOverview {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (configurationFiles() != null) {
             configurationFiles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseConnectionOverview from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseConnectionOverview if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseConnectionOverview.
+     */
+    public static DatabaseConnectionOverview fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseConnectionOverview deserializedDatabaseConnectionOverview = new DatabaseConnectionOverview();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedDatabaseConnectionOverview.resourceId = reader.getString();
+                } else if ("connectionIdentity".equals(fieldName)) {
+                    deserializedDatabaseConnectionOverview.connectionIdentity = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedDatabaseConnectionOverview.region = reader.getString();
+                } else if ("configurationFiles".equals(fieldName)) {
+                    List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles = reader
+                        .readArray(reader1 -> StaticSiteDatabaseConnectionConfigurationFileOverview.fromJson(reader1));
+                    deserializedDatabaseConnectionOverview.configurationFiles = configurationFiles;
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseConnectionOverview.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseConnectionOverview;
+        });
     }
 }

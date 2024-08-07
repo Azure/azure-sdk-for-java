@@ -19,7 +19,8 @@ import reactor.core.publisher.Mono;
 public final class DaprComponentsListSecretsWithResponseMockTests {
     @Test
     public void testListSecretsWithResponse() throws Exception {
-        String responseStr = "{\"value\":[{\"name\":\"xgiqasifubn\",\"value\":\"stlpwqp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"hjriyb\",\"value\":\"zo\"},{\"name\":\"nxwdvwnjkg\",\"value\":\"nmx\"},{\"name\":\"rsqftib\",\"value\":\"ibuyvpirf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +30,7 @@ public final class DaprComponentsListSecretsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DaprSecretsCollection response = manager.daprComponents()
-            .listSecretsWithResponse("yntvzjyielbq", "vvbq", "knmp", com.azure.core.util.Context.NONE)
+            .listSecretsWithResponse("qbxyxoyfpuqqi", "ezxlhdjzqdca", "wvpsoz", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

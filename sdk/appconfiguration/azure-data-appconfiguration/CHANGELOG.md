@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.7.0 (2024-08-07)
 
 ### Features Added
 
@@ -10,12 +10,13 @@
 - Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
 - Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
 
 ## 1.6.3 (2024-07-26)
 

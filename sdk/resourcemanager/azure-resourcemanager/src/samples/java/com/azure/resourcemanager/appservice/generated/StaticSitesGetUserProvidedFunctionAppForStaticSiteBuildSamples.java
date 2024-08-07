@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetUserProvidedFunctionAppForStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetUserProvidedFunctionAppForStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * GetUserProvidedFunctionAppForStaticSiteBuild.json
      */
     /**
      * Sample code: Get details of the user provided function app registered with a static site build.

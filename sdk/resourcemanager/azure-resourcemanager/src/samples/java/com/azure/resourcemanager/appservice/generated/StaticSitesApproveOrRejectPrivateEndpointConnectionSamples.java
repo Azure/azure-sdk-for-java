@@ -12,7 +12,8 @@ import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
  */
 public final class StaticSitesApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApproveRejectSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * ApproveRejectSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a site.

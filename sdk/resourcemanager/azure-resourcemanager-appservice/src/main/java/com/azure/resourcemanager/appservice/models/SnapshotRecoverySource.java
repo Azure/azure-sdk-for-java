@@ -5,25 +5,29 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the web app that snapshot contents will be retrieved from.
  */
 @Fluent
-public final class SnapshotRecoverySource {
+public final class SnapshotRecoverySource implements JsonSerializable<SnapshotRecoverySource> {
     /*
      * Geographical location of the source web app, e.g. SouthEastAsia, SouthCentralUS
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
-     * ARM resource ID of the source app. 
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and 
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
+     * ARM resource ID of the source app.
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production
+     * slots and
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{
+     * slotName} for other slots.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -86,5 +90,44 @@ public final class SnapshotRecoverySource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotRecoverySource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotRecoverySource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotRecoverySource.
+     */
+    public static SnapshotRecoverySource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotRecoverySource deserializedSnapshotRecoverySource = new SnapshotRecoverySource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedSnapshotRecoverySource.location = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSnapshotRecoverySource.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotRecoverySource;
+        });
     }
 }
