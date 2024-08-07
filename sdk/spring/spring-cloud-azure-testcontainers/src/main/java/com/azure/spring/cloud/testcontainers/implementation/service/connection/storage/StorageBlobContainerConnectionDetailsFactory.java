@@ -11,7 +11,7 @@ import org.testcontainers.containers.Container;
 class StorageBlobContainerConnectionDetailsFactory
     extends ContainerConnectionDetailsFactory<Container<?>, AzureStorageBlobConnectionDetails> {
 
-    private static final int STORAGE_BLOB_PORT = 10000;
+    private static final int STORAGE_BLOB_PORT = 10_000;
 
     StorageBlobContainerConnectionDetailsFactory() {
         super("azure-storage/azurite");
