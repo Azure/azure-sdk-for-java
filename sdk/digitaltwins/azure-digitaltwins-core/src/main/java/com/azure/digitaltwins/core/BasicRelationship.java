@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -149,7 +150,12 @@ public final class BasicRelationship implements JsonSerializable<BasicRelationsh
             .writeStringField(DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, etag);
 
         for (Map.Entry<String, Object> additionalProperty : properties.entrySet()) {
-            jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            if (additionalProperty.getValue() instanceof String) {
+                SerializationHelpers.serializeStringHelper(jsonWriter, additionalProperty.getKey(),
+                    (String) additionalProperty.getValue());
+            } else {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
 
         return jsonWriter.writeEndObject();

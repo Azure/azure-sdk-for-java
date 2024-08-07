@@ -18,9 +18,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
@@ -85,22 +83,9 @@ public final class DigitalTwinsAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(DigitalTwinsAsyncClient.class);
     private static final Boolean INCLUDE_MODEL_DEFINITION_ON_GET = true;
 
-    private static final SerializerAdapter SERIALIZER_ADAPTER;
-//    private static final ObjectMapper MAPPER;
-
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private final JsonSerializer serializer;
-
-    static {
-//        final SimpleModule stringModule = new SimpleModule("String Serializer");
-//        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-//        MAPPER = jacksonAdapter.serializer(); // Use the same mapper in this layer that the generated layer will use
-//        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, MAPPER));
-//        jacksonAdapter.serializer().registerModule(stringModule);
-
-        SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-    }
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion,
         JsonSerializer jsonSerializer) {
@@ -112,7 +97,6 @@ public final class DigitalTwinsAsyncClient {
 
         this.protocolLayer = new AzureDigitalTwinsAPIImplBuilder().host(serviceEndpoint)
             .pipeline(pipeline)
-            .serializerAdapter(SERIALIZER_ADAPTER)
             .buildClient();
     }
 
@@ -231,19 +215,7 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .addNoCustomHeadersWithResponseAsync(digitalTwinId, digitalTwin,
                 OptionsConverter.toProtocolLayerOptions(options), context)
-            .flatMap(response -> {
-                T genericResponse;
-                try {
-                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
-                        clazz, this.serializer);
-                } catch (IOException e) {
-                    return Mono.error(LOGGER.atError().log(e));
-                }
-
-                return Mono.just(
-                    new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        genericResponse, createDTResponseHeadersFromResponse(response)));
-            });
+            .flatMap(response -> deserializeHelper(response, clazz));
     }
 
     /**
@@ -332,19 +304,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer.getDigitalTwins()
             .getByIdNoCustomHeadersWithResponseAsync(digitalTwinId, null, context)
-            .flatMap(response -> {
-                T genericResponse;
-                try {
-                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
-                        clazz, this.serializer);
-                } catch (IOException e) {
-                    return Mono.error(LOGGER.atError().log(e));
-                }
-
-                return Mono.just(
-                    new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        genericResponse, createDTResponseHeadersFromResponse(response)));
-            });
+            .flatMap(response -> deserializeHelper(response, clazz));
     }
 
     /**
@@ -588,19 +548,7 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .addRelationshipNoCustomHeadersWithResponseAsync(digitalTwinId, relationshipId, relationship,
                 OptionsConverter.toProtocolLayerOptions(options), context)
-            .flatMap(response -> {
-                T genericResponse;
-                try {
-                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
-                        clazz, this.serializer);
-                } catch (IOException e) {
-                    return Mono.error(LOGGER.atError().log(e));
-                }
-
-                return Mono.just(
-                    new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        genericResponse, createDTResponseHeadersFromResponse(response)));
-            });
+            .flatMap(response -> deserializeHelper(response, clazz));
     }
 
     /**
@@ -692,19 +640,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer.getDigitalTwins()
             .getRelationshipByIdNoCustomHeadersWithResponseAsync(digitalTwinId, relationshipId, null, context)
-            .flatMap(response -> {
-                T genericResponse;
-                try {
-                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
-                        clazz, this.serializer);
-                } catch (IOException e) {
-                    return Mono.error(LOGGER.atError().log(e));
-                }
-
-                return Mono.just(
-                    new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        genericResponse, createDTResponseHeadersFromResponse(response)));
-            });
+            .flatMap(response -> deserializeHelper(response, clazz));
     }
 
     /**
@@ -919,13 +855,8 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, null, context)
             .map(objectPagedResponse -> {
-                List<T> list = objectPagedResponse.getValue().stream().map(object -> {
-                    try {
-                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                    }
-                }).filter(Objects::nonNull).collect(Collectors.toList());
+                List<T> list = objectPagedResponse.getValue().stream().map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull).collect(Collectors.toList());
                 return new PagedResponseBase<>(objectPagedResponse.getRequest(), objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(), list, objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
@@ -940,13 +871,8 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwins()
             .listRelationshipsNextSinglePageAsync(nextLink, null, context)
             .map(objectPagedResponse -> {
-                List<T> stringList = objectPagedResponse.getValue().stream().map(object -> {
-                    try {
-                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                    }
-                }).filter(Objects::nonNull).collect(Collectors.toList());
+                List<T> stringList = objectPagedResponse.getValue().stream().map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull).collect(Collectors.toList());
                 return new PagedResponseBase<>(objectPagedResponse.getRequest(), objectPagedResponse.getStatusCode(),
                     objectPagedResponse.getHeaders(), stringList, objectPagedResponse.getContinuationToken(),
                     ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
@@ -1078,7 +1004,8 @@ public final class DigitalTwinsAsyncClient {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model : dtdlModels) {
             try {
-                modelsPayload.add(SERIALIZER_ADAPTER.deserialize(model, Object.class, SerializerEncoding.JSON));
+                modelsPayload.add(protocolLayer.getSerializerAdapter().deserialize(model, Object.class,
+                    SerializerEncoding.JSON));
             } catch (IOException e) {
                 LOGGER.atError()
                     .addKeyValue("model", model)
@@ -1418,18 +1345,7 @@ public final class DigitalTwinsAsyncClient {
 
         return protocolLayer.getDigitalTwins()
             .getComponentNoCustomHeadersWithResponseAsync(digitalTwinId, componentName, null, context)
-            .flatMap(response -> {
-                T genericResponse;
-                try {
-                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
-                        clazz, this.serializer);
-                } catch (IOException e) {
-                    return Mono.error(LOGGER.atError().log(e));
-                }
-                return Mono.just(
-                    new DigitalTwinsResponse<T>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        genericResponse, createDTResponseHeadersFromResponse(response)));
-            });
+            .flatMap(response -> deserializeHelper(response, clazz));
     }
 
     /**
@@ -1610,13 +1526,8 @@ public final class DigitalTwinsAsyncClient {
             .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(), objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getValue().stream().map(object -> {
-                    try {
-                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                    }
-                }).filter(Objects::nonNull).collect(Collectors.toList()),
+                objectPagedResponse.getValue().getValue().stream().map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull).collect(Collectors.toList()),
                 SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
@@ -1632,13 +1543,8 @@ public final class DigitalTwinsAsyncClient {
             .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
             .map(objectPagedResponse -> new PagedResponseBase<>(objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(), objectPagedResponse.getHeaders(),
-                objectPagedResponse.getValue().getValue().stream().map(object -> {
-                    try {
-                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                    }
-                }).filter(Objects::nonNull).collect(Collectors.toList()),
+                objectPagedResponse.getValue().getValue().stream().map(object -> mapObject(object, clazz))
+                    .filter(Objects::nonNull).collect(Collectors.toList()),
                 SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
     }
@@ -2141,5 +2047,25 @@ public final class DigitalTwinsAsyncClient {
         return (response == null)
             ? null
             : new DigitalTwinsResponseHeaders().setETag(response.getHeaders().getValue(HttpHeaderName.ETAG));
+    }
+
+    private <T> Mono<DigitalTwinsResponse<T>> deserializeHelper(Response<Object> response, Class<T> clazz) {
+        try {
+            T genericResponse = DeserializationHelpers.deserializeObject(protocolLayer.getSerializerAdapter(),
+                response.getValue(), clazz, this.serializer);
+            return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), genericResponse, createDTResponseHeadersFromResponse(response)));
+        } catch (IOException e) {
+            return Mono.error(LOGGER.atError().log(e));
+        }
+    }
+
+    private <T> T mapObject(Object object, Class<T> clazz) {
+        try {
+            return DeserializationHelpers.deserializeObject(protocolLayer.getSerializerAdapter(), object, clazz,
+                serializer);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 }

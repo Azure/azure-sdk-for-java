@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -104,7 +105,11 @@ public final class BasicDigitalTwinComponent implements JsonSerializable<BasicDi
             .writeMapField(DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, metadata, JsonWriter::writeJson);
 
         for (Map.Entry<String, Object> entry : contents.entrySet()) {
-            jsonWriter.writeUntypedField(entry.getKey(), entry.getValue());
+            if (entry.getValue() instanceof String) {
+                SerializationHelpers.serializeStringHelper(jsonWriter, entry.getKey(), (String) entry.getValue());
+            } else {
+                jsonWriter.writeUntypedField(entry.getKey(), entry.getValue());
+            }
         }
 
         return jsonWriter.writeEndObject();
