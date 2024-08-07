@@ -334,8 +334,8 @@ public final class WebPubSubServiceClient {
         return this.serviceClient.addConnectionToGroupWithResponse(hub, group, connectionId, requestOptions);
     }
 
-    private Response<Void> addConnectionsToGroupsWithResponse(String hub, BinaryData groupsToAdd,
-                                                             RequestOptions requestOptions) {
+    private Response<Void> addConnectionsToGroupsWithResponse(BinaryData groupsToAdd,
+                                                              RequestOptions requestOptions) {
         return this.serviceClient.addConnectionsToGroupsWithResponse(hub, groupsToAdd, requestOptions);
     }
 
@@ -350,23 +350,21 @@ public final class WebPubSubServiceClient {
      * }
      * }</pre>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     * characters or underscore.
      * @param groups Target group names. Rejected by server on status code 400 if this parameter is null.
      * @param filter The filter to apply to the connections.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addConnectionsToGroups(String hub, List<String> groups, String filter) {
+    public void addConnectionsToGroups(List<String> groups, String filter) {
         // Convert requestBody to Binary Data String
         AddToGroupsRequest requestBody = new AddToGroupsRequest();
         requestBody.setGroups(groups);
         requestBody.setFilter(filter);
         BinaryData body = BinaryData.fromObject(requestBody);
-        addConnectionsToGroupsWithResponse(hub, body, new RequestOptions());
+        addConnectionsToGroupsWithResponse(body, new RequestOptions());
     }
 
     /**
