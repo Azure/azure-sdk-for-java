@@ -601,6 +601,10 @@ public final class RedisResourceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model RedisResourceInner"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisResourceInner.class);

@@ -157,11 +157,12 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (sku() != null) {
             sku().validate();
+        }
+        if (redisConfiguration() != null) {
+            redisConfiguration().validate();
         }
     }
 

@@ -217,14 +217,15 @@ public class RedisCreateProperties extends RedisCommonProperties {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (sku() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property sku in model RedisCreateProperties"));
         } else {
             sku().validate();
+        }
+        if (redisConfiguration() != null) {
+            redisConfiguration().validate();
         }
     }
 

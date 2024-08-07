@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -102,10 +103,25 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
+        if (linkedRedisCacheId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedRedisCacheId in model RedisLinkedServerProperties"));
+        }
+        if (linkedRedisCacheLocation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedRedisCacheLocation in model RedisLinkedServerProperties"));
+        }
+        if (serverRole() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverRole in model RedisLinkedServerProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisLinkedServerProperties.class);
 
     /**
      * {@inheritDoc}
