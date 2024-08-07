@@ -249,7 +249,7 @@ public class ClientTests extends TestBase {
     @LiveOnly
     public void testInvalidCredential() {
         WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
+            .connectionString(Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CONNECTION_STRING"))
             .hub("hub1")
             .buildAsyncClient();
 

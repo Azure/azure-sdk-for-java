@@ -34,7 +34,8 @@
 
   <properties>
     <jacoco.min.linecoverage>0.39</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
+    <!--  TODO: Update the branch coverage to 0.29, once this Github issue is resolved: https://github.com/Azure/azure-sdk-for-java/issues/41343-->
+    <jacoco.min.branchcoverage>0.27</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
