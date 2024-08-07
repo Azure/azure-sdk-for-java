@@ -401,7 +401,7 @@ com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-azureadexternalidentities;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dashboard;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.0.0-beta.8;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-scvmm;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-workloads;1.0.0;1.1.0-beta.1
