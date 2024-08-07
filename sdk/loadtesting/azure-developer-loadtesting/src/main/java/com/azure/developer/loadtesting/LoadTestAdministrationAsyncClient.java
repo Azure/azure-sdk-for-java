@@ -139,7 +139,7 @@ public final class LoadTestAdministrationAsyncClient {
             (context) ->
                 getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono)
                     .flatMap(fileBinaryData ->
-                        PollingUtils.getPollResponseMono(() ->PollingUtils.getValidationStatus(fileBinaryData))),
+                        PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData))),
             (activationResponse, context) ->
                 Mono.error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
             (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
