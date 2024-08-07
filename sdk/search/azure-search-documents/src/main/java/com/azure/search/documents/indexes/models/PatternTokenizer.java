@@ -145,8 +145,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString());
         jsonWriter.writeNumberField("group", this.group);

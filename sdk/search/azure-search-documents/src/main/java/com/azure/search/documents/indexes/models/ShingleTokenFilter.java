@@ -209,8 +209,7 @@ public final class ShingleTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeNumberField("maxShingleSize", this.maxShingleSize);
         jsonWriter.writeNumberField("minShingleSize", this.minShingleSize);
         jsonWriter.writeBooleanField("outputUnigrams", this.outputUnigrams);

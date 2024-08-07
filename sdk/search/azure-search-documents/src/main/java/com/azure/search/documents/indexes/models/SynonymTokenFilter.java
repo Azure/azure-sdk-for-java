@@ -136,9 +136,8 @@ public final class SynonymTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeArrayField("synonyms", this.synonyms, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);
         jsonWriter.writeBooleanField("expand", this.expand);
         return jsonWriter.writeEndObject();

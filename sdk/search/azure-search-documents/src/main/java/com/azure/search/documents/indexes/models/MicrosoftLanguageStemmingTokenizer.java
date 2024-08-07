@@ -131,8 +131,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeBooleanField("isSearchTokenizer", this.isSearchTokenizerUsed);
         jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());

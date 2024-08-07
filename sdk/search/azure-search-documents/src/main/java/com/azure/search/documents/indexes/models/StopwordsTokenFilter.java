@@ -159,8 +159,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("stopwordsList", this.stopwordsList == null ? null : this.stopwordsList.toString());
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);

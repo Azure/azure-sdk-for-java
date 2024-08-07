@@ -322,8 +322,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeBooleanField("generateWordParts", this.generateWordParts);
         jsonWriter.writeBooleanField("generateNumberParts", this.generateNumberParts);
         jsonWriter.writeBooleanField("catenateWords", this.wordsCatenated);

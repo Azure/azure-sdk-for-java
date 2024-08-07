@@ -75,8 +75,7 @@ public final class ElisionTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeArrayField("articles", this.articles, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }

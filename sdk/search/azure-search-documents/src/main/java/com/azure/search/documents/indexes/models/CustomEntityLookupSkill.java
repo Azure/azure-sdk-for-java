@@ -243,12 +243,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeStringField("defaultLanguageCode",
             this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
         jsonWriter.writeStringField("entitiesDefinitionUri", this.entitiesDefinitionUri);

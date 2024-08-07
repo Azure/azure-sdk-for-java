@@ -91,9 +91,8 @@ public final class KeepTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
+        toJsonShared(jsonWriter, this);
         jsonWriter.writeArrayField("keepWords", this.keepWords, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeBooleanField("keepWordsCase", this.lowerCaseKeepWords);
         return jsonWriter.writeEndObject();
     }

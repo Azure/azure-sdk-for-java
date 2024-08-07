@@ -71,9 +71,8 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("description", getDescription());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 
