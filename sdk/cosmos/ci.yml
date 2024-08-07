@@ -38,7 +38,6 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
-
 pr:
   branches:
     include:
