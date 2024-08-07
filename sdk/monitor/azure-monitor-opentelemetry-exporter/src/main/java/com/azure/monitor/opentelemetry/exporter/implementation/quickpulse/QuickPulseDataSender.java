@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -43,7 +44,7 @@ class QuickPulseDataSender implements Runnable {
             }
 
             long sendTime = System.nanoTime();
-            try (HttpResponse response = httpPipeline.send(post).block()) {
+            try (HttpResponse response = httpPipeline.sendSync(post, Context.NONE)) {
                 if (response == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");

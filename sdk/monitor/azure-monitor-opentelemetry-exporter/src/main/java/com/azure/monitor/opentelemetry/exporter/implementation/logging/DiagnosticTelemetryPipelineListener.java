@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.Response;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
@@ -15,10 +14,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.INGESTION_ERROR;
 
