@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequest
  */
 public final class StaticSitesCreateOrUpdateStaticSiteCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteCustomDomain.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteCustomDomain.
+     * json
      */
     /**
      * Sample code: Create or update a custom domain for a static site.

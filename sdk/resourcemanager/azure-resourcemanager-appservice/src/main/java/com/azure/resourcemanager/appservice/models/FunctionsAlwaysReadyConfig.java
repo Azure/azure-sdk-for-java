@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sets the number of 'Always Ready' instances for a function group or a specific function.
  */
 @Fluent
-public final class FunctionsAlwaysReadyConfig {
+public final class FunctionsAlwaysReadyConfig implements JsonSerializable<FunctionsAlwaysReadyConfig> {
     /*
-     * Either a function group or a function name is required. For additional information see https://aka.ms/flexconsumption/alwaysready.
+     * Either a function group or a function name is required. For additional information see
+     * https://aka.ms/flexconsumption/alwaysready.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional information see https://aka.ms/flexconsumption/alwaysready.
+     * Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional
+     * information see https://aka.ms/flexconsumption/alwaysready.
      */
-    @JsonProperty(value = "instanceCount")
     private Float instanceCount;
 
     /**
@@ -80,5 +84,44 @@ public final class FunctionsAlwaysReadyConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("instanceCount", this.instanceCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionsAlwaysReadyConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionsAlwaysReadyConfig if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionsAlwaysReadyConfig.
+     */
+    public static FunctionsAlwaysReadyConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionsAlwaysReadyConfig deserializedFunctionsAlwaysReadyConfig = new FunctionsAlwaysReadyConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFunctionsAlwaysReadyConfig.name = reader.getString();
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedFunctionsAlwaysReadyConfig.instanceCount = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionsAlwaysReadyConfig;
+        });
     }
 }

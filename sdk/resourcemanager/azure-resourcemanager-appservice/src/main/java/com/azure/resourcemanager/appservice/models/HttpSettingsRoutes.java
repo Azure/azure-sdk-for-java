@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration settings of the paths HTTP requests.
  */
 @Fluent
-public final class HttpSettingsRoutes {
+public final class HttpSettingsRoutes implements JsonSerializable<HttpSettingsRoutes> {
     /*
      * The prefix that should precede all the authentication/authorization paths.
      */
-    @JsonProperty(value = "apiPrefix")
     private String apiPrefix;
 
     /**
@@ -50,5 +53,41 @@ public final class HttpSettingsRoutes {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiPrefix", this.apiPrefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpSettingsRoutes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpSettingsRoutes if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpSettingsRoutes.
+     */
+    public static HttpSettingsRoutes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpSettingsRoutes deserializedHttpSettingsRoutes = new HttpSettingsRoutes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiPrefix".equals(fieldName)) {
+                    deserializedHttpSettingsRoutes.apiPrefix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpSettingsRoutes;
+        });
     }
 }

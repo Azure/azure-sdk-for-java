@@ -5,72 +5,66 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AppServicePlanRestrictions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * PremierAddOnOffer resource specific properties.
  */
 @Fluent
-public final class PremierAddOnOfferProperties {
+public final class PremierAddOnOfferProperties implements JsonSerializable<PremierAddOnOfferProperties> {
     /*
      * Premier add on SKU.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * Premier add on offer Product.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Premier add on offer Vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * <code>true</code> if promotion code is required; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "promoCodeRequired")
     private Boolean promoCodeRequired;
 
     /*
      * Premier add on offer Quota.
      */
-    @JsonProperty(value = "quota")
     private Integer quota;
 
     /*
      * App Service plans this offer is restricted to.
      */
-    @JsonProperty(value = "webHostingPlanRestrictions")
     private AppServicePlanRestrictions webHostingPlanRestrictions;
 
     /*
      * Privacy policy URL.
      */
-    @JsonProperty(value = "privacyPolicyUrl")
     private String privacyPolicyUrl;
 
     /*
      * Legal terms URL.
      */
-    @JsonProperty(value = "legalTermsUrl")
     private String legalTermsUrl;
 
     /*
      * Marketplace publisher.
      */
-    @JsonProperty(value = "marketplacePublisher")
     private String marketplacePublisher;
 
     /*
      * Marketplace offer.
      */
-    @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
 
     /**
@@ -288,5 +282,71 @@ public final class PremierAddOnOfferProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeBooleanField("promoCodeRequired", this.promoCodeRequired);
+        jsonWriter.writeNumberField("quota", this.quota);
+        jsonWriter.writeStringField("webHostingPlanRestrictions",
+            this.webHostingPlanRestrictions == null ? null : this.webHostingPlanRestrictions.toString());
+        jsonWriter.writeStringField("privacyPolicyUrl", this.privacyPolicyUrl);
+        jsonWriter.writeStringField("legalTermsUrl", this.legalTermsUrl);
+        jsonWriter.writeStringField("marketplacePublisher", this.marketplacePublisher);
+        jsonWriter.writeStringField("marketplaceOffer", this.marketplaceOffer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PremierAddOnOfferProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PremierAddOnOfferProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PremierAddOnOfferProperties.
+     */
+    public static PremierAddOnOfferProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PremierAddOnOfferProperties deserializedPremierAddOnOfferProperties = new PremierAddOnOfferProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.sku = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.product = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.vendor = reader.getString();
+                } else if ("promoCodeRequired".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.promoCodeRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("quota".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.quota = reader.getNullable(JsonReader::getInt);
+                } else if ("webHostingPlanRestrictions".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.webHostingPlanRestrictions
+                        = AppServicePlanRestrictions.fromString(reader.getString());
+                } else if ("privacyPolicyUrl".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.privacyPolicyUrl = reader.getString();
+                } else if ("legalTermsUrl".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.legalTermsUrl = reader.getString();
+                } else if ("marketplacePublisher".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.marketplacePublisher = reader.getString();
+                } else if ("marketplaceOffer".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.marketplaceOffer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPremierAddOnOfferProperties;
+        });
     }
 }
