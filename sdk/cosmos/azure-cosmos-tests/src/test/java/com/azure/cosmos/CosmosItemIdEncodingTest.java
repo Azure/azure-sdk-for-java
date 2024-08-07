@@ -684,6 +684,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 if (cosmosError.getStatusCode() == 0 &&
                     cosmosError.getCause() instanceof IllegalArgumentException &&
                     cosmosError.getCause().getCause() instanceof JsonParseException &&
+                    cosmosError.getCause().toString().contains("<TITLE>Bad Request</TITLE>") ||
                     cosmosError.getCause().getCause().toString().contains("<TITLE>Bad Request</TITLE>")) {
 
                     logger.info("HTML BAD REQUEST", cosmosError);
