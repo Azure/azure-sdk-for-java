@@ -61,11 +61,11 @@ public final class WebAppsCreateOrUpdateSamples {
                     .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
                     .withScaleAndConcurrency(new FunctionsScaleAndConcurrency()
                         .withAlwaysReady(
-                            Arrays.asList(new FunctionsAlwaysReadyConfig().withName("http").withInstanceCount(2.0F)))
-                        .withMaximumInstanceCount(100.0F)
-                        .withInstanceMemoryMB(2048.0F)
-                        .withTriggers(new FunctionsScaleAndConcurrencyTriggers().withHttp(
-                            new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16.0F))))),
+                            Arrays.asList(new FunctionsAlwaysReadyConfig().withName("http").withInstanceCount(2)))
+                        .withMaximumInstanceCount(100)
+                        .withInstanceMemoryMB(2048)
+                        .withTriggers(new FunctionsScaleAndConcurrencyTriggers()
+                            .withHttp(new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16))))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -99,8 +99,8 @@ public final class WebAppsCreateOrUpdateSamples {
                                 .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
                                 .withStorageAccountConnectionStringName("TheAppSettingName"))))
                     .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
-                    .withScaleAndConcurrency(new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100.0F)
-                        .withInstanceMemoryMB(2048.0F))),
+                    .withScaleAndConcurrency(
+                        new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100).withInstanceMemoryMB(2048))),
                 com.azure.core.util.Context.NONE);
     }
 
