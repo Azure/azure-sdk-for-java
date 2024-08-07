@@ -5,6 +5,8 @@
 ### Breaking Changes
 
 - Type changed from `Float` to `Integer`, on `maximumInstanceCount` and `instanceMemoryMB` property in `FunctionsScaleAndConcurrency` class. 
+- Type changed from `Float` to `Integer`, on `instanceCount` property in `FunctionsAlwaysReadyConfig` class.
+- Type changed from `Float` to `Integer`, on `perInstanceConcurrency` property in `FunctionsScaleAndConcurrencyTriggersHttp` class.
 
 ### Other Changes
 
