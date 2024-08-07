@@ -84,8 +84,10 @@ extends:
   parameters:
     ServiceDirectory: spring
     SDKType: client
-    AdditionalModules:
+    Artifacts:
       - name: azure-spring-data-cosmos
         groupId: com.azure
+        safeName: azurespringdatacosmos
+        releaseInBatch: true
     MatrixFilters:
       - JavaTestVersion=^(?!1.8|1.11).*
