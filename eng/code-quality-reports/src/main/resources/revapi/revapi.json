@@ -552,15 +552,17 @@
           "justification": "Migration to azure-json"
         },
         {
+          "regex": true,
           "code": "java.class.nowFinal",
-          "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
-          "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "old" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
+          "new" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
           "justification": "Class is now final."
         },
         {
+          "regex": true,
           "code": "java.class.nowFinal",
-          "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
-          "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "old" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
+          "new" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
           "justification": "Class is now final."
         },
         {
