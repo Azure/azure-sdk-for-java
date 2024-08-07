@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.ReissueCertificateOrderRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Class representing certificate reissue request.
@@ -16,8 +19,22 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     /*
      * ReissueCertificateOrderRequest resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ReissueCertificateOrderRequestProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ReissueCertificateOrderRequest class.
@@ -32,6 +49,36 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      */
     private ReissueCertificateOrderRequestProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -150,5 +197,53 @@ public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReissueCertificateOrderRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReissueCertificateOrderRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReissueCertificateOrderRequest.
+     */
+    public static ReissueCertificateOrderRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReissueCertificateOrderRequest deserializedReissueCertificateOrderRequest
+                = new ReissueCertificateOrderRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReissueCertificateOrderRequest.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReissueCertificateOrderRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReissueCertificateOrderRequest.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedReissueCertificateOrderRequest.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReissueCertificateOrderRequest.innerProperties
+                        = ReissueCertificateOrderRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReissueCertificateOrderRequest;
+        });
     }
 }

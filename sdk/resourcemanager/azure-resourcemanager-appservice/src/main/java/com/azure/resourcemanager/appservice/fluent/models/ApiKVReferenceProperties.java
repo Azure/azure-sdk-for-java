@@ -5,68 +5,63 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResolveStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * ApiKVReference resource specific properties.
  */
 @Fluent
-public final class ApiKVReferenceProperties {
+public final class ApiKVReferenceProperties implements JsonSerializable<ApiKVReferenceProperties> {
     /*
      * The reference property.
      */
-    @JsonProperty(value = "reference")
     private String reference;
 
     /*
      * The status property.
      */
-    @JsonProperty(value = "status")
     private ResolveStatus status;
 
     /*
      * The vaultName property.
      */
-    @JsonProperty(value = "vaultName")
     private String vaultName;
 
     /*
      * The secretName property.
      */
-    @JsonProperty(value = "secretName")
     private String secretName;
 
     /*
      * The secretVersion property.
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /*
      * Managed service identity.
      */
-    @JsonProperty(value = "identityType")
     private ManagedServiceIdentity identityType;
 
     /*
      * The details property.
      */
-    @JsonProperty(value = "details")
     private String details;
 
     /*
      * The source property.
      */
-    @JsonProperty(value = "source")
     private ConfigReferenceSource source;
 
     /*
      * The activeVersion property.
      */
-    @JsonProperty(value = "activeVersion")
     private String activeVersion;
 
     /**
@@ -264,5 +259,65 @@ public final class ApiKVReferenceProperties {
         if (identityType() != null) {
             identityType().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reference", this.reference);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("vaultName", this.vaultName);
+        jsonWriter.writeStringField("secretName", this.secretName);
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        jsonWriter.writeJsonField("identityType", this.identityType);
+        jsonWriter.writeStringField("details", this.details);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        jsonWriter.writeStringField("activeVersion", this.activeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKVReferenceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKVReferenceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiKVReferenceProperties.
+     */
+    public static ApiKVReferenceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKVReferenceProperties deserializedApiKVReferenceProperties = new ApiKVReferenceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reference".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.reference = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.status = ResolveStatus.fromString(reader.getString());
+                } else if ("vaultName".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.vaultName = reader.getString();
+                } else if ("secretName".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.secretName = reader.getString();
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.secretVersion = reader.getString();
+                } else if ("identityType".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.identityType = ManagedServiceIdentity.fromJson(reader);
+                } else if ("details".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.details = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.source = ConfigReferenceSource.fromString(reader.getString());
+                } else if ("activeVersion".equals(fieldName)) {
+                    deserializedApiKVReferenceProperties.activeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKVReferenceProperties;
+        });
     }
 }

@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.RollingUpgradePolicy;
 import com.azure.resourcemanager.compute.models.RollingUpgradeProgressInfo;
 import com.azure.resourcemanager.compute.models.RollingUpgradeRunningStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The status of the latest virtual machine scale set rolling upgrade.
  */
 @Immutable
-public final class RollingUpgradeStatusInfoProperties {
+public final class RollingUpgradeStatusInfoProperties implements JsonSerializable<RollingUpgradeStatusInfoProperties> {
     /*
      * The rolling upgrade policies applied for this upgrade.
      */
-    @JsonProperty(value = "policy", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradePolicy policy;
 
     /*
      * Information about the current running state of the overall upgrade.
      */
-    @JsonProperty(value = "runningStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradeRunningStatus runningStatus;
 
     /*
      * Information about the number of virtual machine instances in each upgrade state.
      */
-    @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradeProgressInfo progress;
 
     /*
      * Error details for this upgrade, if there are any.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
     /**
@@ -100,5 +100,49 @@ public final class RollingUpgradeStatusInfoProperties {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RollingUpgradeStatusInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RollingUpgradeStatusInfoProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RollingUpgradeStatusInfoProperties.
+     */
+    public static RollingUpgradeStatusInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RollingUpgradeStatusInfoProperties deserializedRollingUpgradeStatusInfoProperties
+                = new RollingUpgradeStatusInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policy".equals(fieldName)) {
+                    deserializedRollingUpgradeStatusInfoProperties.policy = RollingUpgradePolicy.fromJson(reader);
+                } else if ("runningStatus".equals(fieldName)) {
+                    deserializedRollingUpgradeStatusInfoProperties.runningStatus
+                        = RollingUpgradeRunningStatus.fromJson(reader);
+                } else if ("progress".equals(fieldName)) {
+                    deserializedRollingUpgradeStatusInfoProperties.progress
+                        = RollingUpgradeProgressInfo.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedRollingUpgradeStatusInfoProperties.error = ApiError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRollingUpgradeStatusInfoProperties;
+        });
     }
 }

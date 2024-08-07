@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Triggers for auto-heal.
  */
 @Fluent
-public final class AutoHealTriggers {
+public final class AutoHealTriggers implements JsonSerializable<AutoHealTriggers> {
     /*
      * A rule based on total requests.
      */
-    @JsonProperty(value = "requests")
     private RequestsBasedTrigger requests;
 
     /*
      * A rule based on private bytes.
      */
-    @JsonProperty(value = "privateBytesInKB")
     private Integer privateBytesInKB;
 
     /*
      * A rule based on status codes.
      */
-    @JsonProperty(value = "statusCodes")
     private List<StatusCodesBasedTrigger> statusCodes;
 
     /*
      * A rule based on request execution time.
      */
-    @JsonProperty(value = "slowRequests")
     private SlowRequestsBasedTrigger slowRequests;
 
     /*
      * A rule based on multiple Slow Requests Rule with path
      */
-    @JsonProperty(value = "slowRequestsWithPath")
     private List<SlowRequestsBasedTrigger> slowRequestsWithPath;
 
     /*
      * A rule based on status codes ranges.
      */
-    @JsonProperty(value = "statusCodesRange")
     private List<StatusCodesRangeBasedTrigger> statusCodesRange;
 
     /**
@@ -196,5 +194,64 @@ public final class AutoHealTriggers {
         if (statusCodesRange() != null) {
             statusCodesRange().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("requests", this.requests);
+        jsonWriter.writeNumberField("privateBytesInKB", this.privateBytesInKB);
+        jsonWriter.writeArrayField("statusCodes", this.statusCodes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("slowRequests", this.slowRequests);
+        jsonWriter.writeArrayField("slowRequestsWithPath", this.slowRequestsWithPath,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("statusCodesRange", this.statusCodesRange,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoHealTriggers from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoHealTriggers if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoHealTriggers.
+     */
+    public static AutoHealTriggers fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoHealTriggers deserializedAutoHealTriggers = new AutoHealTriggers();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requests".equals(fieldName)) {
+                    deserializedAutoHealTriggers.requests = RequestsBasedTrigger.fromJson(reader);
+                } else if ("privateBytesInKB".equals(fieldName)) {
+                    deserializedAutoHealTriggers.privateBytesInKB = reader.getNullable(JsonReader::getInt);
+                } else if ("statusCodes".equals(fieldName)) {
+                    List<StatusCodesBasedTrigger> statusCodes
+                        = reader.readArray(reader1 -> StatusCodesBasedTrigger.fromJson(reader1));
+                    deserializedAutoHealTriggers.statusCodes = statusCodes;
+                } else if ("slowRequests".equals(fieldName)) {
+                    deserializedAutoHealTriggers.slowRequests = SlowRequestsBasedTrigger.fromJson(reader);
+                } else if ("slowRequestsWithPath".equals(fieldName)) {
+                    List<SlowRequestsBasedTrigger> slowRequestsWithPath
+                        = reader.readArray(reader1 -> SlowRequestsBasedTrigger.fromJson(reader1));
+                    deserializedAutoHealTriggers.slowRequestsWithPath = slowRequestsWithPath;
+                } else if ("statusCodesRange".equals(fieldName)) {
+                    List<StatusCodesRangeBasedTrigger> statusCodesRange
+                        = reader.readArray(reader1 -> StatusCodesRangeBasedTrigger.fromJson(reader1));
+                    deserializedAutoHealTriggers.statusCodesRange = statusCodesRange;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoHealTriggers;
+        });
     }
 }

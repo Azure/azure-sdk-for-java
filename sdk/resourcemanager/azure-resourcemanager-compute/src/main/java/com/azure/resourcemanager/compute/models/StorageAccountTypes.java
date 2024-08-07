@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -68,7 +67,6 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
      * @param name a name to look for.
      * @return the corresponding StorageAccountTypes.
      */
-    @JsonCreator
     public static StorageAccountTypes fromString(String name) {
         return fromString(name, StorageAccountTypes.class);
     }

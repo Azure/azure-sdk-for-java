@@ -447,7 +447,7 @@ stages:
 
       - job: PublishDocsToNightlyBranch
         dependsOn: PublishPackages
-        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        condition: and(succeeded(), or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal'))))
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           image: azsdk-pool-mms-ubuntu-2004-1espt

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specification for a Kubernetes Environment to use for this resource.
  */
 @Fluent
-public final class KubeEnvironmentProfile {
+public final class KubeEnvironmentProfile implements JsonSerializable<KubeEnvironmentProfile> {
     /*
      * Resource ID of the Kubernetes Environment.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Name of the Kubernetes Environment.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type of the Kubernetes Environment.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -80,5 +81,45 @@ public final class KubeEnvironmentProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubeEnvironmentProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubeEnvironmentProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubeEnvironmentProfile.
+     */
+    public static KubeEnvironmentProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubeEnvironmentProfile deserializedKubeEnvironmentProfile = new KubeEnvironmentProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKubeEnvironmentProfile.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKubeEnvironmentProfile.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKubeEnvironmentProfile.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubeEnvironmentProfile;
+        });
     }
 }

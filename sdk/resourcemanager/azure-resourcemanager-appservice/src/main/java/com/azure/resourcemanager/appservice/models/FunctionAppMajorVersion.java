@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Function App stack major version.
  */
 @Immutable
-public final class FunctionAppMajorVersion {
+public final class FunctionAppMajorVersion implements JsonSerializable<FunctionAppMajorVersion> {
     /*
      * Function App stack major version (display only).
      */
-    @JsonProperty(value = "displayText", access = JsonProperty.Access.WRITE_ONLY)
     private String displayText;
 
     /*
      * Function App stack major version name.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Minor versions associated with the major version.
      */
-    @JsonProperty(value = "minorVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<FunctionAppMinorVersion> minorVersions;
 
     /**
@@ -73,5 +74,46 @@ public final class FunctionAppMajorVersion {
         if (minorVersions() != null) {
             minorVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionAppMajorVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionAppMajorVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionAppMajorVersion.
+     */
+    public static FunctionAppMajorVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionAppMajorVersion deserializedFunctionAppMajorVersion = new FunctionAppMajorVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayText".equals(fieldName)) {
+                    deserializedFunctionAppMajorVersion.displayText = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedFunctionAppMajorVersion.value = reader.getString();
+                } else if ("minorVersions".equals(fieldName)) {
+                    List<FunctionAppMinorVersion> minorVersions
+                        = reader.readArray(reader1 -> FunctionAppMinorVersion.fromJson(reader1));
+                    deserializedFunctionAppMajorVersion.minorVersions = minorVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionAppMajorVersion;
+        });
     }
 }

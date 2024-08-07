@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of the List private link resources operation. */
+/**
+ * Result of the List private link resources operation.
+ */
 @Fluent
-public final class PrivateLinkResourcesListResultInner {
+public final class PrivateLinkResourcesListResultInner
+    implements JsonSerializable<PrivateLinkResourcesListResultInner> {
     /*
      * A collection of private link resources
      */
-    @JsonProperty(value = "value")
     private List<PrivateLinkResource> value;
 
     /*
      * A link for the next page of private link resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of PrivateLinkResourcesListResultInner class.
+     */
+    public PrivateLinkResourcesListResultInner() {
+    }
+
+    /**
      * Get the value property: A collection of private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -35,7 +46,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Set the value property: A collection of private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourcesListResultInner object itself.
      */
@@ -46,7 +57,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Get the nextLink property: A link for the next page of private link resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +66,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Set the nextLink property: A link for the next page of private link resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateLinkResourcesListResultInner object itself.
      */
@@ -66,12 +77,54 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourcesListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourcesListResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourcesListResultInner.
+     */
+    public static PrivateLinkResourcesListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourcesListResultInner deserializedPrivateLinkResourcesListResultInner
+                = new PrivateLinkResourcesListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateLinkResource> value
+                        = reader.readArray(reader1 -> PrivateLinkResource.fromJson(reader1));
+                    deserializedPrivateLinkResourcesListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateLinkResourcesListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourcesListResultInner;
+        });
     }
 }

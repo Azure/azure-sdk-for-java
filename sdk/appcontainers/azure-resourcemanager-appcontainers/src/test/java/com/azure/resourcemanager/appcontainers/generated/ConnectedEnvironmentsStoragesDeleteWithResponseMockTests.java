@@ -28,7 +28,7 @@ public final class ConnectedEnvironmentsStoragesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.connectedEnvironmentsStorages()
-            .deleteWithResponse("zzwjcayerzrran", "ybylpol", "zrghsrleink", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("okmvkhlggd", "bemzqkzszuwi", "tglxx", com.azure.core.util.Context.NONE);
 
     }
 }

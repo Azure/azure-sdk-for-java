@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information of community gallery if current gallery is shared to community.
  */
 @Fluent
-public final class CommunityGalleryInfo {
+public final class CommunityGalleryInfo implements JsonSerializable<CommunityGalleryInfo> {
     /*
      * The link to the publisher website. Visible to all users.
      */
-    @JsonProperty(value = "publisherUri")
     private String publisherUri;
 
     /*
      * Community gallery publisher support email. The email address of the publisher. Visible to all users.
      */
-    @JsonProperty(value = "publisherContact")
     private String publisherContact;
 
     /*
      * End-user license agreement for community gallery image.
      */
-    @JsonProperty(value = "eula")
     private String eula;
 
     /*
      * The prefix of the gallery name that will be displayed publicly. Visible to all users.
      */
-    @JsonProperty(value = "publicNamePrefix")
     private String publicNamePrefix;
 
     /*
      * Contains info about whether community gallery sharing is enabled.
      */
-    @JsonProperty(value = "communityGalleryEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean communityGalleryEnabled;
 
     /*
      * Community gallery public name list.
      */
-    @JsonProperty(value = "publicNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicNames;
 
     /**
@@ -163,5 +161,56 @@ public final class CommunityGalleryInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisherUri", this.publisherUri);
+        jsonWriter.writeStringField("publisherContact", this.publisherContact);
+        jsonWriter.writeStringField("eula", this.eula);
+        jsonWriter.writeStringField("publicNamePrefix", this.publicNamePrefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunityGalleryInfo.
+     */
+    public static CommunityGalleryInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryInfo deserializedCommunityGalleryInfo = new CommunityGalleryInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisherUri".equals(fieldName)) {
+                    deserializedCommunityGalleryInfo.publisherUri = reader.getString();
+                } else if ("publisherContact".equals(fieldName)) {
+                    deserializedCommunityGalleryInfo.publisherContact = reader.getString();
+                } else if ("eula".equals(fieldName)) {
+                    deserializedCommunityGalleryInfo.eula = reader.getString();
+                } else if ("publicNamePrefix".equals(fieldName)) {
+                    deserializedCommunityGalleryInfo.publicNamePrefix = reader.getString();
+                } else if ("communityGalleryEnabled".equals(fieldName)) {
+                    deserializedCommunityGalleryInfo.communityGalleryEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNames".equals(fieldName)) {
+                    List<String> publicNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunityGalleryInfo.publicNames = publicNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryInfo;
+        });
     }
 }

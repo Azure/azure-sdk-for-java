@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Log level.
  */
@@ -51,7 +48,6 @@ public enum LogLevel {
      * @param value the serialized value to parse.
      * @return the parsed LogLevel object, or null if unable to parse.
      */
-    @JsonCreator
     public static LogLevel fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum LogLevel {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

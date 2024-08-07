@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Data Table which defines columns and raw row values.
  */
 @Fluent
-public final class DataTableResponseObject {
+public final class DataTableResponseObject implements JsonSerializable<DataTableResponseObject> {
     /*
      * Name of the table
      */
-    @JsonProperty(value = "tableName")
     private String tableName;
 
     /*
      * List of columns with data types
      */
-    @JsonProperty(value = "columns")
     private List<DataTableResponseColumn> columns;
 
     /*
      * Raw row values
      */
-    @JsonProperty(value = "rows")
     private List<List<String>> rows;
 
     /**
@@ -106,5 +107,52 @@ public final class DataTableResponseObject {
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tableName", this.tableName);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataTableResponseObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataTableResponseObject if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataTableResponseObject.
+     */
+    public static DataTableResponseObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataTableResponseObject deserializedDataTableResponseObject = new DataTableResponseObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedDataTableResponseObject.tableName = reader.getString();
+                } else if ("columns".equals(fieldName)) {
+                    List<DataTableResponseColumn> columns
+                        = reader.readArray(reader1 -> DataTableResponseColumn.fromJson(reader1));
+                    deserializedDataTableResponseObject.columns = columns;
+                } else if ("rows".equals(fieldName)) {
+                    List<List<String>> rows
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedDataTableResponseObject.rows = rows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataTableResponseObject;
+        });
     }
 }
