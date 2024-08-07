@@ -29,6 +29,7 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -300,7 +301,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -325,7 +326,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -350,7 +351,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -375,7 +376,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -400,7 +401,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -425,7 +426,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -451,7 +452,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -476,7 +477,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -500,7 +501,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -805,7 +806,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -830,7 +831,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -854,7 +855,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -880,7 +881,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -1149,7 +1150,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1173,7 +1174,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1197,7 +1198,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1235,7 +1236,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1260,7 +1261,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1285,7 +1286,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1310,7 +1311,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1335,7 +1336,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1360,7 +1361,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1386,7 +1387,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1411,7 +1412,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1435,7 +1436,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildServiceUnavailableFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1459,7 +1460,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -1484,7 +1485,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -1508,7 +1509,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -1534,7 +1535,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
@@ -1632,7 +1633,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1656,7 +1657,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(11),
+                    .withHitLimit(10),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1680,7 +1681,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions)
-                    .withHitLimit(6),
+                    .withHitLimit(5),
                 this.buildInternalServerErrorFaultInjectionRules,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
@@ -1735,7 +1736,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 "Test read many operation injected with service unavailable exception in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
+                    .withHitLimit(10)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServiceUnavailableFaultInjectionRules,
                 executeReadManyOperation,
@@ -1759,7 +1760,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 "Test read many operation injected with internal server error injected in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
+                    .withHitLimit(10)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadManyOperation,
@@ -1856,7 +1857,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 "Test read many operation injected with internal server error in all preferred regions.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
+                    .withHitLimit(10)
                     .withFaultInjectionApplicableRegions(this.writeRegions),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadManyOperation,
@@ -1938,7 +1939,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 "Test read all operation injected with service unavailable exception in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
+                    .withHitLimit(10)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServiceUnavailableFaultInjectionRules,
                 executeReadAllOperation,
@@ -1962,7 +1963,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 "Test read all operation injected with internal server error injected in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
+                    .withHitLimit(10)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadAllOperation,
@@ -2059,7 +2060,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 "Test read all operation injected with internal server error in all preferred regions.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
+                    .withHitLimit(10)
                     .withFaultInjectionApplicableRegions(this.writeRegions),
                 this.buildInternalServerErrorFaultInjectionRules,
                 executeReadAllOperation,
@@ -2776,89 +2777,322 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"multi-master"})
-    public void testCreate_404_1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries() {
-
-        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
-        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
-        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
-
-        CosmosAsyncClient asyncClient = buildCosmosClient(
-            ConsistencyLevel.SESSION,
-            Arrays.asList("West US 2", "South Central US", "East US"),
-            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-            ConnectionMode.GATEWAY,
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
-                .build(),
-            new NonIdempotentWriteRetryOptions()
-                .setEnabled(true)
-                .setTrackingIdUsed(true));
-
-        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
-        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
-
-        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-            .build();
-
-        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-            .connectionType(FaultInjectionConnectionType.GATEWAY)
-//            .operationType(FaultInjectionOperationType.CREATE_ITEM)
-            .region("West US 2")
-            .build();
-
-        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
-            .condition(faultInjectionCondition)
-            .result(faultInjectionServerErrorResult)
-            .build();
-
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
-
-        try {
-            CosmosItemResponse<TestObject> response = asyncContainer.createItem(TestObject.create(UUID.randomUUID().toString())).block();
-
-            System.out.println("Diagnostics : " + response.getDiagnostics());
-        } catch (CosmosException ex) {
-
-            System.out.println("Diagnostics : " + ex.getDiagnostics());
-        } finally {
-            asyncClient.close();
-
-            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
-            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
-            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
-        }
-    }
-
-    private static CosmosAsyncClient buildCosmosClient(
-        ConsistencyLevel consistencyLevel,
-        List<String> preferredRegions,
-        CosmosRegionSwitchHint regionSwitchHint,
-        ConnectionMode connectionMode,
-        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-        NonIdempotentWriteRetryOptions nonIdempotentWriteRetryOptions) {
-
-        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .consistencyLevel(consistencyLevel)
-            .preferredRegions(preferredRegions)
-            .sessionRetryOptions(new SessionRetryOptionsBuilder()
-                .regionSwitchHint(regionSwitchHint)
-                .build())
-            .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
-            .nonIdempotentWriteRetryOptions(nonIdempotentWriteRetryOptions)
-            .multipleWriteRegionsEnabled(true);
-
-        if (connectionMode == ConnectionMode.DIRECT) {
-            clientBuilder.directMode();
-        } else {
-            clientBuilder.gatewayMode();
-        }
-
-        return clientBuilder.buildAsyncClient();
-    }
+//    @Test(groups = {"multi-master"})
+//    public void testCreate_404_1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries() {
+//
+//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
+//
+//        CosmosAsyncClient asyncClient = buildCosmosClient(
+//            ConsistencyLevel.SESSION,
+//            Arrays.asList("West US 2", "South Central US", "East US"),
+//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+//            ConnectionMode.GATEWAY,
+//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+//                .build(),
+//            new NonIdempotentWriteRetryOptions()
+//                .setEnabled(true)
+//                .setTrackingIdUsed(true));
+//
+//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
+//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
+//
+//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+//            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+//            .build();
+//
+//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+//            .connectionType(FaultInjectionConnectionType.GATEWAY)
+////            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+//            .region("West US 2")
+//            .build();
+//
+//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+//            .condition(faultInjectionCondition)
+//            .result(faultInjectionServerErrorResult)
+//            .build();
+//
+//        asyncContainer.getFeedRanges().block();
+//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
+//
+//        try {
+//            CosmosItemResponse<TestObject> response = asyncContainer.createItem(TestObject.create(UUID.randomUUID().toString())).block();
+//
+//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
+//        } catch (CosmosException ex) {
+//
+//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
+//        } finally {
+//            asyncClient.close();
+//
+//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
+//        }
+//    }
+//
+//    @Test(groups = {"multi-master"})
+//    public void testCreate_500_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries() {
+//
+//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
+//        System.setProperty(
+//            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+//            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+//                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+//                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+//                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+//                + "}");
+//
+//
+//        CosmosAsyncClient asyncClient = buildCosmosClient(
+//            ConsistencyLevel.SESSION,
+//            Arrays.asList("West US 2", "South Central US", "East US"),
+//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+//            ConnectionMode.DIRECT,
+//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+//                .build(),
+//            new NonIdempotentWriteRetryOptions()
+//                .setEnabled(true)
+//                .setTrackingIdUsed(true));
+//
+//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
+//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
+//
+//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+//            .getResultBuilder(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+//            .build();
+//
+//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+//            .connectionType(FaultInjectionConnectionType.DIRECT)
+//            .region("West US 2")
+//            .build();
+//
+//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+//            .condition(faultInjectionCondition)
+//            .result(faultInjectionServerErrorResult)
+//            .build();
+//
+//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
+//
+//        try {
+//            CosmosItemResponse<TestObject> response = null;
+//
+//            for (int i = 1; i <= 7; i++) {
+//                response = asyncContainer.createItem(TestObject.create(UUID.randomUUID().toString())).onErrorResume(throwable -> Mono.empty()).block();
+//            }
+//
+//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
+//        } catch (CosmosException ex) {
+//
+//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
+//        } finally {
+//            asyncClient.close();
+//
+//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
+//            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+//        }
+//    }
+//
+//    @Test(groups = {"multi-master"})
+//    public void testRead_503_FirstRegionOnly() {
+//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
+//        System.setProperty(
+//            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+//            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+//                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+//                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+//                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+//                + "}");
+//
+//
+//        CosmosAsyncClient asyncClient = buildCosmosClient(
+//            ConsistencyLevel.SESSION,
+//            Arrays.asList("West US 2", "South Central US", "East US"),
+//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+//            ConnectionMode.DIRECT,
+//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+//                .build(),
+//            new NonIdempotentWriteRetryOptions()
+//                .setEnabled(true)
+//                .setTrackingIdUsed(true));
+//
+//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
+//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
+//
+//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+//            .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+//            .build();
+//
+//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+//            .connectionType(FaultInjectionConnectionType.DIRECT)
+//            .region("West US 2")
+//            .build();
+//
+//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+//            .condition(faultInjectionCondition)
+//            .result(faultInjectionServerErrorResult)
+//            .build();
+//
+//        TestObject testObject = TestObject.create();
+//        String id = testObject.getId();
+//        String myPk = testObject.getMypk();
+//
+//        CosmosItemResponse<TestObject> responseFromCreate = asyncContainer.createItem(testObject).block();
+//
+//        CosmosAsyncClient asyncClient2 = buildCosmosClient(
+//            ConsistencyLevel.SESSION,
+//            Arrays.asList("West US 2", "South Central US", "East US"),
+//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+//            ConnectionMode.DIRECT,
+//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+//                .build(),
+//            new NonIdempotentWriteRetryOptions()
+//                .setEnabled(true)
+//                .setTrackingIdUsed(true));
+//
+//        asyncDatabase = asyncClient2.getDatabase("testDb");
+//        asyncContainer = asyncDatabase.getContainer("testContainer");
+//
+//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
+//
+//        try {
+//            CosmosItemResponse<TestObject> response = null;
+//
+//            for (int i = 1; i <= 10; i++) {
+//                response = asyncContainer.readItem(id, new PartitionKey(myPk), TestObject.class).onErrorResume(throwable -> Mono.empty()).block();
+//                System.out.println("Success Diagnostics : " + response.getDiagnostics());
+//            }
+//
+//            response = asyncContainer.readItem(id, new PartitionKey(myPk), TestObject.class).onErrorResume(throwable -> Mono.empty()).block();
+//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
+//        } catch (CosmosException ex) {
+//
+//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
+//        } finally {
+//            asyncClient.close();
+//
+//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
+//            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+//        }
+//    }
+//
+//    @Test(groups = {"multi-master"})
+//    public void testCreate_503_FirstRegionOnly() {
+//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
+//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
+//        System.setProperty(
+//            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+//            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+//                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+//                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+//                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+//                + "}");
+//
+//
+//        CosmosAsyncClient asyncClient = buildCosmosClient(
+//            ConsistencyLevel.SESSION,
+//            Arrays.asList("West US 2", "South Central US", "East US"),
+//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+//            ConnectionMode.DIRECT,
+//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+//                .build(),
+//            new NonIdempotentWriteRetryOptions()
+//                .setEnabled(true)
+//                .setTrackingIdUsed(true));
+//
+//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
+//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
+//
+//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+//            .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+//            .build();
+//
+//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+//            .connectionType(FaultInjectionConnectionType.DIRECT)
+//            .region("West US 2")
+//            .build();
+//
+//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+//            .condition(faultInjectionCondition)
+//            .result(faultInjectionServerErrorResult)
+//            .build();
+//
+//        TestObject testObject = TestObject.create();
+//        String id = testObject.getId();
+//        String myPk = testObject.getMypk();
+//
+//        CosmosItemResponse<TestObject> responseFromCreate = asyncContainer.createItem(testObject).block();
+//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
+//
+//        try {
+//            CosmosItemResponse<TestObject> response = null;
+//
+//            for (int i = 1; i <= 5; i++) {
+//                response = asyncContainer.createItem(TestObject.create()).onErrorResume(throwable -> Mono.empty()).block();
+//                System.out.println("Success Diagnostics : " + response.getDiagnostics());
+//            }
+//
+//            response = asyncContainer.createItem(TestObject.create()).onErrorResume(throwable -> Mono.empty()).block();
+//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
+//        } catch (CosmosException ex) {
+//
+//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
+//        } finally {
+//            asyncClient.close();
+//
+//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
+//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
+//            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+//        }
+//    }
+//
+//    private static CosmosAsyncClient buildCosmosClient(
+//        ConsistencyLevel consistencyLevel,
+//        List<String> preferredRegions,
+//        CosmosRegionSwitchHint regionSwitchHint,
+//        ConnectionMode connectionMode,
+//        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
+//        NonIdempotentWriteRetryOptions nonIdempotentWriteRetryOptions) {
+//
+//        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+//            .endpoint(TestConfigurations.HOST)
+//            .key(TestConfigurations.MASTER_KEY)
+//            .consistencyLevel(consistencyLevel)
+//            .preferredRegions(preferredRegions)
+//            .sessionRetryOptions(new SessionRetryOptionsBuilder()
+//                .regionSwitchHint(regionSwitchHint)
+//                .build())
+//            .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
+//            .nonIdempotentWriteRetryOptions(nonIdempotentWriteRetryOptions)
+//            .openConnectionsAndInitCaches(new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "testContainer")))
+//                .setProactiveConnectionRegionsCount(3)
+//                .build())
+//            .multipleWriteRegionsEnabled(true);
+//
+//        if (connectionMode == ConnectionMode.DIRECT) {
+//            clientBuilder.directMode();
+//        } else {
+//            clientBuilder.gatewayMode();
+//        }
+//
+//        return clientBuilder.buildAsyncClient();
+//    }
 
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
 
