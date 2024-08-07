@@ -1,5 +1,86 @@
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cosmos/ci.yml
+      - sdk/cosmos/azure-cosmos/
+      - sdk/cosmos/azure-cosmos-benchmark/
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
+      - sdk/cosmos/azure-cosmos-encryption/
+      - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
+      - sdk/cosmos/azure-cosmos-test/
+      - sdk/cosmos/azure-cosmos-tests/
+      - sdk/cosmos/azure-cosmos-kafka-connect/
+      - sdk/cosmos/faq/
+    exclude:
+      - sdk/cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos-tests/pom.xml
+      - sdk/cosmos/azure-cosmos-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-encryption/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - feature/cosmos/spark30
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cosmos/ci.yml
+      - sdk/cosmos/azure-cosmos/
+      - sdk/cosmos/azure-cosmos-benchmark/
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
+      - sdk/cosmos/azure-cosmos-encryption/
+      - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-test/
+      - sdk/cosmos/azure-cosmos-tests/
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
+      - sdk/cosmos/faq/
+      - sdk/cosmos/azure-cosmos-kafka-connect/
+    exclude:
+      - sdk/cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
+      - sdk/cosmos/azure-cosmos-encryption/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-test/pom.xml
+      - sdk/cosmos/azure-cosmos-tests/pom.xml
+      - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
+
 extends:
-  template: /sdk/cosmos/ci.yml
+  template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml
   parameters:
     AdditionalModules:
       - name: azure-spring-data-cosmos
