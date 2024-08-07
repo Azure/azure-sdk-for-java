@@ -189,12 +189,13 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
         // write properties of base class.
         jsonWriter.writeStringField("recognizeInputType", "choices");
         jsonWriter.writeJsonField("playPrompt", getPlayPrompt());
+        jsonWriter.writeArrayField("playPrompts", this.getPlayPrompts(), (writer, playPrompt) -> playPrompt.toJson(writer));
         jsonWriter.writeBooleanField("interruptCallMediaOperation", isInterruptCallMediaOperation());
         jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
         jsonWriter.writeStringField("operationContext", getOperationContext());
         jsonWriter.writeBooleanField("interruptPrompt", isInterruptPrompt());
         jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
-        jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
+        jsonWriter.writeStringField("speechModelEndpointId", getSpeechRecognitionModelEndpointId());
         final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(getTargetParticipant());
         jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
@@ -273,7 +274,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
             options.setOperationContext(operationContext);
             options.setInterruptPrompt(interruptPrompt);
             options.setInitialSilenceTimeout(initialSilenceTimeout);
-            options.setSpeechModelEndpointId(speechModelEndpointId);
+            options.setSpeechRecognitionModelEndpointId(speechModelEndpointId);
             options.setOperationCallbackUrl(operationCallbackUrl);
 
             return options;

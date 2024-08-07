@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.implementation.models.CancelAddPar
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -21,8 +20,6 @@ import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -44,7 +41,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -58,7 +55,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -289,40 +286,6 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(muteParticipantResultResponse);
         assertEquals(200, muteParticipantResultResponse.getStatusCode());
         assertNotNull(muteParticipantResultResponse.getValue());
-    }
-
-    @Test
-    public void unmuteParticipant() {
-        CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
-            Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new UnmuteParticipantsResponseInternal()), 200)
-            )))
-            .getCallConnection(CALL_CONNECTION_ID);
-
-        UnmuteParticipantResult unmuteParticipantsResult =
-            callConnection.unmuteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
-
-        assertNotNull(unmuteParticipantsResult);
-    }
-
-    @Test
-    public void unmuteParticipantWithResponse() {
-        CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
-            Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new UnmuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 200)
-            )))
-            .getCallConnection(CALL_CONNECTION_ID);
-
-        UnmuteParticipantOptions muteParticipantOptions = new UnmuteParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
-            .setOperationContext(CALL_OPERATION_CONTEXT);
-
-        Response<UnmuteParticipantResult> unmuteParticipantResultResponse =
-            callConnection.unmuteParticipantWithResponse(muteParticipantOptions, Context.NONE);
-
-        assertNotNull(unmuteParticipantResultResponse);
-        assertEquals(200, unmuteParticipantResultResponse.getStatusCode());
-        assertNotNull(unmuteParticipantResultResponse.getValue());
     }
 
     @Test

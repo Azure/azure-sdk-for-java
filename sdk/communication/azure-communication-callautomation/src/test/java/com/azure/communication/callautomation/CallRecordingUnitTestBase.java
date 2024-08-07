@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.models.RecordingStateInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingKind;
+import com.azure.communication.callautomation.implementation.models.RecordingKindInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStateResponseInternal;
 
 import com.azure.json.JsonProviders;
@@ -22,8 +22,8 @@ public class CallRecordingUnitTestBase {
 
     private final RecordingStateResponseInternal recordingState = new RecordingStateResponseInternal().setRecordingId(RECORDING_ID);
 
-    private final String recordingActive = generateGetParticipantResponse(RecordingStateInternal.ACTIVE, RecordingKind.TEAMS);
-    private final String recordingInactive = generateGetParticipantResponse(RecordingStateInternal.INACTIVE, RecordingKind.TEAMS);
+    private final String recordingActive = generateGetParticipantResponse(RecordingStateInternal.ACTIVE, RecordingKindInternal.TEAMS);
+    private final String recordingInactive = generateGetParticipantResponse(RecordingStateInternal.INACTIVE, RecordingKindInternal.TEAMS);
 
     ArrayList<AbstractMap.SimpleEntry<String, Integer>> recordingOperationsResponses = new ArrayList<>(Arrays.asList(
         new AbstractMap.SimpleEntry<>(recordingActive, 200),   //startRecording
@@ -46,7 +46,7 @@ public class CallRecordingUnitTestBase {
         }
     }
 
-    private String generateGetParticipantResponse(RecordingStateInternal recordingState, RecordingKind recordingKind) {
+    private String generateGetParticipantResponse(RecordingStateInternal recordingState, RecordingKindInternal recordingKind) {
 
         RecordingStateResponseInternal response = new RecordingStateResponseInternal();
         response.setRecordingState(recordingState);

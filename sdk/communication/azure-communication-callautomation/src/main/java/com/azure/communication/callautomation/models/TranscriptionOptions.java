@@ -22,7 +22,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
-    private final TranscriptionTransportType transportType;
+    private final TranscriptionTransport transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -34,6 +34,16 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      */
     private final boolean startTranscription;
 
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    private String speechRecognitionModelEndpointId;
+
+    /*
+     * Enables intermediate results for the transcribed speech.
+     */
+    private Boolean enableIntermediateResults;
+
     /**
      * Creates a new instance of MediaStreamingConfiguration
      * @param transportUrl - The Transport URL
@@ -41,7 +51,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      * @param locale - Locale
      * @param startTranscription - Start Transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransportType transportType, String locale, boolean startTranscription) {
+    public TranscriptionOptions(String transportUrl, TranscriptionTransport transportType, String locale, boolean startTranscription) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.locale = locale;
@@ -62,7 +72,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      *
      * @return the transportType value.
      */
-    public TranscriptionTransportType getTransportType() {
+    public TranscriptionTransport getTransportType() {
         return this.transportType;
     }
 
@@ -84,6 +94,46 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
         return this.startTranscription;
     }
 
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
+     * 
+     * @return the enableIntermediateResults value.
+     */
+    public Boolean isIntermediateResultsEnabled() {
+        return this.enableIntermediateResults;
+    }
+
+    /**
+     * Set the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
+     * 
+     * @param enableIntermediateResults the enableIntermediateResults value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setEnableIntermediateResults(Boolean enableIntermediateResults) {
+        this.enableIntermediateResults = enableIntermediateResults;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +141,8 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
         jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
         jsonWriter.writeStringField("locale", locale);
         jsonWriter.writeBooleanField("startTranscription", startTranscription);
+        jsonWriter.writeStringField(speechRecognitionModelEndpointId, speechRecognitionModelEndpointId);
+        jsonWriter.writeBooleanField("enableIntermediateResults", enableIntermediateResults);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,7 +157,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     public static TranscriptionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String transportUrl = null;
-            TranscriptionTransportType transportType = null;
+            TranscriptionTransport transportType = null;
             String locale = null;
             boolean startTranscription = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -114,7 +166,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
                 if ("transportUrl".equals(fieldName)) {
                     transportUrl = reader.getString();
                 } else if ("transportType".equals(fieldName)) {
-                    transportType = TranscriptionTransportType.fromString(reader.getString());
+                    transportType = TranscriptionTransport.fromString(reader.getString());
                 } else if ("locale".equals(fieldName)) {
                     locale = reader.getString();
                 } else if ("startTranscription".equals(fieldName)) {

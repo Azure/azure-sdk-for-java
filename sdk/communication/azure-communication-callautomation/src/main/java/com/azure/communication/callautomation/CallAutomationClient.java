@@ -12,6 +12,9 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallResult;
+import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -38,14 +41,6 @@ public final class CallAutomationClient {
 
     CallAutomationClient(CallAutomationAsyncClient callAutomationAsyncClient) {
         this.callAutomationAsyncClient = callAutomationAsyncClient;
-    }
-
-    /**
-     * Get the event processor for handling events.
-     * @return {@link CallAutomationEventProcessor} as event processor
-     */
-    public CallAutomationEventProcessor getEventProcessor() {
-        return callAutomationAsyncClient.getEventProcessor();
     }
 
     /**
@@ -194,6 +189,35 @@ public final class CallAutomationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
         return callAutomationAsyncClient.rejectCallWithResponseInternal(rejectCallOptions, context).block();
+    }
+
+     /**
+     * Create a connect request
+     *
+     * @param callLocator call locator.
+     * @param callbackUrl The call back url for receiving events.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectCallResult connectCall(CallLocator callLocator,
+                                       String callbackUrl) {
+        return callAutomationAsyncClient.connectCall(callLocator, callbackUrl).block();
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectCallOptions Options for connect request.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectCallResult> connectCallWithResponse(ConnectCallOptions connectCallOptions, Context context) {
+        return callAutomationAsyncClient.connectCallWithResponseInternal(connectCallOptions, context).block();
     }
     //endregion
 

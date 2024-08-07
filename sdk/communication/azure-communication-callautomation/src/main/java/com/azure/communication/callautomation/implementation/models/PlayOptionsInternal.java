@@ -21,11 +21,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      */
     private boolean loop;
 
-    /*
-     * If set play can barge into other existing queued-up/currently-processing requests.
-     */
-    private Boolean interruptCallMediaOperation;
-
     /**
      * Creates an instance of PlayOptionsInternal class.
      */
@@ -52,36 +47,10 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
         return this;
     }
 
-    /**
-     * Get the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     * 
-     * @return the interruptCallMediaOperation value.
-     */
-    public Boolean isInterruptCallMediaOperation() {
-        return this.interruptCallMediaOperation;
-    }
-
-    /**
-     * Set the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     * 
-     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    public PlayOptionsInternal setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
-        this.interruptCallMediaOperation = interruptCallMediaOperation;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("loop", this.loop);
-        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,9 +72,6 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
 
                 if ("loop".equals(fieldName)) {
                     deserializedPlayOptionsInternal.loop = reader.getBoolean();
-                } else if ("interruptCallMediaOperation".equals(fieldName)) {
-                    deserializedPlayOptionsInternal.interruptCallMediaOperation
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

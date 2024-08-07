@@ -47,9 +47,6 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

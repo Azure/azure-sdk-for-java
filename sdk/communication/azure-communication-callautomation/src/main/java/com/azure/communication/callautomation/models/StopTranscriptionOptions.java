@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Options for the Stop Transcription operation.
  */
-public class StopTranscriptionOptions {
+@Fluent
+public final class StopTranscriptionOptions {
 
     /**
      * The value to identify context of the operation.

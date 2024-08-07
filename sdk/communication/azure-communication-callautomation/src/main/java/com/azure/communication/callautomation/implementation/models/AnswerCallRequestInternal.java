@@ -32,16 +32,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     private String operationContext;
 
     /*
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * Live Transcription Configuration.
-     */
-    private TranscriptionConfigurationInternal transcriptionConfiguration;
-
-    /*
      * AI options for the call.
      */
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
@@ -50,6 +40,16 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * The identifier of the call automation entity which answers the call
      */
     private CommunicationUserIdentifierModel answeredBy;
+
+    /*
+     * Media Streaming Options.
+     */
+    private MediaStreamingOptionsInternal mediaStreamingOptions;
+
+    /*
+     * Transcription Options.
+     */
+    private TranscriptionOptionsInternal transcriptionOptions;
 
     /**
      * Creates an instance of AnswerCallRequestInternal class.
@@ -118,48 +118,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     * 
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     * 
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal
-        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     * 
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     * 
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal
-        setTranscriptionConfiguration(TranscriptionConfigurationInternal transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
-        return this;
-    }
-
-    /**
      * Get the callIntelligenceOptions property: AI options for the call.
      * 
      * @return the callIntelligenceOptions value.
@@ -201,18 +159,55 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * {@inheritDoc}
+     * Get the mediaStreamingOptions property: Media Streaming Options.
+     * 
+     * @return the mediaStreamingOptions value.
      */
+    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
+        return this.mediaStreamingOptions;
+    }
+
+    /**
+     * Set the mediaStreamingOptions property: Media Streaming Options.
+     * 
+     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Get the transcriptionOptions property: Transcription Options.
+     * 
+     * @return the transcriptionOptions value.
+     */
+    public TranscriptionOptionsInternal getTranscriptionOptions() {
+        return this.transcriptionOptions;
+    }
+
+    /**
+     * Set the transcriptionOptions property: Transcription Options.
+     * 
+     * @param transcriptionOptions the transcriptionOptions value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
         jsonWriter.writeStringField("callbackUri", this.callbackUri);
         jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeJsonField("mediaStreamingConfiguration", this.mediaStreamingConfiguration);
-        jsonWriter.writeJsonField("transcriptionConfiguration", this.transcriptionConfiguration);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("answeredBy", this.answeredBy);
+        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
+        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -238,18 +233,18 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
                     deserializedAnswerCallRequestInternal.callbackUri = reader.getString();
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.operationContext = reader.getString();
-                } else if ("mediaStreamingConfiguration".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.mediaStreamingConfiguration
-                        = MediaStreamingConfigurationInternal.fromJson(reader);
-                } else if ("transcriptionConfiguration".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.transcriptionConfiguration
-                        = TranscriptionConfigurationInternal.fromJson(reader);
                 } else if ("callIntelligenceOptions".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.callIntelligenceOptions
                         = CallIntelligenceOptionsInternal.fromJson(reader);
                 } else if ("answeredBy".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.answeredBy
                         = CommunicationUserIdentifierModel.fromJson(reader);
+                } else if ("mediaStreamingOptions".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.mediaStreamingOptions
+                        = MediaStreamingOptionsInternal.fromJson(reader);
+                } else if ("transcriptionOptions".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.transcriptionOptions
+                        = TranscriptionOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -25,16 +25,10 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
      */
     private DtmfTone tone;
 
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
     public ContinuousDtmfRecognitionToneReceived() {
-        resultInformation = null;
         sequenceId = 0;
         tone = null;
     }
@@ -59,15 +53,6 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -75,7 +60,6 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sequenceId", sequenceId);
         jsonWriter.writeStringField("tone", tone.toString());
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -98,8 +82,6 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
                     event.sequenceId = reader.getInt();
                 } else if ("tone".equals(fieldName)) {
                     event.tone = DtmfTone.fromString(reader.getString());
-                } else if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

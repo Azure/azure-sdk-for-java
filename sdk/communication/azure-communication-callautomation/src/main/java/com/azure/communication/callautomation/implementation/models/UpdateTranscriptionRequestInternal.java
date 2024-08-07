@@ -17,9 +17,19 @@ import java.io.IOException;
 @Fluent
 public final class UpdateTranscriptionRequestInternal implements JsonSerializable<UpdateTranscriptionRequestInternal> {
     /*
-     * Defines new locale for transcription.
+     * Sets new locale for transcription.
      */
     private String locale;
+
+    /*
+     * Sets Endpoint id where the custom model was deployed.
+     */
+    private String speechRecognitionModelEndpointId;
+
+    /*
+     * The value to identify context of the operation.
+     */
+    private String operationContext;
 
     /**
      * Creates an instance of UpdateTranscriptionRequestInternal class.
@@ -28,7 +38,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Get the locale property: Defines new locale for transcription.
+     * Get the locale property: Sets new locale for transcription.
      * 
      * @return the locale value.
      */
@@ -37,7 +47,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Set the locale property: Defines new locale for transcription.
+     * Set the locale property: Sets new locale for transcription.
      * 
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
@@ -48,12 +58,52 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * {@inheritDoc}
+     * Get the speechRecognitionModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * 
+     * @return the speechRecognitionModelEndpointId value.
      */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * 
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    public UpdateTranscriptionRequestInternal
+        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    public UpdateTranscriptionRequestInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("locale", this.locale);
+        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,6 +126,11 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
 
                 if ("locale".equals(fieldName)) {
                     deserializedUpdateTranscriptionRequestInternal.locale = reader.getString();
+                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.speechRecognitionModelEndpointId
+                        = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.operationContext = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
