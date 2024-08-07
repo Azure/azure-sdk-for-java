@@ -4,600 +4,803 @@
 
 - Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK.  Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-### Breaking Changes
-
-* `models.SessionContainer` was removed
-
-* `models.ContainerAppsBuilds` was removed
-
-* `models.DotNetComponent$UpdateStages` was removed
-
-* `models.DaprComponentResiliencyPolicyTimeoutPolicyConfiguration` was removed
-
-* `models.HttpConnectionPool` was removed
-
-* `models.LogicApp$Definition` was removed
-
-* `models.Runtime` was removed
-
-* `models.SessionPoolUpdatableProperties` was removed
-
-* `models.LoggerSetting` was removed
-
-* `models.BuildResource$UpdateStages` was removed
-
-* `models.ScaleConfiguration` was removed
-
-* `models.ManagedEnvironmentPrivateEndpointConnections` was removed
-
-* `models.DotNetComponents` was removed
-
-* `models.RuntimeJavaAgentLogging` was removed
-
-* `models.BuildProvisioningState` was removed
-
-* `models.WorkflowState` was removed
-
-* `models.PrivateEndpointConnectionListResult` was removed
-
-* `models.AppResiliency` was removed
-
-* `models.DaprSubscriptions` was removed
-
-* `models.BuilderResource$Update` was removed
-
-* `models.BuildConfiguration` was removed
-
-* `models.PoolManagementType` was removed
-
-* `models.PatchType` was removed
-
-* `models.BuildResource$Update` was removed
-
-* `models.SmbStorage` was removed
-
-* `models.CertificateKeyVaultProperties` was removed
-
-* `models.IdentitySettingsLifeCycle` was removed
-
-* `models.EnvironmentVariable` was removed
-
-* `models.SessionPoolProvisioningState` was removed
-
-* `models.DotNetComponentServiceBind` was removed
-
-* `models.SpringBootAdminComponent` was removed
-
-* `models.AppResiliencies` was removed
-
-* `models.PrivateEndpoint` was removed
-
-* `models.PatchDetailsOldLayer` was removed
-
-* `models.JavaComponentServiceBind` was removed
-
-* `models.LogsConfiguration` was removed
-
-* `models.DotNetComponent$Update` was removed
-
-* `models.PatchApplyStatus` was removed
-
-* `models.DaprSubscription$UpdateStages` was removed
-
-* `models.DotNetComponent$DefinitionStages` was removed
-
-* `models.HttpGet` was removed
-
-* `models.ContainerAppsPatches` was removed
-
-* `models.LogicApps` was removed
-
-* `models.PrivateEndpointConnection$Definition` was removed
-
-* `models.SessionPool$UpdateStages` was removed
-
-* `models.JavaComponentConfigurationProperty` was removed
-
-* `models.DotNetComponentProvisioningState` was removed
-
-* `models.DotNetComponentType` was removed
-
-* `models.SpringCloudConfigComponent` was removed
-
-* `models.PrivateEndpointConnection` was removed
-
-* `models.BuilderResourceUpdate` was removed
-
-* `models.FunctionsExtensions` was removed
-
-* `models.SessionPool$Definition` was removed
-
-* `models.AppResiliency$DefinitionStages` was removed
-
-* `models.DaprComponentResiliencyPoliciesCollection` was removed
-
-* `models.ImageType` was removed
-
-* `models.BuildAuthTokens` was removed
-
-* `models.PatchCollection` was removed
-
-* `models.ContainerRegistry` was removed
-
-* `models.IngressTargetPortHttpScheme` was removed
-
-* `models.AppResiliency$Definition` was removed
-
-* `models.DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration` was removed
-
-* `models.WorkflowEnvelopeProperties` was removed
-
-* `models.WorkflowHealthState` was removed
-
-* `models.ContainerAppsPatchResource` was removed
-
-* `models.DaprSubscription$DefinitionStages` was removed
-
-* `models.OtlpConfiguration` was removed
-
-* `models.MetricsConfiguration` was removed
-
-* `models.DaprServiceBindMetadata` was removed
-
-* `models.TracesConfiguration` was removed
-
-* `models.DaprSubscriptionBulkSubscribeOptions` was removed
-
-* `models.DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration` was removed
-
-* `models.JavaComponent$Definition` was removed
-
-* `models.SessionPool$DefinitionStages` was removed
-
-* `models.PrivateEndpointServiceConnectionStatus` was removed
-
-* `models.SessionIngress` was removed
-
-* `models.BuildsByBuilderResources` was removed
-
-* `models.BuildResource` was removed
-
-* `models.ContainerAppsBuildConfiguration` was removed
-
-* `models.WorkflowEnvelopeCollection` was removed
-
-* `models.TimeoutPolicy` was removed
-
-* `models.PrivateEndpointConnection$Update` was removed
-
-* `models.DotNetComponentConfigurationProperty` was removed
-
-* `models.ContainerAppsBuildCollection` was removed
-
-* `models.DaprSubscriptionsCollection` was removed
-
-* `models.ErrorEntity` was removed
-
-* `models.LogicApp$UpdateStages` was removed
-
-* `models.PrivateLinkServiceConnectionState` was removed
-
-* `models.AppInsightsConfiguration` was removed
-
-* `models.WorkflowHealth` was removed
-
-* `models.DaprSubscriptionRoutes` was removed
-
-* `models.DaprComponentResiliencyPolicy$Definition` was removed
-
-* `models.PatchProperties` was removed
-
-* `models.HttpRetryPolicy` was removed
-
-* `models.PatchDetails` was removed
-
-* `models.PrivateEndpointConnectionProvisioningState` was removed
-
-* `models.SessionPool` was removed
-
-* `models.NfsAzureFileProperties` was removed
-
-* `models.PrivateLinkResource` was removed
-
-* `models.CircuitBreakerPolicy` was removed
-
-* `models.DaprComponentResiliencyPolicy$DefinitionStages` was removed
-
-* `models.SessionContainerResources` was removed
-
-* `models.TcpRetryPolicy` was removed
-
-* `models.SessionPoolSecret` was removed
-
-* `models.PatchSkipConfig` was removed
-
-* `models.DaprComponentResiliencyPolicies` was removed
-
-* `models.HeaderMatch` was removed
-
-* `models.AppResiliencyCollection` was removed
-
-* `models.DotNetComponent` was removed
-
-* `models.BuilderCollection` was removed
-
-* `models.BuildStatus` was removed
-
-* `models.DaprSubscription` was removed
-
-* `models.SessionPool$Update` was removed
-
-* `models.DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration` was removed
-
-* `models.BuildToken` was removed
-
-* `models.DaprComponentResiliencyPolicyConfiguration` was removed
-
-* `models.WorkflowEnvelope` was removed
-
-* `models.BuilderResource$DefinitionStages` was removed
-
-* `models.JavaComponentsCollection` was removed
-
-* `models.OpenTelemetryConfiguration` was removed
-
-* `models.PrivateLinkResourceListResult` was removed
-
-* `models.Builders` was removed
-
-* `models.Level` was removed
-
-* `models.DaprComponentResiliencyPolicy$Update` was removed
-
-* `models.BuildResource$DefinitionStages` was removed
-
-* `models.JavaComponent` was removed
-
-* `models.AppResiliency$Update` was removed
-
-* `models.SessionNetworkStatus` was removed
-
-* `models.LogicAppsProxyMethod` was removed
-
-* `models.DaprSubscription$Update` was removed
-
-* `models.DestinationsConfiguration` was removed
-
-* `models.CertificateType` was removed
-
-* `models.DataDogConfiguration` was removed
-
-* `models.DotNetComponentsCollection` was removed
-
-* `models.ManagedEnvironmentPrivateLinkResources` was removed
-
-* `models.RuntimeJava` was removed
-
-* `models.DotNetComponent$Definition` was removed
-
-* `models.DaprComponentResiliencyPolicy$UpdateStages` was removed
-
-* `models.BuildCollection` was removed
-
-* `models.ExecutionType` was removed
-
-* `models.JavaComponent$UpdateStages` was removed
-
-* `models.LogicApp` was removed
-
-* `models.JavaComponentProvisioningState` was removed
-
-* `models.PatchDetailsNewLayer` was removed
-
-* `models.DetectionStatus` was removed
-
-* `models.ReplicaExecutionStatus` was removed
-
-* `models.PreBuildStep` was removed
-
-* `models.ContainerExecutionStatus` was removed
-
-* `models.DaprComponentServiceBinding` was removed
-
-* `models.ContainerAppsBuildsByContainerApps` was removed
-
-* `models.CustomContainerTemplate` was removed
-
-* `models.WorkflowArtifacts` was removed
-
-* `models.SessionNetworkConfiguration` was removed
-
-* `models.BuilderResource$UpdateStages` was removed
-
-* `models.RuntimeJavaAgent` was removed
-
-* `models.DynamicPoolConfiguration` was removed
-
-* `models.PatchingMode` was removed
-
-* `models.ContainerAppsBuildResource` was removed
-
-* `models.PrivateEndpointConnection$UpdateStages` was removed
-
-* `models.IdentitySettings` was removed
-
-* `models.JavaComponent$DefinitionStages` was removed
-
-* `models.ExecutionStatus` was removed
-
-* `models.DaprComponentResiliencyPolicy` was removed
-
-* `models.ContainerRegistryWithCustomImage` was removed
-
-* `models.ContainerType` was removed
-
-* `models.SessionRegistryCredentials` was removed
-
-* `models.JavaComponentType` was removed
-
-* `models.RuntimeDotnet` was removed
-
-* `models.AppResiliency$UpdateStages` was removed
-
-* `models.JavaComponentProperties` was removed
-
-* `models.BuilderResource` was removed
-
-* `models.BuildResource$Definition` was removed
-
-* `models.Kind` was removed
-
-* `models.Builds` was removed
-
-* `models.ContainerAppsSessionPools` was removed
-
-* `models.SessionPoolCollection` was removed
-
-* `models.ContainerAppPropertiesPatchingConfiguration` was removed
-
-* `models.BuilderResource$Definition` was removed
-
-* `models.LogicApp$Update` was removed
-
-* `models.NacosComponent` was removed
-
-* `models.LogicApp$DefinitionStages` was removed
-
-* `models.JavaComponent$Update` was removed
-
-* `models.JavaComponentIngress` was removed
-
-* `models.Header` was removed
-
-* `models.TcpConnectionPool` was removed
-
-* `models.PublicNetworkAccess` was removed
-
-* `models.JavaComponents` was removed
-
-* `models.DaprSubscriptionRouteRule` was removed
-
-* `models.DaprSubscription$Definition` was removed
-
-* `models.PrivateEndpointConnection$DefinitionStages` was removed
-
-* `models.BuilderProvisioningState` was removed
-
-* `models.SpringCloudEurekaComponent` was removed
-
-#### `models.ServiceBind` was modified
-
-* `withCustomizedKeys(java.util.Map)` was removed
-* `withClientType(java.lang.String)` was removed
-* `clientType()` was removed
-* `customizedKeys()` was removed
-
-#### `models.Job` was modified
-
-* `extendedLocation()` was removed
-
-#### `models.DaprComponent$Definition` was modified
-
-* `withServiceComponentBind(java.util.List)` was removed
-
-#### `models.ManagedEnvironment$Update` was modified
-
-* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was removed
-* `withIdentity(models.ManagedServiceIdentity)` was removed
-* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
-* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was removed
-
-#### `models.InitContainer` was modified
-
-* `withImageType(models.ImageType)` was removed
-
-#### `models.Job$Definition` was modified
-
-* `withExtendedLocation(models.ExtendedLocation)` was removed
-
-#### `models.QueueScaleRule` was modified
-
-* `identity()` was removed
-* `withAccountName(java.lang.String)` was removed
-* `withIdentity(java.lang.String)` was removed
-* `accountName()` was removed
-
-#### `models.Jobs` was modified
-
-* `proxyGetWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `proxyGet(java.lang.String,java.lang.String)` was removed
-
-#### `models.ConnectedEnvironmentStorageProperties` was modified
-
-* `withSmb(models.SmbStorage)` was removed
-* `smb()` was removed
-
-#### `models.DaprComponent$Update` was modified
-
-* `withServiceComponentBind(java.util.List)` was removed
-
-#### `models.ManagedEnvironment$Definition` was modified
-
-* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was removed
-* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
-* `withIdentity(models.ManagedServiceIdentity)` was removed
-* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was removed
-
-#### `models.ContainerApp$Update` was modified
-
-* `withPatchingConfiguration(models.ContainerAppPropertiesPatchingConfiguration)` was removed
-
-#### `models.ManagedEnvironmentStorageProperties` was modified
-
-* `withNfsAzureFile(models.NfsAzureFileProperties)` was removed
-* `nfsAzureFile()` was removed
-
-#### `models.GithubActionConfiguration` was modified
-
-* `withBuildEnvironmentVariables(java.util.List)` was removed
-* `buildEnvironmentVariables()` was removed
-
-#### `models.DaprComponent` was modified
-
-* `serviceComponentBind()` was removed
-
-#### `models.JobConfiguration` was modified
-
-* `withIdentitySettings(java.util.List)` was removed
-* `identitySettings()` was removed
-
-#### `models.TcpScaleRule` was modified
-
-* `identity()` was removed
-* `withIdentity(java.lang.String)` was removed
-
-#### `models.LogAnalyticsConfiguration` was modified
-
-* `withDynamicJsonColumns(java.lang.Boolean)` was removed
-* `dynamicJsonColumns()` was removed
-
-#### `models.Job$Update` was modified
-
-* `withExtendedLocation(models.ExtendedLocation)` was removed
-
-#### `models.ManagedEnvironment` was modified
-
-* `openTelemetryConfiguration()` was removed
-* `publicNetworkAccess()` was removed
-* `identity()` was removed
-* `privateEndpointConnections()` was removed
-* `appInsightsConfiguration()` was removed
-
-#### `models.HttpScaleRule` was modified
-
-* `withIdentity(java.lang.String)` was removed
-* `identity()` was removed
-
-#### `models.JobExecution` was modified
-
-* `detailedStatus()` was removed
-
-#### `models.JobPatchProperties` was modified
-
-* `withExtendedLocation(models.ExtendedLocation)` was removed
-* `extendedLocation()` was removed
-
-#### `models.Container` was modified
-
-* `withImageType(models.ImageType)` was removed
-
-#### `models.CertificateProperties` was modified
-
-* `certificateKeyVaultProperties()` was removed
-* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was removed
-* `withCertificateType(models.CertificateType)` was removed
-* `certificateType()` was removed
-
-#### `models.ContainerApp` was modified
-
-* `kind()` was removed
-* `patchingConfiguration()` was removed
-
-#### `models.JobScaleRule` was modified
-
-* `identity()` was removed
-* `withIdentity(java.lang.String)` was removed
-
-#### `ContainerAppsApiManager` was modified
-
-* `builders()` was removed
-* `logicApps()` was removed
-* `appResiliencies()` was removed
-* `managedEnvironmentPrivateLinkResources()` was removed
-* `javaComponents()` was removed
-* `managedEnvironmentPrivateEndpointConnections()` was removed
-* `dotNetComponents()` was removed
-* `buildAuthTokens()` was removed
-* `containerAppsBuilds()` was removed
-* `containerAppsSessionPools()` was removed
-* `daprComponentResiliencyPolicies()` was removed
-* `buildsByBuilderResources()` was removed
-* `builds()` was removed
-* `functionsExtensions()` was removed
-* `containerAppsBuildsByContainerApps()` was removed
-* `containerAppsPatches()` was removed
-* `daprSubscriptions()` was removed
-
-#### `models.BaseContainer` was modified
-
-* `withImageType(models.ImageType)` was removed
-* `imageType()` was removed
-
-#### `models.CustomScaleRule` was modified
-
-* `withIdentity(java.lang.String)` was removed
-* `identity()` was removed
-
-#### `models.ContainerApp$Definition` was modified
-
-* `withPatchingConfiguration(models.ContainerAppPropertiesPatchingConfiguration)` was removed
-* `withKind(models.Kind)` was removed
-
-#### `models.Ingress` was modified
-
-* `withTargetPortHttpScheme(models.IngressTargetPortHttpScheme)` was removed
-* `targetPortHttpScheme()` was removed
-
-#### `models.CustomDomainConfiguration` was modified
-
-* `certificateKeyVaultProperties()` was removed
-* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was removed
-
-#### `models.Configuration` was modified
-
-* `runtime()` was removed
-* `withRuntime(models.Runtime)` was removed
-* `withIdentitySettings(java.util.List)` was removed
-* `identitySettings()` was removed
-
 ### Features Added
 
-#### `models.Jobs` was modified
+* `models.Usage` was added
 
-* `proxyGet(java.lang.String,java.lang.String,java.lang.String)` was added
-* `proxyGetWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `models.Usages` was added
 
-#### `models.BillingMeter` was modified
+* `models.UsageName` was added
+
+* `models.ListUsagesResult` was added
+
+* `models.TokenStore` was added
+
+* `models.ManagedEnvironmentUsages` was added
+
+* `models.ManagedEnvironmentPropertiesPeerTrafficConfiguration` was added
+
+* `models.EncryptionSettings` was added
+
+* `models.ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption` was added
+
+* `models.IngressPortMapping` was added
+
+* `models.BlobStorageTokenStore` was added
+
+#### `models.Replica` was modified
 
 * `systemData()` was added
 
+#### `models.JobConfigurationScheduleTriggerConfig` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ManagedCertificatePatch` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceBind` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Secret` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureActiveDirectoryValidation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.WorkloadProfileStatesCollection` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DaprComponentsCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ManagedCertificateCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withPeerTrafficConfiguration(models.ManagedEnvironmentPropertiesPeerTrafficConfiguration)` was added
+
+#### `models.LoginScopes` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Revision` was modified
+
+* `systemData()` was added
+
+#### `models.AvailableWorkloadProfileProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withGpus(java.lang.Integer)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `gpus()` was added
+
+#### `models.HttpSettings` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Google` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AllowedPrincipals` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ContainerAppProbeHttpGetHttpHeadersItem` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KedaConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticsDefinition` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.GlobalValidation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureActiveDirectoryLogin` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.WorkloadProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.InitContainer` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EnvironmentVar` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CertificatePatch` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AvailableWorkloadProfilesCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TrafficWeight` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobScale` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.IpSecurityRestrictionRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AppleRegistration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.QueueScaleRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobsCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OpenIdConnectLogin` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Jobs` was modified
+
+* `listDetectors(java.lang.String,java.lang.String)` was added
+* `proxyGetWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `proxyGet(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDetectors(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getDetectorWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getDetector(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.ConnectedEnvironmentStorageProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AppRegistration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContainerAppSecret` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Service` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BillingMeterProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withPeerTrafficConfiguration(models.ManagedEnvironmentPropertiesPeerTrafficConfiguration)` was added
+
+#### `models.ManagedEnvironmentStorageProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OpenIdConnectConfig` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BillingMeter` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `name()` was added
+* `id()` was added
+* `systemData()` was added
+* `type()` was added
+
+#### `models.GithubActionConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobPatchPropertiesProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AllowedAudiencesValidation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScaleRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClientRegistration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContainerAppCollection` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ForwardProxy` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DaprComponent` was modified
+
+* `systemData()` was added
+
+#### `models.IdentityProviders` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ContainerAppProbe` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScaleRuleAuth` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TcpScaleRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SecretVolumeItem` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobConfigurationManualTriggerConfig` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobConfigurationEventTriggerConfig` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ConnectedEnvironmentCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Scale` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CustomDomain` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CertificateCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.IngressStickySessions` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VnetConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ManagedEnvironmentStorage` was modified
+
+* `systemData()` was added
+
+#### `models.LogAnalyticsConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Mtls` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `peerTrafficConfiguration()` was added
+
+#### `models.AzureFileProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AuthPlatform` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CorsPolicy` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RegistryCredentials` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OpenIdConnectClientCredential` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobTemplate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureActiveDirectoryRegistration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DefaultAuthorizationPolicy` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
 #### `models.DefaultErrorResponseError` was modified
 
-* `getAdditionalInfo()` was added
-* `getTarget()` was added
-* `getCode()` was added
-* `getDetails()` was added
 * `getMessage()` was added
+* `getCode()` was added
+* `getTarget()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `getAdditionalInfo()` was added
+* `getDetails()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureCredentials` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.WorkloadProfileStatesProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AvailableOperations` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.HttpScaleRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureActiveDirectory` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.WorkloadProfileStates` was modified
+
+* `systemData()` was added
+
+#### `models.Login` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `tokenStore()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withTokenStore(models.TokenStore)` was added
+
+#### `models.DiagnosticsDataApiResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ManagedCertificateProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobExecutionContainer` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceProviders` was modified
+
+* `getCustomDomainVerificationId()` was added
+* `getCustomDomainVerificationIdWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.AzureStaticWebApps` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DaprConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobPatchProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AzureStaticWebAppsRegistration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TwitterRegistration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SourceControl` was modified
+
+* `systemData()` was added
+
+#### `models.RevisionCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Twitter` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Container` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Facebook` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CookieExpiration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CustomOpenIdConnectProvider` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CertificateProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DiagnosticRendering` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Apple` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticSupportTopic` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Diagnostics` was modified
+
+* `systemData()` was added
+
+#### `models.AvailableWorkloadProfile` was modified
+
+* `systemData()` was added
+
+#### `models.JwtClaimChecks` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ContainerAppProbeHttpGet` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobScaleRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RegistryInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AuthConfig` was modified
+
+* `encryptionSettings()` was added
+
+#### `models.Volume` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DaprSecret` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DaprMetadata` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobExecutionTemplate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticsProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `managedEnvironmentUsages()` was added
+* `usages()` was added
+
+#### `models.DiagnosticsStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ReplicaContainer` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BaseContainer` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VolumeMount` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticDataProviderMetadata` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ExtendedLocation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticDataTableResponseObject` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ManagedEnvironmentPropertiesPeerAuthentication` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticDataProviderMetadataPropertyBagItem` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AppLogsConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SourceControlCollection` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.GitHub` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ConnectedEnvironmentStorage` was modified
+
+* `systemData()` was added
+
+#### `models.ManagedEnvironmentsCollection` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CustomScaleRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AuthConfigCollection` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Nonce` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContainerResources` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AuthConfig$Update` was modified
+
+* `withEncryptionSettings(models.EncryptionSettings)` was added
+
+#### `models.OpenIdConnectRegistration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Ingress` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `additionalPortMappings()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withAdditionalPortMappings(java.util.List)` was added
+
+#### `models.CustomDomainConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Dapr` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.HttpSettingsRoutes` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiagnosticDataTableResponseColumn` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Configuration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Template` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ContainerAppProbeTcpSocket` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AuthConfig$Definition` was modified
+
+* `withEncryptionSettings(models.EncryptionSettings)` was added
+
+#### `models.LoginRoutes` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0-beta.8 (2024-07-24)
 
