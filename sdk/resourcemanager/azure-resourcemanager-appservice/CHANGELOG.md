@@ -2,11 +2,9 @@
 
 ## 2.42.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Type changed from `Float` to `Integer`, on `maximumInstanceCount` and `instanceMemoryMB` property in `FunctionsScaleAndConcurrency` class. 
 
 ### Other Changes
 
