@@ -131,6 +131,8 @@ class QuickPulseDataFetcher {
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
         postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
         envelopes.add(postEnvelope);
+
+        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
         return postEnvelope.toJsonString().replace("/", "\\/");
     }
 

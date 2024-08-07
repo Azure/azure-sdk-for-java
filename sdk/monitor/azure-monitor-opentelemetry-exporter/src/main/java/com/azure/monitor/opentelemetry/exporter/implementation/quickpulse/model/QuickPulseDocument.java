@@ -60,13 +60,7 @@ public class QuickPulseDocument implements JsonSerializable<QuickPulseDocument> 
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("__type", type)
-            .writeStringField("DocumentType", documentType)
-            .writeStringField("Version", version)
-            .writeStringField("OperationId", operationId)
-            .writeMapField("Properties", properties, JsonWriter::writeString, true)
-            .writeEndObject();
+        return toJsonShared(jsonWriter.writeStartObject()).writeEndObject();
     }
 
     JsonWriter toJsonShared(JsonWriter jsonWriter) throws IOException {
@@ -74,7 +68,7 @@ public class QuickPulseDocument implements JsonSerializable<QuickPulseDocument> 
             .writeStringField("DocumentType", documentType)
             .writeStringField("Version", version)
             .writeStringField("OperationId", operationId)
-            .writeMapField("Properties", properties, JsonWriter::writeString, true);
+            .writeMapField("Properties", properties, JsonWriter::writeString);
     }
 
     public static QuickPulseDocument fromJson(JsonReader jsonReader) throws IOException {

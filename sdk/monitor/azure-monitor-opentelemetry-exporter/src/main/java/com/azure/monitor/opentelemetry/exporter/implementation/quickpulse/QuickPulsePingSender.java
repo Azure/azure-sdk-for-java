@@ -152,6 +152,8 @@ class QuickPulsePingSender {
             pingEnvelope.setVersion(sdkVersion);
         }
         pingEnvelope.setTimeStamp("/Date(" + timeInMillis + ")/");
+
+        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
         return pingEnvelope.toJsonString().replace("/", "\\/");
     }
 
