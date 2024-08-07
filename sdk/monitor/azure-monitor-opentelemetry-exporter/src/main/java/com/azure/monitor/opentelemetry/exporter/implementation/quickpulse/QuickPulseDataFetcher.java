@@ -38,15 +38,9 @@ class QuickPulseDataFetcher {
 
     private final String sdkVersion;
 
-    public QuickPulseDataFetcher(
-        QuickPulseDataCollector collector,
-        ArrayBlockingQueue<HttpRequest> sendQueue,
-        Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey,
-        String roleName,
-        String instanceName,
-        String machineName,
-        String quickPulseId) {
+    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<HttpRequest> sendQueue,
+        Supplier<URL> endpointUrl, Supplier<String> instrumentationKey, String roleName, String instanceName,
+        String machineName, String quickPulseId) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.endpointUrl = endpointUrl;
@@ -78,10 +72,9 @@ class QuickPulseDataFetcher {
             }
 
             Date currentDate = new Date();
-            String endpointPrefix =
-                Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-            HttpRequest request =
-                networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
+            String endpointPrefix
+                = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
             request.setBody(buildPostEntity(counters));
 
             if (!sendQueue.offer(request)) {
@@ -113,8 +106,7 @@ class QuickPulseDataFetcher {
         return endpointUrl.get().toString() + "QuickPulseService.svc";
     }
 
-    private String buildPostEntity(QuickPulseDataCollector.FinalCounters counters)
-        throws IOException {
+    private String buildPostEntity(QuickPulseDataCollector.FinalCounters counters) throws IOException {
         List<QuickPulseEnvelope> envelopes = new ArrayList<>();
         QuickPulseEnvelope postEnvelope = new QuickPulseEnvelope();
         postEnvelope.setDocuments(counters.documentList);
@@ -136,49 +128,30 @@ class QuickPulseDataFetcher {
         return postEnvelope.toJsonString().replace("/", "\\/");
     }
 
-    private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(
-        QuickPulseDataCollector.FinalCounters counters) {
+    private static List<QuickPulseMetrics>
+        addMetricsToQuickPulseEnvelope(QuickPulseDataCollector.FinalCounters counters) {
         List<QuickPulseMetrics> metricsList = new ArrayList<>();
-        metricsList.add(
-            new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
+        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
         if (counters.requests != 0) {
-            metricsList.add(
-                new QuickPulseMetrics(
-                    "\\ApplicationInsights\\Request Duration",
-                    counters.requestsDuration / counters.requests,
-                    counters.requests));
+            metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Request Duration",
+                counters.requestsDuration / counters.requests, counters.requests));
         }
-        metricsList.add(
-            new QuickPulseMetrics(
-                "\\ApplicationInsights\\Requests Failed/Sec", counters.unsuccessfulRequests, 1));
-        metricsList.add(
-            new QuickPulseMetrics(
-                "\\ApplicationInsights\\Requests Succeeded/Sec",
-                counters.requests - counters.unsuccessfulRequests,
-                1));
-        metricsList.add(
-            new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls/Sec", counters.rdds, 1));
+        metricsList
+            .add(new QuickPulseMetrics("\\ApplicationInsights\\Requests Failed/Sec", counters.unsuccessfulRequests, 1));
+        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Requests Succeeded/Sec",
+            counters.requests - counters.unsuccessfulRequests, 1));
+        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls/Sec", counters.rdds, 1));
         if (counters.rdds != 0) {
-            metricsList.add(
-                new QuickPulseMetrics(
-                    "\\ApplicationInsights\\Dependency Call Duration",
-                    counters.rddsDuration / counters.rdds,
-                    (int) counters.rdds));
+            metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Call Duration",
+                counters.rddsDuration / counters.rdds, (int) counters.rdds));
         }
         metricsList.add(
-            new QuickPulseMetrics(
-                "\\ApplicationInsights\\Dependency Calls Failed/Sec", counters.unsuccessfulRdds, 1));
-        metricsList.add(
-            new QuickPulseMetrics(
-                "\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
-                counters.rdds - counters.unsuccessfulRdds,
-                1));
-        metricsList.add(
-            new QuickPulseMetrics("\\ApplicationInsights\\Exceptions/Sec", counters.exceptions, 1));
-        metricsList.add(
-            new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.memoryCommitted, 1));
-        metricsList.add(
-            new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.cpuUsage, 1));
+            new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls Failed/Sec", counters.unsuccessfulRdds, 1));
+        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
+            counters.rdds - counters.unsuccessfulRdds, 1));
+        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Exceptions/Sec", counters.exceptions, 1));
+        metricsList.add(new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.memoryCommitted, 1));
+        metricsList.add(new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.cpuUsage, 1));
 
         return metricsList;
     }

@@ -29,17 +29,16 @@ import java.util.Map;
 
 public final class TestUtils {
 
-    private static final String TRACE_CONNECTION_STRING =
-        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
-            + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
-            + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
+    private static final String TRACE_CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+        + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
+        + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
     public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString) {
         return createMetricTelemetry(name, value, connectionString, "state", "blocked");
     }
 
-    public static TelemetryItem createMetricTelemetry(
-        String name, int value, String connectionString, String propertyKey, String propertyValue) {
+    public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString,
+        String propertyKey, String propertyValue) {
         TelemetryItem telemetry = new TelemetryItem();
         telemetry.setVersion(1);
         telemetry.setName("Metric");
@@ -79,17 +78,17 @@ public final class TestUtils {
         return createOpenTelemetrySdk(httpPipeline, Collections.emptyMap());
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(
-        HttpPipeline httpPipeline, Map<String, String> configuration) {
+    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline,
+        Map<String, String> configuration) {
         return createOpenTelemetrySdk(httpPipeline, configuration, TRACE_CONNECTION_STRING);
 
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline, Map<String, String> configuration, String connectionString) {
+    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline, Map<String, String> configuration,
+        String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitorExporterBuilder()
-            .connectionString(connectionString)
+        new AzureMonitorExporterBuilder().connectionString(connectionString)
             .httpPipeline(httpPipeline)
             .install(sdkBuilder);
 

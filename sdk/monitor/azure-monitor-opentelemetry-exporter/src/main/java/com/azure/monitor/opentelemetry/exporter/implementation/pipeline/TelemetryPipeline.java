@@ -30,32 +30,29 @@ public class TelemetryPipeline {
 
     // Based on Stamp specific redirects design doc
     private static final int MAX_REDIRECTS = 10;
-    private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
+    private static final HttpHeaderName LOCATION = HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
     private final Runnable statsbeatShutdown;
 
     // key is connectionString, value is redirectUrl
-    private final Map<String, URL> redirectCache =
-        Collections.synchronizedMap(new BoundedHashMap<>(100));
+    private final Map<String, URL> redirectCache = Collections.synchronizedMap(new BoundedHashMap<>(100));
 
     public TelemetryPipeline(HttpPipeline pipeline, Runnable statsbeatShutdown) {
         this.pipeline = pipeline;
         this.statsbeatShutdown = statsbeatShutdown;
     }
 
-    public CompletableResultCode send(
-        List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener) {
+    public CompletableResultCode send(List<ByteBuffer> telemetry, String connectionString,
+        TelemetryPipelineListener listener) {
 
         ConnectionString connectionStringObj = ConnectionString.parse(connectionString);
 
-        URL url =
-            redirectCache.computeIfAbsent(
-                connectionString, k -> getFullIngestionUrl(connectionStringObj.getIngestionEndpoint()));
+        URL url = redirectCache.computeIfAbsent(connectionString,
+            k -> getFullIngestionUrl(connectionStringObj.getIngestionEndpoint()));
 
-        TelemetryPipelineRequest request =
-            new TelemetryPipelineRequest(
-                url, connectionString, connectionStringObj.getInstrumentationKey(), telemetry);
+        TelemetryPipelineRequest request = new TelemetryPipelineRequest(url, connectionString,
+            connectionStringObj.getInstrumentationKey(), telemetry);
 
         try {
             CompletableResultCode result = new CompletableResultCode();
@@ -75,53 +72,30 @@ public class TelemetryPipeline {
         }
     }
 
-    private void sendInternal(
-        TelemetryPipelineRequest request,
-        TelemetryPipelineListener listener,
-        CompletableResultCode result,
-        int remainingRedirects) {
+    private void sendInternal(TelemetryPipelineRequest request, TelemetryPipelineListener listener,
+        CompletableResultCode result, int remainingRedirects) {
 
         // Add instrumentation key to context to use in StatsbeatHttpPipelinePolicy
         Context context = new Context("instrumentationKey", request.getInstrumentationKey())
             .addData(Tracer.DISABLE_TRACING_KEY, true);
 
-        pipeline
-            .send(request.createHttpRequest(), context)
-            .subscribe(
-                response ->
-                    response
-                        .getBodyAsString()
-                        .switchIfEmpty(Mono.just(""))
-                        .subscribe(
-                            responseBody ->
-                                onResponseBody(
-                                    request,
-                                    response,
-                                    responseBody,
-                                    listener,
-                                    result,
-                                    remainingRedirects),
-                            throwable -> {
-                                listener.onException(
-                                    request,
-                                    throwable.getMessage() + " (" + request.getUrl() + ")",
-                                    throwable);
-                                result.fail();
-                            }),
+        pipeline.send(request.createHttpRequest(), context)
+            .subscribe(response -> response.getBodyAsString()
+                .switchIfEmpty(Mono.just(""))
+                .subscribe(responseBody -> onResponseBody(request, response, responseBody, listener, result,
+                    remainingRedirects), throwable -> {
+                        listener.onException(request, throwable.getMessage() + " (" + request.getUrl() + ")",
+                            throwable);
+                        result.fail();
+                    }),
                 throwable -> {
-                    listener.onException(
-                        request, throwable.getMessage() + " (" + request.getUrl() + ")", throwable);
+                    listener.onException(request, throwable.getMessage() + " (" + request.getUrl() + ")", throwable);
                     result.fail();
                 });
     }
 
-    private void onResponseBody(
-        TelemetryPipelineRequest request,
-        HttpResponse response,
-        String responseBody,
-        TelemetryPipelineListener listener,
-        CompletableResultCode result,
-        int remainingRedirects) {
+    private void onResponseBody(TelemetryPipelineRequest request, HttpResponse response, String responseBody,
+        TelemetryPipelineListener listener, CompletableResultCode result, int remainingRedirects) {
 
         int responseCode = response.getStatusCode();
 
@@ -148,7 +122,8 @@ public class TelemetryPipeline {
             if (responseCode == 400
                 && statsbeatShutdown != null
                 && telemetryPipelineResponse.isInvalidInstrumentationKey()) {
-                LOGGER.verbose("400 status code is returned for an invalid instrumentation key. Shutting down Statsbeat.");
+                LOGGER.verbose(
+                    "400 status code is returned for an invalid instrumentation key. Shutting down Statsbeat.");
                 statsbeatShutdown.run();
             }
             result.fail();

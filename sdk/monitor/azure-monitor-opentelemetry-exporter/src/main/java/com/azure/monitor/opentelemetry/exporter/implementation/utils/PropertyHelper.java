@@ -82,8 +82,8 @@ public final class PropertyHelper {
     }
 
     public static void setSdkNamePrefix(String sdkNamePrefix) {
-        SdkPropertyValues.sdkVersionString =
-            sdkNamePrefix + VERSION_STRING_PREFIX + SdkPropertyValues.SDK_VERSION_NUMBER;
+        SdkPropertyValues.sdkVersionString
+            = sdkNamePrefix + VERSION_STRING_PREFIX + SdkPropertyValues.SDK_VERSION_NUMBER;
     }
 
     public static String getSdkVersionNumber() {

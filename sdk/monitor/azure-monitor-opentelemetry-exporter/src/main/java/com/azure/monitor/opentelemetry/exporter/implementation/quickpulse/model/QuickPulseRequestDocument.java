@@ -67,8 +67,7 @@ public class QuickPulseRequestDocument extends QuickPulseDocument {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return toJsonShared(jsonWriter.writeStartObject())
-            .writeStringField("Name", name)
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("Name", name)
             .writeBooleanField("Success", success)
             .writeStringField("Duration", duration)
             .writeStringField("ResponseCode", responseCode)
