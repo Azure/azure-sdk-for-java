@@ -7,13 +7,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.util.CustomCharacterEscapes;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.MDC;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,14 +23,6 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 class QuickPulseDataFetcher {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseDataFetcher.class);
-
-    private static final ObjectMapper mapper;
-
-    static {
-        mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.getFactory().setCharacterEscapes(new CustomCharacterEscapes());
-    }
 
     private final QuickPulseDataCollector collector;
 
@@ -125,7 +114,7 @@ class QuickPulseDataFetcher {
     }
 
     private String buildPostEntity(QuickPulseDataCollector.FinalCounters counters)
-        throws JsonProcessingException {
+        throws IOException {
         List<QuickPulseEnvelope> envelopes = new ArrayList<>();
         QuickPulseEnvelope postEnvelope = new QuickPulseEnvelope();
         postEnvelope.setDocuments(counters.documentList);
@@ -142,7 +131,7 @@ class QuickPulseDataFetcher {
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
         postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
         envelopes.add(postEnvelope);
-        return mapper.writeValueAsString(envelopes);
+        return postEnvelope.toJsonString().replace("/", "\\/");
     }
 
     private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(

@@ -6,17 +6,15 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.NetworkFriendlyExceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.util.CustomCharacterEscapes;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,20 +26,12 @@ class QuickPulsePingSender {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulsePingSender.class);
 
-    private static final ObjectMapper mapper;
-
     private static final OperationLogger operationLogger =
         new OperationLogger(QuickPulsePingSender.class, "Pinging live metrics endpoint");
 
     // TODO (kryalama) do we still need this AtomicBoolean, or can we use throttling built in to the
     //  operationLogger?
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
-
-    static {
-        mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.getFactory().setCharacterEscapes(new CustomCharacterEscapes());
-    }
 
     private final HttpPipeline httpPipeline;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
@@ -99,7 +89,7 @@ class QuickPulsePingSender {
         HttpResponse response = null;
         try {
             request.setBody(buildPingEntity(currentDate.getTime()));
-            response = httpPipeline.send(request).block();
+            response = httpPipeline.sendSync(request, Context.NONE);
             if (response == null) {
                 // this shouldn't happen, the mono should complete with a response or a failure
                 throw new AssertionError("http response mono returned empty");
@@ -151,7 +141,7 @@ class QuickPulsePingSender {
         return endpointUrl.get().toString() + "QuickPulseService.svc";
     }
 
-    private String buildPingEntity(long timeInMillis) throws JsonProcessingException {
+    private String buildPingEntity(long timeInMillis) throws IOException {
         if (pingEnvelope == null) {
             pingEnvelope = new QuickPulseEnvelope();
             pingEnvelope.setInstance(instanceName);
@@ -162,7 +152,7 @@ class QuickPulsePingSender {
             pingEnvelope.setVersion(sdkVersion);
         }
         pingEnvelope.setTimeStamp("/Date(" + timeInMillis + ")/");
-        return mapper.writeValueAsString(pingEnvelope);
+        return pingEnvelope.toJsonString().replace("/", "\\/");
     }
 
     private QuickPulseHeaderInfo onPingError(long sendTime) {
