@@ -5,6 +5,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
+import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.implementation.models.CompleteOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
@@ -23,6 +24,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
+
+import java.nio.ByteBuffer;
 
 /**
  * Initializes a new instance of the synchronous ChatCompletionsClient type.
@@ -34,7 +39,7 @@ public final class ChatCompletionsClient {
 
     /**
      * Initializes an instance of ChatCompletionsClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -58,7 +63,7 @@ public final class ChatCompletionsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -88,9 +93,9 @@ public final class ChatCompletionsClient {
      *     model: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -119,7 +124,7 @@ public final class ChatCompletionsClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param completeRequest The completeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -140,7 +145,7 @@ public final class ChatCompletionsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -148,7 +153,7 @@ public final class ChatCompletionsClient {
      *     model_provider_name: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -167,7 +172,7 @@ public final class ChatCompletionsClient {
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data. The method makes a REST API call to the `/chat/completions` route
      * on the given endpoint.
-     * 
+     *
      * @param options Options for complete API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -225,9 +230,136 @@ public final class ChatCompletionsClient {
     }
 
     /**
+     * Gets chat completions for the provided chat messages in streaming mode. Chat completions support a wide variety
+     * of tasks and generate text that continues from or "completes" provided prompt data.
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     * <!-- @formatter:off -->
+     * <!-- src_embed com.azure.ai.inference.ChatCompletionsClient.completeStreaming#CompleteOptions -->
+     * <pre>
+     * ChatCompletionsClient.completeStreaming&#40;new CompleteOptions&#40;chatMessages&#41;&#41;
+     *         .forEach&#40;chatCompletions -&gt; &#123;
+     *             if &#40;CoreUtils.isNullOrEmpty&#40;chatCompletions.getChoices&#40;&#41;&#41;&#41; &#123;
+     *                 return;
+     *             &#125;
+     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
+     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
+     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
+     *             &#125;
+     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
+     *                 String content = delta.getContent&#40;&#41;;
+     *                 System.out.print&#40;content&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.inference.ChatCompletionsClient.completeStreaming#CompleteOptions -->
+     * <!-- @formatter:on -->
+     *
+     * @param completeOptions The configuration information for a chat completions request. Completions support a
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<ChatCompletions> completeStreaming(CompleteOptions completeOptions) {
+        completeOptions.setStream(true);
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream = completeStreamingWithResponse(
+            BinaryData.fromObject(completeOptions), requestOptions).getValue().toFluxByteBuffer();
+        InferenceServerSentEvents<ChatCompletions> chatCompletionsStream
+            = new InferenceServerSentEvents<>(responseStream, ChatCompletions.class);
+        return new IterableStream<>(chatCompletionsStream.getEvents());
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     * text that continues from or "completes" provided prompt data.
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user) (Required)
+     *             content: String (Optional)
+     *         }
+     *     ]
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: int (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user) (Required)
+     *                 content: String (Optional)
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             delta (Optional): {
+     *                 role: String(system/assistant/user) (Optional)
+     *                 content: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     * text that continues from or "completes" provided prompt data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> completeStreamingWithResponse(BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        return serviceClient.completeWithResponse(chatCompletionsOptions, requestOptions);
+    }
+
+    /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
