@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ContainerAppsApi Management</name>
-  <description>This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Functions is an extension resource to revisions and the api listed is used to proxy the call from Web RP to the function app's host process, this api is not exposed to users and only Web RP is allowed to invoke functions extension resource. Package tag package-preview-2024-02.</description>
+  <description>This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2024-03.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

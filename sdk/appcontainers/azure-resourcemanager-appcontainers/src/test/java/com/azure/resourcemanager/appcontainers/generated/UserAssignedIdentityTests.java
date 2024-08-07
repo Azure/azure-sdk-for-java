@@ -11,7 +11,7 @@ public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"3984f8ea-15c5-4845-949d-d4477d8f5957\",\"clientId\":\"913730cb-4e52-4e62-8590-3af390eab4ca\"}")
+            "{\"principalId\":\"b6af62df-7507-4e34-a154-a73a928c9c1d\",\"clientId\":\"2096b92d-755b-4b2a-8736-9a0906792688\"}")
             .toObject(UserAssignedIdentity.class);
     }
 

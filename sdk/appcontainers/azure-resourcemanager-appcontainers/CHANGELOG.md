@@ -1,14 +1,603 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.9 (2024-08-07)
 
-### Features Added
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK.  Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.SessionContainer` was removed
 
-### Other Changes
+* `models.ContainerAppsBuilds` was removed
+
+* `models.DotNetComponent$UpdateStages` was removed
+
+* `models.DaprComponentResiliencyPolicyTimeoutPolicyConfiguration` was removed
+
+* `models.HttpConnectionPool` was removed
+
+* `models.LogicApp$Definition` was removed
+
+* `models.Runtime` was removed
+
+* `models.SessionPoolUpdatableProperties` was removed
+
+* `models.LoggerSetting` was removed
+
+* `models.BuildResource$UpdateStages` was removed
+
+* `models.ScaleConfiguration` was removed
+
+* `models.ManagedEnvironmentPrivateEndpointConnections` was removed
+
+* `models.DotNetComponents` was removed
+
+* `models.RuntimeJavaAgentLogging` was removed
+
+* `models.BuildProvisioningState` was removed
+
+* `models.WorkflowState` was removed
+
+* `models.PrivateEndpointConnectionListResult` was removed
+
+* `models.AppResiliency` was removed
+
+* `models.DaprSubscriptions` was removed
+
+* `models.BuilderResource$Update` was removed
+
+* `models.BuildConfiguration` was removed
+
+* `models.PoolManagementType` was removed
+
+* `models.PatchType` was removed
+
+* `models.BuildResource$Update` was removed
+
+* `models.SmbStorage` was removed
+
+* `models.CertificateKeyVaultProperties` was removed
+
+* `models.IdentitySettingsLifeCycle` was removed
+
+* `models.EnvironmentVariable` was removed
+
+* `models.SessionPoolProvisioningState` was removed
+
+* `models.DotNetComponentServiceBind` was removed
+
+* `models.SpringBootAdminComponent` was removed
+
+* `models.AppResiliencies` was removed
+
+* `models.PrivateEndpoint` was removed
+
+* `models.PatchDetailsOldLayer` was removed
+
+* `models.JavaComponentServiceBind` was removed
+
+* `models.LogsConfiguration` was removed
+
+* `models.DotNetComponent$Update` was removed
+
+* `models.PatchApplyStatus` was removed
+
+* `models.DaprSubscription$UpdateStages` was removed
+
+* `models.DotNetComponent$DefinitionStages` was removed
+
+* `models.HttpGet` was removed
+
+* `models.ContainerAppsPatches` was removed
+
+* `models.LogicApps` was removed
+
+* `models.PrivateEndpointConnection$Definition` was removed
+
+* `models.SessionPool$UpdateStages` was removed
+
+* `models.JavaComponentConfigurationProperty` was removed
+
+* `models.DotNetComponentProvisioningState` was removed
+
+* `models.DotNetComponentType` was removed
+
+* `models.SpringCloudConfigComponent` was removed
+
+* `models.PrivateEndpointConnection` was removed
+
+* `models.BuilderResourceUpdate` was removed
+
+* `models.FunctionsExtensions` was removed
+
+* `models.SessionPool$Definition` was removed
+
+* `models.AppResiliency$DefinitionStages` was removed
+
+* `models.DaprComponentResiliencyPoliciesCollection` was removed
+
+* `models.ImageType` was removed
+
+* `models.BuildAuthTokens` was removed
+
+* `models.PatchCollection` was removed
+
+* `models.ContainerRegistry` was removed
+
+* `models.IngressTargetPortHttpScheme` was removed
+
+* `models.AppResiliency$Definition` was removed
+
+* `models.DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration` was removed
+
+* `models.WorkflowEnvelopeProperties` was removed
+
+* `models.WorkflowHealthState` was removed
+
+* `models.ContainerAppsPatchResource` was removed
+
+* `models.DaprSubscription$DefinitionStages` was removed
+
+* `models.OtlpConfiguration` was removed
+
+* `models.MetricsConfiguration` was removed
+
+* `models.DaprServiceBindMetadata` was removed
+
+* `models.TracesConfiguration` was removed
+
+* `models.DaprSubscriptionBulkSubscribeOptions` was removed
+
+* `models.DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration` was removed
+
+* `models.JavaComponent$Definition` was removed
+
+* `models.SessionPool$DefinitionStages` was removed
+
+* `models.PrivateEndpointServiceConnectionStatus` was removed
+
+* `models.SessionIngress` was removed
+
+* `models.BuildsByBuilderResources` was removed
+
+* `models.BuildResource` was removed
+
+* `models.ContainerAppsBuildConfiguration` was removed
+
+* `models.WorkflowEnvelopeCollection` was removed
+
+* `models.TimeoutPolicy` was removed
+
+* `models.PrivateEndpointConnection$Update` was removed
+
+* `models.DotNetComponentConfigurationProperty` was removed
+
+* `models.ContainerAppsBuildCollection` was removed
+
+* `models.DaprSubscriptionsCollection` was removed
+
+* `models.ErrorEntity` was removed
+
+* `models.LogicApp$UpdateStages` was removed
+
+* `models.PrivateLinkServiceConnectionState` was removed
+
+* `models.AppInsightsConfiguration` was removed
+
+* `models.WorkflowHealth` was removed
+
+* `models.DaprSubscriptionRoutes` was removed
+
+* `models.DaprComponentResiliencyPolicy$Definition` was removed
+
+* `models.PatchProperties` was removed
+
+* `models.HttpRetryPolicy` was removed
+
+* `models.PatchDetails` was removed
+
+* `models.PrivateEndpointConnectionProvisioningState` was removed
+
+* `models.SessionPool` was removed
+
+* `models.NfsAzureFileProperties` was removed
+
+* `models.PrivateLinkResource` was removed
+
+* `models.CircuitBreakerPolicy` was removed
+
+* `models.DaprComponentResiliencyPolicy$DefinitionStages` was removed
+
+* `models.SessionContainerResources` was removed
+
+* `models.TcpRetryPolicy` was removed
+
+* `models.SessionPoolSecret` was removed
+
+* `models.PatchSkipConfig` was removed
+
+* `models.DaprComponentResiliencyPolicies` was removed
+
+* `models.HeaderMatch` was removed
+
+* `models.AppResiliencyCollection` was removed
+
+* `models.DotNetComponent` was removed
+
+* `models.BuilderCollection` was removed
+
+* `models.BuildStatus` was removed
+
+* `models.DaprSubscription` was removed
+
+* `models.SessionPool$Update` was removed
+
+* `models.DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration` was removed
+
+* `models.BuildToken` was removed
+
+* `models.DaprComponentResiliencyPolicyConfiguration` was removed
+
+* `models.WorkflowEnvelope` was removed
+
+* `models.BuilderResource$DefinitionStages` was removed
+
+* `models.JavaComponentsCollection` was removed
+
+* `models.OpenTelemetryConfiguration` was removed
+
+* `models.PrivateLinkResourceListResult` was removed
+
+* `models.Builders` was removed
+
+* `models.Level` was removed
+
+* `models.DaprComponentResiliencyPolicy$Update` was removed
+
+* `models.BuildResource$DefinitionStages` was removed
+
+* `models.JavaComponent` was removed
+
+* `models.AppResiliency$Update` was removed
+
+* `models.SessionNetworkStatus` was removed
+
+* `models.LogicAppsProxyMethod` was removed
+
+* `models.DaprSubscription$Update` was removed
+
+* `models.DestinationsConfiguration` was removed
+
+* `models.CertificateType` was removed
+
+* `models.DataDogConfiguration` was removed
+
+* `models.DotNetComponentsCollection` was removed
+
+* `models.ManagedEnvironmentPrivateLinkResources` was removed
+
+* `models.RuntimeJava` was removed
+
+* `models.DotNetComponent$Definition` was removed
+
+* `models.DaprComponentResiliencyPolicy$UpdateStages` was removed
+
+* `models.BuildCollection` was removed
+
+* `models.ExecutionType` was removed
+
+* `models.JavaComponent$UpdateStages` was removed
+
+* `models.LogicApp` was removed
+
+* `models.JavaComponentProvisioningState` was removed
+
+* `models.PatchDetailsNewLayer` was removed
+
+* `models.DetectionStatus` was removed
+
+* `models.ReplicaExecutionStatus` was removed
+
+* `models.PreBuildStep` was removed
+
+* `models.ContainerExecutionStatus` was removed
+
+* `models.DaprComponentServiceBinding` was removed
+
+* `models.ContainerAppsBuildsByContainerApps` was removed
+
+* `models.CustomContainerTemplate` was removed
+
+* `models.WorkflowArtifacts` was removed
+
+* `models.SessionNetworkConfiguration` was removed
+
+* `models.BuilderResource$UpdateStages` was removed
+
+* `models.RuntimeJavaAgent` was removed
+
+* `models.DynamicPoolConfiguration` was removed
+
+* `models.PatchingMode` was removed
+
+* `models.ContainerAppsBuildResource` was removed
+
+* `models.PrivateEndpointConnection$UpdateStages` was removed
+
+* `models.IdentitySettings` was removed
+
+* `models.JavaComponent$DefinitionStages` was removed
+
+* `models.ExecutionStatus` was removed
+
+* `models.DaprComponentResiliencyPolicy` was removed
+
+* `models.ContainerRegistryWithCustomImage` was removed
+
+* `models.ContainerType` was removed
+
+* `models.SessionRegistryCredentials` was removed
+
+* `models.JavaComponentType` was removed
+
+* `models.RuntimeDotnet` was removed
+
+* `models.AppResiliency$UpdateStages` was removed
+
+* `models.JavaComponentProperties` was removed
+
+* `models.BuilderResource` was removed
+
+* `models.BuildResource$Definition` was removed
+
+* `models.Kind` was removed
+
+* `models.Builds` was removed
+
+* `models.ContainerAppsSessionPools` was removed
+
+* `models.SessionPoolCollection` was removed
+
+* `models.ContainerAppPropertiesPatchingConfiguration` was removed
+
+* `models.BuilderResource$Definition` was removed
+
+* `models.LogicApp$Update` was removed
+
+* `models.NacosComponent` was removed
+
+* `models.LogicApp$DefinitionStages` was removed
+
+* `models.JavaComponent$Update` was removed
+
+* `models.JavaComponentIngress` was removed
+
+* `models.Header` was removed
+
+* `models.TcpConnectionPool` was removed
+
+* `models.PublicNetworkAccess` was removed
+
+* `models.JavaComponents` was removed
+
+* `models.DaprSubscriptionRouteRule` was removed
+
+* `models.DaprSubscription$Definition` was removed
+
+* `models.PrivateEndpointConnection$DefinitionStages` was removed
+
+* `models.BuilderProvisioningState` was removed
+
+* `models.SpringCloudEurekaComponent` was removed
+
+#### `models.ServiceBind` was modified
+
+* `clientType()` was removed
+* `customizedKeys()` was removed
+* `withCustomizedKeys(java.util.Map)` was removed
+* `withClientType(java.lang.String)` was removed
+
+#### `models.Job` was modified
+
+* `extendedLocation()` was removed
+
+#### `models.DaprComponent$Definition` was modified
+
+* `withServiceComponentBind(java.util.List)` was removed
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was removed
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was removed
+
+#### `models.InitContainer` was modified
+
+* `withImageType(models.ImageType)` was removed
+
+#### `models.Job$Definition` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+
+#### `models.QueueScaleRule` was modified
+
+* `withIdentity(java.lang.String)` was removed
+* `accountName()` was removed
+* `withAccountName(java.lang.String)` was removed
+* `identity()` was removed
+
+#### `models.Jobs` was modified
+
+* `proxyGet(java.lang.String,java.lang.String)` was removed
+* `proxyGetWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironmentStorageProperties` was modified
+
+* `smb()` was removed
+* `withSmb(models.SmbStorage)` was removed
+
+#### `models.DaprComponent$Update` was modified
+
+* `withServiceComponentBind(java.util.List)` was removed
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was removed
+* `withIdentity(models.ManagedServiceIdentity)` was removed
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was removed
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
+
+#### `models.ContainerApp$Update` was modified
+
+* `withPatchingConfiguration(models.ContainerAppPropertiesPatchingConfiguration)` was removed
+
+#### `models.ManagedEnvironmentStorageProperties` was modified
+
+* `nfsAzureFile()` was removed
+* `withNfsAzureFile(models.NfsAzureFileProperties)` was removed
+
+#### `models.GithubActionConfiguration` was modified
+
+* `buildEnvironmentVariables()` was removed
+* `withBuildEnvironmentVariables(java.util.List)` was removed
+
+#### `models.DaprComponent` was modified
+
+* `serviceComponentBind()` was removed
+
+#### `models.JobConfiguration` was modified
+
+* `withIdentitySettings(java.util.List)` was removed
+* `identitySettings()` was removed
+
+#### `models.TcpScaleRule` was modified
+
+* `identity()` was removed
+* `withIdentity(java.lang.String)` was removed
+
+#### `models.LogAnalyticsConfiguration` was modified
+
+* `dynamicJsonColumns()` was removed
+* `withDynamicJsonColumns(java.lang.Boolean)` was removed
+
+#### `models.Job$Update` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+
+#### `models.ManagedEnvironment` was modified
+
+* `openTelemetryConfiguration()` was removed
+* `appInsightsConfiguration()` was removed
+* `publicNetworkAccess()` was removed
+* `privateEndpointConnections()` was removed
+* `identity()` was removed
+
+#### `models.HttpScaleRule` was modified
+
+* `identity()` was removed
+* `withIdentity(java.lang.String)` was removed
+
+#### `models.JobExecution` was modified
+
+* `detailedStatus()` was removed
+
+#### `models.JobPatchProperties` was modified
+
+* `extendedLocation()` was removed
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+
+#### `models.Container` was modified
+
+* `withImageType(models.ImageType)` was removed
+
+#### `models.CertificateProperties` was modified
+
+* `certificateKeyVaultProperties()` was removed
+* `withCertificateType(models.CertificateType)` was removed
+* `certificateType()` was removed
+* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was removed
+
+#### `models.ContainerApp` was modified
+
+* `patchingConfiguration()` was removed
+* `kind()` was removed
+
+#### `models.JobScaleRule` was modified
+
+* `identity()` was removed
+* `withIdentity(java.lang.String)` was removed
+
+#### `ContainerAppsApiManager` was modified
+
+* `daprComponentResiliencyPolicies()` was removed
+* `builds()` was removed
+* `containerAppsPatches()` was removed
+* `buildAuthTokens()` was removed
+* `appResiliencies()` was removed
+* `builders()` was removed
+* `dotNetComponents()` was removed
+* `buildsByBuilderResources()` was removed
+* `functionsExtensions()` was removed
+* `containerAppsBuildsByContainerApps()` was removed
+* `managedEnvironmentPrivateLinkResources()` was removed
+* `logicApps()` was removed
+* `containerAppsBuilds()` was removed
+* `daprSubscriptions()` was removed
+* `managedEnvironmentPrivateEndpointConnections()` was removed
+* `javaComponents()` was removed
+* `containerAppsSessionPools()` was removed
+
+#### `models.BaseContainer` was modified
+
+* `withImageType(models.ImageType)` was removed
+* `imageType()` was removed
+
+#### `models.CustomScaleRule` was modified
+
+* `withIdentity(java.lang.String)` was removed
+* `identity()` was removed
+
+#### `models.ContainerApp$Definition` was modified
+
+* `withPatchingConfiguration(models.ContainerAppPropertiesPatchingConfiguration)` was removed
+* `withKind(models.Kind)` was removed
+
+#### `models.Ingress` was modified
+
+* `withTargetPortHttpScheme(models.IngressTargetPortHttpScheme)` was removed
+* `targetPortHttpScheme()` was removed
+
+#### `models.CustomDomainConfiguration` was modified
+
+* `certificateKeyVaultProperties()` was removed
+* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was removed
+
+#### `models.Configuration` was modified
+
+* `withRuntime(models.Runtime)` was removed
+* `withIdentitySettings(java.util.List)` was removed
+* `identitySettings()` was removed
+* `runtime()` was removed
+
+### Features Added
+
+#### `models.Jobs` was modified
+
+* `proxyGet(java.lang.String,java.lang.String,java.lang.String)` was added
+* `proxyGetWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BillingMeter` was modified
+
+* `systemData()` was added
+
+#### `models.DefaultErrorResponseError` was modified
+
+* `getMessage()` was added
+* `getDetails()` was added
+* `getTarget()` was added
+* `getAdditionalInfo()` was added
+* `getCode()` was added
 
 ## 1.0.0-beta.8 (2024-07-24)
 
