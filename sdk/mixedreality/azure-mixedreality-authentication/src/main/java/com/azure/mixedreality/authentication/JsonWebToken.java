@@ -49,7 +49,7 @@ class JsonWebToken {
             if (exp == null) {
                 return null;
             } else {
-                return OffsetDateTime.ofInstant(Instant.ofEpochSecond((long) exp), ZoneOffset.UTC);
+                return OffsetDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(exp.toString())), ZoneOffset.UTC);
             }
         } catch (IOException exception) {
             return null;
