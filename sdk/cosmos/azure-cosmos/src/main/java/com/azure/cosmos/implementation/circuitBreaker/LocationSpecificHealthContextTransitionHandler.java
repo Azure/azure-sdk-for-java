@@ -192,6 +192,13 @@ public class LocationSpecificHealthContextTransitionHandler {
 
                     return this.transitionHealthStatus(LocationHealthStatus.Unavailable, isReadOnlyRequest);
                 }
+            case Unavailable:
+                return this.consecutiveExceptionBasedCircuitBreaker
+                    .handleException(
+                        locationSpecificHealthContext,
+                        partitionKeyRangeWrapper,
+                        regionWithException,
+                        isReadOnlyRequest);
             default:
                 throw new IllegalStateException("Unsupported health status: " + currentLocationHealthStatusSnapshot);
         }
