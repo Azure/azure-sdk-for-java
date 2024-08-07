@@ -75,14 +75,6 @@ public class HttpGetFuture extends ScenarioBase<StressOptions> {
         }
     }
 
-    private Future<Void> asyncWithFutureInternal() {
-        Callable<Void> task = () -> {
-            runInternal();
-            return null;
-        };
-        return executorService.submit(task);
-    }
-
     @Override
     public Mono<Void> runAsync() {
         Callable<Void> task = () -> {
@@ -91,7 +83,8 @@ public class HttpGetFuture extends ScenarioBase<StressOptions> {
         };
         return Mono.fromFuture(() -> CompletableFuture.supplyAsync(() -> {
             try {
-                return executorService.submit(task).get();
+                executorService.submit(task).get();
+                return null;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
