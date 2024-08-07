@@ -25,13 +25,13 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
     /*
      * The maximum number of instances for the function app.
      */
-    private Float maximumInstanceCount;
+    private Integer maximumInstanceCount;
 
     /*
      * Set the amount of memory allocated to each instance of the function app in MB. CPU and network bandwidth are
      * allocated proportionally.
      */
-    private Float instanceMemoryMB;
+    private Integer instanceMemoryMB;
 
     /*
      * Scale and concurrency settings for the function app triggers.
@@ -69,7 +69,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
      * 
      * @return the maximumInstanceCount value.
      */
-    public Float maximumInstanceCount() {
+    public Integer maximumInstanceCount() {
         return this.maximumInstanceCount;
     }
 
@@ -79,7 +79,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
      * @param maximumInstanceCount the maximumInstanceCount value to set.
      * @return the FunctionsScaleAndConcurrency object itself.
      */
-    public FunctionsScaleAndConcurrency withMaximumInstanceCount(Float maximumInstanceCount) {
+    public FunctionsScaleAndConcurrency withMaximumInstanceCount(Integer maximumInstanceCount) {
         this.maximumInstanceCount = maximumInstanceCount;
         return this;
     }
@@ -90,7 +90,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
      * 
      * @return the instanceMemoryMB value.
      */
-    public Float instanceMemoryMB() {
+    public Integer instanceMemoryMB() {
         return this.instanceMemoryMB;
     }
 
@@ -101,7 +101,7 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
      * @param instanceMemoryMB the instanceMemoryMB value to set.
      * @return the FunctionsScaleAndConcurrency object itself.
      */
-    public FunctionsScaleAndConcurrency withInstanceMemoryMB(Float instanceMemoryMB) {
+    public FunctionsScaleAndConcurrency withInstanceMemoryMB(Integer instanceMemoryMB) {
         this.instanceMemoryMB = instanceMemoryMB;
         return this;
     }
@@ -174,10 +174,9 @@ public final class FunctionsScaleAndConcurrency implements JsonSerializable<Func
                     deserializedFunctionsScaleAndConcurrency.alwaysReady = alwaysReady;
                 } else if ("maximumInstanceCount".equals(fieldName)) {
                     deserializedFunctionsScaleAndConcurrency.maximumInstanceCount
-                        = reader.getNullable(JsonReader::getFloat);
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("instanceMemoryMB".equals(fieldName)) {
-                    deserializedFunctionsScaleAndConcurrency.instanceMemoryMB
-                        = reader.getNullable(JsonReader::getFloat);
+                    deserializedFunctionsScaleAndConcurrency.instanceMemoryMB = reader.getNullable(JsonReader::getInt);
                 } else if ("triggers".equals(fieldName)) {
                     deserializedFunctionsScaleAndConcurrency.triggers
                         = FunctionsScaleAndConcurrencyTriggers.fromJson(reader);

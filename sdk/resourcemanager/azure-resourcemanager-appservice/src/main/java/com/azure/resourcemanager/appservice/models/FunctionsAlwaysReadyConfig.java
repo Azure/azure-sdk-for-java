@@ -26,7 +26,7 @@ public final class FunctionsAlwaysReadyConfig implements JsonSerializable<Functi
      * Sets the number of 'Always Ready' instances for a given function group or a specific function. For additional
      * information see https://aka.ms/flexconsumption/alwaysready.
      */
-    private Float instanceCount;
+    private Integer instanceCount;
 
     /**
      * Creates an instance of FunctionsAlwaysReadyConfig class.
@@ -62,7 +62,7 @@ public final class FunctionsAlwaysReadyConfig implements JsonSerializable<Functi
      * 
      * @return the instanceCount value.
      */
-    public Float instanceCount() {
+    public Integer instanceCount() {
         return this.instanceCount;
     }
 
@@ -73,7 +73,7 @@ public final class FunctionsAlwaysReadyConfig implements JsonSerializable<Functi
      * @param instanceCount the instanceCount value to set.
      * @return the FunctionsAlwaysReadyConfig object itself.
      */
-    public FunctionsAlwaysReadyConfig withInstanceCount(Float instanceCount) {
+    public FunctionsAlwaysReadyConfig withInstanceCount(Integer instanceCount) {
         this.instanceCount = instanceCount;
         return this;
     }
@@ -115,7 +115,7 @@ public final class FunctionsAlwaysReadyConfig implements JsonSerializable<Functi
                 if ("name".equals(fieldName)) {
                     deserializedFunctionsAlwaysReadyConfig.name = reader.getString();
                 } else if ("instanceCount".equals(fieldName)) {
-                    deserializedFunctionsAlwaysReadyConfig.instanceCount = reader.getNullable(JsonReader::getFloat);
+                    deserializedFunctionsAlwaysReadyConfig.instanceCount = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

@@ -20,7 +20,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp
     /*
      * The maximum number of concurrent HTTP trigger invocations per instance.
      */
-    private Float perInstanceConcurrency;
+    private Integer perInstanceConcurrency;
 
     /**
      * Creates an instance of FunctionsScaleAndConcurrencyTriggersHttp class.
@@ -33,7 +33,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp
      * 
      * @return the perInstanceConcurrency value.
      */
-    public Float perInstanceConcurrency() {
+    public Integer perInstanceConcurrency() {
         return this.perInstanceConcurrency;
     }
 
@@ -43,7 +43,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp
      * @param perInstanceConcurrency the perInstanceConcurrency value to set.
      * @return the FunctionsScaleAndConcurrencyTriggersHttp object itself.
      */
-    public FunctionsScaleAndConcurrencyTriggersHttp withPerInstanceConcurrency(Float perInstanceConcurrency) {
+    public FunctionsScaleAndConcurrencyTriggersHttp withPerInstanceConcurrency(Integer perInstanceConcurrency) {
         this.perInstanceConcurrency = perInstanceConcurrency;
         return this;
     }
@@ -84,7 +84,7 @@ public final class FunctionsScaleAndConcurrencyTriggersHttp
 
                 if ("perInstanceConcurrency".equals(fieldName)) {
                     deserializedFunctionsScaleAndConcurrencyTriggersHttp.perInstanceConcurrency
-                        = reader.getNullable(JsonReader::getFloat);
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
