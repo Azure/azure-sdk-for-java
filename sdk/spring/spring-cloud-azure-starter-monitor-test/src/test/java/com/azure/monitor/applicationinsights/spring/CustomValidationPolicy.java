@@ -60,12 +60,16 @@ class CustomValidationPolicy implements HttpPipelinePolicy {
             while ((read = in.read(data, 0, data.length)) != -1) {
                 baos.write(data, 0, read);
             }
-            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
+            return baos.toString(StandardCharsets.UTF_8.name());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    // TODO need to update this when a newer version of azure-monitor-opentelemetry-exporter with azure-json is released
+    // azure-sdk-for-java will always test against the source version of azure-monitor-opentelemetry-exporter in CI builds for backward compatibility.
+    // JacksonJsonProvider provides a Jackson Databind modules that enables Jackson deserialization to hook into azure-json deserialization.
+    // Tried it and didn't work.
     private static ObjectMapper createObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         // handle JSR-310 (java 8) dates with Jackson by configuring ObjectMapper to use this

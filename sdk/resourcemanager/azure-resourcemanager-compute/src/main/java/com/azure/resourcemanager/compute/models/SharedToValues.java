@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class SharedToValues extends ExpandableStringEnum<SharedToValues> {
      * @param name a name to look for.
      * @return the corresponding SharedToValues.
      */
-    @JsonCreator
     public static SharedToValues fromString(String name) {
         return fromString(name, SharedToValues.class);
     }

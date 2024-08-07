@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class CloudServiceSlotType extends ExpandableStringEnum<CloudServic
      * @param name a name to look for.
      * @return the corresponding CloudServiceSlotType.
      */
-    @JsonCreator
     public static CloudServiceSlotType fromString(String name) {
         return fromString(name, CloudServiceSlotType.class);
     }

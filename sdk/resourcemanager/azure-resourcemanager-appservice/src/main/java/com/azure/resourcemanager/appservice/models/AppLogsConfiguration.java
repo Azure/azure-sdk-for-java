@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AppLogsConfiguration model.
  */
 @Fluent
-public final class AppLogsConfiguration {
+public final class AppLogsConfiguration implements JsonSerializable<AppLogsConfiguration> {
     /*
      * The destination property.
      */
-    @JsonProperty(value = "destination")
     private String destination;
 
     /*
      * The logAnalyticsConfiguration property.
      */
-    @JsonProperty(value = "logAnalyticsConfiguration")
     private LogAnalyticsConfiguration logAnalyticsConfiguration;
 
     /**
@@ -79,5 +81,45 @@ public final class AppLogsConfiguration {
         if (logAnalyticsConfiguration() != null) {
             logAnalyticsConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destination", this.destination);
+        jsonWriter.writeJsonField("logAnalyticsConfiguration", this.logAnalyticsConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppLogsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppLogsConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppLogsConfiguration.
+     */
+    public static AppLogsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppLogsConfiguration deserializedAppLogsConfiguration = new AppLogsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destination".equals(fieldName)) {
+                    deserializedAppLogsConfiguration.destination = reader.getString();
+                } else if ("logAnalyticsConfiguration".equals(fieldName)) {
+                    deserializedAppLogsConfiguration.logAnalyticsConfiguration
+                        = LogAnalyticsConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppLogsConfiguration;
+        });
     }
 }

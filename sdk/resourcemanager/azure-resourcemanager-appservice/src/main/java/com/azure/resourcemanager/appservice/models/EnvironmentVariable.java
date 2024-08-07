@@ -6,23 +6,25 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The EnvironmentVariable model.
  */
 @Fluent
-public final class EnvironmentVariable {
+public final class EnvironmentVariable implements JsonSerializable<EnvironmentVariable> {
     /*
      * Environment variable name
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Environment variable value
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -88,4 +90,44 @@ public final class EnvironmentVariable {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentVariable.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentVariable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentVariable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentVariable.
+     */
+    public static EnvironmentVariable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentVariable deserializedEnvironmentVariable = new EnvironmentVariable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEnvironmentVariable.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedEnvironmentVariable.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentVariable;
+        });
+    }
 }

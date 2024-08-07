@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowRunActionRepetitionsListExpressionTracesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowRunActionRepetitions_ListExpressionTraces.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * WorkflowRunActionRepetitions_ListExpressionTraces.json
      */
     /**
      * Sample code: List expression traces for a repetition.
