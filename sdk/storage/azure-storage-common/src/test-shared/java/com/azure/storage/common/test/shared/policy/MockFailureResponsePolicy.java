@@ -5,12 +5,16 @@ package com.azure.storage.common.test.shared.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.BinaryData;
+import org.eclipse.jetty.util.IO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class MockFailureResponsePolicy implements HttpPipelinePolicy {
 
@@ -30,5 +34,16 @@ public class MockFailureResponsePolicy implements HttpPipelinePolicy {
                 return Mono.just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())));
             }
         });
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        HttpResponse response = next.processSync();
+        if (this.tries == 0) {
+            return response;
+        } else {
+            this.tries -= 1;
+            return new MockDownloadHttpResponse(response, 206, Flux.error(new IOException()));
+        }
     }
 }

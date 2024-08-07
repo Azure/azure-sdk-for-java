@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -500,6 +502,8 @@ public class StorageImplUtils {
             } else if (cause instanceof Error) {
                 // Propagate if it's an Error
                 throw (Error) cause;
+            } else if (cause instanceof IOException) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) cause));
             } else {
                 // Wrap in RuntimeException if it's neither Error nor RuntimeException
                 throw LOGGER.logExceptionAsError(new RuntimeException(cause));
