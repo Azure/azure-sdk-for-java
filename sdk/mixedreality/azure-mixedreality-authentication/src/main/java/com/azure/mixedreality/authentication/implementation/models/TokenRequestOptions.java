@@ -5,17 +5,23 @@
 package com.azure.mixedreality.authentication.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Parameter group. */
 @Fluent
-public final class TokenRequestOptions {
+public final class TokenRequestOptions implements JsonSerializable<TokenRequestOptions> {
     /*
-     * The client request correlation vector, which should be set to a new
-     * value for each request. Useful when debugging with Microsoft.
+     * The client request correlation vector, which should be set to a new value for each request. Useful when
+     * debugging with Microsoft.
      */
-    @JsonProperty(value = "clientRequestId")
     private String clientRequestId;
+
+    /** Creates an instance of TokenRequestOptions class. */
+    public TokenRequestOptions() {}
 
     /**
      * Get the clientRequestId property: The client request correlation vector, which should be set to a new value for
@@ -37,5 +43,39 @@ public final class TokenRequestOptions {
     public TokenRequestOptions setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TokenRequestOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenRequestOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TokenRequestOptions.
+     */
+    public static TokenRequestOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    TokenRequestOptions deserializedTokenRequestOptions = new TokenRequestOptions();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("clientRequestId".equals(fieldName)) {
+                            deserializedTokenRequestOptions.clientRequestId = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedTokenRequestOptions;
+                });
     }
 }
