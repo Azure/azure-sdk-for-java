@@ -3,12 +3,6 @@
 
 package com.azure.developer.loadtesting;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
@@ -18,25 +12,32 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings("unchecked")
 public final class ReadmeSamples {
     public void auth() {
         // BEGIN: java-readme-sample-auth
         // ensure the user, service principal or managed identity used has Loadtesting Contributor role for the resource
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         // create client using DefaultAzureCredential
         LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
-                .credential(credential)
-                .endpoint("<Enter Azure Load Testing Data-Plane URL>")
-                .buildClient();
+            .credential(credential)
+            .endpoint("<Enter Azure Load Testing Data-Plane URL>")
+            .buildClient();
         LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
-                .credential(credential)
-                .endpoint("<Enter Azure Load Testing Data-Plane URL>")
-                .buildClient();
+            .credential(credential)
+            .endpoint("<Enter Azure Load Testing Data-Plane URL>")
+            .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
             .addQueryParam("orderBy", "lastModifiedDateTime")
@@ -54,38 +55,38 @@ public final class ReadmeSamples {
     public void createTest() {
         // BEGIN: java-readme-sample-createTest
         LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("<endpoint>")
-                .buildClient();
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
 
         // construct Test object using nested String:Object Maps
-        Map<String, Object> testMap = new HashMap<String, Object>();
+        Map<String, Object> testMap = new HashMap<>();
         testMap.put("displayName", "Sample Display Name");
         testMap.put("description", "Sample Description");
 
         // loadTestConfig describes the number of test engines to generate load
-        Map<String, Object> loadTestConfigMap = new HashMap<String, Object>();
+        Map<String, Object> loadTestConfigMap = new HashMap<>();
         loadTestConfigMap.put("engineInstances", 1);
         testMap.put("loadTestConfiguration", loadTestConfigMap);
 
         // environmentVariables are plain-text data passed to test engines
-        Map<String, Object> envVarMap = new HashMap<String, Object>();
+        Map<String, Object> envVarMap = new HashMap<>();
         envVarMap.put("a", "b");
         envVarMap.put("x", "y");
         testMap.put("environmentVariables", envVarMap);
 
         // secrets are secure data sent using Azure Key Vault
-        Map<String, Object> secretMap = new HashMap<String, Object>();
-        Map<String, Object> sampleSecretMap = new HashMap<String, Object>();
+        Map<String, Object> secretMap = new HashMap<>();
+        Map<String, Object> sampleSecretMap = new HashMap<>();
         sampleSecretMap.put("value", "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827");
         sampleSecretMap.put("type", "AKV_SECRET_URI");
         secretMap.put("sampleSecret", sampleSecretMap);
         testMap.put("secrets", secretMap);
 
         // passFailCriteria define the conditions to conclude the test as success
-        Map<String, Object> passFailMap = new HashMap<String, Object>();
-        Map<String, Object> passFailMetrics = new HashMap<String, Object>();
-        Map<String, Object> samplePassFailMetric = new HashMap<String, Object>();
+        Map<String, Object> passFailMap = new HashMap<>();
+        Map<String, Object> passFailMetrics = new HashMap<>();
+        Map<String, Object> samplePassFailMetric = new HashMap<>();
         samplePassFailMetric.put("clientmetric", "response_time_ms");
         samplePassFailMetric.put("aggregate", "percentage");
         samplePassFailMetric.put("condition", ">");
@@ -115,7 +116,8 @@ public final class ReadmeSamples {
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
         // receive response with BinaryData content
-        Response<BinaryData> fileUrlOut = adminClient.uploadTestFileWithResponse("test12345", "sample-file.jmx", fileData, null);
+        Response<BinaryData> fileUrlOut =
+            adminClient.uploadTestFileWithResponse("test12345", "sample-file.jmx", fileData, null);
         System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }
@@ -128,7 +130,7 @@ public final class ReadmeSamples {
             .buildClient();
 
         // construct Test Run object using nested String:Object Maps
-        Map<String, Object> testRunMap = new HashMap<String, Object>();
+        Map<String, Object> testRunMap = new HashMap<>();
         testRunMap.put("testId", "test12345");
         testRunMap.put("displayName", "SDK-Created-TestRun");
 
@@ -144,12 +146,15 @@ public final class ReadmeSamples {
         JsonNode testRunJson = null;
         String testStatus;
         PollResponse<BinaryData> pollResponse = poller.poll();
-        while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
-            try {
-                testRunJson = new ObjectMapper().readTree(pollResponse.getValue().toString());
-                testStatus = testRunJson.get("status").asText();
+        while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
+
+            try (JsonReader jsonReader = JsonProviders.createReader(pollResponse.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                testStatus = jsonTree.get("status").toString();
                 System.out.println("Test run status: " + testStatus);
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 System.out.println("Error processing JSON response");
                 // handle error condition
             }
@@ -166,10 +171,13 @@ public final class ReadmeSamples {
 
         poller.waitForCompletion();
         BinaryData testRunBinary = poller.getFinalResult();
-        try {
-            testRunJson = new ObjectMapper().readTree(testRunBinary.toString());
-            testStatus = testRunJson.get("status").asText();
-        } catch (JsonProcessingException e) {
+
+        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            testStatus = jsonTree.get("status").toString();
+            System.out.println("Test run status: " + testStatus);
+        } catch (IOException e) {
             System.out.println("Error processing JSON response");
             // handle error condition
         }
@@ -181,10 +189,12 @@ public final class ReadmeSamples {
         Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
         String metricNamespace = null;
         // parse JSON and read first value
-        try {
-            JsonNode metricNamespacesJson = new ObjectMapper().readTree(metricNamespacesOut.getValue().toString());
-            metricNamespace = metricNamespacesJson.get("value").get(0).get("metricNamespaceName").asText();
-        } catch (JsonProcessingException e) {
+        try (JsonReader jsonReader = JsonProviders.createReader(metricNamespacesOut.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            List<Object> metricNamespaces = (List<Object>) jsonTree.get("value");
+            Map<String, Object> namespaceMap = (Map<String, Object>) metricNamespaces.get(0);
+            metricNamespace = namespaceMap.get("name").toString();
+        } catch (IOException e) {
             System.out.println("Error processing JSON response");
             // handle error condition
         }
@@ -193,10 +203,13 @@ public final class ReadmeSamples {
         Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
         String metricName = null;
         // parse JSON and read first value
-        try {
-            JsonNode metricDefinitionsJson = new ObjectMapper().readTree(metricDefinitionsOut.getValue().toString());
-            metricName = metricDefinitionsJson.get("value").get(0).get("name").get("value").asText();
-        } catch (JsonProcessingException e) {
+        try (JsonReader jsonReader = JsonProviders.createReader(metricDefinitionsOut.getValue().toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            List<Object> metricDefinitions = (List<Object>) jsonTree.get("value");
+            Map<String, Object> definitionMap = (Map<String, Object>) metricDefinitions.get(0);
+            Map<String, Object> nameMap = (Map<String, Object>) definitionMap.get("name");
+            metricName = nameMap.get("value").toString();
+        } catch (IOException e) {
             System.out.println("Error processing JSON response");
             // handle error condition
         }
