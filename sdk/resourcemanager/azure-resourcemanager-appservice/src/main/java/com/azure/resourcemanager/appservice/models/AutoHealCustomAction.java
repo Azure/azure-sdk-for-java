@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Custom action to be executed
  * when an auto heal rule is triggered.
  */
 @Fluent
-public final class AutoHealCustomAction {
+public final class AutoHealCustomAction implements JsonSerializable<AutoHealCustomAction> {
     /*
      * Executable to be run.
      */
-    @JsonProperty(value = "exe")
     private String exe;
 
     /*
      * Parameters for the executable.
      */
-    @JsonProperty(value = "parameters")
     private String parameters;
 
     /**
@@ -77,5 +79,44 @@ public final class AutoHealCustomAction {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exe", this.exe);
+        jsonWriter.writeStringField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoHealCustomAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoHealCustomAction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoHealCustomAction.
+     */
+    public static AutoHealCustomAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoHealCustomAction deserializedAutoHealCustomAction = new AutoHealCustomAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exe".equals(fieldName)) {
+                    deserializedAutoHealCustomAction.exe = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedAutoHealCustomAction.parameters = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoHealCustomAction;
+        });
     }
 }

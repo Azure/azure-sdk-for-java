@@ -50,11 +50,10 @@ import com.azure.resourcemanager.appservice.models.SiteSealRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in AppServiceCertificateOrdersClient.
@@ -74,7 +73,7 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Initializes an instance of AppServiceCertificateOrdersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AppServiceCertificateOrdersClientImpl(WebSiteManagementClientImpl client) {
@@ -319,9 +318,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
+     * 
      * Description for List all certificate orders in a subscription.
-     *
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate orders along with {@link PagedResponse} on successful completion of
@@ -348,9 +347,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
+     * 
      * Description for List all certificate orders in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -379,9 +378,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
+     * 
      * Description for List all certificate orders in a subscription.
-     *
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate orders as paginated response with {@link PagedFlux}.
@@ -393,9 +392,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
+     * 
      * Description for List all certificate orders in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -410,9 +409,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
+     * 
      * Description for List all certificate orders in a subscription.
-     *
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificate orders as paginated response with {@link PagedIterable}.
@@ -424,9 +423,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificate orders in a subscription.
-     *
+     * 
      * Description for List all certificate orders in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -440,9 +439,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
+     * 
      * Description for Validate information for a certificate order.
-     *
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -474,9 +473,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
+     * 
      * Description for Validate information for a certificate order.
-     *
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -509,9 +508,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
+     * 
      * Description for Validate information for a certificate order.
-     *
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -526,9 +525,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
+     * 
      * Description for Validate information for a certificate order.
-     *
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -544,9 +543,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Validate information for a certificate order.
-     *
+     * 
      * Description for Validate information for a certificate order.
-     *
+     * 
      * @param appServiceCertificateOrder Information for a certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -559,9 +558,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
+     * 
      * Description for Get certificate orders in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -595,9 +594,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
+     * 
      * Description for Get certificate orders in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,9 +631,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
+     * 
      * Description for Get certificate orders in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -649,9 +648,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
+     * 
      * Description for Get certificate orders in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,9 +667,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
+     * 
      * Description for Get certificate orders in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -684,9 +683,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get certificate orders in a resource group.
-     *
+     * 
      * Description for Get certificate orders in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -702,9 +701,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get a certificate order.
-     *
+     * 
      * Description for Get a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,9 +739,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get a certificate order.
-     *
+     * 
      * Description for Get a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -778,9 +777,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get a certificate order.
-     *
+     * 
      * Description for Get a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,9 +796,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get a certificate order.
-     *
+     * 
      * Description for Get a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @param context The context to associate with this operation.
@@ -816,9 +815,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get a certificate order.
-     *
+     * 
      * Description for Get a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order..
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,9 +832,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -879,9 +878,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -925,9 +924,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -949,9 +948,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -975,9 +974,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -996,9 +995,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1019,9 +1018,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1039,9 +1038,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1061,9 +1060,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1080,9 +1079,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1101,9 +1100,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
+     * 
      * Description for Delete an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1138,9 +1137,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
+     * 
      * Description for Delete an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1176,9 +1175,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
+     * 
      * Description for Delete an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1193,9 +1192,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
+     * 
      * Description for Delete an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1211,9 +1210,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete an existing certificate order.
-     *
+     * 
      * Description for Delete an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1227,9 +1226,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1273,9 +1272,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1320,9 +1319,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1340,9 +1339,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1362,9 +1361,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Create or update a certificate purchase order.
-     *
+     * 
      * Description for Create or update a certificate purchase order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param certificateDistinguishedName Distinguished name to use for the certificate order.
@@ -1382,9 +1381,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
+     * 
      * Description for List all certificates associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1423,9 +1422,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
+     * 
      * Description for List all certificates associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1465,9 +1464,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
+     * 
      * Description for List all certificates associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1484,9 +1483,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
+     * 
      * Description for List all certificates associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1504,9 +1503,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
+     * 
      * Description for List all certificates associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1522,9 +1521,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * List all certificates associated with a certificate order.
-     *
+     * 
      * Description for List all certificates associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -1541,9 +1540,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the certificate associated with a certificate order.
-     *
+     * 
      * Description for Get the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1585,9 +1584,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the certificate associated with a certificate order.
-     *
+     * 
      * Description for Get the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1628,9 +1627,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the certificate associated with a certificate order.
-     *
+     * 
      * Description for Get the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1649,9 +1648,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the certificate associated with a certificate order.
-     *
+     * 
      * Description for Get the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1670,9 +1669,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the certificate associated with a certificate order.
-     *
+     * 
      * Description for Get the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1689,9 +1688,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1740,9 +1739,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1791,9 +1790,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1817,9 +1816,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1845,9 +1844,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1869,9 +1868,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1895,9 +1894,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1918,9 +1917,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1942,9 +1941,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1963,9 +1962,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -1986,9 +1985,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
+     * 
      * Description for Delete the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2029,9 +2028,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
+     * 
      * Description for Delete the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2071,9 +2070,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
+     * 
      * Description for Delete the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2090,9 +2089,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
+     * 
      * Description for Delete the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2110,9 +2109,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Delete the certificate associated with a certificate order.
-     *
+     * 
      * Description for Delete the certificate associated with a certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2127,9 +2126,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2179,9 +2178,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2230,9 +2229,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2252,9 +2251,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2276,9 +2275,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * Description for Creates or updates a certificate and associates with key vault secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param name Name of the certificate.
@@ -2297,9 +2296,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Reissue an existing certificate order.
-     *
+     * 
      * Description for Reissue an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2343,9 +2342,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Reissue an existing certificate order.
-     *
+     * 
      * Description for Reissue an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2389,9 +2388,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Reissue an existing certificate order.
-     *
+     * 
      * Description for Reissue an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2409,9 +2408,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Reissue an existing certificate order.
-     *
+     * 
      * Description for Reissue an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2430,9 +2429,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Reissue an existing certificate order.
-     *
+     * 
      * Description for Reissue an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param reissueCertificateOrderRequest Parameters for the reissue.
@@ -2448,9 +2447,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Renew an existing certificate order.
-     *
+     * 
      * Description for Renew an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -2494,9 +2493,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Renew an existing certificate order.
-     *
+     * 
      * Description for Renew an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -2540,9 +2539,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Renew an existing certificate order.
-     *
+     * 
      * Description for Renew an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -2560,9 +2559,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Renew an existing certificate order.
-     *
+     * 
      * Description for Renew an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -2581,9 +2580,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Renew an existing certificate order.
-     *
+     * 
      * Description for Renew an existing certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param renewCertificateOrderRequest Renew parameters.
@@ -2599,9 +2598,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend certificate email.
-     *
+     * 
      * Description for Resend certificate email.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2636,9 +2635,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend certificate email.
-     *
+     * 
      * Description for Resend certificate email.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -2674,9 +2673,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend certificate email.
-     *
+     * 
      * Description for Resend certificate email.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2691,9 +2690,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend certificate email.
-     *
+     * 
      * Description for Resend certificate email.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -2710,9 +2709,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend certificate email.
-     *
+     * 
      * Description for Resend certificate email.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2726,10 +2725,10 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
+     * 
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -2772,10 +2771,10 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
+     * 
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -2817,10 +2816,10 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
+     * 
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -2838,10 +2837,10 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
+     * 
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -2860,10 +2859,10 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Resend domain verification email to customer for this certificate order
-     *
+     * 
      * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
      * order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param nameIdentifier Email address.
@@ -2879,7 +2878,7 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
+     * 
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -2887,7 +2886,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -2931,7 +2930,7 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
+     * 
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -2939,7 +2938,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -2982,7 +2981,7 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
+     * 
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -2990,7 +2989,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3008,7 +3007,7 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
+     * 
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -3016,7 +3015,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3035,7 +3034,7 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * This method is used to obtain the site seal information for an issued certificate.
-     *
+     * 
      * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
      * the certificate purchaser can embed on their web site to show their visitors information about their SSL
      * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
@@ -3043,7 +3042,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
      * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
      * times.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param siteSealRequest Site seal request.
@@ -3061,9 +3060,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Verify domain ownership for this certificate order.
-     *
+     * 
      * Description for Verify domain ownership for this certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3099,9 +3098,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Verify domain ownership for this certificate order.
-     *
+     * 
      * Description for Verify domain ownership for this certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3137,9 +3136,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Verify domain ownership for this certificate order.
-     *
+     * 
      * Description for Verify domain ownership for this certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3155,9 +3154,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Verify domain ownership for this certificate order.
-     *
+     * 
      * Description for Verify domain ownership for this certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3174,9 +3173,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Verify domain ownership for this certificate order.
-     *
+     * 
      * Description for Verify domain ownership for this certificate order.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3190,9 +3189,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve the list of certificate actions.
-     *
+     * 
      * Description for Retrieve the list of certificate actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3227,9 +3226,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve the list of certificate actions.
-     *
+     * 
      * Description for Retrieve the list of certificate actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3264,9 +3263,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve the list of certificate actions.
-     *
+     * 
      * Description for Retrieve the list of certificate actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3283,9 +3282,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve the list of certificate actions.
-     *
+     * 
      * Description for Retrieve the list of certificate actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3302,9 +3301,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve the list of certificate actions.
-     *
+     * 
      * Description for Retrieve the list of certificate actions.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3319,9 +3318,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve email history.
-     *
+     * 
      * Description for Retrieve email history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3356,9 +3355,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve email history.
-     *
+     * 
      * Description for Retrieve email history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3393,9 +3392,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve email history.
-     *
+     * 
      * Description for Retrieve email history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3412,9 +3411,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve email history.
-     *
+     * 
      * Description for Retrieve email history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @param context The context to associate with this operation.
@@ -3431,9 +3430,9 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Retrieve email history.
-     *
+     * 
      * Description for Retrieve email history.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3448,10 +3447,8 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3476,10 +3473,8 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3506,10 +3501,8 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3537,10 +3530,8 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3567,10 +3558,8 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3597,10 +3586,8 @@ public final class AppServiceCertificateOrdersClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

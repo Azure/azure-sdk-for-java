@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -64,7 +63,6 @@ public class DeployType extends ExpandableStringEnum<DeployType> {
      * @param name a name to look for
      * @return the corresponding DeployType
      */
-    @JsonCreator
     public static DeployType fromString(String name) {
         return fromString(name, DeployType.class);
     }

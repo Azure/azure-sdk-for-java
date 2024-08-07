@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class DatabaseType extends ExpandableStringEnum<DatabaseType> {
      * @param name a name to look for.
      * @return the corresponding DatabaseType.
      */
-    @JsonCreator
     public static DatabaseType fromString(String name) {
         return fromString(name, DatabaseType.class);
     }
