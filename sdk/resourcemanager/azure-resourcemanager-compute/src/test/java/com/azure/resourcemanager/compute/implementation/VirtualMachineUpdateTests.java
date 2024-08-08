@@ -33,7 +33,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
 
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmname)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_EAST2)
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
@@ -55,7 +55,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
             .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         VirtualMachine.Update vmUpdate = vm.update();

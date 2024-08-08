@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_EAST2;
     private final String vmName = "javavm";
 
     @Override
@@ -28,7 +28,7 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test

@@ -47,7 +47,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test

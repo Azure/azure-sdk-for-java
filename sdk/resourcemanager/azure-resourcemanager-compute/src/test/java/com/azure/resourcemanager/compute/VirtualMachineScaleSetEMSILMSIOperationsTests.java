@@ -40,7 +40,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
     @Override
     protected void cleanUpResources() {
-        this.resourceManager.resourceGroups().beginDeleteByName(rgName);
+        this.resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .networks()
                 .define(networkName)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .create();
 
         // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
@@ -67,7 +67,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .identities()
                 .define(identityName1)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .withAccessTo(network, BuiltInRole.READER)
                 .create();
 
@@ -80,7 +80,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .identities()
                 .define(identityName2)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create a virtual network for VMSS
@@ -91,7 +91,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .networks()
                 .define("vmssvnet")
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
@@ -106,8 +106,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .virtualMachineScaleSets()
                 .define(vmssName)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingResourceGroup(rgName)
+                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -314,7 +314,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .networks()
                 .define(networkName)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
@@ -326,7 +326,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .identities()
                 .define(identityName1)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create a virtual network for VMSS
@@ -337,7 +337,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .networks()
                 .define("vmssvnet")
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
@@ -352,8 +352,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .virtualMachineScaleSets()
                 .define(vmssName)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingResourceGroup(rgName)
+                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -461,7 +461,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .networks()
                 .define("vmssvnet")
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
+                .withExistingResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
@@ -476,8 +476,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .virtualMachineScaleSets()
                 .define(vmssName)
                 .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingResourceGroup(rgName)
+                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -495,7 +495,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .identities()
                 .define(identityName1)
                 .withRegion(region)
-                .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
+                .withExistingResourceGroup(rgName)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Update virtual machine so that it depends on the EMSI
@@ -528,7 +528,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .identities()
                 .define(identityName2)
                 .withRegion(region)
-                .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
+                .withExistingResourceGroup(rgName)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .create();
 

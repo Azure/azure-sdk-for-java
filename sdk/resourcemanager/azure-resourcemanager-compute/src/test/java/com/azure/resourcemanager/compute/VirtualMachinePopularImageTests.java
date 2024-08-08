@@ -45,13 +45,15 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularWindowsImage(image)
                 .withAdminUsername("testUser")
                 .withAdminPassword(password())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .createAsync();
             vmMonos.add(mono);
         }
 
         for (KnownLinuxVirtualMachineImage image : Arrays.stream(KnownLinuxVirtualMachineImage.values())
-            .filter(image -> image != KnownLinuxVirtualMachineImage.OPENSUSE_LEAP_15_1 && image != KnownLinuxVirtualMachineImage.SLES_15_SP1)
+            .filter(image -> image != KnownLinuxVirtualMachineImage.OPENSUSE_LEAP_15_1
+                && image != KnownLinuxVirtualMachineImage.SLES_15_SP1
+                && image != KnownLinuxVirtualMachineImage.ORACLE_LINUX_8_1)
             .collect(Collectors.toList())) {
 
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
@@ -64,7 +66,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularLinuxImage(image)
                 .withRootUsername("testUser")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .createAsync();
             vmMonos.add(mono);
         }
@@ -74,6 +76,6 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 }

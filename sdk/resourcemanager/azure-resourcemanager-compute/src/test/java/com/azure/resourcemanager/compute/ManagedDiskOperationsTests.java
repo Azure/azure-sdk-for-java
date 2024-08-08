@@ -37,9 +37,9 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
         if (rgName2 != null) {
-            resourceManager.resourceGroups().beginDeleteByName(rgName2);
+            resourceManager.resourceGroups().deleteByName(rgName2);
         }
     }
 

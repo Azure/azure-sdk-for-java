@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -20,20 +22,18 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.util.Map;
-
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineManagedDiskOperationsTests.class);
 
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = Region.US_EAST2;
     private KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
 
     @Override
@@ -44,7 +44,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -632,6 +632,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .enableHibernation()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2s_v5"))
             .create();
 
         Assertions.assertTrue(vmWithHibernation.isHibernationEnabled());

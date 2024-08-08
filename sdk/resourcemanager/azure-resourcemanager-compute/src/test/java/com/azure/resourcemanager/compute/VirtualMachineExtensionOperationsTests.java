@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = Region.US_EAST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -32,7 +32,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test

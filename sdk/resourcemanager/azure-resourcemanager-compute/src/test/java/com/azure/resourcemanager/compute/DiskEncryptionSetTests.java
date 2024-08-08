@@ -32,7 +32,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
     @Override
     protected void cleanUpResources() {
         if (rgName != null) {
-            resourceManager.resourceGroups().beginDeleteByName(rgName);
+            resourceManager.resourceGroups().deleteByName(rgName);
         }
     }
 

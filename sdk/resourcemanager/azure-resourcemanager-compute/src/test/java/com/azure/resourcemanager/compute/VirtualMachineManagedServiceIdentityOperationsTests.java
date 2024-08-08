@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_EAST2;
     private final String vmName = "javavm";
 
     @Override
@@ -33,7 +33,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
@@ -126,7 +126,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
@@ -193,7 +193,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
@@ -264,7 +264,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
                 .create();

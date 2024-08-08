@@ -31,14 +31,14 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
     @Override
     protected void cleanUpResources() {
-        this.resourceManager.resourceGroups().beginDeleteByName(rgName);
+        this.resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canCreateUpdateVirtualMachineWithEMSI() {
         // LiveOnly because "test timing out after latest test proxy update"
-        // this.resourceManager.resourceGroups().beginDeleteByName("41522c6e938c4f6");
+        // this.resourceManager.resourceGroups().deleteByName("41522c6e938c4f6");
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String identityName2 = generateRandomResourceName("msi-id", 15);
@@ -56,13 +56,14 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
         // network
         //
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().getByName(rgName);
         final Identity createdIdentity =
             msiManager
                 .identities()
                 .define(identityName1)
                 .withRegion(region)
                 .withNewResourceGroup(creatableRG)
-                .withAccessTo(network, BuiltInRole.READER)
+                .withAccessTo(resourceGroup, BuiltInRole.READER)
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
@@ -93,7 +94,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withSsh(sshPublicKey())
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -152,7 +153,6 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
         // Ensure expected role assignment exists for explicitly created EMSI
         //
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
         Assertions.assertNotNull(resourceGroup);
 
         PagedIterable<RoleAssignment> roleAssignmentsForResourceGroup =
@@ -304,9 +304,9 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
                 .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
+                .withSystemAssignedIdentityBasedAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -407,7 +407,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

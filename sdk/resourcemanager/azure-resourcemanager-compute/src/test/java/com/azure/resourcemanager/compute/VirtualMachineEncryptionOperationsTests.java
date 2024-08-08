@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_EAST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -30,7 +30,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test

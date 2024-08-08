@@ -88,27 +88,39 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     private String rgName = "";
     private String rgName2 = "";
-    private final Region region = Region.US_EAST;
-    private final Region regionProxPlacementGroup = Region.US_WEST;
-    private final Region regionProxPlacementGroup2 = Region.US_EAST;
-    private final String vmName = "javavm";
-    private final String proxGroupName = "testproxgroup1";
-    private final String proxGroupName2 = "testproxgroup2";
-    private final String availabilitySetName = "availset1";
-    private final String availabilitySetName2 = "availset2";
+    private final Region region = Region.US_EAST2;
+    private final Region regionProxPlacementGroup = Region.US_WEST2;
+    private final Region regionProxPlacementGroup2 = Region.US_EAST2;
+    private String vmName = "";
+    private String proxGroupName = "";
+    private String proxGroupName2 = "";
+    private String availabilitySetName = "";
+    private String availabilitySetName2 = "";
     private final ProximityPlacementGroupType proxGroupType = ProximityPlacementGroupType.STANDARD;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        vmName = generateRandomResourceName("javavm", 15);
         rgName = generateRandomResourceName("javacsmrg", 15);
-        rgName2 = generateRandomResourceName("javacsmrg2", 15);
+        if ("cannotUpdateProximityPlacementGroupForVirtualMachine"
+            .equalsIgnoreCase(this.testContextManager.getTestName())) {
+            rgName2 = generateRandomResourceName("javacsmrg2", 15);
+        }
+        proxGroupName = generateRandomResourceName("testproxgroup1", 15);
+        proxGroupName2 = generateRandomResourceName("testproxgroup2", 15);
+        availabilitySetName = generateRandomResourceName("availset1", 15);
+        availabilitySetName2 = generateRandomResourceName("availset2", 15);
         super.initializeClients(httpPipeline, profile);
     }
 
     @Override
     protected void cleanUpResources() {
         if (rgName != null) {
-            resourceManager.resourceGroups().beginDeleteByName(rgName);
+            resourceManager.resourceGroups().deleteByName(rgName);
+        }
+        if ("cannotUpdateProximityPlacementGroupForVirtualMachine"
+            .equalsIgnoreCase(this.testContextManager.getTestName())) {
+            resourceManager.resourceGroups().deleteByName(rgName2);
         }
     }
 
@@ -130,7 +142,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withNewDataDisk(127)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withUserData(userDataForCreate)
             .create();
         Response<VirtualMachineInner> response = computeManager.serviceClient().getVirtualMachines()
@@ -227,7 +239,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -314,7 +326,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -384,7 +396,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
@@ -499,7 +511,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -550,7 +562,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     clEx
                         .getMessage()
                         .contains(
-                            "Updating proximity placement group of VM javavm is not allowed while the VM is running."
+                            "Updating proximity placement group of VM " + vmName + " is not allowed while the VM is running."
                                 + " Please stop/deallocate the VM and retry the operation."));
         }
 
@@ -594,7 +606,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -809,7 +821,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withLun(3)
                 .storeAt(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
                 .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -846,7 +858,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .create();
         // Gets the vm
         //
@@ -894,7 +906,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .create();
 
         // checking to see if withTag correctly update
@@ -950,7 +962,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("firstuser")
             .withSsh(sshPublicKey())
             .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         Assertions.assertNotNull(virtualMachine.osDiskStorageAccountType());
@@ -1057,7 +1069,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
             .withOSDiskDeleteOptions(DeleteOptions.DELETE)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         Assertions.assertEquals(DeleteOptions.DELETE, vm1.osDiskDeleteOptions());
@@ -1146,7 +1158,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withData()
                 .withSizeInGB(10))
             .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         Assertions.assertEquals(DeleteOptions.DETACH, vm3.osDiskDeleteOptions());
@@ -1224,7 +1236,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withNewDataDisk(10)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         // update with new Disk with DeleteOptions=DELETE
@@ -1247,7 +1259,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // create to enable hibernation
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmName)
-            .withRegion("eastus2euap")
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
@@ -1258,7 +1270,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2ads_v5"))
             .enableHibernation()
             .create();
 
@@ -1295,7 +1307,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
@@ -1331,7 +1343,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withEphemeralOSDisk()
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
             .withNewDataDisk(1, 1, CachingTypes.READ_WRITE)
@@ -1386,7 +1398,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -1443,7 +1455,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootUsername("jvuser3")
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withNewStorageAccount(storageAccountName)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withExistingVirtualMachineScaleSet(flexibleVMSS)
@@ -1468,7 +1480,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .define(vmssName2)
             .withRegion(region)
             .withNewResourceGroup(rgName)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
             .withExistingPrimaryNetworkSubnet(network2, "subnet2")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer2)
             .withoutPrimaryInternalLoadBalancer()
@@ -1623,7 +1635,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withTrustedLaunch()
             .withSecureBoot()
             .withVTpm()
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
             .create();
 
@@ -1681,7 +1693,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D8ads_v5"))
             .withNewSecondaryNetworkInterface(this
                 .networkManager
                 .networkInterfaces()
@@ -1840,7 +1852,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -1876,7 +1888,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -1901,7 +1913,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -1928,7 +1940,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")

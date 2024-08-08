@@ -46,7 +46,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
     @Override
     protected void cleanUpResources() {
         if (resourceManager != null) {
-            resourceManager.resourceGroups().beginDeleteByName(rgName);
+            resourceManager.resourceGroups().deleteByName(rgName);
         }
     }
 
