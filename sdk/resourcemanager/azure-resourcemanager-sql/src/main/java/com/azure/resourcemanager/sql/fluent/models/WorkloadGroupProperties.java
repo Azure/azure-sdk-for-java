@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Workload group definition. For more information look at sys.workload_management_workload_groups (DMV). */
+/**
+ * Workload group definition. For more information look at sys.workload_management_workload_groups (DMV).
+ */
 @Fluent
-public final class WorkloadGroupProperties {
+public final class WorkloadGroupProperties implements JsonSerializable<WorkloadGroupProperties> {
     /*
      * The workload group minimum percentage resource.
      */
-    @JsonProperty(value = "minResourcePercent", required = true)
     private int minResourcePercent;
 
     /*
      * The workload group cap percentage resource.
      */
-    @JsonProperty(value = "maxResourcePercent", required = true)
     private int maxResourcePercent;
 
     /*
      * The workload group request minimum grant percentage.
      */
-    @JsonProperty(value = "minResourcePercentPerRequest", required = true)
     private double minResourcePercentPerRequest;
 
     /*
      * The workload group request maximum grant percentage.
      */
-    @JsonProperty(value = "maxResourcePercentPerRequest")
     private Double maxResourcePercentPerRequest;
 
     /*
      * The workload group importance level.
      */
-    @JsonProperty(value = "importance")
     private String importance;
 
     /*
      * The workload group query execution timeout.
      */
-    @JsonProperty(value = "queryExecutionTimeout")
     private Integer queryExecutionTimeout;
 
-    /** Creates an instance of WorkloadGroupProperties class. */
+    /**
+     * Creates an instance of WorkloadGroupProperties class.
+     */
     public WorkloadGroupProperties() {
     }
 
     /**
      * Get the minResourcePercent property: The workload group minimum percentage resource.
-     *
+     * 
      * @return the minResourcePercent value.
      */
     public int minResourcePercent() {
@@ -61,7 +63,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the minResourcePercent property: The workload group minimum percentage resource.
-     *
+     * 
      * @param minResourcePercent the minResourcePercent value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -72,7 +74,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the maxResourcePercent property: The workload group cap percentage resource.
-     *
+     * 
      * @return the maxResourcePercent value.
      */
     public int maxResourcePercent() {
@@ -81,7 +83,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the maxResourcePercent property: The workload group cap percentage resource.
-     *
+     * 
      * @param maxResourcePercent the maxResourcePercent value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -92,7 +94,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
-     *
+     * 
      * @return the minResourcePercentPerRequest value.
      */
     public double minResourcePercentPerRequest() {
@@ -101,7 +103,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
-     *
+     * 
      * @param minResourcePercentPerRequest the minResourcePercentPerRequest value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -112,7 +114,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
-     *
+     * 
      * @return the maxResourcePercentPerRequest value.
      */
     public Double maxResourcePercentPerRequest() {
@@ -121,7 +123,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
-     *
+     * 
      * @param maxResourcePercentPerRequest the maxResourcePercentPerRequest value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -132,7 +134,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the importance property: The workload group importance level.
-     *
+     * 
      * @return the importance value.
      */
     public String importance() {
@@ -141,7 +143,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the importance property: The workload group importance level.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -152,7 +154,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the queryExecutionTimeout property: The workload group query execution timeout.
-     *
+     * 
      * @return the queryExecutionTimeout value.
      */
     public Integer queryExecutionTimeout() {
@@ -161,7 +163,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the queryExecutionTimeout property: The workload group query execution timeout.
-     *
+     * 
      * @param queryExecutionTimeout the queryExecutionTimeout value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -172,9 +174,62 @@ public final class WorkloadGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("minResourcePercent", this.minResourcePercent);
+        jsonWriter.writeIntField("maxResourcePercent", this.maxResourcePercent);
+        jsonWriter.writeDoubleField("minResourcePercentPerRequest", this.minResourcePercentPerRequest);
+        jsonWriter.writeNumberField("maxResourcePercentPerRequest", this.maxResourcePercentPerRequest);
+        jsonWriter.writeStringField("importance", this.importance);
+        jsonWriter.writeNumberField("queryExecutionTimeout", this.queryExecutionTimeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkloadGroupProperties.
+     */
+    public static WorkloadGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadGroupProperties deserializedWorkloadGroupProperties = new WorkloadGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minResourcePercent".equals(fieldName)) {
+                    deserializedWorkloadGroupProperties.minResourcePercent = reader.getInt();
+                } else if ("maxResourcePercent".equals(fieldName)) {
+                    deserializedWorkloadGroupProperties.maxResourcePercent = reader.getInt();
+                } else if ("minResourcePercentPerRequest".equals(fieldName)) {
+                    deserializedWorkloadGroupProperties.minResourcePercentPerRequest = reader.getDouble();
+                } else if ("maxResourcePercentPerRequest".equals(fieldName)) {
+                    deserializedWorkloadGroupProperties.maxResourcePercentPerRequest
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("importance".equals(fieldName)) {
+                    deserializedWorkloadGroupProperties.importance = reader.getString();
+                } else if ("queryExecutionTimeout".equals(fieldName)) {
+                    deserializedWorkloadGroupProperties.queryExecutionTimeout = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadGroupProperties;
+        });
     }
 }

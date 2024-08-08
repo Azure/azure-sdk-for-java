@@ -6,28 +6,49 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** An Azure SQL Database sync member. */
+/**
+ * An Azure SQL Database sync member.
+ */
 @Fluent
 public final class SyncMemberInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SyncMemberProperties innerProperties;
 
-    /** Creates an instance of SyncMemberInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SyncMemberInner class.
+     */
     public SyncMemberInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SyncMemberProperties innerProperties() {
@@ -35,8 +56,38 @@ public final class SyncMemberInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the databaseType property: Database type of the sync member.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -45,7 +96,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the databaseType property: Database type of the sync member.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -59,7 +110,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the syncAgentId property: ARM resource id of the sync agent in the sync member.
-     *
+     * 
      * @return the syncAgentId value.
      */
     public String syncAgentId() {
@@ -68,7 +119,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the syncAgentId property: ARM resource id of the sync agent in the sync member.
-     *
+     * 
      * @param syncAgentId the syncAgentId value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -82,7 +133,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the sqlServerDatabaseId property: SQL Server database id of the sync member.
-     *
+     * 
      * @return the sqlServerDatabaseId value.
      */
     public UUID sqlServerDatabaseId() {
@@ -91,7 +142,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the sqlServerDatabaseId property: SQL Server database id of the sync member.
-     *
+     * 
      * @param sqlServerDatabaseId the sqlServerDatabaseId value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -106,7 +157,7 @@ public final class SyncMemberInner extends ProxyResource {
     /**
      * Get the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
      * members in Azure.
-     *
+     * 
      * @return the syncMemberAzureDatabaseResourceId value.
      */
     public String syncMemberAzureDatabaseResourceId() {
@@ -116,7 +167,7 @@ public final class SyncMemberInner extends ProxyResource {
     /**
      * Set the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
      * members in Azure.
-     *
+     * 
      * @param syncMemberAzureDatabaseResourceId the syncMemberAzureDatabaseResourceId value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -130,7 +181,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the usePrivateLinkConnection property: Whether to use private link connection.
-     *
+     * 
      * @return the usePrivateLinkConnection value.
      */
     public Boolean usePrivateLinkConnection() {
@@ -139,7 +190,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the usePrivateLinkConnection property: Whether to use private link connection.
-     *
+     * 
      * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -154,7 +205,7 @@ public final class SyncMemberInner extends ProxyResource {
     /**
      * Get the privateEndpointName property: Private endpoint name of the sync member if use private link connection is
      * enabled, for sync members in Azure.
-     *
+     * 
      * @return the privateEndpointName value.
      */
     public String privateEndpointName() {
@@ -163,7 +214,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the serverName property: Server name of the member database in the sync member.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -172,7 +223,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the serverName property: Server name of the member database in the sync member.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -186,7 +237,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the databaseName property: Database name of the member database in the sync member.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -195,7 +246,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the databaseName property: Database name of the member database in the sync member.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -209,7 +260,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the username property: User name of the member database in the sync member.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -218,7 +269,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the username property: User name of the member database in the sync member.
-     *
+     * 
      * @param username the username value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -232,7 +283,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the password property: Password of the member database in the sync member.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -241,7 +292,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the password property: Password of the member database in the sync member.
-     *
+     * 
      * @param password the password value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -255,7 +306,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the syncDirection property: Sync direction of the sync member.
-     *
+     * 
      * @return the syncDirection value.
      */
     public SyncDirection syncDirection() {
@@ -264,7 +315,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Set the syncDirection property: Sync direction of the sync member.
-     *
+     * 
      * @param syncDirection the syncDirection value to set.
      * @return the SyncMemberInner object itself.
      */
@@ -278,7 +329,7 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Get the syncState property: Sync state of the sync member.
-     *
+     * 
      * @return the syncState value.
      */
     public SyncMemberState syncState() {
@@ -287,12 +338,55 @@ public final class SyncMemberInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncMemberInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncMemberInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SyncMemberInner.
+     */
+    public static SyncMemberInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncMemberInner deserializedSyncMemberInner = new SyncMemberInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSyncMemberInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSyncMemberInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSyncMemberInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSyncMemberInner.innerProperties = SyncMemberProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncMemberInner;
+        });
     }
 }

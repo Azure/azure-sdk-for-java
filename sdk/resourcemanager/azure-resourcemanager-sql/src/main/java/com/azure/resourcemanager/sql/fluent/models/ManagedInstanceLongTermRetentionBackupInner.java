@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A long term retention backup for a managed database. */
+/**
+ * A long term retention backup for a managed database.
+ */
 @Immutable
 public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ManagedInstanceLongTermRetentionBackupProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceLongTermRetentionBackupInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ManagedInstanceLongTermRetentionBackupInner class.
+     */
     public ManagedInstanceLongTermRetentionBackupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceLongTermRetentionBackupProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the managedInstanceName property: The managed instance that the backup database belongs to.
-     *
+     * 
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
@@ -43,7 +94,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the managedInstanceCreateTime property: The create time of the instance.
-     *
+     * 
      * @return the managedInstanceCreateTime value.
      */
     public OffsetDateTime managedInstanceCreateTime() {
@@ -52,7 +103,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -61,7 +112,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -70,7 +121,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -79,7 +130,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -88,7 +139,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -97,12 +148,57 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceLongTermRetentionBackupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceLongTermRetentionBackupInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstanceLongTermRetentionBackupInner.
+     */
+    public static ManagedInstanceLongTermRetentionBackupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceLongTermRetentionBackupInner deserializedManagedInstanceLongTermRetentionBackupInner
+                = new ManagedInstanceLongTermRetentionBackupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupInner.innerProperties
+                        = ManagedInstanceLongTermRetentionBackupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceLongTermRetentionBackupInner;
+        });
     }
 }

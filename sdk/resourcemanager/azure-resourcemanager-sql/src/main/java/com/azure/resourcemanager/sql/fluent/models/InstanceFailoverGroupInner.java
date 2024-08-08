@@ -6,30 +6,51 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReadWriteEndpoint;
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ManagedInstancePairInfo;
 import com.azure.resourcemanager.sql.models.PartnerRegionInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An instance failover group. */
+/**
+ * An instance failover group.
+ */
 @Fluent
 public final class InstanceFailoverGroupInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private InstanceFailoverGroupProperties innerProperties;
 
-    /** Creates an instance of InstanceFailoverGroupInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of InstanceFailoverGroupInner class.
+     */
     public InstanceFailoverGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InstanceFailoverGroupProperties innerProperties() {
@@ -37,8 +58,38 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @return the readWriteEndpoint value.
      */
     public InstanceFailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -47,7 +98,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -61,7 +112,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @return the readOnlyEndpoint value.
      */
     public InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -70,7 +121,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -84,7 +135,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Get the replicationRole property: Local replication role of the failover group instance.
-     *
+     * 
      * @return the replicationRole value.
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {
@@ -93,7 +144,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Get the replicationState property: Replication state of the failover group instance.
-     *
+     * 
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -102,7 +153,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Get the partnerRegions property: Partner region information for the failover group.
-     *
+     * 
      * @return the partnerRegions value.
      */
     public List<PartnerRegionInfo> partnerRegions() {
@@ -111,7 +162,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Set the partnerRegions property: Partner region information for the failover group.
-     *
+     * 
      * @param partnerRegions the partnerRegions value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -125,7 +176,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Get the managedInstancePairs property: List of managed instance pairs in the failover group.
-     *
+     * 
      * @return the managedInstancePairs value.
      */
     public List<ManagedInstancePairInfo> managedInstancePairs() {
@@ -134,7 +185,7 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Set the managedInstancePairs property: List of managed instance pairs in the failover group.
-     *
+     * 
      * @param managedInstancePairs the managedInstancePairs value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -148,12 +199,56 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstanceFailoverGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstanceFailoverGroupInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InstanceFailoverGroupInner.
+     */
+    public static InstanceFailoverGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstanceFailoverGroupInner deserializedInstanceFailoverGroupInner = new InstanceFailoverGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInstanceFailoverGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInstanceFailoverGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInstanceFailoverGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInstanceFailoverGroupInner.innerProperties
+                        = InstanceFailoverGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstanceFailoverGroupInner;
+        });
     }
 }

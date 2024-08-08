@@ -4,51 +4,46 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.Arrays;
 
-/** Samples for DatabaseColumns ListByDatabase. */
+/**
+ * Samples for DatabaseColumns ListByDatabase.
+ */
 public final class DatabaseColumnsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnsListByDatabaseMax.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnsListByDatabaseMax.json
      */
     /**
      * Sample code: Filter database columns.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void filterDatabaseColumns(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseColumns()
-            .listByDatabase(
-                "myRG",
-                "serverName",
-                "myDatabase",
-                Arrays.asList("dbo"),
-                Arrays.asList("customer", "address"),
-                Arrays.asList("username"),
-                Arrays.asList("schema asc", "table", "column desc"),
-                null,
-                Context.NONE);
+            .listByDatabase("myRG", "serverName", "myDatabase", Arrays.asList("dbo"),
+                Arrays.asList("customer", "address"), Arrays.asList("username"),
+                Arrays.asList("schema asc", "table", "column desc"), null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnsListByDatabaseMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnsListByDatabaseMin.json
      */
     /**
      * Sample code: List database columns.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDatabaseColumns(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseColumns()
-            .listByDatabase("myRG", "serverName", "myDatabase", null, null, null, null, null, Context.NONE);
+            .listByDatabase("myRG", "serverName", "myDatabase", null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

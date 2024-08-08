@@ -7,32 +7,52 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AdvancedThreatProtectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A database Advanced Threat Protection. */
+/**
+ * A database Advanced Threat Protection.
+ */
 @Fluent
 public final class DatabaseAdvancedThreatProtectionInner extends ProxyResource {
     /*
      * SystemData of AdvancedThreatProtectionResource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private AdvancedThreatProtectionProperties innerProperties;
 
-    /** Creates an instance of DatabaseAdvancedThreatProtectionInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of DatabaseAdvancedThreatProtectionInner class.
+     */
     public DatabaseAdvancedThreatProtectionInner() {
     }
 
     /**
      * Get the systemData property: SystemData of AdvancedThreatProtectionResource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -41,7 +61,7 @@ public final class DatabaseAdvancedThreatProtectionInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdvancedThreatProtectionProperties innerProperties() {
@@ -49,9 +69,39 @@ public final class DatabaseAdvancedThreatProtectionInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the state property: Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
      * or a state has not been applied yet on the specific database or server.
-     *
+     * 
      * @return the state value.
      */
     public AdvancedThreatProtectionState state() {
@@ -61,7 +111,7 @@ public final class DatabaseAdvancedThreatProtectionInner extends ProxyResource {
     /**
      * Set the state property: Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
      * or a state has not been applied yet on the specific database or server.
-     *
+     * 
      * @param state the state value to set.
      * @return the DatabaseAdvancedThreatProtectionInner object itself.
      */
@@ -75,7 +125,7 @@ public final class DatabaseAdvancedThreatProtectionInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -84,12 +134,59 @@ public final class DatabaseAdvancedThreatProtectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseAdvancedThreatProtectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseAdvancedThreatProtectionInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseAdvancedThreatProtectionInner.
+     */
+    public static DatabaseAdvancedThreatProtectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseAdvancedThreatProtectionInner deserializedDatabaseAdvancedThreatProtectionInner
+                = new DatabaseAdvancedThreatProtectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseAdvancedThreatProtectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseAdvancedThreatProtectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseAdvancedThreatProtectionInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDatabaseAdvancedThreatProtectionInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseAdvancedThreatProtectionInner.innerProperties
+                        = AdvancedThreatProtectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseAdvancedThreatProtectionInner;
+        });
     }
 }

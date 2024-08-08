@@ -6,29 +6,50 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobExecutionLifecycle;
 import com.azure.resourcemanager.sql.models.JobExecutionTarget;
 import com.azure.resourcemanager.sql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** An execution of a job. */
+/**
+ * An execution of a job.
+ */
 @Fluent
 public final class JobExecutionInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private JobExecutionProperties innerProperties;
 
-    /** Creates an instance of JobExecutionInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of JobExecutionInner class.
+     */
     public JobExecutionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobExecutionProperties innerProperties() {
@@ -36,8 +57,38 @@ public final class JobExecutionInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the jobVersion property: The job version number.
-     *
+     * 
      * @return the jobVersion value.
      */
     public Integer jobVersion() {
@@ -46,7 +97,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the stepName property: The job step name.
-     *
+     * 
      * @return the stepName value.
      */
     public String stepName() {
@@ -55,7 +106,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the stepId property: The job step id.
-     *
+     * 
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -64,7 +115,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the jobExecutionId property: The unique identifier of the job execution.
-     *
+     * 
      * @return the jobExecutionId value.
      */
     public UUID jobExecutionId() {
@@ -73,7 +124,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the lifecycle property: The detailed state of the job execution.
-     *
+     * 
      * @return the lifecycle value.
      */
     public JobExecutionLifecycle lifecycle() {
@@ -82,7 +133,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The ARM provisioning state of the job execution.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -91,7 +142,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the createTime property: The time that the job execution was created.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -100,7 +151,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the startTime property: The time that the job execution started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -109,7 +160,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the endTime property: The time that the job execution completed.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -118,7 +169,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the currentAttempts property: Number of times the job execution has been attempted.
-     *
+     * 
      * @return the currentAttempts value.
      */
     public Integer currentAttempts() {
@@ -127,7 +178,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Set the currentAttempts property: Number of times the job execution has been attempted.
-     *
+     * 
      * @param currentAttempts the currentAttempts value to set.
      * @return the JobExecutionInner object itself.
      */
@@ -141,7 +192,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the currentAttemptStartTime property: Start time of the current attempt.
-     *
+     * 
      * @return the currentAttemptStartTime value.
      */
     public OffsetDateTime currentAttemptStartTime() {
@@ -150,7 +201,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the lastMessage property: The last status or error message.
-     *
+     * 
      * @return the lastMessage value.
      */
     public String lastMessage() {
@@ -159,7 +210,7 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the target property: The target that this execution is executed on.
-     *
+     * 
      * @return the target value.
      */
     public JobExecutionTarget target() {
@@ -168,12 +219,55 @@ public final class JobExecutionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobExecutionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobExecutionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobExecutionInner.
+     */
+    public static JobExecutionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobExecutionInner deserializedJobExecutionInner = new JobExecutionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobExecutionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobExecutionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobExecutionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobExecutionInner.innerProperties = JobExecutionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobExecutionInner;
+        });
     }
 }

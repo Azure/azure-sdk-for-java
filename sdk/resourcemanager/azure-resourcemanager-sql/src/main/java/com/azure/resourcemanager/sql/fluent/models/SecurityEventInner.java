@@ -6,27 +6,48 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SecurityEventSqlInjectionAdditionalProperties;
 import com.azure.resourcemanager.sql.models.SecurityEventType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A security event. */
+/**
+ * A security event.
+ */
 @Immutable
 public final class SecurityEventInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SecurityEventProperties innerProperties;
 
-    /** Creates an instance of SecurityEventInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SecurityEventInner class.
+     */
     public SecurityEventInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityEventProperties innerProperties() {
@@ -34,8 +55,38 @@ public final class SecurityEventInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the eventTime property: The time when the security event occurred.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -44,7 +95,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the securityEventType property: The type of the security event.
-     *
+     * 
      * @return the securityEventType value.
      */
     public SecurityEventType securityEventType() {
@@ -53,7 +104,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the subscription property: The subscription name.
-     *
+     * 
      * @return the subscription value.
      */
     public String subscription() {
@@ -62,7 +113,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the server property: The server name.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -71,7 +122,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the database property: The database name.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -80,7 +131,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the clientIp property: The IP address of the client who executed the statement.
-     *
+     * 
      * @return the clientIp value.
      */
     public String clientIp() {
@@ -89,7 +140,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the applicationName property: The application used to execute the statement.
-     *
+     * 
      * @return the applicationName value.
      */
     public String applicationName() {
@@ -98,7 +149,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the principalName property: The principal user who executed the statement.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -108,7 +159,7 @@ public final class SecurityEventInner extends ProxyResource {
     /**
      * Get the securityEventSqlInjectionAdditionalProperties property: The sql injection additional properties,
      * populated only if the type of the security event is sql injection.
-     *
+     * 
      * @return the securityEventSqlInjectionAdditionalProperties value.
      */
     public SecurityEventSqlInjectionAdditionalProperties securityEventSqlInjectionAdditionalProperties() {
@@ -119,12 +170,55 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityEventInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityEventInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityEventInner.
+     */
+    public static SecurityEventInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityEventInner deserializedSecurityEventInner = new SecurityEventInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityEventInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecurityEventInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecurityEventInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecurityEventInner.innerProperties = SecurityEventProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityEventInner;
+        });
     }
 }

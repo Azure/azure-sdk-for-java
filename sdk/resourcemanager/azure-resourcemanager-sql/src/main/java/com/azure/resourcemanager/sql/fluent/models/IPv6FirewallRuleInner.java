@@ -5,41 +5,85 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ProxyResourceWithWritableName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An IPv6 server firewall rule. */
+/**
+ * An IPv6 server firewall rule.
+ */
 @Fluent
 public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private IPv6ServerFirewallRuleProperties innerProperties;
 
-    /** Creates an instance of IPv6FirewallRuleInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of IPv6FirewallRuleInner class.
+     */
     public IPv6FirewallRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IPv6ServerFirewallRuleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
     @Override
-    public IPv6FirewallRuleInner withName(String name) {
-        super.withName(name);
-        return this;
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @return the startIPv6Address value.
      */
     public String startIPv6Address() {
@@ -48,7 +92,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Set the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @param startIPv6Address the startIPv6Address value to set.
      * @return the IPv6FirewallRuleInner object itself.
      */
@@ -63,7 +107,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     /**
      * Get the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
      * than or equal to startIpAddress.
-     *
+     * 
      * @return the endIPv6Address value.
      */
     public String endIPv6Address() {
@@ -73,7 +117,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     /**
      * Set the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
      * than or equal to startIpAddress.
-     *
+     * 
      * @param endIPv6Address the endIPv6Address value to set.
      * @return the IPv6FirewallRuleInner object itself.
      */
@@ -87,7 +131,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -96,5 +140,52 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IPv6FirewallRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IPv6FirewallRuleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IPv6FirewallRuleInner.
+     */
+    public static IPv6FirewallRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IPv6FirewallRuleInner deserializedIPv6FirewallRuleInner = new IPv6FirewallRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIPv6FirewallRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIPv6FirewallRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIPv6FirewallRuleInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIPv6FirewallRuleInner.withName(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIPv6FirewallRuleInner.innerProperties
+                        = IPv6ServerFirewallRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIPv6FirewallRuleInner;
+        });
     }
 }

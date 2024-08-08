@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.MaintenanceWindowTimeRange;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Maintenance window options. */
+/**
+ * Maintenance window options.
+ */
 @Fluent
 public final class MaintenanceWindowOptionsInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private MaintenanceWindowOptionsProperties innerProperties;
 
-    /** Creates an instance of MaintenanceWindowOptionsInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of MaintenanceWindowOptionsInner class.
+     */
     public MaintenanceWindowOptionsInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MaintenanceWindowOptionsProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the isEnabled property: Whether maintenance windows are enabled for the database.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -43,7 +94,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Set the isEnabled property: Whether maintenance windows are enabled for the database.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
@@ -58,7 +109,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
     /**
      * Get the maintenanceWindowCycles property: Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0,
      * 24*60}.
-     *
+     * 
      * @return the maintenanceWindowCycles value.
      */
     public List<MaintenanceWindowTimeRange> maintenanceWindowCycles() {
@@ -68,12 +119,12 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
     /**
      * Set the maintenanceWindowCycles property: Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0,
      * 24*60}.
-     *
+     * 
      * @param maintenanceWindowCycles the maintenanceWindowCycles value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
-    public MaintenanceWindowOptionsInner withMaintenanceWindowCycles(
-        List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
+    public MaintenanceWindowOptionsInner
+        withMaintenanceWindowCycles(List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MaintenanceWindowOptionsProperties();
         }
@@ -83,7 +134,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Get the minDurationInMinutes property: Minimum duration of maintenance window.
-     *
+     * 
      * @return the minDurationInMinutes value.
      */
     public Integer minDurationInMinutes() {
@@ -92,7 +143,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Set the minDurationInMinutes property: Minimum duration of maintenance window.
-     *
+     * 
      * @param minDurationInMinutes the minDurationInMinutes value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
@@ -106,7 +157,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Get the defaultDurationInMinutes property: Default duration for maintenance window.
-     *
+     * 
      * @return the defaultDurationInMinutes value.
      */
     public Integer defaultDurationInMinutes() {
@@ -115,7 +166,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Set the defaultDurationInMinutes property: Default duration for maintenance window.
-     *
+     * 
      * @param defaultDurationInMinutes the defaultDurationInMinutes value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
@@ -129,7 +180,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Get the minCycles property: Minimum number of maintenance windows cycles to be set on the database.
-     *
+     * 
      * @return the minCycles value.
      */
     public Integer minCycles() {
@@ -138,7 +189,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Set the minCycles property: Minimum number of maintenance windows cycles to be set on the database.
-     *
+     * 
      * @param minCycles the minCycles value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
@@ -152,7 +203,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Get the timeGranularityInMinutes property: Time granularity in minutes for maintenance windows.
-     *
+     * 
      * @return the timeGranularityInMinutes value.
      */
     public Integer timeGranularityInMinutes() {
@@ -161,7 +212,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Set the timeGranularityInMinutes property: Time granularity in minutes for maintenance windows.
-     *
+     * 
      * @param timeGranularityInMinutes the timeGranularityInMinutes value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
@@ -176,7 +227,7 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
     /**
      * Get the allowMultipleMaintenanceWindowsPerCycle property: Whether we allow multiple maintenance windows per
      * cycle.
-     *
+     * 
      * @return the allowMultipleMaintenanceWindowsPerCycle value.
      */
     public Boolean allowMultipleMaintenanceWindowsPerCycle() {
@@ -186,12 +237,12 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
     /**
      * Set the allowMultipleMaintenanceWindowsPerCycle property: Whether we allow multiple maintenance windows per
      * cycle.
-     *
+     * 
      * @param allowMultipleMaintenanceWindowsPerCycle the allowMultipleMaintenanceWindowsPerCycle value to set.
      * @return the MaintenanceWindowOptionsInner object itself.
      */
-    public MaintenanceWindowOptionsInner withAllowMultipleMaintenanceWindowsPerCycle(
-        Boolean allowMultipleMaintenanceWindowsPerCycle) {
+    public MaintenanceWindowOptionsInner
+        withAllowMultipleMaintenanceWindowsPerCycle(Boolean allowMultipleMaintenanceWindowsPerCycle) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MaintenanceWindowOptionsProperties();
         }
@@ -201,12 +252,57 @@ public final class MaintenanceWindowOptionsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindowOptionsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindowOptionsInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MaintenanceWindowOptionsInner.
+     */
+    public static MaintenanceWindowOptionsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindowOptionsInner deserializedMaintenanceWindowOptionsInner
+                = new MaintenanceWindowOptionsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsInner.innerProperties
+                        = MaintenanceWindowOptionsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindowOptionsInner;
+        });
     }
 }

@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** A LongTermRetentionBackup operation result resource. */
+/**
+ * A LongTermRetentionBackup operation result resource.
+ */
 @Immutable
 public final class LongTermRetentionBackupOperationResultInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private LongTermRetentionOperationResultProperties innerProperties;
 
-    /** Creates an instance of LongTermRetentionBackupOperationResultInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of LongTermRetentionBackupOperationResultInner class.
+     */
     public LongTermRetentionBackupOperationResultInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LongTermRetentionOperationResultProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -43,7 +94,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the operationType property: Operation type.
-     *
+     * 
      * @return the operationType value.
      */
     public String operationType() {
@@ -52,7 +103,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the fromBackupResourceId property: Source backup resource id.
-     *
+     * 
      * @return the fromBackupResourceId value.
      */
     public String fromBackupResourceId() {
@@ -61,7 +112,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the toBackupResourceId property: Target backup resource id.
-     *
+     * 
      * @return the toBackupResourceId value.
      */
     public String toBackupResourceId() {
@@ -70,7 +121,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the targetBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy targetBackupStorageRedundancy() {
@@ -79,7 +130,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -88,7 +139,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the message property: Progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -97,12 +148,57 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermRetentionBackupOperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermRetentionBackupOperationResultInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LongTermRetentionBackupOperationResultInner.
+     */
+    public static LongTermRetentionBackupOperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermRetentionBackupOperationResultInner deserializedLongTermRetentionBackupOperationResultInner
+                = new LongTermRetentionBackupOperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupOperationResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupOperationResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupOperationResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupOperationResultInner.innerProperties
+                        = LongTermRetentionOperationResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermRetentionBackupOperationResultInner;
+        });
     }
 }

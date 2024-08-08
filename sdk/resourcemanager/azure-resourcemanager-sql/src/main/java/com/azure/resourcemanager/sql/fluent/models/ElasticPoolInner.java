@@ -6,57 +6,77 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An elastic pool. */
+/**
+ * An elastic pool.
+ */
 @Fluent
 public final class ElasticPoolInner extends Resource {
     /*
      * The elastic pool SKU.
-     *
+     * 
      * The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
      * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
-     *
+     * 
      * ```azurecli
      * az sql elastic-pool list-editions -l <location> -o table
      * ````
-     *
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Kind of elastic pool. This is metadata used for the Azure portal experience.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ElasticPoolProperties innerProperties;
 
-    /** Creates an instance of ElasticPoolInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ElasticPoolInner class.
+     */
     public ElasticPoolInner() {
     }
 
     /**
      * Get the sku property: The elastic pool SKU.
-     *
-     * <p>The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * 
+     * The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
      * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
-     *
-     * <p>```azurecli az sql elastic-pool list-editions -l &lt;location&gt; -o table ````.
-     *
+     * 
+     * ```azurecli
+     * az sql elastic-pool list-editions -l &lt;location&gt; -o table
+     * ````.
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -65,13 +85,15 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Set the sku property: The elastic pool SKU.
-     *
-     * <p>The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * 
+     * The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
      * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
-     *
-     * <p>```azurecli az sql elastic-pool list-editions -l &lt;location&gt; -o table ````.
-     *
+     * 
+     * ```azurecli
+     * az sql elastic-pool list-editions -l &lt;location&gt; -o table
+     * ````.
+     * 
      * @param sku the sku value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -82,7 +104,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the kind property: Kind of elastic pool. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -91,21 +113,55 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ElasticPoolProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ElasticPoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ElasticPoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -114,7 +170,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the state property: The state of the elastic pool.
-     *
+     * 
      * @return the state value.
      */
     public ElasticPoolState state() {
@@ -123,7 +179,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of the elastic pool (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -132,7 +188,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -141,7 +197,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Set the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -155,7 +211,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -164,7 +220,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -178,7 +234,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
@@ -187,7 +243,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Set the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @param perDatabaseSettings the perDatabaseSettings value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -202,7 +258,7 @@ public final class ElasticPoolInner extends Resource {
     /**
      * Get the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -212,7 +268,7 @@ public final class ElasticPoolInner extends Resource {
     /**
      * Set the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -226,7 +282,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Get the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
@@ -235,7 +291,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Set the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -250,7 +306,7 @@ public final class ElasticPoolInner extends Resource {
     /**
      * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -260,7 +316,7 @@ public final class ElasticPoolInner extends Resource {
     /**
      * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -275,7 +331,7 @@ public final class ElasticPoolInner extends Resource {
     /**
      * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @return the highAvailabilityReplicaCount value.
      */
     public Integer highAvailabilityReplicaCount() {
@@ -285,7 +341,7 @@ public final class ElasticPoolInner extends Resource {
     /**
      * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -299,7 +355,7 @@ public final class ElasticPoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -309,5 +365,60 @@ public final class ElasticPoolInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ElasticPoolInner.
+     */
+    public static ElasticPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolInner deserializedElasticPoolInner = new ElasticPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedElasticPoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedElasticPoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedElasticPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedElasticPoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedElasticPoolInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedElasticPoolInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedElasticPoolInner.kind = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedElasticPoolInner.innerProperties = ElasticPoolProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolInner;
+        });
     }
 }

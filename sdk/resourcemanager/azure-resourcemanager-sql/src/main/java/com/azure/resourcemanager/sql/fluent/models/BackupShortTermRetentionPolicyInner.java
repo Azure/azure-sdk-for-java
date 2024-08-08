@@ -6,25 +6,46 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A short term retention policy. */
+/**
+ * A short term retention policy.
+ */
 @Fluent
 public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private BackupShortTermRetentionPolicyProperties innerProperties;
 
-    /** Creates an instance of BackupShortTermRetentionPolicyInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of BackupShortTermRetentionPolicyInner class.
+     */
     public BackupShortTermRetentionPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupShortTermRetentionPolicyProperties innerProperties() {
@@ -32,9 +53,39 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -44,7 +95,7 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
     /**
      * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the BackupShortTermRetentionPolicyInner object itself.
      */
@@ -60,7 +111,7 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
      * Get the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
      * hours between each differential backup will be supported. This is only applicable to live databases but not
      * dropped databases.
-     *
+     * 
      * @return the diffBackupIntervalInHours value.
      */
     public DiffBackupIntervalInHours diffBackupIntervalInHours() {
@@ -71,12 +122,12 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
      * Set the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
      * hours between each differential backup will be supported. This is only applicable to live databases but not
      * dropped databases.
-     *
+     * 
      * @param diffBackupIntervalInHours the diffBackupIntervalInHours value to set.
      * @return the BackupShortTermRetentionPolicyInner object itself.
      */
-    public BackupShortTermRetentionPolicyInner withDiffBackupIntervalInHours(
-        DiffBackupIntervalInHours diffBackupIntervalInHours) {
+    public BackupShortTermRetentionPolicyInner
+        withDiffBackupIntervalInHours(DiffBackupIntervalInHours diffBackupIntervalInHours) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BackupShortTermRetentionPolicyProperties();
         }
@@ -86,12 +137,57 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupShortTermRetentionPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupShortTermRetentionPolicyInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupShortTermRetentionPolicyInner.
+     */
+    public static BackupShortTermRetentionPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupShortTermRetentionPolicyInner deserializedBackupShortTermRetentionPolicyInner
+                = new BackupShortTermRetentionPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyInner.innerProperties
+                        = BackupShortTermRetentionPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupShortTermRetentionPolicyInner;
+        });
     }
 }

@@ -6,40 +6,95 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A restorable dropped managed database resource. */
+/**
+ * A restorable dropped managed database resource.
+ */
 @Fluent
 public final class RestorableDroppedManagedDatabaseInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private RestorableDroppedManagedDatabaseProperties innerProperties;
 
-    /** Creates an instance of RestorableDroppedManagedDatabaseInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of RestorableDroppedManagedDatabaseInner class.
+     */
     public RestorableDroppedManagedDatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableDroppedManagedDatabaseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestorableDroppedManagedDatabaseInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestorableDroppedManagedDatabaseInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +103,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -57,7 +112,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -66,7 +121,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -75,7 +130,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -84,12 +139,64 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDroppedManagedDatabaseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDroppedManagedDatabaseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestorableDroppedManagedDatabaseInner.
+     */
+    public static RestorableDroppedManagedDatabaseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDroppedManagedDatabaseInner deserializedRestorableDroppedManagedDatabaseInner
+                = new RestorableDroppedManagedDatabaseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRestorableDroppedManagedDatabaseInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseInner.innerProperties
+                        = RestorableDroppedManagedDatabaseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDroppedManagedDatabaseInner;
+        });
     }
 }

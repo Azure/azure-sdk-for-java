@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.QueryMetricInterval;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The QueryStatistics model. */
+/**
+ * The QueryStatistics model.
+ */
 @Fluent
 public final class QueryStatisticsInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private QueryStatisticsProperties innerProperties;
 
-    /** Creates an instance of QueryStatisticsInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of QueryStatisticsInner class.
+     */
     public QueryStatisticsInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private QueryStatisticsProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class QueryStatisticsInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the databaseName property: Database name of the database in which this query was executed.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -43,7 +94,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the queryId property: Unique query id (unique within one database).
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -52,7 +103,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -61,7 +112,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -70,7 +121,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the intervals property: List of intervals with appropriate metric data.
-     *
+     * 
      * @return the intervals value.
      */
     public List<QueryMetricInterval> intervals() {
@@ -79,7 +130,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Set the intervals property: List of intervals with appropriate metric data.
-     *
+     * 
      * @param intervals the intervals value to set.
      * @return the QueryStatisticsInner object itself.
      */
@@ -93,12 +144,55 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryStatisticsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryStatisticsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryStatisticsInner.
+     */
+    public static QueryStatisticsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryStatisticsInner deserializedQueryStatisticsInner = new QueryStatisticsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQueryStatisticsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQueryStatisticsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedQueryStatisticsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedQueryStatisticsInner.innerProperties = QueryStatisticsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryStatisticsInner;
+        });
     }
 }

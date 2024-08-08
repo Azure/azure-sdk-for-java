@@ -6,24 +6,45 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A short term retention policy. */
+/**
+ * A short term retention policy.
+ */
 @Fluent
 public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ManagedBackupShortTermRetentionPolicyProperties innerProperties;
 
-    /** Creates an instance of ManagedBackupShortTermRetentionPolicyInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ManagedBackupShortTermRetentionPolicyInner class.
+     */
     public ManagedBackupShortTermRetentionPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedBackupShortTermRetentionPolicyProperties innerProperties() {
@@ -31,9 +52,39 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -43,7 +94,7 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
     /**
      * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the ManagedBackupShortTermRetentionPolicyInner object itself.
      */
@@ -57,12 +108,57 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedBackupShortTermRetentionPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedBackupShortTermRetentionPolicyInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedBackupShortTermRetentionPolicyInner.
+     */
+    public static ManagedBackupShortTermRetentionPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedBackupShortTermRetentionPolicyInner deserializedManagedBackupShortTermRetentionPolicyInner
+                = new ManagedBackupShortTermRetentionPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedBackupShortTermRetentionPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedBackupShortTermRetentionPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedBackupShortTermRetentionPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedBackupShortTermRetentionPolicyInner.innerProperties
+                        = ManagedBackupShortTermRetentionPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedBackupShortTermRetentionPolicyInner;
+        });
     }
 }

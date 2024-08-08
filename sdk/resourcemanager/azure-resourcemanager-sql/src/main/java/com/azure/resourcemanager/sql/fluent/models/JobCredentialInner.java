@@ -6,24 +6,45 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A stored credential that can be used by a job to connect to target databases. */
+/**
+ * A stored credential that can be used by a job to connect to target databases.
+ */
 @Fluent
 public final class JobCredentialInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private JobCredentialProperties innerProperties;
 
-    /** Creates an instance of JobCredentialInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of JobCredentialInner class.
+     */
     public JobCredentialInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobCredentialProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class JobCredentialInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the username property: The credential user name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -41,7 +92,7 @@ public final class JobCredentialInner extends ProxyResource {
 
     /**
      * Set the username property: The credential user name.
-     *
+     * 
      * @param username the username value to set.
      * @return the JobCredentialInner object itself.
      */
@@ -55,7 +106,7 @@ public final class JobCredentialInner extends ProxyResource {
 
     /**
      * Get the password property: The credential password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -64,7 +115,7 @@ public final class JobCredentialInner extends ProxyResource {
 
     /**
      * Set the password property: The credential password.
-     *
+     * 
      * @param password the password value to set.
      * @return the JobCredentialInner object itself.
      */
@@ -78,12 +129,55 @@ public final class JobCredentialInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobCredentialInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobCredentialInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobCredentialInner.
+     */
+    public static JobCredentialInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobCredentialInner deserializedJobCredentialInner = new JobCredentialInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobCredentialInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobCredentialInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobCredentialInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobCredentialInner.innerProperties = JobCredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobCredentialInner;
+        });
     }
 }

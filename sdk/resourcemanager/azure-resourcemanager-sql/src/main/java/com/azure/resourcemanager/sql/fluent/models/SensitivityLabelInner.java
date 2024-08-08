@@ -6,31 +6,51 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A sensitivity label. */
+/**
+ * A sensitivity label.
+ */
 @Fluent
 public final class SensitivityLabelInner extends ProxyResource {
     /*
      * Resource that manages the sensitivity label.
      */
-    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SensitivityLabelProperties innerProperties;
 
-    /** Creates an instance of SensitivityLabelInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SensitivityLabelInner class.
+     */
     public SensitivityLabelInner() {
     }
 
     /**
      * Get the managedBy property: Resource that manages the sensitivity label.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -39,7 +59,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SensitivityLabelProperties innerProperties() {
@@ -47,8 +67,38 @@ public final class SensitivityLabelInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the schemaName property: The schema name.
-     *
+     * 
      * @return the schemaName value.
      */
     public String schemaName() {
@@ -57,7 +107,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the tableName property: The table name.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -66,7 +116,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the columnName property: The column name.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -75,7 +125,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the labelName property: The label name.
-     *
+     * 
      * @return the labelName value.
      */
     public String labelName() {
@@ -84,7 +134,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Set the labelName property: The label name.
-     *
+     * 
      * @param labelName the labelName value to set.
      * @return the SensitivityLabelInner object itself.
      */
@@ -98,7 +148,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the labelId property: The label ID.
-     *
+     * 
      * @return the labelId value.
      */
     public String labelId() {
@@ -107,7 +157,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Set the labelId property: The label ID.
-     *
+     * 
      * @param labelId the labelId value to set.
      * @return the SensitivityLabelInner object itself.
      */
@@ -121,7 +171,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the informationType property: The information type.
-     *
+     * 
      * @return the informationType value.
      */
     public String informationType() {
@@ -130,7 +180,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Set the informationType property: The information type.
-     *
+     * 
      * @param informationType the informationType value to set.
      * @return the SensitivityLabelInner object itself.
      */
@@ -144,7 +194,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the informationTypeId property: The information type ID.
-     *
+     * 
      * @return the informationTypeId value.
      */
     public String informationTypeId() {
@@ -153,7 +203,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Set the informationTypeId property: The information type ID.
-     *
+     * 
      * @param informationTypeId the informationTypeId value to set.
      * @return the SensitivityLabelInner object itself.
      */
@@ -168,7 +218,7 @@ public final class SensitivityLabelInner extends ProxyResource {
     /**
      * Get the isDisabled property: Is sensitivity recommendation disabled. Applicable for recommended sensitivity label
      * only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
-     *
+     * 
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
@@ -177,7 +227,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Get the rank property: The rank property.
-     *
+     * 
      * @return the rank value.
      */
     public SensitivityLabelRank rank() {
@@ -186,7 +236,7 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Set the rank property: The rank property.
-     *
+     * 
      * @param rank the rank value to set.
      * @return the SensitivityLabelInner object itself.
      */
@@ -200,12 +250,57 @@ public final class SensitivityLabelInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SensitivityLabelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SensitivityLabelInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SensitivityLabelInner.
+     */
+    public static SensitivityLabelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SensitivityLabelInner deserializedSensitivityLabelInner = new SensitivityLabelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSensitivityLabelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSensitivityLabelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSensitivityLabelInner.type = reader.getString();
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedSensitivityLabelInner.managedBy = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSensitivityLabelInner.innerProperties = SensitivityLabelProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSensitivityLabelInner;
+        });
     }
 }

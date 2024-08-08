@@ -6,27 +6,48 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobStepAction;
 import com.azure.resourcemanager.sql.models.JobStepExecutionOptions;
 import com.azure.resourcemanager.sql.models.JobStepOutput;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A job step. */
+/**
+ * A job step.
+ */
 @Fluent
 public final class JobStepInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private JobStepProperties innerProperties;
 
-    /** Creates an instance of JobStepInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of JobStepInner class.
+     */
     public JobStepInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobStepProperties innerProperties() {
@@ -34,9 +55,39 @@ public final class JobStepInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the stepId property: The job step's index within the job. If not specified when creating the job step, it
      * will be created as the last step. If not specified when updating the job step, the step id is not modified.
-     *
+     * 
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -46,7 +97,7 @@ public final class JobStepInner extends ProxyResource {
     /**
      * Set the stepId property: The job step's index within the job. If not specified when creating the job step, it
      * will be created as the last step. If not specified when updating the job step, the step id is not modified.
-     *
+     * 
      * @param stepId the stepId value to set.
      * @return the JobStepInner object itself.
      */
@@ -60,7 +111,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the targetGroup property: The resource ID of the target group that the job step will be executed on.
-     *
+     * 
      * @return the targetGroup value.
      */
     public String targetGroup() {
@@ -69,7 +120,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the targetGroup property: The resource ID of the target group that the job step will be executed on.
-     *
+     * 
      * @param targetGroup the targetGroup value to set.
      * @return the JobStepInner object itself.
      */
@@ -83,7 +134,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the credential property: The resource ID of the job credential that will be used to connect to the targets.
-     *
+     * 
      * @return the credential value.
      */
     public String credential() {
@@ -92,7 +143,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the credential property: The resource ID of the job credential that will be used to connect to the targets.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the JobStepInner object itself.
      */
@@ -106,7 +157,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the action property: The action payload of the job step.
-     *
+     * 
      * @return the action value.
      */
     public JobStepAction action() {
@@ -115,7 +166,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the action property: The action payload of the job step.
-     *
+     * 
      * @param action the action value to set.
      * @return the JobStepInner object itself.
      */
@@ -129,7 +180,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the output property: Output destination properties of the job step.
-     *
+     * 
      * @return the output value.
      */
     public JobStepOutput output() {
@@ -138,7 +189,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the output property: Output destination properties of the job step.
-     *
+     * 
      * @param output the output value to set.
      * @return the JobStepInner object itself.
      */
@@ -152,7 +203,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the executionOptions property: Execution options for the job step.
-     *
+     * 
      * @return the executionOptions value.
      */
     public JobStepExecutionOptions executionOptions() {
@@ -161,7 +212,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the executionOptions property: Execution options for the job step.
-     *
+     * 
      * @param executionOptions the executionOptions value to set.
      * @return the JobStepInner object itself.
      */
@@ -175,12 +226,55 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStepInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStepInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobStepInner.
+     */
+    public static JobStepInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStepInner deserializedJobStepInner = new JobStepInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobStepInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobStepInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobStepInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobStepInner.innerProperties = JobStepProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStepInner;
+        });
     }
 }

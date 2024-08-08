@@ -6,24 +6,45 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Workload classifier operations for a data warehouse. */
+/**
+ * Workload classifier operations for a data warehouse.
+ */
 @Fluent
 public final class WorkloadClassifierInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private WorkloadClassifierProperties innerProperties;
 
-    /** Creates an instance of WorkloadClassifierInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of WorkloadClassifierInner class.
+     */
     public WorkloadClassifierInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkloadClassifierProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class WorkloadClassifierInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the memberName property: The workload classifier member name.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -41,7 +92,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the memberName property: The workload classifier member name.
-     *
+     * 
      * @param memberName the memberName value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -55,7 +106,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the label property: The workload classifier label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -64,7 +115,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the label property: The workload classifier label.
-     *
+     * 
      * @param label the label value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -78,7 +129,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the context property: The workload classifier context.
-     *
+     * 
      * @return the context value.
      */
     public String context() {
@@ -87,7 +138,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the context property: The workload classifier context.
-     *
+     * 
      * @param context the context value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -101,7 +152,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the startTime property: The workload classifier start time for classification.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -110,7 +161,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the startTime property: The workload classifier start time for classification.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -124,7 +175,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the endTime property: The workload classifier end time for classification.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -133,7 +184,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the endTime property: The workload classifier end time for classification.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -147,7 +198,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the importance property: The workload classifier importance.
-     *
+     * 
      * @return the importance value.
      */
     public String importance() {
@@ -156,7 +207,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the importance property: The workload classifier importance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -170,12 +221,55 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadClassifierInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadClassifierInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkloadClassifierInner.
+     */
+    public static WorkloadClassifierInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadClassifierInner deserializedWorkloadClassifierInner = new WorkloadClassifierInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkloadClassifierInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkloadClassifierInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkloadClassifierInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkloadClassifierInner.innerProperties = WorkloadClassifierProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadClassifierInner;
+        });
     }
 }

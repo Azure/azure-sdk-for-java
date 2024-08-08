@@ -6,31 +6,51 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The managed instance encryption protector. */
+/**
+ * The managed instance encryption protector.
+ */
 @Fluent
 public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
     /*
      * Kind of encryption protector. This is metadata used for the Azure portal experience.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ManagedInstanceEncryptionProtectorProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceEncryptionProtectorInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ManagedInstanceEncryptionProtectorInner class.
+     */
     public ManagedInstanceEncryptionProtectorInner() {
     }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -39,7 +59,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceEncryptionProtectorProperties innerProperties() {
@@ -47,8 +67,38 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the serverKeyName property: The name of the managed instance key.
-     *
+     * 
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
@@ -57,7 +107,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Set the serverKeyName property: The name of the managed instance key.
-     *
+     * 
      * @param serverKeyName the serverKeyName value to set.
      * @return the ManagedInstanceEncryptionProtectorInner object itself.
      */
@@ -71,7 +121,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Get the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -80,7 +130,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Set the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceEncryptionProtectorInner object itself.
      */
@@ -94,7 +144,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Get the uri property: The URI of the server key.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -103,7 +153,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -112,7 +162,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -121,7 +171,7 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @param autoRotationEnabled the autoRotationEnabled value to set.
      * @return the ManagedInstanceEncryptionProtectorInner object itself.
      */
@@ -135,12 +185,59 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceEncryptionProtectorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceEncryptionProtectorInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstanceEncryptionProtectorInner.
+     */
+    public static ManagedInstanceEncryptionProtectorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceEncryptionProtectorInner deserializedManagedInstanceEncryptionProtectorInner
+                = new ManagedInstanceEncryptionProtectorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorInner.kind = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorInner.innerProperties
+                        = ManagedInstanceEncryptionProtectorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceEncryptionProtectorInner;
+        });
     }
 }

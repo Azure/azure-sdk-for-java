@@ -6,25 +6,46 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagedInstancePrivateLinkProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Immutable
 public final class ManagedInstancePrivateLinkInner extends ProxyResource {
     /*
      * The private link resource group id.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedInstancePrivateLinkProperties properties;
 
-    /** Creates an instance of ManagedInstancePrivateLinkInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ManagedInstancePrivateLinkInner class.
+     */
     public ManagedInstancePrivateLinkInner() {
     }
 
     /**
      * Get the properties property: The private link resource group id.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedInstancePrivateLinkProperties properties() {
@@ -32,13 +53,87 @@ public final class ManagedInstancePrivateLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstancePrivateLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstancePrivateLinkInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstancePrivateLinkInner.
+     */
+    public static ManagedInstancePrivateLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstancePrivateLinkInner deserializedManagedInstancePrivateLinkInner
+                = new ManagedInstancePrivateLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkInner.properties
+                        = ManagedInstancePrivateLinkProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstancePrivateLinkInner;
+        });
     }
 }

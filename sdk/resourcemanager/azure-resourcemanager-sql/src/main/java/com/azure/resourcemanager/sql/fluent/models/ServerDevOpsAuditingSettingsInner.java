@@ -7,32 +7,52 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** A server DevOps auditing settings. */
+/**
+ * A server DevOps auditing settings.
+ */
 @Fluent
 public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     /*
      * SystemData of ServerDevOpsAuditSettingsResource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ServerDevOpsAuditSettingsProperties innerProperties;
 
-    /** Creates an instance of ServerDevOpsAuditingSettingsInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ServerDevOpsAuditingSettingsInner class.
+     */
     public ServerDevOpsAuditingSettingsInner() {
     }
 
     /**
      * Get the systemData property: SystemData of ServerDevOpsAuditSettingsResource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -41,7 +61,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerDevOpsAuditSettingsProperties innerProperties() {
@@ -49,19 +69,50 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     }
 
     /**
-     * Get the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor. In
-     * order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
      * true.
-     *
-     * <p>When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-     * logs category on the master database should be also created.
-     *
-     * <p>Diagnostic Settings URI format: PUT
+     * 
+     * When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should be also created.
+     * 
+     * Diagnostic Settings URI format:
+     * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
-     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
-     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     *
+     * 
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     * 
      * @return the isAzureMonitorTargetEnabled value.
      */
     public Boolean isAzureMonitorTargetEnabled() {
@@ -69,19 +120,20 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     }
 
     /**
-     * Set the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor. In
-     * order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
+     * Set the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
      * true.
-     *
-     * <p>When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-     * logs category on the master database should be also created.
-     *
-     * <p>Diagnostic Settings URI format: PUT
+     * 
+     * When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should be also created.
+     * 
+     * Diagnostic Settings URI format:
+     * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
-     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
-     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     *
+     * 
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     * 
      * @param isAzureMonitorTargetEnabled the isAzureMonitorTargetEnabled value to set.
      * @return the ServerDevOpsAuditingSettingsInner object itself.
      */
@@ -96,7 +148,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     /**
      * Get the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
-     *
+     * 
      * @return the state value.
      */
     public BlobAuditingPolicyState state() {
@@ -106,7 +158,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     /**
      * Set the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerDevOpsAuditingSettingsInner object itself.
      */
@@ -122,7 +174,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is
      * required.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -133,7 +185,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is
      * required.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the ServerDevOpsAuditingSettingsInner object itself.
      */
@@ -146,14 +198,16 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     }
 
     /**
-     * Get the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server
-     * system-assigned managed identity to access the storage. Prerequisites for using managed identity authentication:
-     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD). 2. Grant SQL Server
-     * identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-     * identity. For more information, see [Auditing to storage using Managed Identity
+     * Get the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account.
+     * If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL
+     * server system-assigned managed identity to access the storage.
+     * Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to
+     * the server identity.
+     * For more information, see [Auditing to storage using Managed Identity
      * authentication](https://go.microsoft.com/fwlink/?linkid=2114355).
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -161,14 +215,16 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
     }
 
     /**
-     * Set the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server
-     * system-assigned managed identity to access the storage. Prerequisites for using managed identity authentication:
-     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD). 2. Grant SQL Server
-     * identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-     * identity. For more information, see [Auditing to storage using Managed Identity
+     * Set the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account.
+     * If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL
+     * server system-assigned managed identity to access the storage.
+     * Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to
+     * the server identity.
+     * For more information, see [Auditing to storage using Managed Identity
      * authentication](https://go.microsoft.com/fwlink/?linkid=2114355).
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the ServerDevOpsAuditingSettingsInner object itself.
      */
@@ -182,7 +238,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
 
     /**
      * Get the storageAccountSubscriptionId property: Specifies the blob storage subscription Id.
-     *
+     * 
      * @return the storageAccountSubscriptionId value.
      */
     public UUID storageAccountSubscriptionId() {
@@ -191,7 +247,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
 
     /**
      * Set the storageAccountSubscriptionId property: Specifies the blob storage subscription Id.
-     *
+     * 
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ServerDevOpsAuditingSettingsInner object itself.
      */
@@ -205,12 +261,59 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerDevOpsAuditingSettingsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerDevOpsAuditingSettingsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerDevOpsAuditingSettingsInner.
+     */
+    public static ServerDevOpsAuditingSettingsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerDevOpsAuditingSettingsInner deserializedServerDevOpsAuditingSettingsInner
+                = new ServerDevOpsAuditingSettingsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerDevOpsAuditingSettingsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServerDevOpsAuditingSettingsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServerDevOpsAuditingSettingsInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedServerDevOpsAuditingSettingsInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerDevOpsAuditingSettingsInner.innerProperties
+                        = ServerDevOpsAuditSettingsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerDevOpsAuditingSettingsInner;
+        });
     }
 }

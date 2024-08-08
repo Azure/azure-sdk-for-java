@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The execution options of a job step. */
+/**
+ * The execution options of a job step.
+ */
 @Fluent
-public final class JobStepExecutionOptions {
+public final class JobStepExecutionOptions implements JsonSerializable<JobStepExecutionOptions> {
     /*
      * Execution timeout for the job step.
      */
-    @JsonProperty(value = "timeoutSeconds")
     private Integer timeoutSeconds;
 
     /*
      * Maximum number of times the job step will be reattempted if the first attempt fails.
      */
-    @JsonProperty(value = "retryAttempts")
     private Integer retryAttempts;
 
     /*
      * Initial delay between retries for job step execution.
      */
-    @JsonProperty(value = "initialRetryIntervalSeconds")
     private Integer initialRetryIntervalSeconds;
 
     /*
      * The maximum amount of time to wait between retries for job step execution.
      */
-    @JsonProperty(value = "maximumRetryIntervalSeconds")
     private Integer maximumRetryIntervalSeconds;
 
     /*
      * The backoff multiplier for the time between retries.
      */
-    @JsonProperty(value = "retryIntervalBackoffMultiplier")
     private Float retryIntervalBackoffMultiplier;
 
-    /** Creates an instance of JobStepExecutionOptions class. */
+    /**
+     * Creates an instance of JobStepExecutionOptions class.
+     */
     public JobStepExecutionOptions() {
     }
 
     /**
      * Get the timeoutSeconds property: Execution timeout for the job step.
-     *
+     * 
      * @return the timeoutSeconds value.
      */
     public Integer timeoutSeconds() {
@@ -55,7 +58,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Set the timeoutSeconds property: Execution timeout for the job step.
-     *
+     * 
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -67,7 +70,7 @@ public final class JobStepExecutionOptions {
     /**
      * Get the retryAttempts property: Maximum number of times the job step will be reattempted if the first attempt
      * fails.
-     *
+     * 
      * @return the retryAttempts value.
      */
     public Integer retryAttempts() {
@@ -77,7 +80,7 @@ public final class JobStepExecutionOptions {
     /**
      * Set the retryAttempts property: Maximum number of times the job step will be reattempted if the first attempt
      * fails.
-     *
+     * 
      * @param retryAttempts the retryAttempts value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -88,7 +91,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Get the initialRetryIntervalSeconds property: Initial delay between retries for job step execution.
-     *
+     * 
      * @return the initialRetryIntervalSeconds value.
      */
     public Integer initialRetryIntervalSeconds() {
@@ -97,7 +100,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Set the initialRetryIntervalSeconds property: Initial delay between retries for job step execution.
-     *
+     * 
      * @param initialRetryIntervalSeconds the initialRetryIntervalSeconds value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -109,7 +112,7 @@ public final class JobStepExecutionOptions {
     /**
      * Get the maximumRetryIntervalSeconds property: The maximum amount of time to wait between retries for job step
      * execution.
-     *
+     * 
      * @return the maximumRetryIntervalSeconds value.
      */
     public Integer maximumRetryIntervalSeconds() {
@@ -119,7 +122,7 @@ public final class JobStepExecutionOptions {
     /**
      * Set the maximumRetryIntervalSeconds property: The maximum amount of time to wait between retries for job step
      * execution.
-     *
+     * 
      * @param maximumRetryIntervalSeconds the maximumRetryIntervalSeconds value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -130,7 +133,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Get the retryIntervalBackoffMultiplier property: The backoff multiplier for the time between retries.
-     *
+     * 
      * @return the retryIntervalBackoffMultiplier value.
      */
     public Float retryIntervalBackoffMultiplier() {
@@ -139,7 +142,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Set the retryIntervalBackoffMultiplier property: The backoff multiplier for the time between retries.
-     *
+     * 
      * @param retryIntervalBackoffMultiplier the retryIntervalBackoffMultiplier value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -150,9 +153,60 @@ public final class JobStepExecutionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("timeoutSeconds", this.timeoutSeconds);
+        jsonWriter.writeNumberField("retryAttempts", this.retryAttempts);
+        jsonWriter.writeNumberField("initialRetryIntervalSeconds", this.initialRetryIntervalSeconds);
+        jsonWriter.writeNumberField("maximumRetryIntervalSeconds", this.maximumRetryIntervalSeconds);
+        jsonWriter.writeNumberField("retryIntervalBackoffMultiplier", this.retryIntervalBackoffMultiplier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStepExecutionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStepExecutionOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobStepExecutionOptions.
+     */
+    public static JobStepExecutionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStepExecutionOptions deserializedJobStepExecutionOptions = new JobStepExecutionOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeoutSeconds".equals(fieldName)) {
+                    deserializedJobStepExecutionOptions.timeoutSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("retryAttempts".equals(fieldName)) {
+                    deserializedJobStepExecutionOptions.retryAttempts = reader.getNullable(JsonReader::getInt);
+                } else if ("initialRetryIntervalSeconds".equals(fieldName)) {
+                    deserializedJobStepExecutionOptions.initialRetryIntervalSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maximumRetryIntervalSeconds".equals(fieldName)) {
+                    deserializedJobStepExecutionOptions.maximumRetryIntervalSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("retryIntervalBackoffMultiplier".equals(fieldName)) {
+                    deserializedJobStepExecutionOptions.retryIntervalBackoffMultiplier
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStepExecutionOptions;
+        });
     }
 }
