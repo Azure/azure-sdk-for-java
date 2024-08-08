@@ -381,6 +381,7 @@ public final class WebPubSubServiceAsyncClient {
      *
      * @param groups Target group names. Rejected by server on status code 400 if this parameter is null.
      * @param filter The filter to apply to the connections.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return the completion of {@link Mono}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -388,12 +389,12 @@ public final class WebPubSubServiceAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addConnectionsToGroups(List<String> groups, String filter) {
+    public Mono<Void> addConnectionsToGroups(List<String> groups, String filter, RequestOptions requestOptions) {
         AddToGroupsRequest requestBody = new AddToGroupsRequest();
         requestBody.setGroups(groups);
         requestBody.setFilter(filter);
         BinaryData body = BinaryData.fromObject(requestBody);
-        return addConnectionsToGroupsWithResponse(body, new RequestOptions()).flatMap(FluxUtil::toMono);
+        return addConnectionsToGroupsWithResponse(body, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
