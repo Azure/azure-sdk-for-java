@@ -2354,13 +2354,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             documentServiceRequestReference.set(request);
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
 
-                            // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                            // excluded regions to know the next location endpoint to route the request to
-                            // unavailable regions are effectively excluded regions for this request
-                            if (requestRetryPolicy != null) {
-                                requestRetryPolicy.onBeforeSendRequest(request);
-                            }
-
                             // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
                             // to the RxDocumentServiceRequest instance
                             mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
@@ -2654,13 +2647,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
                             requestReference.set(request);
-
-                            // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                            // excluded regions to know the next location endpoint to route the request to
-                            // unavailable regions are effectively excluded regions for this request
-                            if (retryPolicyInstance != null) {
-                                retryPolicyInstance.onBeforeSendRequest(request);
-                            }
 
                             // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
                             // to the RxDocumentServiceRequest instance

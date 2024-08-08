@@ -3649,7 +3649,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-
+    // test whether the operation succeeds when there are availability issues (404:1002, 503, 429) in the primary region
+    // for gateway routed requests
     @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "gatewayRoutedFailureParametersDataProvider_ReadAll", timeOut = 4 * TIMEOUT)
     public void testReadAll_withAllGatewayRoutedOperationFailures(
         String testId,
@@ -3742,7 +3743,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-
+    // test whether the operation succeeds when there are availability issues (404:1002, 503, 429) in the primary region
+    // for gateway routed requests
     @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "gatewayRoutedFailuresParametersDataProvider_ReadMany", timeOut = 4 * TIMEOUT)
     public void testReadMany_withAllGatewayRoutedOperationFailures(String testId,
                                                         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -3851,6 +3853,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
+    // test whether the operation succeeds when there are availability issues (404:1002, 503, 429) in the primary region
+    // for gateway routed requests
     @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "gatewayRoutedFailuresParametersDataProviderMiscGateway", timeOut = 4 * TIMEOUT)
     public void testMiscOperation_withAllGatewayRoutedOperationFailuresInPrimaryRegion_withGatewayConnectivity(
         String testId,
@@ -3942,6 +3946,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
+    // test whether the operation succeeds when there are availability issues (404:1002, 503, 429) in the primary region
+    // for gateway routed requests
     @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "gatewayRoutedFailuresParametersDataProviderMiscDirect", timeOut = 4 * TIMEOUT)
     public void testMiscOperation_withAllGatewayRoutedOperationFailuresInPrimaryRegion_withDirectConnectivity(String testId,
                                                                                      FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
