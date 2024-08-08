@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
+    UseFederatedAuth: false
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:

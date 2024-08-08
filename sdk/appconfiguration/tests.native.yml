@@ -12,7 +12,6 @@ pr:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
   parameters:
-    UseFederatedAuth: true
     ServiceDirectory: appconfiguration
     Artifacts:
     - name: azure-data-appconfiguration

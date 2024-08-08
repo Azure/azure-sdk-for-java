@@ -3,7 +3,6 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
   parameters:
-    UseFederatedAuth: true
     ServiceDirectory: documentintelligence
     timeoutInMinutes: 150 # how long to run the job before automatically cancelling
     Artifacts:
