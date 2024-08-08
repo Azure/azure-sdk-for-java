@@ -6,94 +6,84 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the Bastion Host.
  */
 @Fluent
-public final class BastionHostPropertiesFormat {
+public final class BastionHostPropertiesFormat implements JsonSerializable<BastionHostPropertiesFormat> {
     /*
      * IP configuration of the Bastion Host resource.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<BastionHostIpConfiguration> ipConfigurations;
 
     /*
      * FQDN for the endpoint on which bastion host is accessible.
      */
-    @JsonProperty(value = "dnsName")
     private String dnsName;
 
     /*
      * Reference to an existing virtual network required for Developer Bastion Host only.
      */
-    @JsonProperty(value = "virtualNetwork")
     private SubResource virtualNetwork;
 
     /*
      * The networkAcls property.
      */
-    @JsonProperty(value = "networkAcls")
     private BastionHostPropertiesFormatNetworkAcls networkAcls;
 
     /*
      * The provisioning state of the bastion host resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The scale units for the Bastion Host resource.
      */
-    @JsonProperty(value = "scaleUnits")
     private Integer scaleUnits;
 
     /*
      * Enable/Disable Copy/Paste feature of the Bastion Host resource.
      */
-    @JsonProperty(value = "disableCopyPaste")
     private Boolean disableCopyPaste;
 
     /*
      * Enable/Disable File Copy feature of the Bastion Host resource.
      */
-    @JsonProperty(value = "enableFileCopy")
     private Boolean enableFileCopy;
 
     /*
      * Enable/Disable IP Connect feature of the Bastion Host resource.
      */
-    @JsonProperty(value = "enableIpConnect")
     private Boolean enableIpConnect;
 
     /*
      * Enable/Disable Shareable Link of the Bastion Host resource.
      */
-    @JsonProperty(value = "enableShareableLink")
     private Boolean enableShareableLink;
 
     /*
      * Enable/Disable Tunneling feature of the Bastion Host resource.
      */
-    @JsonProperty(value = "enableTunneling")
     private Boolean enableTunneling;
 
     /*
      * Enable/Disable Kerberos feature of the Bastion Host resource.
      */
-    @JsonProperty(value = "enableKerberos")
     private Boolean enableKerberos;
 
     /*
      * Enable/Disable Session Recording feature of the Bastion Host resource.
      */
-    @JsonProperty(value = "enableSessionRecording")
     private Boolean enableSessionRecording;
 
     /**
@@ -104,7 +94,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the ipConfigurations property: IP configuration of the Bastion Host resource.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<BastionHostIpConfiguration> ipConfigurations() {
@@ -113,7 +103,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the ipConfigurations property: IP configuration of the Bastion Host resource.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -124,7 +114,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the dnsName property: FQDN for the endpoint on which bastion host is accessible.
-     *
+     * 
      * @return the dnsName value.
      */
     public String dnsName() {
@@ -133,7 +123,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the dnsName property: FQDN for the endpoint on which bastion host is accessible.
-     *
+     * 
      * @param dnsName the dnsName value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -145,7 +135,7 @@ public final class BastionHostPropertiesFormat {
     /**
      * Get the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
      * only.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -155,7 +145,7 @@ public final class BastionHostPropertiesFormat {
     /**
      * Set the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
      * only.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -166,7 +156,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the networkAcls property: The networkAcls property.
-     *
+     * 
      * @return the networkAcls value.
      */
     public BastionHostPropertiesFormatNetworkAcls networkAcls() {
@@ -175,7 +165,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the networkAcls property: The networkAcls property.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -186,7 +176,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the bastion host resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -195,7 +185,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the scaleUnits property: The scale units for the Bastion Host resource.
-     *
+     * 
      * @return the scaleUnits value.
      */
     public Integer scaleUnits() {
@@ -204,7 +194,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the scaleUnits property: The scale units for the Bastion Host resource.
-     *
+     * 
      * @param scaleUnits the scaleUnits value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -215,7 +205,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
-     *
+     * 
      * @return the disableCopyPaste value.
      */
     public Boolean disableCopyPaste() {
@@ -224,7 +214,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
-     *
+     * 
      * @param disableCopyPaste the disableCopyPaste value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -235,7 +225,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableFileCopy value.
      */
     public Boolean enableFileCopy() {
@@ -244,7 +234,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
-     *
+     * 
      * @param enableFileCopy the enableFileCopy value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -255,7 +245,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableIpConnect value.
      */
     public Boolean enableIpConnect() {
@@ -264,7 +254,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
-     *
+     * 
      * @param enableIpConnect the enableIpConnect value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -275,7 +265,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
-     *
+     * 
      * @return the enableShareableLink value.
      */
     public Boolean enableShareableLink() {
@@ -284,7 +274,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
-     *
+     * 
      * @param enableShareableLink the enableShareableLink value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -295,7 +285,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableTunneling value.
      */
     public Boolean enableTunneling() {
@@ -304,7 +294,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
-     *
+     * 
      * @param enableTunneling the enableTunneling value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -315,7 +305,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableKerberos value.
      */
     public Boolean enableKerberos() {
@@ -324,7 +314,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
-     *
+     * 
      * @param enableKerberos the enableKerberos value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -335,7 +325,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableSessionRecording value.
      */
     public Boolean enableSessionRecording() {
@@ -344,7 +334,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
-     *
+     * 
      * @param enableSessionRecording the enableSessionRecording value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -355,7 +345,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -365,5 +355,86 @@ public final class BastionHostPropertiesFormat {
         if (networkAcls() != null) {
             networkAcls().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("dnsName", this.dnsName);
+        jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
+        jsonWriter.writeJsonField("networkAcls", this.networkAcls);
+        jsonWriter.writeNumberField("scaleUnits", this.scaleUnits);
+        jsonWriter.writeBooleanField("disableCopyPaste", this.disableCopyPaste);
+        jsonWriter.writeBooleanField("enableFileCopy", this.enableFileCopy);
+        jsonWriter.writeBooleanField("enableIpConnect", this.enableIpConnect);
+        jsonWriter.writeBooleanField("enableShareableLink", this.enableShareableLink);
+        jsonWriter.writeBooleanField("enableTunneling", this.enableTunneling);
+        jsonWriter.writeBooleanField("enableKerberos", this.enableKerberos);
+        jsonWriter.writeBooleanField("enableSessionRecording", this.enableSessionRecording);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionHostPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionHostPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BastionHostPropertiesFormat.
+     */
+    public static BastionHostPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionHostPropertiesFormat deserializedBastionHostPropertiesFormat = new BastionHostPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurations".equals(fieldName)) {
+                    List<BastionHostIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> BastionHostIpConfiguration.fromJson(reader1));
+                    deserializedBastionHostPropertiesFormat.ipConfigurations = ipConfigurations;
+                } else if ("dnsName".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.dnsName = reader.getString();
+                } else if ("virtualNetwork".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.virtualNetwork = SubResource.fromJson(reader);
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.networkAcls
+                        = BastionHostPropertiesFormatNetworkAcls.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("scaleUnits".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.scaleUnits = reader.getNullable(JsonReader::getInt);
+                } else if ("disableCopyPaste".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.disableCopyPaste
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableFileCopy".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enableFileCopy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableIpConnect".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enableIpConnect
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableShareableLink".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enableShareableLink
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableTunneling".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enableTunneling
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableKerberos".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enableKerberos = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableSessionRecording".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enableSessionRecording
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionHostPropertiesFormat;
+        });
     }
 }

@@ -111,7 +111,9 @@ final class LocalFileWriter {
 
             FileChannel fileChannel = fileOut.getChannel();
             for (ByteBuffer byteBuffer : buffers) {
-                fileChannel.write(byteBuffer);
+                while (byteBuffer.hasRemaining()) { // possible for the ByteBuffer to not be fully written in one call
+                    fileChannel.write(byteBuffer);
+                }
             }
         }
     }

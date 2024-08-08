@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
      * @param name a name to look for.
      * @return the corresponding PrimaryAggregationType.
      */
-    @JsonCreator
     public static PrimaryAggregationType fromString(String name) {
         return fromString(name, PrimaryAggregationType.class);
     }

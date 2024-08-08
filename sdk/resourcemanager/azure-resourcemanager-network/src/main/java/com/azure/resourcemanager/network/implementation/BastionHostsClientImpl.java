@@ -39,10 +39,9 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in BastionHostsClient.
@@ -61,7 +60,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Initializes an instance of BastionHostsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BastionHostsClientImpl(NetworkManagementClientImpl client) {
@@ -151,7 +150,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +186,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -224,7 +223,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +240,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -261,7 +260,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +275,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -293,7 +292,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +308,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -326,7 +325,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +339,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Deletes the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -355,7 +354,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Gets the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -392,7 +391,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Gets the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -429,7 +428,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Gets the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,7 +444,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Gets the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -462,7 +461,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Gets the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -477,7 +476,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -520,7 +519,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -563,7 +562,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -583,7 +582,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -605,7 +604,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -622,7 +621,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -640,7 +639,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -658,7 +657,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -677,7 +676,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -694,7 +693,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Creates or updates the specified Bastion Host.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to the create or update Bastion Host operation.
@@ -712,7 +711,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -755,7 +754,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -798,7 +797,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -818,7 +817,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -840,7 +839,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -857,7 +856,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -875,7 +874,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -893,7 +892,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -912,7 +911,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -928,7 +927,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Updates Tags for BastionHost resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param parameters Parameters supplied to update BastionHost tags.
@@ -946,7 +945,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call along with {@link PagedResponse} on successful completion
@@ -974,7 +973,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1002,7 +1001,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call as paginated response with {@link PagedFlux}.
@@ -1014,7 +1013,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1029,7 +1028,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call as paginated response with {@link PagedIterable}.
@@ -1041,7 +1040,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,7 +1054,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1089,7 +1088,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1125,7 +1124,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1140,7 +1139,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1156,7 +1155,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1170,7 +1169,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Lists all Bastion Hosts in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1185,7 +1184,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1211,7 +1210,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1238,7 +1237,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1266,7 +1265,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

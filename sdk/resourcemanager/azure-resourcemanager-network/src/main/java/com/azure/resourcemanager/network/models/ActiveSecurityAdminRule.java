@@ -5,37 +5,29 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AdminPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Network admin rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = ActiveSecurityAdminRule.class,
-    visible = true)
-@JsonTypeName("Custom")
 @Fluent
 public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
     /*
      * Whether the rule is custom or default.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.CUSTOM;
 
     /*
      * Indicates the properties of the security admin rule
      */
-    @JsonProperty(value = "properties")
     private AdminPropertiesFormat innerProperties;
 
     /**
@@ -46,7 +38,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the kind property: Whether the rule is custom or default.
-     *
+     * 
      * @return the kind value.
      */
     @Override
@@ -56,7 +48,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the innerProperties property: Indicates the properties of the security admin rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdminPropertiesFormat innerProperties() {
@@ -129,7 +121,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -138,7 +130,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @param description the description value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -152,7 +144,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the protocol property: Network protocol this rule applies to.
-     *
+     * 
      * @return the protocol value.
      */
     public SecurityConfigurationRuleProtocol protocol() {
@@ -161,7 +153,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the protocol property: Network protocol this rule applies to.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -175,7 +167,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the sources property: The CIDR or source IP ranges.
-     *
+     * 
      * @return the sources value.
      */
     public List<AddressPrefixItem> sources() {
@@ -184,7 +176,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the sources property: The CIDR or source IP ranges.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -198,7 +190,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     *
+     * 
      * @return the destinations value.
      */
     public List<AddressPrefixItem> destinations() {
@@ -207,7 +199,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -221,7 +213,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the sourcePortRanges property: The source port ranges.
-     *
+     * 
      * @return the sourcePortRanges value.
      */
     public List<String> sourcePortRanges() {
@@ -230,7 +222,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the sourcePortRanges property: The source port ranges.
-     *
+     * 
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -244,7 +236,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the destinationPortRanges property: The destination port ranges.
-     *
+     * 
      * @return the destinationPortRanges value.
      */
     public List<String> destinationPortRanges() {
@@ -253,7 +245,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the destinationPortRanges property: The destination port ranges.
-     *
+     * 
      * @param destinationPortRanges the destinationPortRanges value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -267,7 +259,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the access property: Indicates the access allowed for this particular rule.
-     *
+     * 
      * @return the access value.
      */
     public SecurityConfigurationRuleAccess access() {
@@ -276,7 +268,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the access property: Indicates the access allowed for this particular rule.
-     *
+     * 
      * @param access the access value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -292,7 +284,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
      * Get the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -303,7 +295,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
      * Set the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -317,7 +309,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     *
+     * 
      * @return the direction value.
      */
     public SecurityConfigurationRuleDirection direction() {
@@ -326,7 +318,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Set the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the ActiveSecurityAdminRule object itself.
      */
@@ -340,7 +332,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -349,7 +341,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -358,7 +350,7 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -367,5 +359,73 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("commitTime",
+            commitTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(commitTime()));
+        jsonWriter.writeStringField("region", region());
+        jsonWriter.writeStringField("configurationDescription", configurationDescription());
+        jsonWriter.writeStringField("ruleCollectionDescription", ruleCollectionDescription());
+        jsonWriter.writeArrayField("ruleCollectionAppliesToGroups", ruleCollectionAppliesToGroups(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ruleGroups", ruleGroups(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveSecurityAdminRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveSecurityAdminRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActiveSecurityAdminRule.
+     */
+    public static ActiveSecurityAdminRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveSecurityAdminRule deserializedActiveSecurityAdminRule = new ActiveSecurityAdminRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withId(reader.getString());
+                } else if ("commitTime".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withCommitTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("region".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withRegion(reader.getString());
+                } else if ("configurationDescription".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withConfigurationDescription(reader.getString());
+                } else if ("ruleCollectionDescription".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withRuleCollectionDescription(reader.getString());
+                } else if ("ruleCollectionAppliesToGroups".equals(fieldName)) {
+                    List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups
+                        = reader.readArray(reader1 -> NetworkManagerSecurityGroupItem.fromJson(reader1));
+                    deserializedActiveSecurityAdminRule
+                        .withRuleCollectionAppliesToGroups(ruleCollectionAppliesToGroups);
+                } else if ("ruleGroups".equals(fieldName)) {
+                    List<ConfigurationGroup> ruleGroups
+                        = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
+                    deserializedActiveSecurityAdminRule.withRuleGroups(ruleGroups);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.kind = EffectiveAdminRuleKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.innerProperties = AdminPropertiesFormat.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveSecurityAdminRule;
+        });
     }
 }

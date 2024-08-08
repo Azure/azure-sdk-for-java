@@ -6,41 +6,40 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Routing Configuration indicating the associated and propagated route tables for this connection.
  */
 @Fluent
-public final class RoutingConfiguration {
+public final class RoutingConfiguration implements JsonSerializable<RoutingConfiguration> {
     /*
      * The resource id RouteTable associated with this RoutingConfiguration.
      */
-    @JsonProperty(value = "associatedRouteTable")
     private SubResource associatedRouteTable;
 
     /*
      * The list of RouteTables to advertise the routes to.
      */
-    @JsonProperty(value = "propagatedRouteTables")
     private PropagatedRouteTable propagatedRouteTables;
 
     /*
      * List of routes that control routing from VirtualHub into a virtual network connection.
      */
-    @JsonProperty(value = "vnetRoutes")
     private VnetRoute vnetRoutes;
 
     /*
      * The resource id of the RouteMap associated with this RoutingConfiguration for inbound learned routes.
      */
-    @JsonProperty(value = "inboundRouteMap")
     private SubResource inboundRouteMap;
 
     /*
      * The resource id of theRouteMap associated with this RoutingConfiguration for outbound advertised routes.
      */
-    @JsonProperty(value = "outboundRouteMap")
     private SubResource outboundRouteMap;
 
     /**
@@ -167,5 +166,53 @@ public final class RoutingConfiguration {
         if (vnetRoutes() != null) {
             vnetRoutes().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("associatedRouteTable", this.associatedRouteTable);
+        jsonWriter.writeJsonField("propagatedRouteTables", this.propagatedRouteTables);
+        jsonWriter.writeJsonField("vnetRoutes", this.vnetRoutes);
+        jsonWriter.writeJsonField("inboundRouteMap", this.inboundRouteMap);
+        jsonWriter.writeJsonField("outboundRouteMap", this.outboundRouteMap);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingConfiguration.
+     */
+    public static RoutingConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingConfiguration deserializedRoutingConfiguration = new RoutingConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("associatedRouteTable".equals(fieldName)) {
+                    deserializedRoutingConfiguration.associatedRouteTable = SubResource.fromJson(reader);
+                } else if ("propagatedRouteTables".equals(fieldName)) {
+                    deserializedRoutingConfiguration.propagatedRouteTables = PropagatedRouteTable.fromJson(reader);
+                } else if ("vnetRoutes".equals(fieldName)) {
+                    deserializedRoutingConfiguration.vnetRoutes = VnetRoute.fromJson(reader);
+                } else if ("inboundRouteMap".equals(fieldName)) {
+                    deserializedRoutingConfiguration.inboundRouteMap = SubResource.fromJson(reader);
+                } else if ("outboundRouteMap".equals(fieldName)) {
+                    deserializedRoutingConfiguration.outboundRouteMap = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingConfiguration;
+        });
     }
 }

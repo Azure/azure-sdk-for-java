@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DenySettingsMode extends ExpandableStringEnum<DenySettingsMod
      * @param name a name to look for.
      * @return the corresponding DenySettingsMode.
      */
-    @JsonCreator
     public static DenySettingsMode fromString(String name) {
         return fromString(name, DenySettingsMode.class);
     }

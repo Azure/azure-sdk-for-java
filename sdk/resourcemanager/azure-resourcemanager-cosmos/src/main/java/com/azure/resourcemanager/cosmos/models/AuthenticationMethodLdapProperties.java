@@ -5,60 +5,56 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Ldap authentication method properties. This feature is in preview.
  */
 @Fluent
-public final class AuthenticationMethodLdapProperties {
+public final class AuthenticationMethodLdapProperties implements JsonSerializable<AuthenticationMethodLdapProperties> {
     /*
      * Hostname of the LDAP server.
      */
-    @JsonProperty(value = "serverHostname")
     private String serverHostname;
 
     /*
      * Port of the LDAP server.
      */
-    @JsonProperty(value = "serverPort")
     private Integer serverPort;
 
     /*
      * Distinguished name of the look up user account, who can look up user details on authentication.
      */
-    @JsonProperty(value = "serviceUserDistinguishedName")
     private String serviceUserDistinguishedName;
 
     /*
      * Password of the look up user.
      */
-    @JsonProperty(value = "serviceUserPassword")
     private String serviceUserPassword;
 
     /*
      * Distinguished name of the object to start the recursive search of users from.
      */
-    @JsonProperty(value = "searchBaseDistinguishedName")
     private String searchBaseDistinguishedName;
 
     /*
      * Template to use for searching. Defaults to (cn=%s) where %s will be replaced by the username used to login.
      */
-    @JsonProperty(value = "searchFilterTemplate")
     private String searchFilterTemplate;
 
     /*
      * The serverCertificates property.
      */
-    @JsonProperty(value = "serverCertificates")
     private List<Certificate> serverCertificates;
 
     /*
      * Timeout for connecting to the LDAP server in miliseconds. The default is 5000 ms.
      */
-    @JsonProperty(value = "connectionTimeoutInMs")
     private Integer connectionTimeoutInMs;
 
     /**
@@ -244,5 +240,66 @@ public final class AuthenticationMethodLdapProperties {
         if (serverCertificates() != null) {
             serverCertificates().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverHostname", this.serverHostname);
+        jsonWriter.writeNumberField("serverPort", this.serverPort);
+        jsonWriter.writeStringField("serviceUserDistinguishedName", this.serviceUserDistinguishedName);
+        jsonWriter.writeStringField("serviceUserPassword", this.serviceUserPassword);
+        jsonWriter.writeStringField("searchBaseDistinguishedName", this.searchBaseDistinguishedName);
+        jsonWriter.writeStringField("searchFilterTemplate", this.searchFilterTemplate);
+        jsonWriter.writeArrayField("serverCertificates", this.serverCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("connectionTimeoutInMs", this.connectionTimeoutInMs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthenticationMethodLdapProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthenticationMethodLdapProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthenticationMethodLdapProperties.
+     */
+    public static AuthenticationMethodLdapProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthenticationMethodLdapProperties deserializedAuthenticationMethodLdapProperties
+                = new AuthenticationMethodLdapProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverHostname".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.serverHostname = reader.getString();
+                } else if ("serverPort".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.serverPort = reader.getNullable(JsonReader::getInt);
+                } else if ("serviceUserDistinguishedName".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.serviceUserDistinguishedName = reader.getString();
+                } else if ("serviceUserPassword".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.serviceUserPassword = reader.getString();
+                } else if ("searchBaseDistinguishedName".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.searchBaseDistinguishedName = reader.getString();
+                } else if ("searchFilterTemplate".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.searchFilterTemplate = reader.getString();
+                } else if ("serverCertificates".equals(fieldName)) {
+                    List<Certificate> serverCertificates = reader.readArray(reader1 -> Certificate.fromJson(reader1));
+                    deserializedAuthenticationMethodLdapProperties.serverCertificates = serverCertificates;
+                } else if ("connectionTimeoutInMs".equals(fieldName)) {
+                    deserializedAuthenticationMethodLdapProperties.connectionTimeoutInMs
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthenticationMethodLdapProperties;
+        });
     }
 }

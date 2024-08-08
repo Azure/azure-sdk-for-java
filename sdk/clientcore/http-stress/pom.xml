@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.26</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <version>1.0.0-beta.27</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
@@ -85,7 +85,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:perf-test-core:[1.0.0-beta.1]</include> <!-- {x-include-update;com.azure:perf-test-core;dependency} -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.26]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.27]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
                 <include>ch.qos.logback:logback-classic:[1.3.14]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->

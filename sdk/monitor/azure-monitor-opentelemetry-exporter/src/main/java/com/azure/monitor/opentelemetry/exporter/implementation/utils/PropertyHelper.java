@@ -106,19 +106,19 @@ public final class PropertyHelper {
     }
 
     public static String getRpIntegrationSdkNamePrefix() {
-        StringBuilder sdkNamePrefix = new StringBuilder(3);
+        StringBuilder sdkNamePrefix = new StringBuilder(4);
         sdkNamePrefix.append(rpIntegrationChar);
         if (SystemInformation.isWindows()) {
-            sdkNamePrefix.append("w");
+            sdkNamePrefix.append('w');
         } else if (SystemInformation.isLinux()) {
-            sdkNamePrefix.append("l");
+            sdkNamePrefix.append('l');
         } else {
             logger.warn("could not detect os: {}", System.getProperty("os.name"));
-            sdkNamePrefix.append("u");
+            sdkNamePrefix.append('u');
         }
 
         sdkNamePrefix.append(getRpAttachTypeChar());
-        sdkNamePrefix.append("_");
+        sdkNamePrefix.append('_');
         return sdkNamePrefix.toString();
     }
 

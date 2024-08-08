@@ -6,41 +6,41 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CORS policy for the Cosmos DB database account.
  */
 @Fluent
-public final class CorsPolicy {
+public final class CorsPolicy implements JsonSerializable<CorsPolicy> {
     /*
      * The origin domains that are permitted to make a request against the service via CORS.
      */
-    @JsonProperty(value = "allowedOrigins", required = true)
     private String allowedOrigins;
 
     /*
      * The methods (HTTP request verbs) that the origin domain may use for a CORS request.
      */
-    @JsonProperty(value = "allowedMethods")
     private String allowedMethods;
 
     /*
      * The request headers that the origin domain may specify on the CORS request.
      */
-    @JsonProperty(value = "allowedHeaders")
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
+     * request issuer.
      */
-    @JsonProperty(value = "exposedHeaders")
     private String exposedHeaders;
 
     /*
      * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
-    @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
 
     /**
@@ -170,4 +170,53 @@ public final class CorsPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CorsPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("allowedOrigins", this.allowedOrigins);
+        jsonWriter.writeStringField("allowedMethods", this.allowedMethods);
+        jsonWriter.writeStringField("allowedHeaders", this.allowedHeaders);
+        jsonWriter.writeStringField("exposedHeaders", this.exposedHeaders);
+        jsonWriter.writeNumberField("maxAgeInSeconds", this.maxAgeInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CorsPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorsPolicy if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CorsPolicy.
+     */
+    public static CorsPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CorsPolicy deserializedCorsPolicy = new CorsPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedOrigins".equals(fieldName)) {
+                    deserializedCorsPolicy.allowedOrigins = reader.getString();
+                } else if ("allowedMethods".equals(fieldName)) {
+                    deserializedCorsPolicy.allowedMethods = reader.getString();
+                } else if ("allowedHeaders".equals(fieldName)) {
+                    deserializedCorsPolicy.allowedHeaders = reader.getString();
+                } else if ("exposedHeaders".equals(fieldName)) {
+                    deserializedCorsPolicy.exposedHeaders = reader.getString();
+                } else if ("maxAgeInSeconds".equals(fieldName)) {
+                    deserializedCorsPolicy.maxAgeInSeconds = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCorsPolicy;
+        });
+    }
 }

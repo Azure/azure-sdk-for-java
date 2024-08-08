@@ -6,57 +6,54 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of listener of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayListenerPropertiesFormat {
+public final class ApplicationGatewayListenerPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayListenerPropertiesFormat> {
     /*
      * Frontend IP configuration resource of an application gateway.
      */
-    @JsonProperty(value = "frontendIPConfiguration")
     private SubResource frontendIpConfiguration;
 
     /*
      * Frontend port resource of an application gateway.
      */
-    @JsonProperty(value = "frontendPort")
     private SubResource frontendPort;
 
     /*
      * Protocol of the listener.
      */
-    @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
 
     /*
      * SSL certificate resource of an application gateway.
      */
-    @JsonProperty(value = "sslCertificate")
     private SubResource sslCertificate;
 
     /*
      * SSL profile resource of the application gateway.
      */
-    @JsonProperty(value = "sslProfile")
     private SubResource sslProfile;
 
     /*
      * The provisioning state of the listener resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * List of Server Name Indications(SNI) for TLS Multi-site Listener that allows special wildcard characters as well.
      */
-    @JsonProperty(value = "hostNames")
     private List<String> hostNames;
 
     /**
@@ -67,7 +64,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
-     *
+     * 
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -76,7 +73,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Set the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
-     *
+     * 
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the ApplicationGatewayListenerPropertiesFormat object itself.
      */
@@ -87,7 +84,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Get the frontendPort property: Frontend port resource of an application gateway.
-     *
+     * 
      * @return the frontendPort value.
      */
     public SubResource frontendPort() {
@@ -96,7 +93,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Set the frontendPort property: Frontend port resource of an application gateway.
-     *
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the ApplicationGatewayListenerPropertiesFormat object itself.
      */
@@ -107,7 +104,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Get the protocol property: Protocol of the listener.
-     *
+     * 
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -116,7 +113,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Set the protocol property: Protocol of the listener.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayListenerPropertiesFormat object itself.
      */
@@ -127,7 +124,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Get the sslCertificate property: SSL certificate resource of an application gateway.
-     *
+     * 
      * @return the sslCertificate value.
      */
     public SubResource sslCertificate() {
@@ -136,7 +133,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Set the sslCertificate property: SSL certificate resource of an application gateway.
-     *
+     * 
      * @param sslCertificate the sslCertificate value to set.
      * @return the ApplicationGatewayListenerPropertiesFormat object itself.
      */
@@ -147,7 +144,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Get the sslProfile property: SSL profile resource of the application gateway.
-     *
+     * 
      * @return the sslProfile value.
      */
     public SubResource sslProfile() {
@@ -156,7 +153,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Set the sslProfile property: SSL profile resource of the application gateway.
-     *
+     * 
      * @param sslProfile the sslProfile value to set.
      * @return the ApplicationGatewayListenerPropertiesFormat object itself.
      */
@@ -167,7 +164,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the listener resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -177,7 +174,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
     /**
      * Get the hostNames property: List of Server Name Indications(SNI) for TLS Multi-site Listener that allows special
      * wildcard characters as well.
-     *
+     * 
      * @return the hostNames value.
      */
     public List<String> hostNames() {
@@ -187,7 +184,7 @@ public final class ApplicationGatewayListenerPropertiesFormat {
     /**
      * Set the hostNames property: List of Server Name Indications(SNI) for TLS Multi-site Listener that allows special
      * wildcard characters as well.
-     *
+     * 
      * @param hostNames the hostNames value to set.
      * @return the ApplicationGatewayListenerPropertiesFormat object itself.
      */
@@ -198,9 +195,68 @@ public final class ApplicationGatewayListenerPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("frontendIPConfiguration", this.frontendIpConfiguration);
+        jsonWriter.writeJsonField("frontendPort", this.frontendPort);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeJsonField("sslCertificate", this.sslCertificate);
+        jsonWriter.writeJsonField("sslProfile", this.sslProfile);
+        jsonWriter.writeArrayField("hostNames", this.hostNames, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayListenerPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayListenerPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayListenerPropertiesFormat.
+     */
+    public static ApplicationGatewayListenerPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayListenerPropertiesFormat deserializedApplicationGatewayListenerPropertiesFormat
+                = new ApplicationGatewayListenerPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frontendIPConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayListenerPropertiesFormat.frontendIpConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("frontendPort".equals(fieldName)) {
+                    deserializedApplicationGatewayListenerPropertiesFormat.frontendPort = SubResource.fromJson(reader);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedApplicationGatewayListenerPropertiesFormat.protocol
+                        = ApplicationGatewayProtocol.fromString(reader.getString());
+                } else if ("sslCertificate".equals(fieldName)) {
+                    deserializedApplicationGatewayListenerPropertiesFormat.sslCertificate
+                        = SubResource.fromJson(reader);
+                } else if ("sslProfile".equals(fieldName)) {
+                    deserializedApplicationGatewayListenerPropertiesFormat.sslProfile = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayListenerPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("hostNames".equals(fieldName)) {
+                    List<String> hostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationGatewayListenerPropertiesFormat.hostNames = hostNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayListenerPropertiesFormat;
+        });
     }
 }

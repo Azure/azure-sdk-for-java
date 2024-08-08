@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AutoLearnPrivateRangesMode extends ExpandableStringEnum<AutoL
      * @param name a name to look for.
      * @return the corresponding AutoLearnPrivateRangesMode.
      */
-    @JsonCreator
     public static AutoLearnPrivateRangesMode fromString(String name) {
         return fromString(name, AutoLearnPrivateRangesMode.class);
     }

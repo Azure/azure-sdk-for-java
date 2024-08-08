@@ -6,29 +6,30 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last Friday'.
  */
 @Fluent
-public final class RelativeMonthlySchedule {
+public final class RelativeMonthlySchedule implements JsonSerializable<RelativeMonthlySchedule> {
     /*
      * Specifies the number of months between each set of occurrences.
      */
-    @JsonProperty(value = "intervalMonths", required = true)
     private int intervalMonths;
 
     /*
      * Specifies on which week of the month the dayOfWeek applies.
      */
-    @JsonProperty(value = "weekIndex", required = true)
     private Type weekIndex;
 
     /*
      * Specifies on which day of the week the maintenance occurs.
      */
-    @JsonProperty(value = "dayOfWeek", required = true)
     private WeekDay dayOfWeek;
 
     /**
@@ -116,4 +117,47 @@ public final class RelativeMonthlySchedule {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelativeMonthlySchedule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("intervalMonths", this.intervalMonths);
+        jsonWriter.writeStringField("weekIndex", this.weekIndex == null ? null : this.weekIndex.toString());
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelativeMonthlySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelativeMonthlySchedule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelativeMonthlySchedule.
+     */
+    public static RelativeMonthlySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelativeMonthlySchedule deserializedRelativeMonthlySchedule = new RelativeMonthlySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("intervalMonths".equals(fieldName)) {
+                    deserializedRelativeMonthlySchedule.intervalMonths = reader.getInt();
+                } else if ("weekIndex".equals(fieldName)) {
+                    deserializedRelativeMonthlySchedule.weekIndex = Type.fromString(reader.getString());
+                } else if ("dayOfWeek".equals(fieldName)) {
+                    deserializedRelativeMonthlySchedule.dayOfWeek = WeekDay.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelativeMonthlySchedule;
+        });
+    }
 }

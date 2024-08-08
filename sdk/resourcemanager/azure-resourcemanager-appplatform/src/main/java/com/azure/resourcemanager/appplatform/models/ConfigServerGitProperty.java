@@ -6,72 +6,66 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Property of git.
  */
 @Fluent
-public final class ConfigServerGitProperty {
+public final class ConfigServerGitProperty implements JsonSerializable<ConfigServerGitProperty> {
     /*
      * Repositories of git.
      */
-    @JsonProperty(value = "repositories")
     private List<GitPatternRepository> repositories;
 
     /*
      * URI of the repository
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * Label of the repository
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Searching path of the repository
      */
-    @JsonProperty(value = "searchPaths")
     private List<String> searchPaths;
 
     /*
      * Username of git repository basic auth.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Password of git repository basic auth.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Public sshKey of git repository.
      */
-    @JsonProperty(value = "hostKey")
     private String hostKey;
 
     /*
      * SshKey algorithm of git repository.
      */
-    @JsonProperty(value = "hostKeyAlgorithm")
     private String hostKeyAlgorithm;
 
     /*
      * Private sshKey algorithm of git repository.
      */
-    @JsonProperty(value = "privateKey")
     private String privateKey;
 
     /*
      * Strict host key checking or not.
      */
-    @JsonProperty(value = "strictHostKeyChecking")
     private Boolean strictHostKeyChecking;
 
     /**
@@ -290,10 +284,78 @@ public final class ConfigServerGitProperty {
             repositories().forEach(e -> e.validate());
         }
         if (uri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property uri in model ConfigServerGitProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model ConfigServerGitProperty"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConfigServerGitProperty.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeArrayField("repositories", this.repositories, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeArrayField("searchPaths", this.searchPaths, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("hostKey", this.hostKey);
+        jsonWriter.writeStringField("hostKeyAlgorithm", this.hostKeyAlgorithm);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        jsonWriter.writeBooleanField("strictHostKeyChecking", this.strictHostKeyChecking);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigServerGitProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigServerGitProperty if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigServerGitProperty.
+     */
+    public static ConfigServerGitProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigServerGitProperty deserializedConfigServerGitProperty = new ConfigServerGitProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uri".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.uri = reader.getString();
+                } else if ("repositories".equals(fieldName)) {
+                    List<GitPatternRepository> repositories
+                        = reader.readArray(reader1 -> GitPatternRepository.fromJson(reader1));
+                    deserializedConfigServerGitProperty.repositories = repositories;
+                } else if ("label".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.label = reader.getString();
+                } else if ("searchPaths".equals(fieldName)) {
+                    List<String> searchPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigServerGitProperty.searchPaths = searchPaths;
+                } else if ("username".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.password = reader.getString();
+                } else if ("hostKey".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.hostKey = reader.getString();
+                } else if ("hostKeyAlgorithm".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.hostKeyAlgorithm = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.privateKey = reader.getString();
+                } else if ("strictHostKeyChecking".equals(fieldName)) {
+                    deserializedConfigServerGitProperty.strictHostKeyChecking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigServerGitProperty;
+        });
+    }
 }

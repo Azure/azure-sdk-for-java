@@ -20,147 +20,173 @@ import com.azure.resourcemanager.authorization.fluent.UsersUsersClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the MicrosoftGraphClientImpl type. */
+/**
+ * Initializes a new instance of the MicrosoftGraphClientImpl type.
+ */
 @ServiceClient(builder = MicrosoftGraphClientBuilder.class)
 public final class MicrosoftGraphClientImpl extends AzureServiceClient implements MicrosoftGraphClient {
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ApplicationsApplicationsClient object to access its operations. */
+    /**
+     * The ApplicationsApplicationsClient object to access its operations.
+     */
     private final ApplicationsApplicationsClient applicationsApplications;
 
     /**
      * Gets the ApplicationsApplicationsClient object to access its operations.
-     *
+     * 
      * @return the ApplicationsApplicationsClient object.
      */
     public ApplicationsApplicationsClient getApplicationsApplications() {
         return this.applicationsApplications;
     }
 
-    /** The ApplicationsClient object to access its operations. */
+    /**
+     * The ApplicationsClient object to access its operations.
+     */
     private final ApplicationsClient applications;
 
     /**
      * Gets the ApplicationsClient object to access its operations.
-     *
+     * 
      * @return the ApplicationsClient object.
      */
     public ApplicationsClient getApplications() {
         return this.applications;
     }
 
-    /** The ServicePrincipalsServicePrincipalsClient object to access its operations. */
+    /**
+     * The ServicePrincipalsServicePrincipalsClient object to access its operations.
+     */
     private final ServicePrincipalsServicePrincipalsClient servicePrincipalsServicePrincipals;
 
     /**
      * Gets the ServicePrincipalsServicePrincipalsClient object to access its operations.
-     *
+     * 
      * @return the ServicePrincipalsServicePrincipalsClient object.
      */
     public ServicePrincipalsServicePrincipalsClient getServicePrincipalsServicePrincipals() {
         return this.servicePrincipalsServicePrincipals;
     }
 
-    /** The ServicePrincipalsClient object to access its operations. */
+    /**
+     * The ServicePrincipalsClient object to access its operations.
+     */
     private final ServicePrincipalsClient servicePrincipals;
 
     /**
      * Gets the ServicePrincipalsClient object to access its operations.
-     *
+     * 
      * @return the ServicePrincipalsClient object.
      */
     public ServicePrincipalsClient getServicePrincipals() {
         return this.servicePrincipals;
     }
 
-    /** The GroupsGroupsClient object to access its operations. */
+    /**
+     * The GroupsGroupsClient object to access its operations.
+     */
     private final GroupsGroupsClient groupsGroups;
 
     /**
      * Gets the GroupsGroupsClient object to access its operations.
-     *
+     * 
      * @return the GroupsGroupsClient object.
      */
     public GroupsGroupsClient getGroupsGroups() {
         return this.groupsGroups;
     }
 
-    /** The GroupsClient object to access its operations. */
+    /**
+     * The GroupsClient object to access its operations.
+     */
     private final GroupsClient groups;
 
     /**
      * Gets the GroupsClient object to access its operations.
-     *
+     * 
      * @return the GroupsClient object.
      */
     public GroupsClient getGroups() {
         return this.groups;
     }
 
-    /** The UsersUsersClient object to access its operations. */
+    /**
+     * The UsersUsersClient object to access its operations.
+     */
     private final UsersUsersClient usersUsers;
 
     /**
      * Gets the UsersUsersClient object to access its operations.
-     *
+     * 
      * @return the UsersUsersClient object.
      */
     public UsersUsersClient getUsersUsers() {
         return this.usersUsers;
     }
 
-    /** The DomainsDomainsClient object to access its operations. */
+    /**
+     * The DomainsDomainsClient object to access its operations.
+     */
     private final DomainsDomainsClient domainsDomains;
 
     /**
      * Gets the DomainsDomainsClient object to access its operations.
-     *
+     * 
      * @return the DomainsDomainsClient object.
      */
     public DomainsDomainsClient getDomainsDomains() {
@@ -169,19 +195,15 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
 
     /**
      * Initializes an instance of MicrosoftGraphClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param endpoint server parameter.
      */
-    MicrosoftGraphClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String endpoint) {
+    MicrosoftGraphClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

@@ -5,29 +5,33 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The failover policy for a given region of a database account.
  */
 @Fluent
-public final class FailoverPolicy {
+public final class FailoverPolicy implements JsonSerializable<FailoverPolicy> {
     /*
-     * The unique identifier of the region in which the database account replicates to. Example: &lt;accountName&gt;-&lt;locationName&gt;.
+     * The unique identifier of the region in which the database account replicates to. Example:
+     * &lt;accountName&gt;-&lt;locationName&gt;.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the region in which the database account exists.
      */
-    @JsonProperty(value = "locationName")
     private String locationName;
 
     /*
-     * The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a
+     * failover priority = (total number of regions - 1). Failover priority values must be unique for each of the
+     * regions in which the database account exists.
      */
-    @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
 
     /**
@@ -96,5 +100,46 @@ public final class FailoverPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("locationName", this.locationName);
+        jsonWriter.writeNumberField("failoverPriority", this.failoverPriority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverPolicy.
+     */
+    public static FailoverPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverPolicy deserializedFailoverPolicy = new FailoverPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFailoverPolicy.id = reader.getString();
+                } else if ("locationName".equals(fieldName)) {
+                    deserializedFailoverPolicy.locationName = reader.getString();
+                } else if ("failoverPriority".equals(fieldName)) {
+                    deserializedFailoverPolicy.failoverPriority = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverPolicy;
+        });
     }
 }

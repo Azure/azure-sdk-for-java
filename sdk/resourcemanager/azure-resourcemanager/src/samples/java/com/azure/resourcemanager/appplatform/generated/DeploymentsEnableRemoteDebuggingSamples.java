@@ -20,7 +20,11 @@ public final class DeploymentsEnableRemoteDebuggingSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsEnableRemoteDebugging(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().enableRemoteDebugging("myResourceGroup",
-            "myservice", "myapp", "mydeployment", new RemoteDebuggingPayload(), com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .enableRemoteDebugging("myResourceGroup", "myservice", "myapp", "mydeployment",
+                new RemoteDebuggingPayload(), com.azure.core.util.Context.NONE);
     }
 }

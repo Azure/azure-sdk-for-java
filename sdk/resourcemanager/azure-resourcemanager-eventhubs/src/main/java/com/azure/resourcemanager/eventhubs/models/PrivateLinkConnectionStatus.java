@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +33,7 @@ public final class PrivateLinkConnectionStatus extends ExpandableStringEnum<Priv
 
     /**
      * Creates a new instance of PrivateLinkConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,18 +42,17 @@ public final class PrivateLinkConnectionStatus extends ExpandableStringEnum<Priv
 
     /**
      * Creates or finds a PrivateLinkConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateLinkConnectionStatus.
      */
-    @JsonCreator
     public static PrivateLinkConnectionStatus fromString(String name) {
         return fromString(name, PrivateLinkConnectionStatus.class);
     }
 
     /**
      * Gets known PrivateLinkConnectionStatus values.
-     *
+     * 
      * @return known PrivateLinkConnectionStatus values.
      */
     public static Collection<PrivateLinkConnectionStatus> values() {

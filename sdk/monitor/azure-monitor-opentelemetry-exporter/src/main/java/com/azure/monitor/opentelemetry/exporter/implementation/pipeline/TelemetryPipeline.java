@@ -20,7 +20,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,12 +82,11 @@ public class TelemetryPipeline {
         int remainingRedirects) {
 
         // Add instrumentation key to context to use in StatsbeatHttpPipelinePolicy
-        Map<Object, Object> contextKeyValues = new HashMap<>();
-        contextKeyValues.put("instrumentationKey", request.getInstrumentationKey());
-        contextKeyValues.put(Tracer.DISABLE_TRACING_KEY, true);
+        Context context = new Context("instrumentationKey", request.getInstrumentationKey())
+            .addData(Tracer.DISABLE_TRACING_KEY, true);
 
         pipeline
-            .send(request.createHttpRequest(), Context.of(contextKeyValues))
+            .send(request.createHttpRequest(), context)
             .subscribe(
                 response ->
                     response

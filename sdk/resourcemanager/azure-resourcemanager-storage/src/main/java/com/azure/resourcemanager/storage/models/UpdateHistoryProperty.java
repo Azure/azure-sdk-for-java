@@ -5,48 +5,47 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * An update history of the ImmutabilityPolicy of a blob container.
  */
 @Fluent
-public final class UpdateHistoryProperty {
+public final class UpdateHistoryProperty implements JsonSerializable<UpdateHistoryProperty> {
     /*
      * The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend.
      */
-    @JsonProperty(value = "update", access = JsonProperty.Access.WRITE_ONLY)
     private ImmutabilityPolicyUpdateType update;
 
     /*
      * The immutability period for the blobs in the container since the policy creation, in days.
      */
-    @JsonProperty(value = "immutabilityPeriodSinceCreationInDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer immutabilityPeriodSinceCreationInDays;
 
     /*
      * Returns the date and time the ImmutabilityPolicy was updated.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * Returns the Object ID of the user who updated the ImmutabilityPolicy.
      */
-    @JsonProperty(value = "objectIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String objectIdentifier;
 
     /*
      * Returns the Tenant ID that issued the token for the user who updated the ImmutabilityPolicy.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Returns the User Principal Name of the user who updated the ImmutabilityPolicy.
      */
-    @JsonProperty(value = "upn", access = JsonProperty.Access.WRITE_ONLY)
     private String upn;
 
     /*
@@ -55,7 +54,6 @@ public final class UpdateHistoryProperty {
      * and any existing blocks cannot be modified or deleted. This property cannot be changed with
      * ExtendImmutabilityPolicy API.
      */
-    @JsonProperty(value = "allowProtectedAppendWrites")
     private Boolean allowProtectedAppendWrites;
 
     /*
@@ -65,7 +63,6 @@ public final class UpdateHistoryProperty {
      * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties are
      * mutually exclusive.
      */
-    @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
     /**
@@ -191,5 +188,61 @@ public final class UpdateHistoryProperty {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowProtectedAppendWrites", this.allowProtectedAppendWrites);
+        jsonWriter.writeBooleanField("allowProtectedAppendWritesAll", this.allowProtectedAppendWritesAll);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateHistoryProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateHistoryProperty if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateHistoryProperty.
+     */
+    public static UpdateHistoryProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateHistoryProperty deserializedUpdateHistoryProperty = new UpdateHistoryProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("update".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.update
+                        = ImmutabilityPolicyUpdateType.fromString(reader.getString());
+                } else if ("immutabilityPeriodSinceCreationInDays".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.immutabilityPeriodSinceCreationInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("objectIdentifier".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.objectIdentifier = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.tenantId = reader.getString();
+                } else if ("upn".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.upn = reader.getString();
+                } else if ("allowProtectedAppendWrites".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.allowProtectedAppendWrites
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowProtectedAppendWritesAll".equals(fieldName)) {
+                    deserializedUpdateHistoryProperty.allowProtectedAppendWritesAll
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateHistoryProperty;
+        });
     }
 }

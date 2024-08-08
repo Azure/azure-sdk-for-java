@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,6 @@ public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryp
      * @param name a name to look for.
      * @return the corresponding DiskEncryptionSetType.
      */
-    @JsonCreator
     public static DiskEncryptionSetType fromString(String name) {
         return fromString(name, DiskEncryptionSetType.class);
     }

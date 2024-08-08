@@ -5,39 +5,37 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The parameters for updating a container registry.
  */
 @Fluent
-public final class RegistryUpdateParameters {
+public final class RegistryUpdateParameters implements JsonSerializable<RegistryUpdateParameters> {
     /*
      * The identity of the container registry.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The tags for the container registry.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The SKU of the container registry.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The properties that the container registry will be updated with.
      */
-    @JsonProperty(value = "properties")
     private RegistryPropertiesUpdateParameters innerProperties;
 
     /**
@@ -231,8 +229,7 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
-     * registry.
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -241,8 +238,7 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
-     * registry.
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryUpdateParameters object itself.
@@ -256,8 +252,8 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
-     * restricted registry.
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
      * 
      * @return the networkRuleBypassOptions value.
      */
@@ -266,8 +262,8 @@ public final class RegistryUpdateParameters {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
-     * restricted registry.
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
      * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryUpdateParameters object itself.
@@ -295,5 +291,52 @@ public final class RegistryUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryUpdateParameters.
+     */
+    public static RegistryUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryUpdateParameters deserializedRegistryUpdateParameters = new RegistryUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedRegistryUpdateParameters.identity = IdentityProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRegistryUpdateParameters.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRegistryUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRegistryUpdateParameters.innerProperties
+                        = RegistryPropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryUpdateParameters;
+        });
     }
 }

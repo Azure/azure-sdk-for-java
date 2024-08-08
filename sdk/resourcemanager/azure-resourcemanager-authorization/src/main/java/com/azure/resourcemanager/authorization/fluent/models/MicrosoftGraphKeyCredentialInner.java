@@ -7,30 +7,33 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** keyCredential. */
+/**
+ * keyCredential.
+ */
 @Fluent
-public final class MicrosoftGraphKeyCredentialInner {
+public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<MicrosoftGraphKeyCredentialInner> {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * Custom key identifier
      */
-    @JsonProperty(value = "customKeyIdentifier")
     private Base64Url customKeyIdentifier;
 
     /*
      * Friendly name for the key. Optional.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
@@ -38,20 +41,17 @@ public final class MicrosoftGraphKeyCredentialInner {
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * The certificate's raw data in byte array converted to Base64 string; for example,
      * [System.Convert]::ToBase64String($Cert.GetRawCertData()).
      */
-    @JsonProperty(value = "key")
     private Base64Url key;
 
     /*
      * The unique identifier (GUID) for the key.
      */
-    @JsonProperty(value = "keyId")
     private UUID keyId;
 
     /*
@@ -59,33 +59,32 @@ public final class MicrosoftGraphKeyCredentialInner {
      * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * The type of key credential; for example, 'Symmetric'.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * A string that describes the purpose for which the key can be used; for example, 'Verify'.
      */
-    @JsonProperty(value = "usage")
     private String usage;
 
     /*
      * keyCredential
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphKeyCredentialInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphKeyCredentialInner class.
+     */
     public MicrosoftGraphKeyCredentialInner() {
     }
 
     /**
      * Get the customKeyIdentifier property: Custom key identifier.
-     *
+     * 
      * @return the customKeyIdentifier value.
      */
     public byte[] customKeyIdentifier() {
@@ -97,7 +96,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Set the customKeyIdentifier property: Custom key identifier.
-     *
+     * 
      * @param customKeyIdentifier the customKeyIdentifier value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -112,7 +111,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Get the displayName property: Friendly name for the key. Optional.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -121,7 +120,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Set the displayName property: Friendly name for the key. Optional.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -134,7 +133,7 @@ public final class MicrosoftGraphKeyCredentialInner {
      * Get the endDateTime property: The date and time at which the credential expires.The Timestamp type represents
      * date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1,
      * 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -145,7 +144,7 @@ public final class MicrosoftGraphKeyCredentialInner {
      * Set the endDateTime property: The date and time at which the credential expires.The Timestamp type represents
      * date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1,
      * 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -157,7 +156,7 @@ public final class MicrosoftGraphKeyCredentialInner {
     /**
      * Get the key property: The certificate's raw data in byte array converted to Base64 string; for example,
      * [System.Convert]::ToBase64String($Cert.GetRawCertData()).
-     *
+     * 
      * @return the key value.
      */
     public byte[] key() {
@@ -170,7 +169,7 @@ public final class MicrosoftGraphKeyCredentialInner {
     /**
      * Set the key property: The certificate's raw data in byte array converted to Base64 string; for example,
      * [System.Convert]::ToBase64String($Cert.GetRawCertData()).
-     *
+     * 
      * @param key the key value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -185,7 +184,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Get the keyId property: The unique identifier (GUID) for the key.
-     *
+     * 
      * @return the keyId value.
      */
     public UUID keyId() {
@@ -194,7 +193,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Set the keyId property: The unique identifier (GUID) for the key.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -207,7 +206,7 @@ public final class MicrosoftGraphKeyCredentialInner {
      * Get the startDateTime property: The date and time at which the credential becomes valid.The Timestamp type
      * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -218,7 +217,7 @@ public final class MicrosoftGraphKeyCredentialInner {
      * Set the startDateTime property: The date and time at which the credential becomes valid.The Timestamp type
      * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -229,7 +228,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Get the type property: The type of key credential; for example, 'Symmetric'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -238,7 +237,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Set the type property: The type of key credential; for example, 'Symmetric'.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -249,7 +248,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Get the usage property: A string that describes the purpose for which the key can be used; for example, 'Verify'.
-     *
+     * 
      * @return the usage value.
      */
     public String usage() {
@@ -258,7 +257,7 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Set the usage property: A string that describes the purpose for which the key can be used; for example, 'Verify'.
-     *
+     * 
      * @param usage the usage value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -269,17 +268,16 @@ public final class MicrosoftGraphKeyCredentialInner {
 
     /**
      * Get the additionalProperties property: keyCredential.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: keyCredential.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphKeyCredentialInner object itself.
      */
@@ -288,19 +286,87 @@ public final class MicrosoftGraphKeyCredentialInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("customKeyIdentifier", Objects.toString(this.customKeyIdentifier, null));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("key", Objects.toString(this.key, null));
+        jsonWriter.writeStringField("keyId", Objects.toString(this.keyId, null));
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("usage", this.usage);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphKeyCredentialInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphKeyCredentialInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphKeyCredentialInner.
+     */
+    public static MicrosoftGraphKeyCredentialInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphKeyCredentialInner deserializedMicrosoftGraphKeyCredentialInner
+                = new MicrosoftGraphKeyCredentialInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customKeyIdentifier".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.customKeyIdentifier
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.displayName = reader.getString();
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("key".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.key
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("keyId".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.keyId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.type = reader.getString();
+                } else if ("usage".equals(fieldName)) {
+                    deserializedMicrosoftGraphKeyCredentialInner.usage = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphKeyCredentialInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphKeyCredentialInner;
+        });
     }
 }

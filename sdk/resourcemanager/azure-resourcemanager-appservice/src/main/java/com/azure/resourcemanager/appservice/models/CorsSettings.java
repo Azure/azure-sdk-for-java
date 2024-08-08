@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cross-Origin Resource Sharing (CORS) settings for the app.
  */
 @Fluent
-public final class CorsSettings {
+public final class CorsSettings implements JsonSerializable<CorsSettings> {
     /*
      * Gets or sets the list of origins that should be allowed to make cross-origin
      * calls (for example: http://example.com:12345). Use "*" to allow all.
      */
-    @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
 
     /*
@@ -26,7 +28,6 @@ public final class CorsSettings {
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
      * for more details.
      */
-    @JsonProperty(value = "supportCredentials")
     private Boolean supportCredentials;
 
     /**
@@ -38,7 +39,7 @@ public final class CorsSettings {
     /**
      * Get the allowedOrigins property: Gets or sets the list of origins that should be allowed to make cross-origin
      * calls (for example: http://example.com:12345). Use "*" to allow all.
-     *
+     * 
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -48,7 +49,7 @@ public final class CorsSettings {
     /**
      * Set the allowedOrigins property: Gets or sets the list of origins that should be allowed to make cross-origin
      * calls (for example: http://example.com:12345). Use "*" to allow all.
-     *
+     * 
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsSettings object itself.
      */
@@ -61,7 +62,7 @@ public final class CorsSettings {
      * Get the supportCredentials property: Gets or sets whether CORS requests with credentials are allowed. See
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
      * for more details.
-     *
+     * 
      * @return the supportCredentials value.
      */
     public Boolean supportCredentials() {
@@ -72,7 +73,7 @@ public final class CorsSettings {
      * Set the supportCredentials property: Gets or sets whether CORS requests with credentials are allowed. See
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
      * for more details.
-     *
+     * 
      * @param supportCredentials the supportCredentials value to set.
      * @return the CorsSettings object itself.
      */
@@ -83,9 +84,50 @@ public final class CorsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedOrigins", this.allowedOrigins,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("supportCredentials", this.supportCredentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CorsSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorsSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CorsSettings.
+     */
+    public static CorsSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CorsSettings deserializedCorsSettings = new CorsSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedOrigins".equals(fieldName)) {
+                    List<String> allowedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCorsSettings.allowedOrigins = allowedOrigins;
+                } else if ("supportCredentials".equals(fieldName)) {
+                    deserializedCorsSettings.supportCredentials = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCorsSettings;
+        });
     }
 }

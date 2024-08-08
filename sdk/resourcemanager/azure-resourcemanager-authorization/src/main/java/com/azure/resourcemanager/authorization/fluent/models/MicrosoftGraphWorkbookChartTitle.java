@@ -5,52 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartTitle. */
+/**
+ * workbookChartTitle.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity {
     /*
      * Boolean value representing if the chart title will overlay the chart or not.
      */
-    @JsonProperty(value = "overlay")
     private Boolean overlay;
 
     /*
      * Represents the title text of a chart.
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * A boolean value the represents the visibility of a chart title object.
      */
-    @JsonProperty(value = "visible")
     private Boolean visible;
 
     /*
      * workbookChartTitleFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartTitleFormat format;
 
     /*
      * workbookChartTitle
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartTitle class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartTitle class.
+     */
     public MicrosoftGraphWorkbookChartTitle() {
     }
 
     /**
      * Get the overlay property: Boolean value representing if the chart title will overlay the chart or not.
-     *
+     * 
      * @return the overlay value.
      */
     public Boolean overlay() {
@@ -59,7 +59,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Set the overlay property: Boolean value representing if the chart title will overlay the chart or not.
-     *
+     * 
      * @param overlay the overlay value to set.
      * @return the MicrosoftGraphWorkbookChartTitle object itself.
      */
@@ -70,7 +70,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Get the text property: Represents the title text of a chart.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -79,7 +79,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Set the text property: Represents the title text of a chart.
-     *
+     * 
      * @param text the text value to set.
      * @return the MicrosoftGraphWorkbookChartTitle object itself.
      */
@@ -90,7 +90,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Get the visible property: A boolean value the represents the visibility of a chart title object.
-     *
+     * 
      * @return the visible value.
      */
     public Boolean visible() {
@@ -99,7 +99,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Set the visible property: A boolean value the represents the visibility of a chart title object.
-     *
+     * 
      * @param visible the visible value to set.
      * @return the MicrosoftGraphWorkbookChartTitle object itself.
      */
@@ -110,7 +110,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Get the format property: workbookChartTitleFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartTitleFormat format() {
@@ -119,7 +119,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Set the format property: workbookChartTitleFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChartTitle object itself.
      */
@@ -130,17 +130,16 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Get the additionalProperties property: workbookChartTitle.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartTitle.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartTitle object itself.
      */
@@ -149,15 +148,9 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartTitle withId(String id) {
         super.withId(id);
@@ -166,7 +159,7 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -175,5 +168,66 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
         if (format() != null) {
             format().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeBooleanField("overlay", this.overlay);
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeBooleanField("visible", this.visible);
+        jsonWriter.writeJsonField("format", this.format);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartTitle from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartTitle if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartTitle.
+     */
+    public static MicrosoftGraphWorkbookChartTitle fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartTitle deserializedMicrosoftGraphWorkbookChartTitle
+                = new MicrosoftGraphWorkbookChartTitle();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitle.withId(reader.getString());
+                } else if ("overlay".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitle.overlay = reader.getNullable(JsonReader::getBoolean);
+                } else if ("text".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitle.text = reader.getString();
+                } else if ("visible".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitle.visible = reader.getNullable(JsonReader::getBoolean);
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitle.format
+                        = MicrosoftGraphWorkbookChartTitleFormat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartTitle.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartTitle;
+        });
     }
 }

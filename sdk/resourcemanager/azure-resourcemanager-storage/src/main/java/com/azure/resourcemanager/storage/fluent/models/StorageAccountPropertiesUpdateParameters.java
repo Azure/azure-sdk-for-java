@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
@@ -19,38 +23,35 @@ import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The parameters used when updating a storage account.
  */
 @Fluent
-public final class StorageAccountPropertiesUpdateParameters {
+public final class StorageAccountPropertiesUpdateParameters
+    implements JsonSerializable<StorageAccountPropertiesUpdateParameters> {
     /*
      * Custom domain assigned to the storage account by the user. Name is the CNAME source. Only one custom domain is
      * supported per storage account at this time. To clear the existing custom domain, use an empty string for the
      * custom domain name property.
      */
-    @JsonProperty(value = "customDomain")
     private CustomDomain customDomain;
 
     /*
      * Not applicable. Azure Storage encryption at rest is enabled by default for all storage accounts and cannot be
      * disabled.
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * SasPolicy assigned to the storage account.
      */
-    @JsonProperty(value = "sasPolicy")
     private SasPolicy sasPolicy;
 
     /*
      * KeyPolicy assigned to the storage account.
      */
-    @JsonProperty(value = "keyPolicy")
     private KeyPolicy keyPolicy;
 
     /*
@@ -58,69 +59,58 @@ public final class StorageAccountPropertiesUpdateParameters {
      * tier is the default value for premium block blobs storage account type and it cannot be changed for the premium
      * block blobs storage account type.
      */
-    @JsonProperty(value = "accessTier")
     private AccessTier accessTier;
 
     /*
      * Provides the identity based authentication settings for Azure Files.
      */
-    @JsonProperty(value = "azureFilesIdentityBasedAuthentication")
     private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /*
      * Allows https traffic only to storage service if sets to true.
      */
-    @JsonProperty(value = "supportsHttpsTrafficOnly")
     private Boolean enableHttpsTrafficOnly;
 
     /*
      * Enables Secure File Transfer Protocol, if set to true
      */
-    @JsonProperty(value = "isSftpEnabled")
     private Boolean isSftpEnabled;
 
     /*
      * Enables local users feature, if set to true
      */
-    @JsonProperty(value = "isLocalUserEnabled")
     private Boolean isLocalUserEnabled;
 
     /*
      * Enables extended group support with local users feature, if set to true
      */
-    @JsonProperty(value = "enableExtendedGroups")
     private Boolean enableExtendedGroups;
 
     /*
      * Network rule set
      */
-    @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkRuleSet;
 
     /*
      * Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
      */
-    @JsonProperty(value = "largeFileSharesState")
     private LargeFileSharesState largeFileSharesState;
 
     /*
      * Maintains information about the network routing choice opted by the user for data transfer
      */
-    @JsonProperty(value = "routingPreference")
     private RoutingPreference routingPreference;
 
     /*
      * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
      * false for this property.
      */
-    @JsonProperty(value = "allowBlobPublicAccess")
     private Boolean allowBlobPublicAccess;
 
     /*
      * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for
      * this property.
      */
-    @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
     /*
@@ -128,7 +118,6 @@ public final class StorageAccountPropertiesUpdateParameters {
      * Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active
      * Directory (Azure AD). The default value is null, which is equivalent to true.
      */
-    @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
 
     /*
@@ -136,34 +125,29 @@ public final class StorageAccountPropertiesUpdateParameters {
      * only if object replication policies will involve storage accounts in different AAD tenants. The default
      * interpretation is false for new accounts to follow best security practices by default.
      */
-    @JsonProperty(value = "allowCrossTenantReplication")
     private Boolean allowCrossTenantReplication;
 
     /*
      * A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is
      * false for this property.
      */
-    @JsonProperty(value = "defaultToOAuthAuthentication")
     private Boolean defaultToOAuthAuthentication;
 
     /*
      * Allow, disallow, or let Network Security Perimeter configuration to evaluate public network access to Storage
      * Account. Value is optional but if passed in, must be 'Enabled', 'Disabled' or 'SecuredByPerimeter'.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The property is immutable and can only be set to true at the account creation time. When set to true, it enables
      * object level immutability for all the containers in the account by default.
      */
-    @JsonProperty(value = "immutableStorageWithVersioning")
     private ImmutableStorageAccount immutableStorageWithVersioning;
 
     /*
      * Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
      */
-    @JsonProperty(value = "allowedCopyScope")
     private AllowedCopyScope allowedCopyScope;
 
     /*
@@ -171,7 +155,6 @@ public final class StorageAccountPropertiesUpdateParameters {
      * single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric
      * DNS Zone identifier.
      */
-    @JsonProperty(value = "dnsEndpointType")
     private DnsEndpointType dnsEndpointType;
 
     /**
@@ -701,5 +684,128 @@ public final class StorageAccountPropertiesUpdateParameters {
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customDomain", this.customDomain);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeJsonField("sasPolicy", this.sasPolicy);
+        jsonWriter.writeJsonField("keyPolicy", this.keyPolicy);
+        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeJsonField("azureFilesIdentityBasedAuthentication", this.azureFilesIdentityBasedAuthentication);
+        jsonWriter.writeBooleanField("supportsHttpsTrafficOnly", this.enableHttpsTrafficOnly);
+        jsonWriter.writeBooleanField("isSftpEnabled", this.isSftpEnabled);
+        jsonWriter.writeBooleanField("isLocalUserEnabled", this.isLocalUserEnabled);
+        jsonWriter.writeBooleanField("enableExtendedGroups", this.enableExtendedGroups);
+        jsonWriter.writeJsonField("networkAcls", this.networkRuleSet);
+        jsonWriter.writeStringField("largeFileSharesState",
+            this.largeFileSharesState == null ? null : this.largeFileSharesState.toString());
+        jsonWriter.writeJsonField("routingPreference", this.routingPreference);
+        jsonWriter.writeBooleanField("allowBlobPublicAccess", this.allowBlobPublicAccess);
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeBooleanField("allowSharedKeyAccess", this.allowSharedKeyAccess);
+        jsonWriter.writeBooleanField("allowCrossTenantReplication", this.allowCrossTenantReplication);
+        jsonWriter.writeBooleanField("defaultToOAuthAuthentication", this.defaultToOAuthAuthentication);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
+        jsonWriter.writeStringField("allowedCopyScope",
+            this.allowedCopyScope == null ? null : this.allowedCopyScope.toString());
+        jsonWriter.writeStringField("dnsEndpointType",
+            this.dnsEndpointType == null ? null : this.dnsEndpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountPropertiesUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountPropertiesUpdateParameters.
+     */
+    public static StorageAccountPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountPropertiesUpdateParameters deserializedStorageAccountPropertiesUpdateParameters
+                = new StorageAccountPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customDomain".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.customDomain = CustomDomain.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.encryption = Encryption.fromJson(reader);
+                } else if ("sasPolicy".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.sasPolicy = SasPolicy.fromJson(reader);
+                } else if ("keyPolicy".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.keyPolicy = KeyPolicy.fromJson(reader);
+                } else if ("accessTier".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.accessTier
+                        = AccessTier.fromString(reader.getString());
+                } else if ("azureFilesIdentityBasedAuthentication".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.azureFilesIdentityBasedAuthentication
+                        = AzureFilesIdentityBasedAuthentication.fromJson(reader);
+                } else if ("supportsHttpsTrafficOnly".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.enableHttpsTrafficOnly
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSftpEnabled".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.isSftpEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isLocalUserEnabled".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.isLocalUserEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableExtendedGroups".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.enableExtendedGroups
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.networkRuleSet
+                        = NetworkRuleSet.fromJson(reader);
+                } else if ("largeFileSharesState".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.largeFileSharesState
+                        = LargeFileSharesState.fromString(reader.getString());
+                } else if ("routingPreference".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.routingPreference
+                        = RoutingPreference.fromJson(reader);
+                } else if ("allowBlobPublicAccess".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.allowBlobPublicAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.minimumTlsVersion
+                        = MinimumTlsVersion.fromString(reader.getString());
+                } else if ("allowSharedKeyAccess".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.allowSharedKeyAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowCrossTenantReplication".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.allowCrossTenantReplication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultToOAuthAuthentication".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.defaultToOAuthAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("immutableStorageWithVersioning".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.immutableStorageWithVersioning
+                        = ImmutableStorageAccount.fromJson(reader);
+                } else if ("allowedCopyScope".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.allowedCopyScope
+                        = AllowedCopyScope.fromString(reader.getString());
+                } else if ("dnsEndpointType".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.dnsEndpointType
+                        = DnsEndpointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountPropertiesUpdateParameters;
+        });
     }
 }

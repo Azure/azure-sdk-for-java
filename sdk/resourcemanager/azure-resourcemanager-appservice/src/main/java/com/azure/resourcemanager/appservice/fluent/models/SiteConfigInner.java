@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ApiDefinitionInfo;
 import com.azure.resourcemanager.appservice.models.ApiManagementConfig;
 import com.azure.resourcemanager.appservice.models.AutoHealRules;
@@ -25,10 +30,9 @@ import com.azure.resourcemanager.appservice.models.SiteMachineKey;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.TlsCipherSuites;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -36,410 +40,344 @@ import java.util.Map;
  * Configuration of an App Service app.
  */
 @Fluent
-public final class SiteConfigInner {
+public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> {
     /*
      * Number of workers.
      */
-    @JsonProperty(value = "numberOfWorkers")
     private Integer numberOfWorkers;
 
     /*
      * Default documents.
      */
-    @JsonProperty(value = "defaultDocuments")
     private List<String> defaultDocuments;
 
     /*
      * .NET Framework version.
      */
-    @JsonProperty(value = "netFrameworkVersion")
     private String netFrameworkVersion;
 
     /*
      * Version of PHP.
      */
-    @JsonProperty(value = "phpVersion")
     private String phpVersion;
 
     /*
      * Version of Python.
      */
-    @JsonProperty(value = "pythonVersion")
     private String pythonVersion;
 
     /*
      * Version of Node.js.
      */
-    @JsonProperty(value = "nodeVersion")
     private String nodeVersion;
 
     /*
      * Version of PowerShell.
      */
-    @JsonProperty(value = "powerShellVersion")
     private String powerShellVersion;
 
     /*
      * Linux App Framework and version
      */
-    @JsonProperty(value = "linuxFxVersion")
     private String linuxFxVersion;
 
     /*
      * Xenon App Framework and version
      */
-    @JsonProperty(value = "windowsFxVersion")
     private String windowsFxVersion;
 
     /*
      * <code>true</code> if request tracing is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "requestTracingEnabled")
     private Boolean requestTracingEnabled;
 
     /*
      * Request tracing expiration time.
      */
-    @JsonProperty(value = "requestTracingExpirationTime")
     private OffsetDateTime requestTracingExpirationTime;
 
     /*
      * <code>true</code> if remote debugging is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "remoteDebuggingEnabled")
     private Boolean remoteDebuggingEnabled;
 
     /*
      * Remote debugging version.
      */
-    @JsonProperty(value = "remoteDebuggingVersion")
     private String remoteDebuggingVersion;
 
     /*
      * <code>true</code> if HTTP logging is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "httpLoggingEnabled")
     private Boolean httpLoggingEnabled;
 
     /*
      * Flag to use Managed Identity Creds for ACR pull
      */
-    @JsonProperty(value = "acrUseManagedIdentityCreds")
     private Boolean acrUseManagedIdentityCreds;
 
     /*
      * If using user managed identity, the user managed identity ClientId
      */
-    @JsonProperty(value = "acrUserManagedIdentityID")
     private String acrUserManagedIdentityId;
 
     /*
      * HTTP logs directory size limit.
      */
-    @JsonProperty(value = "logsDirectorySizeLimit")
     private Integer logsDirectorySizeLimit;
 
     /*
      * <code>true</code> if detailed error logging is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "detailedErrorLoggingEnabled")
     private Boolean detailedErrorLoggingEnabled;
 
     /*
      * Publishing user name.
      */
-    @JsonProperty(value = "publishingUsername")
     private String publishingUsername;
 
     /*
      * Application settings.
      */
-    @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
 
     /*
      * Application metadata. This property cannot be retrieved, since it may contain secrets.
      */
-    @JsonProperty(value = "metadata")
     private List<NameValuePair> metadata;
 
     /*
      * Connection strings.
      */
-    @JsonProperty(value = "connectionStrings")
     private List<ConnStringInfo> connectionStrings;
 
     /*
      * Site MachineKey.
      */
-    @JsonProperty(value = "machineKey", access = JsonProperty.Access.WRITE_ONLY)
     private SiteMachineKey machineKey;
 
     /*
      * Handler mappings.
      */
-    @JsonProperty(value = "handlerMappings")
     private List<HandlerMapping> handlerMappings;
 
     /*
      * Document root.
      */
-    @JsonProperty(value = "documentRoot")
     private String documentRoot;
 
     /*
      * SCM type.
      */
-    @JsonProperty(value = "scmType")
     private ScmType scmType;
 
     /*
      * <code>true</code> to use 32-bit worker process; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "use32BitWorkerProcess")
     private Boolean use32BitWorkerProcess;
 
     /*
      * <code>true</code> if WebSocket is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "webSocketsEnabled")
     private Boolean webSocketsEnabled;
 
     /*
      * <code>true</code> if Always On is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "alwaysOn")
     private Boolean alwaysOn;
 
     /*
      * Java version.
      */
-    @JsonProperty(value = "javaVersion")
     private String javaVersion;
 
     /*
      * Java container.
      */
-    @JsonProperty(value = "javaContainer")
     private String javaContainer;
 
     /*
      * Java container version.
      */
-    @JsonProperty(value = "javaContainerVersion")
     private String javaContainerVersion;
 
     /*
      * App command line to launch.
      */
-    @JsonProperty(value = "appCommandLine")
     private String appCommandLine;
 
     /*
      * Managed pipeline mode.
      */
-    @JsonProperty(value = "managedPipelineMode")
     private ManagedPipelineMode managedPipelineMode;
 
     /*
      * Virtual applications.
      */
-    @JsonProperty(value = "virtualApplications")
     private List<VirtualApplication> virtualApplications;
 
     /*
      * Site load balancing.
      */
-    @JsonProperty(value = "loadBalancing")
     private SiteLoadBalancing loadBalancing;
 
     /*
      * This is work around for polymorphic types.
      */
-    @JsonProperty(value = "experiments")
     private Experiments experiments;
 
     /*
      * Site limits.
      */
-    @JsonProperty(value = "limits")
     private SiteLimits limits;
 
     /*
      * <code>true</code> if Auto Heal is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "autoHealEnabled")
     private Boolean autoHealEnabled;
 
     /*
      * Auto Heal rules.
      */
-    @JsonProperty(value = "autoHealRules")
     private AutoHealRules autoHealRules;
 
     /*
      * Tracing options.
      */
-    @JsonProperty(value = "tracingOptions")
     private String tracingOptions;
 
     /*
      * Virtual Network name.
      */
-    @JsonProperty(value = "vnetName")
     private String vnetName;
 
     /*
-     * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.
+     * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and
+     * User Defined Routes applied.
      */
-    @JsonProperty(value = "vnetRouteAllEnabled")
     private Boolean vnetRouteAllEnabled;
 
     /*
      * The number of private ports assigned to this app. These will be assigned dynamically on runtime.
      */
-    @JsonProperty(value = "vnetPrivatePortsCount")
     private Integer vnetPrivatePortsCount;
 
     /*
      * Cross-Origin Resource Sharing (CORS) settings.
      */
-    @JsonProperty(value = "cors")
     private CorsSettings cors;
 
     /*
      * Push endpoint settings.
      */
-    @JsonProperty(value = "push")
     private PushSettingsInner push;
 
     /*
      * Information about the formal API definition for the app.
      */
-    @JsonProperty(value = "apiDefinition")
     private ApiDefinitionInfo apiDefinition;
 
     /*
      * Azure API management settings linked to the app.
      */
-    @JsonProperty(value = "apiManagementConfig")
     private ApiManagementConfig apiManagementConfig;
 
     /*
      * Auto-swap slot name.
      */
-    @JsonProperty(value = "autoSwapSlotName")
     private String autoSwapSlotName;
 
     /*
      * <code>true</code> to enable local MySQL; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "localMySqlEnabled")
     private Boolean localMySqlEnabled;
 
     /*
      * Managed Service Identity Id
      */
-    @JsonProperty(value = "managedServiceIdentityId")
     private Integer managedServiceIdentityId;
 
     /*
      * Explicit Managed Service Identity Id
      */
-    @JsonProperty(value = "xManagedServiceIdentityId")
     private Integer xManagedServiceIdentityId;
 
     /*
      * Identity to use for Key Vault Reference authentication.
      */
-    @JsonProperty(value = "keyVaultReferenceIdentity")
     private String keyVaultReferenceIdentity;
 
     /*
      * IP security restrictions for main.
      */
-    @JsonProperty(value = "ipSecurityRestrictions")
     private List<IpSecurityRestriction> ipSecurityRestrictions;
 
     /*
      * Default action for main access restriction if no rules are matched.
      */
-    @JsonProperty(value = "ipSecurityRestrictionsDefaultAction")
     private DefaultAction ipSecurityRestrictionsDefaultAction;
 
     /*
      * IP security restrictions for scm.
      */
-    @JsonProperty(value = "scmIpSecurityRestrictions")
     private List<IpSecurityRestriction> scmIpSecurityRestrictions;
 
     /*
      * Default action for scm access restriction if no rules are matched.
      */
-    @JsonProperty(value = "scmIpSecurityRestrictionsDefaultAction")
     private DefaultAction scmIpSecurityRestrictionsDefaultAction;
 
     /*
      * IP security restrictions for scm to use main.
      */
-    @JsonProperty(value = "scmIpSecurityRestrictionsUseMain")
     private Boolean scmIpSecurityRestrictionsUseMain;
 
     /*
      * Http20Enabled: configures a web site to allow clients to connect over http2.0
      */
-    @JsonProperty(value = "http20Enabled")
     private Boolean http20Enabled;
 
     /*
      * MinTlsVersion: configures the minimum version of TLS required for SSL requests
      */
-    @JsonProperty(value = "minTlsVersion")
     private SupportedTlsVersions minTlsVersion;
 
     /*
      * The minimum strength TLS cipher suite allowed for an application
      */
-    @JsonProperty(value = "minTlsCipherSuite")
     private TlsCipherSuites minTlsCipherSuite;
 
     /*
      * ScmMinTlsVersion: configures the minimum version of TLS required for SSL requests for SCM site
      */
-    @JsonProperty(value = "scmMinTlsVersion")
     private SupportedTlsVersions scmMinTlsVersion;
 
     /*
      * State of FTP / FTPS service
      */
-    @JsonProperty(value = "ftpsState")
     private FtpsState ftpsState;
 
     /*
      * Number of preWarmed instances.
      * This setting only applies to the Consumption and Elastic Plans
      */
-    @JsonProperty(value = "preWarmedInstanceCount")
     private Integer preWarmedInstanceCount;
 
     /*
      * Maximum number of workers that a site can scale out to.
      * This setting only applies to the Consumption and Elastic Premium Plans
      */
-    @JsonProperty(value = "functionAppScaleLimit")
     private Integer functionAppScaleLimit;
 
     /*
      * Maximum number of workers that a site can scale out to.
      * This setting only applies to apps in plans where ElasticScaleEnabled is <code>true</code>
      */
-    @JsonProperty(value = "elasticWebAppScaleLimit")
     private Integer elasticWebAppScaleLimit;
 
     /*
      * Health check path
      */
-    @JsonProperty(value = "healthCheckPath")
     private String healthCheckPath;
 
     /*
@@ -447,33 +385,31 @@ public final class SiteConfigInner {
      * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
      */
-    @JsonProperty(value = "functionsRuntimeScaleMonitoringEnabled")
     private Boolean functionsRuntimeScaleMonitoringEnabled;
 
     /*
-     * Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
+     * Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting
+     * the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux, expects tz database values
+     * https://www.iana.org/time-zones (for a quick reference see
+     * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
+     * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
      */
-    @JsonProperty(value = "websiteTimeZone")
     private String websiteTimeZone;
 
     /*
      * Number of minimum instance count for a site
      * This setting only applies to the Elastic Plans
      */
-    @JsonProperty(value = "minimumElasticInstanceCount")
     private Integer minimumElasticInstanceCount;
 
     /*
      * List of Azure Storage Accounts.
      */
-    @JsonProperty(value = "azureStorageAccounts")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /*
      * Property to allow or block all public traffic.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
 
     /**
@@ -484,7 +420,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the numberOfWorkers property: Number of workers.
-     *
+     * 
      * @return the numberOfWorkers value.
      */
     public Integer numberOfWorkers() {
@@ -493,7 +429,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the numberOfWorkers property: Number of workers.
-     *
+     * 
      * @param numberOfWorkers the numberOfWorkers value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -504,7 +440,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the defaultDocuments property: Default documents.
-     *
+     * 
      * @return the defaultDocuments value.
      */
     public List<String> defaultDocuments() {
@@ -513,7 +449,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the defaultDocuments property: Default documents.
-     *
+     * 
      * @param defaultDocuments the defaultDocuments value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -524,7 +460,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the netFrameworkVersion property: .NET Framework version.
-     *
+     * 
      * @return the netFrameworkVersion value.
      */
     public String netFrameworkVersion() {
@@ -533,7 +469,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the netFrameworkVersion property: .NET Framework version.
-     *
+     * 
      * @param netFrameworkVersion the netFrameworkVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -544,7 +480,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the phpVersion property: Version of PHP.
-     *
+     * 
      * @return the phpVersion value.
      */
     public String phpVersion() {
@@ -553,7 +489,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the phpVersion property: Version of PHP.
-     *
+     * 
      * @param phpVersion the phpVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -564,7 +500,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the pythonVersion property: Version of Python.
-     *
+     * 
      * @return the pythonVersion value.
      */
     public String pythonVersion() {
@@ -573,7 +509,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the pythonVersion property: Version of Python.
-     *
+     * 
      * @param pythonVersion the pythonVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -584,7 +520,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the nodeVersion property: Version of Node.js.
-     *
+     * 
      * @return the nodeVersion value.
      */
     public String nodeVersion() {
@@ -593,7 +529,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the nodeVersion property: Version of Node.js.
-     *
+     * 
      * @param nodeVersion the nodeVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -604,7 +540,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the powerShellVersion property: Version of PowerShell.
-     *
+     * 
      * @return the powerShellVersion value.
      */
     public String powerShellVersion() {
@@ -613,7 +549,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the powerShellVersion property: Version of PowerShell.
-     *
+     * 
      * @param powerShellVersion the powerShellVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -624,7 +560,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the linuxFxVersion property: Linux App Framework and version.
-     *
+     * 
      * @return the linuxFxVersion value.
      */
     public String linuxFxVersion() {
@@ -633,7 +569,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the linuxFxVersion property: Linux App Framework and version.
-     *
+     * 
      * @param linuxFxVersion the linuxFxVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -644,7 +580,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the windowsFxVersion property: Xenon App Framework and version.
-     *
+     * 
      * @return the windowsFxVersion value.
      */
     public String windowsFxVersion() {
@@ -653,7 +589,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the windowsFxVersion property: Xenon App Framework and version.
-     *
+     * 
      * @param windowsFxVersion the windowsFxVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -665,7 +601,7 @@ public final class SiteConfigInner {
     /**
      * Get the requestTracingEnabled property: &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the requestTracingEnabled value.
      */
     public Boolean requestTracingEnabled() {
@@ -675,7 +611,7 @@ public final class SiteConfigInner {
     /**
      * Set the requestTracingEnabled property: &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param requestTracingEnabled the requestTracingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -686,7 +622,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the requestTracingExpirationTime property: Request tracing expiration time.
-     *
+     * 
      * @return the requestTracingExpirationTime value.
      */
     public OffsetDateTime requestTracingExpirationTime() {
@@ -695,7 +631,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the requestTracingExpirationTime property: Request tracing expiration time.
-     *
+     * 
      * @param requestTracingExpirationTime the requestTracingExpirationTime value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -707,7 +643,7 @@ public final class SiteConfigInner {
     /**
      * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the remoteDebuggingEnabled value.
      */
     public Boolean remoteDebuggingEnabled() {
@@ -717,7 +653,7 @@ public final class SiteConfigInner {
     /**
      * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -728,7 +664,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the remoteDebuggingVersion property: Remote debugging version.
-     *
+     * 
      * @return the remoteDebuggingVersion value.
      */
     public String remoteDebuggingVersion() {
@@ -737,7 +673,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the remoteDebuggingVersion property: Remote debugging version.
-     *
+     * 
      * @param remoteDebuggingVersion the remoteDebuggingVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -749,7 +685,7 @@ public final class SiteConfigInner {
     /**
      * Get the httpLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the httpLoggingEnabled value.
      */
     public Boolean httpLoggingEnabled() {
@@ -759,7 +695,7 @@ public final class SiteConfigInner {
     /**
      * Set the httpLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param httpLoggingEnabled the httpLoggingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -770,7 +706,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     *
+     * 
      * @return the acrUseManagedIdentityCreds value.
      */
     public Boolean acrUseManagedIdentityCreds() {
@@ -779,7 +715,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     *
+     * 
      * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -790,7 +726,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     *
+     * 
      * @return the acrUserManagedIdentityId value.
      */
     public String acrUserManagedIdentityId() {
@@ -799,7 +735,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     *
+     * 
      * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -810,7 +746,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the logsDirectorySizeLimit property: HTTP logs directory size limit.
-     *
+     * 
      * @return the logsDirectorySizeLimit value.
      */
     public Integer logsDirectorySizeLimit() {
@@ -819,7 +755,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the logsDirectorySizeLimit property: HTTP logs directory size limit.
-     *
+     * 
      * @param logsDirectorySizeLimit the logsDirectorySizeLimit value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -831,7 +767,7 @@ public final class SiteConfigInner {
     /**
      * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the detailedErrorLoggingEnabled value.
      */
     public Boolean detailedErrorLoggingEnabled() {
@@ -841,7 +777,7 @@ public final class SiteConfigInner {
     /**
      * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -852,7 +788,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the publishingUsername property: Publishing user name.
-     *
+     * 
      * @return the publishingUsername value.
      */
     public String publishingUsername() {
@@ -861,7 +797,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the publishingUsername property: Publishing user name.
-     *
+     * 
      * @param publishingUsername the publishingUsername value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -872,7 +808,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the appSettings property: Application settings.
-     *
+     * 
      * @return the appSettings value.
      */
     public List<NameValuePair> appSettings() {
@@ -881,7 +817,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the appSettings property: Application settings.
-     *
+     * 
      * @param appSettings the appSettings value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -892,7 +828,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
-     *
+     * 
      * @return the metadata value.
      */
     public List<NameValuePair> metadata() {
@@ -901,7 +837,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -912,7 +848,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the connectionStrings property: Connection strings.
-     *
+     * 
      * @return the connectionStrings value.
      */
     public List<ConnStringInfo> connectionStrings() {
@@ -921,7 +857,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the connectionStrings property: Connection strings.
-     *
+     * 
      * @param connectionStrings the connectionStrings value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -932,7 +868,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the machineKey property: Site MachineKey.
-     *
+     * 
      * @return the machineKey value.
      */
     public SiteMachineKey machineKey() {
@@ -941,7 +877,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the handlerMappings property: Handler mappings.
-     *
+     * 
      * @return the handlerMappings value.
      */
     public List<HandlerMapping> handlerMappings() {
@@ -950,7 +886,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the handlerMappings property: Handler mappings.
-     *
+     * 
      * @param handlerMappings the handlerMappings value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -961,7 +897,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the documentRoot property: Document root.
-     *
+     * 
      * @return the documentRoot value.
      */
     public String documentRoot() {
@@ -970,7 +906,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the documentRoot property: Document root.
-     *
+     * 
      * @param documentRoot the documentRoot value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -981,7 +917,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the scmType property: SCM type.
-     *
+     * 
      * @return the scmType value.
      */
     public ScmType scmType() {
@@ -990,7 +926,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the scmType property: SCM type.
-     *
+     * 
      * @param scmType the scmType value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1002,7 +938,7 @@ public final class SiteConfigInner {
     /**
      * Get the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the use32BitWorkerProcess value.
      */
     public Boolean use32BitWorkerProcess() {
@@ -1012,7 +948,7 @@ public final class SiteConfigInner {
     /**
      * Set the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param use32BitWorkerProcess the use32BitWorkerProcess value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1024,7 +960,7 @@ public final class SiteConfigInner {
     /**
      * Get the webSocketsEnabled property: &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the webSocketsEnabled value.
      */
     public Boolean webSocketsEnabled() {
@@ -1034,7 +970,7 @@ public final class SiteConfigInner {
     /**
      * Set the webSocketsEnabled property: &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param webSocketsEnabled the webSocketsEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1046,7 +982,7 @@ public final class SiteConfigInner {
     /**
      * Get the alwaysOn property: &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the alwaysOn value.
      */
     public Boolean alwaysOn() {
@@ -1056,7 +992,7 @@ public final class SiteConfigInner {
     /**
      * Set the alwaysOn property: &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param alwaysOn the alwaysOn value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1067,7 +1003,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the javaVersion property: Java version.
-     *
+     * 
      * @return the javaVersion value.
      */
     public String javaVersion() {
@@ -1076,7 +1012,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the javaVersion property: Java version.
-     *
+     * 
      * @param javaVersion the javaVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1087,7 +1023,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the javaContainer property: Java container.
-     *
+     * 
      * @return the javaContainer value.
      */
     public String javaContainer() {
@@ -1096,7 +1032,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the javaContainer property: Java container.
-     *
+     * 
      * @param javaContainer the javaContainer value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1107,7 +1043,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the javaContainerVersion property: Java container version.
-     *
+     * 
      * @return the javaContainerVersion value.
      */
     public String javaContainerVersion() {
@@ -1116,7 +1052,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the javaContainerVersion property: Java container version.
-     *
+     * 
      * @param javaContainerVersion the javaContainerVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1127,7 +1063,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the appCommandLine property: App command line to launch.
-     *
+     * 
      * @return the appCommandLine value.
      */
     public String appCommandLine() {
@@ -1136,7 +1072,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the appCommandLine property: App command line to launch.
-     *
+     * 
      * @param appCommandLine the appCommandLine value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1147,7 +1083,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the managedPipelineMode property: Managed pipeline mode.
-     *
+     * 
      * @return the managedPipelineMode value.
      */
     public ManagedPipelineMode managedPipelineMode() {
@@ -1156,7 +1092,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the managedPipelineMode property: Managed pipeline mode.
-     *
+     * 
      * @param managedPipelineMode the managedPipelineMode value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1167,7 +1103,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the virtualApplications property: Virtual applications.
-     *
+     * 
      * @return the virtualApplications value.
      */
     public List<VirtualApplication> virtualApplications() {
@@ -1176,7 +1112,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the virtualApplications property: Virtual applications.
-     *
+     * 
      * @param virtualApplications the virtualApplications value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1187,7 +1123,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the loadBalancing property: Site load balancing.
-     *
+     * 
      * @return the loadBalancing value.
      */
     public SiteLoadBalancing loadBalancing() {
@@ -1196,7 +1132,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the loadBalancing property: Site load balancing.
-     *
+     * 
      * @param loadBalancing the loadBalancing value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1207,7 +1143,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the experiments property: This is work around for polymorphic types.
-     *
+     * 
      * @return the experiments value.
      */
     public Experiments experiments() {
@@ -1216,7 +1152,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the experiments property: This is work around for polymorphic types.
-     *
+     * 
      * @param experiments the experiments value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1227,7 +1163,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the limits property: Site limits.
-     *
+     * 
      * @return the limits value.
      */
     public SiteLimits limits() {
@@ -1236,7 +1172,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the limits property: Site limits.
-     *
+     * 
      * @param limits the limits value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1248,7 +1184,7 @@ public final class SiteConfigInner {
     /**
      * Get the autoHealEnabled property: &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the autoHealEnabled value.
      */
     public Boolean autoHealEnabled() {
@@ -1258,7 +1194,7 @@ public final class SiteConfigInner {
     /**
      * Set the autoHealEnabled property: &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param autoHealEnabled the autoHealEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1269,7 +1205,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the autoHealRules property: Auto Heal rules.
-     *
+     * 
      * @return the autoHealRules value.
      */
     public AutoHealRules autoHealRules() {
@@ -1278,7 +1214,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the autoHealRules property: Auto Heal rules.
-     *
+     * 
      * @param autoHealRules the autoHealRules value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1289,7 +1225,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the tracingOptions property: Tracing options.
-     *
+     * 
      * @return the tracingOptions value.
      */
     public String tracingOptions() {
@@ -1298,7 +1234,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the tracingOptions property: Tracing options.
-     *
+     * 
      * @param tracingOptions the tracingOptions value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1309,7 +1245,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the vnetName property: Virtual Network name.
-     *
+     * 
      * @return the vnetName value.
      */
     public String vnetName() {
@@ -1318,7 +1254,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the vnetName property: Virtual Network name.
-     *
+     * 
      * @param vnetName the vnetName value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1330,7 +1266,7 @@ public final class SiteConfigInner {
     /**
      * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
      * Virtual Network Security Groups and User Defined Routes applied.
-     *
+     * 
      * @return the vnetRouteAllEnabled value.
      */
     public Boolean vnetRouteAllEnabled() {
@@ -1340,7 +1276,7 @@ public final class SiteConfigInner {
     /**
      * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
      * Virtual Network Security Groups and User Defined Routes applied.
-     *
+     * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1352,7 +1288,7 @@ public final class SiteConfigInner {
     /**
      * Get the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
      * dynamically on runtime.
-     *
+     * 
      * @return the vnetPrivatePortsCount value.
      */
     public Integer vnetPrivatePortsCount() {
@@ -1362,7 +1298,7 @@ public final class SiteConfigInner {
     /**
      * Set the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
      * dynamically on runtime.
-     *
+     * 
      * @param vnetPrivatePortsCount the vnetPrivatePortsCount value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1373,7 +1309,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @return the cors value.
      */
     public CorsSettings cors() {
@@ -1382,7 +1318,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1393,7 +1329,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the push property: Push endpoint settings.
-     *
+     * 
      * @return the push value.
      */
     public PushSettingsInner push() {
@@ -1402,7 +1338,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the push property: Push endpoint settings.
-     *
+     * 
      * @param push the push value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1413,7 +1349,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the apiDefinition property: Information about the formal API definition for the app.
-     *
+     * 
      * @return the apiDefinition value.
      */
     public ApiDefinitionInfo apiDefinition() {
@@ -1422,7 +1358,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the apiDefinition property: Information about the formal API definition for the app.
-     *
+     * 
      * @param apiDefinition the apiDefinition value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1433,7 +1369,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the apiManagementConfig property: Azure API management settings linked to the app.
-     *
+     * 
      * @return the apiManagementConfig value.
      */
     public ApiManagementConfig apiManagementConfig() {
@@ -1442,7 +1378,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the apiManagementConfig property: Azure API management settings linked to the app.
-     *
+     * 
      * @param apiManagementConfig the apiManagementConfig value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1453,7 +1389,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the autoSwapSlotName property: Auto-swap slot name.
-     *
+     * 
      * @return the autoSwapSlotName value.
      */
     public String autoSwapSlotName() {
@@ -1462,7 +1398,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the autoSwapSlotName property: Auto-swap slot name.
-     *
+     * 
      * @param autoSwapSlotName the autoSwapSlotName value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1474,7 +1410,7 @@ public final class SiteConfigInner {
     /**
      * Get the localMySqlEnabled property: &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the localMySqlEnabled value.
      */
     public Boolean localMySqlEnabled() {
@@ -1484,7 +1420,7 @@ public final class SiteConfigInner {
     /**
      * Set the localMySqlEnabled property: &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param localMySqlEnabled the localMySqlEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1495,7 +1431,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the managedServiceIdentityId property: Managed Service Identity Id.
-     *
+     * 
      * @return the managedServiceIdentityId value.
      */
     public Integer managedServiceIdentityId() {
@@ -1504,7 +1440,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the managedServiceIdentityId property: Managed Service Identity Id.
-     *
+     * 
      * @param managedServiceIdentityId the managedServiceIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1515,7 +1451,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the xManagedServiceIdentityId property: Explicit Managed Service Identity Id.
-     *
+     * 
      * @return the xManagedServiceIdentityId value.
      */
     public Integer xManagedServiceIdentityId() {
@@ -1524,7 +1460,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the xManagedServiceIdentityId property: Explicit Managed Service Identity Id.
-     *
+     * 
      * @param xManagedServiceIdentityId the xManagedServiceIdentityId value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1535,7 +1471,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -1544,7 +1480,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1555,7 +1491,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the ipSecurityRestrictions property: IP security restrictions for main.
-     *
+     * 
      * @return the ipSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> ipSecurityRestrictions() {
@@ -1564,7 +1500,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the ipSecurityRestrictions property: IP security restrictions for main.
-     *
+     * 
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1576,7 +1512,7 @@ public final class SiteConfigInner {
     /**
      * Get the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
      * matched.
-     *
+     * 
      * @return the ipSecurityRestrictionsDefaultAction value.
      */
     public DefaultAction ipSecurityRestrictionsDefaultAction() {
@@ -1586,7 +1522,7 @@ public final class SiteConfigInner {
     /**
      * Set the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
      * matched.
-     *
+     * 
      * @param ipSecurityRestrictionsDefaultAction the ipSecurityRestrictionsDefaultAction value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1597,7 +1533,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the scmIpSecurityRestrictions property: IP security restrictions for scm.
-     *
+     * 
      * @return the scmIpSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
@@ -1606,7 +1542,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the scmIpSecurityRestrictions property: IP security restrictions for scm.
-     *
+     * 
      * @param scmIpSecurityRestrictions the scmIpSecurityRestrictions value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1618,7 +1554,7 @@ public final class SiteConfigInner {
     /**
      * Get the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
      * are matched.
-     *
+     * 
      * @return the scmIpSecurityRestrictionsDefaultAction value.
      */
     public DefaultAction scmIpSecurityRestrictionsDefaultAction() {
@@ -1628,7 +1564,7 @@ public final class SiteConfigInner {
     /**
      * Set the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
      * are matched.
-     *
+     * 
      * @param scmIpSecurityRestrictionsDefaultAction the scmIpSecurityRestrictionsDefaultAction value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1640,7 +1576,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the scmIpSecurityRestrictionsUseMain property: IP security restrictions for scm to use main.
-     *
+     * 
      * @return the scmIpSecurityRestrictionsUseMain value.
      */
     public Boolean scmIpSecurityRestrictionsUseMain() {
@@ -1649,7 +1585,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the scmIpSecurityRestrictionsUseMain property: IP security restrictions for scm to use main.
-     *
+     * 
      * @param scmIpSecurityRestrictionsUseMain the scmIpSecurityRestrictionsUseMain value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1660,7 +1596,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the http20Enabled property: Http20Enabled: configures a web site to allow clients to connect over http2.0.
-     *
+     * 
      * @return the http20Enabled value.
      */
     public Boolean http20Enabled() {
@@ -1669,7 +1605,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the http20Enabled property: Http20Enabled: configures a web site to allow clients to connect over http2.0.
-     *
+     * 
      * @param http20Enabled the http20Enabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1680,7 +1616,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
-     *
+     * 
      * @return the minTlsVersion value.
      */
     public SupportedTlsVersions minTlsVersion() {
@@ -1689,7 +1625,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
-     *
+     * 
      * @param minTlsVersion the minTlsVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1700,7 +1636,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the minTlsCipherSuite property: The minimum strength TLS cipher suite allowed for an application.
-     *
+     * 
      * @return the minTlsCipherSuite value.
      */
     public TlsCipherSuites minTlsCipherSuite() {
@@ -1709,7 +1645,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the minTlsCipherSuite property: The minimum strength TLS cipher suite allowed for an application.
-     *
+     * 
      * @param minTlsCipherSuite the minTlsCipherSuite value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1721,7 +1657,7 @@ public final class SiteConfigInner {
     /**
      * Get the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
      * requests for SCM site.
-     *
+     * 
      * @return the scmMinTlsVersion value.
      */
     public SupportedTlsVersions scmMinTlsVersion() {
@@ -1731,7 +1667,7 @@ public final class SiteConfigInner {
     /**
      * Set the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
      * requests for SCM site.
-     *
+     * 
      * @param scmMinTlsVersion the scmMinTlsVersion value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1742,7 +1678,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the ftpsState property: State of FTP / FTPS service.
-     *
+     * 
      * @return the ftpsState value.
      */
     public FtpsState ftpsState() {
@@ -1751,7 +1687,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the ftpsState property: State of FTP / FTPS service.
-     *
+     * 
      * @param ftpsState the ftpsState value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1763,7 +1699,7 @@ public final class SiteConfigInner {
     /**
      * Get the preWarmedInstanceCount property: Number of preWarmed instances.
      * This setting only applies to the Consumption and Elastic Plans.
-     *
+     * 
      * @return the preWarmedInstanceCount value.
      */
     public Integer preWarmedInstanceCount() {
@@ -1773,7 +1709,7 @@ public final class SiteConfigInner {
     /**
      * Set the preWarmedInstanceCount property: Number of preWarmed instances.
      * This setting only applies to the Consumption and Elastic Plans.
-     *
+     * 
      * @param preWarmedInstanceCount the preWarmedInstanceCount value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1785,7 +1721,7 @@ public final class SiteConfigInner {
     /**
      * Get the functionAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to the Consumption and Elastic Premium Plans.
-     *
+     * 
      * @return the functionAppScaleLimit value.
      */
     public Integer functionAppScaleLimit() {
@@ -1795,7 +1731,7 @@ public final class SiteConfigInner {
     /**
      * Set the functionAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to the Consumption and Elastic Premium Plans.
-     *
+     * 
      * @param functionAppScaleLimit the functionAppScaleLimit value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1807,7 +1743,7 @@ public final class SiteConfigInner {
     /**
      * Get the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the elasticWebAppScaleLimit value.
      */
     public Integer elasticWebAppScaleLimit() {
@@ -1817,7 +1753,7 @@ public final class SiteConfigInner {
     /**
      * Set the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to.
      * This setting only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param elasticWebAppScaleLimit the elasticWebAppScaleLimit value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1828,7 +1764,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the healthCheckPath property: Health check path.
-     *
+     * 
      * @return the healthCheckPath value.
      */
     public String healthCheckPath() {
@@ -1837,7 +1773,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the healthCheckPath property: Health check path.
-     *
+     * 
      * @param healthCheckPath the healthCheckPath value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1851,7 +1787,7 @@ public final class SiteConfigInner {
      * runtime scale monitoring is enabled. When enabled,
      * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
-     *
+     * 
      * @return the functionsRuntimeScaleMonitoringEnabled value.
      */
     public Boolean functionsRuntimeScaleMonitoringEnabled() {
@@ -1863,7 +1799,7 @@ public final class SiteConfigInner {
      * runtime scale monitoring is enabled. When enabled,
      * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
-     *
+     * 
      * @param functionsRuntimeScaleMonitoringEnabled the functionsRuntimeScaleMonitoringEnabled value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1878,7 +1814,7 @@ public final class SiteConfigInner {
      * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     *
+     * 
      * @return the websiteTimeZone value.
      */
     public String websiteTimeZone() {
@@ -1891,7 +1827,7 @@ public final class SiteConfigInner {
      * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     *
+     * 
      * @param websiteTimeZone the websiteTimeZone value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1903,7 +1839,7 @@ public final class SiteConfigInner {
     /**
      * Get the minimumElasticInstanceCount property: Number of minimum instance count for a site
      * This setting only applies to the Elastic Plans.
-     *
+     * 
      * @return the minimumElasticInstanceCount value.
      */
     public Integer minimumElasticInstanceCount() {
@@ -1913,7 +1849,7 @@ public final class SiteConfigInner {
     /**
      * Set the minimumElasticInstanceCount property: Number of minimum instance count for a site
      * This setting only applies to the Elastic Plans.
-     *
+     * 
      * @param minimumElasticInstanceCount the minimumElasticInstanceCount value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1924,7 +1860,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
+     * 
      * @return the azureStorageAccounts value.
      */
     public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
@@ -1933,7 +1869,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
+     * 
      * @param azureStorageAccounts the azureStorageAccounts value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1944,7 +1880,7 @@ public final class SiteConfigInner {
 
     /**
      * Get the publicNetworkAccess property: Property to allow or block all public traffic.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public String publicNetworkAccess() {
@@ -1953,7 +1889,7 @@ public final class SiteConfigInner {
 
     /**
      * Set the publicNetworkAccess property: Property to allow or block all public traffic.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SiteConfigInner object itself.
      */
@@ -1964,7 +1900,7 @@ public final class SiteConfigInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -2020,5 +1956,295 @@ public final class SiteConfigInner {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("numberOfWorkers", this.numberOfWorkers);
+        jsonWriter.writeArrayField("defaultDocuments", this.defaultDocuments,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("netFrameworkVersion", this.netFrameworkVersion);
+        jsonWriter.writeStringField("phpVersion", this.phpVersion);
+        jsonWriter.writeStringField("pythonVersion", this.pythonVersion);
+        jsonWriter.writeStringField("nodeVersion", this.nodeVersion);
+        jsonWriter.writeStringField("powerShellVersion", this.powerShellVersion);
+        jsonWriter.writeStringField("linuxFxVersion", this.linuxFxVersion);
+        jsonWriter.writeStringField("windowsFxVersion", this.windowsFxVersion);
+        jsonWriter.writeBooleanField("requestTracingEnabled", this.requestTracingEnabled);
+        jsonWriter.writeStringField("requestTracingExpirationTime",
+            this.requestTracingExpirationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTracingExpirationTime));
+        jsonWriter.writeBooleanField("remoteDebuggingEnabled", this.remoteDebuggingEnabled);
+        jsonWriter.writeStringField("remoteDebuggingVersion", this.remoteDebuggingVersion);
+        jsonWriter.writeBooleanField("httpLoggingEnabled", this.httpLoggingEnabled);
+        jsonWriter.writeBooleanField("acrUseManagedIdentityCreds", this.acrUseManagedIdentityCreds);
+        jsonWriter.writeStringField("acrUserManagedIdentityID", this.acrUserManagedIdentityId);
+        jsonWriter.writeNumberField("logsDirectorySizeLimit", this.logsDirectorySizeLimit);
+        jsonWriter.writeBooleanField("detailedErrorLoggingEnabled", this.detailedErrorLoggingEnabled);
+        jsonWriter.writeStringField("publishingUsername", this.publishingUsername);
+        jsonWriter.writeArrayField("appSettings", this.appSettings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("connectionStrings", this.connectionStrings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("handlerMappings", this.handlerMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("documentRoot", this.documentRoot);
+        jsonWriter.writeStringField("scmType", this.scmType == null ? null : this.scmType.toString());
+        jsonWriter.writeBooleanField("use32BitWorkerProcess", this.use32BitWorkerProcess);
+        jsonWriter.writeBooleanField("webSocketsEnabled", this.webSocketsEnabled);
+        jsonWriter.writeBooleanField("alwaysOn", this.alwaysOn);
+        jsonWriter.writeStringField("javaVersion", this.javaVersion);
+        jsonWriter.writeStringField("javaContainer", this.javaContainer);
+        jsonWriter.writeStringField("javaContainerVersion", this.javaContainerVersion);
+        jsonWriter.writeStringField("appCommandLine", this.appCommandLine);
+        jsonWriter.writeStringField("managedPipelineMode",
+            this.managedPipelineMode == null ? null : this.managedPipelineMode.toString());
+        jsonWriter.writeArrayField("virtualApplications", this.virtualApplications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("loadBalancing", this.loadBalancing == null ? null : this.loadBalancing.toString());
+        jsonWriter.writeJsonField("experiments", this.experiments);
+        jsonWriter.writeJsonField("limits", this.limits);
+        jsonWriter.writeBooleanField("autoHealEnabled", this.autoHealEnabled);
+        jsonWriter.writeJsonField("autoHealRules", this.autoHealRules);
+        jsonWriter.writeStringField("tracingOptions", this.tracingOptions);
+        jsonWriter.writeStringField("vnetName", this.vnetName);
+        jsonWriter.writeBooleanField("vnetRouteAllEnabled", this.vnetRouteAllEnabled);
+        jsonWriter.writeNumberField("vnetPrivatePortsCount", this.vnetPrivatePortsCount);
+        jsonWriter.writeJsonField("cors", this.cors);
+        jsonWriter.writeJsonField("push", this.push);
+        jsonWriter.writeJsonField("apiDefinition", this.apiDefinition);
+        jsonWriter.writeJsonField("apiManagementConfig", this.apiManagementConfig);
+        jsonWriter.writeStringField("autoSwapSlotName", this.autoSwapSlotName);
+        jsonWriter.writeBooleanField("localMySqlEnabled", this.localMySqlEnabled);
+        jsonWriter.writeNumberField("managedServiceIdentityId", this.managedServiceIdentityId);
+        jsonWriter.writeNumberField("xManagedServiceIdentityId", this.xManagedServiceIdentityId);
+        jsonWriter.writeStringField("keyVaultReferenceIdentity", this.keyVaultReferenceIdentity);
+        jsonWriter.writeArrayField("ipSecurityRestrictions", this.ipSecurityRestrictions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("ipSecurityRestrictionsDefaultAction",
+            this.ipSecurityRestrictionsDefaultAction == null
+                ? null
+                : this.ipSecurityRestrictionsDefaultAction.toString());
+        jsonWriter.writeArrayField("scmIpSecurityRestrictions", this.scmIpSecurityRestrictions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scmIpSecurityRestrictionsDefaultAction",
+            this.scmIpSecurityRestrictionsDefaultAction == null
+                ? null
+                : this.scmIpSecurityRestrictionsDefaultAction.toString());
+        jsonWriter.writeBooleanField("scmIpSecurityRestrictionsUseMain", this.scmIpSecurityRestrictionsUseMain);
+        jsonWriter.writeBooleanField("http20Enabled", this.http20Enabled);
+        jsonWriter.writeStringField("minTlsVersion", this.minTlsVersion == null ? null : this.minTlsVersion.toString());
+        jsonWriter.writeStringField("minTlsCipherSuite",
+            this.minTlsCipherSuite == null ? null : this.minTlsCipherSuite.toString());
+        jsonWriter.writeStringField("scmMinTlsVersion",
+            this.scmMinTlsVersion == null ? null : this.scmMinTlsVersion.toString());
+        jsonWriter.writeStringField("ftpsState", this.ftpsState == null ? null : this.ftpsState.toString());
+        jsonWriter.writeNumberField("preWarmedInstanceCount", this.preWarmedInstanceCount);
+        jsonWriter.writeNumberField("functionAppScaleLimit", this.functionAppScaleLimit);
+        jsonWriter.writeNumberField("elasticWebAppScaleLimit", this.elasticWebAppScaleLimit);
+        jsonWriter.writeStringField("healthCheckPath", this.healthCheckPath);
+        jsonWriter.writeBooleanField("functionsRuntimeScaleMonitoringEnabled",
+            this.functionsRuntimeScaleMonitoringEnabled);
+        jsonWriter.writeStringField("websiteTimeZone", this.websiteTimeZone);
+        jsonWriter.writeNumberField("minimumElasticInstanceCount", this.minimumElasticInstanceCount);
+        jsonWriter.writeMapField("azureStorageAccounts", this.azureStorageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteConfigInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteConfigInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteConfigInner.
+     */
+    public static SiteConfigInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteConfigInner deserializedSiteConfigInner = new SiteConfigInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfWorkers".equals(fieldName)) {
+                    deserializedSiteConfigInner.numberOfWorkers = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultDocuments".equals(fieldName)) {
+                    List<String> defaultDocuments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteConfigInner.defaultDocuments = defaultDocuments;
+                } else if ("netFrameworkVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.netFrameworkVersion = reader.getString();
+                } else if ("phpVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.phpVersion = reader.getString();
+                } else if ("pythonVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.pythonVersion = reader.getString();
+                } else if ("nodeVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.nodeVersion = reader.getString();
+                } else if ("powerShellVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.powerShellVersion = reader.getString();
+                } else if ("linuxFxVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.linuxFxVersion = reader.getString();
+                } else if ("windowsFxVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.windowsFxVersion = reader.getString();
+                } else if ("requestTracingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.requestTracingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requestTracingExpirationTime".equals(fieldName)) {
+                    deserializedSiteConfigInner.requestTracingExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("remoteDebuggingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.remoteDebuggingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("remoteDebuggingVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.remoteDebuggingVersion = reader.getString();
+                } else if ("httpLoggingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.httpLoggingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("acrUseManagedIdentityCreds".equals(fieldName)) {
+                    deserializedSiteConfigInner.acrUseManagedIdentityCreds = reader.getNullable(JsonReader::getBoolean);
+                } else if ("acrUserManagedIdentityID".equals(fieldName)) {
+                    deserializedSiteConfigInner.acrUserManagedIdentityId = reader.getString();
+                } else if ("logsDirectorySizeLimit".equals(fieldName)) {
+                    deserializedSiteConfigInner.logsDirectorySizeLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("detailedErrorLoggingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.detailedErrorLoggingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publishingUsername".equals(fieldName)) {
+                    deserializedSiteConfigInner.publishingUsername = reader.getString();
+                } else if ("appSettings".equals(fieldName)) {
+                    List<NameValuePair> appSettings = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
+                    deserializedSiteConfigInner.appSettings = appSettings;
+                } else if ("metadata".equals(fieldName)) {
+                    List<NameValuePair> metadata = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
+                    deserializedSiteConfigInner.metadata = metadata;
+                } else if ("connectionStrings".equals(fieldName)) {
+                    List<ConnStringInfo> connectionStrings
+                        = reader.readArray(reader1 -> ConnStringInfo.fromJson(reader1));
+                    deserializedSiteConfigInner.connectionStrings = connectionStrings;
+                } else if ("machineKey".equals(fieldName)) {
+                    deserializedSiteConfigInner.machineKey = SiteMachineKey.fromJson(reader);
+                } else if ("handlerMappings".equals(fieldName)) {
+                    List<HandlerMapping> handlerMappings
+                        = reader.readArray(reader1 -> HandlerMapping.fromJson(reader1));
+                    deserializedSiteConfigInner.handlerMappings = handlerMappings;
+                } else if ("documentRoot".equals(fieldName)) {
+                    deserializedSiteConfigInner.documentRoot = reader.getString();
+                } else if ("scmType".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmType = ScmType.fromString(reader.getString());
+                } else if ("use32BitWorkerProcess".equals(fieldName)) {
+                    deserializedSiteConfigInner.use32BitWorkerProcess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("webSocketsEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.webSocketsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alwaysOn".equals(fieldName)) {
+                    deserializedSiteConfigInner.alwaysOn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("javaVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.javaVersion = reader.getString();
+                } else if ("javaContainer".equals(fieldName)) {
+                    deserializedSiteConfigInner.javaContainer = reader.getString();
+                } else if ("javaContainerVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.javaContainerVersion = reader.getString();
+                } else if ("appCommandLine".equals(fieldName)) {
+                    deserializedSiteConfigInner.appCommandLine = reader.getString();
+                } else if ("managedPipelineMode".equals(fieldName)) {
+                    deserializedSiteConfigInner.managedPipelineMode
+                        = ManagedPipelineMode.fromString(reader.getString());
+                } else if ("virtualApplications".equals(fieldName)) {
+                    List<VirtualApplication> virtualApplications
+                        = reader.readArray(reader1 -> VirtualApplication.fromJson(reader1));
+                    deserializedSiteConfigInner.virtualApplications = virtualApplications;
+                } else if ("loadBalancing".equals(fieldName)) {
+                    deserializedSiteConfigInner.loadBalancing = SiteLoadBalancing.fromString(reader.getString());
+                } else if ("experiments".equals(fieldName)) {
+                    deserializedSiteConfigInner.experiments = Experiments.fromJson(reader);
+                } else if ("limits".equals(fieldName)) {
+                    deserializedSiteConfigInner.limits = SiteLimits.fromJson(reader);
+                } else if ("autoHealEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.autoHealEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoHealRules".equals(fieldName)) {
+                    deserializedSiteConfigInner.autoHealRules = AutoHealRules.fromJson(reader);
+                } else if ("tracingOptions".equals(fieldName)) {
+                    deserializedSiteConfigInner.tracingOptions = reader.getString();
+                } else if ("vnetName".equals(fieldName)) {
+                    deserializedSiteConfigInner.vnetName = reader.getString();
+                } else if ("vnetRouteAllEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.vnetRouteAllEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vnetPrivatePortsCount".equals(fieldName)) {
+                    deserializedSiteConfigInner.vnetPrivatePortsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("cors".equals(fieldName)) {
+                    deserializedSiteConfigInner.cors = CorsSettings.fromJson(reader);
+                } else if ("push".equals(fieldName)) {
+                    deserializedSiteConfigInner.push = PushSettingsInner.fromJson(reader);
+                } else if ("apiDefinition".equals(fieldName)) {
+                    deserializedSiteConfigInner.apiDefinition = ApiDefinitionInfo.fromJson(reader);
+                } else if ("apiManagementConfig".equals(fieldName)) {
+                    deserializedSiteConfigInner.apiManagementConfig = ApiManagementConfig.fromJson(reader);
+                } else if ("autoSwapSlotName".equals(fieldName)) {
+                    deserializedSiteConfigInner.autoSwapSlotName = reader.getString();
+                } else if ("localMySqlEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.localMySqlEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("managedServiceIdentityId".equals(fieldName)) {
+                    deserializedSiteConfigInner.managedServiceIdentityId = reader.getNullable(JsonReader::getInt);
+                } else if ("xManagedServiceIdentityId".equals(fieldName)) {
+                    deserializedSiteConfigInner.xManagedServiceIdentityId = reader.getNullable(JsonReader::getInt);
+                } else if ("keyVaultReferenceIdentity".equals(fieldName)) {
+                    deserializedSiteConfigInner.keyVaultReferenceIdentity = reader.getString();
+                } else if ("ipSecurityRestrictions".equals(fieldName)) {
+                    List<IpSecurityRestriction> ipSecurityRestrictions
+                        = reader.readArray(reader1 -> IpSecurityRestriction.fromJson(reader1));
+                    deserializedSiteConfigInner.ipSecurityRestrictions = ipSecurityRestrictions;
+                } else if ("ipSecurityRestrictionsDefaultAction".equals(fieldName)) {
+                    deserializedSiteConfigInner.ipSecurityRestrictionsDefaultAction
+                        = DefaultAction.fromString(reader.getString());
+                } else if ("scmIpSecurityRestrictions".equals(fieldName)) {
+                    List<IpSecurityRestriction> scmIpSecurityRestrictions
+                        = reader.readArray(reader1 -> IpSecurityRestriction.fromJson(reader1));
+                    deserializedSiteConfigInner.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+                } else if ("scmIpSecurityRestrictionsDefaultAction".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmIpSecurityRestrictionsDefaultAction
+                        = DefaultAction.fromString(reader.getString());
+                } else if ("scmIpSecurityRestrictionsUseMain".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmIpSecurityRestrictionsUseMain
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("http20Enabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.http20Enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minTlsVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.minTlsVersion = SupportedTlsVersions.fromString(reader.getString());
+                } else if ("minTlsCipherSuite".equals(fieldName)) {
+                    deserializedSiteConfigInner.minTlsCipherSuite = TlsCipherSuites.fromString(reader.getString());
+                } else if ("scmMinTlsVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmMinTlsVersion = SupportedTlsVersions.fromString(reader.getString());
+                } else if ("ftpsState".equals(fieldName)) {
+                    deserializedSiteConfigInner.ftpsState = FtpsState.fromString(reader.getString());
+                } else if ("preWarmedInstanceCount".equals(fieldName)) {
+                    deserializedSiteConfigInner.preWarmedInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("functionAppScaleLimit".equals(fieldName)) {
+                    deserializedSiteConfigInner.functionAppScaleLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("elasticWebAppScaleLimit".equals(fieldName)) {
+                    deserializedSiteConfigInner.elasticWebAppScaleLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("healthCheckPath".equals(fieldName)) {
+                    deserializedSiteConfigInner.healthCheckPath = reader.getString();
+                } else if ("functionsRuntimeScaleMonitoringEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.functionsRuntimeScaleMonitoringEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("websiteTimeZone".equals(fieldName)) {
+                    deserializedSiteConfigInner.websiteTimeZone = reader.getString();
+                } else if ("minimumElasticInstanceCount".equals(fieldName)) {
+                    deserializedSiteConfigInner.minimumElasticInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("azureStorageAccounts".equals(fieldName)) {
+                    Map<String, AzureStorageInfoValue> azureStorageAccounts
+                        = reader.readMap(reader1 -> AzureStorageInfoValue.fromJson(reader1));
+                    deserializedSiteConfigInner.azureStorageAccounts = azureStorageAccounts;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSiteConfigInner.publicNetworkAccess = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteConfigInner;
+        });
     }
 }

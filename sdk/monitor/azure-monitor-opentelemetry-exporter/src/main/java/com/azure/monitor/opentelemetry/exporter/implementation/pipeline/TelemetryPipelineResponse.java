@@ -3,12 +3,12 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.Response;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,17 +58,13 @@ public class TelemetryPipelineResponse {
     }
 
     static Set<ResponseError> parseErrors(String body) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(body);
-        } catch (JsonProcessingException e) {
+        try (JsonReader reader = JsonProviders.createReader(body)) {
+            Response response = Response.fromJson(reader);
+            return response.getErrors().stream()
+                .filter(error -> !error.getMessage().equals("Telemetry sampled out."))
+                .collect(Collectors.toSet());
+        } catch (IOException e) {
             throw new IllegalStateException("Failed to parse response body", e);
         }
-        List<JsonNode> errorNodes = new ArrayList<>();
-        jsonNode.get("errors").forEach(errorNodes::add);
-        return errorNodes.stream()
-            .map(errorNode -> new ResponseError(errorNode.get("index").asInt(), errorNode.get("statusCode").asInt(), errorNode.get("message").asText()))
-            .filter(s -> !s.getMessage().equals("Telemetry sampled out."))
-            .collect(Collectors.toSet());
     }
 }

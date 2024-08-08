@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a Virtual Machine Scale Set VM Reimage Parameters.
@@ -15,7 +18,6 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
     /*
      * Parameter to force update ephemeral OS disk for a virtual machine scale set VM
      */
-    @JsonProperty(value = "forceUpdateOSDiskForEphemeral")
     private Boolean forceUpdateOSDiskForEphemeral;
 
     /**
@@ -82,5 +84,54 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("tempDisk", tempDisk());
+        jsonWriter.writeStringField("exactVersion", exactVersion());
+        jsonWriter.writeJsonField("osProfile", osProfile());
+        jsonWriter.writeBooleanField("forceUpdateOSDiskForEphemeral", this.forceUpdateOSDiskForEphemeral);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMReimageParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMReimageParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMReimageParameters.
+     */
+    public static VirtualMachineScaleSetVMReimageParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMReimageParameters deserializedVirtualMachineScaleSetVMReimageParameters
+                = new VirtualMachineScaleSetVMReimageParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tempDisk".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMReimageParameters
+                        .withTempDisk(reader.getNullable(JsonReader::getBoolean));
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMReimageParameters.withExactVersion(reader.getString());
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMReimageParameters
+                        .withOsProfile(OSProfileProvisioningData.fromJson(reader));
+                } else if ("forceUpdateOSDiskForEphemeral".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMReimageParameters.forceUpdateOSDiskForEphemeral
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMReimageParameters;
+        });
     }
 }

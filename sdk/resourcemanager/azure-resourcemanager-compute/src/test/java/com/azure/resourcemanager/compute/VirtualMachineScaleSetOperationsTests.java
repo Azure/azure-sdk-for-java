@@ -488,7 +488,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
+                .forUser(azureCliSignedInUser().userPrincipalName())
                 .allowSecretAllPermissions()
                 .attach()
                 .withDeploymentEnabled()

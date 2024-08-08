@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * homeRealmDiscoveryPolicy
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -25,19 +28,20 @@ public final class MicrosoftGraphHomeRealmDiscoveryPolicyInner extends Microsoft
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphHomeRealmDiscoveryPolicyInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphHomeRealmDiscoveryPolicyInner class.
+     */
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner() {
     }
 
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -45,68 +49,74 @@ public final class MicrosoftGraphHomeRealmDiscoveryPolicyInner extends Microsoft
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphHomeRealmDiscoveryPolicyInner object itself.
      */
-    public MicrosoftGraphHomeRealmDiscoveryPolicyInner withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphHomeRealmDiscoveryPolicyInner
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner withDefinition(List<String> definition) {
         super.withDefinition(definition);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner withIsOrganizationDefault(Boolean isOrganizationDefault) {
         super.withIsOrganizationDefault(isOrganizationDefault);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public MicrosoftGraphHomeRealmDiscoveryPolicyInner withAppliesTo(
-        List<MicrosoftGraphDirectoryObjectInner> appliesTo) {
+    public MicrosoftGraphHomeRealmDiscoveryPolicyInner
+        withAppliesTo(List<MicrosoftGraphDirectoryObjectInner> appliesTo) {
         super.withAppliesTo(appliesTo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphHomeRealmDiscoveryPolicyInner withId(String id) {
         super.withId(id);
@@ -115,11 +125,83 @@ public final class MicrosoftGraphHomeRealmDiscoveryPolicyInner extends Microsoft
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("definition", definition(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isOrganizationDefault", isOrganizationDefault());
+        jsonWriter.writeArrayField("appliesTo", appliesTo(), (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphHomeRealmDiscoveryPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphHomeRealmDiscoveryPolicyInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphHomeRealmDiscoveryPolicyInner.
+     */
+    public static MicrosoftGraphHomeRealmDiscoveryPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphHomeRealmDiscoveryPolicyInner deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner
+                = new MicrosoftGraphHomeRealmDiscoveryPolicyInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.withDescription(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.withDisplayName(reader.getString());
+                } else if ("definition".equals(fieldName)) {
+                    List<String> definition = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.withDefinition(definition);
+                } else if ("isOrganizationDefault".equals(fieldName)) {
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner
+                        .withIsOrganizationDefault(reader.getNullable(JsonReader::getBoolean));
+                } else if ("appliesTo".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> appliesTo
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.withAppliesTo(appliesTo);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphHomeRealmDiscoveryPolicyInner;
+        });
     }
 }

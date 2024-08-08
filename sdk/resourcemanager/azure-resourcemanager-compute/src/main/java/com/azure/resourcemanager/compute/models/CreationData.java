@@ -6,55 +6,52 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Data used when creating a disk.
  */
 @Fluent
-public final class CreationData {
+public final class CreationData implements JsonSerializable<CreationData> {
     /*
      * This enumerates the possible sources of a disk's creation.
      */
-    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOption createOption;
 
     /*
      * Required if createOption is Import. The Azure Resource Manager identifier of the storage account containing the
      * blob to import as a disk.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
      * Disk source information for PIR or user images.
      */
-    @JsonProperty(value = "imageReference")
     private ImageDiskReference imageReference;
 
     /*
      * Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the
      * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
      */
-    @JsonProperty(value = "galleryImageReference")
     private ImageDiskReference galleryImageReference;
 
     /*
      * If createOption is Import, this is the URI of a blob to be imported into a managed disk.
      */
-    @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /*
      * If createOption is Copy, this is the ARM id of the source snapshot or disk.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * If this field is set, this is the unique id identifying the source of this resource.
      */
-    @JsonProperty(value = "sourceUniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceUniqueId;
 
     /*
@@ -62,38 +59,32 @@ public final class CreationData {
      * should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes
      * for the VHD footer).
      */
-    @JsonProperty(value = "uploadSizeBytes")
     private Long uploadSizeBytes;
 
     /*
      * Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
      */
-    @JsonProperty(value = "logicalSectorSize")
     private Integer logicalSectorSize;
 
     /*
      * If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
      */
-    @JsonProperty(value = "securityDataUri")
     private String securityDataUri;
 
     /*
      * Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective
      * performance target. This flag can only be set on disk creation time and cannot be disabled after enabled.
      */
-    @JsonProperty(value = "performancePlus")
     private Boolean performancePlus;
 
     /*
      * Required if createOption is CopyFromSanSnapshot. This is the ARM id of the source elastic san volume snapshot.
      */
-    @JsonProperty(value = "elasticSanResourceId")
     private String elasticSanResourceId;
 
     /*
      * If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker speed.
      */
-    @JsonProperty(value = "provisionedBandwidthCopySpeed")
     private ProvisionedBandwidthCopyOption provisionedBandwidthCopySpeed;
 
     /**
@@ -396,4 +387,78 @@ public final class CreationData {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreationData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createOption", this.createOption == null ? null : this.createOption.toString());
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeJsonField("galleryImageReference", this.galleryImageReference);
+        jsonWriter.writeStringField("sourceUri", this.sourceUri);
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeNumberField("uploadSizeBytes", this.uploadSizeBytes);
+        jsonWriter.writeNumberField("logicalSectorSize", this.logicalSectorSize);
+        jsonWriter.writeStringField("securityDataUri", this.securityDataUri);
+        jsonWriter.writeBooleanField("performancePlus", this.performancePlus);
+        jsonWriter.writeStringField("elasticSanResourceId", this.elasticSanResourceId);
+        jsonWriter.writeStringField("provisionedBandwidthCopySpeed",
+            this.provisionedBandwidthCopySpeed == null ? null : this.provisionedBandwidthCopySpeed.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreationData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreationData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreationData.
+     */
+    public static CreationData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreationData deserializedCreationData = new CreationData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createOption".equals(fieldName)) {
+                    deserializedCreationData.createOption = DiskCreateOption.fromString(reader.getString());
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedCreationData.storageAccountId = reader.getString();
+                } else if ("imageReference".equals(fieldName)) {
+                    deserializedCreationData.imageReference = ImageDiskReference.fromJson(reader);
+                } else if ("galleryImageReference".equals(fieldName)) {
+                    deserializedCreationData.galleryImageReference = ImageDiskReference.fromJson(reader);
+                } else if ("sourceUri".equals(fieldName)) {
+                    deserializedCreationData.sourceUri = reader.getString();
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedCreationData.sourceResourceId = reader.getString();
+                } else if ("sourceUniqueId".equals(fieldName)) {
+                    deserializedCreationData.sourceUniqueId = reader.getString();
+                } else if ("uploadSizeBytes".equals(fieldName)) {
+                    deserializedCreationData.uploadSizeBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("logicalSectorSize".equals(fieldName)) {
+                    deserializedCreationData.logicalSectorSize = reader.getNullable(JsonReader::getInt);
+                } else if ("securityDataUri".equals(fieldName)) {
+                    deserializedCreationData.securityDataUri = reader.getString();
+                } else if ("performancePlus".equals(fieldName)) {
+                    deserializedCreationData.performancePlus = reader.getNullable(JsonReader::getBoolean);
+                } else if ("elasticSanResourceId".equals(fieldName)) {
+                    deserializedCreationData.elasticSanResourceId = reader.getString();
+                } else if ("provisionedBandwidthCopySpeed".equals(fieldName)) {
+                    deserializedCreationData.provisionedBandwidthCopySpeed
+                        = ProvisionedBandwidthCopyOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreationData;
+        });
+    }
 }

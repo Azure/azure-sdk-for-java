@@ -5,66 +5,65 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** onlineMeetingInfo. */
+/**
+ * onlineMeetingInfo.
+ */
 @Fluent
-public final class MicrosoftGraphOnlineMeetingInfo {
+public final class MicrosoftGraphOnlineMeetingInfo implements JsonSerializable<MicrosoftGraphOnlineMeetingInfo> {
     /*
      * The ID of the conference.
      */
-    @JsonProperty(value = "conferenceId")
     private String conferenceId;
 
     /*
      * The external link that launches the online meeting. This is a URL that clients will launch into a browser and
      * will redirect the user to join the meeting.
      */
-    @JsonProperty(value = "joinUrl")
     private String joinUrl;
 
     /*
      * All of the phone numbers associated with this conference.
      */
-    @JsonProperty(value = "phones")
     private List<MicrosoftGraphPhone> phones;
 
     /*
      * The pre-formatted quickdial for this call.
      */
-    @JsonProperty(value = "quickDial")
     private String quickDial;
 
     /*
      * The toll free numbers that can be used to join the conference.
      */
-    @JsonProperty(value = "tollFreeNumbers")
     private List<String> tollFreeNumbers;
 
     /*
      * The toll number that can be used to join the conference.
      */
-    @JsonProperty(value = "tollNumber")
     private String tollNumber;
 
     /*
      * onlineMeetingInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnlineMeetingInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnlineMeetingInfo class.
+     */
     public MicrosoftGraphOnlineMeetingInfo() {
     }
 
     /**
      * Get the conferenceId property: The ID of the conference.
-     *
+     * 
      * @return the conferenceId value.
      */
     public String conferenceId() {
@@ -73,7 +72,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Set the conferenceId property: The ID of the conference.
-     *
+     * 
      * @param conferenceId the conferenceId value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -85,7 +84,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
     /**
      * Get the joinUrl property: The external link that launches the online meeting. This is a URL that clients will
      * launch into a browser and will redirect the user to join the meeting.
-     *
+     * 
      * @return the joinUrl value.
      */
     public String joinUrl() {
@@ -95,7 +94,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
     /**
      * Set the joinUrl property: The external link that launches the online meeting. This is a URL that clients will
      * launch into a browser and will redirect the user to join the meeting.
-     *
+     * 
      * @param joinUrl the joinUrl value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -106,7 +105,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Get the phones property: All of the phone numbers associated with this conference.
-     *
+     * 
      * @return the phones value.
      */
     public List<MicrosoftGraphPhone> phones() {
@@ -115,7 +114,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Set the phones property: All of the phone numbers associated with this conference.
-     *
+     * 
      * @param phones the phones value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -126,7 +125,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Get the quickDial property: The pre-formatted quickdial for this call.
-     *
+     * 
      * @return the quickDial value.
      */
     public String quickDial() {
@@ -135,7 +134,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Set the quickDial property: The pre-formatted quickdial for this call.
-     *
+     * 
      * @param quickDial the quickDial value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -146,7 +145,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Get the tollFreeNumbers property: The toll free numbers that can be used to join the conference.
-     *
+     * 
      * @return the tollFreeNumbers value.
      */
     public List<String> tollFreeNumbers() {
@@ -155,7 +154,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Set the tollFreeNumbers property: The toll free numbers that can be used to join the conference.
-     *
+     * 
      * @param tollFreeNumbers the tollFreeNumbers value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -166,7 +165,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Get the tollNumber property: The toll number that can be used to join the conference.
-     *
+     * 
      * @return the tollNumber value.
      */
     public String tollNumber() {
@@ -175,7 +174,7 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Set the tollNumber property: The toll number that can be used to join the conference.
-     *
+     * 
      * @param tollNumber the tollNumber value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -186,17 +185,16 @@ public final class MicrosoftGraphOnlineMeetingInfo {
 
     /**
      * Get the additionalProperties property: onlineMeetingInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onlineMeetingInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnlineMeetingInfo object itself.
      */
@@ -205,22 +203,81 @@ public final class MicrosoftGraphOnlineMeetingInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (phones() != null) {
             phones().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("conferenceId", this.conferenceId);
+        jsonWriter.writeStringField("joinUrl", this.joinUrl);
+        jsonWriter.writeArrayField("phones", this.phones, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("quickDial", this.quickDial);
+        jsonWriter.writeArrayField("tollFreeNumbers", this.tollFreeNumbers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("tollNumber", this.tollNumber);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnlineMeetingInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnlineMeetingInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnlineMeetingInfo.
+     */
+    public static MicrosoftGraphOnlineMeetingInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnlineMeetingInfo deserializedMicrosoftGraphOnlineMeetingInfo
+                = new MicrosoftGraphOnlineMeetingInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("conferenceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeetingInfo.conferenceId = reader.getString();
+                } else if ("joinUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeetingInfo.joinUrl = reader.getString();
+                } else if ("phones".equals(fieldName)) {
+                    List<MicrosoftGraphPhone> phones
+                        = reader.readArray(reader1 -> MicrosoftGraphPhone.fromJson(reader1));
+                    deserializedMicrosoftGraphOnlineMeetingInfo.phones = phones;
+                } else if ("quickDial".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeetingInfo.quickDial = reader.getString();
+                } else if ("tollFreeNumbers".equals(fieldName)) {
+                    List<String> tollFreeNumbers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphOnlineMeetingInfo.tollFreeNumbers = tollFreeNumbers;
+                } else if ("tollNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeetingInfo.tollNumber = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnlineMeetingInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnlineMeetingInfo;
+        });
     }
 }

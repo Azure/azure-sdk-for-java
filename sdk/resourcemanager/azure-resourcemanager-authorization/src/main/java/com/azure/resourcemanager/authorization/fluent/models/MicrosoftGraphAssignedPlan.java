@@ -5,54 +5,58 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** assignedPlan. */
+/**
+ * assignedPlan.
+ */
 @Fluent
-public final class MicrosoftGraphAssignedPlan {
+public final class MicrosoftGraphAssignedPlan implements JsonSerializable<MicrosoftGraphAssignedPlan> {
     /*
      * The assignedDateTime property.
      */
-    @JsonProperty(value = "assignedDateTime")
     private OffsetDateTime assignedDateTime;
 
     /*
      * Condition of the capability assignment. The possible values are Enabled, Warning, Suspended, Deleted, LockedOut.
      */
-    @JsonProperty(value = "capabilityStatus")
     private String capabilityStatus;
 
     /*
      * The name of the service; for example, 'Exchange'.
      */
-    @JsonProperty(value = "service")
     private String service;
 
     /*
      * A GUID that identifies the service plan.
      */
-    @JsonProperty(value = "servicePlanId")
     private UUID servicePlanId;
 
     /*
      * assignedPlan
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAssignedPlan class. */
+    /**
+     * Creates an instance of MicrosoftGraphAssignedPlan class.
+     */
     public MicrosoftGraphAssignedPlan() {
     }
 
     /**
      * Get the assignedDateTime property: The assignedDateTime property.
-     *
+     * 
      * @return the assignedDateTime value.
      */
     public OffsetDateTime assignedDateTime() {
@@ -61,7 +65,7 @@ public final class MicrosoftGraphAssignedPlan {
 
     /**
      * Set the assignedDateTime property: The assignedDateTime property.
-     *
+     * 
      * @param assignedDateTime the assignedDateTime value to set.
      * @return the MicrosoftGraphAssignedPlan object itself.
      */
@@ -73,7 +77,7 @@ public final class MicrosoftGraphAssignedPlan {
     /**
      * Get the capabilityStatus property: Condition of the capability assignment. The possible values are Enabled,
      * Warning, Suspended, Deleted, LockedOut.
-     *
+     * 
      * @return the capabilityStatus value.
      */
     public String capabilityStatus() {
@@ -83,7 +87,7 @@ public final class MicrosoftGraphAssignedPlan {
     /**
      * Set the capabilityStatus property: Condition of the capability assignment. The possible values are Enabled,
      * Warning, Suspended, Deleted, LockedOut.
-     *
+     * 
      * @param capabilityStatus the capabilityStatus value to set.
      * @return the MicrosoftGraphAssignedPlan object itself.
      */
@@ -94,7 +98,7 @@ public final class MicrosoftGraphAssignedPlan {
 
     /**
      * Get the service property: The name of the service; for example, 'Exchange'.
-     *
+     * 
      * @return the service value.
      */
     public String service() {
@@ -103,7 +107,7 @@ public final class MicrosoftGraphAssignedPlan {
 
     /**
      * Set the service property: The name of the service; for example, 'Exchange'.
-     *
+     * 
      * @param service the service value to set.
      * @return the MicrosoftGraphAssignedPlan object itself.
      */
@@ -114,7 +118,7 @@ public final class MicrosoftGraphAssignedPlan {
 
     /**
      * Get the servicePlanId property: A GUID that identifies the service plan.
-     *
+     * 
      * @return the servicePlanId value.
      */
     public UUID servicePlanId() {
@@ -123,7 +127,7 @@ public final class MicrosoftGraphAssignedPlan {
 
     /**
      * Set the servicePlanId property: A GUID that identifies the service plan.
-     *
+     * 
      * @param servicePlanId the servicePlanId value to set.
      * @return the MicrosoftGraphAssignedPlan object itself.
      */
@@ -134,17 +138,16 @@ public final class MicrosoftGraphAssignedPlan {
 
     /**
      * Get the additionalProperties property: assignedPlan.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: assignedPlan.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAssignedPlan object itself.
      */
@@ -153,19 +156,72 @@ public final class MicrosoftGraphAssignedPlan {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assignedDateTime",
+            this.assignedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.assignedDateTime));
+        jsonWriter.writeStringField("capabilityStatus", this.capabilityStatus);
+        jsonWriter.writeStringField("service", this.service);
+        jsonWriter.writeStringField("servicePlanId", Objects.toString(this.servicePlanId, null));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAssignedPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAssignedPlan if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAssignedPlan.
+     */
+    public static MicrosoftGraphAssignedPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAssignedPlan deserializedMicrosoftGraphAssignedPlan = new MicrosoftGraphAssignedPlan();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assignedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphAssignedPlan.assignedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("capabilityStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphAssignedPlan.capabilityStatus = reader.getString();
+                } else if ("service".equals(fieldName)) {
+                    deserializedMicrosoftGraphAssignedPlan.service = reader.getString();
+                } else if ("servicePlanId".equals(fieldName)) {
+                    deserializedMicrosoftGraphAssignedPlan.servicePlanId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAssignedPlan.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAssignedPlan;
+        });
     }
 }

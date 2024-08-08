@@ -13,78 +13,80 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.msi.fluent.models.FederatedIdentityCredentialInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FederatedIdentityCredentialsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FederatedIdentityCredentialsClient.
+ */
 public interface FederatedIdentityCredentialsClient {
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<FederatedIdentityCredentialInner> listAsync(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken);
+    PagedFlux<FederatedIdentityCredentialInner> listAsync(String resourceGroupName, String resourceName, Integer top,
+        String skiptoken);
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<FederatedIdentityCredentialInner> listAsync(String resourceGroupName, String resourceName);
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FederatedIdentityCredentialInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FederatedIdentityCredentialInner> list(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken, Context context);
+    PagedIterable<FederatedIdentityCredentialInner> list(String resourceGroupName, String resourceName, Integer top,
+        String skiptoken, Context context);
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -92,19 +94,17 @@ public interface FederatedIdentityCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a federated identity credential along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a federated identity credential along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FederatedIdentityCredentialInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
+    Mono<Response<FederatedIdentityCredentialInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String federatedIdentityCredentialResourceName,
         FederatedIdentityCredentialInner parameters);
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -115,15 +115,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return describes a federated identity credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FederatedIdentityCredentialInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters);
+    Mono<FederatedIdentityCredentialInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, FederatedIdentityCredentialInner parameters);
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -135,16 +132,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return describes a federated identity credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FederatedIdentityCredentialInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters,
-        Context context);
+    Response<FederatedIdentityCredentialInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, FederatedIdentityCredentialInner parameters, Context context);
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -155,15 +148,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return describes a federated identity credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FederatedIdentityCredentialInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters);
+    FederatedIdentityCredentialInner createOrUpdate(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, FederatedIdentityCredentialInner parameters);
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -173,12 +163,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return the federated identity credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FederatedIdentityCredentialInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName);
+    Mono<Response<FederatedIdentityCredentialInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName);
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -188,12 +178,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return the federated identity credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FederatedIdentityCredentialInner> getAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName);
+    Mono<FederatedIdentityCredentialInner> getAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName);
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -204,12 +194,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return the federated identity credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FederatedIdentityCredentialInner> getWithResponse(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName, Context context);
+    Response<FederatedIdentityCredentialInner> getWithResponse(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, Context context);
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -219,12 +209,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return the federated identity credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FederatedIdentityCredentialInner get(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName);
+    FederatedIdentityCredentialInner get(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName);
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -234,12 +224,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName);
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -249,12 +239,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName);
+    Mono<Void> deleteAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName);
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -265,12 +255,12 @@ public interface FederatedIdentityCredentialsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, Context context);
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.

@@ -6,20 +6,22 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Wrapper for a collection of private link resources.
  */
 @Fluent
-public final class PrivateLinkResourcesWrapperInner {
+public final class PrivateLinkResourcesWrapperInner implements JsonSerializable<PrivateLinkResourcesWrapperInner> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
     private List<PrivateLinkResource> value;
 
     /**
@@ -30,7 +32,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -39,7 +41,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourcesWrapperInner object itself.
      */
@@ -50,7 +52,7 @@ public final class PrivateLinkResourcesWrapperInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -64,4 +66,44 @@ public final class PrivateLinkResourcesWrapperInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesWrapperInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourcesWrapperInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourcesWrapperInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourcesWrapperInner.
+     */
+    public static PrivateLinkResourcesWrapperInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourcesWrapperInner deserializedPrivateLinkResourcesWrapperInner
+                = new PrivateLinkResourcesWrapperInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateLinkResource> value
+                        = reader.readArray(reader1 -> PrivateLinkResource.fromJson(reader1));
+                    deserializedPrivateLinkResourcesWrapperInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourcesWrapperInner;
+        });
+    }
 }

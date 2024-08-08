@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Workload Auto-scaler profile for the managed cluster.
  */
 @Fluent
-public final class ManagedClusterWorkloadAutoScalerProfile {
+public final class ManagedClusterWorkloadAutoScalerProfile
+    implements JsonSerializable<ManagedClusterWorkloadAutoScalerProfile> {
     /*
      * KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
      */
-    @JsonProperty(value = "keda")
     private ManagedClusterWorkloadAutoScalerProfileKeda keda;
 
     /*
      * VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler profile.
      */
-    @JsonProperty(value = "verticalPodAutoscaler")
     private ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler;
 
     /**
@@ -85,5 +88,47 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
         if (verticalPodAutoscaler() != null) {
             verticalPodAutoscaler().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keda", this.keda);
+        jsonWriter.writeJsonField("verticalPodAutoscaler", this.verticalPodAutoscaler);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterWorkloadAutoScalerProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterWorkloadAutoScalerProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterWorkloadAutoScalerProfile.
+     */
+    public static ManagedClusterWorkloadAutoScalerProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterWorkloadAutoScalerProfile deserializedManagedClusterWorkloadAutoScalerProfile
+                = new ManagedClusterWorkloadAutoScalerProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keda".equals(fieldName)) {
+                    deserializedManagedClusterWorkloadAutoScalerProfile.keda
+                        = ManagedClusterWorkloadAutoScalerProfileKeda.fromJson(reader);
+                } else if ("verticalPodAutoscaler".equals(fieldName)) {
+                    deserializedManagedClusterWorkloadAutoScalerProfile.verticalPodAutoscaler
+                        = ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterWorkloadAutoScalerProfile;
+        });
     }
 }

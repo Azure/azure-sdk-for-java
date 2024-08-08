@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<E
      * @param name a name to look for.
      * @return the corresponding ExpressRouteLinkMacSecSciState.
      */
-    @JsonCreator
     public static ExpressRouteLinkMacSecSciState fromString(String name) {
         return fromString(name, ExpressRouteLinkMacSecSciState.class);
     }

@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * One and only one of the schedule types should be specified. Choose either 'daily', 'weekly', 'absoluteMonthly' or
  * 'relativeMonthly' for your maintenance schedule.
  */
 @Fluent
-public final class Schedule {
+public final class Schedule implements JsonSerializable<Schedule> {
     /*
      * For schedules like: 'recur every day' or 'recur every 3 days'.
      */
-    @JsonProperty(value = "daily")
     private DailySchedule daily;
 
     /*
      * For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
      */
-    @JsonProperty(value = "weekly")
     private WeeklySchedule weekly;
 
     /*
      * For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'.
      */
-    @JsonProperty(value = "absoluteMonthly")
     private AbsoluteMonthlySchedule absoluteMonthly;
 
     /*
      * For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last Friday'.
      */
-    @JsonProperty(value = "relativeMonthly")
     private RelativeMonthlySchedule relativeMonthly;
 
     /**
@@ -145,5 +145,50 @@ public final class Schedule {
         if (relativeMonthly() != null) {
             relativeMonthly().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("daily", this.daily);
+        jsonWriter.writeJsonField("weekly", this.weekly);
+        jsonWriter.writeJsonField("absoluteMonthly", this.absoluteMonthly);
+        jsonWriter.writeJsonField("relativeMonthly", this.relativeMonthly);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Schedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Schedule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Schedule.
+     */
+    public static Schedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Schedule deserializedSchedule = new Schedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("daily".equals(fieldName)) {
+                    deserializedSchedule.daily = DailySchedule.fromJson(reader);
+                } else if ("weekly".equals(fieldName)) {
+                    deserializedSchedule.weekly = WeeklySchedule.fromJson(reader);
+                } else if ("absoluteMonthly".equals(fieldName)) {
+                    deserializedSchedule.absoluteMonthly = AbsoluteMonthlySchedule.fromJson(reader);
+                } else if ("relativeMonthly".equals(fieldName)) {
+                    deserializedSchedule.relativeMonthly = RelativeMonthlySchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchedule;
+        });
     }
 }

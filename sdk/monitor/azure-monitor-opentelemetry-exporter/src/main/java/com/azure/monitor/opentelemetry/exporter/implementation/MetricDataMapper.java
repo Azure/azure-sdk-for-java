@@ -273,10 +273,10 @@ public class MetricDataMapper {
     }
 
     private static boolean isClient(String metricName) {
-       return metricName.contains(".client.");
+        return metricName.contains(".client.");
     }
 
     private static boolean isServer(String metricName) {
-       return metricName.contains(".server.");
+        return metricName.contains(".server.");
     }
 }

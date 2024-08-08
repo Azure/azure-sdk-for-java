@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** trending. */
+/**
+ * trending.
+ */
 @Fluent
 public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
     /*
      * The lastModifiedDateTime property.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * resourceReference
      */
-    @JsonProperty(value = "resourceReference")
     private MicrosoftGraphResourceReference resourceReference;
 
     /*
      * resourceVisualization
      */
-    @JsonProperty(value = "resourceVisualization")
     private MicrosoftGraphResourceVisualization resourceVisualization;
 
     /*
      * Value indicating how much the document is currently trending. The larger the number, the more the document is
      * currently trending around the user (the more relevant it is). Returned documents are sorted by this value.
      */
-    @JsonProperty(value = "weight")
     private Double weight;
 
     /*
      * entity
      */
-    @JsonProperty(value = "resource")
     private MicrosoftGraphEntity resource;
 
     /*
      * trending
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTrending class. */
+    /**
+     * Creates an instance of MicrosoftGraphTrending class.
+     */
     public MicrosoftGraphTrending() {
     }
 
     /**
      * Get the lastModifiedDateTime property: The lastModifiedDateTime property.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -67,7 +68,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedDateTime property: The lastModifiedDateTime property.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphTrending object itself.
      */
@@ -78,7 +79,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Get the resourceReference property: resourceReference.
-     *
+     * 
      * @return the resourceReference value.
      */
     public MicrosoftGraphResourceReference resourceReference() {
@@ -87,7 +88,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Set the resourceReference property: resourceReference.
-     *
+     * 
      * @param resourceReference the resourceReference value to set.
      * @return the MicrosoftGraphTrending object itself.
      */
@@ -98,7 +99,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Get the resourceVisualization property: resourceVisualization.
-     *
+     * 
      * @return the resourceVisualization value.
      */
     public MicrosoftGraphResourceVisualization resourceVisualization() {
@@ -107,7 +108,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Set the resourceVisualization property: resourceVisualization.
-     *
+     * 
      * @param resourceVisualization the resourceVisualization value to set.
      * @return the MicrosoftGraphTrending object itself.
      */
@@ -120,7 +121,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
      * Get the weight property: Value indicating how much the document is currently trending. The larger the number, the
      * more the document is currently trending around the user (the more relevant it is). Returned documents are sorted
      * by this value.
-     *
+     * 
      * @return the weight value.
      */
     public Double weight() {
@@ -131,7 +132,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
      * Set the weight property: Value indicating how much the document is currently trending. The larger the number, the
      * more the document is currently trending around the user (the more relevant it is). Returned documents are sorted
      * by this value.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the MicrosoftGraphTrending object itself.
      */
@@ -142,7 +143,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Get the resource property: entity.
-     *
+     * 
      * @return the resource value.
      */
     public MicrosoftGraphEntity resource() {
@@ -151,7 +152,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Set the resource property: entity.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MicrosoftGraphTrending object itself.
      */
@@ -162,17 +163,16 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: trending.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: trending.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTrending object itself.
      */
@@ -181,15 +181,9 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTrending withId(String id) {
         super.withId(id);
@@ -198,7 +192,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -213,5 +207,73 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
         if (resource() != null) {
             resource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeJsonField("resourceReference", this.resourceReference);
+        jsonWriter.writeJsonField("resourceVisualization", this.resourceVisualization);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeJsonField("resource", this.resource);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTrending from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTrending if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTrending.
+     */
+    public static MicrosoftGraphTrending fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTrending deserializedMicrosoftGraphTrending = new MicrosoftGraphTrending();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTrending.withId(reader.getString());
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTrending.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphTrending.resourceReference
+                        = MicrosoftGraphResourceReference.fromJson(reader);
+                } else if ("resourceVisualization".equals(fieldName)) {
+                    deserializedMicrosoftGraphTrending.resourceVisualization
+                        = MicrosoftGraphResourceVisualization.fromJson(reader);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedMicrosoftGraphTrending.weight = reader.getNullable(JsonReader::getDouble);
+                } else if ("resource".equals(fieldName)) {
+                    deserializedMicrosoftGraphTrending.resource = MicrosoftGraphEntity.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTrending.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTrending;
+        });
     }
 }

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * This composes with ClientCertEnabled setting.
  * - ClientCertEnabled: false means ClientCert is ignored.
@@ -44,7 +41,6 @@ public enum ClientCertMode {
      * @param value the serialized value to parse.
      * @return the parsed ClientCertMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static ClientCertMode fromString(String value) {
         if (value == null) {
             return null;
@@ -61,7 +57,6 @@ public enum ClientCertMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

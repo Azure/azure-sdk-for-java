@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -41,7 +40,6 @@ public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
      * @param name a name to look for.
      * @return the corresponding OSDiskType.
      */
-    @JsonCreator
     public static OSDiskType fromString(String name) {
         return fromString(name, OSDiskType.class);
     }
