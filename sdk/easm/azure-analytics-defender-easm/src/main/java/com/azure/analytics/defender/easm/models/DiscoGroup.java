@@ -5,98 +5,92 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The DiscoGroup model.
  */
 @Immutable
-public final class DiscoGroup {
+public final class DiscoGroup implements JsonSerializable<DiscoGroup> {
 
     /*
      * The system generated unique id for the resource.
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The caller provided unique name for the resource.
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The name that can be used for display purposes.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description for a disco group.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The tier for the disco group which will affect the algorithm used for the disco runs in this group.
      */
     @Generated
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The frequency at which the disco group is supposed to be rerun in milliseconds.
      */
     @Generated
-    @JsonProperty(value = "frequencyMilliseconds")
     private Long frequencyMilliseconds;
 
     /*
      * The list of seeds used for the disco group runs.
      */
     @Generated
-    @JsonProperty(value = "seeds")
     private List<DiscoSource> seeds;
 
     /*
      * The list of names used for the disco group runs.
      */
     @Generated
-    @JsonProperty(value = "names")
     private List<String> names;
 
     /*
      * The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
      */
     @Generated
-    @JsonProperty(value = "excludes")
     private List<DiscoSource> excludes;
 
     /*
      * The latest run of this disco group with some limited information, null if the group has never been run.
      */
     @Generated
-    @JsonProperty(value = "latestRun")
     private DiscoRunResult latestRun;
 
     /*
      * The date for the disco group was created.
      */
     @Generated
-    @JsonProperty(value = "createdDate")
     private OffsetDateTime createdDate;
 
     /*
      * The unique identifier for the disco template used for the disco group creation.
      */
     @Generated
-    @JsonProperty(value = "templateId")
     private String templateId;
 
     /**
@@ -228,5 +222,79 @@ public final class DiscoGroup {
     @Generated
     public String getTemplateId() {
         return this.templateId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("frequencyMilliseconds", this.frequencyMilliseconds);
+        jsonWriter.writeArrayField("seeds", this.seeds, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("names", this.names, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludes", this.excludes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("latestRun", this.latestRun);
+        jsonWriter.writeStringField("createdDate",
+            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
+        jsonWriter.writeStringField("templateId", this.templateId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoGroup from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoGroup if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiscoGroup.
+     */
+    @Generated
+    public static DiscoGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoGroup deserializedDiscoGroup = new DiscoGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedDiscoGroup.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDiscoGroup.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDiscoGroup.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDiscoGroup.description = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedDiscoGroup.tier = reader.getString();
+                } else if ("frequencyMilliseconds".equals(fieldName)) {
+                    deserializedDiscoGroup.frequencyMilliseconds = reader.getNullable(JsonReader::getLong);
+                } else if ("seeds".equals(fieldName)) {
+                    List<DiscoSource> seeds = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
+                    deserializedDiscoGroup.seeds = seeds;
+                } else if ("names".equals(fieldName)) {
+                    List<String> names = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiscoGroup.names = names;
+                } else if ("excludes".equals(fieldName)) {
+                    List<DiscoSource> excludes = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
+                    deserializedDiscoGroup.excludes = excludes;
+                } else if ("latestRun".equals(fieldName)) {
+                    deserializedDiscoGroup.latestRun = DiscoRunResult.fromJson(reader);
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedDiscoGroup.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("templateId".equals(fieldName)) {
+                    deserializedDiscoGroup.templateId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDiscoGroup;
+        });
     }
 }
