@@ -77,6 +77,7 @@
     "com.azure.ai.openai.models.AzureSearchQueryType": "Azure.OpenAI.AzureSearchQueryType",
     "com.azure.ai.openai.models.ChatChoice": "Azure.OpenAI.ChatChoice",
     "com.azure.ai.openai.models.ChatChoiceLogProbabilityInfo": "Azure.OpenAI.ChatChoiceLogProbabilityInfo",
+    "com.azure.ai.openai.models.ChatCompletionStreamOptions": "Azure.OpenAI.ChatCompletionStreamOptions",
     "com.azure.ai.openai.models.ChatCompletions": "Azure.OpenAI.ChatCompletions",
     "com.azure.ai.openai.models.ChatCompletionsFunctionToolCall": "Azure.OpenAI.ChatCompletionsFunctionToolCall",
     "com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition": "Azure.OpenAI.ChatCompletionsFunctionToolDefinition",
@@ -90,7 +91,6 @@
     "com.azure.ai.openai.models.ChatCompletionsToolCall": "Azure.OpenAI.ChatCompletionsToolCall",
     "com.azure.ai.openai.models.ChatCompletionsToolDefinition": "Azure.OpenAI.ChatCompletionsToolDefinition",
     "com.azure.ai.openai.models.ChatCompletionsToolSelectionPreset": "Azure.OpenAI.ChatCompletionsToolSelectionPreset",
-    "com.azure.ai.openai.models.ChatFinishDetails": "Azure.OpenAI.ChatFinishDetails",
     "com.azure.ai.openai.models.ChatMessageContentItem": "Azure.OpenAI.ChatMessageContentItem",
     "com.azure.ai.openai.models.ChatMessageImageContentItem": "Azure.OpenAI.ChatMessageImageContentItem",
     "com.azure.ai.openai.models.ChatMessageImageDetailLevel": "Azure.OpenAI.ChatMessageImageDetailLevel",
@@ -143,7 +143,6 @@
     "com.azure.ai.openai.models.ImageGenerationStyle": "Azure.OpenAI.ImageGenerationStyle",
     "com.azure.ai.openai.models.ImageGenerations": "Azure.OpenAI.ImageGenerations",
     "com.azure.ai.openai.models.ImageSize": "Azure.OpenAI.ImageSize",
-    "com.azure.ai.openai.models.MaxTokensFinishDetails": "Azure.OpenAI.MaxTokensFinishDetails",
     "com.azure.ai.openai.models.OnYourDataAccessTokenAuthenticationOptions": "Azure.OpenAI.OnYourDataAccessTokenAuthenticationOptions",
     "com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions": "Azure.OpenAI.OnYourDataApiKeyAuthenticationOptions",
     "com.azure.ai.openai.models.OnYourDataAuthenticationOptions": "Azure.OpenAI.OnYourDataAuthenticationOptions",
@@ -168,7 +167,6 @@
     "com.azure.ai.openai.models.PineconeFieldMappingOptions": "Azure.OpenAI.PineconeFieldMappingOptions",
     "com.azure.ai.openai.models.SpeechGenerationOptions": "Azure.OpenAI.SpeechGenerationOptions",
     "com.azure.ai.openai.models.SpeechGenerationResponseFormat": "Azure.OpenAI.SpeechGenerationResponseFormat",
-    "com.azure.ai.openai.models.SpeechVoice": "Azure.OpenAI.SpeechVoice",
-    "com.azure.ai.openai.models.StopFinishDetails": "Azure.OpenAI.StopFinishDetails"
+    "com.azure.ai.openai.models.SpeechVoice": "Azure.OpenAI.SpeechVoice"
   }
 }
