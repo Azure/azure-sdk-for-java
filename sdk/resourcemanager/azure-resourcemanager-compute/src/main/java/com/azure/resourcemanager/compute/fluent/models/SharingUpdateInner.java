@@ -6,27 +6,29 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.SharingProfileGroup;
 import com.azure.resourcemanager.compute.models.SharingUpdateOperationTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies information about the gallery sharing profile update.
  */
 @Fluent
-public final class SharingUpdateInner {
+public final class SharingUpdateInner implements JsonSerializable<SharingUpdateInner> {
     /*
      * This property allows you to specify the operation type of gallery sharing update. Possible values are: **Add,**
      * **Remove,** **Reset.**
      */
-    @JsonProperty(value = "operationType", required = true)
     private SharingUpdateOperationTypes operationType;
 
     /*
      * A list of sharing profile groups.
      */
-    @JsonProperty(value = "groups")
     private List<SharingProfileGroup> groups;
 
     /**
@@ -94,4 +96,47 @@ public final class SharingUpdateInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SharingUpdateInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationType", this.operationType == null ? null : this.operationType.toString());
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharingUpdateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharingUpdateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SharingUpdateInner.
+     */
+    public static SharingUpdateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharingUpdateInner deserializedSharingUpdateInner = new SharingUpdateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationType".equals(fieldName)) {
+                    deserializedSharingUpdateInner.operationType
+                        = SharingUpdateOperationTypes.fromString(reader.getString());
+                } else if ("groups".equals(fieldName)) {
+                    List<SharingProfileGroup> groups
+                        = reader.readArray(reader1 -> SharingProfileGroup.fromJson(reader1));
+                    deserializedSharingUpdateInner.groups = groups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharingUpdateInner;
+        });
+    }
 }

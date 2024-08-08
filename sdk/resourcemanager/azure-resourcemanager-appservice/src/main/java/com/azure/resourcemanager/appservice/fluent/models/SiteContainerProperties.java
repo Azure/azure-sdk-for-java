@@ -5,12 +5,16 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AuthType;
 import com.azure.resourcemanager.appservice.models.EnvironmentVariable;
 import com.azure.resourcemanager.appservice.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -18,77 +22,65 @@ import java.util.List;
  * SiteContainer resource specific properties.
  */
 @Fluent
-public final class SiteContainerProperties {
+public final class SiteContainerProperties implements JsonSerializable<SiteContainerProperties> {
     /*
      * Image Name
      */
-    @JsonProperty(value = "image", required = true)
     private String image;
 
     /*
      * Target Port
      */
-    @JsonProperty(value = "targetPort")
     private String targetPort;
 
     /*
      * <code>true</code> if the container is the main site container; <code>false</code> otherwise.
      */
-    @JsonProperty(value = "isMain", required = true)
     private boolean isMain;
 
     /*
      * StartUp Command
      */
-    @JsonProperty(value = "startUpCommand")
     private String startUpCommand;
 
     /*
      * Auth Type
      */
-    @JsonProperty(value = "authType")
     private AuthType authType;
 
     /*
      * User Name
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Password Secret
      */
-    @JsonProperty(value = "passwordSecret")
     private String passwordSecret;
 
     /*
      * UserManagedIdentity ClientId
      */
-    @JsonProperty(value = "userManagedIdentityClientId")
     private String userManagedIdentityClientId;
 
     /*
      * Created Time
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Last Modified Time
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * List of volume mounts
      */
-    @JsonProperty(value = "volumeMounts")
     private List<VolumeMount> volumeMounts;
 
     /*
      * List of environment variables
      */
-    @JsonProperty(value = "environmentVariables")
     private List<EnvironmentVariable> environmentVariables;
 
     /**
@@ -99,7 +91,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the image property: Image Name.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -108,7 +100,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the image property: Image Name.
-     *
+     * 
      * @param image the image value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -119,7 +111,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the targetPort property: Target Port.
-     *
+     * 
      * @return the targetPort value.
      */
     public String targetPort() {
@@ -128,7 +120,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the targetPort property: Target Port.
-     *
+     * 
      * @param targetPort the targetPort value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -140,7 +132,7 @@ public final class SiteContainerProperties {
     /**
      * Get the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the isMain value.
      */
     public boolean isMain() {
@@ -150,7 +142,7 @@ public final class SiteContainerProperties {
     /**
      * Set the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param isMain the isMain value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -161,7 +153,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the startUpCommand property: StartUp Command.
-     *
+     * 
      * @return the startUpCommand value.
      */
     public String startUpCommand() {
@@ -170,7 +162,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the startUpCommand property: StartUp Command.
-     *
+     * 
      * @param startUpCommand the startUpCommand value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -181,7 +173,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the authType property: Auth Type.
-     *
+     * 
      * @return the authType value.
      */
     public AuthType authType() {
@@ -190,7 +182,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the authType property: Auth Type.
-     *
+     * 
      * @param authType the authType value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -201,7 +193,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the username property: User Name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -210,7 +202,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the username property: User Name.
-     *
+     * 
      * @param username the username value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -221,7 +213,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the passwordSecret property: Password Secret.
-     *
+     * 
      * @return the passwordSecret value.
      */
     public String passwordSecret() {
@@ -230,7 +222,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the passwordSecret property: Password Secret.
-     *
+     * 
      * @param passwordSecret the passwordSecret value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -241,7 +233,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     *
+     * 
      * @return the userManagedIdentityClientId value.
      */
     public String userManagedIdentityClientId() {
@@ -250,7 +242,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     *
+     * 
      * @param userManagedIdentityClientId the userManagedIdentityClientId value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -261,7 +253,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the createdTime property: Created Time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -270,7 +262,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the lastModifiedTime property: Last Modified Time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -279,7 +271,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the volumeMounts property: List of volume mounts.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -288,7 +280,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the volumeMounts property: List of volume mounts.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -299,7 +291,7 @@ public final class SiteContainerProperties {
 
     /**
      * Get the environmentVariables property: List of environment variables.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -308,7 +300,7 @@ public final class SiteContainerProperties {
 
     /**
      * Set the environmentVariables property: List of environment variables.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the SiteContainerProperties object itself.
      */
@@ -319,7 +311,7 @@ public final class SiteContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -336,4 +328,78 @@ public final class SiteContainerProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SiteContainerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeBooleanField("isMain", this.isMain);
+        jsonWriter.writeStringField("targetPort", this.targetPort);
+        jsonWriter.writeStringField("startUpCommand", this.startUpCommand);
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("passwordSecret", this.passwordSecret);
+        jsonWriter.writeStringField("userManagedIdentityClientId", this.userManagedIdentityClientId);
+        jsonWriter.writeArrayField("volumeMounts", this.volumeMounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteContainerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteContainerProperties.
+     */
+    public static SiteContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteContainerProperties deserializedSiteContainerProperties = new SiteContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedSiteContainerProperties.image = reader.getString();
+                } else if ("isMain".equals(fieldName)) {
+                    deserializedSiteContainerProperties.isMain = reader.getBoolean();
+                } else if ("targetPort".equals(fieldName)) {
+                    deserializedSiteContainerProperties.targetPort = reader.getString();
+                } else if ("startUpCommand".equals(fieldName)) {
+                    deserializedSiteContainerProperties.startUpCommand = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedSiteContainerProperties.authType = AuthType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSiteContainerProperties.username = reader.getString();
+                } else if ("passwordSecret".equals(fieldName)) {
+                    deserializedSiteContainerProperties.passwordSecret = reader.getString();
+                } else if ("userManagedIdentityClientId".equals(fieldName)) {
+                    deserializedSiteContainerProperties.userManagedIdentityClientId = reader.getString();
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedSiteContainerProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSiteContainerProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("volumeMounts".equals(fieldName)) {
+                    List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
+                    deserializedSiteContainerProperties.volumeMounts = volumeMounts;
+                } else if ("environmentVariables".equals(fieldName)) {
+                    List<EnvironmentVariable> environmentVariables
+                        = reader.readArray(reader1 -> EnvironmentVariable.fromJson(reader1));
+                    deserializedSiteContainerProperties.environmentVariables = environmentVariables;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteContainerProperties;
+        });
+    }
 }

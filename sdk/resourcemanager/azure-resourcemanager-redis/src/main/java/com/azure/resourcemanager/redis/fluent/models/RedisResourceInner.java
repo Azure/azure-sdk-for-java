@@ -7,6 +7,9 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
@@ -16,7 +19,7 @@ import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,20 +31,32 @@ public final class RedisResourceInner extends Resource {
     /*
      * Redis cache properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private RedisPropertiesInner innerProperties = new RedisPropertiesInner();
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of RedisResourceInner class.
@@ -96,6 +111,36 @@ public final class RedisResourceInner extends Resource {
     public RedisResourceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -556,7 +601,68 @@ public final class RedisResourceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model RedisResourceInner"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisResourceInner.
+     */
+    public static RedisResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisResourceInner deserializedRedisResourceInner = new RedisResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRedisResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRedisResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRedisResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRedisResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRedisResourceInner.innerProperties = RedisPropertiesInner.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRedisResourceInner.zones = zones;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRedisResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisResourceInner;
+        });
+    }
 }

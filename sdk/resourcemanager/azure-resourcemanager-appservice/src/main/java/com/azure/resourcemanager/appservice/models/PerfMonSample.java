@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Performance monitor sample in a set.
  */
 @Fluent
-public final class PerfMonSample {
+public final class PerfMonSample implements JsonSerializable<PerfMonSample> {
     /*
      * Point in time for which counter was measured.
      */
-    @JsonProperty(value = "time")
     private OffsetDateTime time;
 
     /*
      * Name of the server on which the measurement is made.
      */
-    @JsonProperty(value = "instanceName")
     private String instanceName;
 
     /*
      * Value of counter at a certain time.
      */
-    @JsonProperty(value = "value")
     private Double value;
 
     /**
@@ -103,5 +106,49 @@ public final class PerfMonSample {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("time",
+            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
+        jsonWriter.writeStringField("instanceName", this.instanceName);
+        jsonWriter.writeNumberField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerfMonSample from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerfMonSample if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerfMonSample.
+     */
+    public static PerfMonSample fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerfMonSample deserializedPerfMonSample = new PerfMonSample();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("time".equals(fieldName)) {
+                    deserializedPerfMonSample.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("instanceName".equals(fieldName)) {
+                    deserializedPerfMonSample.instanceName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedPerfMonSample.value = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerfMonSample;
+        });
     }
 }

@@ -6,26 +6,27 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.RevisionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Container App Revisions collection ARM resource.
  */
 @Fluent
-public final class RevisionCollection {
+public final class RevisionCollection implements JsonSerializable<RevisionCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<RevisionInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -36,7 +37,7 @@ public final class RevisionCollection {
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<RevisionInner> value() {
@@ -45,7 +46,7 @@ public final class RevisionCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the RevisionCollection object itself.
      */
@@ -56,7 +57,7 @@ public final class RevisionCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +66,7 @@ public final class RevisionCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,4 +79,44 @@ public final class RevisionCollection {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RevisionCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RevisionCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RevisionCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RevisionCollection.
+     */
+    public static RevisionCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RevisionCollection deserializedRevisionCollection = new RevisionCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RevisionInner> value = reader.readArray(reader1 -> RevisionInner.fromJson(reader1));
+                    deserializedRevisionCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRevisionCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRevisionCollection;
+        });
+    }
 }

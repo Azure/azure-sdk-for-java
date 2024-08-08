@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class AggregatedReplicationState extends ExpandableStringEnum<Aggre
      * @param name a name to look for.
      * @return the corresponding AggregatedReplicationState.
      */
-    @JsonCreator
     public static AggregatedReplicationState fromString(String name) {
         return fromString(name, AggregatedReplicationState.class);
     }

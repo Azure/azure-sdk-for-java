@@ -6,25 +6,27 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List resources which are encrypted with the disk encryption set.
  */
 @Fluent
-public final class ResourceUriList {
+public final class ResourceUriList implements JsonSerializable<ResourceUriList> {
     /*
      * A list of IDs or Owner IDs of resources which are encrypted with the disk encryption set.
      */
-    @JsonProperty(value = "value", required = true)
     private List<String> value;
 
     /*
      * The uri to fetch the next page of encrypted resources. Call ListNext() with this to fetch the next page of
      * encrypted resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -88,4 +90,45 @@ public final class ResourceUriList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceUriList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceUriList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceUriList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceUriList.
+     */
+    public static ResourceUriList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceUriList deserializedResourceUriList = new ResourceUriList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<String> value = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceUriList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedResourceUriList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceUriList;
+        });
+    }
 }

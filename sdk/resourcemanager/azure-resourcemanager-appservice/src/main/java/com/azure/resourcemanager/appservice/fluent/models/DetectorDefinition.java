@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Class representing detector definition.
  */
 @Immutable
-public final class DetectorDefinition {
+public final class DetectorDefinition implements JsonSerializable<DetectorDefinition> {
     /*
      * Display name of the detector
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Description of the detector
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Detector Rank
      */
-    @JsonProperty(value = "rank", access = JsonProperty.Access.WRITE_ONLY)
     private Double rank;
 
     /*
      * Flag representing whether detector is enabled or not.
      */
-    @JsonProperty(value = "isEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnabled;
 
     /**
@@ -84,5 +84,46 @@ public final class DetectorDefinition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetectorDefinition.
+     */
+    public static DetectorDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorDefinition deserializedDetectorDefinition = new DetectorDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedDetectorDefinition.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDetectorDefinition.description = reader.getString();
+                } else if ("rank".equals(fieldName)) {
+                    deserializedDetectorDefinition.rank = reader.getNullable(JsonReader::getDouble);
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedDetectorDefinition.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorDefinition;
+        });
     }
 }

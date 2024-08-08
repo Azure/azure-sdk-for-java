@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowRunActionRepetitionsRequestHistoriesListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowRunActionRepetitionsRequestHistories_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * WorkflowRunActionRepetitionsRequestHistories_List.json
      */
     /**
      * Sample code: List repetition request history.

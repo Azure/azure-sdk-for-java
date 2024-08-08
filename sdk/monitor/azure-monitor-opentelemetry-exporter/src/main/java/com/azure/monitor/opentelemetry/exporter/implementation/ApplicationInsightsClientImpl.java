@@ -129,8 +129,8 @@ public final class ApplicationInsightsClientImpl {
         @UnexpectedResponseExceptionType(value = ExportResultException.class, code = { 400, 402, 500, 429, 503 })
         @UnexpectedResponseExceptionType(ExportResultException.class)
         Mono<Response<ExportResult>> track(@HostParam("Host") String host,
-                                           @BodyParam("application/json") List<TelemetryItem> body, @HeaderParam("Accept") String accept,
-                                           Context context);
+            @BodyParam("application/json") List<TelemetryItem> body, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**

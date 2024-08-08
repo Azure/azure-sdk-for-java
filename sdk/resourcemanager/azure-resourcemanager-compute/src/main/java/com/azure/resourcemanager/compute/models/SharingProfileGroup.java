@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Group of the gallery sharing profile.
  */
 @Fluent
-public final class SharingProfileGroup {
+public final class SharingProfileGroup implements JsonSerializable<SharingProfileGroup> {
     /*
      * This property allows you to specify the type of sharing group. Possible values are: **Subscriptions,**
      * **AADTenants.**
      */
-    @JsonProperty(value = "type")
     private SharingProfileGroupTypes type;
 
     /*
      * A list of subscription/tenant ids the gallery is aimed to be shared to.
      */
-    @JsonProperty(value = "ids")
     private List<String> ids;
 
     /**
@@ -80,5 +82,45 @@ public final class SharingProfileGroup {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("ids", this.ids, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharingProfileGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharingProfileGroup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharingProfileGroup.
+     */
+    public static SharingProfileGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharingProfileGroup deserializedSharingProfileGroup = new SharingProfileGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSharingProfileGroup.type = SharingProfileGroupTypes.fromString(reader.getString());
+                } else if ("ids".equals(fieldName)) {
+                    List<String> ids = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSharingProfileGroup.ids = ids;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharingProfileGroup;
+        });
     }
 }

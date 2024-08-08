@@ -6,6 +6,10 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentStatus;
 import com.azure.resourcemanager.appservice.models.LoadBalancingMode;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
@@ -13,134 +17,114 @@ import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.UpgradeAvailability;
 import com.azure.resourcemanager.appservice.models.UpgradePreference;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Description of an App Service Environment.
  */
 @Fluent
-public final class AppServiceEnvironmentInner {
+public final class AppServiceEnvironmentInner implements JsonSerializable<AppServiceEnvironmentInner> {
     /*
      * Provisioning state of the App Service Environment.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Current status of the App Service Environment.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private HostingEnvironmentStatus status;
 
     /*
      * Description of the Virtual Network.
      */
-    @JsonProperty(value = "virtualNetwork", required = true)
     private VirtualNetworkProfile virtualNetwork;
 
     /*
      * Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment.
      */
-    @JsonProperty(value = "internalLoadBalancingMode")
     private LoadBalancingMode internalLoadBalancingMode;
 
     /*
      * Front-end VM size, e.g. "Medium", "Large".
      */
-    @JsonProperty(value = "multiSize")
     private String multiSize;
 
     /*
      * Number of front-end instances.
      */
-    @JsonProperty(value = "multiRoleCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer multiRoleCount;
 
     /*
      * Number of IP SSL addresses reserved for the App Service Environment.
      */
-    @JsonProperty(value = "ipsslAddressCount")
     private Integer ipsslAddressCount;
 
     /*
      * DNS suffix of the App Service Environment.
      */
-    @JsonProperty(value = "dnsSuffix")
     private String dnsSuffix;
 
     /*
      * Maximum number of VMs in the App Service Environment.
      */
-    @JsonProperty(value = "maximumNumberOfMachines", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximumNumberOfMachines;
 
     /*
      * Scale factor for front-ends.
      */
-    @JsonProperty(value = "frontEndScaleFactor")
     private Integer frontEndScaleFactor;
 
     /*
-     * <code>true</code> if the App Service Environment is suspended; otherwise, <code>false</code>. The environment can be suspended, e.g. when the management endpoint is no longer available
-     *  (most likely because NSG blocked the incoming traffic).
+     * <code>true</code> if the App Service Environment is suspended; otherwise, <code>false</code>. The environment can
+     * be suspended, e.g. when the management endpoint is no longer available
+     * (most likely because NSG blocked the incoming traffic).
      */
-    @JsonProperty(value = "suspended", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean suspended;
 
     /*
      * Custom settings for changing the behavior of the App Service Environment.
      */
-    @JsonProperty(value = "clusterSettings")
     private List<NameValuePair> clusterSettings;
 
     /*
      * User added ip ranges to whitelist on ASE db
      */
-    @JsonProperty(value = "userWhitelistedIpRanges")
     private List<String> userWhitelistedIpRanges;
 
     /*
      * Flag that displays whether an ASE has linux workers or not
      */
-    @JsonProperty(value = "hasLinuxWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLinuxWorkers;
 
     /*
      * Upgrade Preference
      */
-    @JsonProperty(value = "upgradePreference")
     private UpgradePreference upgradePreference;
 
     /*
      * Dedicated Host Count
      */
-    @JsonProperty(value = "dedicatedHostCount")
     private Integer dedicatedHostCount;
 
     /*
      * Whether or not this App Service Environment is zone-redundant.
      */
-    @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
 
     /*
      * Full view of the custom domain suffix configuration for ASEv3.
      */
-    @JsonProperty(value = "customDnsSuffixConfiguration")
     private CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration;
 
     /*
      * Full view of networking configuration for an ASE.
      */
-    @JsonProperty(value = "networkingConfiguration")
     private AseV3NetworkingConfigurationInner networkingConfiguration;
 
     /*
      * Whether an upgrade is available for this App Service Environment.
      */
-    @JsonProperty(value = "upgradeAvailability", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeAvailability upgradeAvailability;
 
     /**
@@ -151,7 +135,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the provisioningState property: Provisioning state of the App Service Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -160,7 +144,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the status property: Current status of the App Service Environment.
-     *
+     * 
      * @return the status value.
      */
     public HostingEnvironmentStatus status() {
@@ -169,7 +153,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the virtualNetwork property: Description of the Virtual Network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public VirtualNetworkProfile virtualNetwork() {
@@ -178,7 +162,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the virtualNetwork property: Description of the Virtual Network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -190,7 +174,7 @@ public final class AppServiceEnvironmentInner {
     /**
      * Get the internalLoadBalancingMode property: Specifies which endpoints to serve internally in the Virtual Network
      * for the App Service Environment.
-     *
+     * 
      * @return the internalLoadBalancingMode value.
      */
     public LoadBalancingMode internalLoadBalancingMode() {
@@ -200,7 +184,7 @@ public final class AppServiceEnvironmentInner {
     /**
      * Set the internalLoadBalancingMode property: Specifies which endpoints to serve internally in the Virtual Network
      * for the App Service Environment.
-     *
+     * 
      * @param internalLoadBalancingMode the internalLoadBalancingMode value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -211,7 +195,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the multiSize property: Front-end VM size, e.g. "Medium", "Large".
-     *
+     * 
      * @return the multiSize value.
      */
     public String multiSize() {
@@ -220,7 +204,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the multiSize property: Front-end VM size, e.g. "Medium", "Large".
-     *
+     * 
      * @param multiSize the multiSize value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -231,7 +215,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the multiRoleCount property: Number of front-end instances.
-     *
+     * 
      * @return the multiRoleCount value.
      */
     public Integer multiRoleCount() {
@@ -240,7 +224,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
-     *
+     * 
      * @return the ipsslAddressCount value.
      */
     public Integer ipsslAddressCount() {
@@ -249,7 +233,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
-     *
+     * 
      * @param ipsslAddressCount the ipsslAddressCount value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -260,7 +244,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the dnsSuffix property: DNS suffix of the App Service Environment.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -269,7 +253,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the dnsSuffix property: DNS suffix of the App Service Environment.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -280,7 +264,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the maximumNumberOfMachines property: Maximum number of VMs in the App Service Environment.
-     *
+     * 
      * @return the maximumNumberOfMachines value.
      */
     public Integer maximumNumberOfMachines() {
@@ -289,7 +273,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the frontEndScaleFactor property: Scale factor for front-ends.
-     *
+     * 
      * @return the frontEndScaleFactor value.
      */
     public Integer frontEndScaleFactor() {
@@ -298,7 +282,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the frontEndScaleFactor property: Scale factor for front-ends.
-     *
+     * 
      * @param frontEndScaleFactor the frontEndScaleFactor value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -312,7 +296,7 @@ public final class AppServiceEnvironmentInner {
      * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
      * available
      * (most likely because NSG blocked the incoming traffic).
-     *
+     * 
      * @return the suspended value.
      */
     public Boolean suspended() {
@@ -321,7 +305,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the clusterSettings property: Custom settings for changing the behavior of the App Service Environment.
-     *
+     * 
      * @return the clusterSettings value.
      */
     public List<NameValuePair> clusterSettings() {
@@ -330,7 +314,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the clusterSettings property: Custom settings for changing the behavior of the App Service Environment.
-     *
+     * 
      * @param clusterSettings the clusterSettings value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -341,7 +325,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the userWhitelistedIpRanges property: User added ip ranges to whitelist on ASE db.
-     *
+     * 
      * @return the userWhitelistedIpRanges value.
      */
     public List<String> userWhitelistedIpRanges() {
@@ -350,7 +334,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the userWhitelistedIpRanges property: User added ip ranges to whitelist on ASE db.
-     *
+     * 
      * @param userWhitelistedIpRanges the userWhitelistedIpRanges value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -361,7 +345,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the hasLinuxWorkers property: Flag that displays whether an ASE has linux workers or not.
-     *
+     * 
      * @return the hasLinuxWorkers value.
      */
     public Boolean hasLinuxWorkers() {
@@ -370,7 +354,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the upgradePreference property: Upgrade Preference.
-     *
+     * 
      * @return the upgradePreference value.
      */
     public UpgradePreference upgradePreference() {
@@ -379,7 +363,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the upgradePreference property: Upgrade Preference.
-     *
+     * 
      * @param upgradePreference the upgradePreference value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -390,7 +374,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the dedicatedHostCount property: Dedicated Host Count.
-     *
+     * 
      * @return the dedicatedHostCount value.
      */
     public Integer dedicatedHostCount() {
@@ -399,7 +383,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the dedicatedHostCount property: Dedicated Host Count.
-     *
+     * 
      * @param dedicatedHostCount the dedicatedHostCount value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -410,7 +394,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -419,7 +403,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -430,7 +414,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
-     *
+     * 
      * @return the customDnsSuffixConfiguration value.
      */
     public CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration() {
@@ -439,7 +423,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
-     *
+     * 
      * @param customDnsSuffixConfiguration the customDnsSuffixConfiguration value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -451,7 +435,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the networkingConfiguration property: Full view of networking configuration for an ASE.
-     *
+     * 
      * @return the networkingConfiguration value.
      */
     public AseV3NetworkingConfigurationInner networkingConfiguration() {
@@ -460,7 +444,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Set the networkingConfiguration property: Full view of networking configuration for an ASE.
-     *
+     * 
      * @param networkingConfiguration the networkingConfiguration value to set.
      * @return the AppServiceEnvironmentInner object itself.
      */
@@ -472,7 +456,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Get the upgradeAvailability property: Whether an upgrade is available for this App Service Environment.
-     *
+     * 
      * @return the upgradeAvailability value.
      */
     public UpgradeAvailability upgradeAvailability() {
@@ -481,7 +465,7 @@ public final class AppServiceEnvironmentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -504,4 +488,105 @@ public final class AppServiceEnvironmentInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppServiceEnvironmentInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
+        jsonWriter.writeStringField("internalLoadBalancingMode",
+            this.internalLoadBalancingMode == null ? null : this.internalLoadBalancingMode.toString());
+        jsonWriter.writeStringField("multiSize", this.multiSize);
+        jsonWriter.writeNumberField("ipsslAddressCount", this.ipsslAddressCount);
+        jsonWriter.writeStringField("dnsSuffix", this.dnsSuffix);
+        jsonWriter.writeNumberField("frontEndScaleFactor", this.frontEndScaleFactor);
+        jsonWriter.writeArrayField("clusterSettings", this.clusterSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userWhitelistedIpRanges", this.userWhitelistedIpRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("upgradePreference",
+            this.upgradePreference == null ? null : this.upgradePreference.toString());
+        jsonWriter.writeNumberField("dedicatedHostCount", this.dedicatedHostCount);
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeJsonField("customDnsSuffixConfiguration", this.customDnsSuffixConfiguration);
+        jsonWriter.writeJsonField("networkingConfiguration", this.networkingConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceEnvironmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceEnvironmentInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceEnvironmentInner.
+     */
+    public static AppServiceEnvironmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceEnvironmentInner deserializedAppServiceEnvironmentInner = new AppServiceEnvironmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetwork".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.virtualNetwork = VirtualNetworkProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.status
+                        = HostingEnvironmentStatus.fromString(reader.getString());
+                } else if ("internalLoadBalancingMode".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.internalLoadBalancingMode
+                        = LoadBalancingMode.fromString(reader.getString());
+                } else if ("multiSize".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.multiSize = reader.getString();
+                } else if ("multiRoleCount".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.multiRoleCount = reader.getNullable(JsonReader::getInt);
+                } else if ("ipsslAddressCount".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.ipsslAddressCount = reader.getNullable(JsonReader::getInt);
+                } else if ("dnsSuffix".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.dnsSuffix = reader.getString();
+                } else if ("maximumNumberOfMachines".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.maximumNumberOfMachines
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("frontEndScaleFactor".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.frontEndScaleFactor = reader.getNullable(JsonReader::getInt);
+                } else if ("suspended".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.suspended = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clusterSettings".equals(fieldName)) {
+                    List<NameValuePair> clusterSettings = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
+                    deserializedAppServiceEnvironmentInner.clusterSettings = clusterSettings;
+                } else if ("userWhitelistedIpRanges".equals(fieldName)) {
+                    List<String> userWhitelistedIpRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAppServiceEnvironmentInner.userWhitelistedIpRanges = userWhitelistedIpRanges;
+                } else if ("hasLinuxWorkers".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.hasLinuxWorkers = reader.getNullable(JsonReader::getBoolean);
+                } else if ("upgradePreference".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.upgradePreference
+                        = UpgradePreference.fromString(reader.getString());
+                } else if ("dedicatedHostCount".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.dedicatedHostCount = reader.getNullable(JsonReader::getInt);
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customDnsSuffixConfiguration".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.customDnsSuffixConfiguration
+                        = CustomDnsSuffixConfigurationInner.fromJson(reader);
+                } else if ("networkingConfiguration".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.networkingConfiguration
+                        = AseV3NetworkingConfigurationInner.fromJson(reader);
+                } else if ("upgradeAvailability".equals(fieldName)) {
+                    deserializedAppServiceEnvironmentInner.upgradeAvailability
+                        = UpgradeAvailability.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceEnvironmentInner;
+        });
+    }
 }

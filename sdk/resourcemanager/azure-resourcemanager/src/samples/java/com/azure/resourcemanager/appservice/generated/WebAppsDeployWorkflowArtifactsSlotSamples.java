@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.models.WorkflowArtifacts;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,11 +16,12 @@ import java.util.Map;
  */
 public final class WebAppsDeployWorkflowArtifactsSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PostDeployWorkflowArtifactsSlot.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PostDeployWorkflowArtifactsSlot.json
      */
     /**
      * Sample code: Deploys workflow artifacts slot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploysWorkflowArtifactsSlot(com.azure.resourcemanager.AzureResourceManager azure)

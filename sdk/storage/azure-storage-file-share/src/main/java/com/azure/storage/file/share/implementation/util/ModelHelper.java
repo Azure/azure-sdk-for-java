@@ -203,6 +203,9 @@ public class ModelHelper {
         properties.setMetadata(sharePropertiesInternal.getMetadata());
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
         properties.setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
+        properties.setPaidBurstingEnabled(sharePropertiesInternal.isPaidBurstingEnabled());
+        properties.setPaidBurstingMaxIops(sharePropertiesInternal.getPaidBurstingMaxIops());
+        properties.setPaidBurstingMaxBandwidthMibps(sharePropertiesInternal.getPaidBurstingMaxBandwidthMibps());
 
         return properties;
     }
@@ -461,6 +464,9 @@ public class ModelHelper {
             .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
             .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
             .setSnapshotVirtualDirectoryAccessEnabled(headers.isXMsEnableSnapshotVirtualDirectoryAccess())
+            .setPaidBurstingEnabled(headers.isXMsSharePaidBurstingEnabled())
+            .setPaidBurstingMaxIops(headers.getXMsSharePaidBurstingMaxIops())
+            .setPaidBurstingMaxBandwidthMibps(headers.getXMsSharePaidBurstingMaxBandwidthMibps())
             .setRootSquash(headers.getXMsRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);

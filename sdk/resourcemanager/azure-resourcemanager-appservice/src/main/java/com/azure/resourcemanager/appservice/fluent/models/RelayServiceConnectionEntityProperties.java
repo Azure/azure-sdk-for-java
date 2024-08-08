@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * RelayServiceConnectionEntity resource specific properties.
  */
 @Fluent
-public final class RelayServiceConnectionEntityProperties {
+public final class RelayServiceConnectionEntityProperties
+    implements JsonSerializable<RelayServiceConnectionEntityProperties> {
     /*
      * The entityName property.
      */
-    @JsonProperty(value = "entityName")
     private String entityName;
 
     /*
      * The entityConnectionString property.
      */
-    @JsonProperty(value = "entityConnectionString")
     private String entityConnectionString;
 
     /*
      * The resourceType property.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The resourceConnectionString property.
      */
-    @JsonProperty(value = "resourceConnectionString")
     private String resourceConnectionString;
 
     /*
      * The hostname property.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * The port property.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The biztalkUri property.
      */
-    @JsonProperty(value = "biztalkUri")
     private String biztalkUri;
 
     /**
@@ -206,5 +204,60 @@ public final class RelayServiceConnectionEntityProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityName", this.entityName);
+        jsonWriter.writeStringField("entityConnectionString", this.entityConnectionString);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceConnectionString", this.resourceConnectionString);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("biztalkUri", this.biztalkUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelayServiceConnectionEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelayServiceConnectionEntityProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RelayServiceConnectionEntityProperties.
+     */
+    public static RelayServiceConnectionEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelayServiceConnectionEntityProperties deserializedRelayServiceConnectionEntityProperties
+                = new RelayServiceConnectionEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityName".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.entityName = reader.getString();
+                } else if ("entityConnectionString".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.entityConnectionString = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.resourceType = reader.getString();
+                } else if ("resourceConnectionString".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.resourceConnectionString = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.hostname = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.port = reader.getNullable(JsonReader::getInt);
+                } else if ("biztalkUri".equals(fieldName)) {
+                    deserializedRelayServiceConnectionEntityProperties.biztalkUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelayServiceConnectionEntityProperties;
+        });
     }
 }
