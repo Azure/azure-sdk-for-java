@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class Transform extends ExpandableStringEnum<Transform> {
      * @param name a name to look for.
      * @return the corresponding Transform.
      */
-    @JsonCreator
     public static Transform fromString(String name) {
         return fromString(name, Transform.class);
     }

@@ -6,31 +6,32 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the origin created on the CDN endpoint.
  */
 @Fluent
-public final class DeepCreatedOriginProperties {
+public final class DeepCreatedOriginProperties implements JsonSerializable<DeepCreatedOriginProperties> {
     /*
      * The address of the origin. It can be a domain name, IPv4 address, or IPv6 address. This should be unique across
      * all origins in an endpoint.
      */
-    @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
     /*
      * The value of the HTTP port. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpPort")
     private Integer httpPort;
 
     /*
      * The value of the HTTPS port. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpsPort")
     private Integer httpsPort;
 
     /*
@@ -38,57 +39,48 @@ public final class DeepCreatedOriginProperties {
      * determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host
      * header value to match the origin hostname by default.
      */
-    @JsonProperty(value = "originHostHeader")
     private String originHostHeader;
 
     /*
      * Priority of origin in given origin group for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority origin is healthy.Must be between 1 and 5.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * Origin is enabled for load balancing or not. By default, origin is always enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
      */
-    @JsonProperty(value = "privateLinkAlias")
     private String privateLinkAlias;
 
     /*
      * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is
      * 'Private'
      */
-    @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
      * The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
      */
-    @JsonProperty(value = "privateLinkLocation")
     private String privateLinkLocation;
 
     /*
      * A custom message to be included in the approval request to connect to the Private Link.
      */
-    @JsonProperty(value = "privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;
 
     /*
      * The approval status for the connection to the Private Link
      */
-    @JsonProperty(value = "privateEndpointStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointStatus privateEndpointStatus;
 
     /**
@@ -351,10 +343,81 @@ public final class DeepCreatedOriginProperties {
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hostname in model DeepCreatedOriginProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostname in model DeepCreatedOriginProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeepCreatedOriginProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeNumberField("httpPort", this.httpPort);
+        jsonWriter.writeNumberField("httpsPort", this.httpsPort);
+        jsonWriter.writeStringField("originHostHeader", this.originHostHeader);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("privateLinkAlias", this.privateLinkAlias);
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        jsonWriter.writeStringField("privateLinkLocation", this.privateLinkLocation);
+        jsonWriter.writeStringField("privateLinkApprovalMessage", this.privateLinkApprovalMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeepCreatedOriginProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeepCreatedOriginProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeepCreatedOriginProperties.
+     */
+    public static DeepCreatedOriginProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeepCreatedOriginProperties deserializedDeepCreatedOriginProperties = new DeepCreatedOriginProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.hostname = reader.getString();
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.httpPort = reader.getNullable(JsonReader::getInt);
+                } else if ("httpsPort".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.httpsPort = reader.getNullable(JsonReader::getInt);
+                } else if ("originHostHeader".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.originHostHeader = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateLinkAlias".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.privateLinkAlias = reader.getString();
+                } else if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.privateLinkResourceId = reader.getString();
+                } else if ("privateLinkLocation".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.privateLinkLocation = reader.getString();
+                } else if ("privateLinkApprovalMessage".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.privateLinkApprovalMessage = reader.getString();
+                } else if ("privateEndpointStatus".equals(fieldName)) {
+                    deserializedDeepCreatedOriginProperties.privateEndpointStatus
+                        = PrivateEndpointStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeepCreatedOriginProperties;
+        });
+    }
 }
