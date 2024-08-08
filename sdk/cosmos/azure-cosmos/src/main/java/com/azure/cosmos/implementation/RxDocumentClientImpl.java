@@ -3359,40 +3359,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
             return collectionObs.flatMap(documentCollectionValueHolder -> {
-                    if (documentCollectionValueHolder != null && documentCollectionValueHolder.v != null) {
-                        DocumentCollection documentCollection = documentCollectionValueHolder.v;
-                        return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null)
-                            .flatMap(collectionRoutingMapValueHolder -> {
-                                if (collectionRoutingMapValueHolder.v != null) {
+                    DocumentCollection documentCollection = documentCollectionValueHolder.v;
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
+                            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, pointOperationContextForCircuitBreaker);
 
-                                    Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, pointOperationContextForCircuitBreaker);
+                            return requestObs.flatMap(req -> {
 
-                                    return requestObs.flatMap(req -> {
+                                options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
-                                        options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
-                                        addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
 
-                                        req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                                        requestReference.set(req);
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
 
-                                        // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                                        // to the RxDocumentServiceRequest instance
-                                        mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
-
-                                        return this.read(req, retryPolicyInstance)
-                                            .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
-                                    });
-                                } else {
-                                    return Mono.error(new CollectionRoutingMapNotFoundException(""));
-                                }
+                                return this.read(req, retryPolicyInstance)
+                                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
                             });
-                    } else {
-                        return Mono.error(new NotFoundException());
-                    }
+
+                        });
+
                 }
             );
-
-
         } catch (Exception e) {
             logger.debug("Failure in reading a document due to [{}]", e.getMessage());
             return Mono.error(e);

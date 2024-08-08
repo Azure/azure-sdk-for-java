@@ -29,7 +29,6 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -64,7 +63,6 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -2103,6 +2101,880 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
     }
 
+    @DataProvider(name = "gatewayRoutedFailureParametersDataProvider_ReadAll")
+    public Object[][] gatewayRoutedFailureParametersDataProvider_ReadAll() {
+
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeReadAllOperation = (paramsWrapper) -> {
+            CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+            PartitionKey partitionKey = paramsWrapper.partitionKeyForReadAllOperation;
+            CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions;
+
+            try {
+
+                FeedResponse<TestObject> response = asyncContainer.readAllItems(
+                        partitionKey,
+                        queryRequestOptions,
+                        TestObject.class)
+                    .byPage()
+                    .next()
+                    .block();
+
+                return new ResponseWrapper<>(response);
+            } catch (Exception ex) {
+
+                if (ex instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                    return new ResponseWrapper<>(cosmosException);
+                }
+
+                throw ex;
+            }
+        };
+
+        return new Object[][]{
+            {
+                "Test read all operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                executeReadAllOperation,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ALL_CONNECTION_MODES_INCLUDED
+            },
+            // todo: for read all and read many - collection resolution and pkRange resolution happens
+            // todo: outside the document retry loop so the operation fails with 404:1002
+            // todo: weird thing is the operation succeeds when the client is in DIRECT connectivity mode
+            // todo: track this
+//            {
+//                "Test read all operation injected with read session not available in first preferred region.",
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withOverrideFaultInjectionOperationType(true)
+//                    .withHitLimit(3)
+//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+//                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+//                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+//                executeReadAllOperation,
+//                NO_REGION_SWITCH_HINT,
+//                this.validateResponseHasSuccess,
+//                ONLY_DIRECT_MODE
+//            },
+            {
+                "Test read all operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                executeReadAllOperation,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ALL_CONNECTION_MODES_INCLUDED
+            }
+        };
+    }
+
+    @DataProvider(name = "masterResourceFailuresDataProviderReadMany")
+    public Object[][] masterResourceFailuresDataProviderReadMany() {
+
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeReadManyOperation = (paramsWrapper) -> {
+            CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+            List<CosmosItemIdentity> itemIdentities = paramsWrapper.itemIdentitiesForReadManyOperation;
+            CosmosReadManyRequestOptions readManyRequestOptions = paramsWrapper.readManyRequestOptions;
+
+            try {
+
+                FeedResponse<TestObject> response = asyncContainer.readMany(
+                        itemIdentities,
+                        readManyRequestOptions,
+                        TestObject.class)
+                    .block();
+
+                return new ResponseWrapper<>(response);
+            } catch (Exception ex) {
+
+                if (ex instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                    return new ResponseWrapper<>(cosmosException);
+                }
+
+                throw ex;
+            }
+        };
+
+        return new Object[][]{
+            {
+                "Test read many operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                executeReadManyOperation,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ALL_CONNECTION_MODES_INCLUDED
+            },
+            // todo: for read all and read many - collection resolution and pkRange resolution happens
+            // todo: outside the document retry loop so the operation fails with 404:1002
+            // todo: weird thing is the operation succeeds when the client is in DIRECT connectivity mode
+            // todo: track this
+//            {
+//                "Test read many operation injected with read session not available in first preferred region.",
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withOverrideFaultInjectionOperationType(true)
+//                    .withHitLimit(3)
+//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+//                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+//                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+//                executeReadManyOperation,
+//                NO_REGION_SWITCH_HINT,
+//                this.validateResponseHasSuccess,
+//                ALL_CONNECTION_MODES_INCLUDED
+//            },
+            {
+                "Test read many operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                executeReadManyOperation,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ALL_CONNECTION_MODES_INCLUDED
+            }
+        };
+    }
+
+    @DataProvider(name = "masterResourceFailuresDataProviderMiscGateway")
+    public Object[][] masterResourceFailuresDataProviderMiscGateway() {
+
+        return new Object[][]{
+            {
+                "Test read operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test read operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test read operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test create operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test create operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test create operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test upsert operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test upsert operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test upsert operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test replace operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test replace operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test replace operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test delete operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test delete operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test delete operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test patch operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test patch operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test patch operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test batch operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test batch operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test batch operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test query operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test query operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test query operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test read feed operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test read feed operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test read feed operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_GATEWAY_MODE
+            }
+        };
+    }
+
+    @DataProvider(name = "masterResourceFailuresDataProviderMiscDirect")
+    public Object[][] masterResourceFailuresDataProviderMiscDirect() {
+
+        return new Object[][]{
+            {
+                "Test read operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test read operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test read operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test create operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test create operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test create operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test upsert operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test upsert operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test upsert operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test replace operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test replace operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test replace operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test delete operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test delete operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test delete operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test patch operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test patch operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test patch operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test batch operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test batch operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test batch operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test query operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test query operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test query operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test read feed operation injected with service unavailable exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test read feed operation injected with read session not available in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildReadWriteSessionNotAvailableFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            },
+            {
+                "Test read feed operation injected with too many requests exception in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withOverrideFaultInjectionOperationType(true)
+                    .withHitLimit(3)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasSuccess,
+                ONLY_DIRECT_MODE
+            }
+        };
+    }
+
     @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "miscellaneousOpTestConfigsDirect", timeOut = 4 * TIMEOUT)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsDirect(
         String testId,
@@ -2777,322 +3649,387 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-//    @Test(groups = {"multi-master"})
-//    public void testCreate_404_1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries() {
-//
-//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
-//
-//        CosmosAsyncClient asyncClient = buildCosmosClient(
-//            ConsistencyLevel.SESSION,
-//            Arrays.asList("West US 2", "South Central US", "East US"),
-//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-//            ConnectionMode.GATEWAY,
-//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
-//                .build(),
-//            new NonIdempotentWriteRetryOptions()
-//                .setEnabled(true)
-//                .setTrackingIdUsed(true));
-//
-//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
-//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
-//
-//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-//            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-//            .build();
-//
-//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-//            .connectionType(FaultInjectionConnectionType.GATEWAY)
-////            .operationType(FaultInjectionOperationType.CREATE_ITEM)
-//            .region("West US 2")
-//            .build();
-//
-//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
-//            .condition(faultInjectionCondition)
-//            .result(faultInjectionServerErrorResult)
-//            .build();
-//
-//        asyncContainer.getFeedRanges().block();
-//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
-//
-//        try {
-//            CosmosItemResponse<TestObject> response = asyncContainer.createItem(TestObject.create(UUID.randomUUID().toString())).block();
-//
-//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
-//        } catch (CosmosException ex) {
-//
-//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
-//        } finally {
-//            asyncClient.close();
-//
-//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
-//        }
-//    }
-//
-//    @Test(groups = {"multi-master"})
-//    public void testCreate_500_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries() {
-//
-//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
-//        System.setProperty(
-//            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-//            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-//                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-//                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-//                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-//                + "}");
-//
-//
-//        CosmosAsyncClient asyncClient = buildCosmosClient(
-//            ConsistencyLevel.SESSION,
-//            Arrays.asList("West US 2", "South Central US", "East US"),
-//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-//            ConnectionMode.DIRECT,
-//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
-//                .build(),
-//            new NonIdempotentWriteRetryOptions()
-//                .setEnabled(true)
-//                .setTrackingIdUsed(true));
-//
-//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
-//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
-//
-//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-//            .getResultBuilder(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
-//            .build();
-//
-//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-//            .connectionType(FaultInjectionConnectionType.DIRECT)
-//            .region("West US 2")
-//            .build();
-//
-//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
-//            .condition(faultInjectionCondition)
-//            .result(faultInjectionServerErrorResult)
-//            .build();
-//
-//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
-//
-//        try {
-//            CosmosItemResponse<TestObject> response = null;
-//
-//            for (int i = 1; i <= 7; i++) {
-//                response = asyncContainer.createItem(TestObject.create(UUID.randomUUID().toString())).onErrorResume(throwable -> Mono.empty()).block();
-//            }
-//
-//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
-//        } catch (CosmosException ex) {
-//
-//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
-//        } finally {
-//            asyncClient.close();
-//
-//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
-//            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
-//        }
-//    }
-//
-//    @Test(groups = {"multi-master"})
-//    public void testRead_503_FirstRegionOnly() {
-//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
-//        System.setProperty(
-//            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-//            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-//                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-//                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-//                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-//                + "}");
-//
-//
-//        CosmosAsyncClient asyncClient = buildCosmosClient(
-//            ConsistencyLevel.SESSION,
-//            Arrays.asList("West US 2", "South Central US", "East US"),
-//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-//            ConnectionMode.DIRECT,
-//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
-//                .build(),
-//            new NonIdempotentWriteRetryOptions()
-//                .setEnabled(true)
-//                .setTrackingIdUsed(true));
-//
-//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
-//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
-//
-//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-//            .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-//            .build();
-//
-//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-//            .connectionType(FaultInjectionConnectionType.DIRECT)
-//            .region("West US 2")
-//            .build();
-//
-//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
-//            .condition(faultInjectionCondition)
-//            .result(faultInjectionServerErrorResult)
-//            .build();
-//
-//        TestObject testObject = TestObject.create();
-//        String id = testObject.getId();
-//        String myPk = testObject.getMypk();
-//
-//        CosmosItemResponse<TestObject> responseFromCreate = asyncContainer.createItem(testObject).block();
-//
-//        CosmosAsyncClient asyncClient2 = buildCosmosClient(
-//            ConsistencyLevel.SESSION,
-//            Arrays.asList("West US 2", "South Central US", "East US"),
-//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-//            ConnectionMode.DIRECT,
-//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
-//                .build(),
-//            new NonIdempotentWriteRetryOptions()
-//                .setEnabled(true)
-//                .setTrackingIdUsed(true));
-//
-//        asyncDatabase = asyncClient2.getDatabase("testDb");
-//        asyncContainer = asyncDatabase.getContainer("testContainer");
-//
-//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
-//
-//        try {
-//            CosmosItemResponse<TestObject> response = null;
-//
-//            for (int i = 1; i <= 10; i++) {
-//                response = asyncContainer.readItem(id, new PartitionKey(myPk), TestObject.class).onErrorResume(throwable -> Mono.empty()).block();
-//                System.out.println("Success Diagnostics : " + response.getDiagnostics());
-//            }
-//
-//            response = asyncContainer.readItem(id, new PartitionKey(myPk), TestObject.class).onErrorResume(throwable -> Mono.empty()).block();
-//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
-//        } catch (CosmosException ex) {
-//
-//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
-//        } finally {
-//            asyncClient.close();
-//
-//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
-//            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
-//        }
-//    }
-//
-//    @Test(groups = {"multi-master"})
-//    public void testCreate_503_FirstRegionOnly() {
-//        System.setProperty("COSMOS.SESSION_CAPTURING_TYPE", "REGION_SCOPED");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT", "5000000");
-//        System.setProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE", "0.001");
-//        System.setProperty(
-//            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-//            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-//                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-//                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-//                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-//                + "}");
-//
-//
-//        CosmosAsyncClient asyncClient = buildCosmosClient(
-//            ConsistencyLevel.SESSION,
-//            Arrays.asList("West US 2", "South Central US", "East US"),
-//            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-//            ConnectionMode.DIRECT,
-//            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-//                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
-//                .build(),
-//            new NonIdempotentWriteRetryOptions()
-//                .setEnabled(true)
-//                .setTrackingIdUsed(true));
-//
-//        CosmosAsyncDatabase asyncDatabase = asyncClient.getDatabase("testDb");
-//        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer("testContainer");
-//
-//        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-//            .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-//            .build();
-//
-//        FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-//            .connectionType(FaultInjectionConnectionType.DIRECT)
-//            .region("West US 2")
-//            .build();
-//
-//        FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
-//            .condition(faultInjectionCondition)
-//            .result(faultInjectionServerErrorResult)
-//            .build();
-//
-//        TestObject testObject = TestObject.create();
-//        String id = testObject.getId();
-//        String myPk = testObject.getMypk();
-//
-//        CosmosItemResponse<TestObject> responseFromCreate = asyncContainer.createItem(testObject).block();
-//        CosmosFaultInjectionHelper.configureFaultInjectionRules(asyncContainer, Arrays.asList(faultInjectionRule)).block();
-//
-//        try {
-//            CosmosItemResponse<TestObject> response = null;
-//
-//            for (int i = 1; i <= 5; i++) {
-//                response = asyncContainer.createItem(TestObject.create()).onErrorResume(throwable -> Mono.empty()).block();
-//                System.out.println("Success Diagnostics : " + response.getDiagnostics());
-//            }
-//
-//            response = asyncContainer.createItem(TestObject.create()).onErrorResume(throwable -> Mono.empty()).block();
-//            System.out.println("Success Diagnostics : " + response.getDiagnostics());
-//        } catch (CosmosException ex) {
-//
-//            System.out.println("Failure Diagnostics : " + ex.getDiagnostics());
-//        } finally {
-//            asyncClient.close();
-//
-//            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT");
-//            System.clearProperty("COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE");
-//            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
-//        }
-//    }
-//
-//    private static CosmosAsyncClient buildCosmosClient(
-//        ConsistencyLevel consistencyLevel,
-//        List<String> preferredRegions,
-//        CosmosRegionSwitchHint regionSwitchHint,
-//        ConnectionMode connectionMode,
-//        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-//        NonIdempotentWriteRetryOptions nonIdempotentWriteRetryOptions) {
-//
-//        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
-//            .endpoint(TestConfigurations.HOST)
-//            .key(TestConfigurations.MASTER_KEY)
-//            .consistencyLevel(consistencyLevel)
-//            .preferredRegions(preferredRegions)
-//            .sessionRetryOptions(new SessionRetryOptionsBuilder()
-//                .regionSwitchHint(regionSwitchHint)
-//                .build())
-//            .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
-//            .nonIdempotentWriteRetryOptions(nonIdempotentWriteRetryOptions)
-//            .openConnectionsAndInitCaches(new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "testContainer")))
-//                .setProactiveConnectionRegionsCount(3)
-//                .build())
-//            .multipleWriteRegionsEnabled(true);
-//
-//        if (connectionMode == ConnectionMode.DIRECT) {
-//            clientBuilder.directMode();
-//        } else {
-//            clientBuilder.gatewayMode();
-//        }
-//
-//        return clientBuilder.buildAsyncClient();
-//    }
+
+    @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "gatewayRoutedFailureParametersDataProvider_ReadAll", timeOut = 4 * TIMEOUT)
+    public void testReadAll_withAllGatewayRoutedOperationFailuresInPrimaryRegion(
+        String testId,
+        FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+        CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<ResponseWrapper<?>> validateResponse,
+        Set<ConnectionMode> allowedConnectionModes) {
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        List<String> preferredRegions = this.writeRegions;
+
+        this.firstPreferredRegion = preferredRegions.get(0);
+        this.secondPreferredRegion = preferredRegions.get(1);
+
+        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+
+        if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
+            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
+        }
+
+        CosmosAsyncClient asyncClient = null;
+        FaultInjectionOperationType faultInjectionOperationType = faultInjectionRuleParamsWrapper.getFaultInjectionOperationType();
+        faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+        List<TestObject> testObjects = new ArrayList<>();
+
+        try {
+
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            int testObjCountToBootstrapFrom = resolveTestObjectCountToBootstrapFrom(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType(), 1);
+
+            operationInvocationParamsWrapper.containerIdToTarget = resolveContainerIdByFaultInjectionOperationType(faultInjectionOperationType);
+
+            validateNonEmptyString(operationInvocationParamsWrapper.containerIdToTarget);
+            CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+
+            for (int i = 1; i <= testObjCountToBootstrapFrom; i++) {
+                TestObject testObject = TestObject.create();
+                testObjects.add(testObject);
+                asyncContainer.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+            }
+
+        } catch (Exception ex) {
+            logger.error("Test failed with ex :", ex);
+            fail(String.format("Test %s failed in bootstrap stage.", testId));
+        } finally {
+            safeClose(asyncClient);
+        }
+
+        try {
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            if (regionSwitchHint != null) {
+                clientBuilder = clientBuilder
+                    .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+            }
+
+            CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            operationInvocationParamsWrapper.partitionKeyForReadAllOperation = new PartitionKey(testObjects.get(0).getMypk());
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(asyncContainer);
+
+            List<FaultInjectionRule> faultInjectionRules = generateFaultInjectionRules.apply(faultInjectionRuleParamsWrapper);
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(faultInjectionRuleParamsWrapper.getFaultInjectionApplicableAsyncContainer(), faultInjectionRules)
+                .block();
+
+            ResponseWrapper<?> responseWrapper = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+            validateResponse.accept(responseWrapper);
+        } catch (Exception ex) {
+            logger.error("Exception thrown :", ex);
+            fail("Test should have passed!");
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            safeClose(asyncClient);
+        }
+    }
+
+
+    @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "masterResourceFailuresDataProviderReadMany", timeOut = 4 * TIMEOUT)
+    public void testReadMany_withAllGatewayRoutedOperationFailuresInPrimaryRegion(String testId,
+                                                        FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
+                                                        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
+                                                        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+                                                        CosmosRegionSwitchHint regionSwitchHint,
+                                                        Consumer<ResponseWrapper<?>> validateResponse,
+                                                        Set<ConnectionMode> allowedConnectionModes) {
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        List<String> preferredRegions = this.writeRegions;
+
+        this.firstPreferredRegion = preferredRegions.get(0);
+        this.secondPreferredRegion = preferredRegions.get(1);
+
+        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+
+        logger.info("Connection mode : {}", connectionPolicy.getConnectionMode());
+
+        if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
+            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
+        }
+
+        CosmosAsyncClient asyncClient = null;
+        faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+
+        try {
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            operationInvocationParamsWrapper.containerIdToTarget = this.sharedMultiPartitionAsyncContainerIdWhereMyPkIsPartitionKey;
+
+            CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+
+            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+
+            assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
+            assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
+
+            Map<String, List<CosmosItemIdentity>> partitionKeyToItemIdentityList = new HashMap<>();
+            List<String> partitionKeys = new ArrayList<>();
+
+            for (FeedRange ignored : feedRanges) {
+                String pkForFeedRange = UUID.randomUUID().toString();
+
+                partitionKeys.add(pkForFeedRange);
+                partitionKeyToItemIdentityList.put(pkForFeedRange, new ArrayList<>());
+
+                for (int i = 0; i < 10; i++) {
+                    TestObject testObject = TestObject.create(pkForFeedRange);
+
+                    partitionKeyToItemIdentityList.get(pkForFeedRange).add(new CosmosItemIdentity(new PartitionKey(pkForFeedRange), testObject.getId()));
+                    asyncContainer.createItem(testObject, new PartitionKey(testObject.getMypk()), new CosmosItemRequestOptions()).block();
+                }
+            }
+
+            CosmosReadManyRequestOptions readManyRequestOptions = new CosmosReadManyRequestOptions();
+
+            operationInvocationParamsWrapper.readManyRequestOptions = readManyRequestOptions;
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(asyncContainer);
+
+            operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation = partitionKeyToItemIdentityList.get(partitionKeys.get(0));
+
+        } catch (Exception ex) {
+            logger.error("Test failed with ex :", ex);
+            fail(String.format("Test %s failed in bootstrap stage.", testId));
+        } finally {
+            safeClose(asyncClient);
+        }
+
+        try {
+
+            if (regionSwitchHint != null) {
+                clientBuilder = clientBuilder
+                    .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+            }
+
+            asyncClient = clientBuilder.buildAsyncClient();
+            CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(asyncContainer);
+
+            List<FaultInjectionRule> faultInjectionRules = generateFaultInjectionRules.apply(faultInjectionRuleParamsWrapper);
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(faultInjectionRuleParamsWrapper.getFaultInjectionApplicableAsyncContainer(), faultInjectionRules)
+                .block();
+
+            ResponseWrapper<?> responseWrapper = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+            validateResponse.accept(responseWrapper);
+        } catch (Exception ex) {
+            logger.error("Exception thrown :", ex);
+            fail("Test should have passed!");
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            safeClose(asyncClient);
+        }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "masterResourceFailuresDataProviderMiscGateway", timeOut = 4 * TIMEOUT)
+    public void testMiscOperation_withAllGatewayRoutedOperationFailuresInPrimaryRegion_withGatewayConnectivity(
+        String testId,
+        FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
+        CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<ResponseWrapper<?>> validateResponse,
+        Set<ConnectionMode> allowedConnectionModes) {
+
+        List<String> preferredRegions = this.writeRegions;
+
+        this.firstPreferredRegion = preferredRegions.get(0);
+        this.secondPreferredRegion = preferredRegions.get(1);
+
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+
+        if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
+            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
+        }
+
+        CosmosAsyncClient asyncClient = null;
+        FaultInjectionOperationType faultInjectionOperationType = faultInjectionRuleParamsWrapper.getFaultInjectionOperationType();
+        faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
+        List<TestObject> testObjects = new ArrayList<>();
+
+        try {
+
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            operationInvocationParamsWrapper.itemCountToBootstrapContainerFrom = resolveTestObjectCountToBootstrapFrom(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType(), 15);
+            int testObjCountToBootstrapFrom = operationInvocationParamsWrapper.itemCountToBootstrapContainerFrom;
+
+            operationInvocationParamsWrapper.containerIdToTarget = resolveContainerIdByFaultInjectionOperationType(faultInjectionOperationType);
+
+            validateNonEmptyString(operationInvocationParamsWrapper.containerIdToTarget);
+            CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+
+            for (int i = 1; i <= testObjCountToBootstrapFrom; i++) {
+                TestObject testObject = TestObject.create();
+                testObjects.add(testObject);
+                asyncContainer.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+            }
+
+            operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith = testObjects;
+            operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(0);
+
+        } catch (Exception ex) {
+            logger.error("Test failed with ex :", ex);
+            fail(String.format("Test %s failed in bootstrap stage.", testId));
+        } finally {
+            safeClose(asyncClient);
+        }
+
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation
+            = resolveDataPlaneOperation(faultInjectionOperationType);
+
+        operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+
+        try {
+
+            if (regionSwitchHint != null) {
+                clientBuilder = clientBuilder
+                    .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+            }
+
+            asyncClient = clientBuilder.buildAsyncClient();
+            CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(asyncContainer);
+
+            List<FaultInjectionRule> faultInjectionRules = generateFaultInjectionRules.apply(faultInjectionRuleParamsWrapper);
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(faultInjectionRuleParamsWrapper.getFaultInjectionApplicableAsyncContainer(), faultInjectionRules)
+                .block();
+
+            ResponseWrapper<?> responseWrapper = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+            validateResponse.accept(responseWrapper);
+        } catch (Exception ex) {
+            logger.error("Exception thrown :", ex);
+            fail("Test should have passed!");
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            safeClose(asyncClient);
+        }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "masterResourceFailuresDataProviderMiscDirect", timeOut = 4 * TIMEOUT)
+    public void testMiscOperation_withAllGatewayRoutedOperationFailuresInPrimaryRegion_withDirectConnectivity(String testId,
+                                                                                     FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
+                                                                                     Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
+                                                                                     CosmosRegionSwitchHint regionSwitchHint,
+                                                                                     Consumer<ResponseWrapper<?>> validateResponse,
+                                                                                     Set<ConnectionMode> allowedConnectionModes) {
+         List<String> preferredRegions = this.writeRegions;
+
+         this.firstPreferredRegion = preferredRegions.get(0);
+         this.secondPreferredRegion = preferredRegions.get(1);
+
+         OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+         CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
+
+         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+
+         if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
+             throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
+         }
+
+         CosmosAsyncClient asyncClient = null;
+         FaultInjectionOperationType faultInjectionOperationType = faultInjectionRuleParamsWrapper.getFaultInjectionOperationType();
+         faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
+         List<TestObject> testObjects = new ArrayList<>();
+
+         try {
+
+             asyncClient = clientBuilder.buildAsyncClient();
+
+             operationInvocationParamsWrapper.itemCountToBootstrapContainerFrom = resolveTestObjectCountToBootstrapFrom(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType(), 15);
+             int testObjCountToBootstrapFrom = operationInvocationParamsWrapper.itemCountToBootstrapContainerFrom;
+
+             operationInvocationParamsWrapper.containerIdToTarget = resolveContainerIdByFaultInjectionOperationType(faultInjectionOperationType);
+
+             validateNonEmptyString(operationInvocationParamsWrapper.containerIdToTarget);
+             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+
+             for (int i = 1; i <= testObjCountToBootstrapFrom; i++) {
+                 TestObject testObject = TestObject.create();
+                 testObjects.add(testObject);
+                 asyncContainer.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+             }
+
+             operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith = testObjects;
+             operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(0);
+
+         } catch (Exception ex) {
+             logger.error("Test failed with ex :", ex);
+             fail(String.format("Test %s failed in bootstrap stage.", testId));
+         } finally {
+             safeClose(asyncClient);
+         }
+
+         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation
+             = resolveDataPlaneOperation(faultInjectionOperationType);
+
+         operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+
+         try {
+
+             if (regionSwitchHint != null) {
+                 clientBuilder = clientBuilder
+                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+             }
+
+             asyncClient = clientBuilder.buildAsyncClient();
+             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
+             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(asyncContainer);
+
+             List<FaultInjectionRule> faultInjectionRules = generateFaultInjectionRules.apply(faultInjectionRuleParamsWrapper);
+
+             CosmosFaultInjectionHelper
+                 .configureFaultInjectionRules(faultInjectionRuleParamsWrapper.getFaultInjectionApplicableAsyncContainer(), faultInjectionRules)
+                 .block();
+
+             ResponseWrapper<?> responseWrapper = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+             validateResponse.accept(responseWrapper);
+         } catch (Exception ex) {
+             logger.error("Exception thrown :", ex);
+             fail("Test should have passed!");
+         } finally {
+             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+             safeClose(asyncClient);
+         }
+     }
 
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
 
@@ -3236,8 +4173,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions;
-                    queryRequestOptions = queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery);
+                    CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions == null ? new CosmosQueryRequestOptions() : paramsWrapper.queryRequestOptions;
+                    queryRequestOptions = paramsWrapper.feedRangeForQuery == null ? queryRequestOptions.setFeedRange(FeedRange.forFullRange()) : queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery);
 
                     try {
 
@@ -3316,7 +4253,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     try {
 
                         FeedResponse<TestObject> feedResponseFromChangeFeed = asyncContainer.queryChangeFeed(
-                                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(paramsWrapper.feedRangeToDrainForChangeFeed),
+                                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(paramsWrapper.feedRangeToDrainForChangeFeed == null ? FeedRange.forFullRange() : paramsWrapper.feedRangeToDrainForChangeFeed),
                                 TestObject.class)
                             .byPage()
                             .blockLast();
@@ -3445,6 +4382,16 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         private FeedRange faultInjectionApplicableFeedRange;
         private FaultInjectionOperationType faultInjectionOperationType;
         private FaultInjectionConnectionType faultInjectionConnectionType;
+        private boolean isOverrideFaultInjectionOperationType = false;
+
+        public boolean getIsOverrideFaultInjectionOperationType() {
+            return isOverrideFaultInjectionOperationType;
+        }
+
+        public FaultInjectionRuleParamsWrapper withOverrideFaultInjectionOperationType(boolean isOverrideFaultInjectionOperationType) {
+            this.isOverrideFaultInjectionOperationType = isOverrideFaultInjectionOperationType;
+            return this;
+        }
 
         public CosmosAsyncContainer getFaultInjectionApplicableAsyncContainer() {
             return faultInjectionApplicableAsyncContainer;
@@ -3538,24 +4485,37 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
+
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
 
             FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
                 .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
                 .build();
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(paramsWrapper.getHitLimit())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
@@ -3571,20 +4531,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("gone-rule-" + UUID.randomUUID())
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("gone-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .duration(paramsWrapper.getFaultInjectionDuration())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
@@ -3602,20 +4575,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("response-delay-rule-" + UUID.randomUUID())
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("response-delay-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .duration(paramsWrapper.getFaultInjectionDuration())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
@@ -3631,20 +4617,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .duration(paramsWrapper.getFaultInjectionDuration())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
@@ -3660,20 +4659,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("too-many-requests-rule-" + UUID.randomUUID())
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("too-many-requests-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .duration(paramsWrapper.getFaultInjectionDuration())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
@@ -3689,20 +4701,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("internal-server-error-rule-" + UUID.randomUUID())
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("internal-server-error-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(paramsWrapper.getHitLimit())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
@@ -3717,20 +4742,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(paramsWrapper.getFaultInjectionOperationType())
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
                 .connectionType(paramsWrapper.getFaultInjectionConnectionType())
-                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
-                .region(applicableRegion)
-                .build();
+                .region(applicableRegion);
 
-            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("retry-with-rule-" + UUID.randomUUID())
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("retry-with-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .duration(paramsWrapper.getFaultInjectionDuration())
-                .build();
+                .result(faultInjectionServerErrorResult);
 
-            faultInjectionRules.add(faultInjectionRule);
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
         }
 
         return faultInjectionRules;
