@@ -51,7 +51,10 @@ public class AzureFileSearchSyncTest extends AssistantsClientTestBase {
             createToolResourcesOptions.setFileSearch(
                 new CreateFileSearchToolResourceOptions(
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
-                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
+                            Arrays.asList(openAIFile.getId()),
+                            null
+                        )))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
@@ -96,6 +99,4 @@ public class AzureFileSearchSyncTest extends AssistantsClientTestBase {
             client.deleteThread(thread.getId());
         });
     }
-
-
 }

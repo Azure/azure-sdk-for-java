@@ -43,6 +43,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
             streamEvents.forEach(AssistantsClientTestBase::assertStreamUpdate);
         }, mathTutorAssistantId);
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runThreadWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {

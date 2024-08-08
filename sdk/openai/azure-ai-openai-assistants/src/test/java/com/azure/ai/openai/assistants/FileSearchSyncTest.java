@@ -49,7 +49,10 @@ public class FileSearchSyncTest extends AssistantsClientTestBase {
             createToolResourcesOptions.setFileSearch(
                 new CreateFileSearchToolResourceOptions(
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
-                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
+                            Arrays.asList(openAIFile.getId()),
+                            null
+                        )))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
