@@ -16,30 +16,9 @@ import com.azure.json.implementation.jackson.core.exc.StreamWriteException;
 public class JsonGenerationException extends StreamWriteException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
 
-    @Deprecated // since 2.7
-    public JsonGenerationException(Throwable rootCause) {
-        super(rootCause, null);
-    }
-
-    @Deprecated // since 2.7
-    public JsonGenerationException(String msg) {
-        super(msg, null);
-    }
-
-    @Deprecated // since 2.7
-    public JsonGenerationException(String msg, Throwable rootCause) {
-        super(msg, rootCause, null);
-    }
-
     // @since 2.7
     public JsonGenerationException(String msg, JsonGenerator g) {
         super(msg, g);
         _processor = g;
-    }
-
-    // NOTE: overloaded in 2.13 just to retain binary compatibility with 2.12 (remove from 3.0)
-    @Override
-    public JsonGenerator getProcessor() {
-        return _processor;
     }
 }

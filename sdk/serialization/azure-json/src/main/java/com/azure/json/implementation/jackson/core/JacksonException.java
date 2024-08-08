@@ -46,20 +46,4 @@ public abstract class JacksonException extends java.io.IOException {
      *    available; {@code null} otherwise.
      */
     public abstract JsonLocation getLocation();
-
-    /**
-     * Method that allows accessing underlying processor that triggered
-     * this exception; typically either {@link JsonParser} or {@link JsonGenerator}
-     * for exceptions that originate from streaming API, but may be other types
-     * when thrown by databinding.
-     *<p>
-     * Note that it is possible that {@code null} may be returned if code throwing
-     * exception either has no access to the processor; or has not been retrofitted
-     * to set it; this means that caller needs to take care to check for nulls.
-     * Subtypes override this method with co-variant return type, for more
-     * type-safe access.
-     *
-     * @return Originating processor, if available; {@code null} if not.
-     */
-    public abstract Object getProcessor();
 }

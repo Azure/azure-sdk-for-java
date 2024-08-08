@@ -36,10 +36,6 @@ public class JsonProcessingException extends JacksonException {
         this(msg, loc, null);
     }
 
-    protected JsonProcessingException(String msg, Throwable rootCause) {
-        this(msg, null, rootCause);
-    }
-
     protected JsonProcessingException(Throwable rootCause) {
         this(null, null, rootCause);
     }
@@ -53,25 +49,6 @@ public class JsonProcessingException extends JacksonException {
     @Override
     public JsonLocation getLocation() {
         return _location;
-    }
-
-    /**
-     * Method that allows accessing underlying processor that triggered
-     * this exception; typically either {@link JsonParser} or {@link JsonGenerator}
-     * for exceptions that originate from streaming API.
-     * Note that it is possible that `null` may be returned if code throwing
-     * exception either has no access to processor; or has not been retrofitted
-     * to set it; this means that caller needs to take care to check for nulls.
-     * Subtypes override this method with co-variant return type, for more
-     * type-safe access.
-     *
-     * @return Originating processor, if available; null if not.
-     *
-     * @since 2.7
-     */
-    @Override
-    public Object getProcessor() {
-        return null;
     }
 
     /*

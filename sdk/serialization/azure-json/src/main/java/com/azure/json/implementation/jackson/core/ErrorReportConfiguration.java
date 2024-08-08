@@ -31,44 +31,16 @@ public class ErrorReportConfiguration implements Serializable {
 
     /**
      * Maximum length of token to include in error messages
-     *
-     * @see Builder#maxErrorTokenLength(int)
      */
     protected final int _maxErrorTokenLength;
 
     /**
      * Maximum length of raw content to include in error messages
-     *
-     * @see Builder#maxRawContentLength(int)
      */
     protected final int _maxRawContentLength;
 
     private static final ErrorReportConfiguration DEFAULT
         = new ErrorReportConfiguration(DEFAULT_MAX_ERROR_TOKEN_LENGTH, DEFAULT_MAX_RAW_CONTENT_LENGTH);
-
-    /*
-    /**********************************************************************
-    /* Builder
-    /**********************************************************************
-     */
-
-    public static final class Builder {
-        private final int maxErrorTokenLength;
-        private final int maxRawContentLength;
-
-        Builder() {
-            this(DEFAULT_MAX_ERROR_TOKEN_LENGTH, DEFAULT_MAX_RAW_CONTENT_LENGTH);
-        }
-
-        Builder(final int maxErrorTokenLength, final int maxRawContentLength) {
-            this.maxErrorTokenLength = maxErrorTokenLength;
-            this.maxRawContentLength = maxRawContentLength;
-        }
-
-        public ErrorReportConfiguration build() {
-            return new ErrorReportConfiguration(maxErrorTokenLength, maxRawContentLength);
-        }
-    }
 
     /*
     /**********************************************************************
@@ -81,13 +53,8 @@ public class ErrorReportConfiguration implements Serializable {
         _maxRawContentLength = maxRawContentLength;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     /**
      * @return the default {@link ErrorReportConfiguration} (when none is set on the {@link JsonFactory} explicitly)
-     * @see #overrideDefaultErrorReportConfiguration(ErrorReportConfiguration)
      */
     public static ErrorReportConfiguration defaults() {
         return DEFAULT;
@@ -103,7 +70,6 @@ public class ErrorReportConfiguration implements Serializable {
      * Accessor for {@link #_maxErrorTokenLength}
      *
      * @return Maximum length of token to include in error messages
-     * @see Builder#maxErrorTokenLength(int)
      */
     public int getMaxErrorTokenLength() {
         return _maxErrorTokenLength;
@@ -113,16 +79,8 @@ public class ErrorReportConfiguration implements Serializable {
      * Accessor for {@link #_maxRawContentLength}
      *
      * @return Maximum length of token to include in error messages
-     * @see Builder#maxRawContentLength(int)
      */
     public int getMaxRawContentLength() {
         return _maxRawContentLength;
     }
-
-    /*
-    /**********************************************************************
-    /* Convenience methods for validation
-    /**********************************************************************
-     */
-
 }

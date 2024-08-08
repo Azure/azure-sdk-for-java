@@ -5,7 +5,7 @@ package com.azure.json.implementation.jackson.core.util;
  * Basic API implemented by Enums used for simple Jackson "features": on/off
  * settings and capabilities exposed as something that can be internally
  * represented as bit sets.
- * Designed to be used with {@link JacksonFeatureSet}.
+ * Designed to be used with {@code JacksonFeatureSet}.
  *
  * @since 2.12
  */

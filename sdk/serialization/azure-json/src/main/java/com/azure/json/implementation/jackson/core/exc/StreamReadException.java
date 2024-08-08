@@ -48,31 +48,6 @@ public abstract class StreamReadException extends JsonProcessingException {
      */
     public abstract StreamReadException withRequestPayload(RequestPayload payload);
 
-    @Override
-    public JsonParser getProcessor() {
-        return _processor;
-    }
-
-    /**
-     * Method that may be called to find payload that was being parsed, if
-     * one was specified for parser that threw this Exception.
-     *
-     * @return request body, if payload was specified; `null` otherwise
-     */
-    public RequestPayload getRequestPayload() {
-        return _requestPayload;
-    }
-
-    /**
-     * The method returns the String representation of the request payload if
-     * one was specified for parser that threw this Exception.
-     *
-     * @return request body as String, if payload was specified; `null` otherwise
-     */
-    public String getRequestPayloadAsString() {
-        return (_requestPayload != null) ? _requestPayload.toString() : null;
-    }
-
     /**
      * Overriding the getMessage() to include the request body
      */

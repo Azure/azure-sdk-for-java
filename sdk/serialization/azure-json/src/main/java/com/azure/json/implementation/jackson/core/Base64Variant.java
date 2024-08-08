@@ -223,60 +223,6 @@ public final class Base64Variant implements java.io.Serializable {
         _paddingReadBehaviour = paddingReadBehaviour;
     }
 
-    private Base64Variant(Base64Variant base, PaddingReadBehaviour paddingReadBehaviour) {
-        this(base, base._name, base._writePadding, base._paddingChar, paddingReadBehaviour, base._maxLineLength);
-    }
-
-    /**
-     * @return Base64Variant which does not require padding on read
-     *
-     * @since 2.12
-     */
-    public Base64Variant withPaddingAllowed() {
-        return withReadPadding(PaddingReadBehaviour.PADDING_ALLOWED);
-    }
-
-    /**
-     * @return Base64Variant which requires padding on read
-     * @since 2.12
-     */
-    public Base64Variant withPaddingRequired() {
-        return withReadPadding(PaddingReadBehaviour.PADDING_REQUIRED);
-    }
-
-    /**
-     * @return Base64Variant which does not accept padding on read
-     * @since 2.12
-     */
-    public Base64Variant withPaddingForbidden() {
-        return withReadPadding(PaddingReadBehaviour.PADDING_FORBIDDEN);
-    }
-
-    /**
-     * @param readPadding Padding read behavior desired
-     *
-     * @return Instance with desired padding read behavior setting (this
-     *   if already has setting; new instance otherwise)
-     *
-     * @since 2.12
-     */
-    public Base64Variant withReadPadding(PaddingReadBehaviour readPadding) {
-        return (readPadding == _paddingReadBehaviour) ? this : new Base64Variant(this, readPadding);
-    }
-
-    /**
-     * @param writePadding Determines if padding is output on write or not
-     *
-     * @return Base64Variant which writes padding or not depending on writePadding
-     *
-     * @since 2.12
-     */
-    public Base64Variant withWritePadding(boolean writePadding) {
-        return (writePadding == _writePadding)
-            ? this
-            : new Base64Variant(this, _name, writePadding, _paddingChar, _maxLineLength);
-    }
-
     /*
     /**********************************************************
     /* Serializable overrides
@@ -473,25 +419,6 @@ public final class Base64Variant implements java.io.Serializable {
     /* Convenience conversion methods for String to/from bytes use case
     /**********************************************************
      */
-
-    /**
-     * Convenience method for decoding contents of a Base64-encoded String,
-     * using this variant's settings.
-     *
-     * @param input Base64-encoded input String to decode
-     *
-     * @return Byte array of decoded contents
-     *
-     * @since 2.3
-     *
-     * @throws IllegalArgumentException if input is not valid base64 encoded data
-     */
-    @SuppressWarnings("resource")
-    public byte[] decode(String input) throws IllegalArgumentException {
-        ByteArrayBuilder b = new ByteArrayBuilder();
-        decode(input, b);
-        return b.toByteArray();
-    }
 
     /**
      * Convenience method for decoding contents of a Base64-encoded String,

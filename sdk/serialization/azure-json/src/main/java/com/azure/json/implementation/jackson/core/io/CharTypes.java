@@ -259,74 +259,8 @@ public final class CharTypes {
         return sHexValues[ch & 0xFF];
     }
 
-    // @since 2.13
-    public static char hexToChar(int ch) {
-        return HC[ch];
-    }
-
-    /**
-     * Helper method for appending JSON-escaped version of contents
-     * into specific {@link StringBuilder}, using default JSON specification
-     * mandated minimum escaping rules.
-     *
-     * @param sb Buffer to append escaped contents in
-     *
-     * @param content Unescaped String value to append with escaping applied
-     */
-    public static void appendQuoted(StringBuilder sb, String content) {
-        final int[] escCodes = sOutputEscapes128;
-        int escLen = escCodes.length;
-        for (int i = 0, len = content.length(); i < len; ++i) {
-            char c = content.charAt(i);
-            if (c >= escLen || escCodes[c] == 0) {
-                sb.append(c);
-                continue;
-            }
-            sb.append('\\');
-            int escCode = escCodes[c];
-            if (escCode < 0) { // generic quoting (hex value)
-                // The only negative value sOutputEscapes128 returns
-                // is CharacterEscapes.ESCAPE_STANDARD, which mean
-                // appendQuotes should encode using the Unicode encoding;
-                // not sure if this is the right way to encode for
-                // CharacterEscapes.ESCAPE_CUSTOM or other (future)
-                // CharacterEscapes.ESCAPE_XXX values.
-
-                // We know that it has to fit in just 2 hex chars
-                sb.append('u');
-                sb.append('0');
-                sb.append('0');
-                // widening
-                sb.append(HC[(int) c >> 4]);
-                sb.append(HC[(int) c & 0xF]);
-            } else { // "named", i.e. prepend with slash
-                sb.append((char) escCode);
-            }
-        }
-    }
-
-    /**
-     * @return Copy of array of 16 upper-case hexadecimal characters
-     *
-     * @deprecated Since 2.14 Use {@link #copyHexChars(boolean)} instead
-     */
-    @Deprecated // since 2.14
-    public static char[] copyHexChars() {
-        return copyHexChars(true);
-    }
-
     public static char[] copyHexChars(boolean uppercase) {
         return (uppercase) ? HC.clone() : HClower.clone();
-    }
-
-    /**
-     * @return Copy of array of 16 upper-case hexadecimal characters as bytes
-     *
-     * @deprecated Since 2.14 Use {@link #copyHexBytes(boolean)} instead
-     */
-    @Deprecated // since 2.14
-    public static byte[] copyHexBytes() {
-        return copyHexBytes(true);
     }
 
     public static byte[] copyHexBytes(boolean uppercase) {

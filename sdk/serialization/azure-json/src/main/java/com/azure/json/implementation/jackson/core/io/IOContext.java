@@ -31,14 +31,6 @@ public class IOContext implements AutoCloseable {
     protected final ContentReference _contentReference;
 
     /**
-     * Old, deprecated "raw" reference to input source.
-     *
-     * @deprecated Since 2.13, use {@link #_contentReference} instead
-     */
-    @Deprecated
-    protected final Object _sourceRef;
-
-    /**
      * Encoding used by the underlying stream, if known.
      */
     protected JsonEncoding _encoding;
@@ -150,49 +142,7 @@ public class IOContext implements AutoCloseable {
         _errorReportConfiguration = erc;
         _bufferRecycler = br;
         _contentReference = contentRef;
-        _sourceRef = contentRef.getRawContent();
         _managedResource = managedResource;
-    }
-
-    /**
-     * Deprecated legacy constructor.
-     *
-     * @param src constraints for streaming reads
-     * @param br BufferRecycler to use, if any ({@code null} if none)
-     * @param contentRef Input source reference for location reporting
-     * @param managedResource Whether input source is managed (owned) by Jackson library
-     *
-     * @since 2.15
-     * @deprecated Since 2.16. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints,
-     * ErrorReportConfiguration, BufferRecycler, ContentReference, boolean)} instead.
-     */
-    @Deprecated
-    public IOContext(StreamReadConstraints src, BufferRecycler br, ContentReference contentRef,
-        boolean managedResource) {
-        this(src, StreamWriteConstraints.defaults(), ErrorReportConfiguration.defaults(), br, contentRef,
-            managedResource);
-    }
-
-    /**
-     * Deprecated legacy constructor.
-     *
-     * @param br BufferRecycler to use, if any ({@code null} if none)
-     * @param contentRef Input source reference for location reporting
-     * @param managedResource Whether input source is managed (owned) by Jackson library
-     *
-     * @since 2.13
-     * @deprecated Since 2.15. Use {@link #IOContext(StreamReadConstraints, StreamWriteConstraints,
-     * ErrorReportConfiguration, BufferRecycler, ContentReference, boolean)} instead.
-     */
-    @Deprecated // since 2.15
-    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
-        this(StreamReadConstraints.defaults(), StreamWriteConstraints.defaults(), ErrorReportConfiguration.defaults(),
-            br, contentRef, managedResource);
-    }
-
-    @Deprecated // since 2.13
-    public IOContext(BufferRecycler br, Object rawContent, boolean managedResource) {
-        this(br, ContentReference.rawReference(rawContent), managedResource);
     }
 
     /**
@@ -260,15 +210,6 @@ public class IOContext implements AutoCloseable {
      */
     public ContentReference contentReference() {
         return _contentReference;
-    }
-
-    /**
-     * @deprecated Since 2.13, use {@link #contentReference()} instead
-     * @return "Raw" source reference
-     */
-    @Deprecated
-    public Object getSourceReference() {
-        return _sourceRef;
     }
 
     /*

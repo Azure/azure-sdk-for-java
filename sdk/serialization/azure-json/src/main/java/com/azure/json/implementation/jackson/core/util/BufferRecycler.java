@@ -66,7 +66,7 @@ public class BufferRecycler implements RecyclerPool.WithPool<BufferRecycler> {
      * Used through {@link TextBuffer}: directly by parsers (to concatenate
      * String values)
      *  and indirectly via
-     * {@link com.azure.json.implementation.jackson.core.io.SegmentedStringWriter}
+     * {@code com.azure.json.implementation.jackson.core.io.SegmentedStringWriter}
      * when serializing (databind level {@code ObjectMapper} and
      * {@code ObjectWriter}). In both cases used as segments (and not for whole value),
      * but may result in retention of larger chunks for big content

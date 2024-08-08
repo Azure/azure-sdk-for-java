@@ -2,7 +2,6 @@
 package com.azure.json.implementation.jackson.core;
 
 import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
-import com.azure.json.implementation.jackson.core.json.JsonReadFeature;
 import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
 
 /**
@@ -16,7 +15,7 @@ import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
  *
  * @since 2.10
  */
-public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuilder> {
+public class JsonFactoryBuilder extends TSFBuilder<JsonFactory> {
     protected CharacterEscapes _characterEscapes;
 
     protected int _maximumNonEscapedChar;
@@ -38,86 +37,6 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
     /* Mutators
     /**********************************************************
      */
-
-    // // // JSON-parsing features
-
-    @Override
-    public JsonFactoryBuilder enable(JsonReadFeature f) {
-        _legacyEnable(f.mappedFeature());
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder enable(JsonReadFeature first, JsonReadFeature... other) {
-        _legacyEnable(first.mappedFeature());
-        enable(first);
-        for (JsonReadFeature f : other) {
-            _legacyEnable(f.mappedFeature());
-        }
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder disable(JsonReadFeature f) {
-        _legacyDisable(f.mappedFeature());
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder disable(JsonReadFeature first, JsonReadFeature... other) {
-        _legacyDisable(first.mappedFeature());
-        for (JsonReadFeature f : other) {
-            _legacyEnable(f.mappedFeature());
-        }
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder configure(JsonReadFeature f, boolean state) {
-        return state ? enable(f) : disable(f);
-    }
-
-    // // // JSON-generating features
-
-    @Override
-    public JsonFactoryBuilder enable(JsonWriteFeature f) {
-        JsonGenerator.Feature old = f.mappedFeature();
-        if (old != null) {
-            _legacyEnable(old);
-        }
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder enable(JsonWriteFeature first, JsonWriteFeature... other) {
-        _legacyEnable(first.mappedFeature());
-        for (JsonWriteFeature f : other) {
-            _legacyEnable(f.mappedFeature());
-        }
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder disable(JsonWriteFeature f) {
-        _legacyDisable(f.mappedFeature());
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder disable(JsonWriteFeature first, JsonWriteFeature... other) {
-        _legacyDisable(first.mappedFeature());
-        for (JsonWriteFeature f : other) {
-            _legacyDisable(f.mappedFeature());
-        }
-        return this;
-    }
-
-    @Override
-    public JsonFactoryBuilder configure(JsonWriteFeature f, boolean state) {
-        return state ? enable(f) : disable(f);
-    }
-
-    // // // JSON-specific helper objects, settings
 
     // // // Accessors for JSON-specific settings
 

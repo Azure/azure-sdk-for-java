@@ -71,16 +71,6 @@ public class JsonWriteContext extends JsonStreamContext {
         _index = -1;
     }
 
-    /* @since 2.10 */
-    protected JsonWriteContext(int type, JsonWriteContext parent, Object currValue) {
-        super();
-        _type = type;
-        _parent = parent;
-        _nestingDepth = parent == null ? 0 : parent._nestingDepth + 1;
-        _index = -1;
-        _currentValue = currValue;
-    }
-
     /**
      * Internal method to allow instance reuse: DO NOT USE unless you absolutely
      * know what you are doing.
@@ -101,41 +91,6 @@ public class JsonWriteContext extends JsonStreamContext {
         _gotName = false;
         _currentValue = null;
         return this;
-    }
-
-    /**
-     * Internal method to allow instance reuse: DO NOT USE unless you absolutely
-     * know what you are doing.
-     * Clears up state, changes type to one specified, assigns "current value";
-     * resets current duplicate-detection state (if any).
-     * Parent link left as-is since it is {@code final}.
-     *<p>
-     * NOTE: Public since 2.12.
-     *
-     * @param type Type to assign to this context node
-     * @param currValue Current value to assign to this context node
-     *
-     * @return This context instance to allow call-chaining
-     *
-     * @since 2.10
-     */
-    public JsonWriteContext reset(int type, Object currValue) {
-        _type = type;
-        _index = -1;
-        _currentName = null;
-        _gotName = false;
-        _currentValue = currValue;
-        return this;
-    }
-
-    @Override
-    public Object getCurrentValue() {
-        return _currentValue;
-    }
-
-    @Override
-    public void setCurrentValue(Object v) {
-        _currentValue = v;
     }
 
     /*
@@ -184,7 +139,7 @@ public class JsonWriteContext extends JsonStreamContext {
 
     /**
      * Method that can be used to both clear the accumulated references
-     * (specifically value set with {@link #setCurrentValue(Object)})
+     * (specifically value set with {@code #setCurrentValue(Object)})
      * that should not be retained, and returns parent (as would
      * {@link #getParent()} do). Typically called when closing the active
      * context when encountering {@link JsonToken#END_ARRAY} or

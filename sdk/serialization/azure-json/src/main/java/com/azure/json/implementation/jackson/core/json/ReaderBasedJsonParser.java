@@ -153,11 +153,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
     /**********************************************************
      */
 
-    @Deprecated // since 2.8
-    protected char getNextChar(String eofMsg) throws IOException {
-        return getNextChar(eofMsg, null);
-    }
-
     protected char getNextChar(String eofMsg, JsonToken forToken) throws IOException {
         if (_inputPtr >= _inputEnd) {
             if (!_loadMore()) {
@@ -261,8 +256,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
      * after encountering end-of-input), returns null.
      * Method can be called for any event.
      *
-     * @throws IOException if there are general I/O or parse issues, including if the text is too large,
-     * see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if there are general I/O or parse issues, including if the text is too large
      */
     @Override
     public final String getText() throws IOException {
@@ -532,20 +526,9 @@ public class ReaderBasedJsonParser extends JsonParserBase {
 
     /*
     /**********************************************************
-    /* Public API, nextXxx() overrides
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
     /* Internal methods, number parsing
     /**********************************************************
      */
-
-    @Deprecated // since 2.14
-    protected final JsonToken _parseFloatThatStartsWithPeriod() throws IOException {
-        return _parseFloatThatStartsWithPeriod(false);
-    }
 
     protected final JsonToken _parseFloatThatStartsWithPeriod(final boolean neg) throws IOException {
         // [core#611]: allow optionally leading decimal point
@@ -2170,7 +2153,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                 break;
             }
         }
-        _reportError("Unrecognized token '%s': was expecting %s", sb, msg);
+        _reportError(sb, msg);
     }
 
     /*

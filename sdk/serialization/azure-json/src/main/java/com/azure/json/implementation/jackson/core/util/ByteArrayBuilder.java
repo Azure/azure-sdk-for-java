@@ -84,28 +84,6 @@ public final class ByteArrayBuilder extends OutputStream implements BufferRecycl
         }
     }
 
-    /**
-     * @return Number of bytes aggregated so far
-     *
-     * @since 2.9
-     */
-    public int size() {
-        return _pastLen + _currBlockPtr;
-    }
-
-    /**
-     * Clean up method to call to release all buffers this object may be
-     * using. After calling the method, no other accessors can be used (and
-     * attempt to do so may result in an exception).
-     */
-    public void release() {
-        reset();
-        if (_bufferRecycler != null && _currBlock != null) {
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_CONCAT_BUFFER, _currBlock);
-            _currBlock = null;
-        }
-    }
-
     public void append(int i) {
         if (_currBlockPtr >= _currBlock.length) {
             _allocMore();

@@ -5,7 +5,6 @@
  */
 package com.azure.json.implementation.jackson.core;
 
-import com.azure.json.implementation.jackson.core.exc.StreamWriteException;
 import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 
 import java.io.Closeable;
@@ -301,69 +300,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      */
     public abstract JsonStreamContext getOutputContext();
 
-    /**
-     * Helper method, usually equivalent to:
-     *<code>
-     *   getOutputContext().getCurrentValue();
-     *</code>
-     *<p>
-     * Note that "current value" is NOT populated (or used) by Streaming parser or generators;
-     * it is only used by higher-level data-binding functionality.
-     * The reason it is included here is that it can be stored and accessed hierarchically,
-     * and gets passed through data-binding.
-     *
-     * @return "Current value" associated with the current context (state) of this generator
-     *
-     * @since 2.13 (added as replacement for older {@link #getCurrentValue()}
-     */
-    public Object currentValue() {
-        JsonStreamContext ctxt = getOutputContext();
-        return (ctxt == null) ? null : ctxt.getCurrentValue();
-    }
-
-    /**
-     * Helper method, usually equivalent to:
-     *<code>
-     *   getOutputContext().setCurrentValue(v);
-     *</code>
-     *
-     * @param v Current value to assign for the current context of this generator
-     *
-     * @since 2.13 (added as replacement for older {@link #setCurrentValue}
-     */
-    public void assignCurrentValue(Object v) {
-        JsonStreamContext ctxt = getOutputContext();
-        if (ctxt != null) {
-            ctxt.setCurrentValue(v);
-        }
-    }
-
-    /**
-     * Alias for {@link #currentValue()}, to be deprecated in later
-     * Jackson 2.x versions (and removed from Jackson 3.0).
-     *
-     * @return Location of the last processed input unit (byte or character)
-     *
-     * @deprecated Since 2.17 use {@link #currentValue()} instead
-     */
-    @Deprecated
-    public Object getCurrentValue() {
-        return currentValue();
-    }
-
-    /**
-     * Alias for {@link #assignCurrentValue}, to be deprecated in later
-     * Jackson 2.x versions (and removed from Jackson 3.0).
-     *
-     * @param v Current value to assign for the current context of this generator
-     *
-     * @deprecated Since 2.17 use {@link #currentValue()} instead
-     */
-    @Deprecated
-    public void setCurrentValue(Object v) {
-        assignCurrentValue(v);
-    }
-
     /*
     /**********************************************************************
     /* Public API, Feature configuration
@@ -417,41 +353,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      */
     public abstract boolean isEnabled(Feature f);
 
-    /**
-     * Method for checking whether given feature is enabled.
-     * Check {@link Feature} for list of available features.
-     *
-     * @param f Feature to check
-     *
-     * @return True if specified feature is enabled; false if not
-     *
-     * @since 2.10
-     */
-    public boolean isEnabled(StreamWriteFeature f) {
-        return isEnabled(f.mappedFeature());
-    }
-
-    /**
-     * Bulk set method for (re)setting states of all standard {@link Feature}s
-     *
-     * @since 2.3
-     *
-     * @param values Bitmask that defines which {@link Feature}s are enabled
-     *    and which disabled
-     *
-     * @return This generator, to allow call chaining
-     *
-     * @deprecated Since 2.7, use {@code #overrideStdFeatures(int, int)} instead -- remove from 2.9
-     */
-    @Deprecated
-    public abstract JsonGenerator setFeatureMask(int values);
-
-    /*
-    /**********************************************************************
-    /* Public API, Schema configuration
-    /**********************************************************************
-     */
-
     /*
     /**********************************************************************
     /* Public API, other configuration
@@ -465,38 +366,32 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      * escaped for the data format (if -1).
      * To force escaping of all non-ASCII characters, for example,
      * this method would be called with value of 127.
-     *<p>
+     * <p>
      * Note that generators are NOT required to support setting of value
      * higher than 127, because there are other ways to affect quoting
      * (or lack thereof) of character codes between 0 and 127.
      * Not all generators support concept of escaping, either; if so,
      * calling this method will have no effect.
-     *<p>
+     * <p>
      * Default implementation does nothing; sub-classes need to redefine
      * it according to rules of supported data format.
      *
      * @param charCode Either -1 to indicate that no additional escaping
-     *   is to be done; or highest code point not to escape (meaning higher
-     *   ones will be), if positive value.
-     *
-     * @return This generator, to allow call chaining
+     * is to be done; or highest code point not to escape (meaning higher
+     * ones will be), if positive value.
      */
-    public JsonGenerator setHighestNonEscapedChar(int charCode) {
-        return this;
+    public void setHighestNonEscapedChar(int charCode) {
     }
 
     /**
      * Method for defining custom escapes factory uses for {@link JsonGenerator}s
      * it creates.
-     *<p>
+     * <p>
      * Default implementation does nothing and simply returns this instance.
      *
      * @param esc {@link CharacterEscapes} to configure this generator to use, if any; {@code null} if none
-     *
-     * @return This generator, to allow call chaining
      */
-    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) {
-        return this;
+    public void setCharacterEscapes(CharacterEscapes esc) {
     }
 
     /**
@@ -570,12 +465,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      *    issue at format layer
      */
     public abstract void writeFieldName(String name) throws IOException;
-
-    /*
-    /**********************************************************************
-    /* Public API, write methods, scalar arrays (2.8)
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************
@@ -829,14 +718,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
     @Override
     public abstract void flush() throws IOException;
 
-    /**
-     * Method that can be called to determine whether this generator
-     * is closed or not. If it is closed, no more output can be done.
-     *
-     * @return {@code True} if this generator instance has been closed
-     */
-    public abstract boolean isClosed();
-
     /*
     /**********************************************************************
     /* Closeable implementation
@@ -878,11 +759,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      * @throws JsonGenerationException constructed
      */
     protected void _reportError(String msg) throws JsonGenerationException {
-        throw (JsonGenerationException) _constructWriteException(msg);
-    }
-
-    // @since 2.17
-    protected StreamWriteException _constructWriteException(String msg) {
-        return new JsonGenerationException(msg, this);
+        throw new JsonGenerationException(msg, this);
     }
 }

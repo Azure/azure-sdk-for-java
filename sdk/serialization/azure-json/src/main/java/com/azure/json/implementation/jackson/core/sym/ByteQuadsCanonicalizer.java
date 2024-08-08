@@ -365,17 +365,6 @@ public final class ByteQuadsCanonicalizer {
      */
 
     /**
-     * @return Number of symbol entries contained by this canonicalizer instance
-     */
-    public int size() {
-        if (_tableInfo != null) { // root table
-            return _tableInfo.get().count;
-        }
-        // nope, child table
-        return _count;
-    }
-
-    /**
      * Method called to check to quickly see if a child symbol table
      * may have gotten additional entries. Used for checking to see
      * if a child table should be merged into shared table.

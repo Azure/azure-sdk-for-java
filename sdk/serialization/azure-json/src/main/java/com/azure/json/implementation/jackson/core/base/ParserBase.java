@@ -8,7 +8,6 @@ import com.azure.json.implementation.jackson.core.JsonParser;
 import com.azure.json.implementation.jackson.core.JsonProcessingException;
 import com.azure.json.implementation.jackson.core.JsonToken;
 import com.azure.json.implementation.jackson.core.StreamReadConstraints;
-import com.azure.json.implementation.jackson.core.StreamReadFeature;
 import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
 import com.azure.json.implementation.jackson.core.io.ContentReference;
 import com.azure.json.implementation.jackson.core.io.IOContext;
@@ -276,13 +275,8 @@ public abstract class ParserBase extends ParserMinimalBase {
         _parsingContext = JsonReadContext.createRootContext();
     }
 
-    /**
-     * Method that can be called to get the name associated with
-     * the current event.
-     */
-    @Deprecated // since 2.17
     @Override
-    public String getCurrentName() {
+    public String currentName() {
         // [JACKSON-395]: start markers require information from parent
         if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
             JsonReadContext parent = _parsingContext.getParent();
@@ -311,37 +305,8 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     @Override
-    public boolean isClosed() {
-        return _closed;
-    }
-
-    @Override
     public JsonReadContext getParsingContext() {
         return _parsingContext;
-    }
-
-    /**
-     * Method that return the <b>starting</b> location of the current
-     * token; that is, position of the first character from input
-     * that starts the current token.
-     */
-    @Override
-    @Deprecated // since 2.17
-    public JsonLocation getTokenLocation() {
-        return new JsonLocation(_contentReference(), -1L, getTokenCharacterOffset(), // bytes, chars
-            getTokenLineNr(), getTokenColumnNr());
-    }
-
-    /**
-     * Method that returns location of the last processed character;
-     * usually for error reporting purposes
-     */
-    @Override
-    @Deprecated // since 2.17
-    public JsonLocation getCurrentLocation() {
-        int col = _inputPtr - _currInputRowStart + 1; // 1-based
-        return new JsonLocation(_contentReference(), -1L, _currInputProcessed + _inputPtr, // bytes, chars
-            _currInputRow, col);
     }
 
     /*
@@ -362,26 +327,6 @@ public abstract class ParserBase extends ParserMinimalBase {
             _binaryValue = builder.toByteArray();
         }
         return _binaryValue;
-    }
-
-    /*
-    /**********************************************************
-    /* Public low-level accessors
-    /**********************************************************
-     */
-
-    public long getTokenCharacterOffset() {
-        return _tokenInputTotal;
-    }
-
-    public int getTokenLineNr() {
-        return _tokenInputRow;
-    }
-
-    public int getTokenColumnNr() {
-        // note: value of -1 means "not available"; otherwise convert from 0-based to 1-based
-        int col = _tokenInputCol;
-        return (col < 0) ? col : (col + 1);
     }
 
     /*
@@ -890,8 +835,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         }
         try {
             // NOTE! Length of number string has been validated earlier
-            _numberBigInt
-                = NumberInput.parseBigInteger(_numberString, isEnabled(StreamReadFeature.USE_FAST_BIG_NUMBER_PARSER));
+            _numberBigInt = NumberInput.parseBigInteger(_numberString);
         } catch (NumberFormatException nex) {
             _wrapError("Malformed numeric value (" + _longNumberDesc(_numberString) + ")", nex);
         }
@@ -915,8 +859,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         }
         try {
             // NOTE! Length of number string has been validated earlier
-            _numberBigDecimal
-                = NumberInput.parseBigDecimal(_numberString, isEnabled(StreamReadFeature.USE_FAST_BIG_NUMBER_PARSER));
+            _numberBigDecimal = NumberInput.parseBigDecimal(_numberString);
         } catch (NumberFormatException nex) {
             _wrapError("Malformed numeric value (" + _longNumberDesc(_numberString) + ")", nex);
         }
@@ -935,8 +878,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected double _getNumberDouble() throws JsonParseException {
         if (_numberString != null) {
             try {
-                _numberDouble
-                    = NumberInput.parseDouble(_numberString, isEnabled(StreamReadFeature.USE_FAST_DOUBLE_PARSER));
+                _numberDouble = NumberInput.parseDouble(_numberString);
             } catch (NumberFormatException nex) {
                 _wrapError("Malformed numeric value (" + _longNumberDesc(_numberString) + ")", nex);
             }
@@ -956,8 +898,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected float _getNumberFloat() throws JsonParseException {
         if (_numberString != null) {
             try {
-                _numberFloat
-                    = NumberInput.parseFloat(_numberString, isEnabled(StreamReadFeature.USE_FAST_DOUBLE_PARSER));
+                _numberFloat = NumberInput.parseFloat(_numberString);
             } catch (NumberFormatException nex) {
                 _wrapError("Malformed numeric value (" + _longNumberDesc(_numberString) + ")", nex);
             }
@@ -1164,19 +1105,6 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
 
     /**
-     * @return Source reference
-     * @since 2.9
-     * @deprecated Since 2.13, use {@link #_contentReference()} instead.
-     */
-    @Deprecated
-    protected Object _getSourceReference() {
-        if (JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
-            return _ioContext.contentReference().getRawContent();
-        }
-        return null;
-    }
-
-    /**
      * Helper method used to encapsulate logic of including (or not) of
      * "content reference" when constructing {@link JsonLocation} instances.
      *
@@ -1238,18 +1166,6 @@ public abstract class ParserBase extends ParserMinimalBase {
     /* is not mandatory in 2.8 or above.
     /**********************************************************
      */
-
-    @Deprecated // since 2.8
-    protected void loadMoreGuaranteed() throws IOException {
-        if (!loadMore()) {
-            _reportInvalidEOF();
-        }
-    }
-
-    @Deprecated // since 2.8
-    protected boolean loadMore() {
-        return false;
-    }
 
     // Can't declare as deprecated, for now, but shouldn't be needed
     protected void _finishString() throws IOException {

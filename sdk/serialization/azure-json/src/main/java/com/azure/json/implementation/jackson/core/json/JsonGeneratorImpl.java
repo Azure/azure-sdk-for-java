@@ -152,29 +152,19 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
         return this;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
-        super._checkStdFeatureChanges(newFeatureFlags, changedFeatures);
-        _cfgUnqNames = !Feature.QUOTE_FIELD_NAMES.enabledIn(newFeatureFlags);
-        _cfgWriteHexUppercase = Feature.WRITE_HEX_UPPER_CASE.enabledIn(newFeatureFlags);
-    }
-
-    @Override
-    public JsonGenerator setHighestNonEscapedChar(int charCode) {
+    public void setHighestNonEscapedChar(int charCode) {
         _maximumNonEscapedChar = Math.max(charCode, 0);
-        return this;
     }
 
     @Override
-    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) {
+    public void setCharacterEscapes(CharacterEscapes esc) {
         _characterEscapes = esc;
         if (esc == null) { // revert to standard escapes
             _outputEscapes = sOutputEscapes;
         } else {
             _outputEscapes = esc.getEscapeCodesForAscii();
         }
-        return this;
     }
 
     protected void _reportCantWriteValueExpectName(String typeMsg) throws IOException {

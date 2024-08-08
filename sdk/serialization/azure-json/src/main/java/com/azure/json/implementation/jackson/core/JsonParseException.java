@@ -17,14 +17,9 @@ import com.azure.json.implementation.jackson.core.util.RequestPayload;
 public class JsonParseException extends StreamReadException {
     private static final long serialVersionUID = 2L; // 2.7
 
-    // @since 2.15
-    public JsonParseException(String msg) {
-        this(null, msg, null, null);
-    }
-
     /**
      * Constructor that uses current parsing location as location, and
-     * sets processor (accessible via {@link #getProcessor()}) to
+     * sets processor (accessible via {@code #getProcessor()}) to
      * specified parser.
      *
      * @param p Parser in use when encountering issue reported
@@ -52,16 +47,6 @@ public class JsonParseException extends StreamReadException {
         super(p, msg, loc, rootCause);
     }
 
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc) {
-        this(null, msg, loc, null);
-    }
-
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc, Throwable rootCause) {
-        this(null, msg, loc, rootCause);
-    }
-
     /**
      * Fluent method that may be used to assign payload to this exception,
      * to let recipient access it for diagnostics purposes.
@@ -78,24 +63,6 @@ public class JsonParseException extends StreamReadException {
     public JsonParseException withRequestPayload(RequestPayload payload) {
         _requestPayload = payload;
         return this;
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public JsonParser getProcessor() {
-        return super.getProcessor();
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public RequestPayload getRequestPayload() {
-        return super.getRequestPayload();
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public String getRequestPayloadAsString() {
-        return super.getRequestPayloadAsString();
     }
 
     // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)

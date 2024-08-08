@@ -35,11 +35,6 @@ public final class JsonReadContext extends JsonStreamContext {
 
     private String _currentName;
 
-    /**
-     * @since 2.5
-     */
-    private Object _currentValue;
-
     private int _lineNr;
     private int _columnNr;
 
@@ -68,17 +63,6 @@ public final class JsonReadContext extends JsonStreamContext {
         _nestingDepth = nestingDepth;
     }
 
-    @Deprecated // since 2.15
-    public JsonReadContext(JsonReadContext parent, int type, int lineNr, int colNr) {
-        super();
-        _parent = parent;
-        _type = type;
-        _lineNr = lineNr;
-        _columnNr = colNr;
-        _index = -1;
-        _nestingDepth = parent == null ? 0 : parent._nestingDepth + 1;
-    }
-
     /**
      * Internal method to allow instance reuse: DO NOT USE unless you absolutely
      * know what you are doing.
@@ -98,17 +82,6 @@ public final class JsonReadContext extends JsonStreamContext {
         _lineNr = lineNr;
         _columnNr = colNr;
         _currentName = null;
-        _currentValue = null;
-    }
-
-    @Override
-    public Object getCurrentValue() {
-        return _currentValue;
-    }
-
-    @Override
-    public void setCurrentValue(Object v) {
-        _currentValue = v;
     }
 
     /*
@@ -164,12 +137,6 @@ public final class JsonReadContext extends JsonStreamContext {
         return new JsonLocation(srcRef, totalChars, _lineNr, _columnNr);
     }
 
-    @Override
-    @Deprecated // since 2.13
-    public JsonLocation getStartLocation(Object rawSrc) {
-        return startLocation(ContentReference.rawReference(rawSrc));
-    }
-
     /*
     /**********************************************************
     /* Extended API
@@ -178,7 +145,7 @@ public final class JsonReadContext extends JsonStreamContext {
 
     /**
      * Method that can be used to both clear the accumulated references
-     * (specifically value set with {@link #setCurrentValue(Object)})
+     * (specifically value set with {@code #setCurrentValue(Object)})
      * that should not be retained, and returns parent (as would
      * {@link #getParent()} do). Typically called when closing the active
      * context when encountering {@link JsonToken#END_ARRAY} or
@@ -189,7 +156,6 @@ public final class JsonReadContext extends JsonStreamContext {
      * @since 2.7
      */
     public JsonReadContext clearAndGetParent() {
-        _currentValue = null;
         // could also clear the current name, but seems cheap enough to leave?
         return _parent;
     }

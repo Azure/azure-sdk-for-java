@@ -6,7 +6,6 @@
 
 package com.azure.json.implementation.jackson.core;
 
-import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.ContentReference;
 
 /**
@@ -127,26 +126,6 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * @return Type description String
-     *
-     * @deprecated Since 2.8 use {@link #typeDesc} instead
-     */
-    @Deprecated // since 2.8
-    public final String getTypeDesc() {
-        switch (_type) {
-            case TYPE_ROOT:
-                return "ROOT";
-
-            case TYPE_ARRAY:
-                return "ARRAY";
-
-            case TYPE_OBJECT:
-                return "OBJECT";
-        }
-        return "?";
-    }
-
-    /**
      * Method for accessing simple type description of current context;
      * either ROOT (for root-level values), OBJECT (for field names and
      * values of JSON Objects) or ARRAY (for values of JSON Arrays)
@@ -170,13 +149,6 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * @return Index of the currently processed entry, if any
-     */
-    public final int getCurrentIndex() {
-        return Math.max(_index, 0);
-    }
-
-    /**
      * Method for accessing name associated with the current location.
      * Non-null for <code>FIELD_NAME</code> and value events that directly
      * follow field names; null for root level and array values.
@@ -184,36 +156,6 @@ public abstract class JsonStreamContext {
      * @return Current field name within context, if any; {@code null} if none
      */
     public abstract String getCurrentName();
-
-    /**
-     * Method for accessing currently active value being used by data-binding
-     * (as the source of streaming data to write, or destination of data being
-     * read), at this level in hierarchy.
-     *<p>
-     * Note that "current value" is NOT populated (or used) by Streaming parser or generator;
-     * it is only used by higher-level data-binding functionality.
-     * The reason it is included here is that it can be stored and accessed hierarchically,
-     * and gets passed through data-binding.
-     *
-     * @return Currently active value, if one has been assigned.
-     *
-     * @since 2.5
-     */
-    public Object getCurrentValue() {
-        return null;
-    }
-
-    /**
-     * Method to call to pass value to be returned via {@link #getCurrentValue}; typically
-     * called indirectly through {@code JsonParser#setCurrentValue}
-     * or {@link JsonGenerator#setCurrentValue}).
-     *
-     * @param v Current value to assign to this context
-     *
-     * @since 2.5
-     */
-    public void setCurrentValue(Object v) {
-    }
 
     /**
      * Optional method that may be used to access starting location of this context:
@@ -231,57 +173,5 @@ public abstract class JsonStreamContext {
      */
     public JsonLocation startLocation(ContentReference srcRef) {
         return JsonLocation.NA;
-    }
-
-    /**
-     * @param srcRef Source reference needed to construct location instance
-     * @return Location pointing to the point where the context
-     *   start marker was found (or written); never {@code null}.
-     * @since 2.9
-     * @deprecated Since 2.13 use {@link #startLocation} instead
-     */
-    @Deprecated
-    public JsonLocation getStartLocation(Object srcRef) {
-        return JsonLocation.NA;
-    }
-
-    /**
-     * Overridden to provide developer readable "JsonPath" representation
-     * of the context.
-     *
-     * @return Simple developer-readable description this context layer
-     *   (note: NOT constructed with parents, unlike {@link #pathAsPointer})
-     *
-     * @since 2.9
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(64);
-        switch (_type) {
-            case TYPE_ROOT:
-                sb.append("/");
-                break;
-
-            case TYPE_ARRAY:
-                sb.append('[');
-                sb.append(getCurrentIndex());
-                sb.append(']');
-                break;
-
-            case TYPE_OBJECT:
-            default:
-                sb.append('{');
-                String currentName = getCurrentName();
-                if (currentName != null) {
-                    sb.append('"');
-                    CharTypes.appendQuoted(sb, currentName);
-                    sb.append('"');
-                } else {
-                    sb.append('?');
-                }
-                sb.append('}');
-                break;
-        }
-        return sb.toString();
     }
 }

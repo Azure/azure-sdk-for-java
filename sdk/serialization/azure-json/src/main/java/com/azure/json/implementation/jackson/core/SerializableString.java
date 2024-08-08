@@ -15,8 +15,6 @@ package com.azure.json.implementation.jackson.core;
  *<p>
  * Note that "quoted" in methods means quoting of 'special' characters using
  * JSON backlash notation (and not use of actual double quotes).
- *
- * @see com.fasterxml.jackson.core.io.SerializedString
  */
 public interface SerializableString {
     /**

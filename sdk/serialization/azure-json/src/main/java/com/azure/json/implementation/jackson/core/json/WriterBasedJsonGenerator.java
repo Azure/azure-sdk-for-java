@@ -92,11 +92,6 @@ public class WriterBasedJsonGenerator extends JsonGeneratorImpl {
     /**********************************************************
      */
 
-    @Deprecated // since 2.10
-    public WriterBasedJsonGenerator(IOContext ctxt, int features, Writer w) {
-        this(ctxt, features, w, JsonFactory.DEFAULT_QUOTE_CHAR);
-    }
-
     // @since 2.10
     public WriterBasedJsonGenerator(IOContext ctxt, int features, Writer w, char quoteChar) {
         super(ctxt, features);

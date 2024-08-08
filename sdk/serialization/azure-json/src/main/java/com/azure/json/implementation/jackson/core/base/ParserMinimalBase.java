@@ -1,16 +1,19 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.base;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.Base64Variant;
+import com.azure.json.implementation.jackson.core.JsonLocation;
+import com.azure.json.implementation.jackson.core.JsonParseException;
+import com.azure.json.implementation.jackson.core.JsonParser;
+import com.azure.json.implementation.jackson.core.JsonStreamContext;
+import com.azure.json.implementation.jackson.core.JsonToken;
 import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
 import com.azure.json.implementation.jackson.core.io.JsonEOFException;
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
-import com.azure.json.implementation.jackson.core.util.VersionUtil;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Intermediate base class used by all Jackson {@link JsonParser}
@@ -108,22 +111,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     /*
     /**********************************************************
-    /* Misc other constants
-    /**********************************************************
-     */
-
-    /**
-     * Maximum number of characters to include in token reported
-     * as part of error messages.
-     *
-     * @since 2.9
-     * @deprecated Since 2.16. {@link ErrorReportConfiguration#getMaxErrorTokenLength()} will be used instead.
-     */
-    @Deprecated
-    protected final static int MAX_ERROR_TOKEN_LENGTH = 256;
-
-    /*
-    /**********************************************************
     /* Minimal generally useful state
     /**********************************************************
      */
@@ -150,19 +137,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     /*
     /**********************************************************
-    /* Configuration overrides if any
-    /**********************************************************
-     */
-
-    // from base class:
-
-    //public void enableFeature(Feature f)
-    //public void disableFeature(Feature f)
-    //public void setFeature(Feature f, boolean state)
-    //public boolean isFeatureEnabled(Feature f)
-
-    /*
-    /**********************************************************
     /* JsonParser impl
     /**********************************************************
      */
@@ -173,46 +147,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     @Override
     public JsonToken currentToken() {
         return _currToken;
-    }
-
-    @Override
-    public JsonToken getCurrentToken() {
-        return _currToken;
-    }
-
-    @Override
-    public JsonParser skipChildren() throws IOException {
-        if (_currToken != JsonToken.START_OBJECT && _currToken != JsonToken.START_ARRAY) {
-            return this;
-        }
-        int open = 1;
-
-        // Since proper matching of start/end markers is handled
-        // by nextToken(), we'll just count nesting levels here
-        while (true) {
-            JsonToken t = nextToken();
-            if (t == null) {
-                _handleEOF();
-                /* given constraints, above should never return;
-                 * however, FindBugs doesn't know about it and
-                 * complains... so let's add dummy break here
-                 */
-                return this;
-            }
-            if (t.isStructStart()) {
-                ++open;
-            } else if (t.isStructEnd()) {
-                if (--open == 0) {
-                    return this;
-                }
-                // 23-May-2018, tatu: [core#463] Need to consider non-blocking case...
-            } else if (t == JsonToken.NOT_AVAILABLE) {
-                // Nothing much we can do except to either return `null` (which seems wrong),
-                // or, what we actually do, signal error
-                _reportError("Not enough content available for `skipChildren()`: non-blocking parser? (%s)",
-                    getClass().getName());
-            }
-        }
     }
 
     /**
@@ -227,28 +161,11 @@ public abstract class ParserMinimalBase extends JsonParser {
     //public JsonToken getCurrentToken()
     //public boolean hasCurrentToken()
 
-    @Deprecated // since 2.17 -- still need to implement
-    @Override
-    public abstract String getCurrentName() throws IOException;
-
     @Override
     public abstract void close() throws IOException;
 
     @Override
-    public abstract boolean isClosed();
-
-    @Override
     public abstract JsonStreamContext getParsingContext();
-
-    //    public abstract JsonLocation getTokenLocation();
-
-    //   public abstract JsonLocation getCurrentLocation();
-
-    /*
-    /**********************************************************
-    /* Public API, token state overrides
-    /**********************************************************
-     */
 
     /*
     /**********************************************************
@@ -318,12 +235,6 @@ public abstract class ParserMinimalBase extends JsonParser {
             _reportError(e.getMessage());
         }
     }
-
-    /*
-    /**********************************************************
-    /* Coercion helper methods (overridable)
-    /**********************************************************
-     */
 
     /*
     /**********************************************************
@@ -472,11 +383,6 @@ public abstract class ParserMinimalBase extends JsonParser {
         throw _constructReadException(msg, _currentLocationMinusOne());
     }
 
-    @Deprecated // @since 2.14
-    protected void reportUnexpectedNumberChar(int ch, String comment) throws JsonParseException {
-        _reportUnexpectedNumberChar(ch, comment);
-    }
-
     protected void _throwInvalidSpace(int i) throws JsonParseException {
         char c = (char) i;
         String msg = "Illegal character (" + _getCharDesc(c)
@@ -528,29 +434,15 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     // @since 2.9
-    protected final void _reportError(String msg, Object arg1, Object arg2) throws JsonParseException {
-        throw _constructReadException(msg, arg1, arg2);
+    protected final void _reportError(Object arg1, Object arg2) throws JsonParseException {
+        throw _constructReadException("Unrecognized token '%s': was expecting %s", arg1, arg2);
     }
 
     protected final void _throwInternal() {
-        VersionUtil.throwInternal();
+        throw new RuntimeException("Internal error: this code path should never get executed");
     }
 
     protected final void _wrapError(String msg, Throwable t) throws JsonParseException {
         throw _constructReadException(msg, t);
-    }
-
-    @Deprecated // since 2.11
-    protected static byte[] _asciiBytes(String str) {
-        byte[] b = new byte[str.length()];
-        for (int i = 0, len = str.length(); i < len; ++i) {
-            b[i] = (byte) str.charAt(i);
-        }
-        return b;
-    }
-
-    @Deprecated // since 2.11
-    protected static String _ascii(byte[] b) {
-        return new String(b, StandardCharsets.US_ASCII);
     }
 }

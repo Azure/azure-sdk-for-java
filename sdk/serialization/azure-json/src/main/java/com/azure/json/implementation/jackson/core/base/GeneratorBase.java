@@ -86,11 +86,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     /**********************************************************
      */
 
-    @Deprecated // since 2.16
-    protected GeneratorBase(int features) {
-        this(features, (IOContext) null);
-    }
-
     // @since 2.16
     @SuppressWarnings("deprecation")
     protected GeneratorBase(int features, IOContext ioContext) {
@@ -99,36 +94,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         _ioContext = ioContext;
         _writeContext = JsonWriteContext.createRootContext();
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
-    }
-
-    // @since 2.5
-    @Deprecated // since 2.16
-    protected GeneratorBase(int features, JsonWriteContext ctxt) {
-        this(features, null, ctxt);
-    }
-
-    // @since 2.16
-    @SuppressWarnings("deprecation")
-    protected GeneratorBase(int features, IOContext ioContext, JsonWriteContext jsonWriteContext) {
-        super();
-        _features = features;
-        _ioContext = ioContext;
-        _writeContext = jsonWriteContext;
-        _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
-    }
-
-    // Overridden from JsonGenerator for direct context access:
-    @Override
-    public Object currentValue() {
-        return _writeContext.getCurrentValue();
-    }
-
-    @Override
-    // Overridden from JsonGenerator for direct context access:
-    public void assignCurrentValue(Object v) {
-        if (_writeContext != null) {
-            _writeContext.setCurrentValue(v);
-        }
     }
 
     /*
@@ -175,41 +140,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         return this;
     }
 
-    @Override
-    @Deprecated
-    public JsonGenerator setFeatureMask(int newMask) {
-        int changed = newMask ^ _features;
-        _features = newMask;
-        if (changed != 0) {
-            _checkStdFeatureChanges(newMask, changed);
-        }
-        return this;
-    }
-
-    /**
-     * Helper method called to verify changes to standard features.
-     *
-     * @param newFeatureFlags Bitflag of standard features after they were changed
-     * @param changedFeatures Bitflag of standard features for which setting
-     *    did change
-     *
-     * @since 2.7
-     */
-    @SuppressWarnings("deprecation")
-    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
-        if ((changedFeatures & DERIVED_FEATURES_MASK) == 0) {
-            return;
-        }
-        _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(newFeatureFlags);
-        if (Feature.ESCAPE_NON_ASCII.enabledIn(changedFeatures)) {
-            if (Feature.ESCAPE_NON_ASCII.enabledIn(newFeatureFlags)) {
-                setHighestNonEscapedChar(127);
-            } else {
-                setHighestNonEscapedChar(0);
-            }
-        }
-    }
-
     /*
     /**********************************************************
     /* Public API, accessors
@@ -234,30 +164,6 @@ public abstract class GeneratorBase extends JsonGenerator {
 
     /*
     /**********************************************************
-    /* Public API, write methods, primitive
-    /**********************************************************
-     */
-
-    // Not implemented at this level, added as placeholders
-
-    /*
-    public abstract void writeNumber(int i)
-    public abstract void writeNumber(long l)
-    public abstract void writeNumber(double d)
-    public abstract void writeNumber(float f)
-    public abstract void writeNumber(BigDecimal dec)
-    public abstract void writeBoolean(boolean state)
-    public abstract void writeNull()
-    */
-
-    /*
-    /**********************************************************
-    /* Public API, write methods, POJOs, trees
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
     /* Public API, low-level output handling
     /**********************************************************
      */
@@ -273,11 +179,6 @@ public abstract class GeneratorBase extends JsonGenerator {
             }
             _closed = true;
         }
-    }
-
-    @Override
-    public boolean isClosed() {
-        return _closed;
     }
 
     /*

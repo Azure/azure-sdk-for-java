@@ -2,7 +2,6 @@
 package com.azure.json.implementation.jackson.core.util;
 
 import java.io.*;
-import java.math.BigDecimal;
 import java.util.*;
 
 import com.azure.json.implementation.jackson.core.JsonParseException;
@@ -125,29 +124,6 @@ public class TextBuffer {
         _allocator = allocator;
     }
 
-    // @since 2.10
-    protected TextBuffer(BufferRecycler allocator, char[] initialSegment) {
-        this(allocator);
-        _currentSegment = initialSegment;
-        _currentSize = initialSegment.length;
-        _inputStart = -1;
-    }
-
-    /**
-     * Factory method for constructing an instance with no allocator, and
-     * with initial full segment.
-     *
-     * @param initialSegment Initial, full segment to use for creating buffer (buffer
-     *   {@link #size()} would return length of {@code initialSegment})
-     *
-     * @return TextBuffer constructed
-     *
-     * @since 2.10
-     */
-    public static TextBuffer fromInitial(char[] initialSegment) {
-        return new TextBuffer(null, initialSegment);
-    }
-
     /**
      * Method called to indicate that the underlying buffers should now
      * be recycled if they haven't yet been recycled. Although caller
@@ -216,7 +192,7 @@ public class TextBuffer {
      * @param buf Buffer that contains new contents
      * @param offset Offset of the first content character in {@code buf}
      * @param len Length of content in {@code buf}
-     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the buffer has grown too large
      */
     public void resetWithCopy(char[] buf, int offset, int len) throws IOException {
         _inputBuffer = null;
@@ -238,7 +214,7 @@ public class TextBuffer {
 
     /**
      * @param value to replace existing buffer
-     * @throws IOException if the value is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the value is too large
      */
     public void resetWithString(String value) throws IOException {
         _inputBuffer = null;
@@ -285,13 +261,6 @@ public class TextBuffer {
      */
 
     /**
-     * @since 2.17
-     */
-    public BufferRecycler bufferRecycler() {
-        return _allocator;
-    }
-
-    /**
      * @return Number of characters currently stored in this buffer
      */
     public int size() {
@@ -322,7 +291,7 @@ public class TextBuffer {
      * fashion or not: this typically require allocation of the result buffer.
      *
      * @return Aggregated {@code char[]} that contains all buffered content
-     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the text is too large
      */
     public char[] getTextBuffer() throws IOException {
         // Are we just using shared input buffer?
@@ -353,7 +322,7 @@ public class TextBuffer {
      * fashion or not: this typically require construction of the result String.
      *
      * @return Aggregated buffered contents as a {@link java.lang.String}
-     * @throws IOException if the contents are too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the contents are too large
      */
     public String contentsAsString() throws IOException {
         if (_resultString == null) {
@@ -408,7 +377,7 @@ public class TextBuffer {
 
     /**
      * @return char array
-     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the text is too large
      */
     public char[] contentsAsArray() throws IOException {
         char[] result = _resultArray;
@@ -416,93 +385,6 @@ public class TextBuffer {
             _resultArray = result = resultArray();
         }
         return result;
-    }
-
-    /**
-     * Convenience method for converting contents of the buffer
-     * into a Double value.
-     *
-     * @param useFastParser whether to use {@code FastDoubleParser}
-     * @return Buffered text value parsed as a {@link Double}, if possible
-     *
-     * @throws NumberFormatException if contents are not a valid Java number
-     *
-     * @since 2.14
-     */
-    public double contentsAsDouble(final boolean useFastParser) throws NumberFormatException {
-        try {
-            return NumberInput.parseDouble(contentsAsString(), useFastParser);
-        } catch (IOException e) {
-            // JsonParseException is used to denote a string that is too long
-            throw new NumberFormatException(e.getMessage());
-        }
-    }
-
-    /**
-     * Convenience method for converting contents of the buffer
-     * into a Double value.
-     *
-     * @return Buffered text value parsed as a {@link Double}, if possible
-     *
-     * @throws NumberFormatException if contents are not a valid Java number
-     *
-     * @deprecated use {@link #contentsAsDouble(boolean)}
-     */
-    @Deprecated // @since 2.14
-    public double contentsAsDouble() throws NumberFormatException {
-        return contentsAsDouble(false);
-    }
-
-    /**
-     * Convenience method for converting contents of the buffer
-     * into a Float value.
-     *
-     * @return Buffered text value parsed as a {@link Float}, if possible
-     *
-     * @throws NumberFormatException if contents are not a valid Java number
-     * @deprecated use {@link #contentsAsFloat(boolean)}
-     */
-    @Deprecated // @since 2.14
-    public float contentsAsFloat() throws NumberFormatException {
-        return contentsAsFloat(false);
-    }
-
-    /**
-     * Convenience method for converting contents of the buffer
-     * into a Float value.
-     *
-     * @param useFastParser whether to use {@code FastDoubleParser}
-     * @return Buffered text value parsed as a {@link Float}, if possible
-     *
-     * @throws NumberFormatException if contents are not a valid Java number
-     * @since 2.14
-     */
-    public float contentsAsFloat(final boolean useFastParser) throws NumberFormatException {
-        try {
-            return NumberInput.parseFloat(contentsAsString(), useFastParser);
-        } catch (IOException e) {
-            // JsonParseException is used to denote a string that is too long
-            throw new NumberFormatException(e.getMessage());
-        }
-    }
-
-    /**
-     * @return Buffered text value parsed as a {@link BigDecimal}, if possible
-     * @throws NumberFormatException if contents are not a valid Java number
-     *
-     * @deprecated Since 2.15 just access String contents if necessary, call
-     *   {@link NumberInput#parseBigDecimal(String, boolean)} (or other overloads)
-     *   directly instead
-     */
-    @Deprecated
-    public BigDecimal contentsAsDecimal() throws NumberFormatException {
-        // Was more optimized earlier, removing special handling due to deprecation
-        try {
-            return NumberInput.parseBigDecimal(contentsAsArray());
-        } catch (IOException e) {
-            // JsonParseException is used to denote a string that is too long
-            throw new NumberFormatException(e.getMessage());
-        }
     }
 
     /**
@@ -516,7 +398,7 @@ public class TextBuffer {
      * @param neg Whether contents start with a minus sign
      *
      * @return Buffered text value parsed as an {@code int} using
-     *   {@link NumberInput#parseInt(String)} method (which does NOT validate input)
+     *   {@code NumberInput#parseInt(String)} method (which does NOT validate input)
      *
      * @since 2.9
      */
@@ -544,7 +426,7 @@ public class TextBuffer {
      * @param neg Whether contents start with a minus sign
      *
      * @return Buffered text value parsed as an {@code long} using
-     *   {@link NumberInput#parseLong(String)} method (which does NOT validate input)
+     *   {@code NumberInput#parseLong(String)} method (which does NOT validate input)
      *
      * @since 2.9
      */
@@ -568,32 +450,10 @@ public class TextBuffer {
      */
 
     /**
-     * @param c char to append
-     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
-     */
-    public void append(char c) throws IOException {
-        // Using shared buffer so far?
-        if (_inputStart >= 0) {
-            unshare(16);
-        }
-        _resultString = null;
-        _resultArray = null;
-
-        // Room in current segment?
-        char[] curr = _currentSegment;
-        if (_currentSize >= curr.length) {
-            validateAppend(1);
-            expand();
-            curr = _currentSegment;
-        }
-        curr[_currentSize++] = c;
-    }
-
-    /**
      * @param c char array to append
      * @param start the start index within the array (from which we read chars to append)
      * @param len number of chars to take from the array
-     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the buffer has grown too large
      */
     public void append(char[] c, int start, int len) throws IOException {
         // Can't append to shared buf (sanity check)
@@ -629,49 +489,6 @@ public class TextBuffer {
             System.arraycopy(c, start, _currentSegment, 0, amount);
             _currentSize += amount;
             start += amount;
-            len -= amount;
-        } while (len > 0);
-    }
-
-    /**
-     * @param str string to append
-     * @param offset the start index within the string (from which we read chars to append)
-     * @param len number of chars to take from the string
-     * @throws IOException if the buffer has grown too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
-     */
-    public void append(String str, int offset, int len) throws IOException {
-        // Can't append to shared buf (sanity check)
-        if (_inputStart >= 0) {
-            unshare(len);
-        }
-        _resultString = null;
-        _resultArray = null;
-
-        // Room in current segment?
-        char[] curr = _currentSegment;
-        int max = curr.length - _currentSize;
-        if (max >= len) {
-            str.getChars(offset, offset + len, curr, _currentSize);
-            _currentSize += len;
-            return;
-        }
-
-        validateAppend(len);
-
-        // No room for all, need to copy part(s):
-        if (max > 0) {
-            str.getChars(offset, offset + max, curr, _currentSize);
-            len -= max;
-            offset += max;
-        }
-        // And then allocate new segment; we are guaranteed to now
-        // have enough room in segment.
-        do {
-            expand();
-            int amount = Math.min(_currentSegment.length, len);
-            str.getChars(offset, offset + amount, _currentSegment, 0);
-            _currentSize += amount;
-            offset += amount;
             len -= amount;
         } while (len > 0);
     }
@@ -748,7 +565,7 @@ public class TextBuffer {
      * @param len Length of content (in characters) of the current active segment
      *
      * @return String that contains all buffered content
-     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the text is too large
      *
      * @since 2.6
      */
@@ -768,7 +585,7 @@ public class TextBuffer {
 
     /**
      * @return char array
-     * @throws IOException if the text is too large, see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     * @throws IOException if the text is too large
      */
     public char[] finishCurrentSegment() throws IOException {
         if (_segments == null) {

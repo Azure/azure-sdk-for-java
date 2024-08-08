@@ -15,7 +15,7 @@ public final class JsonRecyclerPools {
      * Method to call to get the default recycler pool instance:
      * as of Jackson 2.17.x and earlier (except for 2.17.0) this is same as calling
      * {@link #threadLocalPool()} -- 2.17.0 temporarily had this call
-     * {@link #newLockFreePool()} (but reverted due to problems reported).
+     * {@code #newLockFreePool()} (but reverted due to problems reported).
      * Will likely be changed in 2.18.0 to something else.
      *
      * @return the default {@link RecyclerPool} implementation to use

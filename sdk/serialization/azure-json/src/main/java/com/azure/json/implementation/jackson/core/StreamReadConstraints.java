@@ -32,13 +32,12 @@ public class StreamReadConstraints implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Default setting for maximum depth: see {@link Builder#maxNestingDepth(int)} for details.
+     * Default setting for maximum depth.
      */
     public static final int DEFAULT_MAX_DEPTH = 1000;
 
     /**
      * Default setting for maximum document length:
-     * see {@link Builder#maxDocumentLength} for details.
      */
     public static final long DEFAULT_MAX_DOC_LEN = -1L;
 
@@ -48,7 +47,7 @@ public class StreamReadConstraints implements java.io.Serializable {
     public static final int DEFAULT_MAX_NUM_LEN = 1000;
 
     /**
-     * Default setting for maximum string length: see {@link Builder#maxStringLength(int)}
+     * Default setting for maximum string length
      * for details.
      *<p>
      * NOTE: Jackson 2.15.0 initially used a lower setting (5_000_000).
@@ -56,7 +55,7 @@ public class StreamReadConstraints implements java.io.Serializable {
     public static final int DEFAULT_MAX_STRING_LEN = 20_000_000;
 
     /**
-     * Default setting for maximum name length: see {@link Builder#maxNameLength(int)}
+     * Default setting for maximum name length
      * for details.
      *
      * @since 2.16
@@ -73,68 +72,11 @@ public class StreamReadConstraints implements java.io.Serializable {
     private static final StreamReadConstraints DEFAULT = new StreamReadConstraints(DEFAULT_MAX_DEPTH,
         DEFAULT_MAX_DOC_LEN, DEFAULT_MAX_NUM_LEN, DEFAULT_MAX_STRING_LEN, DEFAULT_MAX_NAME_LEN);
 
-    public static final class Builder {
-        private final long maxDocLen;
-        private final int maxNestingDepth;
-        private final int maxNumLen;
-        private int maxStringLen;
-        private final int maxNameLen;
-
-        /**
-         * Sets the maximum string length (in chars or bytes, depending on input context).
-         * The default is 20,000,000. This limit is not exact, the limit is applied when we increase
-         * internal buffer sizes and an exception will happen at sizes greater than this limit. Some
-         * text values that are a little bigger than the limit may be treated as valid but no text
-         * values with sizes less than or equal to this limit will be treated as invalid.
-         * <p>
-         *   Setting this value to lower than the {@link #maxNumberLength(int)} is not recommended.
-         * </p>
-         *<p>
-         * NOTE: Jackson 2.15.0 initially used a lower setting (5_000_000).
-         *
-         * @param maxStringLen the maximum string length (in chars or bytes, depending on input context)
-         *
-         * @return this builder
-         * @throws IllegalArgumentException if the maxStringLen is set to a negative value
-         */
-        public Builder maxStringLength(final int maxStringLen) {
-            if (maxStringLen < 0) {
-                throw new IllegalArgumentException("Cannot set maxStringLen to a negative value");
-            }
-            this.maxStringLen = maxStringLen;
-            return this;
-        }
-
-        Builder() {
-            this(DEFAULT_MAX_DEPTH, DEFAULT_MAX_DOC_LEN, DEFAULT_MAX_NUM_LEN, DEFAULT_MAX_STRING_LEN,
-                DEFAULT_MAX_NAME_LEN);
-        }
-
-        Builder(final int maxNestingDepth, final long maxDocLen, final int maxNumLen, final int maxStringLen,
-            final int maxNameLen) {
-            this.maxNestingDepth = maxNestingDepth;
-            this.maxDocLen = maxDocLen;
-            this.maxNumLen = maxNumLen;
-            this.maxStringLen = maxStringLen;
-            this.maxNameLen = maxNameLen;
-        }
-
-        public StreamReadConstraints build() {
-            return new StreamReadConstraints(maxNestingDepth, maxDocLen, maxNumLen, maxStringLen, maxNameLen);
-        }
-    }
-
     /*
     /**********************************************************************
     /* Life-cycle
     /**********************************************************************
      */
-
-    @Deprecated // since 2.16
-    protected StreamReadConstraints(final int maxNestingDepth, final long maxDocLen, final int maxNumLen,
-        final int maxStringLen) {
-        this(maxNestingDepth, DEFAULT_MAX_DOC_LEN, maxNumLen, maxStringLen, DEFAULT_MAX_NAME_LEN);
-    }
 
     /**
      * @param maxNestingDepth Maximum input document nesting to allow
@@ -154,23 +96,12 @@ public class StreamReadConstraints implements java.io.Serializable {
         _maxNameLen = maxNameLen;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     /**
      * @return the default {@link StreamReadConstraints} (when none is set on the {@link JsonFactory} explicitly)
-     * @see #overrideDefaultStreamReadConstraints
      */
     public static StreamReadConstraints defaults() {
         return DEFAULT;
     }
-
-    /*
-    /**********************************************************************
-    /* Accessors
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************
@@ -295,13 +226,6 @@ public class StreamReadConstraints implements java.io.Serializable {
                 _constrainRef("getMaxNameLength"));
         }
     }
-
-    /*
-    /**********************************************************************
-    /* Convenience methods for validation, other
-    /**********************************************************************
-     */
-
     /*
     /**********************************************************************
     /* Error reporting

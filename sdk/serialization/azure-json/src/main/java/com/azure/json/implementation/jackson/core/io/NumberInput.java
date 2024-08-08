@@ -12,14 +12,6 @@ import java.math.BigInteger;
  */
 @SuppressWarnings("fallthrough")
 public final class NumberInput {
-    /**
-     * Formerly used constant for a value that was problematic on certain
-     * pre-1.8 JDKs.
-     *
-     * @deprecated Since 2.14 -- do not use
-     */
-    @Deprecated // since 2.14
-    public final static String NASTY_SMALL_DOUBLE = "2.2250738585072012e-308";
 
     /**
      * Constants needed for parsing longs from basic int parsing methods
@@ -72,71 +64,6 @@ public final class NumberInput {
         return num;
     }
 
-    /**
-     * Helper method to (more) efficiently parse integer numbers from
-     * String values. Input String must be simple Java integer value.
-     * No range checks are made to verify that the value fits in 32-bit Java {@code int}:
-     * caller is expected to only calls this in cases where this can be guaranteed
-     * (basically: number of digits does not exceed 9)
-     *<p>
-     * NOTE: semantics differ significantly from {@link #parseInt(char[], int, int)}.
-     *
-     * @param s String that contains integer value to decode
-     *
-     * @return Decoded {@code int} value
-     */
-    public static int parseInt(String s) {
-        /* Ok: let's keep strategy simple: ignoring optional minus sign,
-         * we'll accept 1 - 9 digits and parse things efficiently;
-         * otherwise just defer to JDK parse functionality.
-         */
-        char c = s.charAt(0);
-        int len = s.length();
-        boolean neg = (c == '-');
-        int offset = 1;
-        // must have 1 - 9 digits after optional sign:
-        // negative?
-        if (neg) {
-            if (len == 1 || len > 10) {
-                return Integer.parseInt(s);
-            }
-            c = s.charAt(offset++);
-        } else {
-            if (len > 9) {
-                return Integer.parseInt(s);
-            }
-        }
-        if (c > '9' || c < '0') {
-            return Integer.parseInt(s);
-        }
-        int num = c - '0';
-        if (offset < len) {
-            c = s.charAt(offset++);
-            if (c > '9' || c < '0') {
-                return Integer.parseInt(s);
-            }
-            num = (num * 10) + (c - '0');
-            if (offset < len) {
-                c = s.charAt(offset++);
-                if (c > '9' || c < '0') {
-                    return Integer.parseInt(s);
-                }
-                num = (num * 10) + (c - '0');
-                // Let's just loop if we have more than 3 digits:
-                if (offset < len) {
-                    do {
-                        c = s.charAt(offset++);
-                        if (c > '9' || c < '0') {
-                            return Integer.parseInt(s);
-                        }
-                        num = (num * 10) + (c - '0');
-                    } while (offset < len);
-                }
-            }
-        }
-        return neg ? -num : num;
-    }
-
     public static long parseLong(char[] ch, int off, int len) {
         // Note: caller must ensure length is [10, 18]
         int len1 = len - 9;
@@ -169,24 +96,6 @@ public final class NumberInput {
             num = (num * 10) + (c - '0');
         }
         return negative ? -num : num;
-    }
-
-    /**
-     * Similar to {@link #parseInt(String)} but for {@code long} values.
-     *
-     * @param s String that contains {@code long} value to decode
-     *
-     * @return Decoded {@code long} value
-     */
-    public static long parseLong(String s) {
-        // Ok, now; as the very first thing, let's just optimize case of "fake longs";
-        // that is, if we know they must be ints, call int parsing
-        int length = s.length();
-        if (length <= 9) {
-            return parseInt(s);
-        }
-        // !!! TODO: implement efficient 2-int parsing...
-        return Long.parseLong(s);
     }
 
     /**
@@ -224,49 +133,20 @@ public final class NumberInput {
     /**
      * @param s a string representing a number to parse
      * @return closest matching double
-     * @throws NumberFormatException if string cannot be represented by a double where useFastParser=false
-     * @see #parseDouble(String, boolean)
-     *
-     * @deprecated Since 2.17 use {@link #parseDouble(String, boolean)} instead
-     */
-    @Deprecated // since 2.17
-    public static double parseDouble(final String s) throws NumberFormatException {
-        return parseDouble(s, false);
-    }
-
-    /**
-     * @param s a string representing a number to parse
-     * @param useFastParser whether to use {@code FastDoubleParser}
-     * @return closest matching double
      * @throws NumberFormatException if string cannot be represented by a double
      * @since v2.14
      */
-    public static double parseDouble(final String s, final boolean useFastParser) throws NumberFormatException {
+    public static double parseDouble(final String s) throws NumberFormatException {
         return Double.parseDouble(s);
     }
 
     /**
      * @param s a string representing a number to parse
      * @return closest matching float
-     * @throws NumberFormatException if string cannot be represented by a float where useFastParser=false
-     * @see #parseFloat(String, boolean)
-     * @since v2.14
-     *
-     * @deprecated Since 2.17 use {@link #parseFloat(String, boolean)} instead
-     */
-    @Deprecated // since 2.17
-    public static float parseFloat(final String s) throws NumberFormatException {
-        return parseFloat(s, false);
-    }
-
-    /**
-     * @param s a string representing a number to parse
-     * @param useFastParser whether to use {@code FastDoubleParser}
-     * @return closest matching float
      * @throws NumberFormatException if string cannot be represented by a float
      * @since v2.14
      */
-    public static float parseFloat(final String s, final boolean useFastParser) throws NumberFormatException {
+    public static float parseFloat(final String s) throws NumberFormatException {
         return Float.parseFloat(s);
     }
 
@@ -274,73 +154,19 @@ public final class NumberInput {
      * @param s a string representing a number to parse
      * @return a BigDecimal
      * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
-     *
-     * @deprecated Since 2.17 use {@link #parseBigDecimal(String, boolean)} instead
-     */
-    @Deprecated // since 2.17
-    public static BigDecimal parseBigDecimal(final String s) throws NumberFormatException {
-        return parseBigDecimal(s, false);
-    }
-
-    /**
-     * @param s a string representing a number to parse
-     * @param useFastParser whether to use custom fast parser (true) or JDK default (false) parser
-     * @return a BigDecimal
-     * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
      * @since v2.15
      */
-    public static BigDecimal parseBigDecimal(final String s, final boolean useFastParser) throws NumberFormatException {
+    public static BigDecimal parseBigDecimal(final String s) throws NumberFormatException {
         return BigDecimalParser.parse(s);
     }
 
     /**
-     * @param ch a char array with text that makes up a number
-     * @param off the offset to apply when parsing the number in the char array
-     * @param len the length of the number in the char array
-     * @return a BigDecimal
-     * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
-     *
-     * @deprecated Since 2.17 use {@code #parseBigDecimal(char[], int, int, boolean)} instead
-     */
-    @Deprecated // since 2.17
-    public static BigDecimal parseBigDecimal(final char[] ch, final int off, final int len)
-        throws NumberFormatException {
-        return BigDecimalParser.parse(ch, off, len);
-    }
-
-    /**
-     * @param ch a char array with text that makes up a number
-     * @return a BigDecimal
-     * @throws NumberFormatException if the char array cannot be represented by a BigDecimal
-     *
-     * @deprecated Since 2.17 use {@code #parseBigDecimal(char[], boolean)} instead
-     */
-    @Deprecated // since 2.17
-    public static BigDecimal parseBigDecimal(final char[] ch) throws NumberFormatException {
-        return BigDecimalParser.parse(ch);
-    }
-
-    /**
      * @param s a string representing a number to parse
-     * @return a BigInteger
-     * @throws NumberFormatException if string cannot be represented by a BigInteger
-     * @since v2.14
-     *
-     * @deprecated Since 2.17 use {@link #parseBigInteger(String, boolean)} instead
-     */
-    @Deprecated // since 2.17
-    public static BigInteger parseBigInteger(final String s) throws NumberFormatException {
-        return parseBigInteger(s, false);
-    }
-
-    /**
-     * @param s a string representing a number to parse
-     * @param useFastParser whether to use custom fast parser (true) or JDK default (false) parser
      * @return a BigInteger
      * @throws NumberFormatException if string cannot be represented by a BigInteger
      * @since v2.15
      */
-    public static BigInteger parseBigInteger(final String s, final boolean useFastParser) throws NumberFormatException {
+    public static BigInteger parseBigInteger(final String s) throws NumberFormatException {
         return new BigInteger(s);
     }
 

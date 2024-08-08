@@ -122,29 +122,6 @@ public class UTF8StreamJsonParser extends JsonParserBase {
      * @param inputBuffer Input buffer to read initial content from (before Reader)
      * @param start Pointer in {@code inputBuffer} that has the first content character to decode
      * @param end Pointer past the last content character in {@code inputBuffer}
-     * @param bufferRecyclable Whether {@code inputBuffer} passed is managed by Jackson core
-     *    (and thereby needs recycling)
-     *
-     * @deprecated Since 2.10
-     */
-    @Deprecated
-    public UTF8StreamJsonParser(IOContext ctxt, int features, InputStream in, ByteQuadsCanonicalizer sym,
-        byte[] inputBuffer, int start, int end, boolean bufferRecyclable) {
-        this(ctxt, features, in, sym, inputBuffer, start, end, 0, bufferRecyclable);
-    }
-
-    /**
-     * Constructor called when caller wants to provide input buffer directly
-     * (or needs to, in case of bootstrapping having read some of contents)
-     * and it may or may not be recyclable use standard recycle context.
-     *
-     * @param ctxt I/O context to use
-     * @param features Standard stream read features enabled
-     * @param in InputStream used for reading actual content, if any; {@code null} if none
-     * @param sym Name canonicalizer to use
-     * @param inputBuffer Input buffer to read initial content from (before Reader)
-     * @param start Pointer in {@code inputBuffer} that has the first content character to decode
-     * @param end Pointer past the last content character in {@code inputBuffer}
      * @param bytesPreProcessed Number of bytes that have been consumed already (by bootstrapping)
      * @param bufferRecyclable Whether {@code inputBuffer} passed is managed by Jackson core
      *    (and thereby needs recycling)
@@ -162,12 +139,6 @@ public class UTF8StreamJsonParser extends JsonParserBase {
         _currInputProcessed = -start + bytesPreProcessed;
         _bufferRecyclable = bufferRecyclable;
     }
-
-    /*
-    /**********************************************************
-    /* Overrides for life-cycle
-    /**********************************************************
-     */
 
     /*
     /**********************************************************
@@ -443,7 +414,7 @@ public class UTF8StreamJsonParser extends JsonParserBase {
                 break;
 
             case '.': // [core#611]:
-                t = _parseFloatThatStartsWithPeriod(false, false);
+                t = _parseFloatThatStartsWithPeriod(false);
                 break;
 
             case '0':
@@ -525,7 +496,7 @@ public class UTF8StreamJsonParser extends JsonParserBase {
                 return (_currToken = _parseSignedNumber(false));
 
             case '.': // [core#611]:
-                return (_currToken = _parseFloatThatStartsWithPeriod(false, false));
+                return (_currToken = _parseFloatThatStartsWithPeriod(false));
 
             case '0':
             case '1':
@@ -560,23 +531,11 @@ public class UTF8StreamJsonParser extends JsonParserBase {
 
     /*
     /**********************************************************
-    /* Public API, traversal, nextXxxValue/nextFieldName
-    /**********************************************************
-     */
-
-    /*
-    /**********************************************************
     /* Internal methods, number parsing
     /**********************************************************
      */
 
-    @Deprecated // since 2.14
-    protected final JsonToken _parseFloatThatStartsWithPeriod() throws IOException {
-        return _parseFloatThatStartsWithPeriod(false, false);
-    }
-
-    protected final JsonToken _parseFloatThatStartsWithPeriod(final boolean neg, final boolean hasSign)
-        throws IOException {
+    protected final JsonToken _parseFloatThatStartsWithPeriod(final boolean neg) throws IOException {
         // [core#611]: allow optionally leading decimal point
         if (!isEnabled(JsonReadFeature.ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS.mappedFeature())) {
             return _handleUnexpectedValue(INT_PERIOD);
@@ -669,13 +628,13 @@ public class UTF8StreamJsonParser extends JsonParserBase {
             // One special case: if first char is 0, must not be followed by a digit
             if (c != INT_0) {
                 if (c == INT_PERIOD) {
-                    return _parseFloatThatStartsWithPeriod(negative, true);
+                    return _parseFloatThatStartsWithPeriod(negative);
                 }
-                return _handleInvalidNumberStart(c, negative, true);
+                return _handleInvalidNumberStart(c, negative);
             }
             c = _verifyNoLeadingZeroes();
         } else if (c > INT_9) {
-            return _handleInvalidNumberStart(c, negative, true);
+            return _handleInvalidNumberStart(c, negative);
         }
 
         // Ok: we can first just add digit we saw first:
@@ -1894,7 +1853,7 @@ public class UTF8StreamJsonParser extends JsonParserBase {
                         _reportInvalidEOFInValue(JsonToken.VALUE_NUMBER_INT);
                     }
                 }
-                return _handleInvalidNumberStart(_inputBuffer[_inputPtr++] & 0xFF, false, true);
+                return _handleInvalidNumberStart(_inputBuffer[_inputPtr++] & 0xFF, false);
         }
         // [core#77] Try to decode most likely token
         if (Character.isJavaIdentifierStart(c)) {
@@ -2002,7 +1961,7 @@ public class UTF8StreamJsonParser extends JsonParserBase {
     /**********************************************************
      */
 
-    protected JsonToken _handleInvalidNumberStart(int ch, final boolean neg, final boolean hasSign) throws IOException {
+    protected JsonToken _handleInvalidNumberStart(int ch, final boolean neg) throws IOException {
         while (ch == 'I') {
             if (_inputPtr >= _inputEnd) {
                 if (!_loadMore()) {
@@ -2024,7 +1983,7 @@ public class UTF8StreamJsonParser extends JsonParserBase {
             }
             _reportError("Non-standard token '%s': enable `JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS` to allow", match);
         }
-        if (!isEnabled(JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS.mappedFeature()) && hasSign && !neg) {
+        if (!isEnabled(JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS.mappedFeature()) && !neg) {
             _reportUnexpectedNumberChar('+',
                 "JSON spec does not allow numbers to have plus signs: enable `JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS` to allow");
         }
@@ -2778,7 +2737,7 @@ public class UTF8StreamJsonParser extends JsonParserBase {
                 break;
             }
         }
-        _reportError("Unrecognized token '%s': was expecting %s", sb, msg);
+        _reportError(sb, msg);
     }
 
     protected void _reportInvalidChar(int c) throws JsonParseException {

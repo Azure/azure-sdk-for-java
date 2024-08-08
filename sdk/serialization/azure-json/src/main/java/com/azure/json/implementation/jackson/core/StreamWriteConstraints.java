@@ -23,29 +23,13 @@ public class StreamWriteConstraints implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Default setting for maximum depth: see {@link Builder#maxNestingDepth(int)} for details.
+     * Default setting for maximum depth
      */
     public static final int DEFAULT_MAX_DEPTH = 1000;
 
     protected final int _maxNestingDepth;
 
     private static final StreamWriteConstraints DEFAULT = new StreamWriteConstraints(DEFAULT_MAX_DEPTH);
-
-    public static final class Builder {
-        private final int maxNestingDepth;
-
-        Builder() {
-            this(DEFAULT_MAX_DEPTH);
-        }
-
-        Builder(final int maxNestingDepth) {
-            this.maxNestingDepth = maxNestingDepth;
-        }
-
-        public StreamWriteConstraints build() {
-            return new StreamWriteConstraints(maxNestingDepth);
-        }
-    }
 
     /*
     /**********************************************************************
@@ -57,22 +41,12 @@ public class StreamWriteConstraints implements java.io.Serializable {
         _maxNestingDepth = maxNestingDepth;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     /**
      * @return the default {@link StreamWriteConstraints} (when none is set on the {@link JsonFactory} explicitly)
      */
     public static StreamWriteConstraints defaults() {
         return DEFAULT;
     }
-
-    /*
-    /**********************************************************************
-    /* Accessors
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************

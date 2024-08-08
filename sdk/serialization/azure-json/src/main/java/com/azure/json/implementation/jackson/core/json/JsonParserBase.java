@@ -34,12 +34,6 @@ public abstract class JsonParserBase extends ParserBase {
     protected final static int[] INPUT_CODES_UTF8 = CharTypes.getInputCodeUtf8();
 
     /*
-    /**********************************************************
-    /* Configuration
-    /**********************************************************
-     */
-
-    /*
     /**********************************************************************
     /* Life-cycle
     /**********************************************************************
@@ -48,18 +42,6 @@ public abstract class JsonParserBase extends ParserBase {
     protected JsonParserBase(IOContext ioCtxt, int features) {
         super(ioCtxt, features);
     }
-
-    /*
-    /**********************************************************************
-    /* Capability introspection
-    /**********************************************************************
-     */
-
-    /*
-    /**********************************************************************
-    /* Overrides
-    /**********************************************************************
-     */
 
     /*
     /**********************************************************************
@@ -77,16 +59,4 @@ public abstract class JsonParserBase extends ParserBase {
 
     @Override
     protected abstract JsonLocation _currentLocationMinusOne();
-
-    @Deprecated // since 2.17
-    @Override
-    public final JsonLocation getCurrentLocation() {
-        return currentLocation();
-    }
-
-    @Deprecated // since 2.17
-    @Override
-    public final JsonLocation getTokenLocation() {
-        return currentTokenLocation();
-    }
 }

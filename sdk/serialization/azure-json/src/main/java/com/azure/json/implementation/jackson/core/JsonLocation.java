@@ -22,12 +22,6 @@ public class JsonLocation implements java.io.Serializable {
     private static final long serialVersionUID = 2L; // in 2.13
 
     /**
-     * @deprecated Since 2.13 use {@link ErrorReportConfiguration#DEFAULT_MAX_RAW_CONTENT_LENGTH} instead
-     */
-    @Deprecated
-    public static final int MAX_CONTENT_SNIPPET = 500;
-
-    /**
      * Shared immutable "N/A location" that can be returned to indicate
      * that no location information is available.
      *<p>
@@ -50,14 +44,6 @@ public class JsonLocation implements java.io.Serializable {
      */
     protected final ContentReference _contentReference;
 
-    /**
-     * Lazily constructed description for source; constructed if and
-     * when {@link #sourceDescription()} is called, retained.
-     *
-     * @since 2.13
-     */
-    protected transient String _sourceDescription;
-
     /*
     /**********************************************************************
     /* Life cycle
@@ -78,112 +64,6 @@ public class JsonLocation implements java.io.Serializable {
         _totalChars = totalChars;
         _lineNr = lineNr;
         _columnNr = columnNr;
-    }
-
-    @Deprecated // since 2.13
-    public JsonLocation(Object srcRef, long totalChars, int lineNr, int columnNr) {
-        this(_wrap(srcRef), totalChars, lineNr, columnNr);
-    }
-
-    @Deprecated // since 2.13
-    public JsonLocation(Object srcRef, long totalBytes, long totalChars, int lineNr, int columnNr) {
-        this(_wrap(srcRef), totalBytes, totalChars, lineNr, columnNr);
-    }
-
-    protected static ContentReference _wrap(Object srcRef) {
-        if (srcRef instanceof ContentReference) {
-            return (ContentReference) srcRef;
-        }
-        return ContentReference.construct(false, srcRef, ErrorReportConfiguration.defaults());
-    }
-
-    /*
-    /**********************************************************************
-    /* Simple accessors
-    /**********************************************************************
-     */
-
-    /**
-     * Reference to the original resource being read, if one available.
-     * For example, when a parser has been constructed by passing
-     * a {@link java.io.File} instance, this method would return
-     * that File. Will return null if no such reference is available,
-     * for example when {@link java.io.InputStream} was used to
-     * construct the parser instance.
-     *
-     * @return Source reference this location was constructed with, if any; {@code null} if none
-     *
-     * @deprecated Since 2.13 Use {@link #contentReference} instead
-     */
-    @Deprecated
-    public Object getSourceRef() {
-        return _contentReference.getRawContent();
-    }
-
-    /**
-     * Accessor for getting a textual description of source reference
-     * (Object returned by {@link #getSourceRef()}), as included in
-     * description returned by {@link #toString()}.
-     *<p>
-     * Note: implementation will simply call
-     * {@link ContentReference#buildSourceDescription()})
-     *<p>
-     * NOTE: not added as a "getter" to prevent it from getting serialized.
-     *
-     * @return Description of the source reference (see {@link #getSourceRef()}
-     *
-     * @since 2.9
-     */
-    public String sourceDescription() {
-        // 04-Apr-2021, tatu: Construct lazily but retain
-        if (_sourceDescription == null) {
-            _sourceDescription = _contentReference.buildSourceDescription();
-        }
-        return _sourceDescription;
-    }
-
-    // @since 2.13
-    public StringBuilder appendOffsetDescription(StringBuilder sb) {
-        // 04-Apr-2021, tatu: [core#694] For binary content, we have no line
-        //    number or column position indicators; try using what we do have
-        //    (if anything)
-
-        if (_contentReference.hasTextualContent()) {
-            sb.append("line: ");
-            // should be 1-based, but consider -1 to be canonical "got none"
-            if (_lineNr >= 0) {
-                sb.append(_lineNr);
-            } else {
-                sb.append("UNKNOWN");
-            }
-            sb.append(", column: ");
-            if (_columnNr >= 0) { // same here
-                sb.append(_columnNr);
-            } else {
-                sb.append("UNKNOWN");
-            }
-        } else {
-            // 04-Apr-2021, tatu: Ideally byte formats would not need line/column
-            //    info, but for backwards-compatibility purposes (Jackson 2.x),
-            //    will leave logic here
-            if (_lineNr > 0) { // yes, require 1-based in case of allegedly binary content
-                sb.append("line: ").append(_lineNr);
-                if (_columnNr > 0) {
-                    sb.append(", column: ");
-                    sb.append(_columnNr);
-                }
-            } else {
-                sb.append("byte offset: #");
-                // For binary formats, total bytes should be the canonical offset
-                // for token/current location
-                if (_totalBytes >= 0) {
-                    sb.append(_totalBytes);
-                } else {
-                    sb.append("UNKNOWN");
-                }
-            }
-        }
-        return sb;
     }
 
     /*
@@ -223,12 +103,5 @@ public class JsonLocation implements java.io.Serializable {
             && (_columnNr == otherLoc._columnNr)
             && (_totalChars == otherLoc._totalChars)
             && (_totalBytes == otherLoc._totalBytes);
-    }
-
-    @Override
-    public String toString() {
-        final String srcDesc = sourceDescription();
-        StringBuilder sb = new StringBuilder(40 + srcDesc.length()).append("[Source: ").append(srcDesc).append("; ");
-        return appendOffsetDescription(sb).append(']').toString();
     }
 }

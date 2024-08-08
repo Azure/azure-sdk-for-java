@@ -436,18 +436,6 @@ public abstract class JsonParser implements Closeable {
     @Override
     public abstract void close() throws IOException;
 
-    /**
-     * Method that can be called to determine whether this parser
-     * is closed or not. If it is closed, no new tokens can be
-     * retrieved by calling {@link #nextToken} (and the underlying
-     * stream may be closed). Closing may be due to an explicit
-     * call to {@link #close} or because parser has encountered
-     * end of input.
-     *
-     * @return {@code True} if this parser instance has been closed
-     */
-    public abstract boolean isClosed();
-
     /*
     /**********************************************************
     /* Public API, simple location, context accessors
@@ -481,12 +469,8 @@ public abstract class JsonParser implements Closeable {
      * to other library)
      *
      * @return Location of the last processed input unit (byte or character)
-     *
-     * @since 2.13
      */
-    public JsonLocation currentLocation() {
-        return getCurrentLocation();
-    }
+    public abstract JsonLocation currentLocation();
 
     /**
      * Method that return the <b>starting</b> location of the current
@@ -501,38 +485,8 @@ public abstract class JsonParser implements Closeable {
      * to other library)
      *
      * @return Starting location of the token parser currently points to
-     *
-     * @since 2.13 (will eventually replace {@link #getTokenLocation})
      */
-    public JsonLocation currentTokenLocation() {
-        return getTokenLocation();
-    }
-
-    /**
-     * Deprecated alias for {@link #currentLocation()} (removed from Jackson 3.0).
-     *
-     * @return Location of the last processed input unit (byte or character)
-     *
-     * @deprecated Since 2.17 use {@link #currentLocation()} instead
-     */
-    @Deprecated // since 2.17
-    public abstract JsonLocation getCurrentLocation();
-
-    /**
-     * Deprecated alias for {@link #currentTokenLocation()} (removed from Jackson 3.0).
-     *
-     * @return Starting location of the token parser currently points to
-     *
-     * @deprecated Since 2.17 use {@link #currentTokenLocation()} instead
-     */
-    @Deprecated // since 2.17
-    public abstract JsonLocation getTokenLocation();
-
-    /*
-    /**********************************************************
-    /* Buffer handling
-    /**********************************************************
-     */
+    public abstract JsonLocation currentTokenLocation();
 
     /*
     /***************************************************
@@ -594,19 +548,6 @@ public abstract class JsonParser implements Closeable {
         return f.enabledIn(_features);
     }
 
-    /**
-     * Method for checking whether specified {@link Feature} is enabled.
-     *
-     * @param f Feature to check
-     *
-     * @return {@code True} if feature is enabled; {@code false} otherwise
-     *
-     * @since 2.10
-     */
-    public boolean isEnabled(StreamReadFeature f) {
-        return f.mappedFeature().enabledIn(_features);
-    }
-
     /*
     /**********************************************************
     /* Public API, traversal
@@ -627,27 +568,6 @@ public abstract class JsonParser implements Closeable {
      */
     public abstract JsonToken nextToken() throws IOException;
 
-    /**
-     * Method that will skip all child tokens of an array or
-     * object token that the parser currently points to,
-     * iff stream points to
-     * {@link JsonToken#START_OBJECT} or {@link JsonToken#START_ARRAY}.
-     * If not, it will do nothing.
-     * After skipping, stream will point to <b>matching</b>
-     * {@link JsonToken#END_OBJECT} or {@link JsonToken#END_ARRAY}
-     * (possibly skipping nested pairs of START/END OBJECT/ARRAY tokens
-     * as well as value tokens).
-     * The idea is that after calling this method, application
-     * will call {@link #nextToken} to point to the next
-     * available token, if any.
-     *
-     * @return This parser, to allow call chaining
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract JsonParser skipChildren() throws IOException;
-
     /*
     /**********************************************************
     /* Public API, simple token id/type access
@@ -667,39 +587,13 @@ public abstract class JsonParser implements Closeable {
      *
      * @since 2.8
      */
-    public JsonToken currentToken() {
-        // !!! TODO: switch direction in 2.18 or later
-        return getCurrentToken();
-    }
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias for {@link #currentToken()}, may be deprecated sometime after
-     * Jackson 2.13 (will be removed from 3.0).
-     *
-     * @return Type of the token this parser currently points to,
-     *   if any: null before any tokens have been read, and
-     */
-    public abstract JsonToken getCurrentToken();
+    public abstract JsonToken currentToken();
 
     /*
     /**********************************************************
     /* Public API, access to token information, text
     /**********************************************************
      */
-
-    /**
-     * Deprecated alias of {@link #currentName()}.
-     *
-     * @return Name of the current field in the parsing context
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @deprecated Since 2.17 use {@link #currentName} instead.
-     */
-    @Deprecated
-    public abstract String getCurrentName() throws IOException;
 
     /**
      * Method that can be called to get the name associated with
@@ -715,10 +609,7 @@ public abstract class JsonParser implements Closeable {
      *
      * @since 2.10
      */
-    public String currentName() throws IOException {
-        // !!! TODO: switch direction in 2.18 or later
-        return getCurrentName();
-    }
+    public abstract String currentName() throws IOException;
 
     /**
      * Method for accessing textual representation of the current token;
@@ -730,8 +621,7 @@ public abstract class JsonParser implements Closeable {
      *   by {@link #nextToken()} or other iteration methods)
      *
      * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems, including if the text is too large,
-     *   see {@link com.azure.json.implementation.jackson.core.StreamReadConstraints.Builder#maxStringLength(int)}
+     *   {@link JsonParseException} for decoding problems, including if the text is too large
      */
     public abstract String getText() throws IOException;
 

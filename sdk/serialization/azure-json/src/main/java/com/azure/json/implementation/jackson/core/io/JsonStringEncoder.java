@@ -1,11 +1,9 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
-import com.azure.json.implementation.jackson.core.util.TextBuffer;
 
 /**
  * Helper class used for efficient encoding of JSON String values (including
@@ -35,8 +33,6 @@ public final class JsonStringEncoder {
     //    to estimate ok initial encoding buffer, switch to segmented for
     //    possible (but rare) big content
 
-    final static int MIN_CHAR_BUFFER_SIZE = 16;
-    final static int MAX_CHAR_BUFFER_SIZE = 32000; // use segments beyond
     final static int MIN_BYTE_BUFFER_SIZE = 24;
     final static int MAX_BYTE_BUFFER_SIZE = 32000; // use segments beyond
 
@@ -67,90 +63,6 @@ public final class JsonStringEncoder {
     /* Public API
     /**********************************************************************
      */
-
-    /**
-     * Method that will escape text contents using JSON standard escaping,
-     * and return results as a character array.
-     *
-     * @param input Value String to process
-     *
-     * @return JSON-escaped String matching {@code input}
-     */
-    public char[] quoteAsString(String input) {
-        final int inputLen = input.length();
-        char[] outputBuffer = new char[_initialCharBufSize(inputLen)];
-        final int[] escCodes = CharTypes.get7BitOutputEscapes();
-        final int escCodeCount = escCodes.length;
-        int inPtr = 0;
-        TextBuffer textBuffer = null;
-        int outPtr = 0;
-        char[] qbuf = null;
-
-        outer: while (inPtr < inputLen) {
-            while (true) {
-                char c = input.charAt(inPtr);
-                if (c < escCodeCount && escCodes[c] != 0) {
-                    break;
-                }
-                if (outPtr >= outputBuffer.length) {
-                    if (textBuffer == null) {
-                        textBuffer = TextBuffer.fromInitial(outputBuffer);
-                    }
-                    try {
-                        outputBuffer = textBuffer.finishCurrentSegment();
-                    } catch (IOException e) {
-                        // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
-                        throw new IllegalStateException(e);
-                    }
-                    outPtr = 0;
-                }
-                outputBuffer[outPtr++] = c;
-                if (++inPtr >= inputLen) {
-                    break outer;
-                }
-            }
-            // something to escape; 2 or 6-char variant?
-            if (qbuf == null) {
-                qbuf = _qbuf();
-            }
-            char d = input.charAt(inPtr++);
-            int escCode = escCodes[d];
-            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);
-
-            if ((outPtr + length) > outputBuffer.length) {
-                int first = outputBuffer.length - outPtr;
-                if (first > 0) {
-                    System.arraycopy(qbuf, 0, outputBuffer, outPtr, first);
-                }
-                if (textBuffer == null) {
-                    textBuffer = TextBuffer.fromInitial(outputBuffer);
-                }
-                try {
-                    outputBuffer = textBuffer.finishCurrentSegment();
-                } catch (IOException e) {
-                    // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
-                    throw new IllegalStateException(e);
-                }
-                int second = length - first;
-                System.arraycopy(qbuf, first, outputBuffer, 0, second);
-                outPtr = second;
-            } else {
-                System.arraycopy(qbuf, 0, outputBuffer, outPtr, length);
-                outPtr += length;
-            }
-        }
-
-        if (textBuffer == null) {
-            return Arrays.copyOfRange(outputBuffer, 0, outPtr);
-        }
-        textBuffer.setCurrentLength(outPtr);
-        try {
-            return textBuffer.contentsAsArray();
-        } catch (IOException e) {
-            // IOException won't happen here, can only occur when ReadConstrainedTextBuffer is used
-            throw new IllegalStateException(e);
-        }
-    }
 
     /**
      * Method that will quote text contents using JSON standard quoting,
@@ -296,104 +208,6 @@ public final class JsonStringEncoder {
         return bb.completeAndCoalesce(outputPtr);
     }
 
-    /**
-     * Will encode given String as UTF-8 (without any escaping) and return
-     * the resulting byte array.
-     *
-     * @param text Value {@link String} to process
-     *
-     * @return UTF-8 encoded bytes of {@code text} (without any escaping)
-     */
-    @SuppressWarnings("resource")
-    public byte[] encodeAsUTF8(String text) {
-        int inputPtr = 0;
-        int inputEnd = text.length();
-        int outputPtr = 0;
-        byte[] outputBuffer = new byte[_initialByteBufSize(inputEnd)];
-        int outputEnd = outputBuffer.length;
-        ByteArrayBuilder bb = null;
-
-        main_loop: while (inputPtr < inputEnd) {
-            int c = text.charAt(inputPtr++);
-
-            // first tight loop for ascii
-            while (c <= 0x7F) {
-                if (outputPtr >= outputEnd) {
-                    if (bb == null) {
-                        bb = ByteArrayBuilder.fromInitial(outputBuffer, outputPtr);
-                    }
-                    outputBuffer = bb.finishCurrentSegment();
-                    outputEnd = outputBuffer.length;
-                    outputPtr = 0;
-                }
-                outputBuffer[outputPtr++] = (byte) c;
-                if (inputPtr >= inputEnd) {
-                    break main_loop;
-                }
-                c = text.charAt(inputPtr++);
-            }
-
-            // then multi-byte...
-            if (bb == null) {
-                bb = ByteArrayBuilder.fromInitial(outputBuffer, outputPtr);
-            }
-            if (outputPtr >= outputEnd) {
-                outputBuffer = bb.finishCurrentSegment();
-                outputEnd = outputBuffer.length;
-                outputPtr = 0;
-            }
-            if (c < 0x800) { // 2-byte
-                outputBuffer[outputPtr++] = (byte) (0xc0 | (c >> 6));
-            } else { // 3 or 4 bytes
-                // Surrogates?
-                if (c < SURR1_FIRST || c > SURR2_LAST) { // nope
-                    outputBuffer[outputPtr++] = (byte) (0xe0 | (c >> 12));
-                    if (outputPtr >= outputEnd) {
-                        outputBuffer = bb.finishCurrentSegment();
-                        outputEnd = outputBuffer.length;
-                        outputPtr = 0;
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0x80 | ((c >> 6) & 0x3f));
-                } else { // yes, surrogate pair
-                    if (c > SURR1_LAST) { // must be from first range
-                        _illegal(c);
-                    }
-                    // and if so, followed by another from next range
-                    if (inputPtr >= inputEnd) {
-                        _illegal(c);
-                    }
-                    c = _convert(c, text.charAt(inputPtr++));
-                    if (c > 0x10FFFF) { // illegal, as per RFC 4627
-                        _illegal(c);
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0xf0 | (c >> 18));
-                    if (outputPtr >= outputEnd) {
-                        outputBuffer = bb.finishCurrentSegment();
-                        outputEnd = outputBuffer.length;
-                        outputPtr = 0;
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0x80 | ((c >> 12) & 0x3f));
-                    if (outputPtr >= outputEnd) {
-                        outputBuffer = bb.finishCurrentSegment();
-                        outputEnd = outputBuffer.length;
-                        outputPtr = 0;
-                    }
-                    outputBuffer[outputPtr++] = (byte) (0x80 | ((c >> 6) & 0x3f));
-                }
-            }
-            if (outputPtr >= outputEnd) {
-                outputBuffer = bb.finishCurrentSegment();
-                outputEnd = outputBuffer.length;
-                outputPtr = 0;
-            }
-            outputBuffer[outputPtr++] = (byte) (0x80 | (c & 0x3f));
-        }
-        if (bb == null) {
-            return Arrays.copyOfRange(outputBuffer, 0, outputPtr);
-        }
-        return bb.completeAndCoalesce(outputPtr);
-    }
-
     /*
     /**********************************************************************
     /* Internal methods
@@ -454,14 +268,6 @@ public final class JsonStringEncoder {
 
     private static void _illegal(int c) {
         throw new IllegalArgumentException(UTF8Writer.illegalSurrogateDesc(c));
-    }
-
-    // non-private for unit test access
-    static int _initialCharBufSize(int strLen) {
-        // char->char won't expand but we need to give some room for escaping
-        // like 1/8 (12.5% expansion) but cap addition to something modest
-        final int estimated = Math.max(MIN_CHAR_BUFFER_SIZE, strLen + Math.min(6 + (strLen >> 3), 1000));
-        return Math.min(estimated, MAX_CHAR_BUFFER_SIZE);
     }
 
     // non-private for unit test access

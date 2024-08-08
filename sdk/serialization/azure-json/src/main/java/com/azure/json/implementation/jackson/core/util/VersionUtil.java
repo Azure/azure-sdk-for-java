@@ -18,25 +18,11 @@ package com.azure.json.implementation.jackson.core.util;
  * from Jackson 2.6.
  */
 public class VersionUtil {
-
-    /*
-    /**********************************************************************
-    /* Instance life-cycle
-    /**********************************************************************
-     */
-
-    protected VersionUtil() {
-    }
-
     /*
     /**********************************************************************
     /* Orphan utility methods
     /**********************************************************************
      */
-
-    public static void throwInternal() {
-        throw new RuntimeException("Internal error: this code path should never get executed");
-    }
 
     public static <T> T throwInternalReturnAny() {
         throw new RuntimeException("Internal error: this code path should never get executed");

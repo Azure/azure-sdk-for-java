@@ -299,28 +299,6 @@ public final class CharsToNameCanonicalizer {
      */
 
     /**
-     * @deprecated Since 2.16 use {@link #createRoot(TokenStreamFactory)} instead
-     *
-     * @return Root instance to use for constructing new child instances
-     */
-    @Deprecated
-    public static CharsToNameCanonicalizer createRoot() {
-        return createRoot(null);
-    }
-
-    /**
-     * @param seed Seed for hash value calculation
-     *
-     * @return Root instance to use for constructing new child instances
-     *
-     * @deprecated Since 2.16 use {@link #createRoot(TokenStreamFactory)} instead
-     */
-    @Deprecated
-    public static CharsToNameCanonicalizer createRoot(int seed) {
-        return createRoot(null, seed);
-    }
-
-    /**
      * Method called to create root canonicalizer for a {@link com.azure.json.implementation.jackson.core.JsonFactory}
      * instance. Root instance is never used directly; its main use is for
      * storing and sharing underlying symbol arrays as needed.
@@ -372,18 +350,6 @@ public final class CharsToNameCanonicalizer {
      */
     public CharsToNameCanonicalizer makeChild() {
         return new CharsToNameCanonicalizer(this, _streamReadConstraints, _factoryFeatures, _seed, _tableInfo.get());
-    }
-
-    /**
-     * @param flags Configuration flags (ignored)
-     *
-     * @return Actual canonicalizer instance that can be used by a parser
-     *
-     * @deprecated Since 2.16 use {@link #makeChild()} instead.
-     */
-    @Deprecated
-    public CharsToNameCanonicalizer makeChild(int flags) {
-        return makeChild();
     }
 
     /**
@@ -439,17 +405,6 @@ public final class CharsToNameCanonicalizer {
     /* Public API, generic accessors:
     /**********************************************************
      */
-
-    /**
-     * @return Number of symbol entries contained by this canonicalizer instance
-     */
-    public int size() {
-        if (_tableInfo != null) { // root table
-            return _tableInfo.get().size;
-        }
-        // nope, child table
-        return _size;
-    }
 
     public boolean maybeDirty() {
         return !_hashShared;
@@ -748,57 +703,6 @@ public final class CharsToNameCanonicalizer {
             "Longest collision chain in symbol table (of size " + _size + ") now exceeds maximum, "
                 + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH + " -- suspect a DoS attack based on hash collisions");
     }
-
-    // since 2.10, for tests only
-
-    // For debugging, comment out
-    /*
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        int primaryCount = 0;
-        for (String s : _symbols) {
-            if (s != null) ++primaryCount;
-        }
-    
-        sb.append("[BytesToNameCanonicalizer, size: ");
-        sb.append(_size);
-        sb.append('/');
-        sb.append(_symbols.length);
-        sb.append(", ");
-        sb.append(primaryCount);
-        sb.append('/');
-        sb.append(_size - primaryCount);
-        sb.append(" coll; avg length: ");
-    
-        // Average length: minimum of 1 for all (1 == primary hit);
-        // and then 1 per each traversal for collisions/buckets
-        //int maxDist = 1;
-        int pathCount = _size;
-        for (Bucket b : _buckets) {
-            if (b != null) {
-                int spillLen = b.length;
-                for (int j = 1; j <= spillLen; ++j) {
-                    pathCount += j;
-                }
-            }
-        }
-        double avgLength;
-    
-        if (_size == 0) {
-            avgLength = 0.0;
-        } else {
-            avgLength = (double) pathCount / (double) _size;
-        }
-        // let's round up a bit (two 2 decimal places)
-        //avgLength -= (avgLength % 0.01);
-    
-        sb.append(avgLength);
-        sb.append(']');
-        return sb.toString();
-    }
-    */
 
     /*
     /**********************************************************

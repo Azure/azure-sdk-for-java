@@ -131,45 +131,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         }
     }
 
-    // @since 2.10
-    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out, char quoteChar, byte[] outputBuffer,
-        int outputOffset, boolean bufferRecyclable) {
-
-        super(ctxt, features);
-        _outputStream = out;
-        _quoteChar = (byte) quoteChar;
-        boolean escapeSlash = isEnabled(JsonWriteFeature.ESCAPE_FORWARD_SLASHES.mappedFeature());
-        if (quoteChar != '"' || escapeSlash) {
-            _outputEscapes = CharTypes.get7BitOutputEscapes(quoteChar, escapeSlash);
-        }
-
-        _bufferRecyclable = bufferRecyclable;
-        _outputTail = outputOffset;
-        _outputBuffer = outputBuffer;
-        _outputEnd = _outputBuffer.length;
-        // up to 6 bytes per char (see above), rounded up to 1/8
-        _outputMaxContiguous = (_outputEnd >> 3);
-        _charBuffer = ctxt.allocConcatBuffer();
-        _charBufferLength = _charBuffer.length;
-    }
-
-    @Deprecated // since 2.10
-    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out) {
-        this(ctxt, features, out, JsonFactory.DEFAULT_QUOTE_CHAR);
-    }
-
-    @Deprecated // since 2.10
-    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out, byte[] outputBuffer, int outputOffset,
-        boolean bufferRecyclable) {
-        this(ctxt, features, out, JsonFactory.DEFAULT_QUOTE_CHAR, outputBuffer, outputOffset, bufferRecyclable);
-    }
-
-    /*
-    /**********************************************************
-    /* Overridden configuration methods
-    /**********************************************************
-     */
-
     /*
     /**********************************************************
     /* Overridden methods

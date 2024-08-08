@@ -149,7 +149,19 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public void skipChildren() throws IOException {
-        parser.skipChildren();
+        if (currentToken != JsonToken.START_OBJECT && currentToken != JsonToken.START_ARRAY) {
+            return;
+        }
+
+        int depth = 1;
+        while (depth > 0) {
+            JsonToken token = nextToken();
+            if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY) {
+                depth++;
+            } else if (token == JsonToken.END_OBJECT || token == JsonToken.END_ARRAY) {
+                depth--;
+            }
+        }
     }
 
     @Override
