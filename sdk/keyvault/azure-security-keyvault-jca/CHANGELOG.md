@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+ - Fixed bug about intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
+
 ### Other Changes
 
 ## 2.9.0-beta.2 (2024-07-09)
