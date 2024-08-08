@@ -4,28 +4,21 @@
 package com.azure.security.keyvault.jca.implementation.signature;
 
 import com.azure.security.keyvault.jca.KeyVaultEncode;
-import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class KeyVaultKeylessEcSignatureTest {
 
     KeyVaultKeylessEcSignature keyVaultKeylessEcSignature;
-
-    private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
-
-    private final KeyVaultPrivateKey keyVaultPrivateKey = mock(KeyVaultPrivateKey.class);
 
     private final byte[] signedWithES256 = "fake256Value".getBytes();
     private final byte[] signedWithES384 = "fake384Value".getBytes();
@@ -99,15 +92,27 @@ public class KeyVaultKeylessEcSignatureTest {
 
     @Test
     public void setDigestNameAndEngineSignTest() {
+        KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null) {
+            @Override
+            public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+                if ("ES256".equals(digestName) && keyId == null) {
+                    return signedWithES256;
+                } else if ("ES384".equals(digestName) && keyId == null) {
+                    return signedWithES384;
+                }
+
+                return null;
+            }
+        };
+
+        KeyVaultPrivateKey keyVaultPrivateKey = new KeyVaultPrivateKey(null, null, keyVaultClient);
+
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha256Signature();
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
-        when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
         keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
         Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeylessEcSignature.engineSign());
 
         keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha384Signature();
         keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES384"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES384);
         assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES384), keyVaultKeylessEcSignature.engineSign());
     }
 

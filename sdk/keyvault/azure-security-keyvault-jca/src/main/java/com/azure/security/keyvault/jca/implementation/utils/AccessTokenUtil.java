@@ -132,15 +132,11 @@ public final class AccessTokenUtil {
             LOGGER.warning("Failed to encode client secret for access token request");
         }
 
-        StringBuilder requestBody = new StringBuilder();
-
-        requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT).append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT).append(encodedClientSecret)
-            .append(RESOURCE_FRAGMENT).append(resource);
+        String requestBody = GRANT_TYPE_FRAGMENT + CLIENT_ID_FRAGMENT + clientId + CLIENT_SECRET_FRAGMENT
+            + encodedClientSecret + RESOURCE_FRAGMENT + resource;
 
         String body =
-            HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+            HttpUtil.post(oauth2Url.toString(), requestBody, "application/x-www-form-urlencoded");
 
         if (body != null) {
             result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
@@ -302,7 +298,7 @@ public final class AccessTokenUtil {
         for (String pair : attributes) {
             String[] keyValue = pair.split("=");
 
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+            attributeMap.put(keyValue[0].replace("\"", ""), keyValue[1].replace("\"", ""));
         }
 
         return attributeMap;

@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +10,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class KeyVaultEncodeTest {
 
@@ -62,9 +62,9 @@ public class KeyVaultEncodeTest {
 
     @Test
     public void concatBytesWithThreeBytes() {
-        byte[] byte1 = RandomString.make(32).getBytes();
-        byte[] byte2 = RandomString.make(32).getBytes();
-        byte[] byte3 = RandomString.make(32).getBytes();
+        byte[] byte1 = getRandomByteArray();
+        byte[] byte2 = getRandomByteArray();
+        byte[] byte3 = getRandomByteArray();
         byte[] result = KeyVaultEncode.concatBytes(byte1, byte2, byte3);
         Assertions.assertArrayEquals(byte1, Arrays.copyOfRange(result, 0, byte1.length));
         Assertions.assertArrayEquals(byte2, Arrays.copyOfRange(result, byte1.length, byte1.length + byte2.length));
@@ -74,8 +74,8 @@ public class KeyVaultEncodeTest {
 
     @Test
     public void concatBytesWithTwoBytes() {
-        byte[] byte1 = RandomString.make(32).getBytes();
-        byte[] byte2 = RandomString.make(32).getBytes();
+        byte[] byte1 = getRandomByteArray();
+        byte[] byte2 = getRandomByteArray();
         byte[] result = KeyVaultEncode.concatBytes(byte1, byte2);
         Assertions.assertArrayEquals(byte1, Arrays.copyOfRange(result, 0, byte1.length));
         Assertions.assertArrayEquals(byte2, Arrays.copyOfRange(result, byte1.length, result.length));
@@ -83,7 +83,7 @@ public class KeyVaultEncodeTest {
 
     @Test
     public void toBigIntegerBytesWithLengthPrefixTest() {
-        byte[] testByte = RandomString.make(32).getBytes();
+        byte[] testByte = getRandomByteArray();
         Random random = new Random();
         int offset = random.nextInt(testByte.length);
         int length = random.nextInt(testByte.length - offset);
@@ -107,6 +107,12 @@ public class KeyVaultEncodeTest {
         }
         BigInteger bigInteger = new BigInteger(value);
         Assertions.assertEquals(bigInteger, new BigInteger(1, Arrays.copyOfRange(testByte, offset, offset + length)));
+    }
+
+    private static byte[] getRandomByteArray() {
+        byte[] random = new byte[32];
+        ThreadLocalRandom.current().nextBytes(random);
+        return random;
     }
 
     @Test
