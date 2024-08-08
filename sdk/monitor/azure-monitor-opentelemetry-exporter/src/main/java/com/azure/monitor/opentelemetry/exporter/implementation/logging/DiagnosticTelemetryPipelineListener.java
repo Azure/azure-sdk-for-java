@@ -32,8 +32,8 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     private final String retryableFailureSuffix;
 
     // e.g. "Sending telemetry to the ingestion service"
-    public DiagnosticTelemetryPipelineListener(
-        String operation, boolean logRetryableFailures, String retryableFailureSuffix) {
+    public DiagnosticTelemetryPipelineListener(String operation, boolean logRetryableFailures,
+        String retryableFailureSuffix) {
         operationLogger = new OperationLogger(FOR_CLASS, operation);
         this.logRetryableFailures = logRetryableFailures;
         this.retryableFailureSuffix = retryableFailureSuffix;
@@ -46,6 +46,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
             case 200: // SUCCESS
                 operationLogger.recordSuccess();
                 break;
+
             case 206: // PARTIAL CONTENT, Breeze-specific: PARTIAL SUCCESS
             case 400: // breeze returns if json content is bad (e.g. missing required field)
                 Set<String> errors = response.getErrorMessages();
@@ -55,10 +56,12 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
                         INGESTION_ERROR);
                 }
                 break;
+
             case 307:
             case 308:
                 operationLogger.recordFailure("Too many redirects", INGESTION_ERROR);
                 break;
+
             case 401: // breeze returns if aad enabled and no authentication token provided
             case 403: // breeze returns if aad enabled or disabled (both cases) and
                 if (logRetryableFailures) {
@@ -67,6 +70,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
                         INGESTION_ERROR);
                 }
                 break;
+
             case 408: // REQUEST TIMEOUT
             case 429: // TOO MANY REQUESTS
             case 500: // INTERNAL SERVER ERROR
@@ -74,21 +78,23 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
             case 503: // SERVICE UNAVAILABLE
             case 504: // GATEWAY TIMEOUT
                 if (logRetryableFailures) {
-                    operationLogger.recordFailure(
-                        "Received response code " + responseCode + retryableFailureSuffix,
+                    operationLogger.recordFailure("Received response code " + responseCode + retryableFailureSuffix,
                         INGESTION_ERROR);
                 }
                 break;
+
             case 402: // Breeze-specific: New Daily Quota Exceeded
                 operationLogger.recordFailure(
                     "Received response code 402 (daily quota exceeded and throttled over extended time)",
                     INGESTION_ERROR);
                 break;
+
             case 439: // Breeze-specific: Deprecated Daily Quota Exceeded
                 operationLogger.recordFailure(
                     "Received response code 439 (daily quota exceeded and throttled over extended time)",
                     INGESTION_ERROR);
                 break;
+
             default:
                 operationLogger.recordFailure("received response code: " + responseCode, INGESTION_ERROR);
         }
@@ -96,13 +102,10 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
 
     @Override
     public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
-        if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
-            throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
+        if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(throwable, request.getUrl().toString(),
+            friendlyExceptionThrown, logger)) {
             if (logRetryableFailures) {
-                operationLogger.recordFailure(
-                    reason + retryableFailureSuffix,
-                    throwable,
-                    INGESTION_ERROR);
+                operationLogger.recordFailure(reason + retryableFailureSuffix, throwable, INGESTION_ERROR);
             }
         }
     }
@@ -112,8 +115,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         return CompletableResultCode.ofSuccess();
     }
 
-    public static String getErrorMessageFromCredentialRelatedResponse(
-        int responseCode, String responseBody) {
+    public static String getErrorMessageFromCredentialRelatedResponse(int responseCode, String responseBody) {
         String message = null;
         try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
             Response response = Response.fromJson(jsonReader);
@@ -121,17 +123,13 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
                 message = response.getErrors().get(0).getMessage();
             }
         } catch (IOException e) {
-            return "Ingestion service returned "
-                + responseCode
-                + ", but could not parse response as json: "
+            return "Ingestion service returned " + responseCode + ", but could not parse response as json: "
                 + responseBody;
         }
 
-        String action =
-            responseCode == 401
-                ? ". Please provide Azure Active Directory credentials"
-                : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
-        return message + action
-            + " (telemetry will be stored to disk and retried)";
+        String action = responseCode == 401
+            ? ". Please provide Azure Active Directory credentials"
+            : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
+        return message + action + " (telemetry will be stored to disk and retried)";
     }
 }

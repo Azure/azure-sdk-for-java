@@ -21,7 +21,6 @@ public final class Response implements JsonSerializable<Response> {
     private String appId;
     private List<ResponseError> errors;
 
-
     public int getItemsReceived() {
         return itemsReceived;
     }
@@ -59,12 +58,8 @@ public final class Response implements JsonSerializable<Response> {
     }
 
     public String toString() {
-        return "Response{" +
-            "itemsReceived=" + itemsReceived +
-            ", itemsAccepted=" + itemsAccepted +
-            ", appId='" + appId + '\'' +
-            ", errors=" + errors +
-            '}';
+        return "Response{" + "itemsReceived=" + itemsReceived + ", itemsAccepted=" + itemsAccepted + ", appId='" + appId
+            + '\'' + ", errors=" + errors + '}';
     }
 
     @Override

@@ -64,44 +64,34 @@ public class FeatureStatsbeatTest {
 
     @Test
     public void testAddInstrumentationFirstLong() {
-        FeatureStatsbeat instrumentationStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(), FeatureType.INSTRUMENTATION);
+        FeatureStatsbeat instrumentationStatsbeat
+            = new FeatureStatsbeat(new CustomDimensions(), FeatureType.INSTRUMENTATION);
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.jdbc");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.tomcat-7.0");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.http-url-connection");
         long[] expectedLongArray = new long[1];
-        expectedLongArray[0] =
-            (long)
-                (Math.pow(2, 5)
-                    + Math.pow(2, 13)
-                    + Math.pow(
-                    2,
-                    21)); // Exponents are keys from StatsbeatTestUtils.INSTRUMENTATION_MAP_DECODING
+        expectedLongArray[0] = (long) (Math.pow(2, 5) + Math.pow(2, 13) + Math.pow(2, 21)); // Exponents are keys from StatsbeatTestUtils.INSTRUMENTATION_MAP_DECODING
         assertThat(instrumentationStatsbeat.getInstrumentation()).isEqualTo(expectedLongArray);
     }
 
     @Test
     public void testAddInstrumentationToSecondLongOnly() {
-        FeatureStatsbeat instrumentationStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(), FeatureType.INSTRUMENTATION);
+        FeatureStatsbeat instrumentationStatsbeat
+            = new FeatureStatsbeat(new CustomDimensions(), FeatureType.INSTRUMENTATION);
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.undertow-1.4");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.play-ws-2.0");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.vertx-kafka-client-3.5");
         long[] expectedLongArray = new long[2];
         expectedLongArray[0] = 0;
-        expectedLongArray[1] =
-            (long)
-                (Math.pow(2, 67 - 64)
-                    + Math.pow(2, 69 - 64)
-                    + Math.pow(2, 71 - 64)); // Exponents are keys from
+        expectedLongArray[1] = (long) (Math.pow(2, 67 - 64) + Math.pow(2, 69 - 64) + Math.pow(2, 71 - 64)); // Exponents are keys from
         // StatsbeatTestUtils.INSTRUMENTATION_MAP_DECODING - 1
         assertThat(instrumentationStatsbeat.getInstrumentation()).isEqualTo(expectedLongArray);
     }
 
     @Test
     public void testAddInstrumentationToBoth() {
-        FeatureStatsbeat instrumentationStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(), FeatureType.INSTRUMENTATION);
+        FeatureStatsbeat instrumentationStatsbeat
+            = new FeatureStatsbeat(new CustomDimensions(), FeatureType.INSTRUMENTATION);
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.undertow-1.4");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.play-ws-2.0");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.vertx-kafka-client-3.5");
@@ -110,8 +100,7 @@ public class FeatureStatsbeatTest {
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.http-url-connection");
         long[] expectedLongArray = new long[2];
         expectedLongArray[0] = (long) (Math.pow(2, 5) + Math.pow(2, 13) + Math.pow(2, 21));
-        expectedLongArray[1] =
-            (long) (Math.pow(2, 67 - 64) + Math.pow(2, 69 - 64) + Math.pow(2, 71 - 64));
+        expectedLongArray[1] = (long) (Math.pow(2, 67 - 64) + Math.pow(2, 69 - 64) + Math.pow(2, 71 - 64));
         assertThat(instrumentationStatsbeat.getInstrumentation()).isEqualTo(expectedLongArray);
     }
 
@@ -127,8 +116,7 @@ public class FeatureStatsbeatTest {
 
     private static void testFeature(Feature feature, boolean expected) {
         // given
-        FeatureStatsbeat featureStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(), FeatureType.FEATURE);
+        FeatureStatsbeat featureStatsbeat = new FeatureStatsbeat(new CustomDimensions(), FeatureType.FEATURE);
 
         // when
         if (expected) {
@@ -141,7 +129,7 @@ public class FeatureStatsbeatTest {
     }
 
     private static boolean getBitAtIndex(long feature, int index) {
-        BitSet bitSet = BitSet.valueOf(new long[]{feature});
+        BitSet bitSet = BitSet.valueOf(new long[] { feature });
         return bitSet.get(index);
     }
 }

@@ -40,8 +40,7 @@ public class QuickPulseExceptionDocument extends QuickPulseDocument {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return toJsonShared(jsonWriter.writeStartObject())
-            .writeStringField("Exception", exception)
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("Exception", exception)
             .writeStringField("ExceptionMessage", exceptionMessage)
             .writeStringField("ExceptionType", exceptionType)
             .writeEndObject();

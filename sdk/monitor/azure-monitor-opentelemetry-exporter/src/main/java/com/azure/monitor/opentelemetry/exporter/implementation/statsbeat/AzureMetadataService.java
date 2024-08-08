@@ -25,9 +25,8 @@ class AzureMetadataService implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(AzureMetadataService.class);
 
-    private static final ScheduledExecutorService scheduledExecutor =
-        Executors.newSingleThreadScheduledExecutor(
-            ThreadPoolUtils.createDaemonThreadFactory(AzureMetadataService.class));
+    private static final ScheduledExecutorService scheduledExecutor = Executors
+        .newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(AzureMetadataService.class));
 
     // this version has the smallest payload.
     private static final String API_VERSION = "api-version=2017-08-01";
@@ -40,13 +39,11 @@ class AzureMetadataService implements Runnable {
     private final HttpPipeline httpPipeline;
     private final Consumer<MetadataInstanceResponse> vmMetadataServiceCallback;
 
-    AzureMetadataService(AttachStatsbeat attachStatsbeat, CustomDimensions customDimensions, Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
+    AzureMetadataService(AttachStatsbeat attachStatsbeat, CustomDimensions customDimensions,
+        Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
         this.attachStatsbeat = attachStatsbeat;
         this.customDimensions = customDimensions;
-        this.httpPipeline =
-            new HttpPipelineBuilder()
-                .tracer(new NoopTracer())
-                .build();
+        this.httpPipeline = new HttpPipelineBuilder().tracer(new NoopTracer()).build();
         this.vmMetadataServiceCallback = vmMetadataServiceCallback;
     }
 
@@ -80,9 +77,11 @@ class AzureMetadataService implements Runnable {
             case "Windows":
                 customDimensions.setOperatingSystem(OperatingSystem.OS_WINDOWS);
                 break;
+
             case "Linux":
                 customDimensions.setOperatingSystem(OperatingSystem.OS_LINUX);
                 break;
+
             default:
                 // unknown, ignore
         }
@@ -96,8 +95,7 @@ class AzureMetadataService implements Runnable {
         try {
             response = httpPipeline.sendSync(request, Context.NONE);
         } catch (RuntimeException e) {
-            logger.debug(
-                "Shutting down AzureMetadataService scheduler: is not running on Azure VM or VMSS");
+            logger.debug("Shutting down AzureMetadataService scheduler: is not running on Azure VM or VMSS");
             logger.trace(e.getMessage(), e);
             scheduledExecutor.shutdown();
             return;
@@ -117,11 +115,8 @@ class AzureMetadataService implements Runnable {
         try {
             metadataInstanceResponse = MetadataInstanceResponse.fromJson(json);
         } catch (IOException e) {
-            logger.debug(
-                "Shutting down AzureMetadataService scheduler:"
-                    + " error parsing response from Azure Metadata Service: {}",
-                json,
-                e);
+            logger.debug("Shutting down AzureMetadataService scheduler:"
+                + " error parsing response from Azure Metadata Service: {}", json, e);
             scheduledExecutor.shutdown();
             return;
         }

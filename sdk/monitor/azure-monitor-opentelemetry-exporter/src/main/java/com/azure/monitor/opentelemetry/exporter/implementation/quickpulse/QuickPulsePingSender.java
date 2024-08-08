@@ -26,8 +26,8 @@ class QuickPulsePingSender {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulsePingSender.class);
 
-    private static final OperationLogger operationLogger =
-        new OperationLogger(QuickPulsePingSender.class, "Pinging live metrics endpoint");
+    private static final OperationLogger operationLogger
+        = new OperationLogger(QuickPulsePingSender.class, "Pinging live metrics endpoint");
 
     // TODO (kryalama) do we still need this AtomicBoolean, or can we use throttling built in to the
     //  operationLogger?
@@ -46,15 +46,8 @@ class QuickPulsePingSender {
     private long lastValidTransmission = 0;
     private final String sdkVersion;
 
-    QuickPulsePingSender(
-        HttpPipeline httpPipeline,
-        Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey,
-        String roleName,
-        String instanceName,
-        String machineName,
-        String quickPulseId,
-        String sdkVersion) {
+    QuickPulsePingSender(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
+        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion) {
         this.httpPipeline = httpPipeline;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -74,16 +67,10 @@ class QuickPulsePingSender {
         }
 
         Date currentDate = new Date();
-        String endpointPrefix =
-            Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-        HttpRequest request =
-            networkHelper.buildPingRequest(
-                currentDate,
-                getQuickPulsePingUri(endpointPrefix),
-                quickPulseId,
-                machineName,
-                roleName,
-                instanceName);
+        String endpointPrefix
+            = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+        HttpRequest request = networkHelper.buildPingRequest(currentDate, getQuickPulsePingUri(endpointPrefix),
+            quickPulseId, machineName, roleName, instanceName);
 
         long sendTime = System.nanoTime();
         HttpResponse response = null;
@@ -109,10 +96,9 @@ class QuickPulsePingSender {
                 }
             }
         } catch (Throwable t) {
-            if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
-                t, getQuickPulseEndpoint(), friendlyExceptionThrown, logger)) {
-                operationLogger.recordFailure(
-                    t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
+            if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, getQuickPulseEndpoint(),
+                friendlyExceptionThrown, logger)) {
+                operationLogger.recordFailure(t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
             }
         } finally {
             if (response != null) {

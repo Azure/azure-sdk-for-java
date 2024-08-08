@@ -20,8 +20,8 @@ public class TelemetryPipelineRequest {
     private final List<ByteBuffer> byteBuffers;
     private final int contentLength;
 
-    TelemetryPipelineRequest(
-        URL url, String connectionString, String instrumentationKey, List<ByteBuffer> byteBuffers) {
+    TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
+        List<ByteBuffer> byteBuffers) {
         this.url = url;
         this.connectionString = connectionString;
         this.instrumentationKey = instrumentationKey;

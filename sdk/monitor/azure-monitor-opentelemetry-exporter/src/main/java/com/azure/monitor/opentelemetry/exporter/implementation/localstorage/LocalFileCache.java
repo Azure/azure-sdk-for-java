@@ -49,7 +49,8 @@ class LocalFileCache {
     // load existing files that are not older than 48 hours
     // this will avoid data loss in the case of app crashes and restarts.
     private static List<File> loadPersistedFiles(File folder) {
-        return FileUtil.listTrnFiles(folder).stream()
+        return FileUtil.listTrnFiles(folder)
+            .stream()
             .filter(file -> !isExpired(file, TimeUnit.DAYS.toSeconds(2))) // filter before sorting
             .sorted(Comparator.comparing(File::lastModified))
             .collect(Collectors.toList());

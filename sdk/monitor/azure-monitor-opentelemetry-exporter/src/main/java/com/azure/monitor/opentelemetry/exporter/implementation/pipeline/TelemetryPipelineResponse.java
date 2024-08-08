@@ -60,7 +60,8 @@ public class TelemetryPipelineResponse {
     static Set<ResponseError> parseErrors(String body) {
         try (JsonReader reader = JsonProviders.createReader(body)) {
             Response response = Response.fromJson(reader);
-            return response.getErrors().stream()
+            return response.getErrors()
+                .stream()
                 .filter(error -> !error.getMessage().equals("Telemetry sampled out."))
                 .collect(Collectors.toSet());
         } catch (IOException e) {

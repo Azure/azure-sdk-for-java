@@ -39,7 +39,8 @@ class QuickPulseDataSender implements Runnable {
                 return;
             }
             if (quickPulseHeaderInfo.getQuickPulseStatus() != QuickPulseStatus.QP_IS_ON) {
-                logger.verbose("QuickPulseDataSender is not sending data because QP is " + quickPulseHeaderInfo.getQuickPulseStatus());
+                logger.verbose("QuickPulseDataSender is not sending data because QP is "
+                    + quickPulseHeaderInfo.getQuickPulseStatus());
                 continue;
             }
 
@@ -51,8 +52,7 @@ class QuickPulseDataSender implements Runnable {
                 }
 
                 if (networkHelper.isSuccess(response)) {
-                    QuickPulseHeaderInfo quickPulseHeaderInfo =
-                        networkHelper.getQuickPulseHeaderInfo(response);
+                    QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
                     switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
                         case QP_IS_OFF:
                         case QP_IS_ON:
