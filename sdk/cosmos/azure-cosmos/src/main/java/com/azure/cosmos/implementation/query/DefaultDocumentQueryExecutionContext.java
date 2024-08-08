@@ -205,14 +205,18 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                                       this.retries.incrementAndGet();
 
                 return Mono.just(req)
-                    .flatMap(request -> client.populateFeedRangeHeader(request))
-                    .flatMap(request -> client.addPartitionLevelUnavailableRegionsOnRequest(request, cosmosQueryRequestOptions, finalRetryPolicyInstance))
                     .flatMap(request -> {
-                        finalRetryPolicyInstance.onBeforeSendRequest(request);
-                        return executeRequestAsync(
-                            this.itemSerializer,
-                            req);
-                    });
+
+                        if(finalRetryPolicyInstance != null) {
+                            finalRetryPolicyInstance.onBeforeSendRequest(request);
+                        }
+
+                        return client.populateFeedRangeHeader(request);
+                    })
+                    .flatMap(request -> client.addPartitionLevelUnavailableRegionsOnRequest(request, cosmosQueryRequestOptions, finalRetryPolicyInstance))
+                    .flatMap(request -> executeRequestAsync(
+                        this.itemSerializer,
+                        req));
             }, finalRetryPolicyInstance)
             .map(tFeedResponse -> {
                 this.fetchSchedulingMetrics.stop();

@@ -1952,18 +1952,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 serializationDiagnosticsContext));
 
         return this.collectionCache.resolveCollectionAsync(metadataDiagnosticsContext, request)
-            .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null)
-                .flatMap(collectionRoutingMapValueHolder -> {
+            .flatMap(documentCollectionValueHolder -> {
 
-                    addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
 
-                    if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
-                        options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                        addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
-                    }
+                return this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
 
-                    return Mono.just(request);
-                }));
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
+
+                        addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
+
+                        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                        }
+
+                        return Mono.just(request);
+                    });
+            });
     }
 
     private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
@@ -2327,8 +2338,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     RxDocumentServiceRequest request = requestToDocumentCollection.getT1();
                     Utils.ValueHolder<DocumentCollection> documentCollectionValueHolder = requestToDocumentCollection.getT2();
 
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
+
                     return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
+
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
@@ -2619,32 +2638,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     RxDocumentServiceRequest request = requestToDocumentCollection.getT1();
                     Utils.ValueHolder<DocumentCollection> documentCollectionValueHolder = requestToDocumentCollection.getT2();
 
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
+
                     return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
-                            if (collectionRoutingMapValueHolder != null && collectionRoutingMapValueHolder.v != null) {
-
-                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                                addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
-
-                                request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                                requestReference.set(request);
-
-                                // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                                // excluded regions to know the next location endpoint to route the request to
-                                // unavailable regions are effectively excluded regions for this request
-                                if (retryPolicyInstance != null) {
-                                    retryPolicyInstance.onBeforeSendRequest(request);
-                                }
-
-                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                                // to the RxDocumentServiceRequest instance
-                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
-
-                                return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
-                            } else {
-                                return Mono.error(new NotFoundException());
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
                             }
+
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                            requestReference.set(request);
+
+                            // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
+                            // excluded regions to know the next location endpoint to route the request to
+                            // unavailable regions are effectively excluded regions for this request
+                            if (retryPolicyInstance != null) {
+                                retryPolicyInstance.onBeforeSendRequest(request);
+                            }
+
+                            // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                            // to the RxDocumentServiceRequest instance
+                            mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                            return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
                         })
                         .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
@@ -2899,25 +2921,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             addPartitionKeyInformation(request, content, document, options, collectionObs, pointOperationContextForCircuitBreaker);
 
         return collectionObs
-            .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
-                .flatMap(collectionRoutingMapValueHolder -> {
-                    return requestObs.flatMap(req -> {
+            .flatMap(documentCollectionValueHolder -> {
 
-                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                            addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
 
-                            req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                            requestReference.set(req);
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
 
-                            // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                            // to the RxDocumentServiceRequest instance
-                            mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
 
-                            return replace(request, retryPolicyInstance);
-                        })
-                        .map(resp -> toResourceResponse(resp, Document.class));
+                        return requestObs.flatMap(req -> {
 
-                }));
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return replace(request, retryPolicyInstance);
+                            })
+                            .map(resp -> toResourceResponse(resp, Document.class));
+                    });
+            });
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
@@ -3076,23 +3109,37 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             pointOperationContextForCircuitBreaker);
 
         return collectionObs
-            .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
-                .flatMap(collectionRoutingMapValueHolder -> requestObs
-                    .flatMap(req -> {
+            .flatMap(documentCollectionValueHolder -> {
 
-                        options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                        addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
 
-                        req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                        requestReference.set(req);
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
 
-                        // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                        // to the RxDocumentServiceRequest instance
-                        mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
 
-                        return patch(request, retryPolicyInstance);
-                    })
-                    .map(resp -> toResourceResponse(resp, Document.class))));
+                        return requestObs
+                            .flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return patch(request, retryPolicyInstance);
+                            })
+                            .map(resp -> toResourceResponse(resp, Document.class));
+                    });
+            });
     }
 
     @Override
@@ -3359,9 +3406,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
             return collectionObs.flatMap(documentCollectionValueHolder -> {
+
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
+
                     DocumentCollection documentCollection = documentCollectionValueHolder.v;
                     return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
+
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
+
                             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, pointOperationContextForCircuitBreaker);
 
                             return requestObs.flatMap(req -> {
@@ -3994,6 +4051,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
 
+                            // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                            // to route the request to unavailable regions are effectively excluded regions for this request
                             if (documentClientRetryPolicy != null) {
                                 documentClientRetryPolicy.onBeforeSendRequest(request);
                             }

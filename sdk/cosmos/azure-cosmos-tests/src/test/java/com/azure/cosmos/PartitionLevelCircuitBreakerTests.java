@@ -2181,8 +2181,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
     }
 
-    @DataProvider(name = "masterResourceFailuresDataProviderReadMany")
-    public Object[][] masterResourceFailuresDataProviderReadMany() {
+    @DataProvider(name = "gatewayRoutedFailuresParametersDataProvider_ReadMany")
+    public Object[][] gatewayRoutedFailuresParametersDataProvider_ReadMany() {
 
         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeReadManyOperation = (paramsWrapper) -> {
             CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
@@ -2259,8 +2259,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
     }
 
-    @DataProvider(name = "masterResourceFailuresDataProviderMiscGateway")
-    public Object[][] masterResourceFailuresDataProviderMiscGateway() {
+    @DataProvider(name = "gatewayRoutedFailuresParametersDataProviderMiscGateway")
+    public Object[][] gatewayRoutedFailuresParametersDataProviderMiscGateway() {
 
         return new Object[][]{
             {
@@ -2617,8 +2617,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
     }
 
-    @DataProvider(name = "masterResourceFailuresDataProviderMiscDirect")
-    public Object[][] masterResourceFailuresDataProviderMiscDirect() {
+    @DataProvider(name = "gatewayRoutedFailuresParametersDataProviderMiscDirect")
+    public Object[][] gatewayRoutedFailuresParametersDataProviderMiscDirect() {
 
         return new Object[][]{
             {
@@ -3651,7 +3651,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
 
     @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "gatewayRoutedFailureParametersDataProvider_ReadAll", timeOut = 4 * TIMEOUT)
-    public void testReadAll_withAllGatewayRoutedOperationFailuresInPrimaryRegion(
+    public void testReadAll_withAllGatewayRoutedOperationFailures(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
@@ -3743,8 +3743,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
     }
 
 
-    @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "masterResourceFailuresDataProviderReadMany", timeOut = 4 * TIMEOUT)
-    public void testReadMany_withAllGatewayRoutedOperationFailuresInPrimaryRegion(String testId,
+    @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "gatewayRoutedFailuresParametersDataProvider_ReadMany", timeOut = 4 * TIMEOUT)
+    public void testReadMany_withAllGatewayRoutedOperationFailures(String testId,
                                                         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
                                                         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
                                                         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
@@ -3851,7 +3851,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "masterResourceFailuresDataProviderMiscGateway", timeOut = 4 * TIMEOUT)
+    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "gatewayRoutedFailuresParametersDataProviderMiscGateway", timeOut = 4 * TIMEOUT)
     public void testMiscOperation_withAllGatewayRoutedOperationFailuresInPrimaryRegion_withGatewayConnectivity(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -3942,7 +3942,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "masterResourceFailuresDataProviderMiscDirect", timeOut = 4 * TIMEOUT)
+    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "gatewayRoutedFailuresParametersDataProviderMiscDirect", timeOut = 4 * TIMEOUT)
     public void testMiscOperation_withAllGatewayRoutedOperationFailuresInPrimaryRegion_withDirectConnectivity(String testId,
                                                                                      FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
                                                                                      Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,

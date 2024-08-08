@@ -70,7 +70,9 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
                 CosmosException dce = Utils.as(err, CosmosException.class);
-                if (dce != null && Exceptions.isNotFound(dce)&& !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
+
+                // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
 
@@ -179,6 +181,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                             partitionKeyRangeId,
                             err);
 
+                    // bubble up in case a 404:1002 is seen to force retries as a part of document retries
                     if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }

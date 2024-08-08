@@ -156,11 +156,6 @@ class DocumentProducer<T> {
                     })
                     .flatMap(req -> client.addPartitionLevelUnavailableRegionsOnRequest(req, cosmosQueryRequestOptions, finalRetryPolicy))
                     .flatMap(req -> {
-
-                        if(finalRetryPolicy != null) {
-                            finalRetryPolicy.onBeforeSendRequest(req);
-                        }
-
                         ++retries;
                         return executeRequestFunc.apply(req);
                     }), finalRetryPolicy);
