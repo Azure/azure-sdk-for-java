@@ -37,9 +37,15 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     @Generated
     private final ChatResponseMessage message;
 
+    /*
+     * The delta message content for a streaming response.
+     */
+    @Generated
+    private ChatResponseMessage delta;
+
     /**
      * Creates an instance of ChatChoice class.
-     * 
+     *
      * @param index the index value to set.
      * @param finishReason the finishReason value to set.
      * @param message the message value to set.
@@ -53,7 +59,7 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
 
     /**
      * Get the index property: The ordered index associated with this chat completions choice.
-     * 
+     *
      * @return the index value.
      */
     @Generated
@@ -62,8 +68,17 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     }
 
     /**
+     * Get the delta property: The delta message content for a streaming response.
+     *
+     * @return the delta value.
+     */
+    public ChatResponseMessage getDelta() {
+        return this.delta;
+    }
+
+    /**
      * Get the finishReason property: The reason that this chat completions choice completed its generated.
-     * 
+     *
      * @return the finishReason value.
      */
     @Generated
@@ -73,7 +88,7 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
 
     /**
      * Get the message property: The chat message for a given chat completions prompt.
-     * 
+     *
      * @return the message value.
      */
     @Generated
@@ -84,31 +99,31 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("index", this.index);
         jsonWriter.writeStringField("finish_reason", this.finishReason == null ? null : this.finishReason.toString());
         jsonWriter.writeJsonField("message", this.message);
+        jsonWriter.writeJsonField("delta", this.delta);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ChatChoice from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChatChoice if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatChoice.
      */
-    @Generated
     public static ChatChoice fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int index = 0;
             CompletionsFinishReason finishReason = null;
             ChatResponseMessage message = null;
+            ChatResponseMessage delta = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -117,13 +132,18 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
                     index = reader.getInt();
                 } else if ("finish_reason".equals(fieldName)) {
                     finishReason = CompletionsFinishReason.fromString(reader.getString());
+                } else if ("delta".equals(fieldName)) {
+                    delta = ChatResponseMessage.fromJson(reader);
                 } else if ("message".equals(fieldName)) {
                     message = ChatResponseMessage.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ChatChoice(index, finishReason, message);
+
+            ChatChoice deserializedChatChoice = new ChatChoice(index, finishReason, message);
+            deserializedChatChoice.delta = delta;
+            return deserializedChatChoice;
         });
     }
 }

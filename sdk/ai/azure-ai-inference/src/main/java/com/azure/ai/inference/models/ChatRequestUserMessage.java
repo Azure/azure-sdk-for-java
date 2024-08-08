@@ -7,10 +7,12 @@ package com.azure.ai.inference.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -31,7 +33,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
 
     /**
      * Creates an instance of ChatRequestUserMessage class.
-     * 
+     *
      * @param content the content value to set.
      */
     @Generated
@@ -41,7 +43,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
 
     /**
      * Get the role property: The chat role associated with this message.
-     * 
+     *
      * @return the role value.
      */
     @Generated
@@ -52,7 +54,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
 
     /**
      * Get the content property: The contents of the user message, with available input types varying by selected model.
-     * 
+     *
      * @return the content value.
      */
     @Generated
@@ -74,7 +76,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
 
     /**
      * Reads an instance of ChatRequestUserMessage from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChatRequestUserMessage if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -104,4 +106,26 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
             return deserializedChatRequestUserMessage;
         });
     }
+
+    /**
+     * Creates an instance of ChatRequestUserMessage class.
+     *
+     * @param content the content value to set.
+     * @return An instance of ChatRequestUserMessage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     */
+    public static ChatRequestUserMessage fromString(String content) {
+        String jsonPrompt = "{"
+            + "\"content\":\"%s\""
+            + "}";
+        String contentString = String.format(jsonPrompt, content);
+        try {
+            return ChatRequestUserMessage.fromJson(
+                JsonProviders.createReader(new StringReader(contentString))
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ package com.azure.ai.inference.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -44,8 +45,17 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
+     * Creates an instance of ChatRequestUserMessage class.
+     *
+     * @param content the content value to set.
+     */
+    public ChatRequestAssistantMessage(String content) {
+        this.content = content;
+    }
+
+    /**
      * Get the role property: The chat role associated with this message.
-     * 
+     *
      * @return the role value.
      */
     @Generated
@@ -56,7 +66,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
 
     /**
      * Get the content property: The content of the message.
-     * 
+     *
      * @return the content value.
      */
     @Generated
@@ -66,7 +76,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
 
     /**
      * Set the content property: The content of the message.
-     * 
+     *
      * @param content the content value to set.
      * @return the ChatRequestAssistantMessage object itself.
      */
@@ -80,7 +90,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * Get the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent
      * input messages for the chat
      * completions request to resolve as configured.
-     * 
+     *
      * @return the toolCalls value.
      */
     @Generated
@@ -92,7 +102,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * Set the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent
      * input messages for the chat
      * completions request to resolve as configured.
-     * 
+     *
      * @param toolCalls the toolCalls value to set.
      * @return the ChatRequestAssistantMessage object itself.
      */
@@ -117,7 +127,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
 
     /**
      * Reads an instance of ChatRequestAssistantMessage from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChatRequestAssistantMessage if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
