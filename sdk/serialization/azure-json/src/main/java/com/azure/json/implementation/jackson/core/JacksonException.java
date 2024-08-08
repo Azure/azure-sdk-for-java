@@ -18,26 +18,20 @@ public abstract class JacksonException extends java.io.IOException {
         super(msg);
     }
 
-    protected JacksonException(Throwable t) {
-        super(t);
-    }
-
     protected JacksonException(String msg, Throwable rootCause) {
         super(msg, rootCause);
         // 23-Sep-2020, tatu: before 2.12, had null checks for some reason...
-        // But I don't think that is actually required; Javadocs for
-        // `java.lang.Throwable` constructor claim {@code null} is fine.
-        /*
-         * if (rootCause != null) {
-         * initCause(rootCause);
-         * }
-         */
+        //   But I don't think that is actually required; Javadocs for
+        //   `java.lang.Throwable` constructor claim {@code null} is fine.
+        /*        if (rootCause != null) {
+            initCause(rootCause);
+        }*/
     }
 
     /*
-     * /**********************************************************************
-     * /* Extended API
-     * /**********************************************************************
+    /**********************************************************************
+    /* Extended API
+    /**********************************************************************
      */
 
     /**
@@ -52,30 +46,4 @@ public abstract class JacksonException extends java.io.IOException {
      *    available; {@code null} otherwise.
      */
     public abstract JsonLocation getLocation();
-
-    /**
-     * Method that allows accessing the original "message" argument,
-     * without additional decorations (like location information)
-     * that overridden {@link #getMessage} adds.
-     *
-     * @return Original, unmodified {@code message} argument used to construct
-     *    this exception instance
-     */
-    public abstract String getOriginalMessage();
-
-    /**
-     * Method that allows accessing underlying processor that triggered
-     * this exception; typically either {@link JsonParser} or {@link JsonGenerator}
-     * for exceptions that originate from streaming API, but may be other types
-     * when thrown by databinding.
-     *<p>
-     * Note that it is possible that {@code null} may be returned if code throwing
-     * exception either has no access to the processor; or has not been retrofitted
-     * to set it; this means that caller needs to take care to check for nulls.
-     * Subtypes override this method with co-variant return type, for more
-     * type-safe access.
-     * 
-     * @return Originating processor, if available; {@code null} if not.
-     */
-    public abstract Object getProcessor();
 }

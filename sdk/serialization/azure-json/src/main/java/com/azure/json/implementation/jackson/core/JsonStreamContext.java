@@ -1,13 +1,11 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
 
 package com.azure.json.implementation.jackson.core;
 
-import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.ContentReference;
 
 /**
@@ -40,7 +38,7 @@ public abstract class JsonStreamContext {
     public final static int TYPE_OBJECT = 2;
 
     /**
-     * Indicates logical type of context as one of {@code TYPE_xxx} consants.
+     * Indicates logical type of context as one of {@code TYPE_xxx} constants.
      */
     protected int _type;
 
@@ -53,38 +51,27 @@ public abstract class JsonStreamContext {
      */
     protected int _index;
 
+    /**
+     * The nesting depth is a count of objects and arrays that have not
+     * been closed, `{` and `[` respectively.
+     *
+     * @since 2.15
+     */
+    protected int _nestingDepth;
+
     /*
-     * /**********************************************************
-     * /* Life-cycle
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle
+    /**********************************************************
      */
 
     protected JsonStreamContext() {
     }
 
-    /**
-     * Copy constructor used by sub-classes for creating copies for
-     * buffering.
-     *
-     * @param base Context instance to copy type and index from
-     *
-     * @since 2.9
-     */
-    protected JsonStreamContext(JsonStreamContext base) {
-        _type = base._type;
-        _index = base._index;
-    }
-
-    // @since 2.9
-    protected JsonStreamContext(int type, int index) {
-        _type = type;
-        _index = index;
-    }
-
     /*
-     * /**********************************************************
-     * /* Public API, accessors
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, accessors
+    /**********************************************************
      */
 
     /**
@@ -127,30 +114,22 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * @return Type description String
-     * 
-     * @deprecated Since 2.8 use {@link #typeDesc} instead
+     * The nesting depth is a count of objects and arrays that have not
+     * been closed, `{` and `[` respectively.
+     *
+     * @return Nesting depth
+     *
+     * @since 2.15
      */
-    @Deprecated // since 2.8
-    public final String getTypeDesc() {
-        switch (_type) {
-            case TYPE_ROOT:
-                return "ROOT";
-
-            case TYPE_ARRAY:
-                return "ARRAY";
-
-            case TYPE_OBJECT:
-                return "OBJECT";
-        }
-        return "?";
+    public final int getNestingDepth() {
+        return _nestingDepth;
     }
 
     /**
      * Method for accessing simple type description of current context;
      * either ROOT (for root-level values), OBJECT (for field names and
      * values of JSON Objects) or ARRAY (for values of JSON Arrays)
-     * 
+     *
      * @return Type description String
      *
      * @since 2.8
@@ -170,61 +149,6 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * @return Number of entries that are complete and started.
-     */
-    public final int getEntryCount() {
-        return _index + 1;
-    }
-
-    /**
-     * @return Index of the currently processed entry, if any
-     */
-    public final int getCurrentIndex() {
-        return (_index < 0) ? 0 : _index;
-    }
-
-    /**
-     * Method that may be called to verify whether this context has valid index:
-     * will return `false` before the first entry of Object context or before
-     * first element of Array context; otherwise returns `true`.
-     *
-     * @return {@code True} if this context has value index to access, {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasCurrentIndex() {
-        return _index >= 0;
-    }
-
-    /**
-     * Method that may be called to check if this context is either:
-     *<ul>
-     * <li>Object, with at least one entry written (partially or completely)
-     *  </li>
-     * <li>Array, with at least one entry written (partially or completely)
-     *  </li>
-     *</ul>
-     * and if so, return `true`; otherwise return `false`. Latter case includes
-     * Root context (always), and Object/Array contexts before any entries/elements
-     * have been read or written.
-     *<p>
-     * Method is mostly used to determine whether this context should be used for
-     * constructing {@link JsonPointer}
-     *
-     * @return {@code True} if this context has value path segment to access, {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasPathSegment() {
-        if (_type == TYPE_OBJECT) {
-            return hasCurrentName();
-        } else if (_type == TYPE_ARRAY) {
-            return hasCurrentIndex();
-        }
-        return false;
-    }
-
-    /**
      * Method for accessing name associated with the current location.
      * Non-null for <code>FIELD_NAME</code> and value events that directly
      * follow field names; null for root level and array values.
@@ -232,74 +156,6 @@ public abstract class JsonStreamContext {
      * @return Current field name within context, if any; {@code null} if none
      */
     public abstract String getCurrentName();
-
-    /**
-     * @return {@code True} if a call to {@link #getCurrentName()} would return non-{@code null}
-     *    name; {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasCurrentName() {
-        return getCurrentName() != null;
-    }
-
-    /**
-     * Method for accessing currently active value being used by data-binding
-     * (as the source of streaming data to write, or destination of data being
-     * read), at this level in hierarchy.
-     *<p>
-     * Note that "current value" is NOT populated (or used) by Streaming parser or generator;
-     * it is only used by higher-level data-binding functionality.
-     * The reason it is included here is that it can be stored and accessed hierarchically,
-     * and gets passed through data-binding.
-     * 
-     * @return Currently active value, if one has been assigned.
-     * 
-     * @since 2.5
-     */
-    public Object getCurrentValue() {
-        return null;
-    }
-
-    /**
-     * Method to call to pass value to be returned via {@link #getCurrentValue}; typically
-     * called indirectly through {@link JsonParser#setCurrentValue}
-     * or {@link JsonGenerator#setCurrentValue}).
-     *
-     * @param v Current value to assign to this context
-     *
-     * @since 2.5
-     */
-    public void setCurrentValue(Object v) {
-    }
-
-    /**
-     * Factory method for constructing a {@link JsonPointer} that points to the current
-     * location within the stream that this context is for, excluding information about
-     * "root context" (only relevant for multi-root-value cases)
-     *
-     * @return Pointer instance constructed
-     *
-     * @since 2.9
-     */
-    public JsonPointer pathAsPointer() {
-        return JsonPointer.forPath(this, false);
-    }
-
-    /**
-     * Factory method for constructing a {@link JsonPointer} that points to the current
-     * location within the stream that this context is for, optionally including
-     * "root value index"
-     *
-     * @param includeRoot Whether root-value offset is included as the first segment or not;
-     *
-     * @return Pointer instance constructed
-     *
-     * @since 2.9
-     */
-    public JsonPointer pathAsPointer(boolean includeRoot) {
-        return JsonPointer.forPath(this, includeRoot);
-    }
 
     /**
      * Optional method that may be used to access starting location of this context:
@@ -317,57 +173,5 @@ public abstract class JsonStreamContext {
      */
     public JsonLocation startLocation(ContentReference srcRef) {
         return JsonLocation.NA;
-    }
-
-    /**
-     * @param srcRef Source reference needed to construct location instance
-     * @return Location pointing to the point where the context
-     *   start marker was found (or written); never {@code null}.
-     * @since 2.9
-     * @deprecated Since 2.13 use {@link #startLocation} instead
-     */
-    @Deprecated
-    public JsonLocation getStartLocation(Object srcRef) {
-        return JsonLocation.NA;
-    }
-
-    /**
-     * Overridden to provide developer readable "JsonPath" representation
-     * of the context.
-     *
-     * @return Simple developer-readable description this context layer
-     *   (note: NOT constructed with parents, unlike {@link #pathAsPointer})
-     * 
-     * @since 2.9
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(64);
-        switch (_type) {
-            case TYPE_ROOT:
-                sb.append("/");
-                break;
-
-            case TYPE_ARRAY:
-                sb.append('[');
-                sb.append(getCurrentIndex());
-                sb.append(']');
-                break;
-
-            case TYPE_OBJECT:
-            default:
-                sb.append('{');
-                String currentName = getCurrentName();
-                if (currentName != null) {
-                    sb.append('"');
-                    CharTypes.appendQuoted(sb, currentName);
-                    sb.append('"');
-                } else {
-                    sb.append('?');
-                }
-                sb.append('}');
-                break;
-        }
-        return sb.toString();
     }
 }

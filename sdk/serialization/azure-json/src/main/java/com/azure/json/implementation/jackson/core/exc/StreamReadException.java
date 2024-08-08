@@ -26,41 +26,15 @@ public abstract class StreamReadException extends JsonProcessingException {
     protected RequestPayload _requestPayload;
 
     protected StreamReadException(JsonParser p, String msg) {
-        super(msg, (p == null) ? null : p.getCurrentLocation());
-        _processor = p;
+        this(p, msg, _currentLocation(p), null);
     }
 
-    protected StreamReadException(JsonParser p, String msg, Throwable root) {
-        super(msg, (p == null) ? null : p.getCurrentLocation(), root);
-        _processor = p;
-    }
-
-    protected StreamReadException(JsonParser p, String msg, JsonLocation loc) {
-        super(msg, loc, null);
-        _processor = p;
-    }
-
+    // Canonical constructor
     // @since 2.13
     protected StreamReadException(JsonParser p, String msg, JsonLocation loc, Throwable rootCause) {
         super(msg, loc, rootCause);
         _processor = p;
     }
-
-    protected StreamReadException(String msg, JsonLocation loc, Throwable rootCause) {
-        super(msg, loc, rootCause);
-    }
-
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     *
-     * @param p Parser instance to assign to this exception
-     *
-     * @return This exception instance to allow call chaining
-     */
-    public abstract StreamReadException withParser(JsonParser p);
 
     /**
      * Fluent method that may be used to assign payload to this exception,
@@ -74,31 +48,6 @@ public abstract class StreamReadException extends JsonProcessingException {
      */
     public abstract StreamReadException withRequestPayload(RequestPayload payload);
 
-    @Override
-    public JsonParser getProcessor() {
-        return _processor;
-    }
-
-    /**
-     * Method that may be called to find payload that was being parsed, if
-     * one was specified for parser that threw this Exception.
-     *
-     * @return request body, if payload was specified; `null` otherwise
-     */
-    public RequestPayload getRequestPayload() {
-        return _requestPayload;
-    }
-
-    /**
-     * The method returns the String representation of the request payload if
-     * one was specified for parser that threw this Exception.
-     * 
-     * @return request body as String, if payload was specified; `null` otherwise
-     */
-    public String getRequestPayloadAsString() {
-        return (_requestPayload != null) ? _requestPayload.toString() : null;
-    }
-
     /**
      * Overriding the getMessage() to include the request body
      */
@@ -106,8 +55,13 @@ public abstract class StreamReadException extends JsonProcessingException {
     public String getMessage() {
         String msg = super.getMessage();
         if (_requestPayload != null) {
-            msg += "\nRequest payload : " + _requestPayload.toString();
+            msg += "\nRequest payload : " + _requestPayload;
         }
         return msg;
+    }
+
+    // @since 2.17
+    protected static JsonLocation _currentLocation(JsonParser p) {
+        return (p == null) ? null : p.currentLocation();
     }
 }

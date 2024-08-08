@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -18,19 +17,9 @@ import com.azure.json.implementation.jackson.core.util.RequestPayload;
 public class JsonParseException extends StreamReadException {
     private static final long serialVersionUID = 2L; // 2.7
 
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc) {
-        super(msg, loc, null);
-    }
-
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc, Throwable root) {
-        super(msg, loc, root);
-    }
-
     /**
      * Constructor that uses current parsing location as location, and
-     * sets processor (accessible via {@link #getProcessor()}) to
+     * sets processor (accessible via {@code #getProcessor()}) to
      * specified parser.
      *
      * @param p Parser in use when encountering issue reported
@@ -39,40 +28,23 @@ public class JsonParseException extends StreamReadException {
      * @since 2.7
      */
     public JsonParseException(JsonParser p, String msg) {
-        super(p, msg);
+        this(p, msg, _currentLocation(p), null);
     }
 
     // @since 2.7
-    public JsonParseException(JsonParser p, String msg, Throwable root) {
-        super(p, msg, root);
+    public JsonParseException(JsonParser p, String msg, Throwable rootCause) {
+        this(p, msg, _currentLocation(p), rootCause);
     }
 
     // @since 2.7
     public JsonParseException(JsonParser p, String msg, JsonLocation loc) {
-        super(p, msg, loc);
+        this(p, msg, loc, null);
     }
 
+    // Canonical constructor
     // @since 2.7
-    public JsonParseException(JsonParser p, String msg, JsonLocation loc, Throwable root) {
-        super(msg, loc, root);
-    }
-
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     *
-     * @param p Parser instance to assign to this exception
-     *
-     * @return This exception instance to allow call chaining
-     *
-     * @since 2.7
-     */
-    @Override
-    public JsonParseException withParser(JsonParser p) {
-        _processor = p;
-        return this;
+    public JsonParseException(JsonParser p, String msg, JsonLocation loc, Throwable rootCause) {
+        super(p, msg, loc, rootCause);
     }
 
     /**
@@ -91,24 +63,6 @@ public class JsonParseException extends StreamReadException {
     public JsonParseException withRequestPayload(RequestPayload payload) {
         _requestPayload = payload;
         return this;
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public JsonParser getProcessor() {
-        return super.getProcessor();
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public RequestPayload getRequestPayload() {
-        return super.getRequestPayload();
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public String getRequestPayloadAsString() {
-        return super.getRequestPayloadAsString();
     }
 
     // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)

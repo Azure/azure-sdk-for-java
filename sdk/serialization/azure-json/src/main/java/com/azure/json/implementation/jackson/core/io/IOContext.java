@@ -1,8 +1,12 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
+import com.azure.json.implementation.jackson.core.ErrorReportConfiguration;
 import com.azure.json.implementation.jackson.core.JsonEncoding;
+import com.azure.json.implementation.jackson.core.StreamReadConstraints;
+import com.azure.json.implementation.jackson.core.StreamWriteConstraints;
 import com.azure.json.implementation.jackson.core.util.BufferRecycler;
+import com.azure.json.implementation.jackson.core.util.ReadConstrainedTextBuffer;
 import com.azure.json.implementation.jackson.core.util.TextBuffer;
 
 /**
@@ -13,11 +17,11 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  *<p>
  * NOTE: non-final since 2.4, to allow sub-classing.
  */
-public class IOContext {
+public class IOContext implements AutoCloseable {
     /*
-     * /**********************************************************************
-     * /* Configuration
-     * /**********************************************************************
+    /**********************************************************************
+    /* Configuration
+    /**********************************************************************
      */
 
     /**
@@ -25,14 +29,6 @@ public class IOContext {
      * location information
      */
     protected final ContentReference _contentReference;
-
-    /**
-     * Old, deprecated "raw" reference to input source.
-     *
-     * @deprecated Since 2.13, use {@link #_contentReference} instead
-     */
-    @Deprecated
-    protected final Object _sourceRef;
 
     /**
      * Encoding used by the underlying stream, if known.
@@ -50,15 +46,40 @@ public class IOContext {
     protected final boolean _managedResource;
 
     /*
-     * /**********************************************************************
-     * /* Buffer handling, recycling
-     * /**********************************************************************
+    /**********************************************************************
+    /* Buffer handling, recycling
+    /**********************************************************************
      */
 
     /**
      * Recycler used for actual allocation/deallocation/reuse
      */
     protected final BufferRecycler _bufferRecycler;
+
+    /**
+     * Flag that indicates whether this context instance should release
+     * configured {@code _bufferRecycler} or not: if it does, it needs to call
+     * (via {@link BufferRecycler#releaseToPool()} when closed; if not,
+     * should do nothing (recycler life-cycle is externally managed)
+     *
+     * @since 2.17
+     */
+    protected boolean _releaseRecycler = true;
+
+    /**
+     * @since 2.15
+     */
+    protected final StreamReadConstraints _streamReadConstraints;
+
+    /**
+     * @since 2.16
+     */
+    protected final StreamWriteConstraints _streamWriteConstraints;
+
+    /**
+     * @since 2.16
+     */
+    protected final ErrorReportConfiguration _errorReportConfiguration;
 
     /**
      * Reference to the allocated I/O buffer for low-level input reading,
@@ -71,12 +92,6 @@ public class IOContext {
      * encoding-related buffering.
      */
     protected byte[] _writeEncodingBuffer;
-
-    /**
-     * Reference to the buffer allocated for temporary use with
-     * base64 encoding or decoding.
-     */
-    protected byte[] _base64Buffer;
 
     /**
      * Reference to the buffer allocated for tokenization purposes,
@@ -100,47 +115,77 @@ public class IOContext {
      */
     protected char[] _nameCopyBuffer;
 
+    private boolean _closed = false;
+
     /*
-     * /**********************************************************************
-     * /* Life-cycle
-     * /**********************************************************************
+    /**********************************************************************
+    /* Life-cycle
+    /**********************************************************************
      */
 
     /**
      * Main constructor to use.
-     * 
+     *
      * @param br BufferRecycler to use, if any ({@code null} if none)
      * @param contentRef Input source reference for location reporting
      * @param managedResource Whether input source is managed (owned) by Jackson library
-     *
-     * @since 2.13
+     * @since 2.16
      */
     public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
+        _streamReadConstraints = StreamReadConstraints.defaults();
+        _streamWriteConstraints = StreamWriteConstraints.defaults();
+        _errorReportConfiguration = ErrorReportConfiguration.defaults();
         _bufferRecycler = br;
         _contentReference = contentRef;
-        _sourceRef = contentRef.getRawContent();
         _managedResource = managedResource;
     }
 
-    @Deprecated // since 2.13
-    public IOContext(BufferRecycler br, Object rawContent, boolean managedResource) {
-        this(br, ContentReference.rawReference(rawContent), managedResource);
+    /**
+     * Method to call to prevent {@link #_bufferRecycler} release upon
+     * {@link #close()}: called when {@link #_bufferRecycler} life-cycle is
+     * externally managed.
+     *
+     * @since 2.17
+     */
+    public void markBufferRecyclerReleased() {
+        _releaseRecycler = false;
+    }
+
+    /*
+    /**********************************************************************
+    /* Public API, accessors
+    /**********************************************************************
+     */
+
+    /**
+     * @return constraints for streaming reads
+     * @since 2.15
+     */
+    public StreamReadConstraints streamReadConstraints() {
+        return _streamReadConstraints;
+    }
+
+    /**
+     * @return constraints for streaming writes
+     * @since 2.16
+     */
+    public StreamWriteConstraints streamWriteConstraints() {
+        return _streamWriteConstraints;
+    }
+
+    /**
+     * @return Configured {@link ErrorReportConfiguration}, containing configured values for
+     * handling error reporting.
+     *
+     * @since 2.16
+     */
+    public ErrorReportConfiguration errorReportConfiguration() {
+        return _errorReportConfiguration;
     }
 
     public void setEncoding(JsonEncoding enc) {
         _encoding = enc;
     }
-
-    public IOContext withEncoding(JsonEncoding enc) {
-        _encoding = enc;
-        return this;
-    }
-
-    /*
-     * /**********************************************************************
-     * /* Public API, accessors
-     * /**********************************************************************
-     */
 
     public JsonEncoding getEncoding() {
         return _encoding;
@@ -150,35 +195,14 @@ public class IOContext {
         return _managedResource;
     }
 
-    /**
-     * Accessor for getting (some) information about input source, mostly
-     * usable for error reporting purposes.
-     * 
-     * @return Reference to input source
-     *
-     * @since 2.13
-     */
-    public ContentReference contentReference() {
-        return _contentReference;
-    }
-
-    /**
-     * @deprecated Since 2.13, use {@link #contentReference()} instead
-     * @return "Raw" source reference
-     */
-    @Deprecated
-    public Object getSourceReference() {
-        return _sourceRef;
-    }
-
     /*
-     * /**********************************************************************
-     * /* Public API, buffer management
-     * /**********************************************************************
+    /**********************************************************************
+    /* Public API, buffer management
+    /**********************************************************************
      */
 
-    public TextBuffer constructTextBuffer() {
-        return new TextBuffer(_bufferRecycler);
+    public TextBuffer constructReadConstrainedTextBuffer() {
+        return new ReadConstrainedTextBuffer(_streamReadConstraints, _bufferRecycler);
     }
 
     /**
@@ -195,21 +219,6 @@ public class IOContext {
     }
 
     /**
-     * Variant of {@link #allocReadIOBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocReadIOBuffer(int minSize) {
-        _verifyAlloc(_readIOBuffer);
-        return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, minSize));
-    }
-
-    /**
      * Method for recycling or allocation byte buffer of "write encoding" type.
      *<p>
      * Note: the method can only be called once during its life cycle.
@@ -220,50 +229,6 @@ public class IOContext {
     public byte[] allocWriteEncodingBuffer() {
         _verifyAlloc(_writeEncodingBuffer);
         return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER));
-    }
-
-    /**
-     * Variant of {@link #allocWriteEncodingBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocWriteEncodingBuffer(int minSize) {
-        _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer
-            = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
-    }
-
-    /**
-     * Method for recycling or allocation byte buffer of "base 64 encode/decode" type.
-     *<p>
-     * Note: the method can only be called once during its life cycle.
-     * This is to protect against accidental sharing.
-     *
-     * @return Allocated or recycled byte buffer
-     */
-    public byte[] allocBase64Buffer() {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
-    }
-
-    /**
-     * Variant of {@link #allocBase64Buffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.9
-     */
-    public byte[] allocBase64Buffer(int minSize) {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, minSize));
     }
 
     public char[] allocTokenBuffer() {
@@ -280,11 +245,6 @@ public class IOContext {
     public char[] allocConcatBuffer() {
         _verifyAlloc(_concatCBuffer);
         return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
-    }
-
-    public char[] allocNameCopyBuffer(int minSize) {
-        _verifyAlloc(_nameCopyBuffer);
-        return (_nameCopyBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, minSize));
     }
 
     /**
@@ -310,14 +270,6 @@ public class IOContext {
             _verifyRelease(buf, _writeEncodingBuffer);
             _writeEncodingBuffer = null;
             _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
-        }
-    }
-
-    public void releaseBase64Buffer(byte[] buf) {
-        if (buf != null) { // sanity checks, release once-and-only-once, must be one owned
-            _verifyRelease(buf, _base64Buffer);
-            _base64Buffer = null;
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
         }
     }
 
@@ -348,9 +300,9 @@ public class IOContext {
     }
 
     /*
-     * /**********************************************************************
-     * /* Internal helpers
-     * /**********************************************************************
+    /**********************************************************************
+    /* Internal helpers
+    /**********************************************************************
      */
 
     protected final void _verifyAlloc(Object buffer) {
@@ -376,5 +328,16 @@ public class IOContext {
     private IllegalArgumentException wrongBuf() {
         // sanity check failed; trying to return different, smaller buffer.
         return new IllegalArgumentException("Trying to release buffer smaller than original");
+    }
+
+    @Override
+    public void close() {
+        if (!_closed) {
+            _closed = true;
+            if (_releaseRecycler) {
+                _releaseRecycler = false;
+                _bufferRecycler.releaseToPool();
+            }
+        }
     }
 }

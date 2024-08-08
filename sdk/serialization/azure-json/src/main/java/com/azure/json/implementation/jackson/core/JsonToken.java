@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -12,13 +11,12 @@ package com.azure.json.implementation.jackson.core;
  * of parsing JSON content.
  */
 public enum JsonToken {
-    /*
-     * Some notes on implementation:
+    /* Some notes on implementation:
      *
      * - Entries are to be ordered such that start/end array/object
-     * markers come first, then field name marker (if any), and
-     * finally scalar value tokens. This is assumed by some
-     * typing checks.
+     *   markers come first, then field name marker (if any), and
+     *   finally scalar value tokens. This is assumed by some
+     *   typing checks.
      */
 
     /**
@@ -176,52 +174,6 @@ public enum JsonToken {
         return _serialized;
     }
 
-    public final char[] asCharArray() {
-        return _serializedChars;
-    }
-
-    public final byte[] asByteArray() {
-        return _serializedBytes;
-    }
-
-    /**
-     * @return {@code True} if this token is {@code VALUE_NUMBER_INT} or {@code VALUE_NUMBER_FLOAT},
-     *   {@code false} otherwise
-     */
-    public final boolean isNumeric() {
-        return _isNumber;
-    }
-
-    /**
-     * Accessor that is functionally equivalent to:
-     * <code>
-     *    this == JsonToken.START_OBJECT || this == JsonToken.START_ARRAY
-     * </code>
-     *
-     * @return {@code True} if this token is {@code START_OBJECT} or {@code START_ARRAY},
-     *   {@code false} otherwise
-     *
-     * @since 2.3
-     */
-    public final boolean isStructStart() {
-        return _isStructStart;
-    }
-
-    /**
-     * Accessor that is functionally equivalent to:
-     * <code>
-     *    this == JsonToken.END_OBJECT || this == JsonToken.END_ARRAY
-     * </code>
-     *
-     * @return {@code True} if this token is {@code END_OBJECT} or {@code END_ARRAY},
-     *   {@code false} otherwise
-     * 
-     * @since 2.3
-     */
-    public final boolean isStructEnd() {
-        return _isStructEnd;
-    }
-
     /**
      * Method that can be used to check whether this token represents
      * a valid non-structured value. This means all {@code VALUE_xxx} tokens;
@@ -235,11 +187,4 @@ public enum JsonToken {
         return _isScalar;
     }
 
-    /**
-     * @return {@code True} if this token is {@code VALUE_TRUE} or {@code VALUE_FALSE},
-     *   {@code false} otherwise
-     */
-    public final boolean isBoolean() {
-        return _isBoolean;
-    }
 }

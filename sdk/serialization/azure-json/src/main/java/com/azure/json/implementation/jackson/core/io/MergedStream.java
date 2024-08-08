@@ -7,7 +7,7 @@ import java.io.*;
  * Simple {@link InputStream} implementation that is used to "unwind" some
  * data previously read from an input stream; so that as long as some of
  * that data remains, it's returned; but as long as it's read, we'll
- * just use data from the underlying original stream. 
+ * just use data from the underlying original stream.
  * This is similar to {@link java.io.PushbackInputStream}, but here there's
  * only one implicit pushback, when instance is constructed.
  */

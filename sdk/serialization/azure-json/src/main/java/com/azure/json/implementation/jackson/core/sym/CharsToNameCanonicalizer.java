@@ -1,11 +1,14 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.sym;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.azure.json.implementation.jackson.core.JsonFactory;
+import com.azure.json.implementation.jackson.core.StreamReadConstraints;
+import com.azure.json.implementation.jackson.core.TokenStreamFactory;
+import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
 import com.azure.json.implementation.jackson.core.util.InternCache;
 
 /**
@@ -44,10 +47,9 @@ import com.azure.json.implementation.jackson.core.util.InternCache;
  * access to master instance is read-only (i.e. no modifications done).
  */
 public final class CharsToNameCanonicalizer {
-    /*
-     * If we use "multiply-add" based hash algorithm, this is the multiplier
+    /* If we use "multiply-add" based hash algorithm, this is the multiplier
      * we use.
-     * <p>
+     *<p>
      * Note that JDK uses 31; but it seems that 33 produces fewer collisions,
      * at least with tests we have.
      */
@@ -56,7 +58,7 @@ public final class CharsToNameCanonicalizer {
     /**
      * Default initial table size. Shouldn't be miniscule (as there's
      * cost to both array realloc and rehashing), but let's keep
-     * it reasonably small. For systems that properly 
+     * it reasonably small. For systems that properly
      * reuse factories it doesn't matter either way; but when
      * recreating factories often, initial overhead may dominate.
      */
@@ -86,15 +88,15 @@ public final class CharsToNameCanonicalizer {
      * Note: longest chain we have been able to produce without malicious
      * intent has been 38 (with "com.azure.json.implementation.jackson.core.main.TestWithTonsaSymbols");
      * our setting should be reasonable here.
-     * 
+     *
      * @since 2.1 (changed in 2.13)
      */
     static final int MAX_COLL_CHAIN_LENGTH = 150;
 
     /*
-     * /**********************************************************
-     * /* Configuration
-     * /**********************************************************
+    /**********************************************************
+    /* Configuration
+    /**********************************************************
      */
 
     /**
@@ -103,7 +105,7 @@ public final class CharsToNameCanonicalizer {
      * defined, and child instance is released (call to <code>release</code>),
      * parent's shared tables may be updated from the child instance.
      */
-    final protected CharsToNameCanonicalizer _parent;
+    private final CharsToNameCanonicalizer _parent;
 
     /**
      * Member that is only used by the root table instance: root
@@ -111,7 +113,15 @@ public final class CharsToNameCanonicalizer {
      * may return new state if they add entries to the table.
      * Child tables do NOT use the reference.
      */
-    final protected AtomicReference<TableInfo> _tableInfo;
+    private final AtomicReference<TableInfo> _tableInfo;
+
+    /**
+     * Constraints used by {@link TokenStreamFactory} that uses
+     * this canonicalizer.
+     *
+     * @since 2.16
+     */
+    private final StreamReadConstraints _streamReadConstraints;
 
     /**
      * Seed value we use as the base to make hash codes non-static between
@@ -119,12 +129,10 @@ public final class CharsToNameCanonicalizer {
      * instance.
      * This is done for security reasons, to avoid potential DoS attack via
      * hash collisions.
-     * 
+     *
      * @since 2.1
      */
-    final protected int _seed;
-
-    final protected int _flags;
+    private final int _seed;
 
     /**
      * Whether any canonicalization should be attempted (whether using
@@ -132,19 +140,19 @@ public final class CharsToNameCanonicalizer {
      *<p>
      * NOTE: non-final since we may need to disable this with overflow.
      */
-    protected boolean _canonicalize;
+    private boolean _canonicalize;
 
     /*
-     * /**********************************************************
-     * /* Actual symbol table data
-     * /**********************************************************
+    /**********************************************************
+    /* Actual symbol table data
+    /**********************************************************
      */
 
     /**
      * Primary matching symbols; it's expected most match occur from
      * here.
      */
-    protected String[] _symbols;
+    private String[] _symbols;
 
     /**
      * Overflow buckets; if primary doesn't match, lookup is done
@@ -153,41 +161,41 @@ public final class CharsToNameCanonicalizer {
      * Note: Number of buckets is half of number of symbol entries, on
      * assumption there's less need for buckets.
      */
-    protected Bucket[] _buckets;
+    private Bucket[] _buckets;
 
     /**
      * Current size (number of entries); needed to know if and when
      * rehash.
      */
-    protected int _size;
+    private int _size;
 
     /**
      * Limit that indicates maximum size this instance can hold before
      * it needs to be expanded and rehashed. Calculated using fill
      * factor passed in to constructor.
      */
-    protected int _sizeThreshold;
+    private int _sizeThreshold;
 
     /**
      * Mask used to get index from hash values; equal to
      * <code>_buckets.length - 1</code>, when _buckets.length is
      * a power of two.
      */
-    protected int _indexMask;
+    private int _indexMask;
 
     /**
      * We need to keep track of the longest collision list; this is needed
      * both to indicate problems with attacks and to allow flushing for
      * other cases.
-     * 
+     *
      * @since 2.1
      */
-    protected int _longestCollisionList;
+    private int _longestCollisionList;
 
     /*
-     * /**********************************************************
-     * /* State regarding shared arrays
-     * /**********************************************************
+    /**********************************************************
+    /* State regarding shared arrays
+    /**********************************************************
      */
 
     /**
@@ -201,12 +209,12 @@ public final class CharsToNameCanonicalizer {
      * and when adding new collision list queues (i.e. creating a new
      * collision list head entry)
      */
-    protected boolean _hashShared;
+    private boolean _hashShared;
 
     /*
-     * /**********************************************************
-     * /* Bit of DoS detection goodness
-     * /**********************************************************
+    /**********************************************************
+    /* Bit of DoS detection goodness
+    /**********************************************************
      */
 
     /**
@@ -214,32 +222,32 @@ public final class CharsToNameCanonicalizer {
      * collision buckets that have overflowed once: this is used
      * to detect likely attempts at denial-of-service attacks that
      * uses hash collisions.
-     * 
+     *
      * @since 2.4
      */
-    protected BitSet _overflows;
+    private BitSet _overflows;
 
     /*
-     * /**********************************************************
-     * /* Life-cycle: constructors
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle: constructors
+    /**********************************************************
      */
 
     /**
      * Main method for constructing a root symbol table instance.
      */
-    private CharsToNameCanonicalizer(int seed) {
+    private CharsToNameCanonicalizer(StreamReadConstraints src, int seed) {
         _parent = null;
         _seed = seed;
+        _streamReadConstraints = src;
 
         // these settings don't really matter for the bootstrap instance
         _canonicalize = true;
-        _flags = -1;
         // And we'll also set flags so no copying of buckets is needed:
         _hashShared = false; // doesn't really matter for root instance
         _longestCollisionList = 0;
 
-        _tableInfo = new AtomicReference<TableInfo>(TableInfo.createInitial(DEFAULT_T_SIZE));
+        _tableInfo = new AtomicReference<>(TableInfo.createInitial(DEFAULT_T_SIZE));
         // and actually do NOT assign buffers so we'll find if anyone tried to
         // use root instance
     }
@@ -247,12 +255,13 @@ public final class CharsToNameCanonicalizer {
     /**
      * Internal constructor used when creating child instances.
      */
-    private CharsToNameCanonicalizer(CharsToNameCanonicalizer parent, int flags, int seed, TableInfo parentState) {
+    private CharsToNameCanonicalizer(CharsToNameCanonicalizer parent, StreamReadConstraints src, int seed,
+        TableInfo parentState) {
         _parent = parent;
+        _streamReadConstraints = src;
         _seed = seed;
         _tableInfo = null; // not used by child tables
-        _flags = flags;
-        _canonicalize = JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(flags);
+        _canonicalize = true;
 
         // Then copy shared state
         _symbols = parentState.symbols;
@@ -275,9 +284,9 @@ public final class CharsToNameCanonicalizer {
     }
 
     /*
-     * /**********************************************************
-     * /* Life-cycle: factory methods, merging
-     * /**********************************************************
+    /**********************************************************
+    /* Life-cycle: factory methods, merging
+    /**********************************************************
      */
 
     /**
@@ -285,20 +294,32 @@ public final class CharsToNameCanonicalizer {
      * instance. Root instance is never used directly; its main use is for
      * storing and sharing underlying symbol arrays as needed.
      *
-     * @return Root instance to use for constructing new child instances 
+     * @param owner Factory that will use the root instance; used for accessing
+     *    configuration
+     *
+     * @return Root instance to use for constructing new child instances
      */
-    public static CharsToNameCanonicalizer createRoot() {
-        // Need to use a variable seed, to thwart hash-collision based attacks.
-        // 14-Feb-2017, tatu: not sure it actually helps, at all, since it won't
-        // change mixing or any of the steps. Should likely just remove in future.
-        long now = System.currentTimeMillis();
-        // ensure it's not 0; and might as well require to be odd so:
-        int seed = (((int) now) + ((int) (now >>> 32))) | 1;
-        return createRoot(seed);
+    public static CharsToNameCanonicalizer createRoot(TokenStreamFactory owner) {
+        return createRoot(owner, 0);
     }
 
-    protected static CharsToNameCanonicalizer createRoot(int seed) {
-        return new CharsToNameCanonicalizer(seed);
+    public static CharsToNameCanonicalizer createRoot(TokenStreamFactory owner, int seed) {
+        // Need to use a variable seed, to thwart hash-collision based attacks.
+        // 14-Feb-2017, tatu: not sure it actually helps, at all, since it won't
+        //   change mixing or any of the steps. Should likely just remove in future.
+        if (seed == 0) {
+            // 23-Aug-2023, tatu: Changed to use identity hash code instead of current time
+            seed = System.identityHashCode(owner);
+        }
+
+        StreamReadConstraints src;
+
+        if (owner == null) {
+            src = StreamReadConstraints.defaults();
+        } else {
+            src = owner.streamReadConstraints();
+        }
+        return new CharsToNameCanonicalizer(src, seed);
     }
 
     /**
@@ -313,12 +334,10 @@ public final class CharsToNameCanonicalizer {
      * on which only makeChild/mergeChild are called, but instance itself
      * is not used as a symbol table.
      *
-     * @param flags Bit flags of active {@link com.azure.json.implementation.jackson.core.JsonFactory.Feature}s enabled.
-     *
      * @return Actual canonicalizer instance that can be used by a parser
      */
-    public CharsToNameCanonicalizer makeChild(int flags) {
-        return new CharsToNameCanonicalizer(this, flags, _seed, _tableInfo.get());
+    public CharsToNameCanonicalizer makeChild() {
+        return new CharsToNameCanonicalizer(this, _streamReadConstraints, _seed, _tableInfo.get());
     }
 
     /**
@@ -358,7 +377,7 @@ public final class CharsToNameCanonicalizer {
         if (childCount == currState.size) {
             return;
         }
-        // One caveat: let's try to avoid problems with degenerate cases of documents with
+        // One caveat: let's try to avoid problems with  degenerate cases of documents with
         // generated "random" names: for these, symbol tables would bloat indefinitely.
         // One way to do this is to just purge tables if they grow
         // too large, and that's what we'll do here.
@@ -370,31 +389,10 @@ public final class CharsToNameCanonicalizer {
     }
 
     /*
-     * /**********************************************************
-     * /* Public API, generic accessors:
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, generic accessors:
+    /**********************************************************
      */
-
-    /**
-     * @return Number of symbol entries contained by this canonicalizer instance
-     */
-    public int size() {
-        if (_tableInfo != null) { // root table
-            return _tableInfo.get().size;
-        }
-        // nope, child table
-        return _size;
-    }
-
-    /**
-     * Method for checking number of primary hash buckets this symbol
-     * table uses.
-     * 
-     * @return number of primary slots table has currently
-     */
-    public int bucketCount() {
-        return _symbols.length;
-    }
 
     public boolean maybeDirty() {
         return !_hashShared;
@@ -404,55 +402,22 @@ public final class CharsToNameCanonicalizer {
         return _seed;
     }
 
-    /**
-     * Method mostly needed by unit tests; calculates number of
-     * entries that are in collision list. Value can be at most
-     * ({@link #size} - 1), but should usually be much lower, ideally 0.
-     * 
-     * @since 2.1
-     *
-     * @return Number of collisions in the primary hash area
-     */
-    public int collisionCount() {
-        int count = 0;
-
-        for (Bucket bucket : _buckets) {
-            if (bucket != null) {
-                count += bucket.length;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Method mostly needed by unit tests; calculates length of the
-     * longest collision chain. This should typically be a low number,
-     * but may be up to {@link #size} - 1 in the pathological case
-     *
-     * @return Length of the collision chain
-     *
-     * @since 2.1
-     */
-    public int maxCollisionLength() {
-        return _longestCollisionList;
-    }
-
     /*
-     * /**********************************************************
-     * /* Public API, accessing symbols:
-     * /**********************************************************
+    /**********************************************************
+    /* Public API, accessing symbols:
+    /**********************************************************
      */
 
-    public String findSymbol(char[] buffer, int start, int len, int h) {
+    public String findSymbol(char[] buffer, int start, int len, int h) throws IOException {
         if (len < 1) { // empty Strings are simplest to handle up front
             return "";
         }
         if (!_canonicalize) { // [JACKSON-259]
+            _streamReadConstraints.validateNameLength(len);
             return new String(buffer, start, len);
         }
 
-        /*
-         * Related to problems with sub-standard hashing (somewhat
+        /* Related to problems with sub-standard hashing (somewhat
          * relevant for collision attacks too), let's try little
          * bit of shuffling to improve hash codes.
          * (note, however, that this can't help with full collisions)
@@ -484,6 +449,7 @@ public final class CharsToNameCanonicalizer {
                 }
             }
         }
+        _streamReadConstraints.validateNameLength(len);
         return _addSymbol(buffer, start, len, h, index);
     }
 
@@ -498,8 +464,8 @@ public final class CharsToNameCanonicalizer {
         return null;
     }
 
-    private String _addSymbol(char[] buffer, int start, int len, int h, int index) {
-        if (_hashShared) { // need to do copy-on-write?
+    private String _addSymbol(char[] buffer, int start, int len, int h, int index) throws IOException {
+        if (_hashShared) { //need to do copy-on-write?
             copyArrays();
             _hashShared = false;
         } else if (_size >= _sizeThreshold) { // Need to expand?
@@ -510,9 +476,7 @@ public final class CharsToNameCanonicalizer {
         }
 
         String newSymbol = new String(buffer, start, len);
-        if (JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(_flags)) {
-            newSymbol = InternCache.instance.intern(newSymbol);
-        }
+        newSymbol = InternCache.instance.intern(newSymbol);
         ++_size;
         // Ok; do we need to add primary entry, or a bucket?
         if (_symbols[index] == null) {
@@ -523,7 +487,7 @@ public final class CharsToNameCanonicalizer {
             int collLen = newB.length;
             if (collLen > MAX_COLL_CHAIN_LENGTH) {
                 // 23-May-2014, tatu: Instead of throwing an exception right away,
-                // let's handle in bit smarter way.
+                //    let's handle in bit smarter way.
                 _handleSpillOverflow(bix, newB, index);
             } else {
                 _buckets[bix] = newB;
@@ -537,22 +501,17 @@ public final class CharsToNameCanonicalizer {
      * Method called when an overflow bucket has hit the maximum expected length:
      * this may be a case of DoS attack. Deal with it based on settings by either
      * clearing up bucket (to avoid indefinite expansion) or throwing exception.
-     * Currently the first overflow for any single bucket DOES NOT throw an exception,
+     * Currently, the first overflow for any single bucket DOES NOT throw an exception,
      * only second time (per symbol table instance)
      */
-    private void _handleSpillOverflow(int bucketIndex, Bucket newBucket, int mainIndex) {
+    private void _handleSpillOverflow(int bucketIndex, Bucket newBucket, int mainIndex) throws IOException {
         if (_overflows == null) {
             _overflows = new BitSet();
             _overflows.set(bucketIndex);
         } else {
             if (_overflows.get(bucketIndex)) {
                 // Has happened once already for this bucket index, so probably not coincidental...
-                if (JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(_flags)) {
-                    _reportTooManyCollisions(MAX_COLL_CHAIN_LENGTH);
-                }
-                // but even if we don't fail, we will stop canonicalizing as safety measure
-                // (so as not to cause problems with PermGen)
-                _canonicalize = false;
+                _reportTooManyCollisions();
             } else {
                 _overflows.set(bucketIndex);
             }
@@ -598,7 +557,7 @@ public final class CharsToNameCanonicalizer {
     public int calcHash(char[] buffer, int start, int len) {
         int hash = _seed;
         for (int i = start, end = start + len; i < end; ++i) {
-            hash = (hash * HASH_MULT) + (int) buffer[i];
+            hash = (hash * HASH_MULT) + buffer[i];
         }
         // NOTE: shuffling, if any, is done in 'findSymbol()', not here:
         return (hash == 0) ? 1 : hash;
@@ -609,16 +568,16 @@ public final class CharsToNameCanonicalizer {
 
         int hash = _seed;
         for (int i = 0; i < len; ++i) {
-            hash = (hash * HASH_MULT) + (int) key.charAt(i);
+            hash = (hash * HASH_MULT) + key.charAt(i);
         }
         // NOTE: shuffling, if any, is done in 'findSymbol()', not here:
         return (hash == 0) ? 1 : hash;
     }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     /**
@@ -643,10 +602,9 @@ public final class CharsToNameCanonicalizer {
         final int size = _symbols.length;
         int newSize = size + size;
 
-        /*
-         * 12-Mar-2010, tatu: Let's actually limit maximum size we are
-         * prepared to use, to guard against OOME in case of unbounded
-         * name sets (unique [non-repeating] names)
+        /* 12-Mar-2010, tatu: Let's actually limit maximum size we are
+         *    prepared to use, to guard against OOME in case of unbounded
+         *    name sets (unique [non-repeating] names)
          */
         if (newSize > MAX_T_SIZE) {
             // If this happens, there's no point in either growing or shrinking hash areas.
@@ -718,98 +676,19 @@ public final class CharsToNameCanonicalizer {
     }
 
     /**
-     * @param maxLen Maximum allowed length of collision chain
-     *
+     * @throws StreamConstraintsException if there are too many collisions (was an IllegalStateException before v2.15)
      * @since 2.1
      */
-    protected void _reportTooManyCollisions(int maxLen) {
-        throw new IllegalStateException("Longest collision chain in symbol table (of size " + _size
-            + ") now exceeds maximum, " + maxLen + " -- suspect a DoS attack based on hash collisions");
+    private void _reportTooManyCollisions() throws StreamConstraintsException {
+        throw new StreamConstraintsException(
+            "Longest collision chain in symbol table (of size " + _size + ") now exceeds maximum, "
+                + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH + " -- suspect a DoS attack based on hash collisions");
     }
 
-    // since 2.10, for tests only
-    /**
-     * Diagnostics method that will verify that internal data structures are consistent;
-     * not meant as user-facing method but only for test suites and possible troubleshooting.
-     *
-     * @since 2.10
-     */
-    protected void verifyInternalConsistency() {
-        int count = 0;
-        final int size = _symbols.length;
-
-        for (int i = 0; i < size; ++i) {
-            String symbol = _symbols[i];
-            if (symbol != null) {
-                ++count;
-            }
-        }
-
-        final int bucketSize = (size >> 1);
-        for (int i = 0; i < bucketSize; ++i) {
-            for (Bucket b = _buckets[i]; b != null; b = b.next) {
-                ++count;
-            }
-        }
-        if (count != _size) {
-            throw new IllegalStateException(
-                String.format("Internal error: expected internal size %d vs calculated count %d", _size, count));
-        }
-    }
-
-    // For debugging, comment out
     /*
-     * @Override
-     * public String toString()
-     * {
-     * StringBuilder sb = new StringBuilder();
-     * int primaryCount = 0;
-     * for (String s : _symbols) {
-     * if (s != null) ++primaryCount;
-     * }
-     * 
-     * sb.append("[BytesToNameCanonicalizer, size: ");
-     * sb.append(_size);
-     * sb.append('/');
-     * sb.append(_symbols.length);
-     * sb.append(", ");
-     * sb.append(primaryCount);
-     * sb.append('/');
-     * sb.append(_size - primaryCount);
-     * sb.append(" coll; avg length: ");
-     * 
-     * // Average length: minimum of 1 for all (1 == primary hit);
-     * // and then 1 per each traversal for collisions/buckets
-     * //int maxDist = 1;
-     * int pathCount = _size;
-     * for (Bucket b : _buckets) {
-     * if (b != null) {
-     * int spillLen = b.length;
-     * for (int j = 1; j <= spillLen; ++j) {
-     * pathCount += j;
-     * }
-     * }
-     * }
-     * double avgLength;
-     * 
-     * if (_size == 0) {
-     * avgLength = 0.0;
-     * } else {
-     * avgLength = (double) pathCount / (double) _size;
-     * }
-     * // let's round up a bit (two 2 decimal places)
-     * //avgLength -= (avgLength % 0.01);
-     * 
-     * sb.append(avgLength);
-     * sb.append(']');
-     * return sb.toString();
-     * }
-     */
-
-    /*
-     * /**********************************************************
-     * /* Helper classes
-     * /**********************************************************
+    /**********************************************************
+    /* Helper classes
+    /**********************************************************
      */
 
     /**
@@ -845,7 +724,7 @@ public final class CharsToNameCanonicalizer {
      * Immutable value class used for sharing information as efficiently
      * as possible, by only require synchronization of reference manipulation
      * but not access to contents.
-     * 
+     *
      * @since 2.8.7
      */
     private final static class TableInfo {

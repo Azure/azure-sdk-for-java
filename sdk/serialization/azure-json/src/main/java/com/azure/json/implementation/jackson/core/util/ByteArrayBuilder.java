@@ -1,6 +1,5 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/*
- * Jackson JSON-processor.
+/* Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -28,7 +27,7 @@ import java.util.*;
  * theoretically this builder can aggregate more content it will not be usable
  * as things are. Behavior may be improved if we solve the access problem.
  */
-public final class ByteArrayBuilder extends OutputStream {
+public final class ByteArrayBuilder extends OutputStream implements BufferRecycler.Gettable {
     public final static byte[] NO_BYTES = new byte[0];
 
     // Size of the first block we will allocate.
@@ -38,11 +37,9 @@ public final class ByteArrayBuilder extends OutputStream {
     // For 2.10, let's limit to using 128k chunks (was 256k up to 2.9)
     private final static int MAX_BLOCK_SIZE = (1 << 17);
 
-    final static int DEFAULT_BLOCK_ARRAY_SIZE = 40;
-
     // Optional buffer recycler instance that we can use for allocating the first block.
     private final BufferRecycler _bufferRecycler;
-    private final LinkedList<byte[]> _pastBlocks = new LinkedList<byte[]>();
+    private final LinkedList<byte[]> _pastBlocks = new LinkedList<>();
 
     // Number of bytes within byte arrays in {@link _pastBlocks}.
     private int _pastLen;
@@ -57,14 +54,10 @@ public final class ByteArrayBuilder extends OutputStream {
         this(br, INITIAL_BLOCK_SIZE);
     }
 
-    public ByteArrayBuilder(int firstBlockSize) {
-        this(null, firstBlockSize);
-    }
-
     public ByteArrayBuilder(BufferRecycler br, int firstBlockSize) {
         _bufferRecycler = br;
         // 04-Sep-2020, tatu: Let's make this bit more robust and refuse to allocate
-        // humongous blocks even if requested
+        //    humongous blocks even if requested
         if (firstBlockSize > MAX_BLOCK_SIZE) {
             firstBlockSize = MAX_BLOCK_SIZE;
         }
@@ -73,7 +66,7 @@ public final class ByteArrayBuilder extends OutputStream {
     }
 
     private ByteArrayBuilder(BufferRecycler br, byte[] initialBlock, int initialLen) {
-        _bufferRecycler = null;
+        _bufferRecycler = br;
         _currBlock = initialBlock;
         _currBlockPtr = initialLen;
     }
@@ -88,28 +81,6 @@ public final class ByteArrayBuilder extends OutputStream {
 
         if (!_pastBlocks.isEmpty()) {
             _pastBlocks.clear();
-        }
-    }
-
-    /**
-     * @return Number of bytes aggregated so far
-     *
-     * @since 2.9
-     */
-    public int size() {
-        return _pastLen + _currBlockPtr;
-    }
-
-    /**
-     * Clean up method to call to release all buffers this object may be
-     * using. After calling the method, no other accessors can be used (and
-     * attempt to do so may result in an exception)
-     */
-    public void release() {
-        reset();
-        if (_bufferRecycler != null && _currBlock != null) {
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_CONCAT_BUFFER, _currBlock);
-            _currBlock = null;
         }
     }
 
@@ -139,21 +110,6 @@ public final class ByteArrayBuilder extends OutputStream {
             append(b24 >> 16);
             append(b24 >> 8);
             append(b24);
-        }
-    }
-
-    // @since 2.9
-    public void appendFourBytes(int b32) {
-        if ((_currBlockPtr + 3) < _currBlock.length) {
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 24);
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 16);
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 8);
-            _currBlock[_currBlockPtr++] = (byte) b32;
-        } else {
-            append(b32 >> 24);
-            append(b32 >> 16);
-            append(b32 >> 8);
-            append(b32);
         }
     }
 
@@ -191,21 +147,21 @@ public final class ByteArrayBuilder extends OutputStream {
     }
 
     /*
-     * /**********************************************************
-     * /* Non-stream API (similar to TextBuffer)
-     * /**********************************************************
+    /**********************************************************
+    /* BufferRecycler.Gettable implementation
+    /**********************************************************
      */
 
-    /**
-     * Method called when starting "manual" output: will clear out
-     * current state and return the first segment buffer to fill
-     *
-     * @return Segment to use for writing
-     */
-    public byte[] resetAndGetFirstSegment() {
-        reset();
-        return _currBlock;
+    @Override
+    public BufferRecycler bufferRecycler() {
+        return _bufferRecycler;
     }
+
+    /*
+    /**********************************************************
+    /* Non-stream API (similar to TextBuffer)
+    /**********************************************************
+     */
 
     /**
      * Method called when the current segment buffer is full; will
@@ -222,10 +178,10 @@ public final class ByteArrayBuilder extends OutputStream {
     /**
      * Method that will complete "manual" output process, coalesce
      * content (if necessary) and return results as a contiguous buffer.
-     * 
+     *
      * @param lastBlockLength Amount of content in the current segment
      * buffer.
-     * 
+     *
      * @return Coalesced contents
      */
     public byte[] completeAndCoalesce(int lastBlockLength) {
@@ -246,9 +202,9 @@ public final class ByteArrayBuilder extends OutputStream {
     }
 
     /*
-     * /**********************************************************
-     * /* OutputStream implementation
-     * /**********************************************************
+    /**********************************************************
+    /* OutputStream implementation
+    /**********************************************************
      */
 
     @Override
@@ -280,31 +236,32 @@ public final class ByteArrayBuilder extends OutputStream {
 
     @Override
     public void close() {
-        /* NOP */ }
+        // 18-Jan-2024, tatu: Ideally would call `release()` but currently
+        //   not possible due to existing usage
+    }
 
     @Override
     public void flush() {
         /* NOP */ }
 
     /*
-     * /**********************************************************
-     * /* Internal methods
-     * /**********************************************************
+    /**********************************************************
+    /* Internal methods
+    /**********************************************************
      */
 
     private void _allocMore() {
         final int newPastLen = _pastLen + _currBlock.length;
 
         // 13-Feb-2016, tatu: As per [core#351] let's try to catch problem earlier;
-        // for now we are strongly limited by 2GB limit of Java arrays
+        //     for now we are strongly limited by 2GB limit of Java arrays
         if (newPastLen < 0) {
             throw new IllegalStateException("Maximum Java array size (2GB) exceeded by `ByteArrayBuilder`");
         }
 
         _pastLen = newPastLen;
 
-        /*
-         * Let's allocate block that's half the total size, except
+        /* Let's allocate block that's half the total size, except
          * never smaller than twice the initial block size.
          * The idea is just to grow with reasonable rate, to optimize
          * between minimal number of chunks and minimal amount of
