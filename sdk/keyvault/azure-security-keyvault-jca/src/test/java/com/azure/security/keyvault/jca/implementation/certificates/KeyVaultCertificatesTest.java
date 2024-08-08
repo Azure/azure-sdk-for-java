@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.security.Key;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class KeyVaultCertificatesTest {
 
     private KeyVaultCertificates keyVaultCertificates;
 
-    private List<String> aliases = Collections.singletonList("myalias");
+    private List<String> aliases = new ArrayList<>(Collections.singletonList("myalias"));
 
     @BeforeEach
     public void beforeEach() {
