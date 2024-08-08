@@ -3,12 +3,14 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -19,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
 
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+
 
     @Test
     public void canParseLong() {
@@ -38,21 +40,34 @@ public class MSITokenTests {
     public void canDeserialize() {
         String json = "{\n"
             + "  \"access_token\": \"fake_token\",\n"
-            + "  \"refresh_token\": \"\",\n"
             + "  \"expires_in\": \"3599\",\n"
-            + "  \"expires_on\": \"1506484173\",\n"
-            + "  \"not_before\": \"1506480273\",\n"
-            + "  \"resource\": \"https://managementazurecom/\",\n"
-            + "  \"token_type\": \"Bearer\"\n"
+            + "  \"expires_on\": \"1506484173\""
             + "}";
         MSIToken token;
         try {
-            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                token = MSIToken.fromJson(reader);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
+        assertEquals("fake_token", token.getToken());
+    }
+
+    @Test
+    public void canSerialize() {
+        MSIToken token = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00", "3599");
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
+            JsonWriter writer = JsonProviders.createWriter(stream);
+            token.toJson(writer);
+            writer.flush();
+            String json = stream.toString();
+            assertEquals("{\"access_token\":\"fake_token\",\"expires_on\":\"01/10/2020 15:03:28 +00:00\",\"expires_in\":\"3599\"}", json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
