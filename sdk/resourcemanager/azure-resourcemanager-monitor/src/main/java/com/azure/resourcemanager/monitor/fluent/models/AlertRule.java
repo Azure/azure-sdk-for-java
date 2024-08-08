@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.RuleAction;
 import com.azure.resourcemanager.monitor.models.RuleCondition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,54 +21,46 @@ import java.util.List;
  * An alert rule.
  */
 @Fluent
-public final class AlertRule {
+public final class AlertRule implements JsonSerializable<AlertRule> {
     /*
      * the name of the alert rule.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * the description of the alert rule that will be included in the alert email.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * the provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * the flag that indicates whether the alert rule is enabled.
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /*
      * the condition that results in the alert rule being activated.
      */
-    @JsonProperty(value = "condition", required = true)
     private RuleCondition condition;
 
     /*
      * action that is performed when the alert rule becomes active, and when an alert condition is resolved.
      */
-    @JsonProperty(value = "action")
     private RuleAction action;
 
     /*
      * the array of actions that are performed when the alert rule becomes active, and when an alert condition is
      * resolved.
      */
-    @JsonProperty(value = "actions")
     private List<RuleAction> actions;
 
     /*
      * Last time the rule was updated in ISO8601 format.
      */
-    @JsonProperty(value = "lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTime;
 
     /**
@@ -173,8 +170,8 @@ public final class AlertRule {
     }
 
     /**
-     * Get the action property: action that is performed when the alert rule becomes active, and when an alert
-     * condition is resolved.
+     * Get the action property: action that is performed when the alert rule becomes active, and when an alert condition
+     * is resolved.
      * 
      * @return the action value.
      */
@@ -183,8 +180,8 @@ public final class AlertRule {
     }
 
     /**
-     * Set the action property: action that is performed when the alert rule becomes active, and when an alert
-     * condition is resolved.
+     * Set the action property: action that is performed when the alert rule becomes active, and when an alert condition
+     * is resolved.
      * 
      * @param action the action value to set.
      * @return the AlertRule object itself.
@@ -195,8 +192,8 @@ public final class AlertRule {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
-     * an alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
      * 
      * @return the actions value.
      */
@@ -205,8 +202,8 @@ public final class AlertRule {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
-     * an alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
      * 
      * @param actions the actions value to set.
      * @return the AlertRule object itself.
@@ -232,12 +229,12 @@ public final class AlertRule {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model AlertRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model AlertRule"));
         }
         if (condition() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property condition in model AlertRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property condition in model AlertRule"));
         } else {
             condition().validate();
         }
@@ -250,4 +247,63 @@ public final class AlertRule {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AlertRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeJsonField("condition", this.condition);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertRule.
+     */
+    public static AlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRule deserializedAlertRule = new AlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAlertRule.name = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedAlertRule.isEnabled = reader.getBoolean();
+                } else if ("condition".equals(fieldName)) {
+                    deserializedAlertRule.condition = RuleCondition.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertRule.description = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAlertRule.provisioningState = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedAlertRule.action = RuleAction.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    List<RuleAction> actions = reader.readArray(reader1 -> RuleAction.fromJson(reader1));
+                    deserializedAlertRule.actions = actions;
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedAlertRule.lastUpdatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRule;
+        });
+    }
 }

@@ -5,94 +5,85 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.MetricAvailability;
 import com.azure.resourcemanager.monitor.models.MetricClass;
 import com.azure.resourcemanager.monitor.models.Unit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Metric definition class specifies the metadata for a metric.
  */
 @Fluent
-public final class MetricDefinitionInner {
+public final class MetricDefinitionInner implements JsonSerializable<MetricDefinitionInner> {
     /*
      * Flag to indicate whether the dimension is required.
      */
-    @JsonProperty(value = "isDimensionRequired")
     private Boolean isDimensionRequired;
 
     /*
      * the resource identifier of the resource that emitted the metric.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * the namespace the metric belongs to.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * the name and the display name of the metric, i.e. it is a localizable string.
      */
-    @JsonProperty(value = "name")
     private LocalizableStringInner name;
 
     /*
      * Detailed description of this metric.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * Custom category name for this metric.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The class of the metric.
      */
-    @JsonProperty(value = "metricClass")
     private MetricClass metricClass;
 
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit")
     private Unit unit;
 
     /*
      * the primary aggregation type value defining how to use the values for display.
      */
-    @JsonProperty(value = "primaryAggregationType")
     private AggregationType primaryAggregationType;
 
     /*
      * the collection of what aggregation types are supported.
      */
-    @JsonProperty(value = "supportedAggregationTypes")
     private List<AggregationType> supportedAggregationTypes;
 
     /*
      * the collection of what aggregation intervals are available to be queried.
      */
-    @JsonProperty(value = "metricAvailabilities")
     private List<MetricAvailability> metricAvailabilities;
 
     /*
      * the resource identifier of the metric definition.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * the name and the display name of the dimension, i.e. it is a localizable string.
      */
-    @JsonProperty(value = "dimensions")
     private List<LocalizableStringInner> dimensions;
 
     /**
@@ -378,5 +369,87 @@ public final class MetricDefinitionInner {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isDimensionRequired", this.isDimensionRequired);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("metricClass", this.metricClass == null ? null : this.metricClass.toString());
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeStringField("primaryAggregationType",
+            this.primaryAggregationType == null ? null : this.primaryAggregationType.toString());
+        jsonWriter.writeArrayField("supportedAggregationTypes", this.supportedAggregationTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("metricAvailabilities", this.metricAvailabilities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricDefinitionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricDefinitionInner.
+     */
+    public static MetricDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricDefinitionInner deserializedMetricDefinitionInner = new MetricDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isDimensionRequired".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.isDimensionRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.resourceId = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.namespace = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.name = LocalizableStringInner.fromJson(reader);
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.displayDescription = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.category = reader.getString();
+                } else if ("metricClass".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.metricClass = MetricClass.fromString(reader.getString());
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.unit = Unit.fromString(reader.getString());
+                } else if ("primaryAggregationType".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.primaryAggregationType
+                        = AggregationType.fromString(reader.getString());
+                } else if ("supportedAggregationTypes".equals(fieldName)) {
+                    List<AggregationType> supportedAggregationTypes
+                        = reader.readArray(reader1 -> AggregationType.fromString(reader1.getString()));
+                    deserializedMetricDefinitionInner.supportedAggregationTypes = supportedAggregationTypes;
+                } else if ("metricAvailabilities".equals(fieldName)) {
+                    List<MetricAvailability> metricAvailabilities
+                        = reader.readArray(reader1 -> MetricAvailability.fromJson(reader1));
+                    deserializedMetricDefinitionInner.metricAvailabilities = metricAvailabilities;
+                } else if ("id".equals(fieldName)) {
+                    deserializedMetricDefinitionInner.id = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<LocalizableStringInner> dimensions
+                        = reader.readArray(reader1 -> LocalizableStringInner.fromJson(reader1));
+                    deserializedMetricDefinitionInner.dimensions = dimensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricDefinitionInner;
+        });
     }
 }
