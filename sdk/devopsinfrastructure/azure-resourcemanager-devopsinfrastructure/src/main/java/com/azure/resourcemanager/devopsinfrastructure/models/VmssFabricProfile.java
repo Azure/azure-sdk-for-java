@@ -170,7 +170,6 @@ public final class VmssFabricProfile extends FabricProfile {
      */
     @Override
     public void validate() {
-        super.validate();
         if (sku() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property sku in model VmssFabricProfile"));

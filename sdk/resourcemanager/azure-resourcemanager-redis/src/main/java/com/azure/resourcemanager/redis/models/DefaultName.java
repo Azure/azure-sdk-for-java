@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class DefaultName extends ExpandableStringEnum<DefaultName> {
      * @param name a name to look for.
      * @return the corresponding DefaultName.
      */
-    @JsonCreator
     public static DefaultName fromString(String name) {
         return fromString(name, DefaultName.class);
     }

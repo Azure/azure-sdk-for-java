@@ -5,43 +5,44 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.LocalizableString;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Usage of the quota resource.
  */
 @Fluent
-public final class CsmUsageQuotaInner {
+public final class CsmUsageQuotaInner implements JsonSerializable<CsmUsageQuotaInner> {
     /*
      * Units of measurement for the quota resource.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Next reset time for the resource counter.
      */
-    @JsonProperty(value = "nextResetTime")
     private OffsetDateTime nextResetTime;
 
     /*
      * The current value of the resource counter.
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * The resource limit.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Quota name.
      */
-    @JsonProperty(value = "name")
     private LocalizableString name;
 
     /**
@@ -159,5 +160,55 @@ public final class CsmUsageQuotaInner {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("nextResetTime",
+            this.nextResetTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextResetTime));
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmUsageQuotaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmUsageQuotaInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CsmUsageQuotaInner.
+     */
+    public static CsmUsageQuotaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmUsageQuotaInner deserializedCsmUsageQuotaInner = new CsmUsageQuotaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedCsmUsageQuotaInner.unit = reader.getString();
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedCsmUsageQuotaInner.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedCsmUsageQuotaInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedCsmUsageQuotaInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedCsmUsageQuotaInner.name = LocalizableString.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmUsageQuotaInner;
+        });
     }
 }

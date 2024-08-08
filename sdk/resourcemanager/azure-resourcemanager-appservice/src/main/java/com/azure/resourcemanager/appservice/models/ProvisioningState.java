@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Status of certificate order.
  */
@@ -51,7 +48,6 @@ public enum ProvisioningState {
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum ProvisioningState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -18,7 +18,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.time.Duration;
 
 /**
@@ -26,10 +26,7 @@ import java.time.Duration;
  */
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class)
 public final class LoadTestAdministrationClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationClient.class);
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Generated
     private final LoadTestAdministrationsImpl serviceClient;
@@ -130,16 +127,15 @@ public final class LoadTestAdministrationClient {
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
         }
-        return SyncPoller.createPoller(Duration.ofSeconds(2), (context) -> {
-            Response<BinaryData> fileResponse
-                = uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions);
-            return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
-        }, (context) -> {
-            Response<BinaryData> fileResponse = getTestFileWithResponse(testId, fileName, defaultRequestOptions);
-            return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
-        }, (activationResponse, context) -> {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
-        }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
+        return SyncPoller.createPoller(Duration.ofSeconds(2),
+            (context) -> PollingUtils.getValidationStatus(uploadTestFileWithResponse(testId, fileName, body,
+                fileUploadRequestOptions).getValue()),
+            (context) -> PollingUtils.getValidationStatus(getTestFileWithResponse(testId, fileName,
+                defaultRequestOptions).getValue()),
+            (activationResponse, context) -> {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            },
+            (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
     }
 
     /**

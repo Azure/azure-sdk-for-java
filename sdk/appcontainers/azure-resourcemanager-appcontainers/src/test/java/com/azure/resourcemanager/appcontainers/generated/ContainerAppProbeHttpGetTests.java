@@ -15,31 +15,32 @@ public final class ContainerAppProbeHttpGetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerAppProbeHttpGet model = BinaryData.fromString(
-            "{\"host\":\"imwkslircizj\",\"httpHeaders\":[{\"name\":\"dfcea\",\"value\":\"vlhv\"},{\"name\":\"gdyftumrtwna\",\"value\":\"jslb\"}],\"path\":\"kojgcyzts\",\"port\":589391699,\"scheme\":\"HTTPS\"}")
+            "{\"host\":\"lvpnpp\",\"httpHeaders\":[{\"name\":\"lrwdmhdlxyj\",\"value\":\"xsaga\"},{\"name\":\"cnihgwqapnedgfbc\",\"value\":\"kcvqvpke\"}],\"path\":\"cvdrhvoodsot\",\"port\":1582782062,\"scheme\":\"HTTPS\"}")
             .toObject(ContainerAppProbeHttpGet.class);
-        Assertions.assertEquals("imwkslircizj", model.host());
-        Assertions.assertEquals("dfcea", model.httpHeaders().get(0).name());
-        Assertions.assertEquals("vlhv", model.httpHeaders().get(0).value());
-        Assertions.assertEquals("kojgcyzts", model.path());
-        Assertions.assertEquals(589391699, model.port());
+        Assertions.assertEquals("lvpnpp", model.host());
+        Assertions.assertEquals("lrwdmhdlxyj", model.httpHeaders().get(0).name());
+        Assertions.assertEquals("xsaga", model.httpHeaders().get(0).value());
+        Assertions.assertEquals("cvdrhvoodsot", model.path());
+        Assertions.assertEquals(1582782062, model.port());
         Assertions.assertEquals(Scheme.HTTPS, model.scheme());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerAppProbeHttpGet model = new ContainerAppProbeHttpGet().withHost("imwkslircizj")
-            .withHttpHeaders(
-                Arrays.asList(new ContainerAppProbeHttpGetHttpHeadersItem().withName("dfcea").withValue("vlhv"),
-                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("gdyftumrtwna").withValue("jslb")))
-            .withPath("kojgcyzts")
-            .withPort(589391699)
-            .withScheme(Scheme.HTTPS);
+        ContainerAppProbeHttpGet model
+            = new ContainerAppProbeHttpGet().withHost("lvpnpp")
+                .withHttpHeaders(Arrays.asList(
+                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("lrwdmhdlxyj").withValue("xsaga"),
+                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("cnihgwqapnedgfbc").withValue("kcvqvpke")))
+                .withPath("cvdrhvoodsot")
+                .withPort(1582782062)
+                .withScheme(Scheme.HTTPS);
         model = BinaryData.fromObject(model).toObject(ContainerAppProbeHttpGet.class);
-        Assertions.assertEquals("imwkslircizj", model.host());
-        Assertions.assertEquals("dfcea", model.httpHeaders().get(0).name());
-        Assertions.assertEquals("vlhv", model.httpHeaders().get(0).value());
-        Assertions.assertEquals("kojgcyzts", model.path());
-        Assertions.assertEquals(589391699, model.port());
+        Assertions.assertEquals("lvpnpp", model.host());
+        Assertions.assertEquals("lrwdmhdlxyj", model.httpHeaders().get(0).name());
+        Assertions.assertEquals("xsaga", model.httpHeaders().get(0).value());
+        Assertions.assertEquals("cvdrhvoodsot", model.path());
+        Assertions.assertEquals(1582782062, model.port());
         Assertions.assertEquals(Scheme.HTTPS, model.scheme());
     }
 }

@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * HybridConnection resource specific properties.
  */
 @Fluent
-public final class HybridConnectionProperties {
+public final class HybridConnectionProperties implements JsonSerializable<HybridConnectionProperties> {
     /*
      * The name of the Service Bus namespace.
      */
-    @JsonProperty(value = "serviceBusNamespace")
     private String serviceBusNamespace;
 
     /*
      * The name of the Service Bus relay.
      */
-    @JsonProperty(value = "relayName")
     private String relayName;
 
     /*
      * The ARM URI to the Service Bus relay.
      */
-    @JsonProperty(value = "relayArmUri")
     private String relayArmUri;
 
     /*
      * The hostname of the endpoint.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * The port of the endpoint.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus.
      */
-    @JsonProperty(value = "sendKeyName")
     private String sendKeyName;
 
     /*
-     * The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned
+     * The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be
+     * returned
      * normally, use the POST /listKeys API instead.
      */
-    @JsonProperty(value = "sendKeyValue")
     private String sendKeyValue;
 
     /*
      * The suffix for the service bus endpoint. By default this is .servicebus.windows.net
      */
-    @JsonProperty(value = "serviceBusSuffix")
     private String serviceBusSuffix;
 
     /**
@@ -241,5 +238,62 @@ public final class HybridConnectionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", this.serviceBusNamespace);
+        jsonWriter.writeStringField("relayName", this.relayName);
+        jsonWriter.writeStringField("relayArmUri", this.relayArmUri);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("sendKeyName", this.sendKeyName);
+        jsonWriter.writeStringField("sendKeyValue", this.sendKeyValue);
+        jsonWriter.writeStringField("serviceBusSuffix", this.serviceBusSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridConnectionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HybridConnectionProperties.
+     */
+    public static HybridConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridConnectionProperties deserializedHybridConnectionProperties = new HybridConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.serviceBusNamespace = reader.getString();
+                } else if ("relayName".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.relayName = reader.getString();
+                } else if ("relayArmUri".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.relayArmUri = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.hostname = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.port = reader.getNullable(JsonReader::getInt);
+                } else if ("sendKeyName".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.sendKeyName = reader.getString();
+                } else if ("sendKeyValue".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.sendKeyValue = reader.getString();
+                } else if ("serviceBusSuffix".equals(fieldName)) {
+                    deserializedHybridConnectionProperties.serviceBusSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridConnectionProperties;
+        });
     }
 }

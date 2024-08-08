@@ -70,7 +70,6 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
      */
     @Override
     public void validate() {
-        super.validate();
         if (organizations() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
