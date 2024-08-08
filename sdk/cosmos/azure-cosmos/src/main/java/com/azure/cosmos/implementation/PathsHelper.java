@@ -588,7 +588,7 @@ public class PathsHelper {
                 return trimmedResourceFullName.substring(0, index);
         }
 
-        return trimmedResourceFullName.isEmpty() ? resourceFullName : trimmedResourceFullName.toString();
+        return trimmedResourceFullName.length() == 0 ? resourceFullName : trimmedResourceFullName.toString();
     }
 
     public static String getDatabasePath(String resourceFullName) {
