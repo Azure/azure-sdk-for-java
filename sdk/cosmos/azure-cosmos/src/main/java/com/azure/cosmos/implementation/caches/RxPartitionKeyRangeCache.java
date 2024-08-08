@@ -72,6 +72,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 CosmosException dce = Utils.as(err, CosmosException.class);
 
                 // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                // todo: revert change when fault injection excludes 404:1002 for master resources
                 if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
@@ -182,6 +183,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                             err);
 
                     // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                    // todo: revert change when fault injection excludes 404:1002 for master resources
                     if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }

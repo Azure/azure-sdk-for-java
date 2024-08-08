@@ -579,16 +579,17 @@ public class PathsHelper {
 
     public static String getCollectionPath(String resourceFullName) {
 
-        StringBuilder trimmedResourceFullName = new StringBuilder();
-
         if (resourceFullName != null) {
-            trimmedResourceFullName.append(Utils.trimBeginningAndEndingSlashes(resourceFullName));
+            String trimmedResourceFullName = Utils.trimBeginningAndEndingSlashes(resourceFullName);
             int index = indexOfNth(trimmedResourceFullName.toString(), '/', 4);
-            if (index > 0)
+            if (index > 0) {
                 return trimmedResourceFullName.substring(0, index);
+            } else {
+                return trimmedResourceFullName;
+            }
         }
 
-        return trimmedResourceFullName.length() == 0 ? resourceFullName : trimmedResourceFullName.toString();
+        return resourceFullName;
     }
 
     public static String getDatabasePath(String resourceFullName) {
