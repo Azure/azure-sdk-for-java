@@ -14,17 +14,7 @@ import com.azure.json.implementation.jackson.core.io.IOContext;
  */
 public abstract class JsonParserBase extends ParserBase {
     @SuppressWarnings("deprecation")
-    protected final static int FEAT_MASK_TRAILING_COMMA = Feature.ALLOW_TRAILING_COMMA.getMask();
-    @SuppressWarnings("deprecation")
-    protected final static int FEAT_MASK_LEADING_ZEROS = Feature.ALLOW_NUMERIC_LEADING_ZEROS.getMask();
-    @SuppressWarnings("deprecation")
     protected final static int FEAT_MASK_NON_NUM_NUMBERS = Feature.ALLOW_NON_NUMERIC_NUMBERS.getMask();
-    @SuppressWarnings("deprecation")
-    protected final static int FEAT_MASK_ALLOW_MISSING = Feature.ALLOW_MISSING_VALUES.getMask();
-    protected final static int FEAT_MASK_ALLOW_SINGLE_QUOTES = Feature.ALLOW_SINGLE_QUOTES.getMask();
-    protected final static int FEAT_MASK_ALLOW_UNQUOTED_NAMES = Feature.ALLOW_UNQUOTED_FIELD_NAMES.getMask();
-    protected final static int FEAT_MASK_ALLOW_JAVA_COMMENTS = Feature.ALLOW_COMMENTS.getMask();
-    protected final static int FEAT_MASK_ALLOW_YAML_COMMENTS = Feature.ALLOW_YAML_COMMENTS.getMask();
 
     // Latin1 encoding is not supported, but we do use 8-bit subset for
     // pre-processing task, to simplify first pass, keep it fast.
@@ -53,9 +43,6 @@ public abstract class JsonParserBase extends ParserBase {
 
     @Override
     public abstract JsonLocation currentLocation();
-
-    @Override
-    public abstract JsonLocation currentTokenLocation();
 
     @Override
     protected abstract JsonLocation _currentLocationMinusOne();

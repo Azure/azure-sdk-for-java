@@ -1,9 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
-import com.azure.json.implementation.jackson.core.io.schubfach.DoubleToDecimal;
-import com.azure.json.implementation.jackson.core.io.schubfach.FloatToDecimal;
-
 public final class NumberOutput {
     private static final int MILLION = 1000000;
     private static final int BILLION = 1000000000;
@@ -250,22 +247,20 @@ public final class NumberOutput {
 
     /**
      * @param v double
-     * @param useFastWriter whether to use Schubfach algorithm to write output (default false)
      * @return double as a string
      * @since 2.14
      */
-    public static String toString(final double v, final boolean useFastWriter) {
-        return useFastWriter ? DoubleToDecimal.toString(v) : Double.toString(v);
+    public static String toString(final double v) {
+        return Double.toString(v);
     }
 
     /**
      * @param v float
-     * @param useFastWriter whether to use Schubfach algorithm to write output (default false)
      * @return float as a string
      * @since 2.14
      */
-    public static String toString(final float v, final boolean useFastWriter) {
-        return useFastWriter ? FloatToDecimal.toString(v) : Float.toString(v);
+    public static String toString(final float v) {
+        return Float.toString(v);
     }
 
     /*

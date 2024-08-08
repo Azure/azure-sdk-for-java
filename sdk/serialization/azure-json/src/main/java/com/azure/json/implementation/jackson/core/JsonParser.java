@@ -27,150 +27,8 @@ public abstract class JsonParser implements Closeable {
      * Enumeration that defines all on/off features for parsers.
      */
     public enum Feature {
-        // // // Low-level I/O handling features:
-
-        /**
-         * Feature that determines whether parser will automatically
-         * close underlying input source that is NOT owned by the
-         * parser. If disabled, calling application has to separately
-         * close the underlying {@link InputStream} and {@link Reader}
-         * instances used to create the parser. If enabled, parser
-         * will handle closing, as long as parser itself gets closed:
-         * this happens when end-of-input is encountered, or parser
-         * is closed by a call to {@link JsonParser#close}.
-         *<p>
-         * Feature is enabled by default.
-         */
-        AUTO_CLOSE_SOURCE(true),
 
         // // // Support for non-standard data format constructs
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of Java/C++ style comments (both '/'+'*' and
-         * '//' varieties) within parsed content or not.
-         *<p>
-         * Since JSON specification does not mention comments as legal
-         * construct,
-         * this is a non-standard feature; however, in the wild
-         * this is extensively used. As such, feature is
-         * <b>disabled by default</b> for parsers and must be
-         * explicitly enabled.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_JAVA_COMMENTS} instead.
-         */
-        ALLOW_COMMENTS(false),
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of YAML comments, ones starting with '#' and continuing
-         * until the end of the line. This commenting style is common
-         * with scripting languages as well.
-         *<p>
-         * Since JSON specification does not mention comments as legal
-         * construct,
-         * this is a non-standard feature. As such, feature is
-         * <b>disabled by default</b> for parsers and must be
-         * explicitly enabled.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_YAML_COMMENTS} instead.
-         */
-        ALLOW_YAML_COMMENTS(false),
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of unquoted field names (which is allowed by Javascript,
-         * but not by JSON specification).
-         *<p>
-         * Since JSON specification requires use of double quotes for
-         * field names,
-         * this is a non-standard feature, and as such disabled by default.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNQUOTED_FIELD_NAMES} instead.
-         */
-        ALLOW_UNQUOTED_FIELD_NAMES(false),
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of single quotes (apostrophe, character '\'') for
-         * quoting Strings (names and String values). If so,
-         * this is in addition to other acceptable markers.
-         * but not by JSON specification).
-         *<p>
-         * Since JSON specification requires use of double quotes for
-         * field names,
-         * this is a non-standard feature, and as such disabled by default.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_SINGLE_QUOTES} instead.
-         */
-        ALLOW_SINGLE_QUOTES(false),
-
-        /**
-         * Feature that determines whether parser will allow
-         * JSON Strings to contain unquoted control characters
-         * (ASCII characters with value less than 32, including
-         * tab and line feed characters) or not.
-         * If feature is set false, an exception is thrown if such a
-         * character is encountered.
-         *<p>
-         * Since JSON specification requires quoting for all control characters,
-         * this is a non-standard feature, and as such disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNESCAPED_CONTROL_CHARS} instead
-         */
-        @Deprecated
-        ALLOW_UNQUOTED_CONTROL_CHARS(false),
-
-        /**
-         * Feature that can be enabled to accept quoting of all character
-         * using backslash quoting mechanism: if not enabled, only characters
-         * that are explicitly listed by JSON specification can be thus
-         * escaped (see JSON spec for small list of these characters)
-         *<p>
-         * Since JSON specification requires quoting for all control characters,
-         * this is a non-standard feature, and as such disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER} instead
-         */
-        @Deprecated
-        ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER(false),
-
-        /**
-         * Feature that determines whether parser will allow
-         * JSON integral numbers to start with additional (ignorable)
-         * zeroes (like: 000001). If enabled, no exception is thrown, and extra
-         * nulls are silently ignored (and not included in textual representation
-         * exposed via {@link JsonParser#getText}).
-         *<p>
-         * Since JSON specification does not allow leading zeroes,
-         * this is a non-standard feature, and as such disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_LEADING_ZEROS_FOR_NUMBERS} instead
-         */
-        @Deprecated
-        ALLOW_NUMERIC_LEADING_ZEROS(false),
-
-        /**
-         * @deprecated Use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS} instead
-         */
-        @Deprecated
-        ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS(false),
-
-        /**
-         * @deprecated Use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS} instead
-         */
-        @Deprecated
-        ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS(false),
-
-        /**
-         * @deprecated Use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS} instead
-         */
-        @Deprecated
-        ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS(false),
 
         /**
          * Feature that allows parser to recognize set of
@@ -193,129 +51,7 @@ public abstract class JsonParser implements Closeable {
           * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_NON_NUMERIC_NUMBERS} instead
           */
         @Deprecated
-        ALLOW_NON_NUMERIC_NUMBERS(false),
-
-        /**
-         * Feature allows the support for "missing" values in a JSON array: missing
-         * value meaning sequence of two commas, without value in-between but only
-         * optional white space.
-         * Enabling this feature will expose "missing" values as {@link JsonToken#VALUE_NULL}
-         * tokens, which typically become Java nulls in arrays and {@link java.util.Collection}
-         * in data-binding.
-         * <p>
-         * For example, enabling this feature will represent a JSON array <code>["value1",,"value3",]</code>
-         * as <code>["value1", null, "value3", null]</code>
-         * <p>
-         * Since the JSON specification does not allow missing values this is a non-compliant JSON
-         * feature and is disabled by default.
-         *
-         * @since 2.8
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_MISSING_VALUES} instead
-         */
-        @Deprecated
-        ALLOW_MISSING_VALUES(false),
-
-        /**
-         * Feature that determines whether {@link JsonParser} will allow for a single trailing
-         * comma following the final value (in an Array) or member (in an Object). These commas
-         * will simply be ignored.
-         * <p>
-         * For example, when this feature is enabled, <code>[true,true,]</code> is equivalent to
-         * <code>[true, true]</code> and <code>{"a": true,}</code> is equivalent to
-         * <code>{"a": true}</code>.
-         * <p>
-         * When combined with <code>ALLOW_MISSING_VALUES</code>, this feature takes priority, and
-         * the final trailing comma in an array declaration does not imply a missing
-         * (<code>null</code>) value. For example, when both <code>ALLOW_MISSING_VALUES</code>
-         * and <code>ALLOW_TRAILING_COMMA</code> are enabled, <code>[true,true,]</code> is
-         * equivalent to <code>[true, true]</code>, and <code>[true,true,,]</code> is equivalent to
-         * <code>[true, true, null]</code>.
-         * <p>
-         * Since the JSON specification does not permit trailing commas, this is a non-standard
-         * feature, and as such disabled by default.
-         *
-         * @since 2.9
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_TRAILING_COMMA} instead
-         */
-        @Deprecated
-        ALLOW_TRAILING_COMMA(false),
-
-        // // // Validity checks
-
-        /**
-         * Feature that determines what to do if the underlying data format requires knowledge
-         * of all properties to decode (usually via a Schema), and if no definition is
-         * found for a property that input content contains.
-         * Typically most textual data formats do NOT require schema information (although
-         * some do, such as CSV), whereas many binary data formats do require definitions
-         * (such as Avro, protobuf), although not all (Smile, CBOR, BSON and MessagePack do not).
-         * Further note that some formats that do require schema information will not be able
-         * to ignore undefined properties: for example, Avro is fully positional and there is
-         * no possibility of undefined data. This leaves formats like Protobuf that have identifiers
-         * that may or may not map; and as such Protobuf format does make use of this feature.
-         *<p>
-         * Note that support for this feature is implemented by individual data format
-         * module, if (and only if) it makes sense for the format in question. For JSON,
-         * for example, this feature has no effect as properties need not be pre-defined.
-         *<p>
-         * Feature is disabled by default, meaning that if the underlying data format
-         * requires knowledge of all properties to output, attempts to read an unknown
-         * property will result in a {@link JsonProcessingException}
-         *
-         * @since 2.6
-         */
-        IGNORE_UNDEFINED(false),
-
-        // // // Other
-
-        /**
-         * Feature that determines whether {@link JsonLocation} instances should be constructed
-         * with reference to source or not. If source reference is included, its type and contents
-         * are included when `toString()` method is called (most notably when printing out parse
-         * exception with that location information). If feature is disabled, no source reference
-         * is passed and source is only indicated as "UNKNOWN".
-         *<p>
-         * Most common reason for disabling this feature is to avoid leaking information about
-         * internal information; this may be done for security reasons.
-         * Note that even if source reference is included, only parts of contents are usually
-         * printed, and not the whole contents. Further, many source reference types can not
-         * necessarily access contents (like streams), so only type is indicated, not contents.
-         *<p>
-         * Since 2.16 feature is <b>disabled</b> by default (before 2.16 it was enabled),
-         * meaning that "source reference" information is NOT passed; this for security
-         * reasons (so by default no information is leaked; see
-         * <a href="https://github.com/FasterXML/jackson-core/issues/991">core#991</a>
-         * for more)
-         *
-         * @since 2.9 (but different default since 2.16)
-         */
-        INCLUDE_SOURCE_IN_LOCATION(false),
-
-        /**
-         * Feature that determines whether we use the built-in {@link Double#parseDouble(String)} code to parse
-         * doubles or if we use {@code FastDoubleParser} implementation.
-         * instead.
-         *<p>
-         * This setting is disabled by default for backwards compatibility.
-         *
-         * @since 2.14
-         */
-        USE_FAST_DOUBLE_PARSER(false),
-
-        /**
-         * Feature that determines whether to use the built-in Java code for parsing
-         * <code>BigDecimal</code>s and <code>BigIntegers</code>s or to use
-         * specifically optimized custom implementation instead.
-         *<p>
-         * This setting is disabled by default for backwards compatibility.
-         *
-         * @since 2.15
-         */
-        USE_FAST_BIG_NUMBER_PARSER(false)
-
-        ;
+        ALLOW_NON_NUMERIC_NUMBERS(false);
 
         /**
          * Whether feature is enabled or disabled by default.
@@ -420,7 +156,7 @@ public abstract class JsonParser implements Closeable {
      * Closes the parser so that no further iteration or data access
      * can be made; will also close the underlying input source
      * if parser either <b>owns</b> the input source, or feature
-     * {@link Feature#AUTO_CLOSE_SOURCE} is enabled.
+     * {@code Feature#AUTO_CLOSE_SOURCE} is enabled.
      * Whether parser owns the input source depends on factory
      * method that was used to construct instance (so check
      * {@link com.azure.json.implementation.jackson.core.JsonFactory} for details,
@@ -471,22 +207,6 @@ public abstract class JsonParser implements Closeable {
      * @return Location of the last processed input unit (byte or character)
      */
     public abstract JsonLocation currentLocation();
-
-    /**
-     * Method that return the <b>starting</b> location of the current
-     * (most recently returned)
-     * token; that is, the position of the first input unit (character or byte) from input
-     * that starts the current token.
-     *<p>
-     * Note that the location is not guaranteed to be accurate (although most
-     * implementation will try their best): some implementations may only
-     * return {@link JsonLocation#NA} due to not having access
-     * to input location information (when delegating actual decoding work
-     * to other library)
-     *
-     * @return Starting location of the token parser currently points to
-     */
-    public abstract JsonLocation currentTokenLocation();
 
     /*
     /***************************************************
@@ -876,8 +596,8 @@ public abstract class JsonParser implements Closeable {
         return _constructReadException(String.format(msg, arg));
     }
 
-    protected JsonParseException _constructReadException(String msg, Object arg1, Object arg2) {
-        return _constructReadException(String.format(msg, arg1, arg2));
+    protected JsonParseException _constructReadException(Object arg1, Object arg2) {
+        return _constructReadException(String.format("Unrecognized token '%s': was expecting %s", arg1, arg2));
     }
 
     /**

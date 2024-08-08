@@ -5,14 +5,9 @@
  */
 package com.azure.json.implementation.jackson.core;
 
-import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
-
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.math.BigDecimal;
 
 /**
  * Base class that defines public API for writing JSON content.
@@ -28,63 +23,7 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      * Enumeration that defines all togglable features for generators.
      */
     public enum Feature {
-        // // Low-level I/O / content features
-
-        /**
-         * Feature that determines whether generator will automatically
-         * close underlying output target that is NOT owned by the
-         * generator.
-         * If disabled, calling application has to separately
-         * close the underlying {@link OutputStream} and {@link Writer}
-         * instances used to create the generator. If enabled, generator
-         * will handle closing, as long as generator itself gets closed:
-         * this happens when end-of-input is encountered, or generator
-         * is closed by a call to {@link JsonGenerator#close}.
-         *<p>
-         * Feature is enabled by default.
-         */
-        AUTO_CLOSE_TARGET(true),
-
-        /**
-         * Feature that determines what happens when the generator is
-         * closed while there are still unmatched
-         * {@link JsonToken#START_ARRAY} or {@link JsonToken#START_OBJECT}
-         * entries in output content. If enabled, such Array(s) and/or
-         * Object(s) are automatically closed; if disabled, nothing
-         * specific is done.
-         *<p>
-         * Feature is enabled by default.
-         */
-        AUTO_CLOSE_JSON_CONTENT(true),
-
-        /**
-         * Feature that specifies that calls to {@link #flush} will cause
-         * matching <code>flush()</code> to underlying {@link OutputStream}
-         * or {@link Writer}; if disabled this will not be done.
-         * Main reason to disable this feature is to prevent flushing at
-         * generator level, if it is not possible to prevent method being
-         * called by other code (like <code>ObjectMapper</code> or third
-         * party libraries).
-         *<p>
-         * Feature is enabled by default.
-         */
-        FLUSH_PASSED_TO_STREAM(true),
-
         // // Quoting-related features
-
-        /**
-         * Feature that determines whether JSON Object field names are
-         * quoted using double-quotes, as specified by JSON specification
-         * or not. Ability to disable quoting was added to support use
-         * cases where they are not usually expected, which most commonly
-         * occurs when used straight from Javascript.
-         *<p>
-         * Feature is enabled by default (since it is required by JSON specification).
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#QUOTE_FIELD_NAMES} instead
-         */
-        @Deprecated
-        QUOTE_FIELD_NAMES(true),
 
         /**
          * Feature that determines whether "exceptional" (not real number)
@@ -101,128 +40,7 @@ public abstract class JsonGenerator implements Closeable, Flushable {
          * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#WRITE_NAN_AS_STRINGS} instead
          */
         @Deprecated
-        QUOTE_NON_NUMERIC_NUMBERS(true),
-
-        // // Character escaping features
-
-        /**
-         * Feature that specifies that all characters beyond 7-bit ASCII
-         * range (i.e. code points of 128 and above) need to be output
-         * using format-specific escapes (for JSON, backslash escapes),
-         * if format uses escaping mechanisms (which is generally true
-         * for textual formats but not for binary formats).
-         *<p>
-         * Note that this setting may not necessarily make sense for all
-         * data formats (for example, binary formats typically do not use
-         * any escaping mechanisms; and some textual formats do not have
-         * general-purpose escaping); if so, settings is simply ignored.
-         * Put another way, effects of this feature are data-format specific.
-         *<p>
-         * Feature is disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#ESCAPE_NON_ASCII} instead
-         */
-        @Deprecated
-        ESCAPE_NON_ASCII(false),
-
-        // // Datatype coercion features
-
-        /**
-         * Feature that forces all Java numbers to be written as Strings,
-         * even if the underlying data format has non-textual representation
-         * (which is the case for JSON as well as all binary formats).
-         * Default state is 'false', meaning that Java numbers are to
-         * be serialized using basic numeric serialization (as JSON
-         * numbers, integral or floating point, for example).
-         * If enabled, all such numeric values are instead written out as
-         * textual values (which for JSON means quoted in double-quotes).
-         *<p>
-         * One use case is to avoid problems with Javascript limitations:
-         * since Javascript standard specifies that all number handling
-         * should be done using 64-bit IEEE 754 floating point values,
-         * result being that some 64-bit integer values can not be
-         * accurately represent (as mantissa is only 51 bit wide).
-         *<p>
-         * Feature is disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#WRITE_NUMBERS_AS_STRINGS} instead
-         */
-        @Deprecated
-        WRITE_NUMBERS_AS_STRINGS(false),
-
-        /**
-         * Feature that determines whether {@link java.math.BigDecimal} entries are
-         * serialized using {@link java.math.BigDecimal#toPlainString()} to prevent
-         * values to be written using scientific notation.
-         *<p>
-         * NOTE: only affects generators that serialize {@link java.math.BigDecimal}s
-         * using textual representation (textual formats but potentially some binary
-         * formats).
-         *<p>
-         * Feature is disabled by default, so default output mode is used; this generally
-         * depends on how {@link BigDecimal} has been created.
-         *
-         * @since 2.3
-         */
-        WRITE_BIGDECIMAL_AS_PLAIN(false),
-
-        // // Schema/Validity support features
-
-        /**
-         * Feature that determines what to do if the underlying data format requires knowledge
-         * of all properties to output, and if no definition is found for a property that
-         * caller tries to write. If enabled, such properties will be quietly ignored;
-         * if disabled, a {@link JsonProcessingException} will be thrown to indicate the
-         * problem.
-         * Typically most textual data formats do NOT require schema information (although
-         * some do, such as CSV), whereas many binary data formats do require definitions
-         * (such as Avro, protobuf), although not all (Smile, CBOR, BSON and MessagePack do not).
-         *<p>
-         * Note that support for this feature is implemented by individual data format
-         * module, if (and only if) it makes sense for the format in question. For JSON,
-         * for example, this feature has no effect as properties need not be pre-defined.
-         *<p>
-         * Feature is disabled by default, meaning that if the underlying data format
-         * requires knowledge of all properties to output, attempts to write an unknown
-         * property will result in a {@link JsonProcessingException}
-         *
-         * @since 2.5
-         */
-        IGNORE_UNKNOWN(false),
-
-        // // Misc other
-
-        /**
-         * Alias for {@link com.azure.json.implementation.jackson.core.StreamWriteFeature#USE_FAST_DOUBLE_WRITER} instead
-         *
-         * @since 2.14
-         * @deprecated Use {@link com.azure.json.implementation.jackson.core.StreamWriteFeature#USE_FAST_DOUBLE_WRITER} instead
-         */
-        @Deprecated
-        USE_FAST_DOUBLE_WRITER(false),
-
-        /**
-         * Feature that specifies that hex values are encoded with capital letters.
-         *<p>
-         * Can be disabled to have a better possibility to compare between other Json
-         * writer libraries, such as JSON.stringify from Javascript.
-         *<p>
-         * Feature is enabled by default.
-         *
-         * @since 2.14
-         * @deprecated Use {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#WRITE_HEX_UPPER_CASE} instead
-         */
-        @Deprecated
-        WRITE_HEX_UPPER_CASE(true),
-
-        /**
-         * Feature that specifies whether {@link JsonGenerator} should escape forward slashes.
-         * <p>
-         * Feature is disabled by default for Jackson 2.x version, and enabled by default in Jackson 3.0.
-         *
-         * @since 2.17
-         */
-        ESCAPE_FORWARD_SLASHES(false);
+        QUOTE_NON_NUMERIC_NUMBERS(true);
 
         private final boolean _defaultState;
         private final int _mask;
@@ -358,41 +176,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
     /* Public API, other configuration
     /**********************************************************************
       */
-
-    /**
-     * Method that can be called to request that generator escapes
-     * all character codes above specified code point (if positive value);
-     * or, to not escape any characters except for ones that must be
-     * escaped for the data format (if -1).
-     * To force escaping of all non-ASCII characters, for example,
-     * this method would be called with value of 127.
-     * <p>
-     * Note that generators are NOT required to support setting of value
-     * higher than 127, because there are other ways to affect quoting
-     * (or lack thereof) of character codes between 0 and 127.
-     * Not all generators support concept of escaping, either; if so,
-     * calling this method will have no effect.
-     * <p>
-     * Default implementation does nothing; sub-classes need to redefine
-     * it according to rules of supported data format.
-     *
-     * @param charCode Either -1 to indicate that no additional escaping
-     * is to be done; or highest code point not to escape (meaning higher
-     * ones will be), if positive value.
-     */
-    public void setHighestNonEscapedChar(int charCode) {
-    }
-
-    /**
-     * Method for defining custom escapes factory uses for {@link JsonGenerator}s
-     * it creates.
-     * <p>
-     * Default implementation does nothing and simply returns this instance.
-     *
-     * @param esc {@link CharacterEscapes} to configure this generator to use, if any; {@code null} if none
-     */
-    public void setCharacterEscapes(CharacterEscapes esc) {
-    }
 
     /**
      * Method for writing starting marker of a Array value
@@ -599,8 +382,7 @@ public abstract class JsonGenerator implements Closeable, Flushable {
 
     /**
      * Similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
-     * but assumes default to using the Jackson default Base64 variant
-     * (which is {@link Base64Variants#MIME_NO_LINEFEEDS}). Also
+     * but assumes default to using the Jackson default Base64 variant. Also
      * assumes that whole byte array is to be output.
      *
      * @param data Buffer that contains binary data to write
@@ -732,7 +514,7 @@ public abstract class JsonGenerator implements Closeable, Flushable {
      * on whether this generator either manages the target (i.e. is the
      * only one with access to the target -- case if caller passes a
      * reference to the resource such as File, but not stream); or
-     * has feature {@link Feature#AUTO_CLOSE_TARGET} enabled.
+     * has feature {@code Feature#AUTO_CLOSE_TARGET} enabled.
      * If either of above is true, the target is also closed. Otherwise
      * (not managing, feature not enabled), target is not closed.
      *

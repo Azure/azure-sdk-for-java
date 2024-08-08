@@ -14,7 +14,7 @@ public final class JsonRecyclerPools {
     /**
      * Method to call to get the default recycler pool instance:
      * as of Jackson 2.17.x and earlier (except for 2.17.0) this is same as calling
-     * {@link #threadLocalPool()} -- 2.17.0 temporarily had this call
+     * {@code #threadLocalPool()} -- 2.17.0 temporarily had this call
      * {@code #newLockFreePool()} (but reverted due to problems reported).
      * Will likely be changed in 2.18.0 to something else.
      *
@@ -22,27 +22,7 @@ public final class JsonRecyclerPools {
      *   if no specific implementation desired.
      */
     public static RecyclerPool<BufferRecycler> defaultPool() {
-        return threadLocalPool();
-    }
-
-    /**
-     * Accessor for getting the shared/global {@link ThreadLocalPool} instance
-     * (due to design only one instance ever needed)
-     *
-     * @return Globally shared instance of {@link ThreadLocalPool}
-     */
-    public static RecyclerPool<BufferRecycler> threadLocalPool() {
         return ThreadLocalPool.GLOBAL;
-    }
-
-    /**
-     * Accessor for getting the shared/global {@link NonRecyclingPool} instance
-     * (due to design only one instance ever needed)
-     *
-     * @return Globally shared instance of {@link NonRecyclingPool}.
-     */
-    public static RecyclerPool<BufferRecycler> nonRecyclingPool() {
-        return NonRecyclingPool.GLOBAL;
     }
 
     /*
@@ -69,30 +49,6 @@ public final class JsonRecyclerPools {
         @Override
         public BufferRecycler acquirePooled() {
             return BufferRecyclers.getBufferRecycler();
-        }
-
-        // // // JDK serialization support
-
-        protected Object readResolve() {
-            return GLOBAL;
-        }
-    }
-
-    /**
-     * Dummy {@link RecyclerPool} implementation that does not recycle
-     * anything but simply creates new instances when asked to acquire items.
-     */
-    public static class NonRecyclingPool extends RecyclerPool.NonRecyclingPoolBase<BufferRecycler> {
-        private static final long serialVersionUID = 1L;
-
-        protected static final NonRecyclingPool GLOBAL = new NonRecyclingPool();
-
-        protected NonRecyclingPool() {
-        }
-
-        @Override
-        public BufferRecycler acquirePooled() {
-            return new BufferRecycler();
         }
 
         // // // JDK serialization support

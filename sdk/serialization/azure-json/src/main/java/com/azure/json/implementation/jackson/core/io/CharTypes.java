@@ -170,16 +170,6 @@ public final class CharTypes {
     }
 
     /**
-     * Lookup table same as {@link #sOutputEscapes128} except that
-     * forward slash ('/') is also escaped
-     */
-    private final static int[] sOutputEscapes128WithSlash;
-    static {
-        sOutputEscapes128WithSlash = Arrays.copyOf(sOutputEscapes128, sOutputEscapes128.length);
-        sOutputEscapes128WithSlash['/'] = '/';
-    }
-
-    /**
      * Lookup table for the first 256 Unicode characters (ASCII / UTF-8)
      * range. For actual hex digits, contains corresponding value;
      * for others -1.
@@ -231,28 +221,6 @@ public final class CharTypes {
         return sOutputEscapes128;
     }
 
-    /**
-     * Alternative to {@link #get7BitOutputEscapes()} when either a non-standard
-     * quote character is used, or forward slash is to be escaped.
-     *
-     * @param quoteChar Character used for quoting textual values and property names;
-     *    usually double-quote but sometimes changed to single-quote (apostrophe)
-     * @param escapeSlash
-     *
-     * @return 128-entry {@code int[]} that contains escape definitions
-     *
-     * @since 2.17
-     */
-    public static int[] get7BitOutputEscapes(int quoteChar, boolean escapeSlash) {
-        if (quoteChar == '"') {
-            if (escapeSlash) {
-                return sOutputEscapes128WithSlash;
-            }
-            return sOutputEscapes128;
-        }
-        return AltEscapes.instance.escapesFor(quoteChar, escapeSlash);
-    }
-
     public static int charToHex(int ch) {
         // 08-Nov-2019, tatu: As per [core#540] and [core#578], changed to
         //   force masking here so caller need not do that.
@@ -267,46 +235,4 @@ public final class CharTypes {
         return (uppercase) ? HB.clone() : HBlower.clone();
     }
 
-    /**
-     * Helper used for lazy initialization of alternative escape (quoting)
-     * table, used for escaping content that uses non-standard quote
-     * character (usually apostrophe).
-     *
-     * @since 2.10
-     */
-    private static class AltEscapes {
-        public final static AltEscapes instance = new AltEscapes();
-
-        private final int[][] _altEscapes = new int[128][];
-
-        // @since 2.17
-        private final int[][] _altEscapesWithSlash = new int[128][];
-
-        public int[] escapesFor(int quoteChar) {
-            int[] esc = _altEscapes[quoteChar];
-            if (esc == null) {
-                esc = Arrays.copyOf(sOutputEscapes128, 128);
-                // Only add escape setting if character does not already have it
-                if (esc[quoteChar] == 0) {
-                    esc[quoteChar] = CharacterEscapes.ESCAPE_STANDARD;
-                }
-                _altEscapes[quoteChar] = esc;
-            }
-            return esc;
-        }
-
-        // @since 2.17
-        public int[] escapesFor(int quoteChar, boolean escapeSlash) {
-            if (!escapeSlash) {
-                return escapesFor(quoteChar);
-            }
-            int[] esc = _altEscapesWithSlash[quoteChar];
-            if (esc == null) {
-                esc = escapesFor(quoteChar);
-                esc['/'] = '/';
-                _altEscapesWithSlash[quoteChar] = esc;
-            }
-            return esc;
-        }
-    }
 }

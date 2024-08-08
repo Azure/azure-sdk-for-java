@@ -20,16 +20,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     public final static int SURR2_FIRST = 0xDC00;
     public final static int SURR2_LAST = 0xDFFF;
 
-    /**
-     * Set of feature masks related to features that need updates of other
-     * local configuration or state.
-     *
-     * @since 2.5
-     */
-    @SuppressWarnings("deprecation")
-    protected final static int DERIVED_FEATURES_MASK
-        = Feature.WRITE_NUMBERS_AS_STRINGS.getMask() | Feature.ESCAPE_NON_ASCII.getMask();
-
     // // // Constants for validation messages (since 2.6)
 
     protected final static String WRITE_BINARY = "write a binary value";
@@ -53,13 +43,6 @@ public abstract class GeneratorBase extends JsonGenerator {
 
     // since 2.16
     protected final IOContext _ioContext;
-
-    /**
-     * Flag set to indicate that implicit conversion from number
-     * to JSON String is needed (as per
-     * {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#WRITE_NUMBERS_AS_STRINGS}).
-     */
-    protected boolean _cfgNumbersAsStrings;
 
     /*
     /**********************************************************
@@ -93,7 +76,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         _features = features;
         _ioContext = ioContext;
         _writeContext = JsonWriteContext.createRootContext();
-        _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
     }
 
     /*
@@ -114,14 +96,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     public JsonGenerator enable(Feature f) {
         final int mask = f.getMask();
         _features |= mask;
-        if ((mask & DERIVED_FEATURES_MASK) != 0) {
-            // why not switch? Requires addition of a generated class, alas
-            if (f == Feature.WRITE_NUMBERS_AS_STRINGS) {
-                _cfgNumbersAsStrings = true;
-            } else if (f == Feature.ESCAPE_NON_ASCII) {
-                setHighestNonEscapedChar(127);
-            }
-        }
         return this;
     }
 
@@ -130,13 +104,6 @@ public abstract class GeneratorBase extends JsonGenerator {
     public JsonGenerator disable(Feature f) {
         final int mask = f.getMask();
         _features &= ~mask;
-        if ((mask & DERIVED_FEATURES_MASK) != 0) {
-            if (f == Feature.WRITE_NUMBERS_AS_STRINGS) {
-                _cfgNumbersAsStrings = false;
-            } else if (f == Feature.ESCAPE_NON_ASCII) {
-                setHighestNonEscapedChar(0);
-            }
-        }
         return this;
     }
 

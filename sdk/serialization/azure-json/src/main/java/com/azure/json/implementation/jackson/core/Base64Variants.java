@@ -10,8 +10,6 @@ package com.azure.json.implementation.jackson.core;
  *<ul>
  * <li> {@link #MIME}
  * <li> {@link #MIME_NO_LINEFEEDS}
- * <li> {@link #PEM}
- * <li> {@link #MODIFIED_FOR_URL}
  * </ul>
  * See entries for full description of differences.
  *<p>
@@ -36,7 +34,7 @@ public final class Base64Variants {
      */
     public final static Base64Variant MIME;
     static {
-        MIME = new Base64Variant("MIME", STD_BASE64_ALPHABET, true, '=', 76);
+        MIME = new Base64Variant("MIME", 76);
     }
 
     /**
@@ -51,34 +49,6 @@ public final class Base64Variants {
     }
 
     /**
-     * This variant is the one that predates {@link #MIME}: it is otherwise
-     * identical, except that it mandates shorter line length.
-     */
-    public final static Base64Variant PEM = new Base64Variant(MIME, "PEM", true, '=', 64);
-
-    /**
-     * This non-standard variant is usually used when encoded data needs to be
-     * passed via URLs (such as part of GET request). It differs from the
-     * base {@link #MIME} variant in multiple ways.
-     * First, no padding is used: this also means that it generally can not
-     * be written in multiple separate but adjacent chunks (which would not
-     * be the usual use case in any case). Also, no linefeeds are used (max
-     * line length set to infinite). And finally, two characters (plus and
-     * slash) that would need quoting in URLs are replaced with more
-     * optimal alternatives (hyphen and underscore, respectively).
-     */
-    public final static Base64Variant MODIFIED_FOR_URL;
-    static {
-        StringBuilder sb = new StringBuilder(STD_BASE64_ALPHABET);
-        // Replace plus with hyphen, slash with underscore (and no padding)
-        sb.setCharAt(sb.indexOf("+"), '-');
-        sb.setCharAt(sb.indexOf("/"), '_');
-        // And finally, let's not split lines either, wouldn't work too well with URLs
-        MODIFIED_FOR_URL = new Base64Variant("MODIFIED-FOR-URL", sb.toString(), false, Base64Variant.PADDING_CHAR_NONE,
-            Integer.MAX_VALUE);
-    }
-
-    /**
      * Method used to get the default variant -- {@link #MIME_NO_LINEFEEDS} -- for cases
      * where caller does not explicitly specify the variant.
      * We will prefer no-linefeed version because linefeeds in JSON values
@@ -90,35 +60,4 @@ public final class Base64Variants {
         return MIME_NO_LINEFEEDS;
     }
 
-    /**
-     * Lookup method for finding one of standard variants by name.
-     * If name does not match any of standard variant names,
-     * a {@link IllegalArgumentException} is thrown.
-     *
-     * @param name Name of base64 variant to return
-     *
-     * @return Standard base64 variant that matches given {@code name}
-     *
-     * @throws IllegalArgumentException if no standard variant with given name exists
-     */
-    public static Base64Variant valueOf(String name) throws IllegalArgumentException {
-        if (MIME._name.equals(name)) {
-            return MIME;
-        }
-        if (MIME_NO_LINEFEEDS._name.equals(name)) {
-            return MIME_NO_LINEFEEDS;
-        }
-        if (PEM._name.equals(name)) {
-            return PEM;
-        }
-        if (MODIFIED_FOR_URL._name.equals(name)) {
-            return MODIFIED_FOR_URL;
-        }
-        if (name == null) {
-            name = "<null>";
-        } else {
-            name = "'" + name + "'";
-        }
-        throw new IllegalArgumentException("No Base64Variant with name " + name);
-    }
 }

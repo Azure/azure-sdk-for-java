@@ -85,31 +85,29 @@ public class ContentReference
      */
 
     /**
-     * @deprecated Since 2.16. Use {@link #ContentReference(boolean, Object, ErrorReportConfiguration)} instead.
+     * @deprecated Since 2.16. Use {@link #ContentReference(Object)} instead.
      */
     @Deprecated
     protected ContentReference(boolean isContentTextual, Object rawContent) {
-        this(isContentTextual, rawContent, -1, -1, ErrorReportConfiguration.defaults());
+        this(isContentTextual, rawContent, -1, -1);
     }
 
     /**
      * @since 2.16
      */
-    protected ContentReference(boolean isContentTextual, Object rawContent,
-        ErrorReportConfiguration errorReportConfiguration) {
-        this(isContentTextual, rawContent, -1, -1, errorReportConfiguration);
+    protected ContentReference(Object rawContent) {
+        this(true, rawContent, -1, -1);
     }
 
     /**
      * @since 2.16
      */
-    protected ContentReference(boolean isContentTextual, Object rawContent, int offset, int length,
-        ErrorReportConfiguration errorReportConfiguration) {
+    protected ContentReference(boolean isContentTextual, Object rawContent, int offset, int length) {
         _isContentTextual = isContentTextual;
         _rawContent = rawContent;
         _offset = offset;
         _length = length;
-        _maxRawContentLength = errorReportConfiguration.getMaxRawContentLength();
+        _maxRawContentLength = ErrorReportConfiguration.defaults().getMaxRawContentLength();
     }
 
     /**
@@ -140,17 +138,8 @@ public class ContentReference
     /**
      * @since 2.16
      */
-    public static ContentReference construct(boolean isContentTextual, Object rawContent, int offset, int length,
-        ErrorReportConfiguration errorReportConfiguration) {
-        return new ContentReference(isContentTextual, rawContent, offset, length, errorReportConfiguration);
-    }
-
-    /**
-     * @since 2.16
-     */
-    public static ContentReference construct(boolean isContentTextual, Object rawContent,
-        ErrorReportConfiguration errorReportConfiguration) {
-        return new ContentReference(isContentTextual, rawContent, errorReportConfiguration);
+    public static ContentReference construct(Object rawContent) {
+        return new ContentReference(rawContent);
     }
 
     /*

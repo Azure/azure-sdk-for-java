@@ -172,9 +172,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
          *   means that buffer recycling won't work correctly.
          */
         if (_reader != null) {
-            if (_ioContext.isResourceManaged() || isEnabled(Feature.AUTO_CLOSE_SOURCE)) {
-                _reader.close();
-            }
+            _reader.close();
             _reader = null;
         }
     }
@@ -399,14 +397,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         // Nope: do we then expect a comma?
         if (_parsingContext.expectComma()) {
             i = _skipComma(i);
-
-            // Was that a trailing comma?
-            if ((_features & FEAT_MASK_TRAILING_COMMA) != 0) {
-                if ((i | 0x20) == INT_RCURLY) { // ~ '}]'
-                    _closeScope(i);
-                    return _currToken;
-                }
-            }
         }
 
         /* And should we now have a name? Always true for Object contexts, since
@@ -471,11 +461,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                 break;
 
             case '+':
-                if (isEnabled(JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS.mappedFeature())) {
-                    t = _parseSignedNumber(false);
-                } else {
-                    t = _handleOddValue(i);
-                }
+                t = _handleOddValue(i);
                 break;
 
             case '.': // [core#61]]
@@ -532,20 +518,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
 
     protected final JsonToken _parseFloatThatStartsWithPeriod(final boolean neg) throws IOException {
         // [core#611]: allow optionally leading decimal point
-        if (!isEnabled(JsonReadFeature.ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS.mappedFeature())) {
-            return _handleOddValue('.');
-        }
-        // 26-Jun-2022, tatu: At this point it is assumed that the whole input is
-        //    within input buffer so we can "rewind" not just one but two characters
-        //    (leading sign, period) within same buffer. Caller must ensure this is
-        //    the case.
-        //    Little bit suspicious of code paths that would go to "_parseNumber2(...)"
-        // 27-Jun-2022, tatu: [core#784] would add plus here too but not yet
-        int startPtr = _inputPtr - 1;
-        if (neg) {
-            --startPtr;
-        }
-        return _parseFloat(INT_PERIOD, startPtr, _inputPtr, neg, 0);
+        return _handleOddValue('.');
     }
 
     /**
@@ -640,9 +613,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
             }
             // must be followed by sequence of ints, one minimum
             if (fractLen == 0) {
-                if (!isEnabled(JsonReadFeature.ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS.mappedFeature())) {
-                    _reportUnexpectedNumberChar(ch, "Decimal point not followed by a digit");
-                }
+                _reportUnexpectedNumberChar(ch, "Decimal point not followed by a digit");
             }
         }
         int expLen = 0;
@@ -791,9 +762,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         // Also, integer part is not optional
         if (intLen == 0) {
             // [core#611]: allow optionally leading decimal point
-            if ((c != '.') || !isEnabled(JsonReadFeature.ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS.mappedFeature())) {
-                return _handleInvalidNumberStart(c, neg);
-            }
+            return _handleInvalidNumberStart(c, neg);
         }
 
         int fractLen = -1;
@@ -824,9 +793,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
             }
             // must be followed by sequence of ints, one minimum
             if (fractLen == 0) {
-                if (!isEnabled(JsonReadFeature.ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS.mappedFeature())) {
-                    _reportUnexpectedNumberChar(c, "Decimal point not followed by a digit");
-                }
+                _reportUnexpectedNumberChar(c, "Decimal point not followed by a digit");
             }
         }
 
@@ -915,9 +882,8 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         if (ch < '0' || ch > '9') {
             return '0';
         }
-        if ((_features & FEAT_MASK_LEADING_ZEROS) == 0) {
-            reportInvalidNumber("Leading zeroes not allowed");
-        }
+
+        reportInvalidNumber("Leading zeroes not allowed");
         // if so, just need to skip either all zeroes (if followed by number); or all but one (if non-number)
         ++_inputPtr; // Leading zero to be skipped
         if (ch == INT_0) {
@@ -968,7 +934,7 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                     "Non-standard token '" + match + "': enable `JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS` to allow");
             }
         }
-        if (!isEnabled(JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS.mappedFeature()) && hasSign && !negative) {
+        if (hasSign && !negative) {
             _reportUnexpectedNumberChar('+',
                 "JSON spec does not allow numbers to have plus signs: enable `JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS` to allow");
         }
@@ -1114,14 +1080,8 @@ public class ReaderBasedJsonParser extends JsonParserBase {
      *   {@link JsonParseException} for decoding problems (invalid name)
      */
     protected String _handleOddName(int i) throws IOException {
-        // [JACKSON-173]: allow single quotes
-        if (i == '\'' && (_features & FEAT_MASK_ALLOW_SINGLE_QUOTES) != 0) {
-            return _parseAposName();
-        }
         // [JACKSON-69]: allow unquoted names if feature enabled:
-        if ((_features & FEAT_MASK_ALLOW_UNQUOTED_NAMES) == 0) {
-            _reportUnexpectedChar(i, "was expecting double-quote to start field name");
-        }
+        _reportUnexpectedChar(i, "was expecting double-quote to start field name");
         final int[] codes = CharTypes.getInputCodeLatin1JsNames();
         final int maxCode = codes.length;
 
@@ -1164,37 +1124,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         return _handleOddName2(start, hash, codes);
     }
 
-    protected String _parseAposName() throws IOException {
-        // Note: mostly copy of_parseFieldName
-        int ptr = _inputPtr;
-        int hash = _hashSeed;
-        final int inputLen = _inputEnd;
-
-        if (ptr < inputLen) {
-            final int[] codes = INPUT_CODES_LATIN1;
-            final int maxCode = codes.length;
-
-            do {
-                int ch = _inputBuffer[ptr];
-                if (ch == '\'') {
-                    int start = _inputPtr;
-                    _inputPtr = ptr + 1; // to skip the quote
-                    return _symbols.findSymbol(_inputBuffer, start, ptr - start, hash);
-                }
-                if (ch < maxCode && codes[ch] != 0) {
-                    break;
-                }
-                hash = (hash * CharsToNameCanonicalizer.HASH_MULT) + ch;
-                ++ptr;
-            } while (ptr < inputLen);
-        }
-
-        int start = _inputPtr;
-        _inputPtr = ptr;
-
-        return _parseName2(start, hash, '\'');
-    }
-
     /**
      * Method for handling cases where first non-space character
      * of an expected value token is not legal for standard JSON content.
@@ -1210,14 +1139,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         // Most likely an error, unless we are to allow single-quote-strings
         switch (i) {
             case '\'':
-                /* Allow single quotes? Unlike with regular Strings, we'll eagerly parse
-                 * contents; this so that there's no need to store information on quote char used.
-                 * Also, no separation to fast/slow parsing; we'll just do
-                 * one regular (~= slowish) parsing, to keep code simple
-                 */
-                if ((_features & FEAT_MASK_ALLOW_SINGLE_QUOTES) != 0) {
-                    return _handleApos();
-                }
                 break;
 
             case ']':
@@ -1230,13 +1151,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                 }
                 // fall through
             case ',':
-                // 11-May-2020, tatu: [core#616] No commas in root level
-                if (!_parsingContext.inRoot()) {
-                    if ((_features & FEAT_MASK_ALLOW_MISSING) != 0) {
-                        --_inputPtr;
-                        return JsonToken.VALUE_NULL;
-                    }
-                }
                 break;
 
             case 'N':
@@ -1271,45 +1185,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         // but if it doesn't look like a token:
         _reportUnexpectedChar(i, "expected a valid value " + _validJsonValueList());
         return null;
-    }
-
-    protected JsonToken _handleApos() throws IOException {
-        char[] outBuf = _textBuffer.emptyAndGetCurrentSegment();
-        int outPtr = _textBuffer.getCurrentSegmentSize();
-
-        while (true) {
-            if (_inputPtr >= _inputEnd) {
-                if (!_loadMore()) {
-                    _reportInvalidEOF(": was expecting closing quote for a string value", JsonToken.VALUE_STRING);
-                }
-            }
-            char c = _inputBuffer[_inputPtr++];
-            int i = c;
-            if (i <= '\\') {
-                if (i == '\\') {
-                    // Although chars outside of BMP are to be escaped as
-                    // an UTF-16 surrogate pair, does that affect decoding?
-                    // For now let's assume it does not.
-                    c = _decodeEscaped();
-                } else if (i <= '\'') {
-                    if (i == '\'') {
-                        break;
-                    }
-                    if (i < INT_SPACE) {
-                        _throwUnquotedSpace(i, "string value");
-                    }
-                }
-            }
-            // Need more room?
-            if (outPtr >= outBuf.length) {
-                outBuf = _textBuffer.finishCurrentSegment();
-                outPtr = 0;
-            }
-            // Ok, let's add char to output:
-            outBuf[outPtr++] = c;
-        }
-        _textBuffer.setCurrentLength(outPtr);
-        return JsonToken.VALUE_STRING;
     }
 
     private String _handleOddName2(int startPtr, int hash, int[] codes) throws IOException {
@@ -1549,11 +1424,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                     _skipComment();
                     continue;
                 }
-                if (i == INT_HASH) {
-                    if (_skipYAMLComment()) {
-                        continue;
-                    }
-                }
                 if (gotColon) {
                     return i;
                 }
@@ -1613,11 +1483,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                 if (i == INT_SLASH) {
                     _skipComment();
                     continue;
-                }
-                if (i == INT_HASH) {
-                    if (_skipYAMLComment()) {
-                        continue;
-                    }
                 }
                 return i;
             }
@@ -1698,11 +1563,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
                     _skipComment();
                     continue;
                 }
-                if (i == INT_HASH) {
-                    if (_skipYAMLComment()) {
-                        continue;
-                    }
-                }
                 return i;
             } else if (i != INT_SPACE) {
                 if (i == INT_LF) {
@@ -1718,10 +1578,8 @@ public class ReaderBasedJsonParser extends JsonParserBase {
     }
 
     private void _skipComment() throws IOException {
-        if ((_features & FEAT_MASK_ALLOW_JAVA_COMMENTS) == 0) {
-            _reportUnexpectedChar('/',
-                "maybe a (non-standard) comment? (not recognized as one since Feature 'ALLOW_COMMENTS' not enabled for parser)");
-        }
+        _reportUnexpectedChar('/',
+            "maybe a (non-standard) comment? (not recognized as one since Feature 'ALLOW_COMMENTS' not enabled for parser)");
         // First: check which comment (if either) it is:
         if (_inputPtr >= _inputEnd && !_loadMore()) {
             _reportInvalidEOF(" in a comment", null);
@@ -1764,14 +1622,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
             }
         }
         _reportInvalidEOF(" in a comment", null);
-    }
-
-    private boolean _skipYAMLComment() throws IOException {
-        if ((_features & FEAT_MASK_ALLOW_YAML_COMMENTS) == 0) {
-            return false;
-        }
-        _skipLine();
-        return true;
     }
 
     private void _skipLine() throws IOException {
@@ -2098,15 +1948,6 @@ public class ReaderBasedJsonParser extends JsonParserBase {
         final int prevInputPtr = _inputPtr - 1;
         final int col = prevInputPtr - _currInputRowStart + 1; // 1-based
         return new JsonLocation(_contentReference(), -1L, _currInputProcessed + prevInputPtr, _currInputRow, col);
-    }
-
-    @Override
-    public JsonLocation currentTokenLocation() {
-        if (_currToken == JsonToken.FIELD_NAME) {
-            long total = _currInputProcessed + (_nameStartOffset - 1);
-            return new JsonLocation(_contentReference(), -1L, total, _nameStartRow, _nameStartCol);
-        }
-        return new JsonLocation(_contentReference(), -1L, _tokenInputTotal - 1, _tokenInputRow, _tokenInputCol);
     }
 
     // @since 2.7

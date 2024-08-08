@@ -9,6 +9,8 @@ import java.util.Arrays;
 
 import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
 
+import static com.azure.json.implementation.jackson.core.Base64Variants.STD_BASE64_ALPHABET;
+
 /**
  * Class used to define specific details of which
  * variant of Base64 encoding/decoding is to be used. Although there is
@@ -48,12 +50,6 @@ public final class Base64Variant implements java.io.Serializable {
 
     // We'll only serialize name
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Placeholder used by "no padding" variant, to be used when a character
-     * value is needed.
-     */
-    final static char PADDING_CHAR_NONE = '\0';
 
     /**
      * Marker used to denote ascii characters that do not correspond
@@ -108,11 +104,6 @@ public final class Base64Variant implements java.io.Serializable {
     final String _name;
 
     /**
-     * Character used for padding, if any ({@link #PADDING_CHAR_NONE} if not).
-     */
-    private final char _paddingChar;
-
-    /**
      * Maximum number of encoded base64 characters to output during encoding
      * before adding a linefeed, if line length is to be limited
      * ({@link java.lang.Integer#MAX_VALUE} if not limited).
@@ -121,13 +112,6 @@ public final class Base64Variant implements java.io.Serializable {
      * need to be avoided, and this value ignored.
      */
     private final int _maxLineLength;
-
-    /**
-     * Whether this variant uses padding when writing out content or not.
-     *
-     * @since 2.12
-     */
-    private final boolean _writePadding;
 
     /**
      * Whether padding characters should be required or not while decoding
@@ -142,23 +126,17 @@ public final class Base64Variant implements java.io.Serializable {
     /**********************************************************
      */
 
-    public Base64Variant(String name, String base64Alphabet, boolean writePadding, char paddingChar,
-        int maxLineLength) {
+    public Base64Variant(String name, int maxLineLength) {
         _name = name;
-        _writePadding = writePadding;
-        _paddingChar = paddingChar;
         _maxLineLength = maxLineLength;
 
         // Ok and then we need to create codec tables.
 
         // First the main encoding table:
-        int alphaLen = base64Alphabet.length();
-        if (alphaLen != 64) {
-            throw new IllegalArgumentException("Base64Alphabet length must be exactly 64 (was " + alphaLen + ")");
-        }
+        int alphaLen = STD_BASE64_ALPHABET.length();
 
         // And then secondary encoding table and decoding table:
-        base64Alphabet.getChars(0, alphaLen, _base64ToAsciiC, 0);
+        STD_BASE64_ALPHABET.getChars(0, alphaLen, _base64ToAsciiC, 0);
         Arrays.fill(_asciiToBase64, BASE64_VALUE_INVALID);
         for (int i = 0; i < alphaLen; ++i) {
             char alpha = _base64ToAsciiC[i];
@@ -167,14 +145,11 @@ public final class Base64Variant implements java.io.Serializable {
         }
 
         // Plus if we use padding, add that in too
-        if (writePadding) {
-            _asciiToBase64[paddingChar] = BASE64_VALUE_PADDING;
-        }
+        _asciiToBase64['='] = BASE64_VALUE_PADDING;
 
         // By default, require padding on input if written on output; do not
         // accept if padding not written
-        _paddingReadBehaviour
-            = writePadding ? PaddingReadBehaviour.PADDING_REQUIRED : PaddingReadBehaviour.PADDING_FORBIDDEN;
+        _paddingReadBehaviour = PaddingReadBehaviour.PADDING_REQUIRED;
     }
 
     /**
@@ -188,27 +163,11 @@ public final class Base64Variant implements java.io.Serializable {
      *    using linefeed
      */
     public Base64Variant(Base64Variant base, String name, int maxLineLength) {
-        this(base, name, base._writePadding, base._paddingChar, maxLineLength);
+        this(base, name, base._paddingReadBehaviour, maxLineLength);
     }
 
-    /**
-     * "Copy constructor" that can be used when the base alphabet is identical
-     * to one used by another variant, but other details (padding, maximum
-     * line length) differ
-     *
-     * @param base Variant to use for settings not specific by other parameters
-     * @param name Name of this variant
-     * @param writePadding Whether variant will use padding when encoding
-     * @param paddingChar Padding character used for encoding, excepted on reading, if any
-     * @param maxLineLength Maximum length (in characters) of lines to output before
-     *    using linefeed
-     */
-    public Base64Variant(Base64Variant base, String name, boolean writePadding, char paddingChar, int maxLineLength) {
-        this(base, name, writePadding, paddingChar, base._paddingReadBehaviour, maxLineLength);
-    }
-
-    private Base64Variant(Base64Variant base, String name, boolean writePadding, char paddingChar,
-        PaddingReadBehaviour paddingReadBehaviour, int maxLineLength) {
+    private Base64Variant(Base64Variant base, String name, PaddingReadBehaviour paddingReadBehaviour,
+        int maxLineLength) {
         _name = name;
         byte[] srcB = base._base64ToAsciiB;
         System.arraycopy(srcB, 0, this._base64ToAsciiB, 0, srcB.length);
@@ -217,31 +176,8 @@ public final class Base64Variant implements java.io.Serializable {
         int[] srcV = base._asciiToBase64;
         System.arraycopy(srcV, 0, this._asciiToBase64, 0, srcV.length);
 
-        _writePadding = writePadding;
-        _paddingChar = paddingChar;
         _maxLineLength = maxLineLength;
         _paddingReadBehaviour = paddingReadBehaviour;
-    }
-
-    /*
-    /**********************************************************
-    /* Serializable overrides
-    /**********************************************************
-     */
-
-    // 26-Oct-2020, tatu: Much more complicated with 2.12 as it is
-    //   possible to create differently configured instances.
-    //   Need to start with name to regenerate tables etc but then
-    //   handle overrides
-    private Object readResolve() {
-        Base64Variant base = Base64Variants.valueOf(_name);
-        if ((_writePadding != base._writePadding)
-            || (_paddingChar != base._paddingChar)
-            || (_paddingReadBehaviour != base._paddingReadBehaviour)
-            || (_maxLineLength != base._maxLineLength)) {
-            return new Base64Variant(base, _name, _writePadding, _paddingChar, _paddingReadBehaviour, _maxLineLength);
-        }
-        return base;
     }
 
     /*
@@ -259,7 +195,7 @@ public final class Base64Variant implements java.io.Serializable {
      *   (note: before Jackson 2.12 also dictated whether padding was accepted on read)
      */
     public boolean usesPadding() {
-        return _writePadding;
+        return true;
     }
 
     /**
@@ -281,15 +217,15 @@ public final class Base64Variant implements java.io.Serializable {
     }
 
     public boolean usesPaddingChar(char c) {
-        return c == _paddingChar;
+        return c == '=';
     }
 
     public boolean usesPaddingChar(int ch) {
-        return ch == _paddingChar;
+        return ch == '=';
     }
 
     public char getPaddingChar() {
-        return _paddingChar;
+        return '=';
     }
 
     public int getMaxLineLength() {
@@ -358,8 +294,8 @@ public final class Base64Variant implements java.io.Serializable {
         buffer[outPtr++] = _base64ToAsciiC[(bits >> 18) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiC[(bits >> 12) & 0x3F];
         if (usesPadding()) {
-            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar;
-            buffer[outPtr++] = _paddingChar;
+            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiC[(bits >> 6) & 0x3F] : '=';
+            buffer[outPtr++] = '=';
         } else {
             if (outputBytes == 2) {
                 buffer[outPtr++] = _base64ToAsciiC[(bits >> 6) & 0x3F];
@@ -403,7 +339,7 @@ public final class Base64Variant implements java.io.Serializable {
         buffer[outPtr++] = _base64ToAsciiB[(bits >> 18) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiB[(bits >> 12) & 0x3F];
         if (usesPadding()) {
-            byte pb = (byte) _paddingChar;
+            byte pb = (byte) '=';
             buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiB[(bits >> 6) & 0x3F] : pb;
             buffer[outPtr++] = pb;
         } else {
@@ -550,9 +486,7 @@ public final class Base64Variant implements java.io.Serializable {
             return false;
 
         Base64Variant other = (Base64Variant) o;
-        return (other._paddingChar == _paddingChar)
-            && (other._maxLineLength == _maxLineLength)
-            && (other._writePadding == _writePadding)
+        return (other._maxLineLength == _maxLineLength)
             && (other._paddingReadBehaviour == _paddingReadBehaviour)
             && (_name.equals(other._name));
     }

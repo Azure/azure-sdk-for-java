@@ -931,16 +931,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     /**********************************************************
      */
 
-    @SuppressWarnings("deprecation")
     protected char _handleUnrecognizedCharacterEscape(char ch) throws JsonProcessingException {
-        // as per [JACKSON-300]
-        if (isEnabled(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER)) {
-            return ch;
-        }
-        // and [JACKSON-548]
-        if (ch == '\'' && isEnabled(Feature.ALLOW_SINGLE_QUOTES)) {
-            return ch;
-        }
         throw _constructReadException("Unrecognized character escape " + _getCharDesc(ch), _currentLocationMinusOne());
     }
 
@@ -955,7 +946,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      * Method called to report a problem with unquoted control character.
      * Note: it is possible to suppress some instances of
      * exception by enabling
-     * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNESCAPED_CONTROL_CHARS}.
+     * {@code com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNESCAPED_CONTROL_CHARS}.
      *
      * @param i Invalid control character
      * @param ctxtDesc Addition description of context to use in exception message
@@ -964,13 +955,10 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
     @SuppressWarnings("deprecation")
     protected void _throwUnquotedSpace(int i, String ctxtDesc) throws JsonParseException {
-        // JACKSON-208; possible to allow unquoted control chars:
-        if (!isEnabled(Feature.ALLOW_UNQUOTED_CONTROL_CHARS) || i > INT_SPACE) {
-            char c = (char) i;
-            String msg = "Illegal unquoted character (" + _getCharDesc(c)
-                + "): has to be escaped using backslash to be included in " + ctxtDesc;
-            throw _constructReadException(msg, _currentLocationMinusOne());
-        }
+        char c = (char) i;
+        String msg = "Illegal unquoted character (" + _getCharDesc(c)
+            + "): has to be escaped using backslash to be included in " + ctxtDesc;
+        throw _constructReadException(msg, _currentLocationMinusOne());
     }
 
     /**
@@ -1113,9 +1101,6 @@ public abstract class ParserBase extends ParserMinimalBase {
      * @since 2.13
      */
     protected ContentReference _contentReference() {
-        if (JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
-            return _ioContext.contentReference();
-        }
         return _contentReferenceRedacted();
     }
 

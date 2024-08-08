@@ -215,20 +215,17 @@ public final class ByteSourceJsonBootstrapper {
     }
 
     public JsonParser constructParser(int parserFeatures, ByteQuadsCanonicalizer rootByteSymbols,
-        CharsToNameCanonicalizer rootCharSymbols, int factoryFeatures) throws IOException {
+        CharsToNameCanonicalizer rootCharSymbols) throws IOException {
         int prevInputPtr = _inputPtr;
-        JsonEncoding enc
-            = JsonFactory.Feature.CHARSET_DETECTION.enabledIn(factoryFeatures) ? detectEncoding() : JsonEncoding.UTF8;
+        JsonEncoding enc = detectEncoding();
         int bytesProcessed = _inputPtr - prevInputPtr;
 
         if (enc == JsonEncoding.UTF8) {
             // and without canonicalization, byte-based approach is not performant; just use std UTF-8 reader
             // (which is ok for larger input; not so hot for smaller; but this is not a common case)
-            if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
-                ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
-                return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr, _inputEnd,
-                    bytesProcessed, _bufferRecyclable);
-            }
+            ByteQuadsCanonicalizer can = rootByteSymbols.makeChild();
+            return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr, _inputEnd,
+                bytesProcessed, _bufferRecyclable);
         }
         return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), rootCharSymbols.makeChild());
     }

@@ -4,7 +4,6 @@ package com.azure.json.implementation.jackson.core.sym;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
 import com.azure.json.implementation.jackson.core.util.InternCache;
 
@@ -310,14 +309,10 @@ public final class ByteQuadsCanonicalizer {
      * Factory method used to create actual symbol table instance to
      * use for parsing.
      *
-     * @param flags Bit flags of active {@link com.azure.json.implementation.jackson.core.JsonFactory.Feature}s enabled.
-     *
      * @return Actual canonicalizer instance that can be used by a parser
      */
-    public ByteQuadsCanonicalizer makeChild(int flags) {
-        return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(),
-            JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
-            JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
+    public ByteQuadsCanonicalizer makeChild() {
+        return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(), true, true);
     }
 
     /**
@@ -373,17 +368,6 @@ public final class ByteQuadsCanonicalizer {
      */
     public boolean maybeDirty() {
         return !_hashShared;
-    }
-
-    /**
-     * @return True for "real", canonicalizing child tables; false for
-     *    root table as well as placeholder "child" tables.
-     *
-     * @since 2.13
-     */
-    public boolean isCanonicalizing() {
-        // couple of options, but for now missing parent linkage simplest:
-        return _parent != null;
     }
 
     /**
@@ -1120,7 +1104,7 @@ public final class ByteQuadsCanonicalizer {
 
         int copyCount = 0;
         int[] q = new int[16];
-        for (int offset = 0, end = oldEnd; offset < end; offset += 4) {
+        for (int offset = 0; offset < oldEnd; offset += 4) {
             int len = oldHashArea[offset + 3];
             if (len == 0) { // empty slot, skip
                 continue;

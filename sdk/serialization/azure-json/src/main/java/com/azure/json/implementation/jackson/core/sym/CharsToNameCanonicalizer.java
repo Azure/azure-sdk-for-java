@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.StreamReadConstraints;
 import com.azure.json.implementation.jackson.core.TokenStreamFactory;
 import com.azure.json.implementation.jackson.core.exc.StreamConstraintsException;
@@ -136,12 +135,6 @@ public final class CharsToNameCanonicalizer {
     private final int _seed;
 
     /**
-     * Feature flags of {@link TokenStreamFactory} that uses
-     * this canonicalizer.
-     */
-    private final int _factoryFeatures;
-
-    /**
      * Whether any canonicalization should be attempted (whether using
      * intern or not.
      *<p>
@@ -243,14 +236,13 @@ public final class CharsToNameCanonicalizer {
     /**
      * Main method for constructing a root symbol table instance.
      */
-    private CharsToNameCanonicalizer(StreamReadConstraints src, int factoryFeatures, int seed) {
+    private CharsToNameCanonicalizer(StreamReadConstraints src, int seed) {
         _parent = null;
         _seed = seed;
         _streamReadConstraints = src;
 
         // these settings don't really matter for the bootstrap instance
         _canonicalize = true;
-        _factoryFeatures = factoryFeatures;
         // And we'll also set flags so no copying of buckets is needed:
         _hashShared = false; // doesn't really matter for root instance
         _longestCollisionList = 0;
@@ -263,14 +255,13 @@ public final class CharsToNameCanonicalizer {
     /**
      * Internal constructor used when creating child instances.
      */
-    private CharsToNameCanonicalizer(CharsToNameCanonicalizer parent, StreamReadConstraints src, int factoryFeatures,
-        int seed, TableInfo parentState) {
+    private CharsToNameCanonicalizer(CharsToNameCanonicalizer parent, StreamReadConstraints src, int seed,
+        TableInfo parentState) {
         _parent = parent;
         _streamReadConstraints = src;
         _seed = seed;
         _tableInfo = null; // not used by child tables
-        _factoryFeatures = factoryFeatures;
-        _canonicalize = JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures);
+        _canonicalize = true;
 
         // Then copy shared state
         _symbols = parentState.symbols;
@@ -322,16 +313,13 @@ public final class CharsToNameCanonicalizer {
         }
 
         StreamReadConstraints src;
-        int factoryFeatures;
 
         if (owner == null) {
             src = StreamReadConstraints.defaults();
-            factoryFeatures = 0;
         } else {
             src = owner.streamReadConstraints();
-            factoryFeatures = owner.getFactoryFeatures();
         }
-        return new CharsToNameCanonicalizer(src, factoryFeatures, seed);
+        return new CharsToNameCanonicalizer(src, seed);
     }
 
     /**
@@ -349,7 +337,7 @@ public final class CharsToNameCanonicalizer {
      * @return Actual canonicalizer instance that can be used by a parser
      */
     public CharsToNameCanonicalizer makeChild() {
-        return new CharsToNameCanonicalizer(this, _streamReadConstraints, _factoryFeatures, _seed, _tableInfo.get());
+        return new CharsToNameCanonicalizer(this, _streamReadConstraints, _seed, _tableInfo.get());
     }
 
     /**
@@ -488,9 +476,7 @@ public final class CharsToNameCanonicalizer {
         }
 
         String newSymbol = new String(buffer, start, len);
-        if (JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(_factoryFeatures)) {
-            newSymbol = InternCache.instance.intern(newSymbol);
-        }
+        newSymbol = InternCache.instance.intern(newSymbol);
         ++_size;
         // Ok; do we need to add primary entry, or a bucket?
         if (_symbols[index] == null) {
@@ -525,12 +511,7 @@ public final class CharsToNameCanonicalizer {
         } else {
             if (_overflows.get(bucketIndex)) {
                 // Has happened once already for this bucket index, so probably not coincidental...
-                if (JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(_factoryFeatures)) {
-                    _reportTooManyCollisions();
-                }
-                // but even if we don't fail, we will stop canonicalizing as safety measure
-                // (so as not to cause problems with PermGen)
-                _canonicalize = false;
+                _reportTooManyCollisions();
             } else {
                 _overflows.set(bucketIndex);
             }

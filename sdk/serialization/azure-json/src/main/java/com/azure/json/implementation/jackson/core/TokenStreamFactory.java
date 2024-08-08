@@ -20,36 +20,6 @@ public abstract class TokenStreamFactory implements java.io.Serializable {
 
     /*
     /**********************************************************************
-    /* Capability introspection
-    /**********************************************************************
-     */
-
-    /**
-     * Introspection method that higher-level functionality may call
-     * to see whether underlying data format can read and write binary
-     * data natively; that is, embeded it as-is without using encodings
-     * such as Base64.
-     *<p>
-     * Default implementation returns <code>false</code> as JSON does not
-     * support native access: all binary content must use Base64 encoding.
-     * Most binary formats (like Smile and Avro) support native binary content.
-     *
-     * @return Whether format supported by this factory
-     *    supports native binary content
-     */
-    public abstract boolean canHandleBinaryNatively();
-
-    /**
-     * Method for getting bit set of all {@link JsonFactory.Feature}s enabled
-     *
-     * @return Bitset of enabled {@link JsonFactory.Feature}s.
-     *
-     * @since 2.16
-     */
-    public abstract int getFactoryFeatures();
-
-    /*
-    /**********************************************************************
     /* Constraints violation checking (2.15)
     /**********************************************************************
      */
@@ -85,8 +55,6 @@ public abstract class TokenStreamFactory implements java.io.Serializable {
      */
 
     public abstract JsonGenerator createGenerator(OutputStream out) throws IOException;
-
-    public abstract JsonGenerator createGenerator(OutputStream out, JsonEncoding enc) throws IOException;
 
     public abstract JsonGenerator createGenerator(Writer w) throws IOException;
 }

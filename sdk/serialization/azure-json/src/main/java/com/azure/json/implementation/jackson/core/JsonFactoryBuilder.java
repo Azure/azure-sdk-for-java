@@ -1,9 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core;
 
-import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
-import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
-
 /**
  * {@link com.azure.json.implementation.jackson.core.TSFBuilder}
  * implementation for constructing vanilla {@link JsonFactory}
@@ -16,20 +13,8 @@ import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
  * @since 2.10
  */
 public class JsonFactoryBuilder extends TSFBuilder<JsonFactory> {
-    protected CharacterEscapes _characterEscapes;
-
-    protected int _maximumNonEscapedChar;
-
-    /**
-     * Character used for quoting field names (if field name quoting has not
-     * been disabled with {@link JsonWriteFeature#QUOTE_FIELD_NAMES})
-     * and JSON String values.
-     */
-    protected char _quoteChar = JsonFactory.DEFAULT_QUOTE_CHAR;
-
     public JsonFactoryBuilder() {
         super();
-        _maximumNonEscapedChar = 0;
     }
 
     /*

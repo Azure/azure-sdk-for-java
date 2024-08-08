@@ -36,10 +36,6 @@ public class JsonProcessingException extends JacksonException {
         this(msg, loc, null);
     }
 
-    protected JsonProcessingException(Throwable rootCause) {
-        this(null, null, rootCause);
-    }
-
     /*
     /**********************************************************************
     /* Extended API

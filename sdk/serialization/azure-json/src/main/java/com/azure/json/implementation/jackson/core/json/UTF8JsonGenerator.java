@@ -1,13 +1,15 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.json;
 
-import java.io.*;
-
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.Base64Variant;
+import com.azure.json.implementation.jackson.core.JsonFactory;
+import com.azure.json.implementation.jackson.core.JsonStreamContext;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
-import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
 import com.azure.json.implementation.jackson.core.io.NumberOutput;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class UTF8JsonGenerator extends JsonGeneratorImpl {
     private final static byte BYTE_u = (byte) 'u';
@@ -24,7 +26,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     private final static byte BYTE_COLON = (byte) ':';
 
     private final static byte[] HEX_BYTES_UPPER = CharTypes.copyHexBytes(true);
-    private final static byte[] HEX_BYTES_LOWER = CharTypes.copyHexBytes(false);
 
     private final static byte[] NULL_BYTES = { 'n', 'u', 'l', 'l' };
     private final static byte[] TRUE_BYTES = { 't', 'r', 'u', 'e' };
@@ -104,15 +105,11 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
 
     // @since 2.10
     @SuppressWarnings("deprecation")
-    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out, char quoteChar) {
+    public UTF8JsonGenerator(IOContext ctxt, int features, OutputStream out) {
         super(ctxt, features);
         _outputStream = out;
-        _quoteChar = (byte) quoteChar;
+        _quoteChar = (byte) JsonFactory.DEFAULT_QUOTE_CHAR;
 
-        boolean escapeSlash = isEnabled(JsonWriteFeature.ESCAPE_FORWARD_SLASHES.mappedFeature());
-        if (quoteChar != '"' || escapeSlash) {
-            _outputEscapes = CharTypes.get7BitOutputEscapes(quoteChar, escapeSlash);
-        }
         _bufferRecyclable = true;
         _outputBuffer = ctxt.allocWriteEncodingBuffer();
         _outputEnd = _outputBuffer.length;
@@ -124,11 +121,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputMaxContiguous = _outputEnd >> 3;
         _charBuffer = ctxt.allocConcatBuffer();
         _charBufferLength = _charBuffer.length;
-
-        // By default we use this feature to determine additional quoting
-        if (isEnabled(Feature.ESCAPE_NON_ASCII)) {
-            setHighestNonEscapedChar(127);
-        }
     }
 
     /*
@@ -153,14 +145,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         /* To support [JACKSON-46], we'll do this:
          * (Question: should quoting of spaces (etc) still be enabled?)
          */
-        if (_cfgUnqNames) {
-            _writeStringSegments(name, false);
-            return;
-        }
         final int len = name.length();
         // Does it fit in buffer?
         if (len > _charBufferLength) { // no, offline
-            _writeStringSegments(name, true);
+            _writeStringSegments(name);
             return;
         }
         if (_outputTail >= _outputEnd) {
@@ -251,7 +239,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         // First: if we can't guarantee it all fits, quoted, within output, offline
         final int len = text.length();
         if (len > _outputMaxContiguous) { // nope: off-line handling
-            _writeStringSegments(text, true);
+            _writeStringSegments(text);
             return;
         }
         if ((_outputTail + len) >= _outputEnd) {
@@ -472,29 +460,12 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         if ((_outputTail + 11) >= _outputEnd) {
             _flushBuffer();
         }
-        if (_cfgNumbersAsStrings) {
-            _writeQuotedInt(i);
-            return;
-        }
         _outputTail = NumberOutput.outputInt(i, _outputBuffer, _outputTail);
-    }
-
-    private void _writeQuotedInt(int i) throws IOException {
-        if ((_outputTail + 13) >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        _outputTail = NumberOutput.outputInt(i, _outputBuffer, _outputTail);
-        _outputBuffer[_outputTail++] = _quoteChar;
     }
 
     @Override
     public void writeNumber(long l) throws IOException {
         _verifyValueWrite(WRITE_NUMBER);
-        if (_cfgNumbersAsStrings) {
-            _writeQuotedLong(l);
-            return;
-        }
         if ((_outputTail + 21) >= _outputEnd) {
             // up to 20 digits, minus sign
             _flushBuffer();
@@ -502,39 +473,28 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         _outputTail = NumberOutput.outputLong(l, _outputBuffer, _outputTail);
     }
 
-    private void _writeQuotedLong(long l) throws IOException {
-        if ((_outputTail + 23) >= _outputEnd) {
-            _flushBuffer();
-        }
-        _outputBuffer[_outputTail++] = _quoteChar;
-        _outputTail = NumberOutput.outputLong(l, _outputBuffer, _outputTail);
-        _outputBuffer[_outputTail++] = _quoteChar;
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public void writeNumber(double d) throws IOException {
-        if (_cfgNumbersAsStrings
-            || (NumberOutput.notFinite(d) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features))) {
-            writeString(NumberOutput.toString(d, isEnabled(Feature.USE_FAST_DOUBLE_WRITER)));
+        if ((NumberOutput.notFinite(d) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features))) {
+            writeString(NumberOutput.toString(d));
             return;
         }
         // What is the max length for doubles? 40 chars?
         _verifyValueWrite(WRITE_NUMBER);
-        writeRaw(NumberOutput.toString(d, isEnabled(Feature.USE_FAST_DOUBLE_WRITER)));
+        writeRaw(NumberOutput.toString(d));
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public void writeNumber(float f) throws IOException {
-        if (_cfgNumbersAsStrings
-            || (NumberOutput.notFinite(f) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features))) {
-            writeString(NumberOutput.toString(f, isEnabled(Feature.USE_FAST_DOUBLE_WRITER)));
+        if ((NumberOutput.notFinite(f) && Feature.QUOTE_NON_NUMERIC_NUMBERS.enabledIn(_features))) {
+            writeString(NumberOutput.toString(f));
             return;
         }
         // What is the max length for floats?
         _verifyValueWrite(WRITE_NUMBER);
-        writeRaw(NumberOutput.toString(f, isEnabled(Feature.USE_FAST_DOUBLE_WRITER)));
+        writeRaw(NumberOutput.toString(f));
     }
 
     @Override
@@ -601,9 +561,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
     public void flush() throws IOException {
         _flushBuffer();
         if (_outputStream != null) {
-            if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
-                _outputStream.flush();
-            }
+            _outputStream.flush();
         }
     }
 
@@ -615,7 +573,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         // First: let's see that we still have buffers...
         IOException flushFail = null;
         try {
-            if ((_outputBuffer != null) && isEnabled(Feature.AUTO_CLOSE_JSON_CONTENT)) {
+            if (_outputBuffer != null) {
                 while (true) {
                     JsonStreamContext ctxt = getOutputContext();
                     if (ctxt.inArray()) {
@@ -644,9 +602,9 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
          */
         if (_outputStream != null) {
             try {
-                if (_ioContext.isResourceManaged() || isEnabled(Feature.AUTO_CLOSE_TARGET)) {
+                if (true) {
                     _outputStream.close();
-                } else if (isEnabled(Feature.FLUSH_PASSED_TO_STREAM)) {
+                } else {
                     // If we can't close it, we should at least flush
                     _outputStream.flush();
                 }
@@ -686,13 +644,11 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      * to single-segment writes (instead of maximum slices that
      * would fit in copy buffer)
      */
-    private void _writeStringSegments(String text, boolean addQuotes) throws IOException {
-        if (addQuotes) {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = _quoteChar;
+    private void _writeStringSegments(String text) throws IOException {
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
+        _outputBuffer[_outputTail++] = _quoteChar;
 
         int left = text.length();
         int offset = 0;
@@ -707,12 +663,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
             left -= len;
         }
 
-        if (addQuotes) {
-            if (_outputTail >= _outputEnd) {
-                _flushBuffer();
-            }
-            _outputBuffer[_outputTail++] = _quoteChar;
+        if (_outputTail >= _outputEnd) {
+            _flushBuffer();
         }
+        _outputBuffer[_outputTail++] = _quoteChar;
     }
 
     private void _writeStringSegments(String text, int offset, int totalLen) throws IOException {
@@ -753,9 +707,7 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         }
         _outputTail = outputPtr;
         if (offset < len) {
-            if (_characterEscapes != null) {
-                _writeCustomStringSegment2(text, offset, len);
-            } else if (_maximumNonEscapedChar == 0) {
+            if (_maximumNonEscapedChar == 0) {
                 _writeStringSegment2(text, offset, len);
             } else {
                 _writeStringSegmentASCII2(text, offset, len);
@@ -849,110 +801,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
         }
         _outputTail = outputPtr;
     }
-
-    /*
-    /**********************************************************
-    /* Internal methods, low-level writing, text segment
-    /* with fully custom escaping (and possibly escaping of non-ASCII
-    /**********************************************************
-     */
-
-    private void _writeCustomStringSegment2(final String text, int offset, final int end) throws IOException {
-        // Ok: caller guarantees buffer can have room; but that may require flushing:
-        if ((_outputTail + 6 * (end - offset)) > _outputEnd) {
-            _flushBuffer();
-        }
-        int outputPtr = _outputTail;
-
-        final byte[] outputBuffer = _outputBuffer;
-        final int[] escCodes = _outputEscapes;
-        // may or may not have this limit
-        final int maxUnescaped = (_maximumNonEscapedChar <= 0) ? 0xFFFF : _maximumNonEscapedChar;
-        final CharacterEscapes customEscapes = _characterEscapes; // non-null
-
-        while (offset < end) {
-            int ch = text.charAt(offset++);
-            if (ch <= 0x7F) {
-                if (escCodes[ch] == 0) {
-                    outputBuffer[outputPtr++] = (byte) ch;
-                    continue;
-                }
-                int escape = escCodes[ch];
-                if (escape > 0) { // 2-char escape, fine
-                    outputBuffer[outputPtr++] = BYTE_BACKSLASH;
-                    outputBuffer[outputPtr++] = (byte) escape;
-                } else if (escape == CharacterEscapes.ESCAPE_CUSTOM) {
-                    SerializableString esc = customEscapes.getEscapeSequence(ch);
-                    if (esc == null) {
-                        _reportError("Invalid custom escape definitions; custom escape not found for character code 0x"
-                            + Integer.toHexString(ch) + ", although was supposed to have one");
-                    }
-                    outputPtr = _writeCustomEscape(outputBuffer, outputPtr, esc, end - offset);
-                } else {
-                    // ctrl-char, 6-byte escape...
-                    outputPtr = _writeGenericEscape(ch, outputPtr);
-                }
-                continue;
-            }
-            if (ch > maxUnescaped) { // [JACKSON-102] Allow forced escaping if non-ASCII (etc) chars:
-                outputPtr = _writeGenericEscape(ch, outputPtr);
-                continue;
-            }
-            SerializableString esc = customEscapes.getEscapeSequence(ch);
-            if (esc != null) {
-                outputPtr = _writeCustomEscape(outputBuffer, outputPtr, esc, end - offset);
-                continue;
-            }
-            if (ch <= 0x7FF) { // fine, just needs 2 byte output
-                outputBuffer[outputPtr++] = (byte) (0xc0 | (ch >> 6));
-                outputBuffer[outputPtr++] = (byte) (0x80 | (ch & 0x3f));
-            } else {
-                outputPtr = _outputMultiByteChar(ch, outputPtr);
-            }
-        }
-        _outputTail = outputPtr;
-    }
-
-    private int _writeCustomEscape(byte[] outputBuffer, int outputPtr, SerializableString esc, int remainingChars)
-        throws IOException {
-        byte[] raw = esc.asUnquotedUTF8(); // must be escaped at this point, shouldn't double-quote
-        int len = raw.length;
-        if (len > 6) { // may violate constraints we have, do offline
-            return _handleLongCustomEscape(outputBuffer, outputPtr, _outputEnd, raw, remainingChars);
-        }
-        // otherwise will fit without issues, so:
-        System.arraycopy(raw, 0, outputBuffer, outputPtr, len);
-        return (outputPtr + len);
-    }
-
-    private int _handleLongCustomEscape(byte[] outputBuffer, int outputPtr, int outputEnd, byte[] raw,
-        int remainingChars) throws IOException {
-        final int len = raw.length;
-        if ((outputPtr + len) > outputEnd) {
-            _outputTail = outputPtr;
-            _flushBuffer();
-            outputPtr = _outputTail;
-            if (len > outputBuffer.length) { // very unlikely, but possible...
-                _outputStream.write(raw, 0, len);
-                return outputPtr;
-            }
-        }
-        System.arraycopy(raw, 0, outputBuffer, outputPtr, len);
-        outputPtr += len;
-        // but is the invariant still obeyed? If not, flush once more
-        if ((outputPtr + 6 * remainingChars) > outputEnd) {
-            _outputTail = outputPtr;
-            _flushBuffer();
-            return _outputTail;
-        }
-        return outputPtr;
-    }
-
-    /*
-    /**********************************************************
-    /* Internal methods, low-level writing, "raw UTF-8" segments
-    /**********************************************************
-     */
 
     /*
     /**********************************************************
@@ -1053,7 +901,6 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      *
      */
     private int _outputMultiByteChar(int ch, int outputPtr) {
-        byte[] HEX_CHARS = getHexBytes();
         byte[] bbuf = _outputBuffer;
         if (ch >= SURR1_FIRST && ch <= SURR2_LAST) { // yes, outside of BMP; add an escape
             // 23-Nov-2015, tatu: As per [core#223], may or may not want escapes;
@@ -1063,10 +910,10 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
             bbuf[outputPtr++] = BYTE_BACKSLASH;
             bbuf[outputPtr++] = BYTE_u;
 
-            bbuf[outputPtr++] = HEX_CHARS[(ch >> 12) & 0xF];
-            bbuf[outputPtr++] = HEX_CHARS[(ch >> 8) & 0xF];
-            bbuf[outputPtr++] = HEX_CHARS[(ch >> 4) & 0xF];
-            bbuf[outputPtr++] = HEX_CHARS[ch & 0xF];
+            bbuf[outputPtr++] = HEX_BYTES_UPPER[(ch >> 12) & 0xF];
+            bbuf[outputPtr++] = HEX_BYTES_UPPER[(ch >> 8) & 0xF];
+            bbuf[outputPtr++] = HEX_BYTES_UPPER[(ch >> 4) & 0xF];
+            bbuf[outputPtr++] = HEX_BYTES_UPPER[ch & 0xF];
             //            } else { ... }
         } else {
             bbuf[outputPtr++] = (byte) (0xe0 | (ch >> 12));
@@ -1091,21 +938,20 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
      */
     private int _writeGenericEscape(int charToEscape, int outputPtr) {
         final byte[] bbuf = _outputBuffer;
-        byte[] HEX_CHARS = getHexBytes();
         bbuf[outputPtr++] = BYTE_BACKSLASH;
         bbuf[outputPtr++] = BYTE_u;
         if (charToEscape > 0xFF) {
             int hi = (charToEscape >> 8) & 0xFF;
-            bbuf[outputPtr++] = HEX_CHARS[hi >> 4];
-            bbuf[outputPtr++] = HEX_CHARS[hi & 0xF];
+            bbuf[outputPtr++] = HEX_BYTES_UPPER[hi >> 4];
+            bbuf[outputPtr++] = HEX_BYTES_UPPER[hi & 0xF];
             charToEscape &= 0xFF;
         } else {
             bbuf[outputPtr++] = BYTE_0;
             bbuf[outputPtr++] = BYTE_0;
         }
         // We know it's a control char, so only the last 2 chars are non-0
-        bbuf[outputPtr++] = HEX_CHARS[charToEscape >> 4];
-        bbuf[outputPtr++] = HEX_CHARS[charToEscape & 0xF];
+        bbuf[outputPtr++] = HEX_BYTES_UPPER[charToEscape >> 4];
+        bbuf[outputPtr++] = HEX_BYTES_UPPER[charToEscape & 0xF];
         return outputPtr;
     }
 
@@ -1115,9 +961,5 @@ public class UTF8JsonGenerator extends JsonGeneratorImpl {
             _outputTail = 0;
             _outputStream.write(_outputBuffer, 0, len);
         }
-    }
-
-    private byte[] getHexBytes() {
-        return _cfgWriteHexUppercase ? HEX_BYTES_UPPER : HEX_BYTES_LOWER;
     }
 }

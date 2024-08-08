@@ -34,7 +34,6 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static int INT_RBRACKET = ']';
     protected final static int INT_RCURLY = '}';
     protected final static int INT_QUOTE = '"';
-    protected final static int INT_APOS = '\'';
     protected final static int INT_BACKSLASH = '\\';
     protected final static int INT_SLASH = '/';
     protected final static int INT_ASTERISK = '*';
@@ -435,7 +434,7 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     // @since 2.9
     protected final void _reportError(Object arg1, Object arg2) throws JsonParseException {
-        throw _constructReadException("Unrecognized token '%s': was expecting %s", arg1, arg2);
+        throw _constructReadException(arg1, arg2);
     }
 
     protected final void _throwInternal() {

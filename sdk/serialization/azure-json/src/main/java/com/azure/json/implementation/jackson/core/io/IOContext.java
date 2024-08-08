@@ -126,20 +126,15 @@ public class IOContext implements AutoCloseable {
     /**
      * Main constructor to use.
      *
-     * @param src constraints for streaming reads
-     * @param swc constraints for streaming writes
      * @param br BufferRecycler to use, if any ({@code null} if none)
      * @param contentRef Input source reference for location reporting
      * @param managedResource Whether input source is managed (owned) by Jackson library
-     * @param erc Error report configuration to use
-     *
      * @since 2.16
      */
-    public IOContext(StreamReadConstraints src, StreamWriteConstraints swc, ErrorReportConfiguration erc,
-        BufferRecycler br, ContentReference contentRef, boolean managedResource) {
-        _streamReadConstraints = src;
-        _streamWriteConstraints = swc;
-        _errorReportConfiguration = erc;
+    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
+        _streamReadConstraints = StreamReadConstraints.defaults();
+        _streamWriteConstraints = StreamWriteConstraints.defaults();
+        _errorReportConfiguration = ErrorReportConfiguration.defaults();
         _bufferRecycler = br;
         _contentReference = contentRef;
         _managedResource = managedResource;
@@ -198,18 +193,6 @@ public class IOContext implements AutoCloseable {
 
     public boolean isResourceManaged() {
         return _managedResource;
-    }
-
-    /**
-     * Accessor for getting (some) information about input source, mostly
-     * usable for error reporting purposes.
-     *
-     * @return Reference to input source
-     *
-     * @since 2.13
-     */
-    public ContentReference contentReference() {
-        return _contentReference;
     }
 
     /*
