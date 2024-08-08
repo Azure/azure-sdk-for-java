@@ -39,6 +39,7 @@ import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions;
 import com.azure.ai.openai.assistants.models.VectorStore;
+import com.azure.ai.openai.assistants.models.VectorStoreChunkingStrategyRequest;
 import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreFile;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
@@ -3750,5 +3751,63 @@ public final class AssistantsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class))
             .map(vectorStoreFileList -> PageableListAccessHelper.create(vectorStoreFileList.getData(),
                 vectorStoreFileList.getFirstId(), vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore()));
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     *
+     * @param vectorStoreId The ID of the vector store for which to create a File.
+     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
+     * files.
+     * @param chunkingStrategy The chunking strategy used to chunk the file(s). If not set, will use the auto strategy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a file attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFile> createVectorStoreFile(String vectorStoreId, String fileId,
+        VectorStoreChunkingStrategyRequest chunkingStrategy) {
+        // Generated convenience method for createVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileRequest createVectorStoreFileRequestObj
+            = new CreateVectorStoreFileRequest(fileId).setChunkingStrategy(chunkingStrategy);
+        BinaryData createVectorStoreFileRequest = BinaryData.fromObject(createVectorStoreFileRequestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, createVectorStoreFileRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class));
+    }
+
+    /**
+     * Create a vector store file batch.
+     *
+     * @param vectorStoreId The ID of the vector store for which to create a File Batch.
+     * @param fileIds A list of File IDs that the vector store should use. Useful for tools like `file_search` that can
+     * access files.
+     * @param chunkingStrategy The chunking strategy used to chunk the file(s). If not set, will use the auto strategy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VectorStoreFileBatch> createVectorStoreFileBatch(String vectorStoreId, List<String> fileIds,
+        VectorStoreChunkingStrategyRequest chunkingStrategy) {
+        // Generated convenience method for createVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileBatchRequest createVectorStoreFileBatchRequestObj
+            = new CreateVectorStoreFileBatchRequest(fileIds).setChunkingStrategy(chunkingStrategy);
+        BinaryData createVectorStoreFileBatchRequest = BinaryData.fromObject(createVectorStoreFileBatchRequestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
     }
 }
