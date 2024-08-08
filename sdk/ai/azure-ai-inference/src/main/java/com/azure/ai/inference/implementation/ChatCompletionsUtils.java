@@ -6,6 +6,7 @@ package com.azure.ai.inference.implementation;
 import com.azure.ai.inference.implementation.models.CompleteOptions;
 import com.azure.ai.inference.models.ChatRequestMessage;
 
+import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import java.util.ArrayList;
@@ -27,20 +28,7 @@ public final class ChatCompletionsUtils {
      * */
     public static CompleteOptions defaultCompleteOptions(String prompt) {
         List<ChatRequestMessage> messages = new ArrayList<>();
-        String jsonPrompt = "{"
-            + "\"role\":\"user\","
-            + "\"content\":\"%s\""
-            + "}";
-        String contentString = String.format(jsonPrompt, prompt);
-        try {
-            ChatRequestMessage message = ChatRequestMessage.fromJson(
-                JsonProviders.createReader(new StringReader(contentString))
-            );
-            messages.add(message);
-        } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "prompt string not accepted for JSON parsing"));
-        }
+        messages.add(ChatRequestUserMessage.fromString(prompt));
         return new CompleteOptions(messages);
     }
 
