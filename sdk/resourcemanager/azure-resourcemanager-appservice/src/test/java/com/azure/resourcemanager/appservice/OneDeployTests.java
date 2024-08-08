@@ -197,8 +197,8 @@ public class OneDeployTests extends AppServiceTest {
                             .withStorageAccountConnectionStringName("DEPLOYMENT_STORAGE_CONNECTION_STRING"))))
                 .withRuntime(new FunctionsRuntime().withName(RuntimeName.JAVA).withVersion("11"))
                 .withScaleAndConcurrency(new FunctionsScaleAndConcurrency()
-                    .withMaximumInstanceCount(100F)
-                    .withInstanceMemoryMB(2048F))),
+                    .withMaximumInstanceCount(100)
+                    .withInstanceMemoryMB(2048))),
                 com.azure.core.util.Context.NONE);
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName, functionAppName);
