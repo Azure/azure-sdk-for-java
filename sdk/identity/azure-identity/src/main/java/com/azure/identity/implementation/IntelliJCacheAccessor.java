@@ -8,8 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -52,8 +54,6 @@ public class IntelliJCacheAccessor {
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
 
     private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
-    private static final ObjectMapper DONT_FAIL_ON_UNKNOWN_PROPERTIES_MAPPER = new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     /**
      * Creates an instance of {@link IntelliJCacheAccessor}
@@ -109,17 +109,47 @@ public class IntelliJCacheAccessor {
         return null;
     }
 
-    private String parseRefreshTokenFromJson(String jsonString) {
+    public String parseRefreshTokenFromJson(String jsonString) {
+        /*
+            The json we are parsing looks like this:
+              "RefreshToken": {
+                "rootNode": { // this is an example, this will be some random string related to the account in question.
+                  "home_account_id": "home_account_id",
+                  "environment": "environment",
+                  "client_id": "client_id",
+                  "secret": "refresh_fake_secret",
+                  "credential_type": "credential_type",
+                  "family_id": "family_id"
+                }
+              },
+              so we need to step the parser through a couple times once we have found RefreshToken, as noted below.
+         */
         try {
-            JsonNode jsonNode =  DEFAULT_MAPPER.readTree(jsonString);
-            TreeNode refreshTokenNode =  jsonNode.get("RefreshToken");
-            TreeNode baseNode = refreshTokenNode.get(refreshTokenNode.fieldNames().next());
-            TreeNode refreshToken = baseNode.get("secret");
-            String tokenString = refreshToken.toString();
-            if (tokenString.startsWith("\"")) {
-                return tokenString.substring(1, tokenString.length() - 1);
+            try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
+                return jsonReader.readObject(reader -> {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        // We only want the "secret" field from the "RefreshToken" node.
+                        if ("RefreshToken".equals(fieldName)) {
+                            reader.nextToken(); // read past the START_OBJECT
+                            reader.nextToken(); // read past the FIELD_NAME for the root sub-object
+                            while(reader.nextToken() != JsonToken.END_OBJECT) { // now read through the RefreshToken
+                                String secretFieldName = reader.getFieldName();
+                                reader.nextToken();
+                                if ("secret".equals(secretFieldName)) {
+                                    return reader.getString();
+                                } else {
+                                    reader.skipChildren();
+                                }
+                            }
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    throw new CredentialUnavailableException("IntelliJCredential => Refresh Token not found.");
+                });
             }
-            return tokenString;
         } catch (Exception e) {
             LOGGER.verbose("IntelliJCredential => Refresh Token not found: " + e.getMessage());
             return null;
@@ -285,7 +315,30 @@ public class IntelliJCacheAccessor {
      * @throws IOException when invalid file path is specified.
      */
     public IntelliJAuthMethodDetails parseAuthMethodDetails(File file) throws IOException {
-        return DONT_FAIL_ON_UNKNOWN_PROPERTIES_MAPPER.readValue(file, IntelliJAuthMethodDetails.class);
+        String json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+            return jsonReader.readObject(reader -> {
+                String accountEmail = null;
+                String credFilePath = null;
+                String authMethod = null;
+                String azureEnv = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    if ("accountEmail".equals(fieldName)) {
+                        accountEmail = reader.getString();
+                    } else if ("credFilePath".equals(fieldName)) {
+                        credFilePath = reader.getString();
+                    } else if ("authMethod".equals(fieldName)) {
+                        authMethod = reader.getString();
+                    } else if ("azureEnv".equals(fieldName)) {
+                        azureEnv = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return new IntelliJAuthMethodDetails(accountEmail, credFilePath, authMethod, azureEnv);
+            });
+        }
     }
 
     /**
