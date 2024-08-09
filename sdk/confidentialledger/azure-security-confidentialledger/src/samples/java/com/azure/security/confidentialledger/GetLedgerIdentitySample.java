@@ -15,7 +15,7 @@ public class GetLedgerIdentitySample {
         ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient =
                 new ConfidentialLedgerCertificateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .certificateEndpoint("identity.accledger.azure.com")
+                        .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         String ledgerId = "your_ledger_name";
