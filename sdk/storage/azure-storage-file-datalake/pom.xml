@@ -65,6 +65,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-xml</artifactId>
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-xml;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
@@ -77,11 +82,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.28.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-xml</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.

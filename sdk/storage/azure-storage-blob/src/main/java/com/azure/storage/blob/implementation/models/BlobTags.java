@@ -10,10 +10,10 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+
+import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Blob tags.
@@ -33,7 +33,7 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
 
     /**
      * Get the blobTagSet property: The BlobTagSet property.
-     * 
+     *
      * @return the blobTagSet value.
      */
     public List<BlobTag> getBlobTagSet() {
@@ -45,7 +45,7 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
 
     /**
      * Set the blobTagSet property: The BlobTagSet property.
-     * 
+     *
      * @param blobTagSet the blobTagSet value to set.
      * @return the BlobTags object itself.
      */
@@ -75,7 +75,7 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
 
     /**
      * Reads an instance of BlobTags from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobTags if the XmlReader was pointing to an instance of it, or null if it was pointing to
      * XML null.
@@ -88,7 +88,7 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
 
     /**
      * Reads an instance of BlobTags from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
@@ -102,23 +102,24 @@ public final class BlobTags implements XmlSerializable<BlobTags> {
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobTags deserializedBlobTags = new BlobTags();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("TagSet".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("Tag".equals(elementName.getLocalPart())) {
-                            if (deserializedBlobTags.blobTagSet == null) {
-                                deserializedBlobTags.blobTagSet = new ArrayList<>();
-                            }
-                            deserializedBlobTags.blobTagSet.add(BlobTag.fromXml(reader, "Tag"));
-                        } else {
-                            reader.skipElement();
+                reader.processNextElement((namespaceUri, localName, reader1) -> {
+                    if ("TagSet".equals(localName)) {
+                        while (reader1.nextElement() != XmlToken.END_ELEMENT) {
+                            reader1.processNextElement((namespaceUri1, localName1, reader2) -> {
+                                if ("Tag".equals(localName1)) {
+                                    if (deserializedBlobTags.blobTagSet == null) {
+                                        deserializedBlobTags.blobTagSet = new ArrayList<>();
+                                    }
+                                    deserializedBlobTags.blobTagSet.add(BlobTag.fromXml(reader2, "Tag"));
+                                } else {
+                                    reader2.skipElement();
+                                }
+                            });
                         }
+                    } else {
+                        reader1.skipElement();
                     }
-                } else {
-                    reader.skipElement();
-                }
+                });
             }
 
             return deserializedBlobTags;
