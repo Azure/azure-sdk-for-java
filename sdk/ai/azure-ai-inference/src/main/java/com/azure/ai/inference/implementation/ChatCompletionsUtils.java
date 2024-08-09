@@ -3,16 +3,14 @@
 
 package com.azure.ai.inference.implementation;
 
-import com.azure.ai.inference.implementation.models.CompleteOptions;
+import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.ai.inference.models.ChatRequestMessage;
 
 import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.io.StringReader;
-import java.io.IOException;
 
 /** This class contains convenience methods and constants for operations related to ChatCompletions */
 public final class ChatCompletionsUtils {

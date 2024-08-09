@@ -6,7 +6,7 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
-import com.azure.ai.inference.implementation.models.CompleteOptions;
+import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
@@ -237,26 +237,10 @@ public final class ChatCompletionsClient {
      * </p>
      * <!-- @formatter:off -->
      * <!-- src_embed com.azure.ai.inference.ChatCompletionsClient.completeStreaming#CompleteOptions -->
-     * <pre>
-     * ChatCompletionsClient.completeStreaming&#40;new CompleteOptions&#40;chatMessages&#41;&#41;
-     *         .forEach&#40;chatCompletions -&gt; &#123;
-     *             if &#40;CoreUtils.isNullOrEmpty&#40;chatCompletions.getChoices&#40;&#41;&#41;&#41; &#123;
-     *                 return;
-     *             &#125;
-     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
-     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
-     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
-     *             &#125;
-     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
-     *                 String content = delta.getContent&#40;&#41;;
-     *                 System.out.print&#40;content&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.ai.inference.ChatCompletionsClient.completeStreaming#CompleteOptions -->
      * <!-- @formatter:on -->
      *
-     * @param completeOptions The configuration information for a chat completions request. Completions support a
+     * @param options The configuration information for a chat completions request. Completions support a
      * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -268,11 +252,29 @@ public final class ChatCompletionsClient {
      * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<ChatCompletions> completeStreaming(CompleteOptions completeOptions) {
-        completeOptions.setStream(true);
+    public IterableStream<ChatCompletions> completeStreaming(CompleteOptions options) {
+        options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
+        CompleteRequest completeRequestObj
+            = new CompleteRequest(options.getMessages()).setFrequencyPenalty(options.getFrequencyPenalty())
+            .setStream(options.isStream())
+            .setPresencePenalty(options.getPresencePenalty())
+            .setTemperature(options.getTemperature())
+            .setTopP(options.getTopP())
+            .setMaxTokens(options.getMaxTokens())
+            .setResponseFormat(options.getResponseFormat())
+            .setStop(options.getStop())
+            .setTools(options.getTools())
+            .setToolChoice(options.getToolChoice())
+            .setSeed(options.getSeed())
+            .setModel(options.getModel());
+        BinaryData completeRequest = BinaryData.fromObject(completeRequestObj);
+        ExtraParameters extraParams = options.getExtraParams();
+        if (extraParams != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
+        }
         Flux<ByteBuffer> responseStream = completeStreamingWithResponse(
-            BinaryData.fromObject(completeOptions), requestOptions).getValue().toFluxByteBuffer();
+            completeRequest, requestOptions).getValue().toFluxByteBuffer();
         InferenceServerSentEvents<ChatCompletions> chatCompletionsStream
             = new InferenceServerSentEvents<>(responseStream, ChatCompletions.class);
         return new IterableStream<>(chatCompletionsStream.getEvents());

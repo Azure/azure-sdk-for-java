@@ -10,6 +10,8 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -18,6 +20,8 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -26,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static com.azure.ai.inference.TestUtils.FAKE_API_KEY;
 
 public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
@@ -81,6 +86,21 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
 
     void getChatCompletionsRunner(Consumer<String> testRunner) {
         testRunner.accept("Say this is a test");
+    }
+
+    void getStreamingChatCompletionsRunner(Consumer<List<ChatRequestMessage>> testRunner) {
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(ChatRequestUserMessage.fromString("Say this is a test"));
+        testRunner.accept(chatMessages);
+    }
+
+    static void assertCompletionsStream(ChatCompletions chatCompletions) {
+        if (chatCompletions.getId() != null && !chatCompletions.getId().isEmpty()) {
+            assertNotNull(chatCompletions.getId());
+            assertNotNull(chatCompletions.getChoices());
+            assertFalse(chatCompletions.getChoices().isEmpty());
+            assertNotNull(chatCompletions.getChoices().getFirst().getDelta());
+        }
     }
 
     static void assertCompletions(int choicesPerPrompt, ChatCompletions actual) {

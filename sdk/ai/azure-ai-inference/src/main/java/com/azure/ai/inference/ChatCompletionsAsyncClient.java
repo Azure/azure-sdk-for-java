@@ -5,7 +5,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
-import com.azure.ai.inference.implementation.models.CompleteOptions;
+import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.models.ChatCompletions;
@@ -35,7 +35,7 @@ public final class ChatCompletionsAsyncClient {
 
     /**
      * Initializes an instance of ChatCompletionsAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -59,7 +59,7 @@ public final class ChatCompletionsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -89,9 +89,9 @@ public final class ChatCompletionsAsyncClient {
      *     model: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -120,7 +120,7 @@ public final class ChatCompletionsAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param completeRequest The completeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -141,7 +141,7 @@ public final class ChatCompletionsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -149,7 +149,7 @@ public final class ChatCompletionsAsyncClient {
      *     model_provider_name: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -169,7 +169,7 @@ public final class ChatCompletionsAsyncClient {
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data. The method makes a REST API call to the `/chat/completions` route
      * on the given endpoint.
-     * 
+     *
      * @param options Options for complete API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -211,7 +211,7 @@ public final class ChatCompletionsAsyncClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.

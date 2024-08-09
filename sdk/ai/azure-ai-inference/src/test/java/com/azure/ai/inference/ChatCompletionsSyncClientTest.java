@@ -2,13 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.ai.inference;
 
+import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.core.http.HttpClient;
 
+import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase {
     private ChatCompletionsClient client;
@@ -29,18 +37,20 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         });
     }
 
-/*
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
-    public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
-        getCompletionsRunner((deploymentId, prompt) -> {
-            IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
+    public void testGetCompletionsStream(HttpClient httpClient) {
+        client = getChatCompletionsClient(httpClient);
+        getChatCompletionsRunner((prompt) -> {
+            List<ChatRequestMessage> chatMessages = new ArrayList<>();
+            chatMessages.add(ChatRequestUserMessage.fromString(prompt));
+            IterableStream<ChatCompletions> resultCompletions = client.completeStreaming(new CompleteOptions(chatMessages));
             assertTrue(resultCompletions.stream().toArray().length > 1);
-            resultCompletions.forEach(OpenAIClientTestBase::assertCompletionsStream);
+            resultCompletions.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
         });
     }
 
+/*
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
