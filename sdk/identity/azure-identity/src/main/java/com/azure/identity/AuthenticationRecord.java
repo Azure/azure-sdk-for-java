@@ -7,8 +7,6 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +30,6 @@ import java.io.OutputStream;
  * @see InteractiveBrowserCredential
  */
 public final class AuthenticationRecord {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private String authority;
 
