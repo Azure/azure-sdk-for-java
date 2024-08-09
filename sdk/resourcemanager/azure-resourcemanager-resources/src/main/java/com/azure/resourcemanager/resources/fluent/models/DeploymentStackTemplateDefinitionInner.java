@@ -5,24 +5,29 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.DeploymentStacksTemplateLink;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Export Template specific properties of the Deployment stack.
  */
 @Fluent
-public final class DeploymentStackTemplateDefinitionInner {
+public final class DeploymentStackTemplateDefinitionInner
+    implements JsonSerializable<DeploymentStackTemplateDefinitionInner> {
     /*
-     * The template content. Use this element to pass the template syntax directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the template property, but not both.
+     * The template content. Use this element to pass the template syntax directly in the request rather than link to an
+     * existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the
+     * template property, but not both.
      */
-    @JsonProperty(value = "template")
     private Object template;
 
     /*
      * The URI of the template. Use either the templateLink property or the template property, but not both.
      */
-    @JsonProperty(value = "templateLink")
     private DeploymentStacksTemplateLink templateLink;
 
     /**
@@ -86,5 +91,46 @@ public final class DeploymentStackTemplateDefinitionInner {
         if (templateLink() != null) {
             templateLink().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("template", this.template);
+        jsonWriter.writeJsonField("templateLink", this.templateLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentStackTemplateDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentStackTemplateDefinitionInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentStackTemplateDefinitionInner.
+     */
+    public static DeploymentStackTemplateDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentStackTemplateDefinitionInner deserializedDeploymentStackTemplateDefinitionInner
+                = new DeploymentStackTemplateDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("template".equals(fieldName)) {
+                    deserializedDeploymentStackTemplateDefinitionInner.template = reader.readUntyped();
+                } else if ("templateLink".equals(fieldName)) {
+                    deserializedDeploymentStackTemplateDefinitionInner.templateLink
+                        = DeploymentStacksTemplateLink.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentStackTemplateDefinitionInner;
+        });
     }
 }

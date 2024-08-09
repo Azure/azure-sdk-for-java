@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Setting for SMB protocol.
  */
 @Fluent
-public final class SmbSetting {
+public final class SmbSetting implements JsonSerializable<SmbSetting> {
     /*
      * Multichannel setting. Applies to Premium FileStorage only.
      */
-    @JsonProperty(value = "multichannel")
     private Multichannel multichannel;
 
     /*
      * SMB protocol versions supported by server. Valid values are SMB2.1, SMB3.0, SMB3.1.1. Should be passed as a
      * string with delimiter ';'.
      */
-    @JsonProperty(value = "versions")
     private String versions;
 
     /*
      * SMB authentication methods supported by server. Valid values are NTLMv2, Kerberos. Should be passed as a string
      * with delimiter ';'.
      */
-    @JsonProperty(value = "authenticationMethods")
     private String authenticationMethods;
 
     /*
      * Kerberos ticket encryption supported by server. Valid values are RC4-HMAC, AES-256. Should be passed as a string
      * with delimiter ';'
      */
-    @JsonProperty(value = "kerberosTicketEncryption")
     private String kerberosTicketEncryption;
 
     /*
      * SMB channel encryption supported by server. Valid values are AES-128-CCM, AES-128-GCM, AES-256-GCM. Should be
      * passed as a string with delimiter ';'.
      */
-    @JsonProperty(value = "channelEncryption")
     private String channelEncryption;
 
     /**
@@ -169,5 +168,53 @@ public final class SmbSetting {
         if (multichannel() != null) {
             multichannel().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("multichannel", this.multichannel);
+        jsonWriter.writeStringField("versions", this.versions);
+        jsonWriter.writeStringField("authenticationMethods", this.authenticationMethods);
+        jsonWriter.writeStringField("kerberosTicketEncryption", this.kerberosTicketEncryption);
+        jsonWriter.writeStringField("channelEncryption", this.channelEncryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmbSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmbSetting if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SmbSetting.
+     */
+    public static SmbSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmbSetting deserializedSmbSetting = new SmbSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("multichannel".equals(fieldName)) {
+                    deserializedSmbSetting.multichannel = Multichannel.fromJson(reader);
+                } else if ("versions".equals(fieldName)) {
+                    deserializedSmbSetting.versions = reader.getString();
+                } else if ("authenticationMethods".equals(fieldName)) {
+                    deserializedSmbSetting.authenticationMethods = reader.getString();
+                } else if ("kerberosTicketEncryption".equals(fieldName)) {
+                    deserializedSmbSetting.kerberosTicketEncryption = reader.getString();
+                } else if ("channelEncryption".equals(fieldName)) {
+                    deserializedSmbSetting.channelEncryption = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmbSetting;
+        });
     }
 }

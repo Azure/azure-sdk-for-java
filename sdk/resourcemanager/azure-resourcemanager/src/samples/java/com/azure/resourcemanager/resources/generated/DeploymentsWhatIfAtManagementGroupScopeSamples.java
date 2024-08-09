@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnManagementGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * PostDeploymentWhatIfOnManagementGroup.json
      */
     /**
      * Sample code: Predict template changes at management group scope.

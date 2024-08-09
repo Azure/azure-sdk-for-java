@@ -5,72 +5,70 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** subscribedSku. */
+/**
+ * subscribedSku.
+ */
 @Fluent
 public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
     /*
      * For example, 'User' or 'Company'.
      */
-    @JsonProperty(value = "appliesTo")
     private String appliesTo;
 
     /*
      * Possible values are: Enabled, Warning, Suspended, Deleted, LockedOut.
      */
-    @JsonProperty(value = "capabilityStatus")
     private String capabilityStatus;
 
     /*
      * The number of licenses that have been assigned.
      */
-    @JsonProperty(value = "consumedUnits")
     private Integer consumedUnits;
 
     /*
      * licenseUnitsDetail
      */
-    @JsonProperty(value = "prepaidUnits")
     private MicrosoftGraphLicenseUnitsDetail prepaidUnits;
 
     /*
      * Information about the service plans that are available with the SKU. Not nullable
      */
-    @JsonProperty(value = "servicePlans")
     private List<MicrosoftGraphServicePlanInfo> servicePlans;
 
     /*
      * The unique identifier (GUID) for the service SKU.
      */
-    @JsonProperty(value = "skuId")
     private UUID skuId;
 
     /*
      * The skuPartNumber property.
      */
-    @JsonProperty(value = "skuPartNumber")
     private String skuPartNumber;
 
     /*
      * subscribedSku
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSubscribedSku class. */
+    /**
+     * Creates an instance of MicrosoftGraphSubscribedSku class.
+     */
     public MicrosoftGraphSubscribedSku() {
     }
 
     /**
      * Get the appliesTo property: For example, 'User' or 'Company'.
-     *
+     * 
      * @return the appliesTo value.
      */
     public String appliesTo() {
@@ -79,7 +77,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the appliesTo property: For example, 'User' or 'Company'.
-     *
+     * 
      * @param appliesTo the appliesTo value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -90,7 +88,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the capabilityStatus property: Possible values are: Enabled, Warning, Suspended, Deleted, LockedOut.
-     *
+     * 
      * @return the capabilityStatus value.
      */
     public String capabilityStatus() {
@@ -99,7 +97,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the capabilityStatus property: Possible values are: Enabled, Warning, Suspended, Deleted, LockedOut.
-     *
+     * 
      * @param capabilityStatus the capabilityStatus value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -110,7 +108,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the consumedUnits property: The number of licenses that have been assigned.
-     *
+     * 
      * @return the consumedUnits value.
      */
     public Integer consumedUnits() {
@@ -119,7 +117,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the consumedUnits property: The number of licenses that have been assigned.
-     *
+     * 
      * @param consumedUnits the consumedUnits value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -130,7 +128,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the prepaidUnits property: licenseUnitsDetail.
-     *
+     * 
      * @return the prepaidUnits value.
      */
     public MicrosoftGraphLicenseUnitsDetail prepaidUnits() {
@@ -139,7 +137,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the prepaidUnits property: licenseUnitsDetail.
-     *
+     * 
      * @param prepaidUnits the prepaidUnits value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -150,7 +148,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the servicePlans property: Information about the service plans that are available with the SKU. Not nullable.
-     *
+     * 
      * @return the servicePlans value.
      */
     public List<MicrosoftGraphServicePlanInfo> servicePlans() {
@@ -159,7 +157,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the servicePlans property: Information about the service plans that are available with the SKU. Not nullable.
-     *
+     * 
      * @param servicePlans the servicePlans value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -170,7 +168,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the skuId property: The unique identifier (GUID) for the service SKU.
-     *
+     * 
      * @return the skuId value.
      */
     public UUID skuId() {
@@ -179,7 +177,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the skuId property: The unique identifier (GUID) for the service SKU.
-     *
+     * 
      * @param skuId the skuId value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -190,7 +188,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the skuPartNumber property: The skuPartNumber property.
-     *
+     * 
      * @return the skuPartNumber value.
      */
     public String skuPartNumber() {
@@ -199,7 +197,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Set the skuPartNumber property: The skuPartNumber property.
-     *
+     * 
      * @param skuPartNumber the skuPartNumber value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -210,17 +208,16 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: subscribedSku.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: subscribedSku.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSubscribedSku object itself.
      */
@@ -229,15 +226,9 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSubscribedSku withId(String id) {
         super.withId(id);
@@ -246,7 +237,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -258,5 +249,77 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
         if (servicePlans() != null) {
             servicePlans().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("appliesTo", this.appliesTo);
+        jsonWriter.writeStringField("capabilityStatus", this.capabilityStatus);
+        jsonWriter.writeNumberField("consumedUnits", this.consumedUnits);
+        jsonWriter.writeJsonField("prepaidUnits", this.prepaidUnits);
+        jsonWriter.writeArrayField("servicePlans", this.servicePlans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("skuId", Objects.toString(this.skuId, null));
+        jsonWriter.writeStringField("skuPartNumber", this.skuPartNumber);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSubscribedSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSubscribedSku if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSubscribedSku.
+     */
+    public static MicrosoftGraphSubscribedSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSubscribedSku deserializedMicrosoftGraphSubscribedSku = new MicrosoftGraphSubscribedSku();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.withId(reader.getString());
+                } else if ("appliesTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.appliesTo = reader.getString();
+                } else if ("capabilityStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.capabilityStatus = reader.getString();
+                } else if ("consumedUnits".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.consumedUnits = reader.getNullable(JsonReader::getInt);
+                } else if ("prepaidUnits".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.prepaidUnits
+                        = MicrosoftGraphLicenseUnitsDetail.fromJson(reader);
+                } else if ("servicePlans".equals(fieldName)) {
+                    List<MicrosoftGraphServicePlanInfo> servicePlans
+                        = reader.readArray(reader1 -> MicrosoftGraphServicePlanInfo.fromJson(reader1));
+                    deserializedMicrosoftGraphSubscribedSku.servicePlans = servicePlans;
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.skuId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("skuPartNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphSubscribedSku.skuPartNumber = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSubscribedSku.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSubscribedSku;
+        });
     }
 }

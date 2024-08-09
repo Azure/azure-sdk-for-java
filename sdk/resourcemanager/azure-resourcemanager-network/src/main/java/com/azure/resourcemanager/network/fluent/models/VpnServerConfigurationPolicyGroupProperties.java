@@ -6,44 +6,44 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGroupMember;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for VpnServerConfigurationPolicyGroup.
  */
 @Fluent
-public final class VpnServerConfigurationPolicyGroupProperties {
+public final class VpnServerConfigurationPolicyGroupProperties
+    implements JsonSerializable<VpnServerConfigurationPolicyGroupProperties> {
     /*
      * Shows if this is a Default VpnServerConfigurationPolicyGroup or not.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * Priority for VpnServerConfigurationPolicyGroup.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Multiple PolicyMembers for VpnServerConfigurationPolicyGroup.
      */
-    @JsonProperty(value = "policyMembers")
     private List<VpnServerConfigurationPolicyGroupMember> policyMembers;
 
     /*
      * List of references to P2SConnectionConfigurations.
      */
-    @JsonProperty(value = "p2SConnectionConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> p2SConnectionConfigurations;
 
     /*
      * The provisioning state of the VpnServerConfigurationPolicyGroup resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -140,5 +140,60 @@ public final class VpnServerConfigurationPolicyGroupProperties {
         if (policyMembers() != null) {
             policyMembers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeArrayField("policyMembers", this.policyMembers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnServerConfigurationPolicyGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnServerConfigurationPolicyGroupProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnServerConfigurationPolicyGroupProperties.
+     */
+    public static VpnServerConfigurationPolicyGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnServerConfigurationPolicyGroupProperties deserializedVpnServerConfigurationPolicyGroupProperties
+                = new VpnServerConfigurationPolicyGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isDefault".equals(fieldName)) {
+                    deserializedVpnServerConfigurationPolicyGroupProperties.isDefault
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedVpnServerConfigurationPolicyGroupProperties.priority
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("policyMembers".equals(fieldName)) {
+                    List<VpnServerConfigurationPolicyGroupMember> policyMembers
+                        = reader.readArray(reader1 -> VpnServerConfigurationPolicyGroupMember.fromJson(reader1));
+                    deserializedVpnServerConfigurationPolicyGroupProperties.policyMembers = policyMembers;
+                } else if ("p2SConnectionConfigurations".equals(fieldName)) {
+                    List<SubResource> p2SConnectionConfigurations
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVpnServerConfigurationPolicyGroupProperties.p2SConnectionConfigurations
+                        = p2SConnectionConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVpnServerConfigurationPolicyGroupProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnServerConfigurationPolicyGroupProperties;
+        });
     }
 }

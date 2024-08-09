@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The name of the current provisioning operation.
  */
@@ -76,7 +73,6 @@ public enum ProvisioningOperation {
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningOperation object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProvisioningOperation fromString(String value) {
         if (value == null) {
             return null;
@@ -93,7 +89,6 @@ public enum ProvisioningOperation {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

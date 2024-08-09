@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage profile for the container service cluster.
  */
 @Fluent
-public final class ManagedClusterStorageProfile {
+public final class ManagedClusterStorageProfile implements JsonSerializable<ManagedClusterStorageProfile> {
     /*
      * AzureDisk CSI Driver settings for the storage profile.
      */
-    @JsonProperty(value = "diskCSIDriver")
     private ManagedClusterStorageProfileDiskCsiDriver diskCsiDriver;
 
     /*
      * AzureFile CSI Driver settings for the storage profile.
      */
-    @JsonProperty(value = "fileCSIDriver")
     private ManagedClusterStorageProfileFileCsiDriver fileCsiDriver;
 
     /*
      * Snapshot Controller settings for the storage profile.
      */
-    @JsonProperty(value = "snapshotController")
     private ManagedClusterStorageProfileSnapshotController snapshotController;
 
     /*
      * AzureBlob CSI Driver settings for the storage profile.
      */
-    @JsonProperty(value = "blobCSIDriver")
     private ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver;
 
     /**
@@ -141,5 +141,54 @@ public final class ManagedClusterStorageProfile {
         if (blobCsiDriver() != null) {
             blobCsiDriver().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskCSIDriver", this.diskCsiDriver);
+        jsonWriter.writeJsonField("fileCSIDriver", this.fileCsiDriver);
+        jsonWriter.writeJsonField("snapshotController", this.snapshotController);
+        jsonWriter.writeJsonField("blobCSIDriver", this.blobCsiDriver);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterStorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterStorageProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterStorageProfile.
+     */
+    public static ManagedClusterStorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterStorageProfile deserializedManagedClusterStorageProfile = new ManagedClusterStorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskCSIDriver".equals(fieldName)) {
+                    deserializedManagedClusterStorageProfile.diskCsiDriver
+                        = ManagedClusterStorageProfileDiskCsiDriver.fromJson(reader);
+                } else if ("fileCSIDriver".equals(fieldName)) {
+                    deserializedManagedClusterStorageProfile.fileCsiDriver
+                        = ManagedClusterStorageProfileFileCsiDriver.fromJson(reader);
+                } else if ("snapshotController".equals(fieldName)) {
+                    deserializedManagedClusterStorageProfile.snapshotController
+                        = ManagedClusterStorageProfileSnapshotController.fromJson(reader);
+                } else if ("blobCSIDriver".equals(fieldName)) {
+                    deserializedManagedClusterStorageProfile.blobCsiDriver
+                        = ManagedClusterStorageProfileBlobCsiDriver.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterStorageProfile;
+        });
     }
 }

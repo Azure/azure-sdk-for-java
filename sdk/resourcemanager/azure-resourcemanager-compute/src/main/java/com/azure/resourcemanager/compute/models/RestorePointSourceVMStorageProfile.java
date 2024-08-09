@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the storage profile.
  */
 @Fluent
-public final class RestorePointSourceVMStorageProfile {
+public final class RestorePointSourceVMStorageProfile implements JsonSerializable<RestorePointSourceVMStorageProfile> {
     /*
      * Gets the OS disk of the VM captured at the time of the restore point creation.
      */
-    @JsonProperty(value = "osDisk")
     private RestorePointSourceVmosDisk osDisk;
 
     /*
      * Gets the data disks of the VM captured at the time of the restore point creation.
      */
-    @JsonProperty(value = "dataDisks")
     private List<RestorePointSourceVMDataDisk> dataDisks;
 
     /*
      * Gets the disk controller type of the VM captured at the time of the restore point creation.
      */
-    @JsonProperty(value = "diskControllerType", access = JsonProperty.Access.WRITE_ONLY)
     private DiskControllerTypes diskControllerType;
 
     /**
@@ -99,5 +100,50 @@ public final class RestorePointSourceVMStorageProfile {
         if (dataDisks() != null) {
             dataDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("osDisk", this.osDisk);
+        jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointSourceVMStorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointSourceVMStorageProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointSourceVMStorageProfile.
+     */
+    public static RestorePointSourceVMStorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointSourceVMStorageProfile deserializedRestorePointSourceVMStorageProfile
+                = new RestorePointSourceVMStorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osDisk".equals(fieldName)) {
+                    deserializedRestorePointSourceVMStorageProfile.osDisk = RestorePointSourceVmosDisk.fromJson(reader);
+                } else if ("dataDisks".equals(fieldName)) {
+                    List<RestorePointSourceVMDataDisk> dataDisks
+                        = reader.readArray(reader1 -> RestorePointSourceVMDataDisk.fromJson(reader1));
+                    deserializedRestorePointSourceVMStorageProfile.dataDisks = dataDisks;
+                } else if ("diskControllerType".equals(fieldName)) {
+                    deserializedRestorePointSourceVMStorageProfile.diskControllerType
+                        = DiskControllerTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointSourceVMStorageProfile;
+        });
     }
 }

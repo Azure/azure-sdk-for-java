@@ -5,43 +5,46 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** dateTimeColumn. */
+/**
+ * dateTimeColumn.
+ */
 @Fluent
-public final class MicrosoftGraphDateTimeColumn {
+public final class MicrosoftGraphDateTimeColumn implements JsonSerializable<MicrosoftGraphDateTimeColumn> {
     /*
      * How the value should be presented in the UX. Must be one of default, friendly, or standard. See below for more
      * details. If unspecified, treated as default.
      */
-    @JsonProperty(value = "displayAs")
     private String displayAs;
 
     /*
      * Indicates whether the value should be presented as a date only or a date and time. Must be one of dateOnly or
      * dateTime
      */
-    @JsonProperty(value = "format")
     private String format;
 
     /*
      * dateTimeColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDateTimeColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphDateTimeColumn class.
+     */
     public MicrosoftGraphDateTimeColumn() {
     }
 
     /**
      * Get the displayAs property: How the value should be presented in the UX. Must be one of default, friendly, or
      * standard. See below for more details. If unspecified, treated as default.
-     *
+     * 
      * @return the displayAs value.
      */
     public String displayAs() {
@@ -51,7 +54,7 @@ public final class MicrosoftGraphDateTimeColumn {
     /**
      * Set the displayAs property: How the value should be presented in the UX. Must be one of default, friendly, or
      * standard. See below for more details. If unspecified, treated as default.
-     *
+     * 
      * @param displayAs the displayAs value to set.
      * @return the MicrosoftGraphDateTimeColumn object itself.
      */
@@ -63,7 +66,7 @@ public final class MicrosoftGraphDateTimeColumn {
     /**
      * Get the format property: Indicates whether the value should be presented as a date only or a date and time. Must
      * be one of dateOnly or dateTime.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -73,7 +76,7 @@ public final class MicrosoftGraphDateTimeColumn {
     /**
      * Set the format property: Indicates whether the value should be presented as a date only or a date and time. Must
      * be one of dateOnly or dateTime.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphDateTimeColumn object itself.
      */
@@ -84,17 +87,16 @@ public final class MicrosoftGraphDateTimeColumn {
 
     /**
      * Get the additionalProperties property: dateTimeColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: dateTimeColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDateTimeColumn object itself.
      */
@@ -103,19 +105,61 @@ public final class MicrosoftGraphDateTimeColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayAs", this.displayAs);
+        jsonWriter.writeStringField("format", this.format);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDateTimeColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDateTimeColumn if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDateTimeColumn.
+     */
+    public static MicrosoftGraphDateTimeColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDateTimeColumn deserializedMicrosoftGraphDateTimeColumn = new MicrosoftGraphDateTimeColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphDateTimeColumn.displayAs = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphDateTimeColumn.format = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDateTimeColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDateTimeColumn;
+        });
     }
 }

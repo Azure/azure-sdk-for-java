@@ -244,7 +244,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetMqttAuthenticationToken() throws ParseException {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions()
-            .setWebPubSubClientAccess(WebPubSubClientProtocol.MQTT);
+            .setWebPubSubClientProtocol(WebPubSubClientProtocol.MQTT);
         WebPubSubClientAccessToken token = client.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);

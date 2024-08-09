@@ -5,33 +5,32 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.fluent.models.RedisUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Parameters supplied to the Update Redis operation.
  */
 @Fluent
-public final class RedisUpdateParameters {
+public final class RedisUpdateParameters implements JsonSerializable<RedisUpdateParameters> {
     /*
      * Redis cache properties.
      */
-    @JsonProperty(value = "properties")
     private RedisUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /**
@@ -399,5 +398,48 @@ public final class RedisUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisUpdateParameters.
+     */
+    public static RedisUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisUpdateParameters deserializedRedisUpdateParameters = new RedisUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRedisUpdateParameters.innerProperties = RedisUpdateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRedisUpdateParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisUpdateParameters;
+        });
     }
 }

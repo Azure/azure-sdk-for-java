@@ -5,59 +5,59 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** lookupColumn. */
+/**
+ * lookupColumn.
+ */
 @Fluent
-public final class MicrosoftGraphLookupColumn {
+public final class MicrosoftGraphLookupColumn implements JsonSerializable<MicrosoftGraphLookupColumn> {
     /*
      * Indicates whether multiple values can be selected from the source.
      */
-    @JsonProperty(value = "allowMultipleValues")
     private Boolean allowMultipleValues;
 
     /*
      * Indicates whether values in the column should be able to exceed the standard limit of 255 characters.
      */
-    @JsonProperty(value = "allowUnlimitedLength")
     private Boolean allowUnlimitedLength;
 
     /*
      * The name of the lookup source column.
      */
-    @JsonProperty(value = "columnName")
     private String columnName;
 
     /*
      * The unique identifier of the lookup source list.
      */
-    @JsonProperty(value = "listId")
     private String listId;
 
     /*
      * If specified, this column is a secondary lookup, pulling an additional field from the list item looked up by the
      * primary lookup. Use the list item looked up by the primary as the source for the column named here.
      */
-    @JsonProperty(value = "primaryLookupColumnId")
     private String primaryLookupColumnId;
 
     /*
      * lookupColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphLookupColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphLookupColumn class.
+     */
     public MicrosoftGraphLookupColumn() {
     }
 
     /**
      * Get the allowMultipleValues property: Indicates whether multiple values can be selected from the source.
-     *
+     * 
      * @return the allowMultipleValues value.
      */
     public Boolean allowMultipleValues() {
@@ -66,7 +66,7 @@ public final class MicrosoftGraphLookupColumn {
 
     /**
      * Set the allowMultipleValues property: Indicates whether multiple values can be selected from the source.
-     *
+     * 
      * @param allowMultipleValues the allowMultipleValues value to set.
      * @return the MicrosoftGraphLookupColumn object itself.
      */
@@ -78,7 +78,7 @@ public final class MicrosoftGraphLookupColumn {
     /**
      * Get the allowUnlimitedLength property: Indicates whether values in the column should be able to exceed the
      * standard limit of 255 characters.
-     *
+     * 
      * @return the allowUnlimitedLength value.
      */
     public Boolean allowUnlimitedLength() {
@@ -88,7 +88,7 @@ public final class MicrosoftGraphLookupColumn {
     /**
      * Set the allowUnlimitedLength property: Indicates whether values in the column should be able to exceed the
      * standard limit of 255 characters.
-     *
+     * 
      * @param allowUnlimitedLength the allowUnlimitedLength value to set.
      * @return the MicrosoftGraphLookupColumn object itself.
      */
@@ -99,7 +99,7 @@ public final class MicrosoftGraphLookupColumn {
 
     /**
      * Get the columnName property: The name of the lookup source column.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -108,7 +108,7 @@ public final class MicrosoftGraphLookupColumn {
 
     /**
      * Set the columnName property: The name of the lookup source column.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the MicrosoftGraphLookupColumn object itself.
      */
@@ -119,7 +119,7 @@ public final class MicrosoftGraphLookupColumn {
 
     /**
      * Get the listId property: The unique identifier of the lookup source list.
-     *
+     * 
      * @return the listId value.
      */
     public String listId() {
@@ -128,7 +128,7 @@ public final class MicrosoftGraphLookupColumn {
 
     /**
      * Set the listId property: The unique identifier of the lookup source list.
-     *
+     * 
      * @param listId the listId value to set.
      * @return the MicrosoftGraphLookupColumn object itself.
      */
@@ -141,7 +141,7 @@ public final class MicrosoftGraphLookupColumn {
      * Get the primaryLookupColumnId property: If specified, this column is a secondary lookup, pulling an additional
      * field from the list item looked up by the primary lookup. Use the list item looked up by the primary as the
      * source for the column named here.
-     *
+     * 
      * @return the primaryLookupColumnId value.
      */
     public String primaryLookupColumnId() {
@@ -152,7 +152,7 @@ public final class MicrosoftGraphLookupColumn {
      * Set the primaryLookupColumnId property: If specified, this column is a secondary lookup, pulling an additional
      * field from the list item looked up by the primary lookup. Use the list item looked up by the primary as the
      * source for the column named here.
-     *
+     * 
      * @param primaryLookupColumnId the primaryLookupColumnId value to set.
      * @return the MicrosoftGraphLookupColumn object itself.
      */
@@ -163,17 +163,16 @@ public final class MicrosoftGraphLookupColumn {
 
     /**
      * Get the additionalProperties property: lookupColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: lookupColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphLookupColumn object itself.
      */
@@ -182,19 +181,72 @@ public final class MicrosoftGraphLookupColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowMultipleValues", this.allowMultipleValues);
+        jsonWriter.writeBooleanField("allowUnlimitedLength", this.allowUnlimitedLength);
+        jsonWriter.writeStringField("columnName", this.columnName);
+        jsonWriter.writeStringField("listId", this.listId);
+        jsonWriter.writeStringField("primaryLookupColumnId", this.primaryLookupColumnId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphLookupColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphLookupColumn if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphLookupColumn.
+     */
+    public static MicrosoftGraphLookupColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphLookupColumn deserializedMicrosoftGraphLookupColumn = new MicrosoftGraphLookupColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowMultipleValues".equals(fieldName)) {
+                    deserializedMicrosoftGraphLookupColumn.allowMultipleValues
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowUnlimitedLength".equals(fieldName)) {
+                    deserializedMicrosoftGraphLookupColumn.allowUnlimitedLength
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("columnName".equals(fieldName)) {
+                    deserializedMicrosoftGraphLookupColumn.columnName = reader.getString();
+                } else if ("listId".equals(fieldName)) {
+                    deserializedMicrosoftGraphLookupColumn.listId = reader.getString();
+                } else if ("primaryLookupColumnId".equals(fieldName)) {
+                    deserializedMicrosoftGraphLookupColumn.primaryLookupColumnId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphLookupColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphLookupColumn;
+        });
     }
 }

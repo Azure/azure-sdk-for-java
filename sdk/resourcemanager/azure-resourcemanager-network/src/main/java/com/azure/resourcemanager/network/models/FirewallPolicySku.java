@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SKU of Firewall policy.
  */
 @Fluent
-public final class FirewallPolicySku {
+public final class FirewallPolicySku implements JsonSerializable<FirewallPolicySku> {
     /*
      * Tier of Firewall Policy.
      */
-    @JsonProperty(value = "tier")
     private FirewallPolicySkuTier tier;
 
     /**
@@ -50,5 +53,41 @@ public final class FirewallPolicySku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicySku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicySku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicySku.
+     */
+    public static FirewallPolicySku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicySku deserializedFirewallPolicySku = new FirewallPolicySku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tier".equals(fieldName)) {
+                    deserializedFirewallPolicySku.tier = FirewallPolicySkuTier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicySku;
+        });
     }
 }

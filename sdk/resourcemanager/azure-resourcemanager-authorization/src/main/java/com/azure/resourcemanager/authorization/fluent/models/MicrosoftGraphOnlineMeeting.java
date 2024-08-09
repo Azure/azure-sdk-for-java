@@ -5,113 +5,105 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onlineMeeting. */
+/**
+ * onlineMeeting.
+ */
 @Fluent
 public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
     /*
      * onlineMeetingPresenters
      */
-    @JsonProperty(value = "allowedPresenters")
     private MicrosoftGraphOnlineMeetingPresenters allowedPresenters;
 
     /*
      * audioConferencing
      */
-    @JsonProperty(value = "audioConferencing")
     private MicrosoftGraphAudioConferencing audioConferencing;
 
     /*
      * chatInfo
      */
-    @JsonProperty(value = "chatInfo")
     private MicrosoftGraphChatInfo chatInfo;
 
     /*
      * The meeting creation time in UTC. Read-only.
      */
-    @JsonProperty(value = "creationDateTime")
     private OffsetDateTime creationDateTime;
 
     /*
      * The meeting end time in UTC.
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * The externalId property.
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
     /*
      * Whether or not to announce when callers join or leave.
      */
-    @JsonProperty(value = "isEntryExitAnnounced")
     private Boolean isEntryExitAnnounced;
 
     /*
      * itemBody
      */
-    @JsonProperty(value = "joinInformation")
     private MicrosoftGraphItemBody joinInformation;
 
     /*
      * The join URL of the online meeting. Read-only.
      */
-    @JsonProperty(value = "joinWebUrl")
     private String joinWebUrl;
 
     /*
      * lobbyBypassSettings
      */
-    @JsonProperty(value = "lobbyBypassSettings")
     private MicrosoftGraphLobbyBypassSettings lobbyBypassSettings;
 
     /*
      * meetingParticipants
      */
-    @JsonProperty(value = "participants")
     private MicrosoftGraphMeetingParticipants participants;
 
     /*
      * The meeting start time in UTC.
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * The subject of the online meeting.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * The video teleconferencing ID. Read-only.
      */
-    @JsonProperty(value = "videoTeleconferenceId")
     private String videoTeleconferenceId;
 
     /*
      * onlineMeeting
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnlineMeeting class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnlineMeeting class.
+     */
     public MicrosoftGraphOnlineMeeting() {
     }
 
     /**
      * Get the allowedPresenters property: onlineMeetingPresenters.
-     *
+     * 
      * @return the allowedPresenters value.
      */
     public MicrosoftGraphOnlineMeetingPresenters allowedPresenters() {
@@ -120,7 +112,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the allowedPresenters property: onlineMeetingPresenters.
-     *
+     * 
      * @param allowedPresenters the allowedPresenters value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -131,7 +123,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the audioConferencing property: audioConferencing.
-     *
+     * 
      * @return the audioConferencing value.
      */
     public MicrosoftGraphAudioConferencing audioConferencing() {
@@ -140,7 +132,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the audioConferencing property: audioConferencing.
-     *
+     * 
      * @param audioConferencing the audioConferencing value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -151,7 +143,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the chatInfo property: chatInfo.
-     *
+     * 
      * @return the chatInfo value.
      */
     public MicrosoftGraphChatInfo chatInfo() {
@@ -160,7 +152,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the chatInfo property: chatInfo.
-     *
+     * 
      * @param chatInfo the chatInfo value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -171,7 +163,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the creationDateTime property: The meeting creation time in UTC. Read-only.
-     *
+     * 
      * @return the creationDateTime value.
      */
     public OffsetDateTime creationDateTime() {
@@ -180,7 +172,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the creationDateTime property: The meeting creation time in UTC. Read-only.
-     *
+     * 
      * @param creationDateTime the creationDateTime value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -191,7 +183,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the endDateTime property: The meeting end time in UTC.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -200,7 +192,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the endDateTime property: The meeting end time in UTC.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -211,7 +203,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the externalId property: The externalId property.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -220,7 +212,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the externalId property: The externalId property.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -231,7 +223,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the isEntryExitAnnounced property: Whether or not to announce when callers join or leave.
-     *
+     * 
      * @return the isEntryExitAnnounced value.
      */
     public Boolean isEntryExitAnnounced() {
@@ -240,7 +232,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the isEntryExitAnnounced property: Whether or not to announce when callers join or leave.
-     *
+     * 
      * @param isEntryExitAnnounced the isEntryExitAnnounced value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -251,7 +243,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the joinInformation property: itemBody.
-     *
+     * 
      * @return the joinInformation value.
      */
     public MicrosoftGraphItemBody joinInformation() {
@@ -260,7 +252,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the joinInformation property: itemBody.
-     *
+     * 
      * @param joinInformation the joinInformation value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -271,7 +263,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the joinWebUrl property: The join URL of the online meeting. Read-only.
-     *
+     * 
      * @return the joinWebUrl value.
      */
     public String joinWebUrl() {
@@ -280,7 +272,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the joinWebUrl property: The join URL of the online meeting. Read-only.
-     *
+     * 
      * @param joinWebUrl the joinWebUrl value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -291,7 +283,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the lobbyBypassSettings property: lobbyBypassSettings.
-     *
+     * 
      * @return the lobbyBypassSettings value.
      */
     public MicrosoftGraphLobbyBypassSettings lobbyBypassSettings() {
@@ -300,7 +292,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the lobbyBypassSettings property: lobbyBypassSettings.
-     *
+     * 
      * @param lobbyBypassSettings the lobbyBypassSettings value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -311,7 +303,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the participants property: meetingParticipants.
-     *
+     * 
      * @return the participants value.
      */
     public MicrosoftGraphMeetingParticipants participants() {
@@ -320,7 +312,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the participants property: meetingParticipants.
-     *
+     * 
      * @param participants the participants value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -331,7 +323,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the startDateTime property: The meeting start time in UTC.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -340,7 +332,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the startDateTime property: The meeting start time in UTC.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -351,7 +343,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the subject property: The subject of the online meeting.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -360,7 +352,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the subject property: The subject of the online meeting.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -371,7 +363,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the videoTeleconferenceId property: The video teleconferencing ID. Read-only.
-     *
+     * 
      * @return the videoTeleconferenceId value.
      */
     public String videoTeleconferenceId() {
@@ -380,7 +372,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Set the videoTeleconferenceId property: The video teleconferencing ID. Read-only.
-     *
+     * 
      * @param videoTeleconferenceId the videoTeleconferenceId value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -391,17 +383,16 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: onlineMeeting.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onlineMeeting.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.
      */
@@ -410,15 +401,9 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnlineMeeting withId(String id) {
         super.withId(id);
@@ -427,7 +412,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -448,5 +433,108 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
         if (participants() != null) {
             participants().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("allowedPresenters",
+            this.allowedPresenters == null ? null : this.allowedPresenters.toString());
+        jsonWriter.writeJsonField("audioConferencing", this.audioConferencing);
+        jsonWriter.writeJsonField("chatInfo", this.chatInfo);
+        jsonWriter.writeStringField("creationDateTime",
+            this.creationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationDateTime));
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeBooleanField("isEntryExitAnnounced", this.isEntryExitAnnounced);
+        jsonWriter.writeJsonField("joinInformation", this.joinInformation);
+        jsonWriter.writeStringField("joinWebUrl", this.joinWebUrl);
+        jsonWriter.writeJsonField("lobbyBypassSettings", this.lobbyBypassSettings);
+        jsonWriter.writeJsonField("participants", this.participants);
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("videoTeleconferenceId", this.videoTeleconferenceId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnlineMeeting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnlineMeeting if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnlineMeeting.
+     */
+    public static MicrosoftGraphOnlineMeeting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnlineMeeting deserializedMicrosoftGraphOnlineMeeting = new MicrosoftGraphOnlineMeeting();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.withId(reader.getString());
+                } else if ("allowedPresenters".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.allowedPresenters
+                        = MicrosoftGraphOnlineMeetingPresenters.fromString(reader.getString());
+                } else if ("audioConferencing".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.audioConferencing
+                        = MicrosoftGraphAudioConferencing.fromJson(reader);
+                } else if ("chatInfo".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.chatInfo = MicrosoftGraphChatInfo.fromJson(reader);
+                } else if ("creationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.creationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.externalId = reader.getString();
+                } else if ("isEntryExitAnnounced".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.isEntryExitAnnounced
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("joinInformation".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.joinInformation = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("joinWebUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.joinWebUrl = reader.getString();
+                } else if ("lobbyBypassSettings".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.lobbyBypassSettings
+                        = MicrosoftGraphLobbyBypassSettings.fromJson(reader);
+                } else if ("participants".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.participants
+                        = MicrosoftGraphMeetingParticipants.fromJson(reader);
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.subject = reader.getString();
+                } else if ("videoTeleconferenceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnlineMeeting.videoTeleconferenceId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnlineMeeting.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnlineMeeting;
+        });
     }
 }

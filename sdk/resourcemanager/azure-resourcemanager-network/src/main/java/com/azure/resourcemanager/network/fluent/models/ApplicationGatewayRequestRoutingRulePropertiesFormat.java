@@ -6,73 +6,68 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of request routing rule of the application gateway.
  */
 @Fluent
-public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
+public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
+    implements JsonSerializable<ApplicationGatewayRequestRoutingRulePropertiesFormat> {
     /*
      * Rule type.
      */
-    @JsonProperty(value = "ruleType")
     private ApplicationGatewayRequestRoutingRuleType ruleType;
 
     /*
      * Priority of the request routing rule.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Backend address pool resource of the application gateway.
      */
-    @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /*
      * Backend http settings resource of the application gateway.
      */
-    @JsonProperty(value = "backendHttpSettings")
     private SubResource backendHttpSettings;
 
     /*
      * Http listener resource of the application gateway.
      */
-    @JsonProperty(value = "httpListener")
     private SubResource httpListener;
 
     /*
      * URL path map resource of the application gateway.
      */
-    @JsonProperty(value = "urlPathMap")
     private SubResource urlPathMap;
 
     /*
      * Rewrite Rule Set resource in Basic rule of the application gateway.
      */
-    @JsonProperty(value = "rewriteRuleSet")
     private SubResource rewriteRuleSet;
 
     /*
      * Redirect configuration resource of the application gateway.
      */
-    @JsonProperty(value = "redirectConfiguration")
     private SubResource redirectConfiguration;
 
     /*
      * Load Distribution Policy resource of the application gateway.
      */
-    @JsonProperty(value = "loadDistributionPolicy")
     private SubResource loadDistributionPolicy;
 
     /*
      * The provisioning state of the request routing rule resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -280,5 +275,79 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeJsonField("backendAddressPool", this.backendAddressPool);
+        jsonWriter.writeJsonField("backendHttpSettings", this.backendHttpSettings);
+        jsonWriter.writeJsonField("httpListener", this.httpListener);
+        jsonWriter.writeJsonField("urlPathMap", this.urlPathMap);
+        jsonWriter.writeJsonField("rewriteRuleSet", this.rewriteRuleSet);
+        jsonWriter.writeJsonField("redirectConfiguration", this.redirectConfiguration);
+        jsonWriter.writeJsonField("loadDistributionPolicy", this.loadDistributionPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayRequestRoutingRulePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayRequestRoutingRulePropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayRequestRoutingRulePropertiesFormat.
+     */
+    public static ApplicationGatewayRequestRoutingRulePropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayRequestRoutingRulePropertiesFormat deserializedApplicationGatewayRequestRoutingRulePropertiesFormat
+                = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleType".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.ruleType
+                        = ApplicationGatewayRequestRoutingRuleType.fromString(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.priority
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("backendAddressPool".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.backendAddressPool
+                        = SubResource.fromJson(reader);
+                } else if ("backendHttpSettings".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.backendHttpSettings
+                        = SubResource.fromJson(reader);
+                } else if ("httpListener".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.httpListener
+                        = SubResource.fromJson(reader);
+                } else if ("urlPathMap".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.urlPathMap
+                        = SubResource.fromJson(reader);
+                } else if ("rewriteRuleSet".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.rewriteRuleSet
+                        = SubResource.fromJson(reader);
+                } else if ("redirectConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.redirectConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("loadDistributionPolicy".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.loadDistributionPolicy
+                        = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayRequestRoutingRulePropertiesFormat;
+        });
     }
 }

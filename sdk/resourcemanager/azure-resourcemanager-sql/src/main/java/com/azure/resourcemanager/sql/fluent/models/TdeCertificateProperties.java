@@ -6,30 +6,36 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a TDE certificate. */
+/**
+ * Properties of a TDE certificate.
+ */
 @Fluent
-public final class TdeCertificateProperties {
+public final class TdeCertificateProperties implements JsonSerializable<TdeCertificateProperties> {
     /*
      * The base64 encoded certificate private blob.
      */
-    @JsonProperty(value = "privateBlob", required = true)
     private String privateBlob;
 
     /*
      * The certificate password.
      */
-    @JsonProperty(value = "certPassword")
     private String certPassword;
 
-    /** Creates an instance of TdeCertificateProperties class. */
+    /**
+     * Creates an instance of TdeCertificateProperties class.
+     */
     public TdeCertificateProperties() {
     }
 
     /**
      * Get the privateBlob property: The base64 encoded certificate private blob.
-     *
+     * 
      * @return the privateBlob value.
      */
     public String privateBlob() {
@@ -38,7 +44,7 @@ public final class TdeCertificateProperties {
 
     /**
      * Set the privateBlob property: The base64 encoded certificate private blob.
-     *
+     * 
      * @param privateBlob the privateBlob value to set.
      * @return the TdeCertificateProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class TdeCertificateProperties {
 
     /**
      * Get the certPassword property: The certificate password.
-     *
+     * 
      * @return the certPassword value.
      */
     public String certPassword() {
@@ -58,7 +64,7 @@ public final class TdeCertificateProperties {
 
     /**
      * Set the certPassword property: The certificate password.
-     *
+     * 
      * @param certPassword the certPassword value to set.
      * @return the TdeCertificateProperties object itself.
      */
@@ -69,17 +75,56 @@ public final class TdeCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateBlob() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateBlob in model TdeCertificateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateBlob in model TdeCertificateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TdeCertificateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateBlob", this.privateBlob);
+        jsonWriter.writeStringField("certPassword", this.certPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TdeCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TdeCertificateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TdeCertificateProperties.
+     */
+    public static TdeCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TdeCertificateProperties deserializedTdeCertificateProperties = new TdeCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateBlob".equals(fieldName)) {
+                    deserializedTdeCertificateProperties.privateBlob = reader.getString();
+                } else if ("certPassword".equals(fieldName)) {
+                    deserializedTdeCertificateProperties.certPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTdeCertificateProperties;
+        });
+    }
 }

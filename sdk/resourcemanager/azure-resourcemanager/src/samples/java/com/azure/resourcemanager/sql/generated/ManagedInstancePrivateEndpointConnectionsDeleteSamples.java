@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedInstancePrivateEndpointConnections Delete. */
+/**
+ * Samples for ManagedInstancePrivateEndpointConnections Delete.
+ */
 public final class ManagedInstancePrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstancePrivateEndpointConnectionDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * ManagedInstancePrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deletesAPrivateEndpointConnectionWithAGivenName(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        deletesAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstancePrivateEndpointConnections()
-            .delete("Default", "test-cl", "private-endpoint-connection-name", Context.NONE);
+            .delete("Default", "test-cl", "private-endpoint-connection-name", com.azure.core.util.Context.NONE);
     }
 }

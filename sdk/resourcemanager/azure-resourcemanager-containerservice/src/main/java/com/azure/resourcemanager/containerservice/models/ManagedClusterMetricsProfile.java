@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The metrics profile for the ManagedCluster.
  */
 @Fluent
-public final class ManagedClusterMetricsProfile {
+public final class ManagedClusterMetricsProfile implements JsonSerializable<ManagedClusterMetricsProfile> {
     /*
      * The cost analysis configuration for the cluster
      */
-    @JsonProperty(value = "costAnalysis")
     private ManagedClusterCostAnalysis costAnalysis;
 
     /**
@@ -53,5 +56,41 @@ public final class ManagedClusterMetricsProfile {
         if (costAnalysis() != null) {
             costAnalysis().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("costAnalysis", this.costAnalysis);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterMetricsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterMetricsProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterMetricsProfile.
+     */
+    public static ManagedClusterMetricsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterMetricsProfile deserializedManagedClusterMetricsProfile = new ManagedClusterMetricsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("costAnalysis".equals(fieldName)) {
+                    deserializedManagedClusterMetricsProfile.costAnalysis = ManagedClusterCostAnalysis.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterMetricsProfile;
+        });
     }
 }

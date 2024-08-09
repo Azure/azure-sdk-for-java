@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
  */
@@ -51,7 +48,6 @@ public enum SubscriptionState {
      * @param value the serialized value to parse.
      * @return the parsed SubscriptionState object, or null if unable to parse.
      */
-    @JsonCreator
     public static SubscriptionState fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum SubscriptionState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

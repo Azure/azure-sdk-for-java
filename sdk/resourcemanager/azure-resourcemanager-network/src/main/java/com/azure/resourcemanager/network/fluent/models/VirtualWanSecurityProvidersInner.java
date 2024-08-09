@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.VirtualWanSecurityProvider;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of SecurityProviders.
  */
 @Fluent
-public final class VirtualWanSecurityProvidersInner {
+public final class VirtualWanSecurityProvidersInner implements JsonSerializable<VirtualWanSecurityProvidersInner> {
     /*
      * List of VirtualWAN security providers.
      */
-    @JsonProperty(value = "supportedProviders")
     private List<VirtualWanSecurityProvider> supportedProviders;
 
     /**
@@ -56,5 +59,45 @@ public final class VirtualWanSecurityProvidersInner {
         if (supportedProviders() != null) {
             supportedProviders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("supportedProviders", this.supportedProviders,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualWanSecurityProvidersInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualWanSecurityProvidersInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualWanSecurityProvidersInner.
+     */
+    public static VirtualWanSecurityProvidersInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualWanSecurityProvidersInner deserializedVirtualWanSecurityProvidersInner
+                = new VirtualWanSecurityProvidersInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedProviders".equals(fieldName)) {
+                    List<VirtualWanSecurityProvider> supportedProviders
+                        = reader.readArray(reader1 -> VirtualWanSecurityProvider.fromJson(reader1));
+                    deserializedVirtualWanSecurityProvidersInner.supportedProviders = supportedProviders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualWanSecurityProvidersInner;
+        });
     }
 }

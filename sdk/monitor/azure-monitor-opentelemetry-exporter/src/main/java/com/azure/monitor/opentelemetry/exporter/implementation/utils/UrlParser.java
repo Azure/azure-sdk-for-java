@@ -43,8 +43,7 @@ public class UrlParser {
 
         String port = url.substring(portStartIndex, portEndIndexExclusive);
 
-        if ((port.equals("80") && url.startsWith("http://"))
-            || (port.equals("443") && url.startsWith("https://"))) {
+        if ((port.equals("80") && url.startsWith("http://")) || (port.equals("443") && url.startsWith("https://"))) {
             return url.substring(schemeEndIndexExclusive, hostEndIndexExclusive);
         }
 

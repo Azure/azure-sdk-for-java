@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Virtual Machine operation response.
  */
 @Fluent
-public final class VirtualMachineScaleSetListResult {
+public final class VirtualMachineScaleSetListResult implements JsonSerializable<VirtualMachineScaleSetListResult> {
     /*
      * The list of virtual machine scale sets.
      */
-    @JsonProperty(value = "value", required = true)
     private List<VirtualMachineScaleSetInner> value;
 
     /*
      * The uri to fetch the next page of Virtual Machine Scale Sets. Call ListNext() with this to fetch the next page of
      * VMSS.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -92,4 +94,47 @@ public final class VirtualMachineScaleSetListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetListResult.
+     */
+    public static VirtualMachineScaleSetListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetListResult deserializedVirtualMachineScaleSetListResult
+                = new VirtualMachineScaleSetListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineScaleSetInner> value
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetListResult;
+        });
+    }
 }

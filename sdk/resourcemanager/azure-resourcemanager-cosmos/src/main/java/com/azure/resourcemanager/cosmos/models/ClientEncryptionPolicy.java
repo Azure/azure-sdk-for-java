@@ -6,25 +6,27 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cosmos DB client encryption policy.
  */
 @Fluent
-public final class ClientEncryptionPolicy {
+public final class ClientEncryptionPolicy implements JsonSerializable<ClientEncryptionPolicy> {
     /*
      * Paths of the item that need encryption along with path-specific settings.
      */
-    @JsonProperty(value = "includedPaths", required = true)
     private List<ClientEncryptionIncludedPath> includedPaths;
 
     /*
-     * Version of the client encryption policy definition. Supported versions are 1 and 2. Version 2 supports id and partition key path encryption.
+     * Version of the client encryption policy definition. Supported versions are 1 and 2. Version 2 supports id and
+     * partition key path encryption.
      */
-    @JsonProperty(value = "policyFormatVersion", required = true)
     private int policyFormatVersion;
 
     /**
@@ -35,7 +37,7 @@ public final class ClientEncryptionPolicy {
 
     /**
      * Get the includedPaths property: Paths of the item that need encryption along with path-specific settings.
-     *
+     * 
      * @return the includedPaths value.
      */
     public List<ClientEncryptionIncludedPath> includedPaths() {
@@ -44,7 +46,7 @@ public final class ClientEncryptionPolicy {
 
     /**
      * Set the includedPaths property: Paths of the item that need encryption along with path-specific settings.
-     *
+     * 
      * @param includedPaths the includedPaths value to set.
      * @return the ClientEncryptionPolicy object itself.
      */
@@ -56,7 +58,7 @@ public final class ClientEncryptionPolicy {
     /**
      * Get the policyFormatVersion property: Version of the client encryption policy definition. Supported versions are
      * 1 and 2. Version 2 supports id and partition key path encryption.
-     *
+     * 
      * @return the policyFormatVersion value.
      */
     public int policyFormatVersion() {
@@ -66,7 +68,7 @@ public final class ClientEncryptionPolicy {
     /**
      * Set the policyFormatVersion property: Version of the client encryption policy definition. Supported versions are
      * 1 and 2. Version 2 supports id and partition key path encryption.
-     *
+     * 
      * @param policyFormatVersion the policyFormatVersion value to set.
      * @return the ClientEncryptionPolicy object itself.
      */
@@ -77,7 +79,7 @@ public final class ClientEncryptionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -91,4 +93,46 @@ public final class ClientEncryptionPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientEncryptionPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("includedPaths", this.includedPaths, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeIntField("policyFormatVersion", this.policyFormatVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientEncryptionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientEncryptionPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClientEncryptionPolicy.
+     */
+    public static ClientEncryptionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientEncryptionPolicy deserializedClientEncryptionPolicy = new ClientEncryptionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includedPaths".equals(fieldName)) {
+                    List<ClientEncryptionIncludedPath> includedPaths
+                        = reader.readArray(reader1 -> ClientEncryptionIncludedPath.fromJson(reader1));
+                    deserializedClientEncryptionPolicy.includedPaths = includedPaths;
+                } else if ("policyFormatVersion".equals(fieldName)) {
+                    deserializedClientEncryptionPolicy.policyFormatVersion = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientEncryptionPolicy;
+        });
+    }
 }

@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Route Table resource.
  */
 @Fluent
-public final class RouteTablePropertiesFormat {
+public final class RouteTablePropertiesFormat implements JsonSerializable<RouteTablePropertiesFormat> {
     /*
      * Collection of routes contained within a route table.
      */
-    @JsonProperty(value = "routes")
     private List<RouteInner> routes;
 
     /*
      * A collection of references to subnets.
      */
-    @JsonProperty(value = "subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubnetInner> subnets;
 
     /*
      * Whether to disable the routes learned by BGP on that route table. True means disable.
      */
-    @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;
 
     /*
      * The provisioning state of the route table resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resource GUID property of the route table.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
@@ -131,5 +130,54 @@ public final class RouteTablePropertiesFormat {
         if (subnets() != null) {
             subnets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("disableBgpRoutePropagation", this.disableBgpRoutePropagation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteTablePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteTablePropertiesFormat if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteTablePropertiesFormat.
+     */
+    public static RouteTablePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteTablePropertiesFormat deserializedRouteTablePropertiesFormat = new RouteTablePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routes".equals(fieldName)) {
+                    List<RouteInner> routes = reader.readArray(reader1 -> RouteInner.fromJson(reader1));
+                    deserializedRouteTablePropertiesFormat.routes = routes;
+                } else if ("subnets".equals(fieldName)) {
+                    List<SubnetInner> subnets = reader.readArray(reader1 -> SubnetInner.fromJson(reader1));
+                    deserializedRouteTablePropertiesFormat.subnets = subnets;
+                } else if ("disableBgpRoutePropagation".equals(fieldName)) {
+                    deserializedRouteTablePropertiesFormat.disableBgpRoutePropagation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRouteTablePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedRouteTablePropertiesFormat.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteTablePropertiesFormat;
+        });
     }
 }

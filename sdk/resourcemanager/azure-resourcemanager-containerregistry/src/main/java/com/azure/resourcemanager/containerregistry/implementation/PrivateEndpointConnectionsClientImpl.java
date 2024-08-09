@@ -574,8 +574,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String registryName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, registryName, privateEndpointConnectionName,
-            privateEndpointConnection).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, registryName, privateEndpointConnectionName,
+                privateEndpointConnection)
+            .getSyncPoller();
     }
 
     /**
@@ -596,8 +598,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String registryName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, registryName, privateEndpointConnectionName,
-            privateEndpointConnection, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, registryName, privateEndpointConnectionName,
+                privateEndpointConnection, context)
+            .getSyncPoller();
     }
 
     /**
@@ -912,9 +916,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -940,9 +942,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

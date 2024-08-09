@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
  */
 @Fluent
-public final class ProxyAgentSettings {
+public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSettings> {
     /*
      * Specifies whether ProxyAgent feature should be enabled on the virtual machine or virtual machine scale set.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
@@ -23,14 +26,12 @@ public final class ProxyAgentSettings {
      * monitor but not enforce access control over requests to host endpoints in Audit mode, while in Enforce mode it
      * will enforce access control. The default value is Enforce mode.
      */
-    @JsonProperty(value = "mode")
     private Mode mode;
 
     /*
      * Increase the value of this property allows user to reset the key used for securing communication channel between
      * guest and host.
      */
-    @JsonProperty(value = "keyIncarnationId")
     private Integer keyIncarnationId;
 
     /**
@@ -113,5 +114,47 @@ public final class ProxyAgentSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeNumberField("keyIncarnationId", this.keyIncarnationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProxyAgentSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProxyAgentSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProxyAgentSettings.
+     */
+    public static ProxyAgentSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProxyAgentSettings deserializedProxyAgentSettings = new ProxyAgentSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedProxyAgentSettings.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedProxyAgentSettings.mode = Mode.fromString(reader.getString());
+                } else if ("keyIncarnationId".equals(fieldName)) {
+                    deserializedProxyAgentSettings.keyIncarnationId = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProxyAgentSettings;
+        });
     }
 }

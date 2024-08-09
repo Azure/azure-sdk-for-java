@@ -6,32 +6,33 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01.
  */
 @Fluent
-public final class SecurityPostureReference {
+public final class SecurityPostureReference implements JsonSerializable<SecurityPostureReference> {
     /*
      * The security posture reference id in the form of
      * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|
      * latest
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The list of virtual machine extension names to exclude when applying the security posture.
      */
-    @JsonProperty(value = "excludeExtensions")
     private List<String> excludeExtensions;
 
     /*
      * Whether the security posture can be overridden by the user.
      */
-    @JsonProperty(value = "isOverridable")
     private Boolean isOverridable;
 
     /**
@@ -117,4 +118,49 @@ public final class SecurityPostureReference {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityPostureReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("excludeExtensions", this.excludeExtensions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isOverridable", this.isOverridable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPostureReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPostureReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityPostureReference.
+     */
+    public static SecurityPostureReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPostureReference deserializedSecurityPostureReference = new SecurityPostureReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityPostureReference.id = reader.getString();
+                } else if ("excludeExtensions".equals(fieldName)) {
+                    List<String> excludeExtensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityPostureReference.excludeExtensions = excludeExtensions;
+                } else if ("isOverridable".equals(fieldName)) {
+                    deserializedSecurityPostureReference.isOverridable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPostureReference;
+        });
+    }
 }

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -13,44 +18,41 @@ import java.time.OffsetDateTime;
  * Action.
  */
 @Immutable
-public final class RecommendedActionMetricInfo {
+public final class RecommendedActionMetricInfo implements JsonSerializable<RecommendedActionMetricInfo> {
     /*
      * Gets the name of the metric. e.g., CPU, Number of Queries.
      */
-    @JsonProperty(value = "metricName", access = JsonProperty.Access.WRITE_ONLY)
     private String metricName;
 
     /*
      * Gets the unit in which metric is measured. e.g., DTU, Frequency
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * Gets the duration of time interval for the value given by this MetricInfo. e.g., PT1H (1 hour)
      */
-    @JsonProperty(value = "timeGrain", access = JsonProperty.Access.WRITE_ONLY)
     private String timeGrain;
 
     /*
      * Gets the start time of time interval given by this MetricInfo.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the value of the metric in the time interval given by this MetricInfo.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Double value;
 
-    /** Creates an instance of RecommendedActionMetricInfo class. */
+    /**
+     * Creates an instance of RecommendedActionMetricInfo class.
+     */
     public RecommendedActionMetricInfo() {
     }
 
     /**
      * Get the metricName property: Gets the name of the metric. e.g., CPU, Number of Queries.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -59,7 +61,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Get the unit property: Gets the unit in which metric is measured. e.g., DTU, Frequency.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -69,7 +71,7 @@ public final class RecommendedActionMetricInfo {
     /**
      * Get the timeGrain property: Gets the duration of time interval for the value given by this MetricInfo. e.g., PT1H
      * (1 hour).
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -78,7 +80,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Get the startTime property: Gets the start time of time interval given by this MetricInfo.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -87,7 +89,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Get the value property: Gets the value of the metric in the time interval given by this MetricInfo.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -96,9 +98,53 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedActionMetricInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedActionMetricInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendedActionMetricInfo.
+     */
+    public static RecommendedActionMetricInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedActionMetricInfo deserializedRecommendedActionMetricInfo = new RecommendedActionMetricInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricName".equals(fieldName)) {
+                    deserializedRecommendedActionMetricInfo.metricName = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedRecommendedActionMetricInfo.unit = reader.getString();
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedRecommendedActionMetricInfo.timeGrain = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRecommendedActionMetricInfo.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedRecommendedActionMetricInfo.value = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedActionMetricInfo;
+        });
     }
 }

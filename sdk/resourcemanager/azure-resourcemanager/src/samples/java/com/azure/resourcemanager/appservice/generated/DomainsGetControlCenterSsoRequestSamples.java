@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DomainsGetControlCenterSsoRequestSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/GetDomainControlCenterSsoRequest.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/
+     * GetDomainControlCenterSsoRequest.json
      */
     /**
      * Sample code: Get Domain Control Center Sso Request.

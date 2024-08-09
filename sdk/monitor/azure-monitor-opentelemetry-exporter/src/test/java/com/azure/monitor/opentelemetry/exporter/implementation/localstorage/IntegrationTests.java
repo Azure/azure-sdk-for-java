@@ -32,8 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegrationTests {
 
-    private static final String CONNECTION_STRING =
-        "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
+    private static final String CONNECTION_STRING
+        = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
 
     private TelemetryItemExporter telemetryItemExporter;
 
@@ -47,22 +47,19 @@ public class IntegrationTests {
     public void setup() {
         HttpClient mockedClient;
         if (testWithException) {
-            mockedClient = httpRequest ->
-                Mono.error(() -> new Exception("this is expected to be logged by the operation logger"));
+            mockedClient = httpRequest -> Mono
+                .error(() -> new Exception("this is expected to be logged by the operation logger"));
         } else {
             // 401, 403, 408, 429, 500, and 503 response codes result in storing to disk
             mockedClient = httpRequest -> Mono.just(new MockHttpResponse(httpRequest, 500));
         }
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
-            .httpClient(mockedClient)
-            .tracer(new NoopTracer());
+        HttpPipelineBuilder pipelineBuilder
+            = new HttpPipelineBuilder().httpClient(mockedClient).tracer(new NoopTracer());
 
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
-        telemetryItemExporter =
-            new TelemetryItemExporter(
-                telemetryPipeline,
-                new LocalStorageTelemetryPipelineListener(
-                    50, tempFolder, telemetryPipeline, LocalStorageStats.noop(), false));
+        telemetryItemExporter
+            = new TelemetryItemExporter(telemetryPipeline, new LocalStorageTelemetryPipelineListener(50, tempFolder,
+                telemetryPipeline, LocalStorageStats.noop(), false));
     }
 
     @Test
@@ -76,12 +73,11 @@ public class IntegrationTests {
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 10; i++) {
-            executorService.execute(
-                () -> {
-                    for (int j = 0; j < 10; j++) {
-                        telemetryItemExporter.send(telemetryItems);
-                    }
-                });
+            executorService.execute(() -> {
+                for (int j = 0; j < 10; j++) {
+                    telemetryItemExporter.send(telemetryItems);
+                }
+            });
         }
 
         telemetryItemExporter.flush();
@@ -92,8 +88,8 @@ public class IntegrationTests {
         Thread.sleep(1000);
 
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
-        LocalFileLoader localFileLoader =
-            new LocalFileLoader(localFileCache, tempFolder, LocalStorageStats.noop(), false);
+        LocalFileLoader localFileLoader
+            = new LocalFileLoader(localFileCache, tempFolder, LocalStorageStats.noop(), false);
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(100);
 

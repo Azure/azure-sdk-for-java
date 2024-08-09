@@ -40,23 +40,28 @@ import com.azure.resourcemanager.servicebus.models.FailoverProperties;
 import com.azure.resourcemanager.servicebus.models.SBAuthorizationRuleListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient.
+ */
 public final class DisasterRecoveryConfigsClientImpl implements DisasterRecoveryConfigsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DisasterRecoveryConfigsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ServiceBusManagementClientImpl client;
 
     /**
      * Initializes an instance of DisasterRecoveryConfigsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DisasterRecoveryConfigsClientImpl(ServiceBusManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(DisasterRecoveryConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DisasterRecoveryConfigsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,212 +71,138 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface DisasterRecoveryConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs")
-        @ExpectedResponses({200})
+    public interface DisasterRecoveryConfigsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmDisasterRecoveryListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ArmDisasterRecoveryListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ArmDisasterRecoveryInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ArmDisasterRecoveryInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmDisasterRecoveryInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ArmDisasterRecoveryInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/breakPairing")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> breakPairing(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/failover")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> failOver(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ArmDisasterRecoveryInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FailoverProperties parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<SBAuthorizationRuleListResult>> listAuthorizationRules(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRule(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @PathParam("authorizationRuleName") String authorizationRuleName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}/listKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AccessKeysInner>> listKeys(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("alias") String alias, @PathParam("authorizationRuleName") String authorizationRuleName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/disasterRecoveryConfigs/CheckNameAvailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") CheckNameAvailability parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmDisasterRecoveryInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/breakPairing")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> breakPairing(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/failover")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> failOver(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") FailoverProperties parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SBAuthorizationRuleListResult>> listAuthorizationRules(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
-                + "/{authorizationRuleName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRule(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
-                + "/{authorizationRuleName}/listKeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessKeysInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @PathParam("alias") String alias,
-            @PathParam("authorizationRuleName") String authorizationRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/disasterRecoveryConfigs/CheckNameAvailability")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameAvailability parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ArmDisasterRecoveryListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SBAuthorizationRuleListResult>> listAuthorizationRulesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Alias(Disaster Recovery configurations) along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ArmDisasterRecoveryInner>> listSinglePageAsync(
-        String resourceGroupName, String namespaceName) {
+    private Mono<PagedResponse<ArmDisasterRecoveryInner>> listSinglePageAsync(String resourceGroupName,
+        String namespaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -281,39 +212,21 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ArmDisasterRecoveryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ArmDisasterRecoveryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -321,16 +234,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Alias(Disaster Recovery configurations) along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ArmDisasterRecoveryInner>> listSinglePageAsync(
-        String resourceGroupName, String namespaceName, Context context) {
+    private Mono<PagedResponse<ArmDisasterRecoveryInner>> listSinglePageAsync(String resourceGroupName,
+        String namespaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -340,36 +251,21 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, namespaceName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -379,13 +275,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ArmDisasterRecoveryInner> listAsync(String resourceGroupName, String namespaceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, namespaceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -395,16 +291,15 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return all Alias(Disaster Recovery configurations) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ArmDisasterRecoveryInner> listAsync(
-        String resourceGroupName, String namespaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, namespaceName, context),
+    private PagedFlux<ArmDisasterRecoveryInner> listAsync(String resourceGroupName, String namespaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -419,7 +314,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -429,14 +324,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return all Alias(Disaster Recovery configurations) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArmDisasterRecoveryInner> list(
-        String resourceGroupName, String namespaceName, Context context) {
+    public PagedIterable<ArmDisasterRecoveryInner> list(String resourceGroupName, String namespaceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, namespaceName, context));
     }
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -445,16 +340,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters) {
+    public Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String alias, ArmDisasterRecoveryInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -467,10 +360,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -479,25 +370,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                alias, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -507,20 +387,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String alias,
-        ArmDisasterRecoveryInner parameters,
-        Context context) {
+    private Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String alias, ArmDisasterRecoveryInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -533,10 +407,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -545,22 +417,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -569,36 +432,18 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmDisasterRecoveryInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters) {
+    public Mono<ArmDisasterRecoveryInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        String alias, ArmDisasterRecoveryInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, alias, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmDisasterRecoveryInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, namespaceName, alias, parameters).block();
-    }
-
-    /**
-     * Creates or updates a new Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -610,18 +455,32 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArmDisasterRecoveryInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String alias,
-        ArmDisasterRecoveryInner parameters,
-        Context context) {
+    public Response<ArmDisasterRecoveryInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
+        String alias, ArmDisasterRecoveryInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, alias, parameters, context).block();
     }
 
     /**
+     * Creates or updates a new Alias(Disaster Recovery configuration).
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ArmDisasterRecoveryInner createOrUpdate(String resourceGroupName, String namespaceName, String alias,
+        ArmDisasterRecoveryInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, alias, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes an Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -633,10 +492,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String alias) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -649,31 +506,19 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -684,13 +529,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String alias,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -703,28 +546,18 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -740,22 +573,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String namespaceName, String alias) {
-        deleteAsync(resourceGroupName, namespaceName, alias).block();
-    }
-
-    /**
-     * Deletes an Alias(Disaster Recovery configuration).
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -766,14 +584,29 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String alias,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, alias, context).block();
     }
 
     /**
+     * Deletes an Alias(Disaster Recovery configuration).
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String namespaceName, String alias) {
+        deleteWithResponse(resourceGroupName, namespaceName, alias, Context.NONE);
+    }
+
+    /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -781,16 +614,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias) {
+    public Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String alias) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -803,31 +634,19 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -836,16 +655,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    private Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(String resourceGroupName,
+        String namespaceName, String alias, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -858,28 +675,18 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -887,7 +694,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArmDisasterRecoveryInner> getAsync(String resourceGroupName, String namespaceName, String alias) {
@@ -897,23 +704,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmDisasterRecoveryInner get(String resourceGroupName, String namespaceName, String alias) {
-        return getAsync(resourceGroupName, namespaceName, alias).block();
-    }
-
-    /**
-     * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -924,14 +715,30 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArmDisasterRecoveryInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    public Response<ArmDisasterRecoveryInner> getWithResponse(String resourceGroupName, String namespaceName,
+        String alias, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, alias, context).block();
     }
 
     /**
+     * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ArmDisasterRecoveryInner get(String resourceGroupName, String namespaceName, String alias) {
+        return getWithResponse(resourceGroupName, namespaceName, alias, Context.NONE).getValue();
+    }
+
+    /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -941,13 +748,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> breakPairingWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias) {
+    public Mono<Response<Void>> breakPairingWithResponseAsync(String resourceGroupName, String namespaceName,
+        String alias) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -960,31 +765,19 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .breakPairing(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.breakPairing(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                alias, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -995,13 +788,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> breakPairingWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    private Mono<Response<Void>> breakPairingWithResponseAsync(String resourceGroupName, String namespaceName,
+        String alias, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1014,28 +805,18 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .breakPairing(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.breakPairing(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1051,22 +832,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void breakPairing(String resourceGroupName, String namespaceName, String alias) {
-        breakPairingAsync(resourceGroupName, namespaceName, alias).block();
-    }
-
-    /**
-     * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1077,14 +843,29 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> breakPairingWithResponse(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    public Response<Void> breakPairingWithResponse(String resourceGroupName, String namespaceName, String alias,
+        Context context) {
         return breakPairingWithResponseAsync(resourceGroupName, namespaceName, alias, context).block();
     }
 
     /**
+     * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void breakPairing(String resourceGroupName, String namespaceName, String alias) {
+        breakPairingWithResponse(resourceGroupName, namespaceName, alias, Context.NONE);
+    }
+
+    /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1095,13 +876,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> failOverWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters) {
+    public Mono<Response<Void>> failOverWithResponseAsync(String resourceGroupName, String namespaceName, String alias,
+        FailoverProperties parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1114,35 +893,22 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .failOver(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.failOver(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1154,13 +920,11 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> failOverWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters, Context context) {
+    private Mono<Response<Void>> failOverWithResponseAsync(String resourceGroupName, String namespaceName, String alias,
+        FailoverProperties parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1173,51 +937,21 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .failOver(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.failOver(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @param parameters Parameters required to create an Alias(Disaster Recovery configuration).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> failOverAsync(
-        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters) {
-        return failOverWithResponseAsync(resourceGroupName, namespaceName, alias, parameters)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1235,23 +969,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void failOver(String resourceGroupName, String namespaceName, String alias) {
-        final FailoverProperties parameters = null;
-        failOverAsync(resourceGroupName, namespaceName, alias, parameters).block();
-    }
-
-    /**
-     * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1263,14 +981,30 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> failOverWithResponse(
-        String resourceGroupName, String namespaceName, String alias, FailoverProperties parameters, Context context) {
+    public Response<Void> failOverWithResponse(String resourceGroupName, String namespaceName, String alias,
+        FailoverProperties parameters, Context context) {
         return failOverWithResponseAsync(resourceGroupName, namespaceName, alias, parameters, context).block();
     }
 
     /**
+     * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failOver(String resourceGroupName, String namespaceName, String alias) {
+        final FailoverProperties parameters = null;
+        failOverWithResponse(resourceGroupName, namespaceName, alias, parameters, Context.NONE);
+    }
+
+    /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1278,16 +1012,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the authorization rules for a namespace along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesSinglePageAsync(
-        String resourceGroupName, String namespaceName, String alias) {
+    private Mono<PagedResponse<SBAuthorizationRuleInner>>
+        listAuthorizationRulesSinglePageAsync(String resourceGroupName, String namespaceName, String alias) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1300,40 +1032,21 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAuthorizationRules(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SBAuthorizationRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAuthorizationRules(this.client.getEndpoint(), resourceGroupName,
+                namespaceName, alias, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SBAuthorizationRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1342,16 +1055,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the authorization rules for a namespace along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesSinglePageAsync(
         String resourceGroupName, String namespaceName, String alias, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1364,37 +1075,21 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter alias is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAuthorizationRules(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAuthorizationRules(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1404,16 +1099,15 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the authorization rules for a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
-        String resourceGroupName, String namespaceName, String alias) {
-        return new PagedFlux<>(
-            () -> listAuthorizationRulesSinglePageAsync(resourceGroupName, namespaceName, alias),
+    public PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(String resourceGroupName,
+        String namespaceName, String alias) {
+        return new PagedFlux<>(() -> listAuthorizationRulesSinglePageAsync(resourceGroupName, namespaceName, alias),
             nextLink -> listAuthorizationRulesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1424,8 +1118,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the authorization rules for a namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    private PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(String resourceGroupName,
+        String namespaceName, String alias, Context context) {
         return new PagedFlux<>(
             () -> listAuthorizationRulesSinglePageAsync(resourceGroupName, namespaceName, alias, context),
             nextLink -> listAuthorizationRulesNextSinglePageAsync(nextLink, context));
@@ -1433,7 +1127,7 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1443,14 +1137,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String alias) {
+    public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
+        String namespaceName, String alias) {
         return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, alias));
     }
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1461,14 +1155,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, String alias, Context context) {
+    public PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
+        String namespaceName, String alias, Context context) {
         return new PagedIterable<>(listAuthorizationRulesAsync(resourceGroupName, namespaceName, alias, context));
     }
 
     /**
      * Gets an authorization rule for a namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1477,16 +1171,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a namespace by rule name along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
+    public Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(String resourceGroupName,
+        String namespaceName, String alias, String authorizationRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1503,32 +1195,20 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAuthorizationRule(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getAuthorizationRule(this.client.getEndpoint(), resourceGroupName,
+                namespaceName, alias, authorizationRuleName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an authorization rule for a namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1538,16 +1218,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a namespace by rule name along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context) {
+    private Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(String resourceGroupName,
+        String namespaceName, String alias, String authorizationRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1564,29 +1242,18 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAuthorizationRule(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getAuthorizationRule(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets an authorization rule for a namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1597,33 +1264,15 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return an authorization rule for a namespace by rule name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
+    public Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName,
+        String alias, String authorizationRuleName) {
         return getAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an authorization rule for a namespace by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SBAuthorizationRuleInner getAuthorizationRule(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
-        return getAuthorizationRuleAsync(resourceGroupName, namespaceName, alias, authorizationRuleName).block();
-    }
-
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1635,16 +1284,34 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return an authorization rule for a namespace by rule name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context) {
-        return getAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, alias, authorizationRuleName, context)
-            .block();
+    public Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName,
+        String namespaceName, String alias, String authorizationRuleName, Context context) {
+        return getAuthorizationRuleWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName,
+            context).block();
+    }
+
+    /**
+     * Gets an authorization rule for a namespace by rule name.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a namespace by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SBAuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName, String alias,
+        String authorizationRuleName) {
+        return getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, alias, authorizationRuleName,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1653,16 +1320,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the primary and secondary connection strings for the namespace along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
+    public Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String namespaceName,
+        String alias, String authorizationRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1679,32 +1344,19 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            alias,
-                            authorizationRuleName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+                authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1714,16 +1366,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the primary and secondary connection strings for the namespace along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context) {
+    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String namespaceName,
+        String alias, String authorizationRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1740,29 +1390,18 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
                 .error(new IllegalArgumentException("Parameter authorizationRuleName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                alias,
-                authorizationRuleName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listKeys(this.client.getEndpoint(), resourceGroupName, namespaceName, alias,
+            authorizationRuleName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1773,33 +1412,15 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessKeysInner> listKeysAsync(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
+    public Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String alias,
+        String authorizationRuleName) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the primary and secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param alias The Disaster Recovery configuration name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName) {
-        return listKeysAsync(resourceGroupName, namespaceName, alias, authorizationRuleName).block();
-    }
-
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -1811,15 +1432,34 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return the primary and secondary connection strings for the namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessKeysInner> listKeysWithResponse(
-        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context) {
+    public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName, String alias,
+        String authorizationRuleName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, alias, authorizationRuleName, context)
             .block();
     }
 
     /**
+     * Gets the primary and secondary connection strings for the namespace.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param alias The Disaster Recovery configuration name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the primary and secondary connection strings for the namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String alias,
+        String authorizationRuleName) {
+        return listKeysWithResponse(resourceGroupName, namespaceName, alias, authorizationRuleName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Check the give namespace name availability.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param parameters Parameters to check availability of the given namespace name.
@@ -1827,16 +1467,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a Check Name availability request properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String resourceGroupName, String namespaceName, CheckNameAvailability parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1846,10 +1484,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1859,23 +1495,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the give namespace name availability.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param parameters Parameters to check availability of the given namespace name.
@@ -1884,16 +1511,14 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a Check Name availability request properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String resourceGroupName, String namespaceName, CheckNameAvailability parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1903,10 +1528,8 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1915,21 +1538,13 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, namespaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Check the give namespace name availability.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param parameters Parameters to check availability of the given namespace name.
@@ -1939,32 +1554,15 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return description of a Check Name availability request properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName, String namespaceName, CheckNameAvailability parameters) {
+    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String resourceGroupName,
+        String namespaceName, CheckNameAvailability parameters) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, namespaceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check the give namespace name availability.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters to check availability of the given namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Check Name availability request properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(
-        String resourceGroupName, String namespaceName, CheckNameAvailability parameters) {
-        return checkNameAvailabilityAsync(resourceGroupName, namespaceName, parameters).block();
-    }
-
-    /**
-     * Check the give namespace name availability.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param parameters Parameters to check availability of the given namespace name.
@@ -1975,21 +1573,37 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
      * @return description of a Check Name availability request properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String namespaceName, CheckNameAvailability parameters, Context context) {
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String namespaceName, CheckNameAvailability parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, namespaceName, parameters, context).block();
     }
 
     /**
+     * Check the give namespace name availability.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters Parameters to check availability of the given namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a Check Name availability request properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String namespaceName,
+        CheckNameAvailability parameters) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, namespaceName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the List Alias(Disaster Recovery configuration) operation along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmDisasterRecoveryInner>> listNextSinglePageAsync(String nextLink) {
@@ -1997,37 +1611,26 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ArmDisasterRecoveryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ArmDisasterRecoveryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the List Alias(Disaster Recovery configuration) operation along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmDisasterRecoveryInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2035,36 +1638,25 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to the List Namespace operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(String nextLink) {
@@ -2072,63 +1664,43 @@ public final class DisasterRecoveryConfigsClientImpl implements DisasterRecovery
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listAuthorizationRulesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SBAuthorizationRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SBAuthorizationRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to the List Namespace operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SBAuthorizationRuleInner>> listAuthorizationRulesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAuthorizationRulesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAuthorizationRulesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

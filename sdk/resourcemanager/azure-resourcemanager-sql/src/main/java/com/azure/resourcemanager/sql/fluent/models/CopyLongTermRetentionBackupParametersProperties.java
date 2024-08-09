@@ -5,55 +5,58 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Contains the properties to perform long term retention backup copy operation. */
+/**
+ * Contains the properties to perform long term retention backup copy operation.
+ */
 @Fluent
-public final class CopyLongTermRetentionBackupParametersProperties {
+public final class CopyLongTermRetentionBackupParametersProperties
+    implements JsonSerializable<CopyLongTermRetentionBackupParametersProperties> {
     /*
      * The subscription that owns the target server
      */
-    @JsonProperty(value = "targetSubscriptionId")
     private String targetSubscriptionId;
 
     /*
      * The resource group that owns the target server
      */
-    @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
     /*
      * The resource Id of the target server that owns the database
      */
-    @JsonProperty(value = "targetServerResourceId")
     private String targetServerResourceId;
 
     /*
      * The fully qualified domain name of the target server
      */
-    @JsonProperty(value = "targetServerFullyQualifiedDomainName")
     private String targetServerFullyQualifiedDomainName;
 
     /*
      * The name of the database owns the copied backup.
      */
-    @JsonProperty(value = "targetDatabaseName")
     private String targetDatabaseName;
 
     /*
      * The storage redundancy type of the copied backup
      */
-    @JsonProperty(value = "targetBackupStorageRedundancy")
     private BackupStorageRedundancy targetBackupStorageRedundancy;
 
-    /** Creates an instance of CopyLongTermRetentionBackupParametersProperties class. */
+    /**
+     * Creates an instance of CopyLongTermRetentionBackupParametersProperties class.
+     */
     public CopyLongTermRetentionBackupParametersProperties() {
     }
 
     /**
      * Get the targetSubscriptionId property: The subscription that owns the target server.
-     *
+     * 
      * @return the targetSubscriptionId value.
      */
     public String targetSubscriptionId() {
@@ -62,7 +65,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the targetSubscriptionId property: The subscription that owns the target server.
-     *
+     * 
      * @param targetSubscriptionId the targetSubscriptionId value to set.
      * @return the CopyLongTermRetentionBackupParametersProperties object itself.
      */
@@ -73,7 +76,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Get the targetResourceGroup property: The resource group that owns the target server.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -82,7 +85,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the targetResourceGroup property: The resource group that owns the target server.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the CopyLongTermRetentionBackupParametersProperties object itself.
      */
@@ -93,7 +96,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Get the targetServerResourceId property: The resource Id of the target server that owns the database.
-     *
+     * 
      * @return the targetServerResourceId value.
      */
     public String targetServerResourceId() {
@@ -102,7 +105,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the targetServerResourceId property: The resource Id of the target server that owns the database.
-     *
+     * 
      * @param targetServerResourceId the targetServerResourceId value to set.
      * @return the CopyLongTermRetentionBackupParametersProperties object itself.
      */
@@ -113,7 +116,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Get the targetServerFullyQualifiedDomainName property: The fully qualified domain name of the target server.
-     *
+     * 
      * @return the targetServerFullyQualifiedDomainName value.
      */
     public String targetServerFullyQualifiedDomainName() {
@@ -122,19 +125,19 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the targetServerFullyQualifiedDomainName property: The fully qualified domain name of the target server.
-     *
+     * 
      * @param targetServerFullyQualifiedDomainName the targetServerFullyQualifiedDomainName value to set.
      * @return the CopyLongTermRetentionBackupParametersProperties object itself.
      */
-    public CopyLongTermRetentionBackupParametersProperties withTargetServerFullyQualifiedDomainName(
-        String targetServerFullyQualifiedDomainName) {
+    public CopyLongTermRetentionBackupParametersProperties
+        withTargetServerFullyQualifiedDomainName(String targetServerFullyQualifiedDomainName) {
         this.targetServerFullyQualifiedDomainName = targetServerFullyQualifiedDomainName;
         return this;
     }
 
     /**
      * Get the targetDatabaseName property: The name of the database owns the copied backup.
-     *
+     * 
      * @return the targetDatabaseName value.
      */
     public String targetDatabaseName() {
@@ -143,7 +146,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the targetDatabaseName property: The name of the database owns the copied backup.
-     *
+     * 
      * @param targetDatabaseName the targetDatabaseName value to set.
      * @return the CopyLongTermRetentionBackupParametersProperties object itself.
      */
@@ -154,7 +157,7 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Get the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the targetBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy targetBackupStorageRedundancy() {
@@ -163,21 +166,79 @@ public final class CopyLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @param targetBackupStorageRedundancy the targetBackupStorageRedundancy value to set.
      * @return the CopyLongTermRetentionBackupParametersProperties object itself.
      */
-    public CopyLongTermRetentionBackupParametersProperties withTargetBackupStorageRedundancy(
-        BackupStorageRedundancy targetBackupStorageRedundancy) {
+    public CopyLongTermRetentionBackupParametersProperties
+        withTargetBackupStorageRedundancy(BackupStorageRedundancy targetBackupStorageRedundancy) {
         this.targetBackupStorageRedundancy = targetBackupStorageRedundancy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetSubscriptionId", this.targetSubscriptionId);
+        jsonWriter.writeStringField("targetResourceGroup", this.targetResourceGroup);
+        jsonWriter.writeStringField("targetServerResourceId", this.targetServerResourceId);
+        jsonWriter.writeStringField("targetServerFullyQualifiedDomainName", this.targetServerFullyQualifiedDomainName);
+        jsonWriter.writeStringField("targetDatabaseName", this.targetDatabaseName);
+        jsonWriter.writeStringField("targetBackupStorageRedundancy",
+            this.targetBackupStorageRedundancy == null ? null : this.targetBackupStorageRedundancy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyLongTermRetentionBackupParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyLongTermRetentionBackupParametersProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CopyLongTermRetentionBackupParametersProperties.
+     */
+    public static CopyLongTermRetentionBackupParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyLongTermRetentionBackupParametersProperties deserializedCopyLongTermRetentionBackupParametersProperties
+                = new CopyLongTermRetentionBackupParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetSubscriptionId".equals(fieldName)) {
+                    deserializedCopyLongTermRetentionBackupParametersProperties.targetSubscriptionId
+                        = reader.getString();
+                } else if ("targetResourceGroup".equals(fieldName)) {
+                    deserializedCopyLongTermRetentionBackupParametersProperties.targetResourceGroup
+                        = reader.getString();
+                } else if ("targetServerResourceId".equals(fieldName)) {
+                    deserializedCopyLongTermRetentionBackupParametersProperties.targetServerResourceId
+                        = reader.getString();
+                } else if ("targetServerFullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedCopyLongTermRetentionBackupParametersProperties.targetServerFullyQualifiedDomainName
+                        = reader.getString();
+                } else if ("targetDatabaseName".equals(fieldName)) {
+                    deserializedCopyLongTermRetentionBackupParametersProperties.targetDatabaseName = reader.getString();
+                } else if ("targetBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedCopyLongTermRetentionBackupParametersProperties.targetBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyLongTermRetentionBackupParametersProperties;
+        });
     }
 }

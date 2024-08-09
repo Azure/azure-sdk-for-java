@@ -44,6 +44,7 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -94,6 +95,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -106,6 +111,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -118,6 +127,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -130,6 +143,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -139,6 +156,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -148,6 +166,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -157,6 +176,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -166,6 +186,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{shareName}")
@@ -176,7 +197,9 @@ public final class SharesImpl {
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
@@ -186,7 +209,9 @@ public final class SharesImpl {
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
@@ -196,7 +221,9 @@ public final class SharesImpl {
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
@@ -205,7 +232,9 @@ public final class SharesImpl {
             @QueryParam("restype") String restype, @QueryParam("sharesnapshot") String sharesnapshot,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -216,6 +245,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -227,6 +257,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -238,6 +269,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -249,6 +281,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -259,8 +292,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -270,8 +304,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -281,8 +316,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -292,8 +328,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -304,6 +341,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -315,6 +353,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -326,6 +365,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -337,6 +377,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version,
             @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -347,8 +388,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -358,8 +400,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -369,8 +412,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -380,8 +424,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 202 })
@@ -392,6 +437,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -403,6 +449,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -414,6 +461,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -425,6 +473,7 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
             @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -434,6 +483,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -443,6 +493,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -452,6 +503,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -461,6 +513,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -513,6 +566,7 @@ public final class SharesImpl {
         Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermission(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -523,6 +577,7 @@ public final class SharesImpl {
         Mono<Response<SharePermission>> getPermissionNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -533,6 +588,7 @@ public final class SharesImpl {
         ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -543,6 +599,7 @@ public final class SharesImpl {
         Response<SharePermission> getPermissionNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -557,6 +614,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -569,6 +630,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -581,6 +646,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -593,6 +662,10 @@ public final class SharesImpl {
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
             @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("x-ms-share-paid-bursting-enabled") Boolean paidBurstingEnabled,
+            @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
+            @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -602,7 +675,9 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -611,7 +686,9 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -620,7 +697,9 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -629,7 +708,9 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -638,7 +719,9 @@ public final class SharesImpl {
             @HostParam("url") String url, @PathParam("shareName") String shareName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -647,6 +730,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -656,7 +740,9 @@ public final class SharesImpl {
             @HostParam("url") String url, @PathParam("shareName") String shareName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -665,6 +751,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -674,6 +761,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareSignedIdentifierWrapper shareAcl, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -684,6 +772,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareSignedIdentifierWrapper shareAcl, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -694,6 +783,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareSignedIdentifierWrapper shareAcl, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -704,6 +794,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @BodyParam("application/xml") ShareSignedIdentifierWrapper shareAcl, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -714,6 +805,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -723,6 +815,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -732,6 +825,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -741,6 +835,7 @@ public final class SharesImpl {
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -751,8 +846,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-deleted-share-name") String deletedShareName,
-            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -762,8 +858,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-deleted-share-name") String deletedShareName,
-            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -773,8 +870,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-deleted-share-name") String deletedShareName,
-            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -784,8 +882,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-deleted-share-name") String deletedShareName,
-            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -802,6 +901,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -810,12 +915,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(), shareName, restype, timeout,
             metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -832,6 +939,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -841,127 +954,13 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, accept,
-            context);
-    }
-
-    /**
-     * Creates a new share under the specified account. If the share with the same name already exists, the operation
-     * fails.
-     * 
-     * @param shareName The name of the target share.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param quota Specifies the maximum size of the share, in gigabytes.
-     * @param accessTier Specifies the access tier of the share.
-     * @param enabledProtocols Protocols to enable on the share.
-     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
-     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
-        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Creates a new share under the specified account. If the share with the same name already exists, the operation
-     * fails.
-     * 
-     * @param shareName The name of the target share.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param quota Specifies the maximum size of the share, in gigabytes.
-     * @param accessTier Specifies the access tier of the share.
-     * @param enabledProtocols Protocols to enable on the share.
-     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
-     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
-        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Creates a new share under the specified account. If the share with the same name already exists, the operation
-     * fails.
-     * 
-     * @param shareName The name of the target share.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param quota Specifies the maximum size of the share, in gigabytes.
-     * @param accessTier Specifies the access tier of the share.
-     * @param enabledProtocols Protocols to enable on the share.
-     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
-     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
-        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
-        final String restype = "share";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype,
-            timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, accept, context));
-    }
-
-    /**
-     * Creates a new share under the specified account. If the share with the same name already exists, the operation
-     * fails.
-     * 
-     * @param shareName The name of the target share.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param quota Specifies the maximum size of the share, in gigabytes.
-     * @param accessTier Specifies the access tier of the share.
-     * @param enabledProtocols Protocols to enable on the share.
-     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
-     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
-        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
-        return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
-            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
             accept, context);
     }
 
@@ -979,6 +978,160 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
+        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Creates a new share under the specified account. If the share with the same name already exists, the operation
+     * fails.
+     * 
+     * @param shareName The name of the target share.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param quota Specifies the maximum size of the share, in gigabytes.
+     * @param accessTier Specifies the access tier of the share.
+     * @param enabledProtocols Protocols to enable on the share.
+     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
+        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Creates a new share under the specified account. If the share with the same name already exists, the operation
+     * fails.
+     * 
+     * @param shareName The name of the target share.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param quota Specifies the maximum size of the share, in gigabytes.
+     * @param accessTier Specifies the access tier of the share.
+     * @param enabledProtocols Protocols to enable on the share.
+     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
+        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
+        final String restype = "share";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype,
+            timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
+    }
+
+    /**
+     * Creates a new share under the specified account. If the share with the same name already exists, the operation
+     * fails.
+     * 
+     * @param shareName The name of the target share.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param quota Specifies the maximum size of the share, in gigabytes.
+     * @param accessTier Specifies the access tier of the share.
+     * @param enabledProtocols Protocols to enable on the share.
+     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
+        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
+        final String restype = "share";
+        final String accept = "application/xml";
+        return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
+            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
+    }
+
+    /**
+     * Creates a new share under the specified account. If the share with the same name already exists, the operation
+     * fails.
+     * 
+     * @param shareName The name of the target share.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param quota Specifies the maximum size of the share, in gigabytes.
+     * @param accessTier Specifies the access tier of the share.
+     * @param enabledProtocols Protocols to enable on the share.
+     * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -988,12 +1141,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesCreateHeaders, Void> createWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, accept,
-            context);
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -1010,6 +1165,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1017,9 +1178,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, Context.NONE);
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, Context.NONE);
     }
 
     /**
@@ -1036,6 +1199,12 @@ public final class SharesImpl {
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1045,11 +1214,13 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
             accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
             accept, context);
     }
 
@@ -1074,8 +1245,9 @@ public final class SharesImpl {
         String sharesnapshot, Integer timeout, String leaseId) {
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(), shareName, restype,
-            sharesnapshot, timeout, this.client.getVersion(), leaseId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.getProperties(this.client.getUrl(), shareName, restype, sharesnapshot,
+                timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1101,7 +1273,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.getProperties(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1171,8 +1343,9 @@ public final class SharesImpl {
         Integer timeout, String leaseId) {
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, sharesnapshot, timeout, this.client.getVersion(), leaseId, accept, context));
+        return FluxUtil.withContext(
+            context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, sharesnapshot,
+                timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1198,7 +1371,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.getPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1224,7 +1397,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.getPropertiesSync(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1270,7 +1443,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, sharesnapshot,
-            timeout, this.client.getVersion(), leaseId, accept, context);
+            timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1296,7 +1469,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.delete(this.client.getUrl(), shareName, restype, sharesnapshot,
-            timeout, this.client.getVersion(), deleteSnapshots, leaseId, accept, context));
+            timeout, this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept,
+            context));
     }
 
     /**
@@ -1323,7 +1497,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.delete(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), deleteSnapshots, leaseId, accept, context);
+            this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1398,7 +1572,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), shareName, restype,
-            sharesnapshot, timeout, this.client.getVersion(), deleteSnapshots, leaseId, accept, context));
+            sharesnapshot, timeout, this.client.getVersion(), deleteSnapshots, leaseId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1425,7 +1600,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.deleteNoCustomHeaders(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), deleteSnapshots, leaseId, accept, context);
+            this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1452,7 +1627,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.deleteSync(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), deleteSnapshots, leaseId, accept, context);
+            this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1501,7 +1676,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.deleteNoCustomHeadersSync(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
-            this.client.getVersion(), deleteSnapshots, leaseId, accept, context);
+            this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1534,9 +1709,9 @@ public final class SharesImpl {
         final String action = "acquire";
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-            context -> service.acquireLease(this.client.getUrl(), shareName, comp, action, restype, timeout, duration,
-                proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context));
+        return FluxUtil.withContext(context -> service.acquireLease(this.client.getUrl(), shareName, comp, action,
+            restype, timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1572,7 +1747,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.acquireLease(this.client.getUrl(), shareName, comp, action, restype, timeout, duration,
-            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -1668,7 +1844,7 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.acquireLeaseNoCustomHeaders(this.client.getUrl(), shareName,
             comp, action, restype, timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot,
-            requestId, accept, context));
+            requestId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1703,7 +1879,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.acquireLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1738,7 +1915,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.acquireLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, duration,
-            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -1801,7 +1979,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1830,7 +2009,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.releaseLease(this.client.getUrl(), shareName, comp, action,
-            restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context));
+            restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1860,7 +2040,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.releaseLease(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
-            this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1939,9 +2119,9 @@ public final class SharesImpl {
         final String action = "release";
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.releaseLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action,
-                restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context));
+        return FluxUtil.withContext(context -> service.releaseLeaseNoCustomHeaders(this.client.getUrl(), shareName,
+            comp, action, restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1971,7 +2151,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.releaseLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            leaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -2001,7 +2182,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.releaseLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
-            this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2054,7 +2235,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            leaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -2085,9 +2267,9 @@ public final class SharesImpl {
         final String action = "change";
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.changeLease(this.client.getUrl(), shareName, comp, action, restype, timeout,
-                leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context));
+        return FluxUtil.withContext(context -> service.changeLease(this.client.getUrl(), shareName, comp, action,
+            restype, timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2121,7 +2303,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.changeLease(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
-            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -2211,7 +2394,7 @@ public final class SharesImpl {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.changeLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp,
             action, restype, timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
-            accept, context));
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2244,7 +2427,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.changeLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2277,7 +2461,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.changeLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
-            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(),
+            accept, context);
     }
 
     /**
@@ -2336,7 +2521,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2365,7 +2551,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.renewLease(this.client.getUrl(), shareName, comp, action,
-            restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context));
+            restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2395,7 +2582,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.renewLease(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
-            this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2475,7 +2662,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.renewLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp,
-            action, restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context));
+            action, restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2505,7 +2693,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.renewLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            leaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -2535,7 +2724,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.renewLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
-            this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2587,7 +2776,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            leaseId, this.client.getVersion(), sharesnapshot, requestId, accept, context);
+            leaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -2621,9 +2811,9 @@ public final class SharesImpl {
         final String action = "break";
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.breakLease(this.client.getUrl(), shareName, comp, action, restype, timeout,
-                breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, accept, context));
+        return FluxUtil.withContext(context -> service.breakLease(this.client.getUrl(), shareName, comp, action,
+            restype, timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2659,7 +2849,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.breakLease(this.client.getUrl(), shareName, comp, action, restype, timeout, breakPeriod, leaseId,
-            this.client.getVersion(), requestId, sharesnapshot, accept, context);
+            this.client.getVersion(), requestId, sharesnapshot, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2756,9 +2946,9 @@ public final class SharesImpl {
         final String action = "break";
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-            context -> service.breakLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action, restype,
-                timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, accept, context));
+        return FluxUtil.withContext(context -> service.breakLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp,
+            action, restype, timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2794,7 +2984,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.breakLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, accept, context);
+            breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2830,7 +3021,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.breakLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, breakPeriod,
-            leaseId, this.client.getVersion(), requestId, sharesnapshot, accept, context);
+            leaseId, this.client.getVersion(), requestId, sharesnapshot, this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -2895,7 +3087,8 @@ public final class SharesImpl {
         final String restype = "share";
         final String accept = "application/xml";
         return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype, timeout,
-            breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, accept, context);
+            breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2918,7 +3111,7 @@ public final class SharesImpl {
         final String comp = "snapshot";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.createSnapshot(this.client.getUrl(), shareName, restype, comp,
-            timeout, metadata, this.client.getVersion(), accept, context));
+            timeout, metadata, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2942,7 +3135,7 @@ public final class SharesImpl {
         final String comp = "snapshot";
         final String accept = "application/xml";
         return service.createSnapshot(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3002,8 +3195,9 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "snapshot";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.createSnapshotNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, timeout, metadata, this.client.getVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> service.createSnapshotNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
+                metadata, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3027,7 +3221,7 @@ public final class SharesImpl {
         final String comp = "snapshot";
         final String accept = "application/xml";
         return service.createSnapshotNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3051,7 +3245,7 @@ public final class SharesImpl {
         final String comp = "snapshot";
         final String accept = "application/xml";
         return service.createSnapshotSync(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), accept, context);
+            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3092,7 +3286,7 @@ public final class SharesImpl {
         final String comp = "snapshot";
         final String accept = "application/xml";
         return service.createSnapshotNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            metadata, this.client.getVersion(), accept, context);
+            metadata, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3299,6 +3493,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3309,13 +3508,14 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>>
-        getPermissionWithResponseAsync(String shareName, String filePermissionKey, Integer timeout) {
+    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
+        String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getPermission(this.client.getUrl(), shareName, restype, comp,
-            filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context));
+            filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3323,6 +3523,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3334,13 +3539,15 @@ public final class SharesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>>
-        getPermissionWithResponseAsync(String shareName, String filePermissionKey, Integer timeout, Context context) {
+    public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
+        String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout,
+        Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
-        return service.getPermission(this.client.getUrl(), shareName, restype, comp, filePermissionKey, timeout,
-            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+        return service.getPermission(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3348,6 +3555,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3357,8 +3569,9 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey, Integer timeout) {
-        return getPermissionWithResponseAsync(shareName, filePermissionKey, timeout)
+    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout) {
+        return getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, timeout)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3367,6 +3580,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3377,9 +3595,9 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey, Integer timeout,
-        Context context) {
-        return getPermissionWithResponseAsync(shareName, filePermissionKey, timeout, context)
+    public Mono<SharePermission> getPermissionAsync(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
+        return getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, timeout, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3388,6 +3606,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3399,13 +3622,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
-        String filePermissionKey, Integer timeout) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
-            accept, context));
+            restype, comp, filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3413,6 +3636,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3425,12 +3653,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
-            timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3438,6 +3667,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3449,12 +3683,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionWithResponse(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
-        return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey, timeout,
-            this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+        return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
+            filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
+            context);
     }
 
     /**
@@ -3462,6 +3697,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3471,8 +3711,10 @@ public final class SharesImpl {
      * @return a permission (a security descriptor) at the share level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharePermission getPermission(String shareName, String filePermissionKey, Integer timeout) {
-        return getPermissionWithResponse(shareName, filePermissionKey, timeout, Context.NONE).getValue();
+    public SharePermission getPermission(String shareName, String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Integer timeout) {
+        return getPermissionWithResponse(shareName, filePermissionKey, filePermissionFormat, timeout, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3480,6 +3722,11 @@ public final class SharesImpl {
      * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -3491,12 +3738,13 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharePermission> getPermissionNoCustomHeadersWithResponse(String shareName,
-        String filePermissionKey, Integer timeout, Context context) {
+        String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "filepermission";
         final String accept = "application/json";
         return service.getPermissionNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp,
-            filePermissionKey, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
+            filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3511,6 +3759,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3519,13 +3773,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setProperties(this.client.getUrl(), shareName, restype, comp,
             timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3540,6 +3796,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3549,12 +3811,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setProperties(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
-            quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, accept, context);
+            quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+            paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3569,6 +3833,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3576,9 +3846,11 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3593,6 +3865,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3601,9 +3879,11 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3618,6 +3898,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3626,13 +3912,15 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName,
             restype, comp, timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, accept, context));
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3647,6 +3935,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3656,12 +3950,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
             this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
             accept, context);
     }
 
@@ -3677,6 +3973,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3686,12 +3988,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesSetPropertiesHeaders, Void> setPropertiesWithResponse(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesSync(this.client.getUrl(), shareName, restype, comp, timeout,
             this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
             accept, context);
     }
 
@@ -3707,15 +4011,23 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
         setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, Context.NONE);
+            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+            paidBurstingMaxIops, Context.NONE);
     }
 
     /**
@@ -3730,6 +4042,12 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
      * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
+     * @param paidBurstingEnabled Optional. Boolean. Default if not specified is false. This property enables paid
+     * bursting.
+     * @param paidBurstingMaxBandwidthMibps Optional. Integer. Default if not specified is the maximum throughput the
+     * file share can support. Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
+     * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3739,12 +4057,14 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer quota,
         ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
+        Long paidBurstingMaxIops, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
             this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
             accept, context);
     }
 
@@ -3769,7 +4089,7 @@ public final class SharesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setMetadata(this.client.getUrl(), shareName, restype, comp,
-            timeout, metadata, this.client.getVersion(), leaseId, accept, context));
+            timeout, metadata, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3794,7 +4114,7 @@ public final class SharesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return service.setMetadata(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3859,8 +4179,9 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "metadata";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, timeout, metadata, this.client.getVersion(), leaseId, accept, context));
+        return FluxUtil.withContext(
+            context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
+                metadata, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -3885,7 +4206,7 @@ public final class SharesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return service.setMetadataNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3910,7 +4231,7 @@ public final class SharesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return service.setMetadataSync(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3953,7 +4274,7 @@ public final class SharesImpl {
         final String comp = "metadata";
         final String accept = "application/xml";
         return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3977,7 +4298,7 @@ public final class SharesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getAccessPolicy(this.client.getUrl(), shareName, restype, comp,
-            timeout, this.client.getVersion(), leaseId, accept, context));
+            timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -4002,7 +4323,7 @@ public final class SharesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicy(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4064,8 +4385,9 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "acl";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, timeout, this.client.getVersion(), leaseId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName, restype,
+                comp, timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -4089,7 +4411,7 @@ public final class SharesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4113,7 +4435,7 @@ public final class SharesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicySync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4155,7 +4477,7 @@ public final class SharesImpl {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4180,7 +4502,8 @@ public final class SharesImpl {
         final String accept = "application/xml";
         ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         return FluxUtil.withContext(context -> service.setAccessPolicy(this.client.getUrl(), shareName, restype, comp,
-            timeout, this.client.getVersion(), leaseId, shareAclConverted, accept, context));
+            timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept,
+            context));
     }
 
     /**
@@ -4206,7 +4529,7 @@ public final class SharesImpl {
         final String accept = "application/xml";
         ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         return service.setAccessPolicy(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, shareAclConverted, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept, context);
     }
 
     /**
@@ -4273,7 +4596,8 @@ public final class SharesImpl {
         final String accept = "application/xml";
         ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         return FluxUtil.withContext(context -> service.setAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, timeout, this.client.getVersion(), leaseId, shareAclConverted, accept, context));
+            restype, comp, timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(),
+            shareAclConverted, accept, context));
     }
 
     /**
@@ -4299,7 +4623,7 @@ public final class SharesImpl {
         final String accept = "application/xml";
         ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         return service.setAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, shareAclConverted, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept, context);
     }
 
     /**
@@ -4325,7 +4649,7 @@ public final class SharesImpl {
         final String accept = "application/xml";
         ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         return service.setAccessPolicySync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, shareAclConverted, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept, context);
     }
 
     /**
@@ -4370,7 +4694,7 @@ public final class SharesImpl {
         final String accept = "application/xml";
         ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, shareAclConverted, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept, context);
     }
 
     /**
@@ -4393,7 +4717,7 @@ public final class SharesImpl {
         final String comp = "stats";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getStatistics(this.client.getUrl(), shareName, restype, comp,
-            timeout, this.client.getVersion(), leaseId, accept, context));
+            timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -4417,7 +4741,7 @@ public final class SharesImpl {
         final String comp = "stats";
         final String accept = "application/xml";
         return service.getStatistics(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
-            leaseId, accept, context);
+            leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4478,8 +4802,9 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "stats";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getStatisticsNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, timeout, this.client.getVersion(), leaseId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.getStatisticsNoCustomHeaders(this.client.getUrl(), shareName, restype, comp,
+                timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -4503,7 +4828,7 @@ public final class SharesImpl {
         final String comp = "stats";
         final String accept = "application/xml";
         return service.getStatisticsNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4527,7 +4852,7 @@ public final class SharesImpl {
         final String comp = "stats";
         final String accept = "application/xml";
         return service.getStatisticsSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4569,7 +4894,7 @@ public final class SharesImpl {
         final String comp = "stats";
         final String accept = "application/xml";
         return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), leaseId, accept, context);
+            this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4595,7 +4920,8 @@ public final class SharesImpl {
         final String comp = "undelete";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.restore(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, accept, context));
+            this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -4622,7 +4948,7 @@ public final class SharesImpl {
         final String comp = "undelete";
         final String accept = "application/xml";
         return service.restore(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
-            requestId, deletedShareName, deletedShareVersion, accept, context);
+            requestId, deletedShareName, deletedShareVersion, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4694,9 +5020,9 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "undelete";
         final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.restoreNoCustomHeaders(this.client.getUrl(), shareName, restype, comp,
-                timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, accept, context));
+        return FluxUtil.withContext(context -> service.restoreNoCustomHeaders(this.client.getUrl(), shareName, restype,
+            comp, timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -4723,7 +5049,8 @@ public final class SharesImpl {
         final String comp = "undelete";
         final String accept = "application/xml";
         return service.restoreNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, accept, context);
+            this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4750,7 +5077,7 @@ public final class SharesImpl {
         final String comp = "undelete";
         final String accept = "application/xml";
         return service.restoreSync(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
-            requestId, deletedShareName, deletedShareVersion, accept, context);
+            requestId, deletedShareName, deletedShareVersion, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -4798,6 +5125,7 @@ public final class SharesImpl {
         final String comp = "undelete";
         final String accept = "application/xml";
         return service.restoreNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, accept, context);
+            this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
+            this.client.getFileRequestIntent(), accept, context);
     }
 }

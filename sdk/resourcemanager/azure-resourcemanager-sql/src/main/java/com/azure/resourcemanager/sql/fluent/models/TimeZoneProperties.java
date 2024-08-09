@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a time zone. */
+/**
+ * The properties of a time zone.
+ */
 @Immutable
-public final class TimeZoneProperties {
+public final class TimeZoneProperties implements JsonSerializable<TimeZoneProperties> {
     /*
      * The time zone id
      */
-    @JsonProperty(value = "timeZoneId", access = JsonProperty.Access.WRITE_ONLY)
     private String timeZoneId;
 
     /*
      * The time zone display name
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
-    /** Creates an instance of TimeZoneProperties class. */
+    /**
+     * Creates an instance of TimeZoneProperties class.
+     */
     public TimeZoneProperties() {
     }
 
     /**
      * Get the timeZoneId property: The time zone id.
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -37,7 +43,7 @@ public final class TimeZoneProperties {
 
     /**
      * Get the displayName property: The time zone display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -46,9 +52,46 @@ public final class TimeZoneProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeZoneProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeZoneProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TimeZoneProperties.
+     */
+    public static TimeZoneProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeZoneProperties deserializedTimeZoneProperties = new TimeZoneProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeZoneId".equals(fieldName)) {
+                    deserializedTimeZoneProperties.timeZoneId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedTimeZoneProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeZoneProperties;
+        });
     }
 }

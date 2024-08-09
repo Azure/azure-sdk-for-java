@@ -5,47 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** groupSetting. */
+/**
+ * groupSetting.
+ */
 @Fluent
 public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
     /*
      * Display name of this group of settings, which comes from the associated template.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Unique identifier for the template used to create this group of settings. Read-only.
      */
-    @JsonProperty(value = "templateId")
     private String templateId;
 
     /*
      * Collection of name value pairs. Must contain and set all the settings defined in the template.
      */
-    @JsonProperty(value = "values")
     private List<MicrosoftGraphSettingValue> values;
 
     /*
      * groupSetting
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphGroupSetting class. */
+    /**
+     * Creates an instance of MicrosoftGraphGroupSetting class.
+     */
     public MicrosoftGraphGroupSetting() {
     }
 
     /**
      * Get the displayName property: Display name of this group of settings, which comes from the associated template.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -54,7 +55,7 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: Display name of this group of settings, which comes from the associated template.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphGroupSetting object itself.
      */
@@ -65,7 +66,7 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
 
     /**
      * Get the templateId property: Unique identifier for the template used to create this group of settings. Read-only.
-     *
+     * 
      * @return the templateId value.
      */
     public String templateId() {
@@ -74,7 +75,7 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
 
     /**
      * Set the templateId property: Unique identifier for the template used to create this group of settings. Read-only.
-     *
+     * 
      * @param templateId the templateId value to set.
      * @return the MicrosoftGraphGroupSetting object itself.
      */
@@ -86,7 +87,7 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
     /**
      * Get the values property: Collection of name value pairs. Must contain and set all the settings defined in the
      * template.
-     *
+     * 
      * @return the values value.
      */
     public List<MicrosoftGraphSettingValue> values() {
@@ -96,7 +97,7 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
     /**
      * Set the values property: Collection of name value pairs. Must contain and set all the settings defined in the
      * template.
-     *
+     * 
      * @param values the values value to set.
      * @return the MicrosoftGraphGroupSetting object itself.
      */
@@ -107,17 +108,16 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: groupSetting.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: groupSetting.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphGroupSetting object itself.
      */
@@ -126,15 +126,9 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphGroupSetting withId(String id) {
         super.withId(id);
@@ -143,7 +137,7 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -152,5 +146,63 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("templateId", this.templateId);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphGroupSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphGroupSetting if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphGroupSetting.
+     */
+    public static MicrosoftGraphGroupSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphGroupSetting deserializedMicrosoftGraphGroupSetting = new MicrosoftGraphGroupSetting();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupSetting.withId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupSetting.displayName = reader.getString();
+                } else if ("templateId".equals(fieldName)) {
+                    deserializedMicrosoftGraphGroupSetting.templateId = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<MicrosoftGraphSettingValue> values
+                        = reader.readArray(reader1 -> MicrosoftGraphSettingValue.fromJson(reader1));
+                    deserializedMicrosoftGraphGroupSetting.values = values;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphGroupSetting.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphGroupSetting;
+        });
     }
 }

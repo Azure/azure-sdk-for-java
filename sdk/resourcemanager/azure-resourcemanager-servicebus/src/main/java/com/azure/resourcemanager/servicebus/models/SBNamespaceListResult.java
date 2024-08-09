@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of the List Namespace operation. */
+/**
+ * The response of the List Namespace operation.
+ */
 @Fluent
-public final class SBNamespaceListResult {
+public final class SBNamespaceListResult implements JsonSerializable<SBNamespaceListResult> {
     /*
      * Result of the List Namespace operation.
      */
-    @JsonProperty(value = "value")
     private List<SBNamespaceInner> value;
 
     /*
      * Link to the next set of results. Not empty if Value contains incomplete list of Namespaces.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of SBNamespaceListResult class.
+     */
+    public SBNamespaceListResult() {
+    }
+
+    /**
      * Get the value property: Result of the List Namespace operation.
-     *
+     * 
      * @return the value value.
      */
     public List<SBNamespaceInner> value() {
@@ -35,7 +45,7 @@ public final class SBNamespaceListResult {
 
     /**
      * Set the value property: Result of the List Namespace operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the SBNamespaceListResult object itself.
      */
@@ -47,7 +57,7 @@ public final class SBNamespaceListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Namespaces.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -57,7 +67,7 @@ public final class SBNamespaceListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Namespaces.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SBNamespaceListResult object itself.
      */
@@ -68,12 +78,52 @@ public final class SBNamespaceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBNamespaceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBNamespaceListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBNamespaceListResult.
+     */
+    public static SBNamespaceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBNamespaceListResult deserializedSBNamespaceListResult = new SBNamespaceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SBNamespaceInner> value = reader.readArray(reader1 -> SBNamespaceInner.fromJson(reader1));
+                    deserializedSBNamespaceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSBNamespaceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBNamespaceListResult;
+        });
     }
 }
