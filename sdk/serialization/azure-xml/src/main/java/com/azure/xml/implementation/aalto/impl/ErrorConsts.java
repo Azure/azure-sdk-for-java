@@ -104,14 +104,6 @@ public final class ErrorConsts {
     }
 
     public static void throwInternalError() {
-        throwInternalError(null);
-    }
-
-    public static void throwInternalError(String type) {
-        String msg = "Internal error";
-        if (type != null) {
-            msg += ": " + type;
-        }
-        throw new RuntimeException(msg);
+        throw new RuntimeException("Internal error");
     }
 }

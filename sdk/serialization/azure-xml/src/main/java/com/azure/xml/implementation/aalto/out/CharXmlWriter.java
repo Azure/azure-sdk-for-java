@@ -16,15 +16,24 @@
 
 package com.azure.xml.implementation.aalto.out;
 
-import java.io.*;
-
-import javax.xml.stream.*;
-
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
-import com.azure.xml.implementation.aalto.io.UTF8Writer;
 import com.azure.xml.implementation.aalto.util.XmlCharTypes;
 
-import static com.azure.xml.implementation.aalto.out.OutputCharTypes.*;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Writer;
+
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_AMP;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_ATTR_QUOTE;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_GT;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_HYPHEN;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_INVALID;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_LT;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_OUTPUT_MUST_QUOTE;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_QMARK;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_RBRACKET;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_WS_CR;
+import static com.azure.xml.implementation.aalto.out.OutputCharTypes.CT_WS_LF;
 
 /**
  * This is the generic implementation of {@link XmlWriter}, used if
@@ -184,7 +193,7 @@ public final class CharXmlWriter extends XmlWriter {
              *   the second check... but I'll be damned if I rememeber
              *   what exactly it was right now.
              */
-            if (doClose || (_out instanceof UTF8Writer)) {
+            if (doClose) {
                 _out.close();
                 _out = null;
             }

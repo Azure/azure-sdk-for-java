@@ -80,7 +80,6 @@ public final class ReaderConfig extends CommonConfig {
         sProperties.put(XMLInputFactory2.P_INTERN_NAMES, F_INTERN_NAMES);
         sProperties.put(XMLInputFactory2.P_INTERN_NS_URIS, F_INTERN_NS_URIS);
         sProperties.put(XMLInputFactory2.P_AUTO_CLOSE_INPUT, F_AUTO_CLOSE_INPUT);
-        sProperties.put(XMLInputFactory2.P_PRESERVE_LOCATION, F_PRESERVE_LOCATION);
 
         // (ones with fixed defaults)
 

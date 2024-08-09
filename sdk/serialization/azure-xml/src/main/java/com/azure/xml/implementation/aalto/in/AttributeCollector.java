@@ -44,10 +44,6 @@ public final class AttributeCollector {
      */
     private final static int DEFAULT_BUFFER_LENGTH = 120;
 
-    // // // Configuration
-
-    final ReaderConfig _config;
-
     // // // State: actual collected attributes
 
     /**
@@ -133,8 +129,7 @@ public final class AttributeCollector {
     /**********************************************************************
      */
 
-    AttributeCollector(ReaderConfig cfg) {
-        _config = cfg;
+    AttributeCollector() {
         _attrCount = 0;
     }
 

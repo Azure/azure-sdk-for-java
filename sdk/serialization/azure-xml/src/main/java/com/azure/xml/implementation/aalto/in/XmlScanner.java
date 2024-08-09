@@ -300,7 +300,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         _cfgLazyParsing = cfg.willParseLazily();
         _xml11 = cfg.isXml11();
         _textBuilder = TextBuilder.createRecyclableBuffer(_config);
-        _attrCollector = new AttributeCollector(cfg);
+        _attrCollector = new AttributeCollector();
         _nameBuffer = cfg.allocSmallCBuffer(ReaderConfig.DEFAULT_SMALL_BUFFER_LEN);
         _currRow = 0;
     }
