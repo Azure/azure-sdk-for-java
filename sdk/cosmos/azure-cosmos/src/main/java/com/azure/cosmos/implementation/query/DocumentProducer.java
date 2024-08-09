@@ -146,13 +146,16 @@ class DocumentProducer<T> {
             return ObservableHelper.inlineIfPossibleAsObs(
                 () -> Mono
                     .just(request)
-                    .flatMap(req -> client.populateFeedRangeHeader(req))
-                    .flatMap(req -> client.addPartitionLevelUnavailableRegionsOnRequest(req, cosmosQueryRequestOptions))
                     .flatMap(req -> {
 
                         if(finalRetryPolicy != null) {
                             finalRetryPolicy.onBeforeSendRequest(req);
                         }
+
+                        return client.populateFeedRangeHeader(req);
+                    })
+                    .flatMap(req -> client.addPartitionLevelUnavailableRegionsOnRequest(req, cosmosQueryRequestOptions, finalRetryPolicy))
+                    .flatMap(req -> {
                         ++retries;
                         return executeRequestFunc.apply(req);
                     }), finalRetryPolicy);

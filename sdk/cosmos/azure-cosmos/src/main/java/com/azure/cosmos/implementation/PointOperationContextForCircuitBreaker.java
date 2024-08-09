@@ -11,20 +11,17 @@ public class PointOperationContextForCircuitBreaker {
     private final boolean isThresholdBasedAvailabilityStrategyEnabled;
     private boolean isRequestHedged;
     private final String collectionLink;
-    private final MetadataDiagnosticsContext metadataDiagnosticsContext;
     private final SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     public PointOperationContextForCircuitBreaker(
         AtomicBoolean hasOperationSeenSuccess,
         boolean isThresholdBasedAvailabilityStrategyEnabled,
         String collectionLink,
-        MetadataDiagnosticsContext metadataDiagnosticsContext,
         SerializationDiagnosticsContext serializationDiagnosticsContext) {
 
         this.hasOperationSeenSuccess = hasOperationSeenSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
         this.collectionLink = collectionLink;
-        this.metadataDiagnosticsContext = metadataDiagnosticsContext;
         this.serializationDiagnosticsContext = serializationDiagnosticsContext;
     }
 
@@ -50,10 +47,6 @@ public class PointOperationContextForCircuitBreaker {
 
     public String getCollectionLink() {
         return this.collectionLink;
-    }
-
-    public MetadataDiagnosticsContext getMetadataDiagnosticsContext() {
-        return this.metadataDiagnosticsContext;
     }
 
     public SerializationDiagnosticsContext getSerializationDiagnosticsContext() {

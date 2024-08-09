@@ -163,7 +163,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
         int exceptionCountActual
             = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContext.getExceptionCountForWriteForCircuitBreaking();
 
-        return exceptionCountActual >= getAllowedExceptionCountToMaintainStatus(locationSpecificHealthContext.getLocationHealthStatus(), isReadOnlyRequest);
+        return (exceptionCountActual + 1) >= getAllowedExceptionCountToMaintainStatus(locationSpecificHealthContext.getLocationHealthStatus(), isReadOnlyRequest);
     }
 
     public boolean canHealthStatusBeUpgraded(LocationSpecificHealthContext locationSpecificHealthContext, boolean isReadOnlyRequest) {
