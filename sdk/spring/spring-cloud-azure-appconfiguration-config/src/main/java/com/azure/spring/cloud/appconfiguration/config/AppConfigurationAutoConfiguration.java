@@ -2,9 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config;
 
+import org.springframework.boot.BootstrapContext;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +23,10 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 /**
  * Setup AppConfigurationRefresh when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
  */
-@Configuration
 @EnableAsync
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
+@EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
+@AutoConfiguration
 public class AppConfigurationAutoConfiguration {
 
     /**
@@ -45,8 +50,12 @@ public class AppConfigurationAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
+        @ConditionalOnBean(AppConfigurationReplicaClientFactory.class)
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory, ReplicaLookUp replicaLookUp) {
+            AppConfigurationProviderProperties appProperties, BootstrapContext context) {
+            AppConfigurationReplicaClientFactory clientFactory = context.get(AppConfigurationReplicaClientFactory.class);
+            ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
+            
             return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
                 appProperties.getDefaultMinBackoff(), replicaLookUp);
         }

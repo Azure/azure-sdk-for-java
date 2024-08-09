@@ -14,6 +14,8 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -151,8 +152,14 @@ public class FeatureFlagClient {
      */
     private static String calculateFeatureFlagId(String key, String label) {
         final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
-        final SHA256.Digest digest = new SHA256.Digest();
-        final String beforeTrim = Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8)))
+        MessageDigest sha256 = null;
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        final String beforeTrim = Base64URL.encode(sha256.digest(data.getBytes(StandardCharsets.UTF_8)))
             .toString().replace('+', '-').replace('/', '_');
         final int index = beforeTrim.indexOf('=');
         return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());

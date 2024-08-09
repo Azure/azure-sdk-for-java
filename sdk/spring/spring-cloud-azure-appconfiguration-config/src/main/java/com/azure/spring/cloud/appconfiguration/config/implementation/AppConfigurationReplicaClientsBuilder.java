@@ -4,40 +4,31 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.convert.DurationStyle;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.core.service.AzureServiceType.AppConfiguration;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
-public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
+public class AppConfigurationReplicaClientsBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationReplicaClientsBuilder.class);
 
@@ -53,10 +44,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     public static final String BASE_DELAY_PROPERTY_NAME = "retry.exponential.base-delay";
 
     public static final String MAX_DELAY_PROPERTY_NAME = "retry.exponential.max-delay";
-
-    private static final Duration DEFAULT_MIN_RETRY_POLICY = Duration.ofMillis(800);
-
-    private static final Duration DEFAULT_MAX_RETRY_POLICY = Duration.ofSeconds(8);
 
     /**
      * Connection String Regex format
@@ -75,19 +62,13 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private final ConfigurationClientBuilderFactory clientFactory;
 
-    private Environment env;
-
     private boolean isDev = false;
 
     private boolean isKeyVaultConfigured = false;
 
     private final boolean credentialConfigured;
 
-    private final int defaultMaxRetries;
-
-    public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
-        boolean credentialConfigured) {
-        this.defaultMaxRetries = defaultMaxRetries;
+    public AppConfigurationReplicaClientsBuilder(ConfigurationClientBuilderFactory clientFactory, boolean credentialConfigured) {
         this.clientFactory = clientFactory;
         this.credentialConfigured = credentialConfigured;
     }
@@ -174,12 +155,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         } else {
             for (String endpoint : endpoints) {
                 ConfigurationClientBuilder builder = this.createBuilderInstance();
-                if (!credentialConfigured) {
-                    // System Assigned Identity. Needs to be checked last as all of the above should
-                    // have an Endpoint.
-                    LOGGER.debug("Connecting to {} using Azure System Assigned Identity.", endpoint);
-                    builder.credential(new ManagedIdentityCredentialBuilder().build());
-                }
+
+                builder.credential(new DefaultAzureCredentialBuilder().build());
 
                 builder.endpoint(endpoint);
 
@@ -203,12 +180,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else {
             ConfigurationClientBuilder builder = createBuilderInstance();
-            if (!credentialConfigured) {
-                // System Assigned Identity. Needs to be checked last as all of the above should
-                // have an Endpoint.
-                LOGGER.debug("Connecting to {} using Azure System Assigned Identity.", failoverEndpoint);
-                builder.credential(new ManagedIdentityCredentialBuilder().build());
-            }
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+
             builder.endpoint(failoverEndpoint);
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         }
@@ -226,67 +199,11 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
     }
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        for (String profile : environment.getActiveProfiles()) {
-            if ("dev".equalsIgnoreCase(profile)) {
-                this.isDev = true;
-                break;
-            }
-        }
-        this.env = environment;
-    }
-
     protected ConfigurationClientBuilder createBuilderInstance() {
-        RetryStrategy retryStatagy = null;
 
-        String mode = env.getProperty(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
-        String modeService = env.getProperty(AzureAppConfigurationProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
-
-        if ("exponential".equals(mode) || "exponential".equals(modeService) || (mode == null && modeService == null)) {
-            Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));
-            Function<String, Duration> checkPropertyDuration = parameter -> (DurationStyle.detectAndParse(parameter));
-
-            int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries,
-                " isn't a valid integer, using default value.", checkPropertyInt);
-
-            Duration baseDelay = checkProperty(BASE_DELAY_PROPERTY_NAME, DEFAULT_MIN_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
-            Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
-
-            retryStatagy = new ExponentialBackoff(retries, baseDelay, maxDelay);
-        }
-
-        ConfigurationClientBuilder builder = clientFactory.build();
-
-        if (retryStatagy != null) {
-            builder.retryPolicy(new RetryPolicy(retryStatagy));
-        }
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
 
         return builder;
-    }
-
-    private <T> T checkProperty(String propertyName, T defaultValue, String errMsg, Function<String, T> fn) {
-        String envValue = System.getProperty(AzureGlobalProperties.PREFIX + "." + propertyName);
-        String envServiceValue = System.getProperty(AzureAppConfigurationProperties.PREFIX + "." + propertyName);
-        T value = defaultValue;
-
-        if (envServiceValue != null) {
-            try {
-                value = fn.apply(envServiceValue);
-            } catch (Exception e) {
-                LOGGER.warn("{}.{} {}", AzureAppConfigurationProperties.PREFIX, propertyName, errMsg);
-            }
-        } else if (envValue != null) {
-            try {
-                value = fn.apply(envValue);
-            } catch (Exception e) {
-                LOGGER.warn("{}.{} {}", AzureGlobalProperties.PREFIX, propertyName, errMsg);
-            }
-        }
-
-        return value;
     }
 
     private static class ConnectionStringConnector
@@ -322,7 +239,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         private final String secret;
 
-        @SuppressWarnings("deprecation")
         ConnectionString(String connectionString) {
             if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw new IllegalArgumentException("'connectionString' cannot be null or empty.");
@@ -358,7 +274,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             }
         }
 
-        @SuppressWarnings("deprecation")
         protected ConnectionString setUri(String uri) {
             try {
                 this.baseUri = new URL(uri);

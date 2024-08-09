@@ -26,7 +26,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
-import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -52,9 +51,6 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Mock
     private ConfigurationClientBuilderFactory clientFactoryMock;
 
-    @Mock
-    private Environment envMock;
-
     private MockitoSession session;
 
     @BeforeEach
@@ -68,7 +64,6 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.validateAndInit();
 
         clientBuilder = null;
-        when(envMock.getActiveProfiles()).thenReturn(new String[0]);
     }
 
     @AfterEach
@@ -79,8 +74,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void buildClientFromEndpointTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         when(clientFactoryMock.build()).thenReturn(builderMock);
@@ -102,8 +96,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         when(clientFactoryMock.build()).thenReturn(builderMock);
@@ -120,9 +113,8 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void modifyClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         clientBuilder.setClientProvider(modifierMock);
-        clientBuilder.setEnvironment(envMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -153,8 +145,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -180,8 +171,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         
@@ -205,8 +195,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
 
         String message = assertThrows(IllegalArgumentException.class,
             () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
@@ -216,8 +205,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void buildClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         when(clientFactoryMock.build()).thenReturn(builderMock);
@@ -236,8 +224,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Test
     public void buildClientConnectionStringTest() {
         configStore.setConnectionString(TEST_CONN_STRING);
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         when(clientFactoryMock.build()).thenReturn(builderMock);
@@ -255,8 +242,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Test
     public void buildClientConnectionStringsTest() {
         configStore.setConnectionStrings(List.of(TEST_CONN_STRING, TEST_CONN_STRING_GEO));
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
@@ -274,8 +260,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Test
     public void buildClientConnectionStringInvalidTest() {
         configStore.setConnectionString(TEST_CONN_STRING);
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -287,8 +272,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Test
     public void buildClientConnectionStringInvalid2Test() {
         configStore.setConnectionString("Not A Connection String");
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -300,8 +284,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Test
     public void buildClientConnectionStringInvalid3Test() {
         configStore.setConnectionString("Not;A;Connection String");
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, false);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,

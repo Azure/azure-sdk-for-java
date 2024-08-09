@@ -5,8 +5,9 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.feature.en
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,14 +16,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Conditions {
     @JsonProperty("client_filters")
-    private final List<FeatureFlagFilter> clientFilters;
+    private final Map<Integer, FeatureFlagFilter> clientFilters;
 
     @JsonProperty("requirement_type")
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     public Conditions(List<FeatureFlagFilter> featureFilters, String requirementType) {
-        clientFilters = new ArrayList<>();
-        clientFilters.addAll(featureFilters);
+        clientFilters = new HashMap<>();
+        for (int i = 0; i < featureFilters.size(); i++) {
+            clientFilters.put(i, featureFilters.get(i));
+        }
         this.requirementType = requirementType;
     }
 
@@ -36,7 +39,7 @@ public class Conditions {
     /**
      * @return the clientFilters
      */
-    public List<FeatureFlagFilter> getClientFilters() {
+    public Map<Integer, FeatureFlagFilter> getClientFilters() {
         return clientFilters;
     }
 
