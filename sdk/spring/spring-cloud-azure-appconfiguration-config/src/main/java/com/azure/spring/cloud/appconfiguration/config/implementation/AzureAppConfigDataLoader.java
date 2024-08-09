@@ -9,17 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.boot.logging.DeferredLog;
 import org.springframework.boot.logging.DeferredLogFactory;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
 public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfigDataResource> {
 
@@ -40,10 +44,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     public AzureAppConfigDataLoader(DeferredLogFactory logFactory) {
         LOGGER = logFactory.getLog(getClass());
     }
-    
-    void setFeatureFlagClient(FeatureFlagClient featureFlagClient) {
-        this.featureFlagClient = featureFlagClient;
-    }
 
     @Override
     public ConfigData load(ConfigDataLoaderContext context, AzureAppConfigDataResource resource)
@@ -51,7 +51,15 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         this.resource = resource;
         storeState.setNextForcedRefresh(refreshInterval);
 
-        List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
+        if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
+            this.featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
+        } else {
+            this.featureFlagClient = new FeatureFlagClient();
+            context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class, InstanceSupplier.from(() -> this.featureFlagClient));
+        }
+        
+
+        List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
 
         if (resource.isConfigStoreEnabled()) {
             replicaClientFactory = context.getBootstrapContext()
@@ -80,9 +88,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
                     sourceList.addAll(createSettings(client));
+                    List<FeatureFlags> featureFlags = createFeatureFlags(client);
 
                     LOGGER.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
+
+                    storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
+                        monitoring.getFeatureFlagRefreshInterval());
 
                     if (monitoring.isEnabled()) {
                         // Setting new ETag values for Watch
@@ -108,6 +120,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
 
         StateHolder.updateState(storeState);
+        sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
         return new ConfigData(sourceList);
     }
 
@@ -154,6 +167,28 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         return sourceList;
     }
 
+    /**
+     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
+     *
+     * @param client client for connecting to App Configuration
+     * @param store Config Store the PropertySource is being generated from
+     * @param profiles active profiles to be used as labels. it needs to be in the last one.
+     * @return a list of AppConfigurationPropertySources
+     * @throws Exception creating a property source failed
+     */
+    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client) throws Exception {
+        List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
+        List<String> profiles = resource.getProfiles().getActive();
+        for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
+            List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
+                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+            storesFeatureFlags.forEach(featureFlags -> featureFlags.setResource(resource));
+            featureFlagWatchKeys.addAll(storesFeatureFlags);
+        }
+
+        return featureFlagWatchKeys;
+    }
+    
     private void delayException() {
         Instant currentDate = Instant.now();
         Instant preKillTIme = resource.getAppProperties().getStartDate()

@@ -94,7 +94,7 @@ public class FeatureFlagClient {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
-                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
+                properties.put(featureFlag.getFeatureId(), createFeature(featureFlag, endpoint));
             }
         }
         return loadedFeatureFlags;

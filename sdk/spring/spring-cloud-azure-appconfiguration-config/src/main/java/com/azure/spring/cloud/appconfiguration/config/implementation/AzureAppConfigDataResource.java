@@ -12,6 +12,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
 public class AzureAppConfigDataResource extends ConfigDataResource {
 
@@ -24,6 +25,8 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     private final Profiles profiles;
 
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
+    
+    private List<FeatureFlagKeyValueSelector> featureFlagSelects = new ArrayList<>();
 
     private final AppConfigurationStoreMonitoring monitoring;
 
@@ -34,6 +37,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
         this.configStoreEnabled = configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
+        this.featureFlagSelects = configStore.getFeatureFlags().getSelects();
         this.trimKeyPrefix = configStore.getTrimKeyPrefix();
         this.monitoring = configStore.getMonitoring();
         this.profiles = profiles;
@@ -52,6 +56,20 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      */
     public void setSelects(List<AppConfigurationKeyValueSelector> selects) {
         this.selects = selects;
+    }
+
+    /**
+     * @return the selects for feature flags
+     */
+    public List<FeatureFlagKeyValueSelector> getFeatureFlagSelects() {
+        return featureFlagSelects;
+    }
+
+    /**
+     * @param featureFlagSelects the selects to set
+     */
+    public void setFeatureFlagSelects(List<FeatureFlagKeyValueSelector> featureFlagSelects) {
+        this.featureFlagSelects = featureFlagSelects;
     }
 
     /**
