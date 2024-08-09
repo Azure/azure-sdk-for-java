@@ -87,6 +87,7 @@ public final class DefaultJsonReader extends JsonReader {
         this.parser = parser;
         this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported);
         this.resetSupported = resetSupported;
+        this.parser.enable(JsonParser.Feature.ALLOW_COMMENTS);
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
