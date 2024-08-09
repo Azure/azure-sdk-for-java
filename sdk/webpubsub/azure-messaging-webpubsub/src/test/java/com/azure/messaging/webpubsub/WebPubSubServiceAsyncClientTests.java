@@ -345,7 +345,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         String filter = "userId eq 'user 1'";
         // Expect no error
         StepVerifier
-            .create(client.addConnectionsToGroups(groupList, filter, new RequestOptions()))
+            .create(client.addConnectionsToGroups(groupList, filter))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -354,7 +354,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
         String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroups(null, filter, new RequestOptions())
+            client.addConnectionsToGroups(null, filter)
         ).expectError(HttpResponseException.class);
     }
 
