@@ -26,18 +26,22 @@ public final class DevToolPortalsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void devToolPortalsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDevToolPortals().createOrUpdate("myResourceGroup",
-            "myservice", "default",
-            new DevToolPortalResourceInner().withProperties(new DevToolPortalProperties().withPublicProperty(true)
-                .withSsoProperties(new DevToolPortalSsoProperties().withScopes(Arrays.asList("openid"))
-                    .withClientId("00000000-0000-0000-0000-000000000000").withClientSecret("fakeTokenPlaceholder")
-                    .withMetadataUrl(
-                        "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"))
-                .withFeatures(new DevToolPortalFeatureSettings()
-                    .withApplicationAccelerator(
-                        new DevToolPortalFeatureDetail().withState(DevToolPortalFeatureState.ENABLED))
-                    .withApplicationLiveView(
-                        new DevToolPortalFeatureDetail().withState(DevToolPortalFeatureState.ENABLED)))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDevToolPortals()
+            .createOrUpdate("myResourceGroup", "myservice", "default",
+                new DevToolPortalResourceInner().withProperties(new DevToolPortalProperties().withPublicProperty(true)
+                    .withSsoProperties(new DevToolPortalSsoProperties().withScopes(Arrays.asList("openid"))
+                        .withClientId("00000000-0000-0000-0000-000000000000")
+                        .withClientSecret("fakeTokenPlaceholder")
+                        .withMetadataUrl(
+                            "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"))
+                    .withFeatures(new DevToolPortalFeatureSettings()
+                        .withApplicationAccelerator(
+                            new DevToolPortalFeatureDetail().withState(DevToolPortalFeatureState.ENABLED))
+                        .withApplicationLiveView(
+                            new DevToolPortalFeatureDetail().withState(DevToolPortalFeatureState.ENABLED)))),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration settings of the token store.
  */
 @Fluent
-public final class TokenStore {
+public final class TokenStore implements JsonSerializable<TokenStore> {
     /*
-     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows; otherwise, <code>false</code>.
-     *  The default is <code>false</code>.
+     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows;
+     * otherwise, <code>false</code>.
+     * The default is <code>false</code>.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The number of hours after session token expiration that a session token can be used to
      * call the token refresh API. The default is 72 hours.
      */
-    @JsonProperty(value = "tokenRefreshExtensionHours")
     private Double tokenRefreshExtensionHours;
 
     /*
      * The configuration settings of the storage of the tokens if a file system is used.
      */
-    @JsonProperty(value = "fileSystem")
     private FileSystemTokenStore fileSystem;
 
     /*
      * The configuration settings of the storage of the tokens if blob storage is used.
      */
-    @JsonProperty(value = "azureBlobStorage")
     private BlobStorageTokenStore azureBlobStorage;
 
     /**
@@ -146,5 +147,50 @@ public final class TokenStore {
         if (azureBlobStorage() != null) {
             azureBlobStorage().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("tokenRefreshExtensionHours", this.tokenRefreshExtensionHours);
+        jsonWriter.writeJsonField("fileSystem", this.fileSystem);
+        jsonWriter.writeJsonField("azureBlobStorage", this.azureBlobStorage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TokenStore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenStore if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TokenStore.
+     */
+    public static TokenStore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TokenStore deserializedTokenStore = new TokenStore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedTokenStore.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tokenRefreshExtensionHours".equals(fieldName)) {
+                    deserializedTokenStore.tokenRefreshExtensionHours = reader.getNullable(JsonReader::getDouble);
+                } else if ("fileSystem".equals(fieldName)) {
+                    deserializedTokenStore.fileSystem = FileSystemTokenStore.fromJson(reader);
+                } else if ("azureBlobStorage".equals(fieldName)) {
+                    deserializedTokenStore.azureBlobStorage = BlobStorageTokenStore.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTokenStore;
+        });
     }
 }

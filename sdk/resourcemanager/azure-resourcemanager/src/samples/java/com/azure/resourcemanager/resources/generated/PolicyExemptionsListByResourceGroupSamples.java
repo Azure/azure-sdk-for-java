@@ -9,7 +9,9 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyExemptionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
+     * listPolicyExemptionsForResourceGroup.json
      */
     /**
      * Sample code: List policy exemptions that apply to a resource group.

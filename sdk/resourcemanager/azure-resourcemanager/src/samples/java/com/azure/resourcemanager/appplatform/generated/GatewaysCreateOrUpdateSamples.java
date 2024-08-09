@@ -25,13 +25,16 @@ public final class GatewaysCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewaysCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGateways().createOrUpdate("myResourceGroup", "myservice",
-            "default",
-            new GatewayResourceInner().withProperties(new GatewayProperties().withPublicProperty(true)
-                .withApms(Arrays.asList(new ApmReference().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights")))
-                .withResourceRequests(new GatewayResourceRequests().withCpu("1").withMemory("1G"))).withSku(
-                    new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGateways()
+            .createOrUpdate("myResourceGroup", "myservice", "default", new GatewayResourceInner()
+                .withProperties(new GatewayProperties().withPublicProperty(true)
+                    .withApms(Arrays.asList(new ApmReference().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights")))
+                    .withResourceRequests(new GatewayResourceRequests().withCpu("1").withMemory("1G")))
+                .withSku(new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,61 +6,58 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of redirect configuration of the application gateway.
  */
 @Fluent
-public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
+public final class ApplicationGatewayRedirectConfigurationPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayRedirectConfigurationPropertiesFormat> {
     /*
      * HTTP redirection type.
      */
-    @JsonProperty(value = "redirectType")
     private ApplicationGatewayRedirectType redirectType;
 
     /*
      * Reference to a listener to redirect the request to.
      */
-    @JsonProperty(value = "targetListener")
     private SubResource targetListener;
 
     /*
      * Url to redirect the request to.
      */
-    @JsonProperty(value = "targetUrl")
     private String targetUrl;
 
     /*
      * Include path in the redirected url.
      */
-    @JsonProperty(value = "includePath")
     private Boolean includePath;
 
     /*
      * Include query string in the redirected url.
      */
-    @JsonProperty(value = "includeQueryString")
     private Boolean includeQueryString;
 
     /*
      * Request routing specifying redirect configuration.
      */
-    @JsonProperty(value = "requestRoutingRules")
     private List<SubResource> requestRoutingRules;
 
     /*
      * Url path maps specifying default redirect configuration.
      */
-    @JsonProperty(value = "urlPathMaps")
     private List<SubResource> urlPathMaps;
 
     /*
      * Path rules specifying redirect configuration.
      */
-    @JsonProperty(value = "pathRules")
     private List<SubResource> pathRules;
 
     /**
@@ -237,5 +234,73 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("redirectType", this.redirectType == null ? null : this.redirectType.toString());
+        jsonWriter.writeJsonField("targetListener", this.targetListener);
+        jsonWriter.writeStringField("targetUrl", this.targetUrl);
+        jsonWriter.writeBooleanField("includePath", this.includePath);
+        jsonWriter.writeBooleanField("includeQueryString", this.includeQueryString);
+        jsonWriter.writeArrayField("requestRoutingRules", this.requestRoutingRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("urlPathMaps", this.urlPathMaps, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pathRules", this.pathRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayRedirectConfigurationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayRedirectConfigurationPropertiesFormat if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayRedirectConfigurationPropertiesFormat.
+     */
+    public static ApplicationGatewayRedirectConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayRedirectConfigurationPropertiesFormat deserializedApplicationGatewayRedirectConfigurationPropertiesFormat
+                = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("redirectType".equals(fieldName)) {
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.redirectType
+                        = ApplicationGatewayRedirectType.fromString(reader.getString());
+                } else if ("targetListener".equals(fieldName)) {
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.targetListener
+                        = SubResource.fromJson(reader);
+                } else if ("targetUrl".equals(fieldName)) {
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.targetUrl = reader.getString();
+                } else if ("includePath".equals(fieldName)) {
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.includePath
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeQueryString".equals(fieldName)) {
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.includeQueryString
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requestRoutingRules".equals(fieldName)) {
+                    List<SubResource> requestRoutingRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.requestRoutingRules
+                        = requestRoutingRules;
+                } else if ("urlPathMaps".equals(fieldName)) {
+                    List<SubResource> urlPathMaps = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.urlPathMaps = urlPathMaps;
+                } else if ("pathRules".equals(fieldName)) {
+                    List<SubResource> pathRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayRedirectConfigurationPropertiesFormat.pathRules = pathRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayRedirectConfigurationPropertiesFormat;
+        });
     }
 }

@@ -276,7 +276,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetMqttAuthenticationToken() {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setWebPubSubClientAccess(WebPubSubClientProtocol.MQTT);
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.MQTT);
         StepVerifier.create(client.getClientAccessToken(options))
             .assertNext(token -> {
                 Assertions.assertNotNull(token);

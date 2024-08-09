@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** timeOffRequest. */
+/**
+ * timeOffRequest.
+ */
 @Fluent
 public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleChangeRequest {
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * The reason for the time off.
      */
-    @JsonProperty(value = "timeOffReasonId")
     private String timeOffReasonId;
 
     /*
      * timeOffRequest
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTimeOffRequest class. */
+    /**
+     * Creates an instance of MicrosoftGraphTimeOffRequest class.
+     */
     public MicrosoftGraphTimeOffRequest() {
     }
 
     /**
      * Get the endDateTime property: The Timestamp type represents date and time information using ISO 8601 format and
      * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -58,7 +61,7 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
     /**
      * Set the endDateTime property: The Timestamp type represents date and time information using ISO 8601 format and
      * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the MicrosoftGraphTimeOffRequest object itself.
      */
@@ -70,7 +73,7 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
     /**
      * Get the startDateTime property: The Timestamp type represents date and time information using ISO 8601 format and
      * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -80,7 +83,7 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
     /**
      * Set the startDateTime property: The Timestamp type represents date and time information using ISO 8601 format and
      * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphTimeOffRequest object itself.
      */
@@ -91,7 +94,7 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
 
     /**
      * Get the timeOffReasonId property: The reason for the time off.
-     *
+     * 
      * @return the timeOffReasonId value.
      */
     public String timeOffReasonId() {
@@ -100,7 +103,7 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
 
     /**
      * Set the timeOffReasonId property: The reason for the time off.
-     *
+     * 
      * @param timeOffReasonId the timeOffReasonId value to set.
      * @return the MicrosoftGraphTimeOffRequest object itself.
      */
@@ -111,17 +114,16 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
 
     /**
      * Get the additionalProperties property: timeOffRequest.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: timeOffRequest.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTimeOffRequest object itself.
      */
@@ -130,92 +132,108 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withAssignedTo(MicrosoftGraphScheduleChangeRequestActor assignedTo) {
         super.withAssignedTo(assignedTo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withManagerActionDateTime(OffsetDateTime managerActionDateTime) {
         super.withManagerActionDateTime(managerActionDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withManagerActionMessage(String managerActionMessage) {
         super.withManagerActionMessage(managerActionMessage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withManagerUserId(String managerUserId) {
         super.withManagerUserId(managerUserId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withSenderDateTime(OffsetDateTime senderDateTime) {
         super.withSenderDateTime(senderDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withSenderMessage(String senderMessage) {
         super.withSenderMessage(senderMessage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withSenderUserId(String senderUserId) {
         super.withSenderUserId(senderUserId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withState(MicrosoftGraphScheduleChangeState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffRequest withId(String id) {
         super.withId(id);
@@ -224,11 +242,119 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("assignedTo", assignedTo() == null ? null : assignedTo().toString());
+        jsonWriter.writeStringField("managerActionDateTime",
+            managerActionDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(managerActionDateTime()));
+        jsonWriter.writeStringField("managerActionMessage", managerActionMessage());
+        jsonWriter.writeStringField("managerUserId", managerUserId());
+        jsonWriter.writeStringField("senderDateTime",
+            senderDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(senderDateTime()));
+        jsonWriter.writeStringField("senderMessage", senderMessage());
+        jsonWriter.writeStringField("senderUserId", senderUserId());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeStringField("timeOffReasonId", this.timeOffReasonId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTimeOffRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTimeOffRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTimeOffRequest.
+     */
+    public static MicrosoftGraphTimeOffRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTimeOffRequest deserializedMicrosoftGraphTimeOffRequest = new MicrosoftGraphTimeOffRequest();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("assignedTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest
+                        .withAssignedTo(MicrosoftGraphScheduleChangeRequestActor.fromString(reader.getString()));
+                } else if ("managerActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withManagerActionDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("managerActionMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withManagerActionMessage(reader.getString());
+                } else if ("managerUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withManagerUserId(reader.getString());
+                } else if ("senderDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withSenderDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("senderMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withSenderMessage(reader.getString());
+                } else if ("senderUserId".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.withSenderUserId(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest
+                        .withState(MicrosoftGraphScheduleChangeState.fromString(reader.getString()));
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeOffReasonId".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffRequest.timeOffReasonId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTimeOffRequest.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTimeOffRequest;
+        });
     }
 }

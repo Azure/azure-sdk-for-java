@@ -7,8 +7,11 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.VpnClientRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * VPN client root certificate of virtual network gateway.
@@ -18,19 +21,16 @@ public final class VpnClientRootCertificate extends SubResource {
     /*
      * Properties of the vpn client root certificate.
      */
-    @JsonProperty(value = "properties", required = true)
     private VpnClientRootCertificatePropertiesFormat innerProperties = new VpnClientRootCertificatePropertiesFormat();
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -136,4 +136,50 @@ public final class VpnClientRootCertificate extends SubResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VpnClientRootCertificate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnClientRootCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnClientRootCertificate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VpnClientRootCertificate.
+     */
+    public static VpnClientRootCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnClientRootCertificate deserializedVpnClientRootCertificate = new VpnClientRootCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVpnClientRootCertificate.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVpnClientRootCertificate.innerProperties
+                        = VpnClientRootCertificatePropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedVpnClientRootCertificate.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVpnClientRootCertificate.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnClientRootCertificate;
+        });
+    }
 }

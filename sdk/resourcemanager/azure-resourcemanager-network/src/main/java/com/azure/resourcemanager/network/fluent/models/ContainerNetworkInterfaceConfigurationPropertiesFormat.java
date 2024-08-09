@@ -6,31 +6,33 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Container network interface configuration properties.
  */
 @Fluent
-public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
+public final class ContainerNetworkInterfaceConfigurationPropertiesFormat
+    implements JsonSerializable<ContainerNetworkInterfaceConfigurationPropertiesFormat> {
     /*
      * A list of ip configurations of the container network interface configuration.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<IpConfigurationProfileInner> ipConfigurations;
 
     /*
      * A list of container network interfaces created from this container network interface configuration.
      */
-    @JsonProperty(value = "containerNetworkInterfaces")
     private List<SubResource> containerNetworkInterfaces;
 
     /*
      * The provisioning state of the container network interface configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -102,5 +104,57 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("containerNetworkInterfaces", this.containerNetworkInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerNetworkInterfaceConfigurationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerNetworkInterfaceConfigurationPropertiesFormat if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerNetworkInterfaceConfigurationPropertiesFormat.
+     */
+    public static ContainerNetworkInterfaceConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerNetworkInterfaceConfigurationPropertiesFormat deserializedContainerNetworkInterfaceConfigurationPropertiesFormat
+                = new ContainerNetworkInterfaceConfigurationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurations".equals(fieldName)) {
+                    List<IpConfigurationProfileInner> ipConfigurations
+                        = reader.readArray(reader1 -> IpConfigurationProfileInner.fromJson(reader1));
+                    deserializedContainerNetworkInterfaceConfigurationPropertiesFormat.ipConfigurations
+                        = ipConfigurations;
+                } else if ("containerNetworkInterfaces".equals(fieldName)) {
+                    List<SubResource> containerNetworkInterfaces
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedContainerNetworkInterfaceConfigurationPropertiesFormat.containerNetworkInterfaces
+                        = containerNetworkInterfaces;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceConfigurationPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerNetworkInterfaceConfigurationPropertiesFormat;
+        });
     }
 }

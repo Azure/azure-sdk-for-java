@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** timeOff. */
+/**
+ * timeOff.
+ */
 @Fluent
 public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEntity {
     /*
      * timeOffItem
      */
-    @JsonProperty(value = "draftTimeOff")
     private MicrosoftGraphTimeOffItem draftTimeOff;
 
     /*
      * timeOffItem
      */
-    @JsonProperty(value = "sharedTimeOff")
     private MicrosoftGraphTimeOffItem sharedTimeOff;
 
     /*
      * ID of the user assigned to the timeOff. Required.
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
     /*
      * timeOff
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTimeOff class. */
+    /**
+     * Creates an instance of MicrosoftGraphTimeOff class.
+     */
     public MicrosoftGraphTimeOff() {
     }
 
     /**
      * Get the draftTimeOff property: timeOffItem.
-     *
+     * 
      * @return the draftTimeOff value.
      */
     public MicrosoftGraphTimeOffItem draftTimeOff() {
@@ -54,7 +57,7 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Set the draftTimeOff property: timeOffItem.
-     *
+     * 
      * @param draftTimeOff the draftTimeOff value to set.
      * @return the MicrosoftGraphTimeOff object itself.
      */
@@ -65,7 +68,7 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Get the sharedTimeOff property: timeOffItem.
-     *
+     * 
      * @return the sharedTimeOff value.
      */
     public MicrosoftGraphTimeOffItem sharedTimeOff() {
@@ -74,7 +77,7 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Set the sharedTimeOff property: timeOffItem.
-     *
+     * 
      * @param sharedTimeOff the sharedTimeOff value to set.
      * @return the MicrosoftGraphTimeOff object itself.
      */
@@ -85,7 +88,7 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Get the userId property: ID of the user assigned to the timeOff. Required.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -94,7 +97,7 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Set the userId property: ID of the user assigned to the timeOff. Required.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the MicrosoftGraphTimeOff object itself.
      */
@@ -105,17 +108,16 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Get the additionalProperties property: timeOff.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: timeOff.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTimeOff object itself.
      */
@@ -124,36 +126,36 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOff withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOff withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOff withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOff withId(String id) {
         super.withId(id);
@@ -162,7 +164,7 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -174,5 +176,76 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
         if (sharedTimeOff() != null) {
             sharedTimeOff().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeJsonField("draftTimeOff", this.draftTimeOff);
+        jsonWriter.writeJsonField("sharedTimeOff", this.sharedTimeOff);
+        jsonWriter.writeStringField("userId", this.userId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTimeOff from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTimeOff if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTimeOff.
+     */
+    public static MicrosoftGraphTimeOff fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTimeOff deserializedMicrosoftGraphTimeOff = new MicrosoftGraphTimeOff();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("draftTimeOff".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.draftTimeOff = MicrosoftGraphTimeOffItem.fromJson(reader);
+                } else if ("sharedTimeOff".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.sharedTimeOff = MicrosoftGraphTimeOffItem.fromJson(reader);
+                } else if ("userId".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOff.userId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTimeOff.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTimeOff;
+        });
     }
 }

@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,5 +39,43 @@ public final class PrivateLinkServicePropertiesAutoApproval extends ResourceSet 
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("subscriptions", subscriptions(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServicePropertiesAutoApproval from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServicePropertiesAutoApproval if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkServicePropertiesAutoApproval.
+     */
+    public static PrivateLinkServicePropertiesAutoApproval fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServicePropertiesAutoApproval deserializedPrivateLinkServicePropertiesAutoApproval
+                = new PrivateLinkServicePropertiesAutoApproval();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptions".equals(fieldName)) {
+                    List<String> subscriptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkServicePropertiesAutoApproval.withSubscriptions(subscriptions);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServicePropertiesAutoApproval;
+        });
     }
 }

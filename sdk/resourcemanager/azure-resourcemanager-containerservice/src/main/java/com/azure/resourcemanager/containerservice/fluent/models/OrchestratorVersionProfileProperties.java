@@ -6,20 +6,23 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of an orchestrator version profile.
  */
 @Fluent
-public final class OrchestratorVersionProfileProperties {
+public final class OrchestratorVersionProfileProperties
+    implements JsonSerializable<OrchestratorVersionProfileProperties> {
     /*
      * List of orchestrator version profiles.
      */
-    @JsonProperty(value = "orchestrators", required = true)
     private List<OrchestratorVersionProfile> orchestrators;
 
     /**
@@ -30,7 +33,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -39,7 +42,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileProperties object itself.
      */
@@ -50,7 +53,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -64,4 +67,44 @@ public final class OrchestratorVersionProfileProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrchestratorVersionProfileProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("orchestrators", this.orchestrators, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestratorVersionProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestratorVersionProfileProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrchestratorVersionProfileProperties.
+     */
+    public static OrchestratorVersionProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestratorVersionProfileProperties deserializedOrchestratorVersionProfileProperties
+                = new OrchestratorVersionProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orchestrators".equals(fieldName)) {
+                    List<OrchestratorVersionProfile> orchestrators
+                        = reader.readArray(reader1 -> OrchestratorVersionProfile.fromJson(reader1));
+                    deserializedOrchestratorVersionProfileProperties.orchestrators = orchestrators;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestratorVersionProfileProperties;
+        });
+    }
 }

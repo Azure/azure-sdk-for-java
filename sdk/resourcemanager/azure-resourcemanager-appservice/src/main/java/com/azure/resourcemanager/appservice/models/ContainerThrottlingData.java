@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ContainerThrottlingData model.
  */
 @Fluent
-public final class ContainerThrottlingData {
+public final class ContainerThrottlingData implements JsonSerializable<ContainerThrottlingData> {
     /*
      * The periods property.
      */
-    @JsonProperty(value = "periods")
     private Integer periods;
 
     /*
      * The throttledPeriods property.
      */
-    @JsonProperty(value = "throttledPeriods")
     private Integer throttledPeriods;
 
     /*
      * The throttledTime property.
      */
-    @JsonProperty(value = "throttledTime")
     private Integer throttledTime;
 
     /**
@@ -102,5 +103,47 @@ public final class ContainerThrottlingData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("periods", this.periods);
+        jsonWriter.writeNumberField("throttledPeriods", this.throttledPeriods);
+        jsonWriter.writeNumberField("throttledTime", this.throttledTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerThrottlingData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerThrottlingData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerThrottlingData.
+     */
+    public static ContainerThrottlingData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerThrottlingData deserializedContainerThrottlingData = new ContainerThrottlingData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("periods".equals(fieldName)) {
+                    deserializedContainerThrottlingData.periods = reader.getNullable(JsonReader::getInt);
+                } else if ("throttledPeriods".equals(fieldName)) {
+                    deserializedContainerThrottlingData.throttledPeriods = reader.getNullable(JsonReader::getInt);
+                } else if ("throttledTime".equals(fieldName)) {
+                    deserializedContainerThrottlingData.throttledTime = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerThrottlingData;
+        });
     }
 }

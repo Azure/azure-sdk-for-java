@@ -36,10 +36,6 @@ public class KeyTests extends KeyVaultManagementTest {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canCRUDKey() throws Exception {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Vault vault = createVault();
         String keyName = generateRandomResourceName("key", 20);
 
@@ -270,7 +266,7 @@ public class KeyTests extends KeyVaultManagementTest {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
+                .forUser(azureCliSignedInUser().userPrincipalName())
                 .allowKeyAllPermissions()
                 .attach()
                 .create();

@@ -6,59 +6,55 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings properties for Active Directory (AD).
  */
 @Fluent
-public final class ActiveDirectoryProperties {
+public final class ActiveDirectoryProperties implements JsonSerializable<ActiveDirectoryProperties> {
     /*
      * Specifies the primary domain that the AD DNS server is authoritative for.
      */
-    @JsonProperty(value = "domainName", required = true)
     private String domainName;
 
     /*
      * Specifies the NetBIOS domain name.
      */
-    @JsonProperty(value = "netBiosDomainName")
     private String netBiosDomainName;
 
     /*
      * Specifies the Active Directory forest to get.
      */
-    @JsonProperty(value = "forestName")
     private String forestName;
 
     /*
      * Specifies the domain GUID.
      */
-    @JsonProperty(value = "domainGuid", required = true)
     private String domainGuid;
 
     /*
      * Specifies the security identifier (SID).
      */
-    @JsonProperty(value = "domainSid")
     private String domainSid;
 
     /*
      * Specifies the security identifier (SID) for Azure Storage.
      */
-    @JsonProperty(value = "azureStorageSid")
     private String azureStorageSid;
 
     /*
      * Specifies the Active Directory SAMAccountName for Azure Storage.
      */
-    @JsonProperty(value = "samAccountName")
     private String samAccountName;
 
     /*
      * Specifies the Active Directory account type for Azure Storage.
      */
-    @JsonProperty(value = "accountType")
     private ActiveDirectoryPropertiesAccountType accountType;
 
     /**
@@ -246,4 +242,63 @@ public final class ActiveDirectoryProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActiveDirectoryProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeStringField("domainGuid", this.domainGuid);
+        jsonWriter.writeStringField("netBiosDomainName", this.netBiosDomainName);
+        jsonWriter.writeStringField("forestName", this.forestName);
+        jsonWriter.writeStringField("domainSid", this.domainSid);
+        jsonWriter.writeStringField("azureStorageSid", this.azureStorageSid);
+        jsonWriter.writeStringField("samAccountName", this.samAccountName);
+        jsonWriter.writeStringField("accountType", this.accountType == null ? null : this.accountType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveDirectoryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveDirectoryProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActiveDirectoryProperties.
+     */
+    public static ActiveDirectoryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveDirectoryProperties deserializedActiveDirectoryProperties = new ActiveDirectoryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainName".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.domainName = reader.getString();
+                } else if ("domainGuid".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.domainGuid = reader.getString();
+                } else if ("netBiosDomainName".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.netBiosDomainName = reader.getString();
+                } else if ("forestName".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.forestName = reader.getString();
+                } else if ("domainSid".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.domainSid = reader.getString();
+                } else if ("azureStorageSid".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.azureStorageSid = reader.getString();
+                } else if ("samAccountName".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.samAccountName = reader.getString();
+                } else if ("accountType".equals(fieldName)) {
+                    deserializedActiveDirectoryProperties.accountType
+                        = ActiveDirectoryPropertiesAccountType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveDirectoryProperties;
+        });
+    }
 }

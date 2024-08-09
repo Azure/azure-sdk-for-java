@@ -6,23 +6,25 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Blob range.
  */
 @Fluent
-public final class BlobRestoreRange {
+public final class BlobRestoreRange implements JsonSerializable<BlobRestoreRange> {
     /*
      * Blob start range. This is inclusive. Empty means account start.
      */
-    @JsonProperty(value = "startRange", required = true)
     private String startRange;
 
     /*
      * Blob end range. This is exclusive. Empty means account end.
      */
-    @JsonProperty(value = "endRange", required = true)
     private String endRange;
 
     /**
@@ -88,4 +90,44 @@ public final class BlobRestoreRange {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobRestoreRange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startRange", this.startRange);
+        jsonWriter.writeStringField("endRange", this.endRange);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobRestoreRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobRestoreRange if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobRestoreRange.
+     */
+    public static BlobRestoreRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobRestoreRange deserializedBlobRestoreRange = new BlobRestoreRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startRange".equals(fieldName)) {
+                    deserializedBlobRestoreRange.startRange = reader.getString();
+                } else if ("endRange".equals(fieldName)) {
+                    deserializedBlobRestoreRange.endRange = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobRestoreRange;
+        });
+    }
 }

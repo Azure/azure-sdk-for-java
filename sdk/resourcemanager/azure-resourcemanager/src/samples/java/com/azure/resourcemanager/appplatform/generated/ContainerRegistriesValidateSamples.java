@@ -21,10 +21,15 @@ public final class ContainerRegistriesValidateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerRegistriesValidate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getContainerRegistries().validate("myResourceGroup",
-            "my-service", "my-container-registry",
-            new ContainerRegistryProperties().withCredentials(new ContainerRegistryBasicCredentials()
-                .withServer("myServer").withUsername("myUsername").withPassword("fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getContainerRegistries()
+            .validate("myResourceGroup", "my-service", "my-container-registry",
+                new ContainerRegistryProperties()
+                    .withCredentials(new ContainerRegistryBasicCredentials().withServer("myServer")
+                        .withUsername("myUsername")
+                        .withPassword("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 }

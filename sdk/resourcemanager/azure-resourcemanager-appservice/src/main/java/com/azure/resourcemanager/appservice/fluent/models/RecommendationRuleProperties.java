@@ -5,94 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * RecommendationRule resource specific properties.
  */
 @Fluent
-public final class RecommendationRuleProperties {
+public final class RecommendationRuleProperties implements JsonSerializable<RecommendationRuleProperties> {
     /*
      * Unique name of the rule.
      */
-    @JsonProperty(value = "recommendationName")
     private String recommendationName;
 
     /*
      * UI friendly name of the rule.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Localized name of the rule (Good for UI).
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Recommendation ID of an associated recommendation object tied to the rule, if exists.
      * If such an object doesn't exist, it is set to null.
      */
-    @JsonProperty(value = "recommendationId")
     private UUID recommendationId;
 
     /*
      * Localized detailed description of the rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Name of action that is recommended by this rule in string.
      */
-    @JsonProperty(value = "actionName")
     private String actionName;
 
     /*
      * Level of impact indicating how critical this rule is.
      */
-    @JsonProperty(value = "level")
     private NotificationLevel level;
 
     /*
      * List of available channels that this rule applies.
      */
-    @JsonProperty(value = "channels")
     private Channels channels;
 
     /*
      * The list of category tags that this recommendation rule belongs to.
      */
-    @JsonProperty(value = "categoryTags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> categoryTags;
 
     /*
      * True if this is associated with a dynamically added rule
      */
-    @JsonProperty(value = "isDynamic")
     private Boolean isDynamic;
 
     /*
      * Extension name of the portal if exists. Applicable to dynamic rule only.
      */
-    @JsonProperty(value = "extensionName")
     private String extensionName;
 
     /*
      * Deep link to a blade on the portal. Applicable to dynamic rule only.
      */
-    @JsonProperty(value = "bladeName")
     private String bladeName;
 
     /*
      * Forward link to an external document associated with the rule. Applicable to dynamic rule only.
      */
-    @JsonProperty(value = "forwardLink")
     private String forwardLink;
 
     /**
@@ -362,5 +354,78 @@ public final class RecommendationRuleProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recommendationName", this.recommendationName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("recommendationId", Objects.toString(this.recommendationId, null));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("actionName", this.actionName);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("channels", this.channels == null ? null : this.channels.toString());
+        jsonWriter.writeBooleanField("isDynamic", this.isDynamic);
+        jsonWriter.writeStringField("extensionName", this.extensionName);
+        jsonWriter.writeStringField("bladeName", this.bladeName);
+        jsonWriter.writeStringField("forwardLink", this.forwardLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendationRuleProperties.
+     */
+    public static RecommendationRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationRuleProperties deserializedRecommendationRuleProperties = new RecommendationRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recommendationName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.recommendationName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.displayName = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.message = reader.getString();
+                } else if ("recommendationId".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.recommendationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.description = reader.getString();
+                } else if ("actionName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.actionName = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.level = NotificationLevel.fromString(reader.getString());
+                } else if ("channels".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.channels = Channels.fromString(reader.getString());
+                } else if ("categoryTags".equals(fieldName)) {
+                    List<String> categoryTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecommendationRuleProperties.categoryTags = categoryTags;
+                } else if ("isDynamic".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.isDynamic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("extensionName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.extensionName = reader.getString();
+                } else if ("bladeName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.bladeName = reader.getString();
+                } else if ("forwardLink".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.forwardLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationRuleProperties;
+        });
     }
 }

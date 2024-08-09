@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GalleryTargetExtendedLocation model.
  */
 @Fluent
-public final class GalleryTargetExtendedLocation {
+public final class GalleryTargetExtendedLocation implements JsonSerializable<GalleryTargetExtendedLocation> {
     /*
      * The name of the region.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The name of the extended location.
      */
-    @JsonProperty(value = "extendedLocation")
     private GalleryExtendedLocation extendedLocation;
 
     /*
      * The number of replicas of the Image Version to be created per extended location. This property is updatable.
      */
-    @JsonProperty(value = "extendedLocationReplicaCount")
     private Integer extendedLocationReplicaCount;
 
     /*
      * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
-    @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /*
      * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
      * artifact.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
 
     /**
@@ -167,5 +166,58 @@ public final class GalleryTargetExtendedLocation {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeNumberField("extendedLocationReplicaCount", this.extendedLocationReplicaCount);
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryTargetExtendedLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryTargetExtendedLocation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryTargetExtendedLocation.
+     */
+    public static GalleryTargetExtendedLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryTargetExtendedLocation deserializedGalleryTargetExtendedLocation
+                = new GalleryTargetExtendedLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedGalleryTargetExtendedLocation.name = reader.getString();
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedGalleryTargetExtendedLocation.extendedLocation
+                        = GalleryExtendedLocation.fromJson(reader);
+                } else if ("extendedLocationReplicaCount".equals(fieldName)) {
+                    deserializedGalleryTargetExtendedLocation.extendedLocationReplicaCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedGalleryTargetExtendedLocation.storageAccountType
+                        = StorageAccountType.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedGalleryTargetExtendedLocation.encryption = EncryptionImages.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryTargetExtendedLocation;
+        });
     }
 }

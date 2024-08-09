@@ -59,7 +59,7 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
-        final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientAccess();
+        final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientProtocol();
         final String path = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT)
             ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
@@ -91,8 +91,8 @@ public final class WebPubSubServiceAsyncClient {
         if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
             options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
         }
-        if (options.getWebPubSubClientAccess() != null) {
-            requestOptions.addQueryParam("clientType", options.getWebPubSubClientAccess().toString());
+        if (options.getWebPubSubClientProtocol() != null) {
+            requestOptions.addQueryParam("clientType", options.getWebPubSubClientProtocol().toString());
         }
         return requestOptions;
     }

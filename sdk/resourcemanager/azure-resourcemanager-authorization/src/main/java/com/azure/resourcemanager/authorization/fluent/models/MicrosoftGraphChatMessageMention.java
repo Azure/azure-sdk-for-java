@@ -5,48 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** chatMessageMention. */
+/**
+ * chatMessageMention.
+ */
 @Fluent
-public final class MicrosoftGraphChatMessageMention {
+public final class MicrosoftGraphChatMessageMention implements JsonSerializable<MicrosoftGraphChatMessageMention> {
     /*
      * Index of an entity being mentioned in the specified chatMessage. Matches the {index} value in the corresponding
      * <at id='{index}'> tag in the message body.
      */
-    @JsonProperty(value = "id")
     private Integer id;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "mentioned")
     private MicrosoftGraphIdentitySet mentioned;
 
     /*
      * String used to represent the mention. For example, a user's display name, a team name.
      */
-    @JsonProperty(value = "mentionText")
     private String mentionText;
 
     /*
      * chatMessageMention
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChatMessageMention class. */
+    /**
+     * Creates an instance of MicrosoftGraphChatMessageMention class.
+     */
     public MicrosoftGraphChatMessageMention() {
     }
 
     /**
      * Get the id property: Index of an entity being mentioned in the specified chatMessage. Matches the {index} value
      * in the corresponding &lt;at id='{index}'&gt; tag in the message body.
-     *
+     * 
      * @return the id value.
      */
     public Integer id() {
@@ -56,7 +58,7 @@ public final class MicrosoftGraphChatMessageMention {
     /**
      * Set the id property: Index of an entity being mentioned in the specified chatMessage. Matches the {index} value
      * in the corresponding &lt;at id='{index}'&gt; tag in the message body.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphChatMessageMention object itself.
      */
@@ -67,7 +69,7 @@ public final class MicrosoftGraphChatMessageMention {
 
     /**
      * Get the mentioned property: identitySet.
-     *
+     * 
      * @return the mentioned value.
      */
     public MicrosoftGraphIdentitySet mentioned() {
@@ -76,7 +78,7 @@ public final class MicrosoftGraphChatMessageMention {
 
     /**
      * Set the mentioned property: identitySet.
-     *
+     * 
      * @param mentioned the mentioned value to set.
      * @return the MicrosoftGraphChatMessageMention object itself.
      */
@@ -88,7 +90,7 @@ public final class MicrosoftGraphChatMessageMention {
     /**
      * Get the mentionText property: String used to represent the mention. For example, a user's display name, a team
      * name.
-     *
+     * 
      * @return the mentionText value.
      */
     public String mentionText() {
@@ -98,7 +100,7 @@ public final class MicrosoftGraphChatMessageMention {
     /**
      * Set the mentionText property: String used to represent the mention. For example, a user's display name, a team
      * name.
-     *
+     * 
      * @param mentionText the mentionText value to set.
      * @return the MicrosoftGraphChatMessageMention object itself.
      */
@@ -109,17 +111,16 @@ public final class MicrosoftGraphChatMessageMention {
 
     /**
      * Get the additionalProperties property: chatMessageMention.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: chatMessageMention.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChatMessageMention object itself.
      */
@@ -128,22 +129,68 @@ public final class MicrosoftGraphChatMessageMention {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mentioned() != null) {
             mentioned().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeJsonField("mentioned", this.mentioned);
+        jsonWriter.writeStringField("mentionText", this.mentionText);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChatMessageMention from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChatMessageMention if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChatMessageMention.
+     */
+    public static MicrosoftGraphChatMessageMention fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChatMessageMention deserializedMicrosoftGraphChatMessageMention
+                = new MicrosoftGraphChatMessageMention();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageMention.id = reader.getNullable(JsonReader::getInt);
+                } else if ("mentioned".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageMention.mentioned = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("mentionText".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessageMention.mentionText = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChatMessageMention.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChatMessageMention;
+        });
     }
 }

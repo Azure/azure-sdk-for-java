@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The PutLockHeaders model. */
+/**
+ * The PutLockHeaders model.
+ */
 @Fluent
 public final class PutLockHeaders {
     /*
@@ -26,7 +28,7 @@ public final class PutLockHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PutLockHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PutLockHeaders(HttpHeaders rawHeaders) {
@@ -36,7 +38,7 @@ public final class PutLockHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -45,7 +47,7 @@ public final class PutLockHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the PutLockHeaders object itself.
      */
@@ -56,7 +58,7 @@ public final class PutLockHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -65,7 +67,7 @@ public final class PutLockHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the PutLockHeaders object itself.
      */

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * IP Configuration of a VPN Gateway Resource.
  */
 @Fluent
-public final class VpnGatewayIpConfiguration {
+public final class VpnGatewayIpConfiguration implements JsonSerializable<VpnGatewayIpConfiguration> {
     /*
      * The identifier of the IP configuration for a VPN Gateway.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The public IP address of this IP configuration.
      */
-    @JsonProperty(value = "publicIpAddress")
     private String publicIpAddress;
 
     /*
      * The private IP address of this IP configuration.
      */
-    @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
 
     /**
@@ -102,5 +103,47 @@ public final class VpnGatewayIpConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("publicIpAddress", this.publicIpAddress);
+        jsonWriter.writeStringField("privateIpAddress", this.privateIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnGatewayIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnGatewayIpConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnGatewayIpConfiguration.
+     */
+    public static VpnGatewayIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnGatewayIpConfiguration deserializedVpnGatewayIpConfiguration = new VpnGatewayIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVpnGatewayIpConfiguration.id = reader.getString();
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedVpnGatewayIpConfiguration.publicIpAddress = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedVpnGatewayIpConfiguration.privateIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnGatewayIpConfiguration;
+        });
     }
 }

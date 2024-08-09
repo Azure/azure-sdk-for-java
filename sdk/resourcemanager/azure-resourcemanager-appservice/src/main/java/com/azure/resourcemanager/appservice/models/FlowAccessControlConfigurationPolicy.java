@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The access control configuration policy.
  */
 @Fluent
-public final class FlowAccessControlConfigurationPolicy {
+public final class FlowAccessControlConfigurationPolicy
+    implements JsonSerializable<FlowAccessControlConfigurationPolicy> {
     /*
      * The allowed caller IP address ranges.
      */
-    @JsonProperty(value = "allowedCallerIpAddresses")
     private List<IpAddressRange> allowedCallerIpAddresses;
 
     /*
      * The authentication policies for workflow.
      */
-    @JsonProperty(value = "openAuthenticationPolicies")
     private OpenAuthenticationAccessPolicies openAuthenticationPolicies;
 
     /**
@@ -85,5 +88,50 @@ public final class FlowAccessControlConfigurationPolicy {
         if (openAuthenticationPolicies() != null) {
             openAuthenticationPolicies().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedCallerIpAddresses", this.allowedCallerIpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("openAuthenticationPolicies", this.openAuthenticationPolicies);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlowAccessControlConfigurationPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlowAccessControlConfigurationPolicy if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FlowAccessControlConfigurationPolicy.
+     */
+    public static FlowAccessControlConfigurationPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlowAccessControlConfigurationPolicy deserializedFlowAccessControlConfigurationPolicy
+                = new FlowAccessControlConfigurationPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedCallerIpAddresses".equals(fieldName)) {
+                    List<IpAddressRange> allowedCallerIpAddresses
+                        = reader.readArray(reader1 -> IpAddressRange.fromJson(reader1));
+                    deserializedFlowAccessControlConfigurationPolicy.allowedCallerIpAddresses
+                        = allowedCallerIpAddresses;
+                } else if ("openAuthenticationPolicies".equals(fieldName)) {
+                    deserializedFlowAccessControlConfigurationPolicy.openAuthenticationPolicies
+                        = OpenAuthenticationAccessPolicies.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlowAccessControlConfigurationPolicy;
+        });
     }
 }

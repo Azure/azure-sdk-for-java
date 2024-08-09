@@ -32,23 +32,28 @@ import com.azure.resourcemanager.sql.models.ElasticPoolOperationListResult;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ElasticPoolOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ElasticPoolOperationsClient.
+ */
 public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ElasticPoolOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ElasticPoolOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ElasticPoolOperationsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ElasticPoolOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ElasticPoolOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,70 +64,53 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientE")
     public interface ElasticPoolOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/operations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/operations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ElasticPoolOperationListResult>> listByElasticPool(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("elasticPoolName") String elasticPoolName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ElasticPoolOperationListResult>> listByElasticPool(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("elasticPoolName") String elasticPoolName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/operations/{operationId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> cancel(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("elasticPoolName") String elasticPoolName, @PathParam("operationId") UUID operationId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/operations/{operationId}/cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancel(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("elasticPoolName") String elasticPoolName,
-            @PathParam("operationId") UUID operationId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticPoolOperationListResult>> listByElasticPoolNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of operations performed on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of operations performed on the elastic pool along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolSinglePageAsync(
-        String resourceGroupName, String serverName, String elasticPoolName) {
+    private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolSinglePageAsync(String resourceGroupName,
+        String serverName, String elasticPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -136,42 +124,23 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
                 .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByElasticPool(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            elasticPoolName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ElasticPoolOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByElasticPool(this.client.getEndpoint(), resourceGroupName, serverName,
+                elasticPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ElasticPoolOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of operations performed on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param context The context to associate with this operation.
@@ -179,16 +148,14 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of operations performed on the elastic pool along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolSinglePageAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+    private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolSinglePageAsync(String resourceGroupName,
+        String serverName, String elasticPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -202,39 +169,23 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
                 .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByElasticPool(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                elasticPoolName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByElasticPool(this.client.getEndpoint(), resourceGroupName, serverName, elasticPoolName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of operations performed on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,18 +194,17 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return a list of operations performed on the elastic pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ElasticPoolOperationInner> listByElasticPoolAsync(
-        String resourceGroupName, String serverName, String elasticPoolName) {
-        return new PagedFlux<>(
-            () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName),
+    public PagedFlux<ElasticPoolOperationInner> listByElasticPoolAsync(String resourceGroupName, String serverName,
+        String elasticPoolName) {
+        return new PagedFlux<>(() -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName),
             nextLink -> listByElasticPoolNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of operations performed on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param context The context to associate with this operation.
@@ -264,8 +214,8 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return a list of operations performed on the elastic pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ElasticPoolOperationInner> listByElasticPoolAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+    private PagedFlux<ElasticPoolOperationInner> listByElasticPoolAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, Context context) {
         return new PagedFlux<>(
             () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName, context),
             nextLink -> listByElasticPoolNextSinglePageAsync(nextLink, context));
@@ -273,9 +223,9 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
 
     /**
      * Gets a list of operations performed on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,16 +234,16 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return a list of operations performed on the elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ElasticPoolOperationInner> listByElasticPool(
-        String resourceGroupName, String serverName, String elasticPoolName) {
+    public PagedIterable<ElasticPoolOperationInner> listByElasticPool(String resourceGroupName, String serverName,
+        String elasticPoolName) {
         return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName));
     }
 
     /**
      * Gets a list of operations performed on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param context The context to associate with this operation.
@@ -303,16 +253,16 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return a list of operations performed on the elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ElasticPoolOperationInner> listByElasticPool(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+    public PagedIterable<ElasticPoolOperationInner> listByElasticPool(String resourceGroupName, String serverName,
+        String elasticPoolName, Context context) {
         return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName, context));
     }
 
     /**
      * Cancels the asynchronous operation on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param operationId The operation identifier.
@@ -322,13 +272,11 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, UUID operationId) {
+    public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, UUID operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -345,32 +293,20 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            elasticPoolName,
-                            operationId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, serverName,
+                elasticPoolName, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancels the asynchronous operation on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param operationId The operation identifier.
@@ -381,13 +317,11 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, UUID operationId, Context context) {
+    private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, UUID operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -404,29 +338,19 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                elasticPoolName,
-                operationId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.cancel(this.client.getEndpoint(), resourceGroupName, serverName, elasticPoolName, operationId,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
      * Cancels the asynchronous operation on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param operationId The operation identifier.
@@ -436,17 +360,17 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, UUID operationId) {
+    public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String elasticPoolName,
+        UUID operationId) {
         return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Cancels the asynchronous operation on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param operationId The operation identifier.
@@ -457,16 +381,16 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName, String serverName, String elasticPoolName, UUID operationId, Context context) {
+    public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String elasticPoolName,
+        UUID operationId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId, context).block();
     }
 
     /**
      * Cancels the asynchronous operation on the elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The elasticPoolName parameter.
      * @param operationId The operation identifier.
@@ -481,14 +405,13 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list elastic pool operations request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolNextSinglePageAsync(String nextLink) {
@@ -496,62 +419,42 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByElasticPoolNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ElasticPoolOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ElasticPoolOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list elastic pool operations request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ElasticPoolOperationInner>> listByElasticPoolNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByElasticPoolNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByElasticPoolNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

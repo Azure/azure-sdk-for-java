@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** workbookOperationStatus. */
+/**
+ * workbookOperationStatus.
+ */
 public final class MicrosoftGraphWorkbookOperationStatus
     extends ExpandableStringEnum<MicrosoftGraphWorkbookOperationStatus> {
-    /** Static value notStarted for MicrosoftGraphWorkbookOperationStatus. */
+    /**
+     * Static value notStarted for MicrosoftGraphWorkbookOperationStatus.
+     */
     public static final MicrosoftGraphWorkbookOperationStatus NOT_STARTED = fromString("notStarted");
 
-    /** Static value running for MicrosoftGraphWorkbookOperationStatus. */
+    /**
+     * Static value running for MicrosoftGraphWorkbookOperationStatus.
+     */
     public static final MicrosoftGraphWorkbookOperationStatus RUNNING = fromString("running");
 
-    /** Static value succeeded for MicrosoftGraphWorkbookOperationStatus. */
+    /**
+     * Static value succeeded for MicrosoftGraphWorkbookOperationStatus.
+     */
     public static final MicrosoftGraphWorkbookOperationStatus SUCCEEDED = fromString("succeeded");
 
-    /** Static value failed for MicrosoftGraphWorkbookOperationStatus. */
+    /**
+     * Static value failed for MicrosoftGraphWorkbookOperationStatus.
+     */
     public static final MicrosoftGraphWorkbookOperationStatus FAILED = fromString("failed");
 
     /**
      * Creates a new instance of MicrosoftGraphWorkbookOperationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class MicrosoftGraphWorkbookOperationStatus
 
     /**
      * Creates or finds a MicrosoftGraphWorkbookOperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphWorkbookOperationStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphWorkbookOperationStatus fromString(String name) {
         return fromString(name, MicrosoftGraphWorkbookOperationStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphWorkbookOperationStatus values.
-     *
+     * 
      * @return known MicrosoftGraphWorkbookOperationStatus values.
      */
     public static Collection<MicrosoftGraphWorkbookOperationStatus> values() {

@@ -5,64 +5,64 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** physicalOfficeAddress. */
+/**
+ * physicalOfficeAddress.
+ */
 @Fluent
-public final class MicrosoftGraphPhysicalOfficeAddress {
+public final class MicrosoftGraphPhysicalOfficeAddress
+    implements JsonSerializable<MicrosoftGraphPhysicalOfficeAddress> {
     /*
      * The city.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The country or region. It's a free-format string value, for example, 'United States'.
      */
-    @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
 
     /*
      * Office location such as building and office number for an organizational contact.
      */
-    @JsonProperty(value = "officeLocation")
     private String officeLocation;
 
     /*
      * The postal code.
      */
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * The state.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The street.
      */
-    @JsonProperty(value = "street")
     private String street;
 
     /*
      * physicalOfficeAddress
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPhysicalOfficeAddress class. */
+    /**
+     * Creates an instance of MicrosoftGraphPhysicalOfficeAddress class.
+     */
     public MicrosoftGraphPhysicalOfficeAddress() {
     }
 
     /**
      * Get the city property: The city.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -71,7 +71,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Set the city property: The city.
-     *
+     * 
      * @param city the city value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -83,7 +83,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
     /**
      * Get the countryOrRegion property: The country or region. It's a free-format string value, for example, 'United
      * States'.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -93,7 +93,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
     /**
      * Set the countryOrRegion property: The country or region. It's a free-format string value, for example, 'United
      * States'.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -105,7 +105,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
     /**
      * Get the officeLocation property: Office location such as building and office number for an organizational
      * contact.
-     *
+     * 
      * @return the officeLocation value.
      */
     public String officeLocation() {
@@ -115,7 +115,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
     /**
      * Set the officeLocation property: Office location such as building and office number for an organizational
      * contact.
-     *
+     * 
      * @param officeLocation the officeLocation value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -126,7 +126,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Get the postalCode property: The postal code.
-     *
+     * 
      * @return the postalCode value.
      */
     public String postalCode() {
@@ -135,7 +135,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Set the postalCode property: The postal code.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -146,7 +146,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Get the state property: The state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -155,7 +155,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Set the state property: The state.
-     *
+     * 
      * @param state the state value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -166,7 +166,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Get the street property: The street.
-     *
+     * 
      * @return the street value.
      */
     public String street() {
@@ -175,7 +175,7 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Set the street property: The street.
-     *
+     * 
      * @param street the street value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -186,17 +186,16 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
 
     /**
      * Get the additionalProperties property: physicalOfficeAddress.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: physicalOfficeAddress.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPhysicalOfficeAddress object itself.
      */
@@ -205,19 +204,74 @@ public final class MicrosoftGraphPhysicalOfficeAddress {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("countryOrRegion", this.countryOrRegion);
+        jsonWriter.writeStringField("officeLocation", this.officeLocation);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("street", this.street);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPhysicalOfficeAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPhysicalOfficeAddress if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPhysicalOfficeAddress.
+     */
+    public static MicrosoftGraphPhysicalOfficeAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPhysicalOfficeAddress deserializedMicrosoftGraphPhysicalOfficeAddress
+                = new MicrosoftGraphPhysicalOfficeAddress();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("city".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhysicalOfficeAddress.city = reader.getString();
+                } else if ("countryOrRegion".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhysicalOfficeAddress.countryOrRegion = reader.getString();
+                } else if ("officeLocation".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhysicalOfficeAddress.officeLocation = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhysicalOfficeAddress.postalCode = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhysicalOfficeAddress.state = reader.getString();
+                } else if ("street".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhysicalOfficeAddress.street = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPhysicalOfficeAddress.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPhysicalOfficeAddress;
+        });
     }
 }

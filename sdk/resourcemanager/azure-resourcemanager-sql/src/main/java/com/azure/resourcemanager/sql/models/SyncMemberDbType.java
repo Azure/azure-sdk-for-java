@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the sync agent linked database. */
+/**
+ * Type of the sync agent linked database.
+ */
 public final class SyncMemberDbType extends ExpandableStringEnum<SyncMemberDbType> {
-    /** Static value AzureSqlDatabase for SyncMemberDbType. */
+    /**
+     * Static value AzureSqlDatabase for SyncMemberDbType.
+     */
     public static final SyncMemberDbType AZURE_SQL_DATABASE = fromString("AzureSqlDatabase");
 
-    /** Static value SqlServerDatabase for SyncMemberDbType. */
+    /**
+     * Static value SqlServerDatabase for SyncMemberDbType.
+     */
     public static final SyncMemberDbType SQL_SERVER_DATABASE = fromString("SqlServerDatabase");
 
     /**
+     * Creates a new instance of SyncMemberDbType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncMemberDbType() {
+    }
+
+    /**
      * Creates or finds a SyncMemberDbType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SyncMemberDbType.
      */
-    @JsonCreator
     public static SyncMemberDbType fromString(String name) {
         return fromString(name, SyncMemberDbType.class);
     }
 
     /**
      * Gets known SyncMemberDbType values.
-     *
+     * 
      * @return known SyncMemberDbType values.
      */
     public static Collection<SyncMemberDbType> values() {

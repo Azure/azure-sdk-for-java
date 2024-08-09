@@ -28,8 +28,8 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
 
     private static final String EXPORTER_LOGGER_PREFIX = "com.azure.monitor.opentelemetry.exporter";
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogRecordExporter.class);
-    private static final OperationLogger OPERATION_LOGGER =
-        new OperationLogger(AzureMonitorLogRecordExporter.class, "Exporting log");
+    private static final OperationLogger OPERATION_LOGGER
+        = new OperationLogger(AzureMonitorLogRecordExporter.class, "Exporting log");
 
     private final AtomicBoolean stopped = new AtomicBoolean();
     private final LogDataMapper mapper;

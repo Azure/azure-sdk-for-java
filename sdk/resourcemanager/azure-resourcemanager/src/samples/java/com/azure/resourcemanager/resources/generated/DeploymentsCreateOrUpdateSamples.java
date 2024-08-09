@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * PutDeploymentResourceGroup.json
      */
     /**
      * Sample code: Create a deployment that will deploy a template with a uri and queryString.
@@ -42,7 +43,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.
@@ -64,7 +66,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
      * Sample code: Create a deployment that will redeploy another deployment on failure.
@@ -88,7 +91,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
      * Sample code: Create a deployment that will redeploy the last successful deployment on failure.

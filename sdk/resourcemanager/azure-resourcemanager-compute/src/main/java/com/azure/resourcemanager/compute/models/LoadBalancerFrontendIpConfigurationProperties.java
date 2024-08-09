@@ -6,29 +6,31 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a cloud service IP Configuration.
  */
 @Fluent
-public final class LoadBalancerFrontendIpConfigurationProperties {
+public final class LoadBalancerFrontendIpConfigurationProperties
+    implements JsonSerializable<LoadBalancerFrontendIpConfigurationProperties> {
     /*
      * The reference to the public ip address resource.
      */
-    @JsonProperty(value = "publicIPAddress")
     private SubResource publicIpAddress;
 
     /*
      * The reference to the virtual network subnet resource.
      */
-    @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
      * The virtual network private IP address of the IP configuration.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /**
@@ -103,5 +105,49 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerFrontendIpConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerFrontendIpConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancerFrontendIpConfigurationProperties.
+     */
+    public static LoadBalancerFrontendIpConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerFrontendIpConfigurationProperties deserializedLoadBalancerFrontendIpConfigurationProperties
+                = new LoadBalancerFrontendIpConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicIPAddress".equals(fieldName)) {
+                    deserializedLoadBalancerFrontendIpConfigurationProperties.publicIpAddress
+                        = SubResource.fromJson(reader);
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedLoadBalancerFrontendIpConfigurationProperties.subnet = SubResource.fromJson(reader);
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedLoadBalancerFrontendIpConfigurationProperties.privateIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerFrontendIpConfigurationProperties;
+        });
     }
 }
