@@ -26,7 +26,7 @@ public interface SupportsOneDeploy {
      *
      * @param type the deploy type
      * @param file the file to upload
-     * @return the completable of the operation
+     * @return the completion of the operation
      */
     Mono<Void> deployAsync(DeployType type, File file);
 
@@ -45,7 +45,7 @@ public interface SupportsOneDeploy {
      * @param type the deploy type
      * @param file the file to upload
      * @param deployOptions the deploy options
-     * @return the completable of the operation
+     * @return the completion of the operation
      */
     Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions);
 
@@ -64,7 +64,7 @@ public interface SupportsOneDeploy {
      * @param type the deploy type
      * @param file the file to upload
      * @param length the length of the file
-     * @return the completable of the operation
+     * @return the completion of the operation
      */
     Mono<Void> deployAsync(DeployType type, InputStream file, long length);
 
@@ -85,7 +85,7 @@ public interface SupportsOneDeploy {
      * @param file the file to upload
      * @param length the length of the file
      * @param deployOptions the deploy options
-     * @return the completable of the operation
+     * @return the completion of the operation
      */
     Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions);
 

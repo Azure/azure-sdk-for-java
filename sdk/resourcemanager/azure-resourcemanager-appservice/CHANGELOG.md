@@ -2,6 +2,10 @@
 
 ## 2.42.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Added `deploy` function to `FunctionApp` class for deploying zip file to FunctionApp of Flex Consumption plan.
+
 ### Breaking Changes
 
 - Type changed from `Float` to `Integer`, on `maximumInstanceCount` and `instanceMemoryMB` property in `FunctionsScaleAndConcurrency` class. 

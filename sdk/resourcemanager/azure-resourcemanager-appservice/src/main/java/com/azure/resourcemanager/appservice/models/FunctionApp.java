@@ -16,6 +16,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure Function App. */
@@ -145,6 +146,21 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
      * @return the minimum replica count
      */
     Integer minReplicas();
+
+    /**
+     * Deploy a zip file to Azure site, for Flex Consumption plan.
+     *
+     * @param file the file to upload
+     * @return the completion of the operation
+     */
+    Mono<Void> deployAsync(File file);
+
+    /**
+     * Deploy a zip file to Azure site, for Flex Consumption plan.
+     *
+     * @param file the file to upload
+     */
+    void deploy(File file);
 
     /**************************************************************
      * Fluent interfaces to provision a Function App

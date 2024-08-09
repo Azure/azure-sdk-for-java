@@ -24,6 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -193,6 +194,21 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
         } catch (Exception e) {
             LOGGER.logThrowableAsError(e);
             return null;
+        }
+    }
+
+    protected void assertFunctionAppRunning(FunctionApp functionApp) {
+        if (!isPlaybackMode()) {
+            // wait
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+            String name = "linux_function_app";
+            Response<String> response = curl("https://" + functionApp.defaultHostname()
+                + "/api/HttpTrigger-Java?name=" + name);
+            Assertions.assertEquals(200, response.getStatusCode());
+            String body = response.getValue();
+            Assertions.assertNotNull(body);
+            Assertions.assertTrue(body.contains("Hello, " + name));
         }
     }
 
