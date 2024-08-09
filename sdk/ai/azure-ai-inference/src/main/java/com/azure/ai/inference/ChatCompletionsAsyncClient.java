@@ -5,6 +5,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
+import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
@@ -23,7 +24,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * Initializes a new instance of the asynchronous ChatCompletionsClient type.
@@ -162,6 +166,33 @@ public final class ChatCompletionsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getModelInfoWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getModelInfoWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     *
+     * @param options The configuration information for a chat completions request. Completions support a
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ChatCompletions> completeStreaming(CompleteOptions options) {
+        options.setStream(true);
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream
+            = completeWithResponse(BinaryData.fromObject(options),
+            requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        InferenceServerSentEvents<ChatCompletions> chatCompletionsStream
+            = new InferenceServerSentEvents<>(responseStream, ChatCompletions.class);
+        return chatCompletionsStream.getEvents();
     }
 
     /**

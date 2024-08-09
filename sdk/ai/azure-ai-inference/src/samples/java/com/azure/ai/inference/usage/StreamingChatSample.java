@@ -6,7 +6,7 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.implementation.models.CompleteOptions;
+import com.azure.ai.inference.models.CompleteOptions;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -15,7 +15,6 @@ import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public final class StreamingChatSample {
      /**
