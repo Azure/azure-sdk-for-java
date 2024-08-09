@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The display information for a container registry operation.
  */
 @Fluent
-public final class OperationDisplayDefinition {
+public final class OperationDisplayDefinition implements JsonSerializable<OperationDisplayDefinition> {
     /*
      * The resource provider name: Microsoft.ContainerRegistry.
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * The resource on which the operation is performed.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * The operation that users can perform.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * The description for the operation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -128,5 +128,50 @@ public final class OperationDisplayDefinition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDisplayDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDisplayDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDisplayDefinition.
+     */
+    public static OperationDisplayDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDisplayDefinition deserializedOperationDisplayDefinition = new OperationDisplayDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationDisplayDefinition.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationDisplayDefinition.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplayDefinition.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationDisplayDefinition.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDisplayDefinition;
+        });
     }
 }

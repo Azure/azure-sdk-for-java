@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The CheckRevisionsHeaders model. */
+/**
+ * The CheckRevisionsHeaders model.
+ */
 @Fluent
 public final class CheckRevisionsHeaders {
     /*
@@ -26,7 +28,7 @@ public final class CheckRevisionsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CheckRevisionsHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CheckRevisionsHeaders(HttpHeaders rawHeaders) {
@@ -36,7 +38,7 @@ public final class CheckRevisionsHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -45,7 +47,7 @@ public final class CheckRevisionsHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the CheckRevisionsHeaders object itself.
      */
@@ -56,7 +58,7 @@ public final class CheckRevisionsHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -65,7 +67,7 @@ public final class CheckRevisionsHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the CheckRevisionsHeaders object itself.
      */

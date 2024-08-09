@@ -24,18 +24,22 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
     public abstract void modelLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void getModelThrowsIfModelDoesNotExist(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void createModelThrowsIfModelAlreadyExists(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion);
 
     @Test
     public abstract void listModelsMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void getModelThrowsIfModelIdInvalid(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void getModelThrowsIfModelIdInvalid(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion);
 
-    static void createModelsRunner(String buildingModelId, String floorModelId, String hvacModelId, String wardModelId, Consumer<List<String>> createModelsTestRunner) {
+    static void createModelsRunner(String buildingModelId, String floorModelId, String hvacModelId, String wardModelId,
+        Consumer<List<String>> createModelsTestRunner) {
         String modelBuilding = TestAssetsHelper.getBuildingModelPayload(buildingModelId, hvacModelId, floorModelId);
         String modelHvac = TestAssetsHelper.getHvacModelPayload(hvacModelId, floorModelId);
         String modelWard = TestAssetsHelper.getWardModelPayload(wardModelId);
@@ -57,7 +61,8 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
         deleteModelRunner.accept(modelId);
     }
 
-    static void assertModelDataAreEqual(DigitalTwinsModelData expected, DigitalTwinsModelData actual, boolean compareModel) {
+    static void assertModelDataAreEqual(DigitalTwinsModelData expected, DigitalTwinsModelData actual,
+        boolean compareModel) {
         assertEquals(expected.getModelId(), actual.getModelId());
         assertEquals(expected.getUploadedOn(), actual.getUploadedOn());
 

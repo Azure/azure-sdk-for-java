@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Resource for a regional service location.
  */
 @Immutable
-public class RegionalServiceResource {
+public class RegionalServiceResource implements JsonSerializable<RegionalServiceResource> {
     /*
      * The regional service name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The location name.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Describes the status of a service.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceStatus status;
 
     /**
@@ -46,12 +47,34 @@ public class RegionalServiceResource {
     }
 
     /**
+     * Set the name property: The regional service name.
+     * 
+     * @param name the name value to set.
+     * @return the RegionalServiceResource object itself.
+     */
+    RegionalServiceResource withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the location property: The location name.
      * 
      * @return the location value.
      */
     public String location() {
         return this.location;
+    }
+
+    /**
+     * Set the location property: The location name.
+     * 
+     * @param location the location value to set.
+     * @return the RegionalServiceResource object itself.
+     */
+    RegionalServiceResource withLocation(String location) {
+        this.location = location;
+        return this;
     }
 
     /**
@@ -64,10 +87,60 @@ public class RegionalServiceResource {
     }
 
     /**
+     * Set the status property: Describes the status of a service.
+     * 
+     * @param status the status value to set.
+     * @return the RegionalServiceResource object itself.
+     */
+    RegionalServiceResource withStatus(ServiceStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegionalServiceResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegionalServiceResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegionalServiceResource.
+     */
+    public static RegionalServiceResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegionalServiceResource deserializedRegionalServiceResource = new RegionalServiceResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRegionalServiceResource.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRegionalServiceResource.location = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedRegionalServiceResource.status = ServiceStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegionalServiceResource;
+        });
     }
 }

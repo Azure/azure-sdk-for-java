@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about shared availability zone.
  */
 @Immutable
-public final class Peers {
+public final class Peers implements JsonSerializable<Peers> {
     /*
      * The subscription ID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * The availabilityZone.
      */
-    @JsonProperty(value = "availabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String availabilityZone;
 
     /**
@@ -54,5 +56,42 @@ public final class Peers {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Peers from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Peers if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Peers.
+     */
+    public static Peers fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Peers deserializedPeers = new Peers();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedPeers.subscriptionId = reader.getString();
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedPeers.availabilityZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeers;
+        });
     }
 }

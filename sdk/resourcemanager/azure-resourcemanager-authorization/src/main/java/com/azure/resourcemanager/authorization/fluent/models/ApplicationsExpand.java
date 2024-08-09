@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationsExpand. */
+/**
+ * Defines values for ApplicationsExpand.
+ */
 public final class ApplicationsExpand extends ExpandableStringEnum<ApplicationsExpand> {
-    /** Static value * for ApplicationsExpand. */
+    /**
+     * Static value * for ApplicationsExpand.
+     */
     public static final ApplicationsExpand ASTERISK = fromString("*");
 
-    /** Static value appliesTo for ApplicationsExpand. */
+    /**
+     * Static value appliesTo for ApplicationsExpand.
+     */
     public static final ApplicationsExpand APPLIES_TO = fromString("appliesTo");
 
     /**
      * Creates a new instance of ApplicationsExpand value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ApplicationsExpand extends ExpandableStringEnum<ApplicationsE
 
     /**
      * Creates or finds a ApplicationsExpand from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationsExpand.
      */
-    @JsonCreator
     public static ApplicationsExpand fromString(String name) {
         return fromString(name, ApplicationsExpand.class);
     }
 
     /**
      * Gets known ApplicationsExpand values.
-     *
+     * 
      * @return known ApplicationsExpand values.
      */
     public static Collection<ApplicationsExpand> values() {

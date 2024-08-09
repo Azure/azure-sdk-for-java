@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The response from the List namespace operation.
  */
 @Fluent
-public final class NWRuleSetVirtualNetworkRules {
+public final class NWRuleSetVirtualNetworkRules implements JsonSerializable<NWRuleSetVirtualNetworkRules> {
     /*
      * Subnet properties
      */
-    @JsonProperty(value = "subnet")
     private Subnet subnet;
 
     /*
      * Value that indicates whether to ignore missing Vnet Service Endpoint
      */
-    @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
 
     /**
@@ -81,5 +83,45 @@ public final class NWRuleSetVirtualNetworkRules {
         if (subnet() != null) {
             subnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("ignoreMissingVnetServiceEndpoint", this.ignoreMissingVnetServiceEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NWRuleSetVirtualNetworkRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NWRuleSetVirtualNetworkRules if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NWRuleSetVirtualNetworkRules.
+     */
+    public static NWRuleSetVirtualNetworkRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NWRuleSetVirtualNetworkRules deserializedNWRuleSetVirtualNetworkRules = new NWRuleSetVirtualNetworkRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedNWRuleSetVirtualNetworkRules.subnet = Subnet.fromJson(reader);
+                } else if ("ignoreMissingVnetServiceEndpoint".equals(fieldName)) {
+                    deserializedNWRuleSetVirtualNetworkRules.ignoreMissingVnetServiceEndpoint
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNWRuleSetVirtualNetworkRules;
+        });
     }
 }

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Custom domain of app resource payload.
  */
 @Fluent
-public final class CustomDomainProperties {
+public final class CustomDomainProperties implements JsonSerializable<CustomDomainProperties> {
     /*
      * The thumbprint of bound certificate.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * The app name of domain.
      */
-    @JsonProperty(value = "appName", access = JsonProperty.Access.WRITE_ONLY)
     private String appName;
 
     /*
      * The bound certificate name of domain.
      */
-    @JsonProperty(value = "certName")
     private String certName;
 
     /*
      * Provisioning state of the Domain
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomainResourceProvisioningState provisioningState;
 
     /**
@@ -106,5 +106,49 @@ public final class CustomDomainProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("certName", this.certName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomDomainProperties.
+     */
+    public static CustomDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainProperties deserializedCustomDomainProperties = new CustomDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprint".equals(fieldName)) {
+                    deserializedCustomDomainProperties.thumbprint = reader.getString();
+                } else if ("appName".equals(fieldName)) {
+                    deserializedCustomDomainProperties.appName = reader.getString();
+                } else if ("certName".equals(fieldName)) {
+                    deserializedCustomDomainProperties.certName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomDomainProperties.provisioningState
+                        = CustomDomainResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainProperties;
+        });
     }
 }

@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A long term retention backup. */
+/**
+ * A long term retention backup.
+ */
 @Fluent
 public final class LongTermRetentionBackupInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private LongTermRetentionBackupProperties innerProperties;
 
-    /** Creates an instance of LongTermRetentionBackupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LongTermRetentionBackupInner class.
+     */
     public LongTermRetentionBackupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LongTermRetentionBackupProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the serverName property: The server name that the backup database belong to.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -43,7 +94,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the serverCreateTime property: The create time of the server.
-     *
+     * 
      * @return the serverCreateTime value.
      */
     public OffsetDateTime serverCreateTime() {
@@ -52,7 +103,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -61,7 +112,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -70,7 +121,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -79,7 +130,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -88,7 +139,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -97,7 +148,7 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -106,12 +157,12 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the LongTermRetentionBackupInner object itself.
      */
-    public LongTermRetentionBackupInner withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public LongTermRetentionBackupInner
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new LongTermRetentionBackupProperties();
         }
@@ -121,12 +172,56 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermRetentionBackupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermRetentionBackupInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LongTermRetentionBackupInner.
+     */
+    public static LongTermRetentionBackupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermRetentionBackupInner deserializedLongTermRetentionBackupInner = new LongTermRetentionBackupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupInner.innerProperties
+                        = LongTermRetentionBackupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermRetentionBackupInner;
+        });
     }
 }

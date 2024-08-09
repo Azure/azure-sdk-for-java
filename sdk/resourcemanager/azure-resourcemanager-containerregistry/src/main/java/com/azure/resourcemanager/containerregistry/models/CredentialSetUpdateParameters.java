@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.CredentialSetUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The parameters for updating a credential set.
  */
 @Fluent
-public final class CredentialSetUpdateParameters {
+public final class CredentialSetUpdateParameters implements JsonSerializable<CredentialSetUpdateParameters> {
     /*
      * The properties of the credential set update parameters
      */
-    @JsonProperty(value = "properties")
     private CredentialSetUpdateProperties innerProperties;
 
     /*
      * Identities associated with the resource. This is used to access the KeyVault secrets.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /**
@@ -98,5 +100,46 @@ public final class CredentialSetUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialSetUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialSetUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialSetUpdateParameters.
+     */
+    public static CredentialSetUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialSetUpdateParameters deserializedCredentialSetUpdateParameters
+                = new CredentialSetUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCredentialSetUpdateParameters.innerProperties
+                        = CredentialSetUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCredentialSetUpdateParameters.identity = IdentityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialSetUpdateParameters;
+        });
     }
 }

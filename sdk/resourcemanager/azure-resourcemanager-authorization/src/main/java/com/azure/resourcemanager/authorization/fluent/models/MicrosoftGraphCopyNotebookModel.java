@@ -5,119 +5,111 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** CopyNotebookModel. */
+/**
+ * CopyNotebookModel.
+ */
 @Fluent
-public final class MicrosoftGraphCopyNotebookModel {
+public final class MicrosoftGraphCopyNotebookModel implements JsonSerializable<MicrosoftGraphCopyNotebookModel> {
     /*
      * The createdBy property.
      */
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "createdByIdentity")
     private MicrosoftGraphIdentitySet createdByIdentity;
 
     /*
      * The createdTime property.
      */
-    @JsonProperty(value = "createdTime")
     private OffsetDateTime createdTime;
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The isDefault property.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * The isShared property.
      */
-    @JsonProperty(value = "isShared")
     private Boolean isShared;
 
     /*
      * The lastModifiedBy property.
      */
-    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "lastModifiedByIdentity")
     private MicrosoftGraphIdentitySet lastModifiedByIdentity;
 
     /*
      * The lastModifiedTime property.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * notebookLinks
      */
-    @JsonProperty(value = "links")
     private MicrosoftGraphNotebookLinks links;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The sectionGroupsUrl property.
      */
-    @JsonProperty(value = "sectionGroupsUrl")
     private String sectionGroupsUrl;
 
     /*
      * The sectionsUrl property.
      */
-    @JsonProperty(value = "sectionsUrl")
     private String sectionsUrl;
 
     /*
      * The self property.
      */
-    @JsonProperty(value = "self")
     private String self;
 
     /*
      * onenoteUserRole
      */
-    @JsonProperty(value = "userRole")
     private MicrosoftGraphOnenoteUserRole userRole;
 
     /*
      * CopyNotebookModel
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCopyNotebookModel class. */
+    /**
+     * Creates an instance of MicrosoftGraphCopyNotebookModel class.
+     */
     public MicrosoftGraphCopyNotebookModel() {
     }
 
     /**
      * Get the createdBy property: The createdBy property.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -126,7 +118,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the createdBy property: The createdBy property.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -137,7 +129,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the createdByIdentity property: identitySet.
-     *
+     * 
      * @return the createdByIdentity value.
      */
     public MicrosoftGraphIdentitySet createdByIdentity() {
@@ -146,7 +138,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the createdByIdentity property: identitySet.
-     *
+     * 
      * @param createdByIdentity the createdByIdentity value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -157,7 +149,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the createdTime property: The createdTime property.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -166,7 +158,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the createdTime property: The createdTime property.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -177,7 +169,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -186,7 +178,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -197,7 +189,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the isDefault property: The isDefault property.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -206,7 +198,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the isDefault property: The isDefault property.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -217,7 +209,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the isShared property: The isShared property.
-     *
+     * 
      * @return the isShared value.
      */
     public Boolean isShared() {
@@ -226,7 +218,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the isShared property: The isShared property.
-     *
+     * 
      * @param isShared the isShared value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -237,7 +229,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the lastModifiedBy property: The lastModifiedBy property.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -246,7 +238,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the lastModifiedBy property: The lastModifiedBy property.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -257,7 +249,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the lastModifiedByIdentity property: identitySet.
-     *
+     * 
      * @return the lastModifiedByIdentity value.
      */
     public MicrosoftGraphIdentitySet lastModifiedByIdentity() {
@@ -266,19 +258,19 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the lastModifiedByIdentity property: identitySet.
-     *
+     * 
      * @param lastModifiedByIdentity the lastModifiedByIdentity value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModel withLastModifiedByIdentity(
-        MicrosoftGraphIdentitySet lastModifiedByIdentity) {
+    public MicrosoftGraphCopyNotebookModel
+        withLastModifiedByIdentity(MicrosoftGraphIdentitySet lastModifiedByIdentity) {
         this.lastModifiedByIdentity = lastModifiedByIdentity;
         return this;
     }
 
     /**
      * Get the lastModifiedTime property: The lastModifiedTime property.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -287,7 +279,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the lastModifiedTime property: The lastModifiedTime property.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -298,7 +290,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the links property: notebookLinks.
-     *
+     * 
      * @return the links value.
      */
     public MicrosoftGraphNotebookLinks links() {
@@ -307,7 +299,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the links property: notebookLinks.
-     *
+     * 
      * @param links the links value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -318,7 +310,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -327,7 +319,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -338,7 +330,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the sectionGroupsUrl property: The sectionGroupsUrl property.
-     *
+     * 
      * @return the sectionGroupsUrl value.
      */
     public String sectionGroupsUrl() {
@@ -347,7 +339,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the sectionGroupsUrl property: The sectionGroupsUrl property.
-     *
+     * 
      * @param sectionGroupsUrl the sectionGroupsUrl value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -358,7 +350,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the sectionsUrl property: The sectionsUrl property.
-     *
+     * 
      * @return the sectionsUrl value.
      */
     public String sectionsUrl() {
@@ -367,7 +359,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the sectionsUrl property: The sectionsUrl property.
-     *
+     * 
      * @param sectionsUrl the sectionsUrl value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -378,7 +370,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the self property: The self property.
-     *
+     * 
      * @return the self value.
      */
     public String self() {
@@ -387,7 +379,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the self property: The self property.
-     *
+     * 
      * @param self the self value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -398,7 +390,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the userRole property: onenoteUserRole.
-     *
+     * 
      * @return the userRole value.
      */
     public MicrosoftGraphOnenoteUserRole userRole() {
@@ -407,7 +399,7 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Set the userRole property: onenoteUserRole.
-     *
+     * 
      * @param userRole the userRole value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -418,17 +410,16 @@ public final class MicrosoftGraphCopyNotebookModel {
 
     /**
      * Get the additionalProperties property: CopyNotebookModel.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: CopyNotebookModel.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
@@ -437,17 +428,9 @@ public final class MicrosoftGraphCopyNotebookModel {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -460,5 +443,104 @@ public final class MicrosoftGraphCopyNotebookModel {
         if (links() != null) {
             links().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeJsonField("createdByIdentity", this.createdByIdentity);
+        jsonWriter.writeStringField("createdTime",
+            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeBooleanField("isShared", this.isShared);
+        jsonWriter.writeStringField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeJsonField("lastModifiedByIdentity", this.lastModifiedByIdentity);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeJsonField("links", this.links);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("sectionGroupsUrl", this.sectionGroupsUrl);
+        jsonWriter.writeStringField("sectionsUrl", this.sectionsUrl);
+        jsonWriter.writeStringField("self", this.self);
+        jsonWriter.writeStringField("userRole", this.userRole == null ? null : this.userRole.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCopyNotebookModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCopyNotebookModel if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCopyNotebookModel.
+     */
+    public static MicrosoftGraphCopyNotebookModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCopyNotebookModel deserializedMicrosoftGraphCopyNotebookModel
+                = new MicrosoftGraphCopyNotebookModel();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.createdBy = reader.getString();
+                } else if ("createdByIdentity".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.createdByIdentity
+                        = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.id = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isShared".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.isShared = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.lastModifiedBy = reader.getString();
+                } else if ("lastModifiedByIdentity".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.lastModifiedByIdentity
+                        = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("links".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.links = MicrosoftGraphNotebookLinks.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.name = reader.getString();
+                } else if ("sectionGroupsUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.sectionGroupsUrl = reader.getString();
+                } else if ("sectionsUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.sectionsUrl = reader.getString();
+                } else if ("self".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.self = reader.getString();
+                } else if ("userRole".equals(fieldName)) {
+                    deserializedMicrosoftGraphCopyNotebookModel.userRole
+                        = MicrosoftGraphOnenoteUserRole.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCopyNotebookModel.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCopyNotebookModel;
+        });
     }
 }

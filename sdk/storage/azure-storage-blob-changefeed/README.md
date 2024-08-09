@@ -21,7 +21,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.22</version>
+    <version>12.0.0-beta.24</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

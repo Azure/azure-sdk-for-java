@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Deployment operation properties.
  */
 @Fluent
-public final class WhatIfOperationProperties {
+public final class WhatIfOperationProperties implements JsonSerializable<WhatIfOperationProperties> {
     /*
      * List of resource changes predicted by What-If operation.
      */
-    @JsonProperty(value = "changes")
     private List<WhatIfChange> changes;
 
     /**
@@ -55,5 +58,42 @@ public final class WhatIfOperationProperties {
         if (changes() != null) {
             changes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("changes", this.changes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WhatIfOperationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WhatIfOperationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WhatIfOperationProperties.
+     */
+    public static WhatIfOperationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WhatIfOperationProperties deserializedWhatIfOperationProperties = new WhatIfOperationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("changes".equals(fieldName)) {
+                    List<WhatIfChange> changes = reader.readArray(reader1 -> WhatIfChange.fromJson(reader1));
+                    deserializedWhatIfOperationProperties.changes = changes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWhatIfOperationProperties;
+        });
     }
 }

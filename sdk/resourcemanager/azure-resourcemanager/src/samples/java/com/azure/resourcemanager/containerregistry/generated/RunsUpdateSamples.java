@@ -21,8 +21,11 @@ public final class RunsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void runsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRuns().update("myResourceGroup", "myRegistry",
-            "0accec26-d6de-4757-8e74-d080f38eaaab", new RunUpdateParameters().withIsArchiveEnabled(true),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRuns()
+            .update("myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab",
+                new RunUpdateParameters().withIsArchiveEnabled(true), com.azure.core.util.Context.NONE);
     }
 }

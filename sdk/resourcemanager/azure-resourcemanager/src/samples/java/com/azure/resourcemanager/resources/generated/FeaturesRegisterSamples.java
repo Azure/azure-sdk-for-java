@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class FeaturesRegisterSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/registerFeature.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/registerFeature.json
      */
     /**
      * Sample code: Register feature.

@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * CsmPublishingCredentialsPoliciesEntity resource specific properties.
  */
 @Fluent
-public final class CsmPublishingCredentialsPoliciesEntityProperties {
+public final class CsmPublishingCredentialsPoliciesEntityProperties
+    implements JsonSerializable<CsmPublishingCredentialsPoliciesEntityProperties> {
     /*
      * <code>true</code> to allow access to a publishing method; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "allow", required = true)
     private boolean allow;
 
     /**
@@ -52,5 +56,43 @@ public final class CsmPublishingCredentialsPoliciesEntityProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allow", this.allow);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmPublishingCredentialsPoliciesEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmPublishingCredentialsPoliciesEntityProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CsmPublishingCredentialsPoliciesEntityProperties.
+     */
+    public static CsmPublishingCredentialsPoliciesEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmPublishingCredentialsPoliciesEntityProperties deserializedCsmPublishingCredentialsPoliciesEntityProperties
+                = new CsmPublishingCredentialsPoliciesEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allow".equals(fieldName)) {
+                    deserializedCsmPublishingCredentialsPoliciesEntityProperties.allow = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmPublishingCredentialsPoliciesEntityProperties;
+        });
     }
 }

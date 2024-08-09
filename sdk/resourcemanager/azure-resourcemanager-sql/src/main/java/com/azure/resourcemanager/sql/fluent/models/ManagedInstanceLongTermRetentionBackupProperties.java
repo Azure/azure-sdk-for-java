@@ -5,62 +5,65 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a long term retention backup. */
+/**
+ * Properties of a long term retention backup.
+ */
 @Immutable
-public final class ManagedInstanceLongTermRetentionBackupProperties {
+public final class ManagedInstanceLongTermRetentionBackupProperties
+    implements JsonSerializable<ManagedInstanceLongTermRetentionBackupProperties> {
     /*
      * The managed instance that the backup database belongs to.
      */
-    @JsonProperty(value = "managedInstanceName", access = JsonProperty.Access.WRITE_ONLY)
     private String managedInstanceName;
 
     /*
      * The create time of the instance.
      */
-    @JsonProperty(value = "managedInstanceCreateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime managedInstanceCreateTime;
 
     /*
      * The name of the database the backup belong to
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * The delete time of the database
      */
-    @JsonProperty(value = "databaseDeletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime databaseDeletionTime;
 
     /*
      * The time the backup was taken
      */
-    @JsonProperty(value = "backupTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupTime;
 
     /*
      * The time the long term retention backup will expire.
      */
-    @JsonProperty(value = "backupExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupExpirationTime;
 
     /*
      * The storage redundancy type of the backup
      */
-    @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy backupStorageRedundancy;
 
-    /** Creates an instance of ManagedInstanceLongTermRetentionBackupProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceLongTermRetentionBackupProperties class.
+     */
     public ManagedInstanceLongTermRetentionBackupProperties() {
     }
 
     /**
      * Get the managedInstanceName property: The managed instance that the backup database belongs to.
-     *
+     * 
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
@@ -69,7 +72,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the managedInstanceCreateTime property: The create time of the instance.
-     *
+     * 
      * @return the managedInstanceCreateTime value.
      */
     public OffsetDateTime managedInstanceCreateTime() {
@@ -78,7 +81,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -87,7 +90,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -96,7 +99,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -105,7 +108,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -114,7 +117,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -123,9 +126,63 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceLongTermRetentionBackupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceLongTermRetentionBackupProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceLongTermRetentionBackupProperties.
+     */
+    public static ManagedInstanceLongTermRetentionBackupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceLongTermRetentionBackupProperties deserializedManagedInstanceLongTermRetentionBackupProperties
+                = new ManagedInstanceLongTermRetentionBackupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedInstanceName".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.managedInstanceName
+                        = reader.getString();
+                } else if ("managedInstanceCreateTime".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.managedInstanceCreateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.databaseName = reader.getString();
+                } else if ("databaseDeletionTime".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.databaseDeletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupTime".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.backupTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupExpirationTime".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.backupExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupStorageRedundancy".equals(fieldName)) {
+                    deserializedManagedInstanceLongTermRetentionBackupProperties.backupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceLongTermRetentionBackupProperties;
+        });
     }
 }

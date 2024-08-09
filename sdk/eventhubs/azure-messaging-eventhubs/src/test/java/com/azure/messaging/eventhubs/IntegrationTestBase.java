@@ -5,24 +5,19 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
@@ -31,8 +26,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,11 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
-import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 
 /**
  * Test base for running integration tests.
@@ -65,30 +56,18 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected final ClientLogger logger;
 
-    private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
+    protected String testName;
 
-    private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
-    private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-    private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
     private static final ClientOptions OPTIONS_WITH_TRACING = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
-    private static Scheduler scheduler;
+    private Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
     private List<AutoCloseable> toClose = new ArrayList<>();
-    protected String testName;
+
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
-    }
-
-    @BeforeAll
-    public static void beforeAll() {
-        scheduler = Schedulers.newParallel("eh-integration");
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        scheduler.dispose();
     }
 
     @BeforeEach
@@ -100,6 +79,8 @@ public abstract class IntegrationTestBase extends TestBase {
         testName = testContextManager.getTrackerTestName();
         skipIfNotRecordMode();
         toClose = new ArrayList<>();
+
+        scheduler = Schedulers.newParallel("eh-integration");
         beforeTest();
     }
 
@@ -118,7 +99,7 @@ public abstract class IntegrationTestBase extends TestBase {
     public void teardownTest() {
         logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
-
+        scheduler.dispose();
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
 
@@ -128,56 +109,10 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Gets the configured ProxyConfiguration from environment variables.
-     */
-    protected ProxyOptions getProxyConfiguration() {
-        final String address = GLOBAL_CONFIGURATION.get(Configuration.PROPERTY_HTTP_PROXY);
-
-        if (address == null) {
-            return null;
-        }
-
-        final String[] host = address.split(":");
-        if (host.length < 2) {
-            logger.warning("Environment variable '{}' cannot be parsed into a proxy. Value: {}",
-                Configuration.PROPERTY_HTTP_PROXY, address);
-            return null;
-        }
-
-        final String hostname = host[0];
-        final int port = Integer.parseInt(host[1]);
-        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
-
-        final String username = GLOBAL_CONFIGURATION.get(PROXY_USERNAME);
-
-        if (username == null) {
-            logger.info("Environment variable '{}' is not set. No authentication used.");
-            return new ProxyOptions(ProxyAuthenticationType.NONE, proxy, null, null);
-        }
-
-        final String password = GLOBAL_CONFIGURATION.get(PROXY_PASSWORD);
-        final String authentication = GLOBAL_CONFIGURATION.get(PROXY_AUTHENTICATION_TYPE);
-
-        final ProxyAuthenticationType authenticationType = CoreUtils.isNullOrEmpty(authentication)
-            ? ProxyAuthenticationType.NONE
-            : ProxyAuthenticationType.valueOf(authentication);
-
-        return new ProxyOptions(authenticationType, proxy, username, password);
-    }
-
-    protected static String getFullyQualifiedDomainName() {
-        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
-    }
-
-    protected static String getEventHubName() {
-        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_EVENT_HUB_NAME);
-    }
-
-    /**
      * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate.
      */
-    protected static EventHubClientBuilder createBuilder() {
+    protected EventHubClientBuilder createBuilder() {
         return createBuilder(false);
     }
 
@@ -186,31 +121,47 @@ public abstract class IntegrationTestBase extends TestBase {
      * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
      * {@link com.azure.identity.ClientSecretCredential}.
      */
-    protected static EventHubClientBuilder createBuilder(boolean useCredentials) {
+    protected EventHubClientBuilder createBuilder(boolean shareConnection) {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retry(RETRY_OPTIONS)
+            .retryOptions(RETRY_OPTIONS)
             .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
-        if (useCredentials) {
-            final ConnectionStringProperties properties = TestUtils.getConnectionStringProperties();
-            final String fqdn = properties.getEndpoint().getHost();
-            final String eventHubName = properties.getEntityPath();
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final String eventHubName = TestUtils.getEventHubName();
 
-            Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
-            Assumptions.assumeTrue(eventHubName != null && !eventHubName.isEmpty(), AZURE_EVENTHUBS_EVENT_HUB_NAME + " variable needs to be set when using credentials.");
+        if (shareConnection) {
+            builder.shareConnection();
+        }
 
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID"))
-                .clientSecret(GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET"))
-                .tenantId(GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID"))
-                .build();
+        switch (getTestMode()) {
+            case PLAYBACK:
+                Assumptions.assumeTrue(false, "Integration tests are not enabled in playback mode.");
+                return null;
 
-            return builder.credential(fqdn, eventHubName, clientSecretCredential);
-        } else {
-            return builder.connectionString(TestUtils.getConnectionString());
+            case LIVE:
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "EventHubName is not set.");
+
+                final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
+                return builder.credential(fullyQualifiedDomainName, eventHubName, credential);
+
+            case RECORD:
+                final String connectionString = TestUtils.getConnectionString(false);
+
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(eventHubName), "EventHubName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+
+                if (CoreUtils.isNullOrEmpty(connectionString)) {
+                    final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+                    return builder.credential(fullyQualifiedDomainName, eventHubName, tokenCredential);
+                } else {
+                    return builder.connectionString(connectionString).eventHubName(eventHubName);
+                }
+            default:
+                return null;
         }
     }
 
@@ -225,11 +176,7 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("--> Adding events to Event Hubs.");
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
-        try (EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
-            .clientOptions(OPTIONS_WITH_TRACING)
-            .buildProducerClient()) {
+        try (EventHubProducerClient producer = createBuilder().buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
                 logger.info("--> Adding events to partition: " + partitionId);
@@ -264,7 +211,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
     protected void dispose(Closeable... closeables) {
-        if (closeables == null || closeables.length == 0) {
+        if (closeables == null) {
             return;
         }
 

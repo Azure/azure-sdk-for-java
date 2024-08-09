@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
 import com.azure.resourcemanager.resources.models.OverrideModel;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
 import com.azure.resourcemanager.resources.models.ResourceSelector;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,72 +22,61 @@ import java.util.Map;
  * The policy assignment properties.
  */
 @Fluent
-public final class PolicyAssignmentProperties {
+public final class PolicyAssignmentProperties implements JsonSerializable<PolicyAssignmentProperties> {
     /*
      * The display name of the policy assignment.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The ID of the policy definition or policy set definition being assigned.
      */
-    @JsonProperty(value = "policyDefinitionId")
     private String policyDefinitionId;
 
     /*
      * The scope for the policy assignment.
      */
-    @JsonProperty(value = "scope", access = JsonProperty.Access.WRITE_ONLY)
     private String scope;
 
     /*
      * The policy's excluded scopes.
      */
-    @JsonProperty(value = "notScopes")
     private List<String> notScopes;
 
     /*
      * The parameter values for the assigned policy rule. The keys are the parameter names.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterValuesValue> parameters;
 
     /*
      * This message will be part of response in case of policy violation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+     * The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value
+     * pairs.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
      */
-    @JsonProperty(value = "enforcementMode")
     private EnforcementMode enforcementMode;
 
     /*
      * The messages that describe why a resource is non-compliant with the policy.
      */
-    @JsonProperty(value = "nonComplianceMessages")
     private List<NonComplianceMessage> nonComplianceMessages;
 
     /*
      * The resource selector list to filter policies by resource properties.
      */
-    @JsonProperty(value = "resourceSelectors")
     private List<ResourceSelector> resourceSelectors;
 
     /*
      * The policy property value override.
      */
-    @JsonProperty(value = "overrides")
     private List<OverrideModel> overrides;
 
     /**
@@ -330,5 +322,82 @@ public final class PolicyAssignmentProperties {
         if (overrides() != null) {
             overrides().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("policyDefinitionId", this.policyDefinitionId);
+        jsonWriter.writeArrayField("notScopes", this.notScopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeStringField("enforcementMode",
+            this.enforcementMode == null ? null : this.enforcementMode.toString());
+        jsonWriter.writeArrayField("nonComplianceMessages", this.nonComplianceMessages,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("resourceSelectors", this.resourceSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("overrides", this.overrides, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentProperties.
+     */
+    public static PolicyAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentProperties deserializedPolicyAssignmentProperties = new PolicyAssignmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.displayName = reader.getString();
+                } else if ("policyDefinitionId".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.policyDefinitionId = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.scope = reader.getString();
+                } else if ("notScopes".equals(fieldName)) {
+                    List<String> notScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPolicyAssignmentProperties.notScopes = notScopes;
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterValuesValue> parameters
+                        = reader.readMap(reader1 -> ParameterValuesValue.fromJson(reader1));
+                    deserializedPolicyAssignmentProperties.parameters = parameters;
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.description = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.metadata = reader.readUntyped();
+                } else if ("enforcementMode".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.enforcementMode
+                        = EnforcementMode.fromString(reader.getString());
+                } else if ("nonComplianceMessages".equals(fieldName)) {
+                    List<NonComplianceMessage> nonComplianceMessages
+                        = reader.readArray(reader1 -> NonComplianceMessage.fromJson(reader1));
+                    deserializedPolicyAssignmentProperties.nonComplianceMessages = nonComplianceMessages;
+                } else if ("resourceSelectors".equals(fieldName)) {
+                    List<ResourceSelector> resourceSelectors
+                        = reader.readArray(reader1 -> ResourceSelector.fromJson(reader1));
+                    deserializedPolicyAssignmentProperties.resourceSelectors = resourceSelectors;
+                } else if ("overrides".equals(fieldName)) {
+                    List<OverrideModel> overrides = reader.readArray(reader1 -> OverrideModel.fromJson(reader1));
+                    deserializedPolicyAssignmentProperties.overrides = overrides;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentProperties;
+        });
     }
 }

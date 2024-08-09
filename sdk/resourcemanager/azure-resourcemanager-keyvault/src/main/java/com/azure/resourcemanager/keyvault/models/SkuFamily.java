@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** SKU family name. */
+/**
+ * SKU family name.
+ */
 public final class SkuFamily extends ExpandableStringEnum<SkuFamily> {
-    /** Static value A for SkuFamily. */
+    /**
+     * Static value A for SkuFamily.
+     */
     public static final SkuFamily A = fromString("A");
 
     /**
      * Creates a new instance of SkuFamily value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class SkuFamily extends ExpandableStringEnum<SkuFamily> {
 
     /**
      * Creates or finds a SkuFamily from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuFamily.
      */
-    @JsonCreator
     public static SkuFamily fromString(String name) {
         return fromString(name, SkuFamily.class);
     }
 
     /**
      * Gets known SkuFamily values.
-     *
+     * 
      * @return known SkuFamily values.
      */
     public static Collection<SkuFamily> values() {

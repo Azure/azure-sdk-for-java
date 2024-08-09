@@ -5,55 +5,58 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of a active directory administrator. */
+/**
+ * Properties of a active directory administrator.
+ */
 @Fluent
-public final class ServerExternalAdministrator {
+public final class ServerExternalAdministrator implements JsonSerializable<ServerExternalAdministrator> {
     /*
      * Type of the sever administrator.
      */
-    @JsonProperty(value = "administratorType")
     private AdministratorType administratorType;
 
     /*
      * Principal Type of the sever administrator.
      */
-    @JsonProperty(value = "principalType")
     private PrincipalType principalType;
 
     /*
      * Login name of the server administrator.
      */
-    @JsonProperty(value = "login")
     private String login;
 
     /*
      * SID (object ID) of the server administrator.
      */
-    @JsonProperty(value = "sid")
     private UUID sid;
 
     /*
      * Tenant ID of the administrator.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /*
      * Azure Active Directory only Authentication enabled.
      */
-    @JsonProperty(value = "azureADOnlyAuthentication")
     private Boolean azureADOnlyAuthentication;
 
-    /** Creates an instance of ServerExternalAdministrator class. */
+    /**
+     * Creates an instance of ServerExternalAdministrator class.
+     */
     public ServerExternalAdministrator() {
     }
 
     /**
      * Get the administratorType property: Type of the sever administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public AdministratorType administratorType() {
@@ -62,7 +65,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Set the administratorType property: Type of the sever administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the ServerExternalAdministrator object itself.
      */
@@ -73,7 +76,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Get the principalType property: Principal Type of the sever administrator.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -82,7 +85,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Set the principalType property: Principal Type of the sever administrator.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the ServerExternalAdministrator object itself.
      */
@@ -93,7 +96,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Get the login property: Login name of the server administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -102,7 +105,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Set the login property: Login name of the server administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the ServerExternalAdministrator object itself.
      */
@@ -113,7 +116,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Get the sid property: SID (object ID) of the server administrator.
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -122,7 +125,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Set the sid property: SID (object ID) of the server administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the ServerExternalAdministrator object itself.
      */
@@ -133,7 +136,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Get the tenantId property: Tenant ID of the administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -142,7 +145,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Set the tenantId property: Tenant ID of the administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ServerExternalAdministrator object itself.
      */
@@ -153,7 +156,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -162,7 +165,7 @@ public final class ServerExternalAdministrator {
 
     /**
      * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the ServerExternalAdministrator object itself.
      */
@@ -173,9 +176,66 @@ public final class ServerExternalAdministrator {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorType",
+            this.administratorType == null ? null : this.administratorType.toString());
+        jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
+        jsonWriter.writeStringField("login", this.login);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeBooleanField("azureADOnlyAuthentication", this.azureADOnlyAuthentication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerExternalAdministrator from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerExternalAdministrator if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerExternalAdministrator.
+     */
+    public static ServerExternalAdministrator fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerExternalAdministrator deserializedServerExternalAdministrator = new ServerExternalAdministrator();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorType".equals(fieldName)) {
+                    deserializedServerExternalAdministrator.administratorType
+                        = AdministratorType.fromString(reader.getString());
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedServerExternalAdministrator.principalType
+                        = PrincipalType.fromString(reader.getString());
+                } else if ("login".equals(fieldName)) {
+                    deserializedServerExternalAdministrator.login = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedServerExternalAdministrator.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServerExternalAdministrator.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("azureADOnlyAuthentication".equals(fieldName)) {
+                    deserializedServerExternalAdministrator.azureADOnlyAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerExternalAdministrator;
+        });
     }
 }

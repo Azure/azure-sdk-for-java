@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Job status.
  */
@@ -41,7 +38,6 @@ public enum TriggeredWebJobStatus {
      * @param value the serialized value to parse.
      * @return the parsed TriggeredWebJobStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static TriggeredWebJobStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum TriggeredWebJobStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkRules ListByServer. */
+/**
+ * Samples for VirtualNetworkRules ListByServer.
+ */
 public final class VirtualNetworkRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualNetworkRulesList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualNetworkRulesList.json
      */
     /**
      * Sample code: List virtual network rules.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listVirtualNetworkRules(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getVirtualNetworkRules()
-            .listByServer("Default", "vnet-test-svr", Context.NONE);
+            .listByServer("Default", "vnet-test-svr", com.azure.core.util.Context.NONE);
     }
 }

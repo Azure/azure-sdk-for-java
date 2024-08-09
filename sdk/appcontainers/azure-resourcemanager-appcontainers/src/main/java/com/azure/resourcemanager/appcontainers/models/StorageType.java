@@ -27,16 +27,6 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
     public static final StorageType SECRET = fromString("Secret");
 
     /**
-     * Static value NfsAzureFile for StorageType.
-     */
-    public static final StorageType NFS_AZURE_FILE = fromString("NfsAzureFile");
-
-    /**
-     * Static value Smb for StorageType.
-     */
-    public static final StorageType SMB = fromString("Smb");
-
-    /**
      * Creates a new instance of StorageType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

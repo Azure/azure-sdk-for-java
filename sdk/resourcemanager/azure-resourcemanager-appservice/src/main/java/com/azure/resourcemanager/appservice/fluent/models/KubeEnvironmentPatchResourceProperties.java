@@ -5,45 +5,45 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appservice.models.ArcConfiguration;
 import com.azure.resourcemanager.appservice.models.ContainerAppsConfiguration;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * KubeEnvironmentPatchResource resource specific properties.
  */
 @Fluent
-public final class KubeEnvironmentPatchResourceProperties {
+public final class KubeEnvironmentPatchResourceProperties
+    implements JsonSerializable<KubeEnvironmentPatchResourceProperties> {
     /*
      * Provisioning state of the Kubernetes Environment.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KubeEnvironmentProvisioningState provisioningState;
 
     /*
      * Any errors that occurred during deployment or deployment validation
      */
-    @JsonProperty(value = "deploymentErrors", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentErrors;
 
     /*
      * Only visible within Vnet/Subnet
      */
-    @JsonProperty(value = "internalLoadBalancerEnabled")
     private Boolean internalLoadBalancerEnabled;
 
     /*
      * Default Domain Name for the cluster
      */
-    @JsonProperty(value = "defaultDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultDomain;
 
     /*
      * Static IP of the KubeEnvironment
      */
-    @JsonProperty(value = "staticIp")
     private String staticIp;
 
     /*
@@ -51,7 +51,6 @@ public final class KubeEnvironmentPatchResourceProperties {
      * components types. Eg: Choosing between BuildService kind,
      * FrontEnd Service ArtifactsStorageType etc.
      */
-    @JsonProperty(value = "arcConfiguration")
     private ArcConfiguration arcConfiguration;
 
     /*
@@ -59,19 +58,17 @@ public final class KubeEnvironmentPatchResourceProperties {
      * app logs to a destination. Currently only "log-analytics" is
      * supported
      */
-    @JsonProperty(value = "appLogsConfiguration")
     private AppLogsConfiguration appLogsConfiguration;
 
     /*
-     * Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET Configuration
+     * Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET
+     * Configuration
      */
-    @JsonProperty(value = "containerAppsConfiguration")
     private ContainerAppsConfiguration containerAppsConfiguration;
 
     /*
      * The aksResourceID property.
      */
-    @JsonProperty(value = "aksResourceID")
     private String aksResourceId;
 
     /**
@@ -253,5 +250,68 @@ public final class KubeEnvironmentPatchResourceProperties {
         if (containerAppsConfiguration() != null) {
             containerAppsConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("internalLoadBalancerEnabled", this.internalLoadBalancerEnabled);
+        jsonWriter.writeStringField("staticIp", this.staticIp);
+        jsonWriter.writeJsonField("arcConfiguration", this.arcConfiguration);
+        jsonWriter.writeJsonField("appLogsConfiguration", this.appLogsConfiguration);
+        jsonWriter.writeJsonField("containerAppsConfiguration", this.containerAppsConfiguration);
+        jsonWriter.writeStringField("aksResourceID", this.aksResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubeEnvironmentPatchResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubeEnvironmentPatchResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubeEnvironmentPatchResourceProperties.
+     */
+    public static KubeEnvironmentPatchResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubeEnvironmentPatchResourceProperties deserializedKubeEnvironmentPatchResourceProperties
+                = new KubeEnvironmentPatchResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.provisioningState
+                        = KubeEnvironmentProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.deploymentErrors = reader.getString();
+                } else if ("internalLoadBalancerEnabled".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.internalLoadBalancerEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultDomain".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.defaultDomain = reader.getString();
+                } else if ("staticIp".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.staticIp = reader.getString();
+                } else if ("arcConfiguration".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.arcConfiguration
+                        = ArcConfiguration.fromJson(reader);
+                } else if ("appLogsConfiguration".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.appLogsConfiguration
+                        = AppLogsConfiguration.fromJson(reader);
+                } else if ("containerAppsConfiguration".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.containerAppsConfiguration
+                        = ContainerAppsConfiguration.fromJson(reader);
+                } else if ("aksResourceID".equals(fieldName)) {
+                    deserializedKubeEnvironmentPatchResourceProperties.aksResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubeEnvironmentPatchResourceProperties;
+        });
     }
 }

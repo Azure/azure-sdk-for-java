@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The JSON schema.
  */
 @Fluent
-public final class JsonSchemaInner {
+public final class JsonSchemaInner implements JsonSerializable<JsonSchemaInner> {
     /*
      * The JSON title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The JSON content.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /**
@@ -76,5 +78,44 @@ public final class JsonSchemaInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonSchemaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonSchemaInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonSchemaInner.
+     */
+    public static JsonSchemaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonSchemaInner deserializedJsonSchemaInner = new JsonSchemaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedJsonSchemaInner.title = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedJsonSchemaInner.content = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonSchemaInner;
+        });
     }
 }

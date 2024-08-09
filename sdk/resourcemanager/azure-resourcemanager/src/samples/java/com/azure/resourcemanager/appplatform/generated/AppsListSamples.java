@@ -18,8 +18,11 @@ public final class AppsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().list("myResourceGroup", "myservice",
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -32,7 +35,10 @@ public final class AppsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsListVNetInjection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().list("myResourceGroup", "myservice",
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

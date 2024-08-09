@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-common</artifactId>
-    <version>12.26.0</version>
+    <version>12.27.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

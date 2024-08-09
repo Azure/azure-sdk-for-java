@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Management information availability state for the app.
  */
@@ -41,7 +38,6 @@ public enum SiteAvailabilityState {
      * @param value the serialized value to parse.
      * @return the parsed SiteAvailabilityState object, or null if unable to parse.
      */
-    @JsonCreator
     public static SiteAvailabilityState fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum SiteAvailabilityState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

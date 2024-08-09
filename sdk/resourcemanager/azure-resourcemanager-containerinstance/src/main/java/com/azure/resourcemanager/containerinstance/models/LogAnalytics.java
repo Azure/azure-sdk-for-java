@@ -6,51 +6,52 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Container group log analytics information. */
+/**
+ * Container group log analytics information.
+ */
 @Fluent
-public final class LogAnalytics {
+public final class LogAnalytics implements JsonSerializable<LogAnalytics> {
     /*
      * The workspace id for log analytics
      */
-    @JsonProperty(value = "workspaceId", required = true)
     private String workspaceId;
 
     /*
      * The workspace key for log analytics
      */
-    @JsonProperty(value = "workspaceKey")
     private String workspaceKey;
 
     /*
      * The log type to be used.
      */
-    @JsonProperty(value = "logType")
     private LogAnalyticsLogType logType;
 
     /*
      * Metadata for log analytics.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The workspace resource id for log analytics
      */
-    @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
-    /** Creates an instance of LogAnalytics class. */
+    /**
+     * Creates an instance of LogAnalytics class.
+     */
     public LogAnalytics() {
     }
 
     /**
      * Get the workspaceId property: The workspace id for log analytics.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -59,7 +60,7 @@ public final class LogAnalytics {
 
     /**
      * Set the workspaceId property: The workspace id for log analytics.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the LogAnalytics object itself.
      */
@@ -70,7 +71,7 @@ public final class LogAnalytics {
 
     /**
      * Get the workspaceKey property: The workspace key for log analytics.
-     *
+     * 
      * @return the workspaceKey value.
      */
     public String workspaceKey() {
@@ -79,7 +80,7 @@ public final class LogAnalytics {
 
     /**
      * Set the workspaceKey property: The workspace key for log analytics.
-     *
+     * 
      * @param workspaceKey the workspaceKey value to set.
      * @return the LogAnalytics object itself.
      */
@@ -90,7 +91,7 @@ public final class LogAnalytics {
 
     /**
      * Get the logType property: The log type to be used.
-     *
+     * 
      * @return the logType value.
      */
     public LogAnalyticsLogType logType() {
@@ -99,7 +100,7 @@ public final class LogAnalytics {
 
     /**
      * Set the logType property: The log type to be used.
-     *
+     * 
      * @param logType the logType value to set.
      * @return the LogAnalytics object itself.
      */
@@ -110,7 +111,7 @@ public final class LogAnalytics {
 
     /**
      * Get the metadata property: Metadata for log analytics.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -119,7 +120,7 @@ public final class LogAnalytics {
 
     /**
      * Set the metadata property: Metadata for log analytics.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the LogAnalytics object itself.
      */
@@ -130,7 +131,7 @@ public final class LogAnalytics {
 
     /**
      * Get the workspaceResourceId property: The workspace resource id for log analytics.
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public String workspaceResourceId() {
@@ -139,7 +140,7 @@ public final class LogAnalytics {
 
     /**
      * Set the workspaceResourceId property: The workspace resource id for log analytics.
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the LogAnalytics object itself.
      */
@@ -150,21 +151,69 @@ public final class LogAnalytics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (workspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property workspaceId in model LogAnalytics"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property workspaceId in model LogAnalytics"));
         }
         if (workspaceKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property workspaceKey in model LogAnalytics"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property workspaceKey in model LogAnalytics"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogAnalytics.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceId", this.workspaceId);
+        jsonWriter.writeStringField("workspaceKey", this.workspaceKey);
+        jsonWriter.writeStringField("logType", this.logType == null ? null : this.logType.toString());
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("workspaceResourceId", this.workspaceResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalytics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalytics if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogAnalytics.
+     */
+    public static LogAnalytics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalytics deserializedLogAnalytics = new LogAnalytics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedLogAnalytics.workspaceId = reader.getString();
+                } else if ("workspaceKey".equals(fieldName)) {
+                    deserializedLogAnalytics.workspaceKey = reader.getString();
+                } else if ("logType".equals(fieldName)) {
+                    deserializedLogAnalytics.logType = LogAnalyticsLogType.fromString(reader.getString());
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLogAnalytics.metadata = metadata;
+                } else if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedLogAnalytics.workspaceResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalytics;
+        });
+    }
 }

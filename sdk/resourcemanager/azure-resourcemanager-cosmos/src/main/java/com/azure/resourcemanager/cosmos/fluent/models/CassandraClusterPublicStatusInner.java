@@ -5,46 +5,45 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.CassandraClusterPublicStatusDataCentersItem;
 import com.azure.resourcemanager.cosmos.models.CassandraError;
 import com.azure.resourcemanager.cosmos.models.ConnectionError;
 import com.azure.resourcemanager.cosmos.models.ManagedCassandraReaperStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of a managed Cassandra cluster public status.
  */
 @Fluent
-public final class CassandraClusterPublicStatusInner {
+public final class CassandraClusterPublicStatusInner implements JsonSerializable<CassandraClusterPublicStatusInner> {
     /*
      * The eTag property.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
 
     /*
      * The reaperStatus property.
      */
-    @JsonProperty(value = "reaperStatus")
     private ManagedCassandraReaperStatus reaperStatus;
 
     /*
      * List relevant information about any connection errors to the Datacenters.
      */
-    @JsonProperty(value = "connectionErrors")
     private List<ConnectionError> connectionErrors;
 
     /*
      * List relevant information about any errors about cluster, data center and connection error.
      */
-    @JsonProperty(value = "errors")
     private List<CassandraError> errors;
 
     /*
      * List of the status of each datacenter in this cluster.
      */
-    @JsonProperty(value = "dataCenters")
     private List<CassandraClusterPublicStatusDataCentersItem> dataCenters;
 
     /**
@@ -174,5 +173,61 @@ public final class CassandraClusterPublicStatusInner {
         if (dataCenters() != null) {
             dataCenters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eTag", this.etag);
+        jsonWriter.writeJsonField("reaperStatus", this.reaperStatus);
+        jsonWriter.writeArrayField("connectionErrors", this.connectionErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataCenters", this.dataCenters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraClusterPublicStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraClusterPublicStatusInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CassandraClusterPublicStatusInner.
+     */
+    public static CassandraClusterPublicStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraClusterPublicStatusInner deserializedCassandraClusterPublicStatusInner
+                = new CassandraClusterPublicStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eTag".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusInner.etag = reader.getString();
+                } else if ("reaperStatus".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusInner.reaperStatus
+                        = ManagedCassandraReaperStatus.fromJson(reader);
+                } else if ("connectionErrors".equals(fieldName)) {
+                    List<ConnectionError> connectionErrors
+                        = reader.readArray(reader1 -> ConnectionError.fromJson(reader1));
+                    deserializedCassandraClusterPublicStatusInner.connectionErrors = connectionErrors;
+                } else if ("errors".equals(fieldName)) {
+                    List<CassandraError> errors = reader.readArray(reader1 -> CassandraError.fromJson(reader1));
+                    deserializedCassandraClusterPublicStatusInner.errors = errors;
+                } else if ("dataCenters".equals(fieldName)) {
+                    List<CassandraClusterPublicStatusDataCentersItem> dataCenters
+                        = reader.readArray(reader1 -> CassandraClusterPublicStatusDataCentersItem.fromJson(reader1));
+                    deserializedCassandraClusterPublicStatusInner.dataCenters = dataCenters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraClusterPublicStatusInner;
+        });
     }
 }

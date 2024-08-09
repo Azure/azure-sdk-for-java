@@ -5,25 +5,28 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The LogAnalyticsDataConnectionData model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("logAnalytics")
 @Fluent
 public final class LogAnalyticsDataConnectionData extends DataConnectionData {
+
+    /*
+     * Discriminator property for DataConnectionData.
+     */
+    @Generated
+    private String kind = "logAnalytics";
 
     /*
      * properties
      */
     @Generated
-    @JsonProperty(value = "properties")
-    private LogAnalyticsDataConnectionProperties properties;
+    private final LogAnalyticsDataConnectionProperties properties;
 
     /**
      * Creates an instance of LogAnalyticsDataConnectionData class.
@@ -31,10 +34,19 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
      * @param properties the properties value to set.
      */
     @Generated
-    @JsonCreator
-    public LogAnalyticsDataConnectionData(
-        @JsonProperty(value = "properties") LogAnalyticsDataConnectionProperties properties) {
+    public LogAnalyticsDataConnectionData(LogAnalyticsDataConnectionProperties properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for DataConnectionData.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -85,5 +97,69 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
     public LogAnalyticsDataConnectionData setFrequencyOffset(Integer frequencyOffset) {
         super.setFrequencyOffset(frequencyOffset);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("content", getContent() == null ? null : getContent().toString());
+        jsonWriter.writeStringField("frequency", getFrequency() == null ? null : getFrequency().toString());
+        jsonWriter.writeNumberField("frequencyOffset", getFrequencyOffset());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsDataConnectionData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsDataConnectionData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogAnalyticsDataConnectionData.
+     */
+    @Generated
+    public static LogAnalyticsDataConnectionData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            DataConnectionContent content = null;
+            DataConnectionFrequency frequency = null;
+            Integer frequencyOffset = null;
+            LogAnalyticsDataConnectionProperties properties = null;
+            String kind = "logAnalytics";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    content = DataConnectionContent.fromString(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    frequency = DataConnectionFrequency.fromString(reader.getString());
+                } else if ("frequencyOffset".equals(fieldName)) {
+                    frequencyOffset = reader.getNullable(JsonReader::getInt);
+                } else if ("properties".equals(fieldName)) {
+                    properties = LogAnalyticsDataConnectionProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            LogAnalyticsDataConnectionData deserializedLogAnalyticsDataConnectionData
+                = new LogAnalyticsDataConnectionData(properties);
+            deserializedLogAnalyticsDataConnectionData.setName(name);
+            deserializedLogAnalyticsDataConnectionData.setContent(content);
+            deserializedLogAnalyticsDataConnectionData.setFrequency(frequency);
+            deserializedLogAnalyticsDataConnectionData.setFrequencyOffset(frequencyOffset);
+            deserializedLogAnalyticsDataConnectionData.kind = kind;
+            return deserializedLogAnalyticsDataConnectionData;
+        });
     }
 }

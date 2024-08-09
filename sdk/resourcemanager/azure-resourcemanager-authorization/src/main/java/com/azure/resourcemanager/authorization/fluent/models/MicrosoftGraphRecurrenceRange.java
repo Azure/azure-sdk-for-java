@@ -5,64 +5,65 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-/** recurrenceRange. */
+/**
+ * recurrenceRange.
+ */
 @Fluent
-public final class MicrosoftGraphRecurrenceRange {
+public final class MicrosoftGraphRecurrenceRange implements JsonSerializable<MicrosoftGraphRecurrenceRange> {
     /*
      * The date to stop applying the recurrence pattern. Depending on the recurrence pattern of the event, the last
      * occurrence of the meeting may not be this date. Required if type is endDate.
      */
-    @JsonProperty(value = "endDate")
     private LocalDate endDate;
 
     /*
      * The number of times to repeat the event. Required and must be positive if type is numbered.
      */
-    @JsonProperty(value = "numberOfOccurrences")
     private Integer numberOfOccurrences;
 
     /*
      * Time zone for the startDate and endDate properties. Optional. If not specified, the time zone of the event is
      * used.
      */
-    @JsonProperty(value = "recurrenceTimeZone")
     private String recurrenceTimeZone;
 
     /*
-     * The date to start applying the recurrence pattern. The first occurrence of the meeting may be this date or
-     * later, depending on the recurrence pattern of the event. Must be the same value as the start property of the
-     * recurring event. Required.
+     * The date to start applying the recurrence pattern. The first occurrence of the meeting may be this date or later,
+     * depending on the recurrence pattern of the event. Must be the same value as the start property of the recurring
+     * event. Required.
      */
-    @JsonProperty(value = "startDate")
     private LocalDate startDate;
 
     /*
      * recurrenceRangeType
      */
-    @JsonProperty(value = "type")
     private MicrosoftGraphRecurrenceRangeType type;
 
     /*
      * recurrenceRange
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphRecurrenceRange class. */
+    /**
+     * Creates an instance of MicrosoftGraphRecurrenceRange class.
+     */
     public MicrosoftGraphRecurrenceRange() {
     }
 
     /**
      * Get the endDate property: The date to stop applying the recurrence pattern. Depending on the recurrence pattern
      * of the event, the last occurrence of the meeting may not be this date. Required if type is endDate.
-     *
+     * 
      * @return the endDate value.
      */
     public LocalDate endDate() {
@@ -72,7 +73,7 @@ public final class MicrosoftGraphRecurrenceRange {
     /**
      * Set the endDate property: The date to stop applying the recurrence pattern. Depending on the recurrence pattern
      * of the event, the last occurrence of the meeting may not be this date. Required if type is endDate.
-     *
+     * 
      * @param endDate the endDate value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.
      */
@@ -84,7 +85,7 @@ public final class MicrosoftGraphRecurrenceRange {
     /**
      * Get the numberOfOccurrences property: The number of times to repeat the event. Required and must be positive if
      * type is numbered.
-     *
+     * 
      * @return the numberOfOccurrences value.
      */
     public Integer numberOfOccurrences() {
@@ -94,7 +95,7 @@ public final class MicrosoftGraphRecurrenceRange {
     /**
      * Set the numberOfOccurrences property: The number of times to repeat the event. Required and must be positive if
      * type is numbered.
-     *
+     * 
      * @param numberOfOccurrences the numberOfOccurrences value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.
      */
@@ -106,7 +107,7 @@ public final class MicrosoftGraphRecurrenceRange {
     /**
      * Get the recurrenceTimeZone property: Time zone for the startDate and endDate properties. Optional. If not
      * specified, the time zone of the event is used.
-     *
+     * 
      * @return the recurrenceTimeZone value.
      */
     public String recurrenceTimeZone() {
@@ -116,7 +117,7 @@ public final class MicrosoftGraphRecurrenceRange {
     /**
      * Set the recurrenceTimeZone property: Time zone for the startDate and endDate properties. Optional. If not
      * specified, the time zone of the event is used.
-     *
+     * 
      * @param recurrenceTimeZone the recurrenceTimeZone value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.
      */
@@ -129,7 +130,7 @@ public final class MicrosoftGraphRecurrenceRange {
      * Get the startDate property: The date to start applying the recurrence pattern. The first occurrence of the
      * meeting may be this date or later, depending on the recurrence pattern of the event. Must be the same value as
      * the start property of the recurring event. Required.
-     *
+     * 
      * @return the startDate value.
      */
     public LocalDate startDate() {
@@ -140,7 +141,7 @@ public final class MicrosoftGraphRecurrenceRange {
      * Set the startDate property: The date to start applying the recurrence pattern. The first occurrence of the
      * meeting may be this date or later, depending on the recurrence pattern of the event. Must be the same value as
      * the start property of the recurring event. Required.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.
      */
@@ -151,7 +152,7 @@ public final class MicrosoftGraphRecurrenceRange {
 
     /**
      * Get the type property: recurrenceRangeType.
-     *
+     * 
      * @return the type value.
      */
     public MicrosoftGraphRecurrenceRangeType type() {
@@ -160,7 +161,7 @@ public final class MicrosoftGraphRecurrenceRange {
 
     /**
      * Set the type property: recurrenceRangeType.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.
      */
@@ -171,17 +172,16 @@ public final class MicrosoftGraphRecurrenceRange {
 
     /**
      * Get the additionalProperties property: recurrenceRange.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: recurrenceRange.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.
      */
@@ -190,19 +190,75 @@ public final class MicrosoftGraphRecurrenceRange {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endDate", Objects.toString(this.endDate, null));
+        jsonWriter.writeNumberField("numberOfOccurrences", this.numberOfOccurrences);
+        jsonWriter.writeStringField("recurrenceTimeZone", this.recurrenceTimeZone);
+        jsonWriter.writeStringField("startDate", Objects.toString(this.startDate, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphRecurrenceRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphRecurrenceRange if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphRecurrenceRange.
+     */
+    public static MicrosoftGraphRecurrenceRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphRecurrenceRange deserializedMicrosoftGraphRecurrenceRange
+                = new MicrosoftGraphRecurrenceRange();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endDate".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrenceRange.endDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("numberOfOccurrences".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrenceRange.numberOfOccurrences
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("recurrenceTimeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrenceRange.recurrenceTimeZone = reader.getString();
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrenceRange.startDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrenceRange.type
+                        = MicrosoftGraphRecurrenceRangeType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphRecurrenceRange.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphRecurrenceRange;
+        });
     }
 }

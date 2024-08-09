@@ -25,9 +25,9 @@ import reactor.core.publisher.Mono;
 public interface BackupShortTermRetentionPoliciesClient {
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,14 +36,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a database's short term retention policy as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,14 +52,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -69,32 +69,32 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a database's short term retention policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName);
+    Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, ShortTermRetentionPolicyName policyName);
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -104,14 +104,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a database's short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackupShortTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName);
+    Mono<BackupShortTermRetentionPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName);
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -122,18 +122,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a database's short term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupShortTermRetentionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        Context context);
+    Response<BackupShortTermRetentionPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, Context context);
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -143,14 +139,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupShortTermRetentionPolicyInner get(
-        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName);
+    BackupShortTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -161,18 +157,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -184,18 +176,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters);
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -207,18 +195,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters);
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -231,19 +215,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -254,18 +233,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters);
+    Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -276,18 +251,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters);
+    BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -299,19 +270,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
-        Context context);
+    BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -322,18 +288,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -345,17 +307,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
+        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
         BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -367,17 +326,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
+        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
         BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -390,18 +346,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
+        BackupShortTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -412,18 +364,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackupShortTermRetentionPolicyInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters);
+    Mono<BackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -434,18 +382,14 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters);
+    BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -457,11 +401,6 @@ public interface BackupShortTermRetentionPoliciesClient {
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
-        Context context);
+    BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context);
 }

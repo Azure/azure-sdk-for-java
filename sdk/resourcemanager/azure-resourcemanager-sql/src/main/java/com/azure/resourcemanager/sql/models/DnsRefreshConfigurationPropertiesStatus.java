@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the DNS refresh operation. */
+/**
+ * The status of the DNS refresh operation.
+ */
 public final class DnsRefreshConfigurationPropertiesStatus
     extends ExpandableStringEnum<DnsRefreshConfigurationPropertiesStatus> {
-    /** Static value Succeeded for DnsRefreshConfigurationPropertiesStatus. */
+    /**
+     * Static value Succeeded for DnsRefreshConfigurationPropertiesStatus.
+     */
     public static final DnsRefreshConfigurationPropertiesStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for DnsRefreshConfigurationPropertiesStatus. */
+    /**
+     * Static value Failed for DnsRefreshConfigurationPropertiesStatus.
+     */
     public static final DnsRefreshConfigurationPropertiesStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of DnsRefreshConfigurationPropertiesStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsRefreshConfigurationPropertiesStatus() {
+    }
+
+    /**
      * Creates or finds a DnsRefreshConfigurationPropertiesStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsRefreshConfigurationPropertiesStatus.
      */
-    @JsonCreator
     public static DnsRefreshConfigurationPropertiesStatus fromString(String name) {
         return fromString(name, DnsRefreshConfigurationPropertiesStatus.class);
     }
 
     /**
      * Gets known DnsRefreshConfigurationPropertiesStatus values.
-     *
+     * 
      * @return known DnsRefreshConfigurationPropertiesStatus values.
      */
     public static Collection<DnsRefreshConfigurationPropertiesStatus> values() {

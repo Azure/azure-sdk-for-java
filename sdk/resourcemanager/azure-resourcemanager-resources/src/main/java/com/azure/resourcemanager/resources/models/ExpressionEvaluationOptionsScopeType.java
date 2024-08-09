@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class ExpressionEvaluationOptionsScopeType
      * @param name a name to look for.
      * @return the corresponding ExpressionEvaluationOptionsScopeType.
      */
-    @JsonCreator
     public static ExpressionEvaluationOptionsScopeType fromString(String name) {
         return fromString(name, ExpressionEvaluationOptionsScopeType.class);
     }

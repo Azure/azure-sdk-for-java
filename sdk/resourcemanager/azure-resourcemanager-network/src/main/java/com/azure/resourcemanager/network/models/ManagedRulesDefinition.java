@@ -6,24 +6,26 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Allow to exclude some variable satisfy the condition for the WAF check.
  */
 @Fluent
-public final class ManagedRulesDefinition {
+public final class ManagedRulesDefinition implements JsonSerializable<ManagedRulesDefinition> {
     /*
      * The Exclusions that are applied on the policy.
      */
-    @JsonProperty(value = "exclusions")
     private List<OwaspCrsExclusionEntry> exclusions;
 
     /*
      * The managed rule sets that are associated with the policy.
      */
-    @JsonProperty(value = "managedRuleSets", required = true)
     private List<ManagedRuleSet> managedRuleSets;
 
     /**
@@ -91,4 +93,49 @@ public final class ManagedRulesDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedRulesDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("managedRuleSets", this.managedRuleSets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("exclusions", this.exclusions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRulesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRulesDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedRulesDefinition.
+     */
+    public static ManagedRulesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRulesDefinition deserializedManagedRulesDefinition = new ManagedRulesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedRuleSets".equals(fieldName)) {
+                    List<ManagedRuleSet> managedRuleSets
+                        = reader.readArray(reader1 -> ManagedRuleSet.fromJson(reader1));
+                    deserializedManagedRulesDefinition.managedRuleSets = managedRuleSets;
+                } else if ("exclusions".equals(fieldName)) {
+                    List<OwaspCrsExclusionEntry> exclusions
+                        = reader.readArray(reader1 -> OwaspCrsExclusionEntry.fromJson(reader1));
+                    deserializedManagedRulesDefinition.exclusions = exclusions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRulesDefinition;
+        });
+    }
 }

@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * App ingress settings payload.
  */
 @Fluent
-public final class IngressSettings {
+public final class IngressSettings implements JsonSerializable<IngressSettings> {
     /*
      * Ingress read time out in seconds.
      */
-    @JsonProperty(value = "readTimeoutInSeconds")
     private Integer readTimeoutInSeconds;
 
     /*
      * Ingress send time out in seconds.
      */
-    @JsonProperty(value = "sendTimeoutInSeconds")
     private Integer sendTimeoutInSeconds;
 
     /*
      * Type of the affinity, set this to Cookie to enable session affinity.
      */
-    @JsonProperty(value = "sessionAffinity")
     private SessionAffinity sessionAffinity;
 
     /*
      * Time in seconds until the cookie expires.
      */
-    @JsonProperty(value = "sessionCookieMaxAge")
     private Integer sessionCookieMaxAge;
 
     /*
      * How ingress should communicate with this app backend service.
      */
-    @JsonProperty(value = "backendProtocol")
     private BackendProtocol backendProtocol;
 
     /*
      * Client-Certification Authentication.
      */
-    @JsonProperty(value = "clientAuth")
     private IngressSettingsClientAuth clientAuth;
 
     /**
@@ -183,5 +181,58 @@ public final class IngressSettings {
         if (clientAuth() != null) {
             clientAuth().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("readTimeoutInSeconds", this.readTimeoutInSeconds);
+        jsonWriter.writeNumberField("sendTimeoutInSeconds", this.sendTimeoutInSeconds);
+        jsonWriter.writeStringField("sessionAffinity",
+            this.sessionAffinity == null ? null : this.sessionAffinity.toString());
+        jsonWriter.writeNumberField("sessionCookieMaxAge", this.sessionCookieMaxAge);
+        jsonWriter.writeStringField("backendProtocol",
+            this.backendProtocol == null ? null : this.backendProtocol.toString());
+        jsonWriter.writeJsonField("clientAuth", this.clientAuth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngressSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngressSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngressSettings.
+     */
+    public static IngressSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngressSettings deserializedIngressSettings = new IngressSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("readTimeoutInSeconds".equals(fieldName)) {
+                    deserializedIngressSettings.readTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("sendTimeoutInSeconds".equals(fieldName)) {
+                    deserializedIngressSettings.sendTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("sessionAffinity".equals(fieldName)) {
+                    deserializedIngressSettings.sessionAffinity = SessionAffinity.fromString(reader.getString());
+                } else if ("sessionCookieMaxAge".equals(fieldName)) {
+                    deserializedIngressSettings.sessionCookieMaxAge = reader.getNullable(JsonReader::getInt);
+                } else if ("backendProtocol".equals(fieldName)) {
+                    deserializedIngressSettings.backendProtocol = BackendProtocol.fromString(reader.getString());
+                } else if ("clientAuth".equals(fieldName)) {
+                    deserializedIngressSettings.clientAuth = IngressSettingsClientAuth.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngressSettings;
+        });
     }
 }
