@@ -130,7 +130,19 @@ class QuickPulsePingSenderTests {
         metric1.put("TelemetryType", "Metric");
         metric1.put("Projection", "my_gauge");
         metric1.put("BackendAggregation", "Min");
-        metric1.put("FilterGroups", new ArrayList<>());
+
+        ArrayList<HashMap<String, ArrayList<HashMap<String, String>>>> filterGroups = new ArrayList<>();
+        HashMap<String, ArrayList<HashMap<String, String>>> filterGroup = new HashMap<>();
+        ArrayList<HashMap<String, String>> filters = new ArrayList<>();
+        HashMap<String, String> filterOne = new HashMap<>();
+        filterOne.put("FieldName", "Test");
+        filterOne.put("Predicate", "Equals");
+        filterOne.put("Comparand", "Value");
+        filters.add(filterOne);
+        filterGroup.put("Filters", filters);
+        filterGroups.add(filterGroup);
+        metric1.put("FilterGroups", filterGroups);
+
         Map<String, Object> metric2 = new HashMap<>();
         metric2.put("Id", "MyFruitCounter");
         metric2.put("Aggregation", "Sum");
@@ -185,6 +197,11 @@ class QuickPulsePingSenderTests {
             .isEqualTo("Avg");
         assertThat(metricCategory.get(0).getTelemetryType())
             .isEqualTo("Metric");
+        assertThat(metricCategory.get(0).getFilterGroups().size() == 1);
+        assertThat(metricCategory.get(0).getFilterGroups().get(0).getFieldName())
+            .isEqualTo("Test");
+        assertThat(metricCategory.get(0).getFilterGroups().get(0).getOperator()).isEqualTo("Equals");
+        assertThat(metricCategory.get(0).getFilterGroups().get(0).getComparand()).isEqualTo("Value");
         assertThat(metricCategory.get(0).getProjection()).isEqualTo("my_gauge");
         assertThat(metricCategory.get(0).getId()).isEqualTo("my_gauge");
         assertThat(metricCategory.get(1).getAggregation()).isEqualTo("Sum");

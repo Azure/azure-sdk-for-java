@@ -1,6 +1,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OTelMetric {
 
@@ -12,8 +13,8 @@ public class OTelMetric {
         this.dataPoints = new ArrayList<>();
     }
 
-    public void addDataPoint(double value) {
-        OTelDataPoint dataPoint = new OTelDataPoint(value);
+    public void addDataPoint(double value, HashMap<String, String> dimensions) {
+        OTelDataPoint dataPoint = new OTelDataPoint(value, dimensions);
         this.dataPoints.add(dataPoint);
     }
 

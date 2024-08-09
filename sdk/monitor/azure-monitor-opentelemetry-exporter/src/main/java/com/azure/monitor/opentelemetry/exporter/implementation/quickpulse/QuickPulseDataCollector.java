@@ -118,7 +118,7 @@ final class QuickPulseDataCollector {
                 System.out.println("Type: " + metricsData.getProperties().get("testing").length());
             }
             MetricDataPoint point = metricsData.getMetrics().get(0);
-            this.metricsStorage.addMetric(point.getName(), point.getValue());
+            this.metricsStorage.addMetric(point.getName(), point.getValue(), metricsData.getProperties());
         }
 
     }
@@ -458,18 +458,18 @@ final class QuickPulseDataCollector {
         // setting most amount of OTel metrics a user can stream to this. will review if users surpass threshold.
         private final int maxMetricsLimit = 50;
 
-        public void addMetric(String metricName, double value) {
+        public void addMetric(String metricName, double value, Map<String, String> dimensions) {
             OTelMetric metric = metrics.get(metricName);
             if (metric == null) {
                 // create new metric and add to metrics map
                 // (if we have reached the limit, we will block the metric from being created
                 if (metrics.size() <= maxMetricsLimit) {
                     metric = new OTelMetric(metricName);
-                    metric.addDataPoint(value);
+                    metric.addDataPoint(value, dimensions == null ? new HashMap<>() : new HashMap<>(dimensions));
                     metrics.putIfAbsent(metricName, metric);
                 }
             } else {
-                metric.addDataPoint(value);
+                metric.addDataPoint(value, dimensions == null ? new HashMap<>() : new HashMap<>(dimensions));
             }
         }
 
@@ -497,24 +497,39 @@ final class QuickPulseDataCollector {
             }
 
             String aggregation = metricInfo.getAggregation();
-            ArrayList<Double> dataValues = metric.getDataValues();
-
-            if (Objects.equals(metricInfo.getProjection(), "UserEngagement")) {
-                System.out.println("User Engagement: " + dataValues);
+            ArrayList<Double> filteredValues = new ArrayList<>();
+            for (OTelDataPoint dataPoint : metric.getDataPoints()) {
+                boolean passedFilter = true;
+                for (QuickPulseConfiguration.FilterGroup filterGroup : metricInfo.getFilterGroups()) {
+                    String fieldName = filterGroup.getFieldName();
+                    String operator = filterGroup.getOperator();
+                    String comparand = filterGroup.getComparand();
+                    if (Objects.equals(operator, "Equal")) {
+                        String fieldValue = dataPoint.getDimensions().get(fieldName);
+                        if (fieldValue == null || !fieldValue.equals(comparand)) {
+                            passedFilter = false;
+                            break;
+                            // Handle the case where the value is null or does not equal the operator
+                        }
+                    }
+                }
+                if (passedFilter) {
+                    filteredValues.add(dataPoint.getValue());
+                }
             }
 
             switch (aggregation) {
                 case "Sum":
-                    double sum = dataValues.stream().mapToDouble(Double::doubleValue).sum();
+                    double sum = filteredValues.stream().mapToDouble(Double::doubleValue).sum();
                     return new QuickPulseMetrics(metricInfo.getId(), sum, 1);
                 case "Avg":
-                    double avg = dataValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
-                    return new QuickPulseMetrics(metricInfo.getId(), avg, dataValues.size());
+                    double avg = filteredValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+                    return new QuickPulseMetrics(metricInfo.getId(), avg, filteredValues.size());
                 case "Min":
-                    double min = dataValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
+                    double min = filteredValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), min, 1);
                 case "Max":
-                    double max = dataValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
+                    double max = filteredValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), max, 1);
                 default:
                     throw new IllegalArgumentException("Aggregation type not supported: " + aggregation);

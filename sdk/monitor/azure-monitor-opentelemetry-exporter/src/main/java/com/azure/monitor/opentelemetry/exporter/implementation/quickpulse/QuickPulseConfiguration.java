@@ -64,6 +64,28 @@ public class QuickPulseConfiguration {
                     metric.setProjection(metricNode.get("Projection").asText());
                     requestedMetrics.computeIfAbsent(metric.getTelemetryType(), k -> new ArrayList<>()).add(metric);
 
+
+                    JsonNode filterGroupsNode = metricNode.get("FilterGroups");
+                    if (filterGroupsNode instanceof ArrayNode) {
+                        ArrayNode filterGroupsArray = (ArrayNode) filterGroupsNode;
+                        for (JsonNode filterGroupNode : filterGroupsArray) {
+                            JsonNode filtersNode = filterGroupNode.get("Filters");
+                            if (filtersNode instanceof ArrayNode) {
+                                ArrayNode filtersArray = (ArrayNode) filtersNode;
+                                for (JsonNode filterNode : filtersArray) {
+                                    String fieldName = filterNode.get("FieldName").asText();
+                                    if (fieldName.contains(".")) {
+                                        fieldName = fieldName.split("\\.")[1];
+                                    }
+                                    String predicate = filterNode.get("Predicate").asText();
+                                    String comparand = filterNode.get("Comparand").asText();
+                                    if (!fieldName.isEmpty() && !fieldName.equals("undefined") && !predicate.isEmpty() && !comparand.isEmpty()) {
+                                        metric.addFilterGroup(fieldName, predicate, comparand);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             return requestedMetrics;
@@ -79,6 +101,7 @@ public class QuickPulseConfiguration {
         private String projection;
         private String telemetryType;
         private String aggregation;
+        private ArrayList<FilterGroup> filterGroups = new ArrayList<>();
 
         public String getId() {
             return this.id;
@@ -111,6 +134,50 @@ public class QuickPulseConfiguration {
 
         public void setAggregation(String aggregation) {
             this.aggregation = aggregation;
+        }
+
+        public ArrayList<FilterGroup> getFilterGroups() {
+            return this.filterGroups;
+        }
+
+        public void addFilterGroup(String fieldName, String predicate, String comparand) {
+            this.filterGroups.add(new FilterGroup(fieldName, predicate, comparand));
+        }
+    }
+
+    class FilterGroup {
+        private String fieldName;
+        private String operator;
+        private String comparand;
+
+        public FilterGroup(String fieldName, String predicate, String comparand) {
+            this.fieldName = fieldName;
+            this.operator = predicate;
+            this.comparand = comparand;
+        }
+
+        public String getFieldName() {
+            return this.fieldName;
+        }
+
+        public void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+        public String getOperator() {
+            return this.operator;
+        }
+
+        public void setOperator(String operator) {
+            this.operator = operator;
+        }
+
+        public String getComparand() {
+            return this.comparand;
+        }
+
+        public void setComparand(String comparand) {
+            this.comparand = comparand;
         }
     }
 }
