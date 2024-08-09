@@ -22,14 +22,14 @@ public class ResourceWithWritableName extends ProxyResource {
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ResourceWithWritableName class.
@@ -58,16 +58,6 @@ public class ResourceWithWritableName extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -75,6 +65,16 @@ public class ResourceWithWritableName extends ProxyResource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
