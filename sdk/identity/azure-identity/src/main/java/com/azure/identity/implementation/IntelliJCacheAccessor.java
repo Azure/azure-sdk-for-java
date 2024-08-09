@@ -162,12 +162,12 @@ public class IntelliJCacheAccessor {
      * @return the {@link JsonNode} holding the authentication details.
      * @throws IOException If an I/O error occurs.
      */
-    public JsonNode getDeviceCodeCredentials() throws IOException {
+    public String getDeviceCodeCredentials() throws IOException {
         if (Platform.isMac()) {
             KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager", "cachedAuthResult");
             String jsonCred  = new String(accessor.read(), StandardCharsets.UTF_8);
 
-            return DEFAULT_MAPPER.readTree(jsonCred);
+            return DEFAULT_MAPPER.readTree(jsonCred).get("refreshToken").textValue();
         } else if (Platform.isLinux()) {
             LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
                 "com.intellij.credentialStore.Credential",
@@ -182,9 +182,9 @@ public class IntelliJCacheAccessor {
                 jsonCred = jsonCred.substring("cachedAuthResult@".length());
             }
 
-            return DEFAULT_MAPPER.readTree(jsonCred);
+            return DEFAULT_MAPPER.readTree(jsonCred).get("refreshToken").textValue();
         } else if (Platform.isWindows()) {
-            return getCredentialFromKdbx();
+            return getCredentialFromKdbx().get("refreshToken").textValue();
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(String.format("OS %s Platform not supported.",
                     Platform.getOSType())));

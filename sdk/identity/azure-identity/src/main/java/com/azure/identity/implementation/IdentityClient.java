@@ -18,7 +18,6 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
@@ -306,9 +305,7 @@ public class IdentityClient extends IdentityClientBase {
                                          + "authentication unavailable. ADFS tenant/authorities are not supported.")));
                 }
                 try {
-                    JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
-
-                    String refreshToken = intelliJCredentials.get("refreshToken").textValue();
+                    String refreshToken = cacheAccessor.getDeviceCodeCredentials();
 
                     RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
                         RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), refreshToken);
