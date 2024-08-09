@@ -34,7 +34,7 @@
     "dir": "azure-resourcemanager-cdn",
     "source": "specification/cdn/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cdn",
-    "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource --stream-style-serialization=false"
+    "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource"
   },
   "compute": {
     "dir": "azure-resourcemanager-compute",
@@ -168,7 +168,7 @@
     "dir": "azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit --stream-style-serialization=false",
+    "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit",
     "note": "Use commit c0f92082a788895368a738a9200e24971157d7ca, and remove Swagger from Microsoft.Monitor"
   },
   "monitor-hybrid": {

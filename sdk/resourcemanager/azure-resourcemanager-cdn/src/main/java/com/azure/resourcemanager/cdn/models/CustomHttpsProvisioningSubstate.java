@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -82,7 +81,6 @@ public final class CustomHttpsProvisioningSubstate extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding CustomHttpsProvisioningSubstate.
      */
-    @JsonCreator
     public static CustomHttpsProvisioningSubstate fromString(String name) {
         return fromString(name, CustomHttpsProvisioningSubstate.class);
     }

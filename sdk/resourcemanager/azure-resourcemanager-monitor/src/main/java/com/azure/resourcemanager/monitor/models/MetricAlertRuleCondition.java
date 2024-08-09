@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MetricAlertRuleCondition. */
@@ -33,7 +32,6 @@ public final class MetricAlertRuleCondition extends ExpandableStringEnum<MetricA
      * @param name a name to look for
      * @return the corresponding MetricAlertRuleCondition
      */
-    @JsonCreator
     public static MetricAlertRuleCondition fromString(String name) {
         return fromString(name, MetricAlertRuleCondition.class);
     }

@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * An alert incident indicates the activation status of an alert rule.
  */
 @Immutable
-public final class IncidentInner {
+public final class IncidentInner implements JsonSerializable<IncidentInner> {
     /*
      * Incident name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Rule name that is associated with the incident.
      */
-    @JsonProperty(value = "ruleName", access = JsonProperty.Access.WRITE_ONLY)
     private String ruleName;
 
     /*
      * A boolean to indicate whether the incident is active or resolved.
      */
-    @JsonProperty(value = "isActive", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isActive;
 
     /*
      * The time at which the incident was activated in ISO8601 format.
      */
-    @JsonProperty(value = "activatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime activatedTime;
 
     /*
      * The time at which the incident was resolved in ISO8601 format. If null, it means the incident is still active.
      */
-    @JsonProperty(value = "resolvedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resolvedTime;
 
     /**
@@ -101,5 +101,50 @@ public final class IncidentInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IncidentInner.
+     */
+    public static IncidentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentInner deserializedIncidentInner = new IncidentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIncidentInner.name = reader.getString();
+                } else if ("ruleName".equals(fieldName)) {
+                    deserializedIncidentInner.ruleName = reader.getString();
+                } else if ("isActive".equals(fieldName)) {
+                    deserializedIncidentInner.isActive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("activatedTime".equals(fieldName)) {
+                    deserializedIncidentInner.activatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resolvedTime".equals(fieldName)) {
+                    deserializedIncidentInner.resolvedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentInner;
+        });
     }
 }

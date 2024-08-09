@@ -5,28 +5,43 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Specifies the metric alert criteria for multiple resource that has multiple metric criteria.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria")
 @Fluent
 public final class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
     /*
+     * specifies the type of the alert criteria.
+     */
+    private Odatatype odataType = Odatatype.MICROSOFT_AZURE_MONITOR_MULTIPLE_RESOURCE_MULTIPLE_METRIC_CRITERIA;
+
+    /*
      * the list of multiple metric criteria for this 'all of' operation.
      */
-    @JsonProperty(value = "allOf")
     private List<MultiMetricCriteria> allOf;
 
     /**
      * Creates an instance of MetricAlertMultipleResourceMultipleMetricCriteria class.
      */
     public MetricAlertMultipleResourceMultipleMetricCriteria() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of the alert criteria.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public Odatatype odataType() {
+        return this.odataType;
     }
 
     /**
@@ -60,5 +75,60 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
         if (allOf() != null) {
             allOf().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("odata.type", this.odataType == null ? null : this.odataType.toString());
+        jsonWriter.writeArrayField("allOf", this.allOf, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricAlertMultipleResourceMultipleMetricCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricAlertMultipleResourceMultipleMetricCriteria if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricAlertMultipleResourceMultipleMetricCriteria.
+     */
+    public static MetricAlertMultipleResourceMultipleMetricCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricAlertMultipleResourceMultipleMetricCriteria deserializedMetricAlertMultipleResourceMultipleMetricCriteria
+                = new MetricAlertMultipleResourceMultipleMetricCriteria();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("odata.type".equals(fieldName)) {
+                    deserializedMetricAlertMultipleResourceMultipleMetricCriteria.odataType
+                        = Odatatype.fromString(reader.getString());
+                } else if ("allOf".equals(fieldName)) {
+                    List<MultiMetricCriteria> allOf
+                        = reader.readArray(reader1 -> MultiMetricCriteria.fromJson(reader1));
+                    deserializedMetricAlertMultipleResourceMultipleMetricCriteria.allOf = allOf;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMetricAlertMultipleResourceMultipleMetricCriteria
+                .withAdditionalProperties(additionalProperties);
+
+            return deserializedMetricAlertMultipleResourceMultipleMetricCriteria;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class KnownPublicNetworkAccessOptions extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding KnownPublicNetworkAccessOptions.
      */
-    @JsonCreator
     public static KnownPublicNetworkAccessOptions fromString(String name) {
         return fromString(name, KnownPublicNetworkAccessOptions.class);
     }

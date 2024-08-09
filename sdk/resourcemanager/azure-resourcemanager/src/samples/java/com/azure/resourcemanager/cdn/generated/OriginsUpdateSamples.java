@@ -20,11 +20,19 @@ public final class OriginsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void originsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getOrigins().update("RG", "profile1", "endpoint1",
-            "www-someDomain-net",
-            new OriginUpdateParameters().withHttpPort(42).withHttpsPort(43).withOriginHostHeader("www.someDomain2.net")
-                .withPriority(1).withWeight(50).withEnabled(true).withPrivateLinkAlias(
-                    "APPSERVER.d84e61f0-0870-4d24-9746-7438fa0019d1.westus2.azure.privatelinkservice"),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getOrigins()
+            .update("RG", "profile1", "endpoint1", "www-someDomain-net",
+                new OriginUpdateParameters().withHttpPort(42)
+                    .withHttpsPort(43)
+                    .withOriginHostHeader("www.someDomain2.net")
+                    .withPriority(1)
+                    .withWeight(50)
+                    .withEnabled(true)
+                    .withPrivateLinkAlias(
+                        "APPSERVER.d84e61f0-0870-4d24-9746-7438fa0019d1.westus2.azure.privatelinkservice"),
+                com.azure.core.util.Context.NONE);
     }
 }

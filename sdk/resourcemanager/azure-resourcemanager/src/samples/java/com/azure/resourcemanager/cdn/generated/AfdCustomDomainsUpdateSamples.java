@@ -24,12 +24,16 @@ public final class AfdCustomDomainsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDCustomDomainsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdCustomDomains().update("RG", "profile1", "domain1",
-            new AfdDomainUpdateParameters()
-                .withTlsSettings(
-                    new AfdDomainHttpsParameters().withCertificateType(AfdCertificateType.CUSTOMER_CERTIFICATE)
-                        .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12))
-                .withAzureDnsZone(new ResourceReference().withId("")),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdCustomDomains()
+            .update("RG", "profile1", "domain1",
+                new AfdDomainUpdateParameters()
+                    .withTlsSettings(
+                        new AfdDomainHttpsParameters().withCertificateType(AfdCertificateType.CUSTOMER_CERTIFICATE)
+                            .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12))
+                    .withAzureDnsZone(new ResourceReference().withId("")),
+                com.azure.core.util.Context.NONE);
     }
 }

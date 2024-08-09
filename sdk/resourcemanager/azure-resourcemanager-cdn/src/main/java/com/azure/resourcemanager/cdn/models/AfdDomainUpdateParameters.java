@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.AfdDomainUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The domain JSON object required for domain creation or update.
  */
 @Fluent
-public final class AfdDomainUpdateParameters {
+public final class AfdDomainUpdateParameters implements JsonSerializable<AfdDomainUpdateParameters> {
     /*
      * The JSON object that contains the properties of the domain to create.
      */
-    @JsonProperty(value = "properties")
     private AfdDomainUpdatePropertiesParameters innerProperties;
 
     /**
@@ -94,8 +97,8 @@ public final class AfdDomainUpdateParameters {
     }
 
     /**
-     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
-     * domain ownership was prevalidated.
+     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
+     * ownership was prevalidated.
      * 
      * @return the preValidatedCustomDomainResourceId value.
      */
@@ -104,8 +107,8 @@ public final class AfdDomainUpdateParameters {
     }
 
     /**
-     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
-     * domain ownership was prevalidated.
+     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
+     * ownership was prevalidated.
      * 
      * @param preValidatedCustomDomainResourceId the preValidatedCustomDomainResourceId value to set.
      * @return the AfdDomainUpdateParameters object itself.
@@ -128,5 +131,42 @@ public final class AfdDomainUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdDomainUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdDomainUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdDomainUpdateParameters.
+     */
+    public static AfdDomainUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdDomainUpdateParameters deserializedAfdDomainUpdateParameters = new AfdDomainUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAfdDomainUpdateParameters.innerProperties
+                        = AfdDomainUpdatePropertiesParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdDomainUpdateParameters;
+        });
     }
 }

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * AFDOrigin group properties needed for origin group creation or update.
  */
 @Fluent
-public final class AfdOriginGroupUpdateParameters {
+public final class AfdOriginGroupUpdateParameters implements JsonSerializable<AfdOriginGroupUpdateParameters> {
     /*
      * The JSON object that contains the properties of the origin group.
      */
-    @JsonProperty(value = "properties")
     private AfdOriginGroupUpdatePropertiesParameters innerProperties;
 
     /**
@@ -68,8 +71,8 @@ public final class AfdOriginGroupUpdateParameters {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @return the healthProbeSettings value.
      */
@@ -78,8 +81,8 @@ public final class AfdOriginGroupUpdateParameters {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the AfdOriginGroupUpdateParameters object itself.
@@ -100,7 +103,8 @@ public final class AfdOriginGroupUpdateParameters {
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -118,8 +122,9 @@ public final class AfdOriginGroupUpdateParameters {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginGroupUpdatePropertiesParameters();
         }
-        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties()
+            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
@@ -157,5 +162,43 @@ public final class AfdOriginGroupUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginGroupUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginGroupUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginGroupUpdateParameters.
+     */
+    public static AfdOriginGroupUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginGroupUpdateParameters deserializedAfdOriginGroupUpdateParameters
+                = new AfdOriginGroupUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdateParameters.innerProperties
+                        = AfdOriginGroupUpdatePropertiesParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginGroupUpdateParameters;
+        });
     }
 }

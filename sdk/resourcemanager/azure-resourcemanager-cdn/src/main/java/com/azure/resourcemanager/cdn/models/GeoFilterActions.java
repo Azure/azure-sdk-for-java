@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Action of the geo filter, i.e. allow or block access.
  */
@@ -36,7 +33,6 @@ public enum GeoFilterActions {
      * @param value the serialized value to parse.
      * @return the parsed GeoFilterActions object, or null if unable to parse.
      */
-    @JsonCreator
     public static GeoFilterActions fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum GeoFilterActions {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

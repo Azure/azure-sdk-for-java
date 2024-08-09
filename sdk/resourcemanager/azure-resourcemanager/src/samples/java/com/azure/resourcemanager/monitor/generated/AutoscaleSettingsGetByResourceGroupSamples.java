@@ -18,7 +18,10 @@ public final class AutoscaleSettingsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAutoscaleSetting(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAutoscaleSettings()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAutoscaleSettings()
             .getByResourceGroupWithResponse("TestingMetricsScaleSet", "MySetting", com.azure.core.util.Context.NONE);
     }
 }

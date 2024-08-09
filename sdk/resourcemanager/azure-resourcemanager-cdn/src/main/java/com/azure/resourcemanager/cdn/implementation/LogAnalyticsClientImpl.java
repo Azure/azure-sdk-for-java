@@ -170,15 +170,15 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
-     * @param groupBy Array of LogMetricsGroupBy.
-     * @param continents Array of Get9ItemsItem.
-     * @param countryOrRegions Array of Get10ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
+     * @param groupBy The groupBy parameter.
+     * @param continents The continents parameter.
+     * @param countryOrRegions The countryOrRegions parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,11 +225,14 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final String accept = "application/json";
         List<String> metricsConverted
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+        List<String> groupByConverted = (groupBy == null)
+            ? new ArrayList<>()
             : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> continentsConverted = (continents == null) ? new ArrayList<>()
+        List<String> continentsConverted = (continents == null)
+            ? new ArrayList<>()
             : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> countryOrRegionsConverted = (countryOrRegions == null) ? new ArrayList<>()
+        List<String> countryOrRegionsConverted = (countryOrRegions == null)
+            ? new ArrayList<>()
             : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> customDomainsConverted
             = customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
@@ -249,15 +252,15 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
-     * @param groupBy Array of LogMetricsGroupBy.
-     * @param continents Array of Get9ItemsItem.
-     * @param countryOrRegions Array of Get10ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
+     * @param groupBy The groupBy parameter.
+     * @param continents The continents parameter.
+     * @param countryOrRegions The countryOrRegions parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -305,11 +308,14 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final String accept = "application/json";
         List<String> metricsConverted
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+        List<String> groupByConverted = (groupBy == null)
+            ? new ArrayList<>()
             : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> continentsConverted = (continents == null) ? new ArrayList<>()
+        List<String> continentsConverted = (continents == null)
+            ? new ArrayList<>()
             : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> countryOrRegionsConverted = (countryOrRegions == null) ? new ArrayList<>()
+        List<String> countryOrRegionsConverted = (countryOrRegions == null)
+            ? new ArrayList<>()
             : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> customDomainsConverted
             = customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
@@ -328,12 +334,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -357,15 +363,15 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
-     * @param groupBy Array of LogMetricsGroupBy.
-     * @param continents Array of Get9ItemsItem.
-     * @param countryOrRegions Array of Get10ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
+     * @param groupBy The groupBy parameter.
+     * @param continents The continents parameter.
+     * @param countryOrRegions The countryOrRegions parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -387,12 +393,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -415,12 +421,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
-     * @param customDomains Array of String.
+     * @param customDomains The customDomains parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,7 +469,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> metricsConverted
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> customDomainsConverted = (customDomains == null) ? new ArrayList<>()
+        List<String> customDomainsConverted = (customDomains == null)
+            ? new ArrayList<>()
             : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
@@ -479,12 +486,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
-     * @param customDomains Array of String.
+     * @param customDomains The customDomains parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -528,7 +535,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> metricsConverted
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> customDomainsConverted = (customDomains == null) ? new ArrayList<>()
+        List<String> customDomainsConverted = (customDomains == null)
+            ? new ArrayList<>()
             : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service.getLogAnalyticsRankings(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -542,8 +550,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -567,12 +575,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
-     * @param customDomains Array of String.
+     * @param customDomains The customDomains parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,8 +601,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -870,13 +878,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param actions Array of WafAction.
-     * @param groupBy Array of WafRankingGroupBy.
-     * @param ruleTypes Array of WafRuleType.
+     * @param actions The actions parameter.
+     * @param groupBy The groupBy parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -918,11 +926,14 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final String accept = "application/json";
         List<String> metricsConverted
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+        List<String> actionsConverted = (actions == null)
+            ? new ArrayList<>()
             : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+        List<String> groupByConverted = (groupBy == null)
+            ? new ArrayList<>()
             : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+        List<String> ruleTypesConverted = (ruleTypes == null)
+            ? new ArrayList<>()
             : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
@@ -938,13 +949,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param actions Array of WafAction.
-     * @param groupBy Array of WafRankingGroupBy.
-     * @param ruleTypes Array of WafRuleType.
+     * @param actions The actions parameter.
+     * @param groupBy The groupBy parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -987,11 +998,14 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final String accept = "application/json";
         List<String> metricsConverted
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+        List<String> actionsConverted = (actions == null)
+            ? new ArrayList<>()
             : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+        List<String> groupByConverted = (groupBy == null)
+            ? new ArrayList<>()
             : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+        List<String> ruleTypesConverted = (ruleTypes == null)
+            ? new ArrayList<>()
             : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service.getWafLogAnalyticsMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1005,7 +1019,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
@@ -1030,13 +1044,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param actions Array of WafAction.
-     * @param groupBy Array of WafRankingGroupBy.
-     * @param ruleTypes Array of WafRuleType.
+     * @param actions The actions parameter.
+     * @param groupBy The groupBy parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1058,7 +1072,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
@@ -1083,13 +1097,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
-     * @param actions Array of WafAction.
-     * @param ruleTypes Array of WafRuleType.
+     * @param rankings The rankings parameter.
+     * @param actions The actions parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1133,9 +1147,11 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> rankingsConverted
             = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+        List<String> actionsConverted = (actions == null)
+            ? new ArrayList<>()
             : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+        List<String> ruleTypesConverted = (ruleTypes == null)
+            ? new ArrayList<>()
             : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(context -> service.getWafLogAnalyticsRankings(this.client.getEndpoint(),
@@ -1151,13 +1167,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
-     * @param actions Array of WafAction.
-     * @param ruleTypes Array of WafRuleType.
+     * @param rankings The rankings parameter.
+     * @param actions The actions parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,9 +1218,11 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> rankingsConverted
             = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+        List<String> actionsConverted = (actions == null)
+            ? new ArrayList<>()
             : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+        List<String> ruleTypesConverted = (ruleTypes == null)
+            ? new ArrayList<>()
             : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service.getWafLogAnalyticsRankings(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1218,11 +1236,11 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
+     * @param rankings The rankings parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1244,13 +1262,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
-     * @param actions Array of WafAction.
-     * @param ruleTypes Array of WafRuleType.
+     * @param rankings The rankings parameter.
+     * @param actions The actions parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1272,11 +1290,11 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
+     * @param rankings The rankings parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -20,8 +20,11 @@ public final class CustomDomainsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void customDomainsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getCustomDomains().create("RG", "profile1", "endpoint1",
-            "www-someDomain-net", new CustomDomainParameters().withHostname("www.someDomain.net"),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
+            .create("RG", "profile1", "endpoint1", "www-someDomain-net",
+                new CustomDomainParameters().withHostname("www.someDomain.net"), com.azure.core.util.Context.NONE);
     }
 }

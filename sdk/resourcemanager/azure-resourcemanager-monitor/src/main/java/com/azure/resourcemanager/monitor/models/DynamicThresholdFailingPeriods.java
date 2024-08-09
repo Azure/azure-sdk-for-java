@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The minimum number of violations required within the selected lookback time window required to raise an alert.
  */
 @Fluent
-public final class DynamicThresholdFailingPeriods {
+public final class DynamicThresholdFailingPeriods implements JsonSerializable<DynamicThresholdFailingPeriods> {
     /*
      * The number of aggregated lookback points. The lookback time window is calculated based on the aggregation
      * granularity (windowSize) and the selected number of aggregated points.
      */
-    @JsonProperty(value = "numberOfEvaluationPeriods", required = true)
     private float numberOfEvaluationPeriods;
 
     /*
      * The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
      */
-    @JsonProperty(value = "minFailingPeriodsToAlert", required = true)
     private float minFailingPeriodsToAlert;
 
     /**
@@ -32,8 +34,8 @@ public final class DynamicThresholdFailingPeriods {
     }
 
     /**
-     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
-     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
+     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      * 
      * @return the numberOfEvaluationPeriods value.
      */
@@ -42,8 +44,8 @@ public final class DynamicThresholdFailingPeriods {
     }
 
     /**
-     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
-     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
+     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      * 
      * @param numberOfEvaluationPeriods the numberOfEvaluationPeriods value to set.
      * @return the DynamicThresholdFailingPeriods object itself.
@@ -81,5 +83,46 @@ public final class DynamicThresholdFailingPeriods {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeFloatField("numberOfEvaluationPeriods", this.numberOfEvaluationPeriods);
+        jsonWriter.writeFloatField("minFailingPeriodsToAlert", this.minFailingPeriodsToAlert);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicThresholdFailingPeriods from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicThresholdFailingPeriods if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicThresholdFailingPeriods.
+     */
+    public static DynamicThresholdFailingPeriods fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicThresholdFailingPeriods deserializedDynamicThresholdFailingPeriods
+                = new DynamicThresholdFailingPeriods();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfEvaluationPeriods".equals(fieldName)) {
+                    deserializedDynamicThresholdFailingPeriods.numberOfEvaluationPeriods = reader.getFloat();
+                } else if ("minFailingPeriodsToAlert".equals(fieldName)) {
+                    deserializedDynamicThresholdFailingPeriods.minFailingPeriodsToAlert = reader.getFloat();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynamicThresholdFailingPeriods;
+        });
     }
 }

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.ActionGroupResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of action groups.
  */
 @Fluent
-public final class ActionGroupList {
+public final class ActionGroupList implements JsonSerializable<ActionGroupList> {
     /*
      * The list of action groups.
      */
-    @JsonProperty(value = "value")
     private List<ActionGroupResourceInner> value;
 
     /*
      * Provides the link to retrieve the next set of elements.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class ActionGroupList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionGroupList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionGroupList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionGroupList.
+     */
+    public static ActionGroupList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionGroupList deserializedActionGroupList = new ActionGroupList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ActionGroupResourceInner> value
+                        = reader.readArray(reader1 -> ActionGroupResourceInner.fromJson(reader1));
+                    deserializedActionGroupList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedActionGroupList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionGroupList;
+        });
     }
 }

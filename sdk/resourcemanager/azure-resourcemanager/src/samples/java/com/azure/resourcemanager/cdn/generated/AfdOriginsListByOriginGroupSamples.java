@@ -18,7 +18,10 @@ public final class AfdOriginsListByOriginGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDOriginsListByOriginGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdOrigins().listByOriginGroup("RG", "profile1",
-            "origingroup1", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdOrigins()
+            .listByOriginGroup("RG", "profile1", "origingroup1", com.azure.core.util.Context.NONE);
     }
 }

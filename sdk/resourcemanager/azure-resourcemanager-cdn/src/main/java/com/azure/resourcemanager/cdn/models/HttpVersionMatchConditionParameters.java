@@ -6,42 +6,42 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines the parameters for HttpVersion match conditions.
  */
 @Fluent
-public final class HttpVersionMatchConditionParameters {
+public final class HttpVersionMatchConditionParameters
+    implements JsonSerializable<HttpVersionMatchConditionParameters> {
     /*
      * The typeName property.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName = "DeliveryRuleHttpVersionConditionParameters";
 
     /*
      * Describes operator to be matched
      */
-    @JsonProperty(value = "operator", required = true)
     private HttpVersionOperator operator;
 
     /*
      * Describes if this is negate condition or not
      */
-    @JsonProperty(value = "negateCondition")
     private Boolean negateCondition;
 
     /*
      * The match value for the condition of the delivery rule
      */
-    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /*
      * List of transforms
      */
-    @JsonProperty(value = "transforms")
     private List<Transform> transforms;
 
     /**
@@ -157,10 +157,64 @@ public final class HttpVersionMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property operator in model HttpVersionMatchConditionParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operator in model HttpVersionMatchConditionParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpVersionMatchConditionParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeBooleanField("negateCondition", this.negateCondition);
+        jsonWriter.writeArrayField("matchValues", this.matchValues, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("transforms", this.transforms,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpVersionMatchConditionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpVersionMatchConditionParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HttpVersionMatchConditionParameters.
+     */
+    public static HttpVersionMatchConditionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpVersionMatchConditionParameters deserializedHttpVersionMatchConditionParameters
+                = new HttpVersionMatchConditionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operator".equals(fieldName)) {
+                    deserializedHttpVersionMatchConditionParameters.operator
+                        = HttpVersionOperator.fromString(reader.getString());
+                } else if ("negateCondition".equals(fieldName)) {
+                    deserializedHttpVersionMatchConditionParameters.negateCondition
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("matchValues".equals(fieldName)) {
+                    List<String> matchValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHttpVersionMatchConditionParameters.matchValues = matchValues;
+                } else if ("transforms".equals(fieldName)) {
+                    List<Transform> transforms = reader.readArray(reader1 -> Transform.fromString(reader1.getString()));
+                    deserializedHttpVersionMatchConditionParameters.transforms = transforms;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpVersionMatchConditionParameters;
+        });
+    }
 }

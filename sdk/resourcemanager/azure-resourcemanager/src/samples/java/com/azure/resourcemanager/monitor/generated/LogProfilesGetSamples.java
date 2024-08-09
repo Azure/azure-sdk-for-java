@@ -18,7 +18,10 @@ public final class LogProfilesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLogProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getLogProfiles().getWithResponse("default",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getLogProfiles()
+            .getWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

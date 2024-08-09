@@ -19,7 +19,10 @@ public final class LogAnalyticsGetLogAnalyticsLocationsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void logAnalyticsGetLogAnalyticsLocations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getLogAnalytics().getLogAnalyticsLocationsWithResponse("RG",
-            "profile1", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getLogAnalytics()
+            .getLogAnalyticsLocationsWithResponse("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

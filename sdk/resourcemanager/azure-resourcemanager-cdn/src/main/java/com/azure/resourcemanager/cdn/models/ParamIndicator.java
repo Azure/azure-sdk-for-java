@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
      * @param name a name to look for.
      * @return the corresponding ParamIndicator.
      */
-    @JsonCreator
     public static ParamIndicator fromString(String name) {
         return fromString(name, ParamIndicator.class);
     }

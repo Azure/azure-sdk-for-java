@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.OriginGroupUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Origin group properties needed for origin group creation or update.
  */
 @Fluent
-public final class OriginGroupUpdateParameters {
+public final class OriginGroupUpdateParameters implements JsonSerializable<OriginGroupUpdateParameters> {
     /*
      * The JSON object that contains the properties of the origin group.
      */
-    @JsonProperty(value = "properties")
     private OriginGroupUpdatePropertiesParameters innerProperties;
 
     /**
@@ -36,8 +39,8 @@ public final class OriginGroupUpdateParameters {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @return the healthProbeSettings value.
      */
@@ -46,8 +49,8 @@ public final class OriginGroupUpdateParameters {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the OriginGroupUpdateParameters object itself.
@@ -91,7 +94,8 @@ public final class OriginGroupUpdateParameters {
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -109,8 +113,9 @@ public final class OriginGroupUpdateParameters {
         if (this.innerProperties() == null) {
             this.innerProperties = new OriginGroupUpdatePropertiesParameters();
         }
-        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties()
+            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
@@ -121,7 +126,8 @@ public final class OriginGroupUpdateParameters {
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
@@ -150,5 +156,42 @@ public final class OriginGroupUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginGroupUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginGroupUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OriginGroupUpdateParameters.
+     */
+    public static OriginGroupUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginGroupUpdateParameters deserializedOriginGroupUpdateParameters = new OriginGroupUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedOriginGroupUpdateParameters.innerProperties
+                        = OriginGroupUpdatePropertiesParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginGroupUpdateParameters;
+        });
     }
 }

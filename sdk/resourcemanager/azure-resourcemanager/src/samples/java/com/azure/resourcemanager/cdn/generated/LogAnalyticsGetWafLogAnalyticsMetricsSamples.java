@@ -24,9 +24,13 @@ public final class LogAnalyticsGetWafLogAnalyticsMetricsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void logAnalyticsGetWafLogAnalyticsMetrics(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getLogAnalytics().getWafLogAnalyticsMetricsWithResponse("RG",
-            "profile1", Arrays.asList(WafMetric.CLIENT_REQUEST_COUNT), OffsetDateTime.parse("2020-11-04T06:49:27.554Z"),
-            OffsetDateTime.parse("2020-11-04T09:49:27.554Z"), WafGranularity.PT5M,
-            Arrays.asList(WafAction.BLOCK, WafAction.LOG), null, null, com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getLogAnalytics()
+            .getWafLogAnalyticsMetricsWithResponse("RG", "profile1", Arrays.asList(WafMetric.CLIENT_REQUEST_COUNT),
+                OffsetDateTime.parse("2020-11-04T06:49:27.554Z"), OffsetDateTime.parse("2020-11-04T09:49:27.554Z"),
+                WafGranularity.PT5M, Arrays.asList(WafAction.BLOCK, WafAction.LOG), null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

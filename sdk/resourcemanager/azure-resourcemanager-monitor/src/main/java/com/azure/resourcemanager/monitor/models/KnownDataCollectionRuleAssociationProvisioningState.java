@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class KnownDataCollectionRuleAssociationProvisioningState
      * @param name a name to look for.
      * @return the corresponding KnownDataCollectionRuleAssociationProvisioningState.
      */
-    @JsonCreator
     public static KnownDataCollectionRuleAssociationProvisioningState fromString(String name) {
         return fromString(name, KnownDataCollectionRuleAssociationProvisioningState.class);
     }

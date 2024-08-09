@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The JSON object containing security policy update parameters.
  */
 @Fluent
-public final class SecurityPolicyUpdateParameters {
+public final class SecurityPolicyUpdateParameters implements JsonSerializable<SecurityPolicyUpdateParameters> {
     /*
      * The json object that contains properties required to update a security policy
      */
-    @JsonProperty(value = "properties")
     private SecurityPolicyUpdateProperties innerProperties;
 
     /**
@@ -66,5 +69,43 @@ public final class SecurityPolicyUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPolicyUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPolicyUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityPolicyUpdateParameters.
+     */
+    public static SecurityPolicyUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPolicyUpdateParameters deserializedSecurityPolicyUpdateParameters
+                = new SecurityPolicyUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSecurityPolicyUpdateParameters.innerProperties
+                        = SecurityPolicyUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPolicyUpdateParameters;
+        });
     }
 }

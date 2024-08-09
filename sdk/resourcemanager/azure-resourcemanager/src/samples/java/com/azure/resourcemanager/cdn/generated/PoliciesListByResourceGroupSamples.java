@@ -18,7 +18,10 @@ public final class PoliciesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPoliciesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getPolicies().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getPolicies()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

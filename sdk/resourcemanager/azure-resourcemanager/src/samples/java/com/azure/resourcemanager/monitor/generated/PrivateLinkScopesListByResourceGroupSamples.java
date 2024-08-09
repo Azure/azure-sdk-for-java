@@ -19,7 +19,10 @@ public final class PrivateLinkScopesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateLinkScopeListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopes()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopes()
             .listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
     }
 }

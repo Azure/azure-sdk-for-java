@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Web Application Firewall Mapping.
  */
 @Fluent
-public final class MigrationWebApplicationFirewallMapping {
+public final class MigrationWebApplicationFirewallMapping
+    implements JsonSerializable<MigrationWebApplicationFirewallMapping> {
     /*
      * Migration From Waf policy
      */
-    @JsonProperty(value = "migratedFrom")
     private ResourceReference migratedFrom;
 
     /*
      * Migration to Waf policy
      */
-    @JsonProperty(value = "migratedTo")
     private ResourceReference migratedTo;
 
     /**
@@ -82,5 +85,46 @@ public final class MigrationWebApplicationFirewallMapping {
         if (migratedTo() != null) {
             migratedTo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("migratedFrom", this.migratedFrom);
+        jsonWriter.writeJsonField("migratedTo", this.migratedTo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationWebApplicationFirewallMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationWebApplicationFirewallMapping if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationWebApplicationFirewallMapping.
+     */
+    public static MigrationWebApplicationFirewallMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationWebApplicationFirewallMapping deserializedMigrationWebApplicationFirewallMapping
+                = new MigrationWebApplicationFirewallMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migratedFrom".equals(fieldName)) {
+                    deserializedMigrationWebApplicationFirewallMapping.migratedFrom
+                        = ResourceReference.fromJson(reader);
+                } else if ("migratedTo".equals(fieldName)) {
+                    deserializedMigrationWebApplicationFirewallMapping.migratedTo = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationWebApplicationFirewallMapping;
+        });
     }
 }

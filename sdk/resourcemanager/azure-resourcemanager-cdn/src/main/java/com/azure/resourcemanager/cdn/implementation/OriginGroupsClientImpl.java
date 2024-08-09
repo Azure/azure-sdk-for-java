@@ -673,7 +673,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     private Mono<OriginGroupInner> createAsync(String resourceGroupName, String profileName, String endpointName,
         String originGroupName, OriginGroupInner originGroup, Context context) {
         return beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -891,8 +892,10 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(String resourceGroupName,
         String profileName, String endpointName, String originGroupName,
         OriginGroupUpdateParameters originGroupUpdateProperties) {
-        return this.beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
-            originGroupUpdateProperties).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
+                originGroupUpdateProperties)
+            .getSyncPoller();
     }
 
     /**
@@ -914,8 +917,10 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(String resourceGroupName,
         String profileName, String endpointName, String originGroupName,
         OriginGroupUpdateParameters originGroupUpdateProperties, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
-            originGroupUpdateProperties, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
+                originGroupUpdateProperties, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1251,9 +1256,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1280,9 +1283,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

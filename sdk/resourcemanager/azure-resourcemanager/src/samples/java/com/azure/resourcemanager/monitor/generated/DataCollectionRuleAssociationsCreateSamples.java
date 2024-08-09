@@ -21,11 +21,15 @@ public final class DataCollectionRuleAssociationsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAssociation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRuleAssociations().createWithResponse(
-            "subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
-            "myAssociation",
-            new DataCollectionRuleAssociationProxyOnlyResourceInner().withDataCollectionRuleId(
-                "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/myCollectionRule"),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRuleAssociations()
+            .createWithResponse(
+                "subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
+                "myAssociation",
+                new DataCollectionRuleAssociationProxyOnlyResourceInner().withDataCollectionRuleId(
+                    "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/myCollectionRule"),
+                com.azure.core.util.Context.NONE);
     }
 }

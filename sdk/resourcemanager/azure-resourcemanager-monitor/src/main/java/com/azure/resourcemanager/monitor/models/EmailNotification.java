@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Email notification of an autoscale event.
  */
 @Fluent
-public final class EmailNotification {
+public final class EmailNotification implements JsonSerializable<EmailNotification> {
     /*
      * a value indicating whether to send email to subscription administrator.
      */
-    @JsonProperty(value = "sendToSubscriptionAdministrator")
     private Boolean sendToSubscriptionAdministrator;
 
     /*
      * a value indicating whether to send email to subscription co-administrators.
      */
-    @JsonProperty(value = "sendToSubscriptionCoAdministrators")
     private Boolean sendToSubscriptionCoAdministrators;
 
     /*
      * the custom e-mails list. This value can be null or empty, in which case this attribute will be ignored.
      */
-    @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
     /**
@@ -109,5 +110,50 @@ public final class EmailNotification {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("sendToSubscriptionAdministrator", this.sendToSubscriptionAdministrator);
+        jsonWriter.writeBooleanField("sendToSubscriptionCoAdministrators", this.sendToSubscriptionCoAdministrators);
+        jsonWriter.writeArrayField("customEmails", this.customEmails, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailNotification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailNotification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmailNotification.
+     */
+    public static EmailNotification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailNotification deserializedEmailNotification = new EmailNotification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sendToSubscriptionAdministrator".equals(fieldName)) {
+                    deserializedEmailNotification.sendToSubscriptionAdministrator
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sendToSubscriptionCoAdministrators".equals(fieldName)) {
+                    deserializedEmailNotification.sendToSubscriptionCoAdministrators
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customEmails".equals(fieldName)) {
+                    List<String> customEmails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEmailNotification.customEmails = customEmails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailNotification;
+        });
     }
 }

@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Log Analytics destination.
  */
 @Fluent
-public final class LogAnalyticsDestination {
+public final class LogAnalyticsDestination implements JsonSerializable<LogAnalyticsDestination> {
     /*
      * The resource ID of the Log Analytics workspace.
      */
-    @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
     /*
      * The Customer ID of the Log Analytics workspace.
      */
-    @JsonProperty(value = "workspaceId", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceId;
 
     /*
      * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -94,5 +95,46 @@ public final class LogAnalyticsDestination {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceResourceId", this.workspaceResourceId);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsDestination if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogAnalyticsDestination.
+     */
+    public static LogAnalyticsDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalyticsDestination deserializedLogAnalyticsDestination = new LogAnalyticsDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedLogAnalyticsDestination.workspaceResourceId = reader.getString();
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedLogAnalyticsDestination.workspaceId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLogAnalyticsDestination.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalyticsDestination;
+        });
     }
 }

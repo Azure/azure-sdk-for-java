@@ -18,7 +18,10 @@ public final class ScheduledQueryRulesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listScheduledQueryRulesBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
             .list(com.azure.core.util.Context.NONE);
     }
 }

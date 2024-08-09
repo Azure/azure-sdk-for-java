@@ -23,11 +23,14 @@ public final class DataCollectionEndpointsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateDataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionEndpoints().createWithResponse(
-            "myResourceGroup", "myCollectionEndpoint",
-            new DataCollectionEndpointResourceInner().withLocation("eastus")
-                .withNetworkAcls(new DataCollectionEndpointNetworkAcls()
-                    .withPublicNetworkAccess(KnownPublicNetworkAccessOptions.ENABLED)),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionEndpoints()
+            .createWithResponse("myResourceGroup", "myCollectionEndpoint",
+                new DataCollectionEndpointResourceInner().withLocation("eastus")
+                    .withNetworkAcls(new DataCollectionEndpointNetworkAcls()
+                        .withPublicNetworkAccess(KnownPublicNetworkAccessOptions.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }

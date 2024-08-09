@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,18 +17,15 @@ import java.util.Map;
  * Actions to invoke when the alert fires.
  */
 @Fluent
-public final class Actions {
+public final class Actions implements JsonSerializable<Actions> {
     /*
      * Action Group resource Ids to invoke when the alert fires.
      */
-    @JsonProperty(value = "actionGroups")
     private List<String> actionGroups;
 
     /*
      * The properties of an alert payload.
      */
-    @JsonProperty(value = "customProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customProperties;
 
     /**
@@ -80,5 +80,47 @@ public final class Actions {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actionGroups", this.actionGroups, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("customProperties", this.customProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Actions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Actions if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Actions.
+     */
+    public static Actions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Actions deserializedActions = new Actions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionGroups".equals(fieldName)) {
+                    List<String> actionGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedActions.actionGroups = actionGroups;
+                } else if ("customProperties".equals(fieldName)) {
+                    Map<String, String> customProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedActions.customProperties = customProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActions;
+        });
     }
 }

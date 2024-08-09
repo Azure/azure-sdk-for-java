@@ -18,7 +18,10 @@ public final class AlertRuleIncidentsListByAlertRuleSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAlertRuleIncidents(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAlertRuleIncidents().listByAlertRule("Rac46PostSwapRG",
-            "myRuleName", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAlertRuleIncidents()
+            .listByAlertRule("Rac46PostSwapRG", "myRuleName", com.azure.core.util.Context.NONE);
     }
 }

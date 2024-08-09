@@ -5,20 +5,40 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpoint;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointConfigurationAccess;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointLogsIngestion;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
+import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointProvisioningState;
+import java.io.IOException;
 
 /**
  * Resource properties.
  */
 @Fluent
 public final class DataCollectionEndpointResourceProperties extends DataCollectionEndpoint {
+    /*
+     * The resource provisioning state. This property is READ-ONLY.
+     */
+    private KnownDataCollectionEndpointProvisioningState provisioningState;
+
     /**
      * Creates an instance of DataCollectionEndpointResourceProperties class.
      */
     public DataCollectionEndpointResourceProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: The resource provisioning state. This property is READ-ONLY.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public KnownDataCollectionEndpointProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -76,5 +96,60 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("immutableId", immutableId());
+        jsonWriter.writeJsonField("configurationAccess", configurationAccess());
+        jsonWriter.writeJsonField("logsIngestion", logsIngestion());
+        jsonWriter.writeJsonField("networkAcls", networkAcls());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionEndpointResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionEndpointResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataCollectionEndpointResourceProperties.
+     */
+    public static DataCollectionEndpointResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionEndpointResourceProperties deserializedDataCollectionEndpointResourceProperties
+                = new DataCollectionEndpointResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties.withDescription(reader.getString());
+                } else if ("immutableId".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties.withImmutableId(reader.getString());
+                } else if ("configurationAccess".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties
+                        .withConfigurationAccess(DataCollectionEndpointConfigurationAccess.fromJson(reader));
+                } else if ("logsIngestion".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties
+                        .withLogsIngestion(DataCollectionEndpointLogsIngestion.fromJson(reader));
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties
+                        .withNetworkAcls(DataCollectionEndpointNetworkAcls.fromJson(reader));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties.provisioningState
+                        = KnownDataCollectionEndpointProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionEndpointResourceProperties;
+        });
     }
 }

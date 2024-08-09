@@ -25,14 +25,17 @@ public final class OriginGroupsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void originGroupsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getOriginGroups().update("RG", "profile1", "endpoint1",
-            "originGroup1",
-            new OriginGroupUpdateParameters()
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getOriginGroups()
+            .update("RG", "profile1", "endpoint1", "originGroup1", new OriginGroupUpdateParameters()
                 .withHealthProbeSettings(new HealthProbeParameters().withProbePath("/health.aspx")
-                    .withProbeRequestType(HealthProbeRequestType.GET).withProbeProtocol(ProbeProtocol.HTTP)
+                    .withProbeRequestType(HealthProbeRequestType.GET)
+                    .withProbeProtocol(ProbeProtocol.HTTP)
                     .withProbeIntervalInSeconds(120))
                 .withOrigins(Arrays.asList(new ResourceReference().withId(
                     "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin2"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

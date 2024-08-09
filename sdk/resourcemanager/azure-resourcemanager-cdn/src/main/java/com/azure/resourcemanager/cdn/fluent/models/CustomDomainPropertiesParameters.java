@@ -6,17 +6,20 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties of the custom domain to create.
  */
 @Fluent
-public final class CustomDomainPropertiesParameters {
+public final class CustomDomainPropertiesParameters implements JsonSerializable<CustomDomainPropertiesParameters> {
     /*
      * The host name of the custom domain. Must be a domain name.
      */
-    @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
     /**
@@ -52,10 +55,49 @@ public final class CustomDomainPropertiesParameters {
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hostname in model CustomDomainPropertiesParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostname in model CustomDomainPropertiesParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomDomainPropertiesParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainPropertiesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainPropertiesParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomainPropertiesParameters.
+     */
+    public static CustomDomainPropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainPropertiesParameters deserializedCustomDomainPropertiesParameters
+                = new CustomDomainPropertiesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedCustomDomainPropertiesParameters.hostname = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainPropertiesParameters;
+        });
+    }
 }

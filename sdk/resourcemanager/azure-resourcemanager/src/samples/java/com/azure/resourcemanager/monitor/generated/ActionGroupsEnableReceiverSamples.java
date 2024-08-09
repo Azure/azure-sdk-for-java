@@ -20,8 +20,11 @@ public final class ActionGroupsEnableReceiverSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void enableTheReceiver(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActionGroups().enableReceiverWithResponse(
-            "Default-NotificationRules", "SampleActionGroup", new EnableRequest().withReceiverName("John Doe's mobile"),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActionGroups()
+            .enableReceiverWithResponse("Default-NotificationRules", "SampleActionGroup",
+                new EnableRequest().withReceiverName("John Doe's mobile"), com.azure.core.util.Context.NONE);
     }
 }

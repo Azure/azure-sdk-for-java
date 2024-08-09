@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,32 +17,28 @@ import java.util.List;
  * Only collected from Linux machines.
  */
 @Fluent
-public final class SyslogDataSource {
+public final class SyslogDataSource implements JsonSerializable<SyslogDataSource> {
     /*
      * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
      * be sent to.
      */
-    @JsonProperty(value = "streams")
     private List<KnownSyslogDataSourceStreams> streams;
 
     /*
      * The list of facility names.
      */
-    @JsonProperty(value = "facilityNames")
     private List<KnownSyslogDataSourceFacilityNames> facilityNames;
 
     /*
      * The log levels to collect.
      */
-    @JsonProperty(value = "logLevels")
     private List<KnownSyslogDataSourceLogLevels> logLevels;
 
     /*
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -139,5 +139,59 @@ public final class SyslogDataSource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("streams", this.streams,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("facilityNames", this.facilityNames,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("logLevels", this.logLevels,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyslogDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyslogDataSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyslogDataSource.
+     */
+    public static SyslogDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyslogDataSource deserializedSyslogDataSource = new SyslogDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streams".equals(fieldName)) {
+                    List<KnownSyslogDataSourceStreams> streams
+                        = reader.readArray(reader1 -> KnownSyslogDataSourceStreams.fromString(reader1.getString()));
+                    deserializedSyslogDataSource.streams = streams;
+                } else if ("facilityNames".equals(fieldName)) {
+                    List<KnownSyslogDataSourceFacilityNames> facilityNames = reader
+                        .readArray(reader1 -> KnownSyslogDataSourceFacilityNames.fromString(reader1.getString()));
+                    deserializedSyslogDataSource.facilityNames = facilityNames;
+                } else if ("logLevels".equals(fieldName)) {
+                    List<KnownSyslogDataSourceLogLevels> logLevels
+                        = reader.readArray(reader1 -> KnownSyslogDataSourceLogLevels.fromString(reader1.getString()));
+                    deserializedSyslogDataSource.logLevels = logLevels;
+                } else if ("name".equals(fieldName)) {
+                    deserializedSyslogDataSource.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyslogDataSource;
+        });
     }
 }

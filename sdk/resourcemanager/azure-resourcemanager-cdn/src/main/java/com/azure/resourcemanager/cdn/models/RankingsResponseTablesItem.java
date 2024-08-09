@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The RankingsResponseTablesItem model.
  */
 @Fluent
-public final class RankingsResponseTablesItem {
+public final class RankingsResponseTablesItem implements JsonSerializable<RankingsResponseTablesItem> {
     /*
      * The ranking property.
      */
-    @JsonProperty(value = "ranking")
     private String ranking;
 
     /*
      * The data property.
      */
-    @JsonProperty(value = "data")
     private List<RankingsResponseTablesPropertiesItemsItem> data;
 
     /**
@@ -80,5 +82,46 @@ public final class RankingsResponseTablesItem {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ranking", this.ranking);
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RankingsResponseTablesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RankingsResponseTablesItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RankingsResponseTablesItem.
+     */
+    public static RankingsResponseTablesItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RankingsResponseTablesItem deserializedRankingsResponseTablesItem = new RankingsResponseTablesItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ranking".equals(fieldName)) {
+                    deserializedRankingsResponseTablesItem.ranking = reader.getString();
+                } else if ("data".equals(fieldName)) {
+                    List<RankingsResponseTablesPropertiesItemsItem> data
+                        = reader.readArray(reader1 -> RankingsResponseTablesPropertiesItemsItem.fromJson(reader1));
+                    deserializedRankingsResponseTablesItem.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRankingsResponseTablesItem;
+        });
     }
 }

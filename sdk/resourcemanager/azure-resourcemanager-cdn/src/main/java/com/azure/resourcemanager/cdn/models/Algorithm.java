@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class Algorithm extends ExpandableStringEnum<Algorithm> {
      * @param name a name to look for.
      * @return the corresponding Algorithm.
      */
-    @JsonCreator
     public static Algorithm fromString(String name) {
         return fromString(name, Algorithm.class);
     }

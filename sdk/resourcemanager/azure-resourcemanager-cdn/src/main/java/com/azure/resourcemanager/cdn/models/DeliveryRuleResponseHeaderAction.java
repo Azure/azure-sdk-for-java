@@ -6,27 +6,40 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the response header action for the delivery rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
-@JsonTypeName("ModifyResponseHeader")
 @Fluent
 public final class DeliveryRuleResponseHeaderAction extends DeliveryRuleAction {
     /*
+     * The name of the action for the delivery rule.
+     */
+    private DeliveryRuleActionValue name = DeliveryRuleActionValue.MODIFY_RESPONSE_HEADER;
+
+    /*
      * Defines the parameters for the action.
      */
-    @JsonProperty(value = "parameters", required = true)
     private HeaderActionParameters parameters;
 
     /**
      * Creates an instance of DeliveryRuleResponseHeaderAction class.
      */
     public DeliveryRuleResponseHeaderAction() {
+    }
+
+    /**
+     * Get the name property: The name of the action for the delivery rule.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public DeliveryRuleActionValue name() {
+        return this.name;
     }
 
     /**
@@ -58,12 +71,55 @@ public final class DeliveryRuleResponseHeaderAction extends DeliveryRuleAction {
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property parameters in model DeliveryRuleResponseHeaderAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property parameters in model DeliveryRuleResponseHeaderAction"));
         } else {
             parameters().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeliveryRuleResponseHeaderAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryRuleResponseHeaderAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryRuleResponseHeaderAction if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeliveryRuleResponseHeaderAction.
+     */
+    public static DeliveryRuleResponseHeaderAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryRuleResponseHeaderAction deserializedDeliveryRuleResponseHeaderAction
+                = new DeliveryRuleResponseHeaderAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("parameters".equals(fieldName)) {
+                    deserializedDeliveryRuleResponseHeaderAction.parameters = HeaderActionParameters.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeliveryRuleResponseHeaderAction.name
+                        = DeliveryRuleActionValue.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryRuleResponseHeaderAction;
+        });
+    }
 }

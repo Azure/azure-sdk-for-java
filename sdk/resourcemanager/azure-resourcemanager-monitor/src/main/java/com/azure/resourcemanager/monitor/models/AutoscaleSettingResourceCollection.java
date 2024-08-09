@@ -6,25 +6,27 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.AutoscaleSettingResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Represents a collection of autoscale setting resources.
  */
 @Fluent
-public final class AutoscaleSettingResourceCollection {
+public final class AutoscaleSettingResourceCollection implements JsonSerializable<AutoscaleSettingResourceCollection> {
     /*
      * the values for the autoscale setting resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<AutoscaleSettingResourceInner> value;
 
     /*
      * URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -80,12 +82,56 @@ public final class AutoscaleSettingResourceCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model AutoscaleSettingResourceCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model AutoscaleSettingResourceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoscaleSettingResourceCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoscaleSettingResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoscaleSettingResourceCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoscaleSettingResourceCollection.
+     */
+    public static AutoscaleSettingResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoscaleSettingResourceCollection deserializedAutoscaleSettingResourceCollection
+                = new AutoscaleSettingResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AutoscaleSettingResourceInner> value
+                        = reader.readArray(reader1 -> AutoscaleSettingResourceInner.fromJson(reader1));
+                    deserializedAutoscaleSettingResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAutoscaleSettingResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoscaleSettingResourceCollection;
+        });
+    }
 }

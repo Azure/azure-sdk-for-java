@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class WafRuleType extends ExpandableStringEnum<WafRuleType> {
      * @param name a name to look for.
      * @return the corresponding WafRuleType.
      */
-    @JsonCreator
     public static WafRuleType fromString(String name) {
         return fromString(name, WafRuleType.class);
     }

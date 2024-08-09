@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Protocol to use for health probe.
  */
@@ -41,7 +38,6 @@ public enum ProbeProtocol {
      * @param value the serialized value to parse.
      * @return the parsed ProbeProtocol object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProbeProtocol fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum ProbeProtocol {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

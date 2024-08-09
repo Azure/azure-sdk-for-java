@@ -19,7 +19,10 @@ public final class DataCollectionRulesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDataCollectionRulesByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRules()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRules()
             .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

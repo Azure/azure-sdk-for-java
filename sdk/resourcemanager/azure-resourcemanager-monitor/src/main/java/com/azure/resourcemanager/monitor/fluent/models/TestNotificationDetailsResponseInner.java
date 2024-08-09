@@ -6,44 +6,44 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.ActionDetail;
 import com.azure.resourcemanager.monitor.models.Context;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The details of the test notification results.
  */
 @Fluent
-public final class TestNotificationDetailsResponseInner {
+public final class TestNotificationDetailsResponseInner
+    implements JsonSerializable<TestNotificationDetailsResponseInner> {
     /*
      * The context info
      */
-    @JsonProperty(value = "context")
     private Context context;
 
     /*
      * The overall state
      */
-    @JsonProperty(value = "state", required = true)
     private String state;
 
     /*
      * The completed time
      */
-    @JsonProperty(value = "completedTime")
     private String completedTime;
 
     /*
      * The created time
      */
-    @JsonProperty(value = "createdTime")
     private String createdTime;
 
     /*
      * The list of action detail
      */
-    @JsonProperty(value = "actionDetails")
     private List<ActionDetail> actionDetails;
 
     /**
@@ -162,8 +162,9 @@ public final class TestNotificationDetailsResponseInner {
             context().validate();
         }
         if (state() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property state in model TestNotificationDetailsResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model TestNotificationDetailsResponseInner"));
         }
         if (actionDetails() != null) {
             actionDetails().forEach(e -> e.validate());
@@ -171,4 +172,55 @@ public final class TestNotificationDetailsResponseInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TestNotificationDetailsResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeJsonField("context", this.context);
+        jsonWriter.writeStringField("completedTime", this.completedTime);
+        jsonWriter.writeStringField("createdTime", this.createdTime);
+        jsonWriter.writeArrayField("actionDetails", this.actionDetails, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestNotificationDetailsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestNotificationDetailsResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TestNotificationDetailsResponseInner.
+     */
+    public static TestNotificationDetailsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestNotificationDetailsResponseInner deserializedTestNotificationDetailsResponseInner
+                = new TestNotificationDetailsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedTestNotificationDetailsResponseInner.state = reader.getString();
+                } else if ("context".equals(fieldName)) {
+                    deserializedTestNotificationDetailsResponseInner.context = Context.fromJson(reader);
+                } else if ("completedTime".equals(fieldName)) {
+                    deserializedTestNotificationDetailsResponseInner.completedTime = reader.getString();
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedTestNotificationDetailsResponseInner.createdTime = reader.getString();
+                } else if ("actionDetails".equals(fieldName)) {
+                    List<ActionDetail> actionDetails = reader.readArray(reader1 -> ActionDetail.fromJson(reader1));
+                    deserializedTestNotificationDetailsResponseInner.actionDetails = actionDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestNotificationDetailsResponseInner;
+        });
+    }
 }

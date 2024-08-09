@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The json object containing secret parameters.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = SecretParameters.class)
-@JsonTypeName("SecretParameters")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "UrlSigningKey", value = UrlSigningKeyParameters.class),
-    @JsonSubTypes.Type(name = "ManagedCertificate", value = ManagedCertificateParameters.class),
-    @JsonSubTypes.Type(name = "CustomerCertificate", value = CustomerCertificateParameters.class),
-    @JsonSubTypes.Type(
-        name = "AzureFirstPartyManagedCertificate",
-        value = AzureFirstPartyManagedCertificateParameters.class) })
 @Immutable
-public class SecretParameters {
+public class SecretParameters implements JsonSerializable<SecretParameters> {
+    /*
+     * The type of the secret resource.
+     */
+    private SecretType type = SecretType.fromString("SecretParameters");
+
     /**
      * Creates an instance of SecretParameters class.
      */
     public SecretParameters() {
+    }
+
+    /**
+     * Get the type property: The type of the secret resource.
+     * 
+     * @return the type value.
+     */
+    public SecretType type() {
+        return this.type;
     }
 
     /**
@@ -39,5 +42,72 @@ public class SecretParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecretParameters.
+     */
+    public static SecretParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("UrlSigningKey".equals(discriminatorValue)) {
+                    return UrlSigningKeyParameters.fromJson(readerToUse.reset());
+                } else if ("ManagedCertificate".equals(discriminatorValue)) {
+                    return ManagedCertificateParameters.fromJson(readerToUse.reset());
+                } else if ("CustomerCertificate".equals(discriminatorValue)) {
+                    return CustomerCertificateParameters.fromJson(readerToUse.reset());
+                } else if ("AzureFirstPartyManagedCertificate".equals(discriminatorValue)) {
+                    return AzureFirstPartyManagedCertificateParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static SecretParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretParameters deserializedSecretParameters = new SecretParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSecretParameters.type = SecretType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretParameters;
+        });
     }
 }

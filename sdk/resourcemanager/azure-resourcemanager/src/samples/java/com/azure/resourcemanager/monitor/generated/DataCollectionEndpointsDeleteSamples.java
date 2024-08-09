@@ -19,7 +19,10 @@ public final class DataCollectionEndpointsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteDataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionEndpoints()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionEndpoints()
             .deleteWithResponse("myResourceGroup", "myCollectionEndpoint", com.azure.core.util.Context.NONE);
     }
 }

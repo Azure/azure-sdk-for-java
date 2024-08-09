@@ -35,50 +35,59 @@ public final class DataCollectionRulesCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateDataCollectionRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRules()
-            .createWithResponse("myResourceGroup", "myCollectionRule", new DataCollectionRuleResourceInner()
-                .withLocation("eastus").withDataSources(new DataCollectionRuleDataSources()
-                    .withPerformanceCounters(Arrays.asList(
-                        new PerfCounterDataSource()
-                            .withStreams(Arrays.asList(KnownPerfCounterDataSourceStreams.MICROSOFT_PERF))
-                            .withSamplingFrequencyInSeconds(15)
-                            .withCounterSpecifiers(Arrays.asList("\\Processor(_Total)\\% Processor Time",
-                                "\\Memory\\Committed Bytes", "\\LogicalDisk(_Total)\\Free Megabytes",
-                                "\\PhysicalDisk(_Total)\\Avg. Disk Queue Length"))
-                            .withName("cloudTeamCoreCounters"),
-                        new PerfCounterDataSource()
-                            .withStreams(Arrays.asList(KnownPerfCounterDataSourceStreams.MICROSOFT_PERF))
-                            .withSamplingFrequencyInSeconds(30)
-                            .withCounterSpecifiers(Arrays.asList("\\Process(_Total)\\Thread Count"))
-                            .withName("appTeamExtraCounters")))
-                    .withWindowsEventLogs(Arrays.asList(
-                        new WindowsEventLogDataSource()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRules()
+            .createWithResponse("myResourceGroup", "myCollectionRule",
+                new DataCollectionRuleResourceInner().withLocation("eastus")
+                    .withDataSources(new DataCollectionRuleDataSources()
+                        .withPerformanceCounters(Arrays.asList(
+                            new PerfCounterDataSource()
+                                .withStreams(Arrays.asList(KnownPerfCounterDataSourceStreams.MICROSOFT_PERF))
+                                .withSamplingFrequencyInSeconds(15)
+                                .withCounterSpecifiers(Arrays.asList("\\Processor(_Total)\\% Processor Time",
+                                    "\\Memory\\Committed Bytes", "\\LogicalDisk(_Total)\\Free Megabytes",
+                                    "\\PhysicalDisk(_Total)\\Avg. Disk Queue Length"))
+                                .withName("cloudTeamCoreCounters"),
+                            new PerfCounterDataSource()
+                                .withStreams(Arrays.asList(KnownPerfCounterDataSourceStreams.MICROSOFT_PERF))
+                                .withSamplingFrequencyInSeconds(30)
+                                .withCounterSpecifiers(Arrays.asList("\\Process(_Total)\\Thread Count"))
+                                .withName("appTeamExtraCounters")))
+                        .withWindowsEventLogs(Arrays.asList(new WindowsEventLogDataSource()
                             .withStreams(Arrays.asList(KnownWindowsEventLogDataSourceStreams.MICROSOFT_WINDOWS_EVENT))
-                            .withXPathQueries(Arrays.asList("Security!")).withName("cloudSecurityTeamEvents"),
-                        new WindowsEventLogDataSource()
-                            .withStreams(Arrays.asList(KnownWindowsEventLogDataSourceStreams.MICROSOFT_WINDOWS_EVENT))
-                            .withXPathQueries(Arrays.asList("System![System[(Level = 1 or Level = 2 or Level = 3)]]",
-                                "Application!*[System[(Level = 1 or Level = 2 or Level = 3)]]"))
-                            .withName("appTeam1AppEvents")))
-                    .withSyslog(Arrays.asList(
-                        new SyslogDataSource().withStreams(Arrays.asList(KnownSyslogDataSourceStreams.MICROSOFT_SYSLOG))
-                            .withFacilityNames(Arrays.asList(KnownSyslogDataSourceFacilityNames.CRON))
-                            .withLogLevels(Arrays.asList(KnownSyslogDataSourceLogLevels.DEBUG,
-                                KnownSyslogDataSourceLogLevels.CRITICAL, KnownSyslogDataSourceLogLevels.EMERGENCY))
-                            .withName("cronSyslog"),
-                        new SyslogDataSource().withStreams(Arrays.asList(KnownSyslogDataSourceStreams.MICROSOFT_SYSLOG))
-                            .withFacilityNames(Arrays.asList(KnownSyslogDataSourceFacilityNames.SYSLOG))
-                            .withLogLevels(Arrays.asList(KnownSyslogDataSourceLogLevels.ALERT,
-                                KnownSyslogDataSourceLogLevels.CRITICAL, KnownSyslogDataSourceLogLevels.EMERGENCY))
-                            .withName("syslogBase"))))
-                .withDestinations(new DataCollectionRuleDestinations()
-                    .withLogAnalytics(Arrays.asList(new LogAnalyticsDestination().withWorkspaceResourceId(
-                        "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/centralTeamWorkspace")
-                        .withName("centralWorkspace"))))
-                .withDataFlows(Arrays.asList(new DataFlow()
-                    .withStreams(Arrays.asList(KnownDataFlowStreams.MICROSOFT_PERF,
-                        KnownDataFlowStreams.MICROSOFT_SYSLOG, KnownDataFlowStreams.MICROSOFT_WINDOWS_EVENT))
-                    .withDestinations(Arrays.asList("centralWorkspace")))),
+                            .withXPathQueries(Arrays.asList("Security!"))
+                            .withName("cloudSecurityTeamEvents"),
+                            new WindowsEventLogDataSource()
+                                .withStreams(
+                                    Arrays.asList(KnownWindowsEventLogDataSourceStreams.MICROSOFT_WINDOWS_EVENT))
+                                .withXPathQueries(
+                                    Arrays.asList("System![System[(Level = 1 or Level = 2 or Level = 3)]]",
+                                        "Application!*[System[(Level = 1 or Level = 2 or Level = 3)]]"))
+                                .withName("appTeam1AppEvents")))
+                        .withSyslog(Arrays.asList(
+                            new SyslogDataSource()
+                                .withStreams(Arrays.asList(KnownSyslogDataSourceStreams.MICROSOFT_SYSLOG))
+                                .withFacilityNames(Arrays.asList(KnownSyslogDataSourceFacilityNames.CRON))
+                                .withLogLevels(Arrays.asList(KnownSyslogDataSourceLogLevels.DEBUG,
+                                    KnownSyslogDataSourceLogLevels.CRITICAL, KnownSyslogDataSourceLogLevels.EMERGENCY))
+                                .withName("cronSyslog"),
+                            new SyslogDataSource()
+                                .withStreams(Arrays.asList(KnownSyslogDataSourceStreams.MICROSOFT_SYSLOG))
+                                .withFacilityNames(Arrays.asList(KnownSyslogDataSourceFacilityNames.SYSLOG))
+                                .withLogLevels(Arrays.asList(
+                                    KnownSyslogDataSourceLogLevels.ALERT, KnownSyslogDataSourceLogLevels.CRITICAL,
+                                    KnownSyslogDataSourceLogLevels.EMERGENCY))
+                                .withName("syslogBase"))))
+                    .withDestinations(new DataCollectionRuleDestinations()
+                        .withLogAnalytics(Arrays.asList(new LogAnalyticsDestination().withWorkspaceResourceId(
+                            "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/centralTeamWorkspace")
+                            .withName("centralWorkspace"))))
+                    .withDataFlows(Arrays.asList(new DataFlow()
+                        .withStreams(Arrays.asList(KnownDataFlowStreams.MICROSOFT_PERF,
+                            KnownDataFlowStreams.MICROSOFT_SYSLOG, KnownDataFlowStreams.MICROSOFT_WINDOWS_EVENT))
+                        .withDestinations(Arrays.asList("centralWorkspace")))),
                 com.azure.core.util.Context.NONE);
     }
 }

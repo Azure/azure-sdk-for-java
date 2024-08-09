@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -132,7 +131,6 @@ public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEn
      * @param name a name to look for.
      * @return the corresponding KnownSyslogDataSourceFacilityNames.
      */
-    @JsonCreator
     public static KnownSyslogDataSourceFacilityNames fromString(String name) {
         return fromString(name, KnownSyslogDataSourceFacilityNames.class);
     }

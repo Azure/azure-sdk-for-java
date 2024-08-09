@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SslProtocol extends ExpandableStringEnum<SslProtocol> {
      * @param name a name to look for.
      * @return the corresponding SslProtocol.
      */
-    @JsonCreator
     public static SslProtocol fromString(String name) {
         return fromString(name, SslProtocol.class);
     }

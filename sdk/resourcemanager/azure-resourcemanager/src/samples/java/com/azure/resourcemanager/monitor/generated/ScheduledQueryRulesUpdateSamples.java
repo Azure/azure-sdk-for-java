@@ -20,8 +20,11 @@ public final class ScheduledQueryRulesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAScheduledQueryRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules().updateWithResponse(
-            "QueryResourceGroupName", "heartbeat", new ScheduledQueryRuleResourcePatch().withEnabled(false),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
+            .updateWithResponse("QueryResourceGroupName", "heartbeat",
+                new ScheduledQueryRuleResourcePatch().withEnabled(false), com.azure.core.util.Context.NONE);
     }
 }

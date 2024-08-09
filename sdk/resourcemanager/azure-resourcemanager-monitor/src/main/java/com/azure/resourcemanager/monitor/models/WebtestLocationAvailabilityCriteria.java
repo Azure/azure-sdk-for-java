@@ -6,39 +6,52 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Specifies the metric alert rule criteria for a web test resource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria")
 @Fluent
 public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriteria {
     /*
+     * specifies the type of the alert criteria.
+     */
+    private Odatatype odataType = Odatatype.MICROSOFT_AZURE_MONITOR_WEBTEST_LOCATION_AVAILABILITY_CRITERIA;
+
+    /*
      * The Application Insights web test Id.
      */
-    @JsonProperty(value = "webTestId", required = true)
     private String webTestId;
 
     /*
      * The Application Insights resource Id.
      */
-    @JsonProperty(value = "componentId", required = true)
     private String componentId;
 
     /*
      * The number of failed locations.
      */
-    @JsonProperty(value = "failedLocationCount", required = true)
     private float failedLocationCount;
 
     /**
      * Creates an instance of WebtestLocationAvailabilityCriteria class.
      */
     public WebtestLocationAvailabilityCriteria() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of the alert criteria.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public Odatatype odataType() {
+        return this.odataType;
     }
 
     /**
@@ -110,14 +123,75 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     public void validate() {
         super.validate();
         if (webTestId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
         }
         if (componentId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebtestLocationAvailabilityCriteria.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("webTestId", this.webTestId);
+        jsonWriter.writeStringField("componentId", this.componentId);
+        jsonWriter.writeFloatField("failedLocationCount", this.failedLocationCount);
+        jsonWriter.writeStringField("odata.type", this.odataType == null ? null : this.odataType.toString());
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebtestLocationAvailabilityCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebtestLocationAvailabilityCriteria if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebtestLocationAvailabilityCriteria.
+     */
+    public static WebtestLocationAvailabilityCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebtestLocationAvailabilityCriteria deserializedWebtestLocationAvailabilityCriteria
+                = new WebtestLocationAvailabilityCriteria();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("webTestId".equals(fieldName)) {
+                    deserializedWebtestLocationAvailabilityCriteria.webTestId = reader.getString();
+                } else if ("componentId".equals(fieldName)) {
+                    deserializedWebtestLocationAvailabilityCriteria.componentId = reader.getString();
+                } else if ("failedLocationCount".equals(fieldName)) {
+                    deserializedWebtestLocationAvailabilityCriteria.failedLocationCount = reader.getFloat();
+                } else if ("odata.type".equals(fieldName)) {
+                    deserializedWebtestLocationAvailabilityCriteria.odataType
+                        = Odatatype.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedWebtestLocationAvailabilityCriteria.withAdditionalProperties(additionalProperties);
+
+            return deserializedWebtestLocationAvailabilityCriteria;
+        });
+    }
 }

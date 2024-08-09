@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.CustomRuleList;
 import com.azure.resourcemanager.cdn.models.EndpointResource;
 import com.azure.resourcemanager.cdn.models.ManagedRuleSetList;
@@ -16,7 +19,7 @@ import com.azure.resourcemanager.cdn.models.PolicySettings;
 import com.azure.resourcemanager.cdn.models.ProvisioningState;
 import com.azure.resourcemanager.cdn.models.RateLimitRuleList;
 import com.azure.resourcemanager.cdn.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,26 +31,37 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /*
      * Properties of the web application firewall policy.
      */
-    @JsonProperty(value = "properties")
     private CdnWebApplicationFirewallPolicyProperties innerProperties;
 
     /*
      * Gets a unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of CdnWebApplicationFirewallPolicyInner class.
@@ -113,6 +127,36 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -288,12 +332,73 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sku in model CdnWebApplicationFirewallPolicyInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model CdnWebApplicationFirewallPolicyInner"));
         } else {
             sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CdnWebApplicationFirewallPolicyInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CdnWebApplicationFirewallPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CdnWebApplicationFirewallPolicyInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CdnWebApplicationFirewallPolicyInner.
+     */
+    public static CdnWebApplicationFirewallPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CdnWebApplicationFirewallPolicyInner deserializedCdnWebApplicationFirewallPolicyInner
+                = new CdnWebApplicationFirewallPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCdnWebApplicationFirewallPolicyInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.innerProperties
+                        = CdnWebApplicationFirewallPolicyProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCdnWebApplicationFirewallPolicyInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCdnWebApplicationFirewallPolicyInner;
+        });
+    }
 }

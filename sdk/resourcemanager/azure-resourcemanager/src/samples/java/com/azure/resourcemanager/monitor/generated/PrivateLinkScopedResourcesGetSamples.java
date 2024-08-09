@@ -19,7 +19,11 @@ public final class PrivateLinkScopedResourcesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsPrivateLinkScopedResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopedResources().getWithResponse(
-            "MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopedResources()
+            .getWithResponse("MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name",
+                com.azure.core.util.Context.NONE);
     }
 }

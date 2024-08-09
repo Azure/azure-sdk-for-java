@@ -23,10 +23,13 @@ public final class DataCollectionRulesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateDataCollectionRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRules().updateWithResponse(
-            "myResourceGroup", "myCollectionRule",
-            new ResourceForUpdate().withTags(mapOf("tag1", "A", "tag2", "B", "tag3", "C")),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRules()
+            .updateWithResponse("myResourceGroup", "myCollectionRule",
+                new ResourceForUpdate().withTags(mapOf("tag1", "A", "tag2", "B", "tag3", "C")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

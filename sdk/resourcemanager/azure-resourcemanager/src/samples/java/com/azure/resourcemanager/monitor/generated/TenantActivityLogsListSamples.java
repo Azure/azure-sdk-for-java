@@ -18,10 +18,14 @@ public final class TenantActivityLogsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTenantActivityLogsWithFilterAndSelect(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getTenantActivityLogs().list(
-            "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
-            "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getTenantActivityLogs()
+            .list(
+                "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
+                "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,9 +38,13 @@ public final class TenantActivityLogsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTenantActivityLogsWithSelect(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getTenantActivityLogs().list(null,
-            "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getTenantActivityLogs()
+            .list(null,
+                "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -49,9 +57,13 @@ public final class TenantActivityLogsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTenantActivityLogsWithFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getTenantActivityLogs().list(
-            "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
-            null, com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getTenantActivityLogs()
+            .list(
+                "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -65,7 +77,10 @@ public final class TenantActivityLogsListSamples {
      */
     public static void
         getTenantActivityLogsWithoutFilterOrSelect(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getTenantActivityLogs().list(null, null,
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getTenantActivityLogs()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 }

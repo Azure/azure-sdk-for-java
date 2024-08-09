@@ -21,9 +21,13 @@ public final class AfdEndpointsPurgeContentSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDEndpointsPurgeContent(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdEndpoints().purgeContent(
-            "RG", "profile1", "endpoint1", new AfdPurgeParameters().withContentPaths(Arrays.asList("/folder1"))
-                .withDomains(Arrays.asList("endpoint1-abcdefghijklmnop.z01.azurefd.net")),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdEndpoints()
+            .purgeContent("RG", "profile1", "endpoint1",
+                new AfdPurgeParameters().withContentPaths(Arrays.asList("/folder1"))
+                    .withDomains(Arrays.asList("endpoint1-abcdefghijklmnop.z01.azurefd.net")),
+                com.azure.core.util.Context.NONE);
     }
 }

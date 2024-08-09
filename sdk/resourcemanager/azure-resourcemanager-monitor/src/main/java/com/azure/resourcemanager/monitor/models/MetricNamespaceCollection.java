@@ -6,19 +6,22 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.MetricNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Represents collection of metric namespaces.
  */
 @Fluent
-public final class MetricNamespaceCollection {
+public final class MetricNamespaceCollection implements JsonSerializable<MetricNamespaceCollection> {
     /*
      * The values for the metric namespaces.
      */
-    @JsonProperty(value = "value", required = true)
     private List<MetricNamespaceInner> value;
 
     /**
@@ -54,12 +57,52 @@ public final class MetricNamespaceCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model MetricNamespaceCollection"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model MetricNamespaceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricNamespaceCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricNamespaceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricNamespaceCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricNamespaceCollection.
+     */
+    public static MetricNamespaceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricNamespaceCollection deserializedMetricNamespaceCollection = new MetricNamespaceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MetricNamespaceInner> value
+                        = reader.readArray(reader1 -> MetricNamespaceInner.fromJson(reader1));
+                    deserializedMetricNamespaceCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricNamespaceCollection;
+        });
+    }
 }

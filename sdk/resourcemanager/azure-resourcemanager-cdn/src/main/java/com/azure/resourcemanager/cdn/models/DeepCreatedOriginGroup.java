@@ -6,8 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedOriginGroupProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,17 +19,15 @@ import java.util.List;
  * the origin group based on origin health.
  */
 @Fluent
-public final class DeepCreatedOriginGroup {
+public final class DeepCreatedOriginGroup implements JsonSerializable<DeepCreatedOriginGroup> {
     /*
      * Origin group name which must be unique within the endpoint.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Properties of the origin group created on the CDN endpoint.
      */
-    @JsonProperty(value = "properties")
     private DeepCreatedOriginGroupProperties innerProperties;
 
     /**
@@ -64,8 +66,8 @@ public final class DeepCreatedOriginGroup {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @return the healthProbeSettings value.
      */
@@ -74,8 +76,8 @@ public final class DeepCreatedOriginGroup {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the DeepCreatedOriginGroup object itself.
@@ -119,7 +121,8 @@ public final class DeepCreatedOriginGroup {
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -137,8 +140,9 @@ public final class DeepCreatedOriginGroup {
         if (this.innerProperties() == null) {
             this.innerProperties = new DeepCreatedOriginGroupProperties();
         }
-        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties()
+            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
@@ -149,7 +153,8 @@ public final class DeepCreatedOriginGroup {
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
@@ -176,8 +181,8 @@ public final class DeepCreatedOriginGroup {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model DeepCreatedOriginGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DeepCreatedOriginGroup"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -185,4 +190,45 @@ public final class DeepCreatedOriginGroup {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeepCreatedOriginGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeepCreatedOriginGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeepCreatedOriginGroup if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeepCreatedOriginGroup.
+     */
+    public static DeepCreatedOriginGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeepCreatedOriginGroup deserializedDeepCreatedOriginGroup = new DeepCreatedOriginGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeepCreatedOriginGroup.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeepCreatedOriginGroup.innerProperties
+                        = DeepCreatedOriginGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeepCreatedOriginGroup;
+        });
+    }
 }

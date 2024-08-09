@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -77,7 +76,6 @@ public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOpe
      * @param name a name to look for.
      * @return the corresponding ServerPortOperator.
      */
-    @JsonCreator
     public static ServerPortOperator fromString(String name) {
         return fromString(name, ServerPortOperator.class);
     }

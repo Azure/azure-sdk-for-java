@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -82,5 +86,69 @@ public final class DataCollectionRuleDataSources extends DataSourcesSpec {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("performanceCounters", performanceCounters(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("windowsEventLogs", windowsEventLogs(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("syslog", syslog(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", extensions(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logFiles", logFiles(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("iisLogs", iisLogs(), (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionRuleDataSources from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionRuleDataSources if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataCollectionRuleDataSources.
+     */
+    public static DataCollectionRuleDataSources fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionRuleDataSources deserializedDataCollectionRuleDataSources
+                = new DataCollectionRuleDataSources();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("performanceCounters".equals(fieldName)) {
+                    List<PerfCounterDataSource> performanceCounters
+                        = reader.readArray(reader1 -> PerfCounterDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withPerformanceCounters(performanceCounters);
+                } else if ("windowsEventLogs".equals(fieldName)) {
+                    List<WindowsEventLogDataSource> windowsEventLogs
+                        = reader.readArray(reader1 -> WindowsEventLogDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withWindowsEventLogs(windowsEventLogs);
+                } else if ("syslog".equals(fieldName)) {
+                    List<SyslogDataSource> syslog = reader.readArray(reader1 -> SyslogDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withSyslog(syslog);
+                } else if ("extensions".equals(fieldName)) {
+                    List<ExtensionDataSource> extensions
+                        = reader.readArray(reader1 -> ExtensionDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withExtensions(extensions);
+                } else if ("logFiles".equals(fieldName)) {
+                    List<LogFilesDataSource> logFiles
+                        = reader.readArray(reader1 -> LogFilesDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withLogFiles(logFiles);
+                } else if ("iisLogs".equals(fieldName)) {
+                    List<IisLogsDataSource> iisLogs = reader.readArray(reader1 -> IisLogsDataSource.fromJson(reader1));
+                    deserializedDataCollectionRuleDataSources.withIisLogs(iisLogs);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionRuleDataSources;
+        });
     }
 }

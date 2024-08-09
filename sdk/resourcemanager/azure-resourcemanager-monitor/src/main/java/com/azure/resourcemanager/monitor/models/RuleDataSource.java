@@ -5,59 +5,59 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource from which the rule collects its data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = RuleDataSource.class)
-@JsonTypeName("RuleDataSource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-        value = RuleMetricDataSource.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
-        value = RuleManagementEventDataSource.class) })
 @Fluent
-public class RuleDataSource {
+public class RuleDataSource implements JsonSerializable<RuleDataSource> {
+    /*
+     * specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and
+     * RuleManagementEventDataSource
+     */
+    private String odataType = "RuleDataSource";
+
     /*
      * the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an
      * existing rule.
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /*
      * the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for
      * an existing rule.
      */
-    @JsonProperty(value = "legacyResourceId")
     private String legacyResourceId;
 
     /*
      * the location of the resource.
      */
-    @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
 
     /*
      * the namespace of the metric.
      */
-    @JsonProperty(value = "metricNamespace")
     private String metricNamespace;
 
     /**
      * Creates an instance of RuleDataSource class.
      */
     public RuleDataSource() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of data source. There are two types of rule data sources:
+     * RuleMetricDataSource and RuleManagementEventDataSource.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -150,5 +150,81 @@ public class RuleDataSource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("legacyResourceId", this.legacyResourceId);
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("metricNamespace", this.metricNamespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleDataSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RuleDataSource.
+     */
+    public static RuleDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource".equals(discriminatorValue)) {
+                    return RuleMetricDataSource.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource"
+                    .equals(discriminatorValue)) {
+                    return RuleManagementEventDataSource.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RuleDataSource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleDataSource deserializedRuleDataSource = new RuleDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("odata.type".equals(fieldName)) {
+                    deserializedRuleDataSource.odataType = reader.getString();
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedRuleDataSource.resourceUri = reader.getString();
+                } else if ("legacyResourceId".equals(fieldName)) {
+                    deserializedRuleDataSource.legacyResourceId = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedRuleDataSource.resourceLocation = reader.getString();
+                } else if ("metricNamespace".equals(fieldName)) {
+                    deserializedRuleDataSource.metricNamespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleDataSource;
+        });
     }
 }

@@ -44,57 +44,82 @@ public final class AutoscaleSettingsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchAnAutoscaleSetting(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAutoscaleSettings().updateWithResponse(
-            "TestingMetricsScaleSet", "MySetting",
-            new AutoscaleSettingResourcePatch().withTags(mapOf("key1", "fakeTokenPlaceholder"))
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAutoscaleSettings()
+            .updateWithResponse("TestingMetricsScaleSet", "MySetting", new AutoscaleSettingResourcePatch()
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withProfiles(Arrays.asList(new AutoscaleProfileInner().withName("adios")
                     .withCapacity(new ScaleCapacity().withMinimum("1").withMaximum("10").withDefaultProperty("1"))
-                    .withRules(Arrays.asList(new ScaleRuleInner()
-                        .withMetricTrigger(new MetricTrigger().withMetricName("Percentage CPU").withMetricResourceUri(
+                    .withRules(Arrays.asList(new ScaleRuleInner().withMetricTrigger(new MetricTrigger()
+                        .withMetricName("Percentage CPU")
+                        .withMetricResourceUri(
                             "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc")
-                            .withTimeGrain(Duration.parse("PT1M")).withStatistic(MetricStatisticType.AVERAGE)
-                            .withTimeWindow(Duration.parse("PT5M")).withTimeAggregation(TimeAggregationType.AVERAGE)
-                            .withOperator(ComparisonOperationType.GREATER_THAN).withThreshold(10.0)
-                            .withDividePerInstance(false))
+                        .withTimeGrain(Duration.parse("PT1M"))
+                        .withStatistic(MetricStatisticType.AVERAGE)
+                        .withTimeWindow(Duration.parse("PT5M"))
+                        .withTimeAggregation(TimeAggregationType.AVERAGE)
+                        .withOperator(ComparisonOperationType.GREATER_THAN)
+                        .withThreshold(10.0)
+                        .withDividePerInstance(false))
                         .withScaleAction(new ScaleAction().withDirection(ScaleDirection.INCREASE)
-                            .withType(ScaleType.CHANGE_COUNT).withValue("1").withCooldown(Duration.parse("PT5M"))),
+                            .withType(ScaleType.CHANGE_COUNT)
+                            .withValue("1")
+                            .withCooldown(Duration.parse("PT5M"))),
                         new ScaleRuleInner().withMetricTrigger(new MetricTrigger().withMetricName("Percentage CPU")
                             .withMetricResourceUri(
                                 "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc")
-                            .withTimeGrain(Duration.parse("PT2M")).withStatistic(MetricStatisticType.AVERAGE)
-                            .withTimeWindow(Duration.parse("PT5M")).withTimeAggregation(TimeAggregationType.AVERAGE)
-                            .withOperator(ComparisonOperationType.GREATER_THAN).withThreshold(15.0)
+                            .withTimeGrain(Duration.parse("PT2M"))
+                            .withStatistic(MetricStatisticType.AVERAGE)
+                            .withTimeWindow(Duration.parse("PT5M"))
+                            .withTimeAggregation(TimeAggregationType.AVERAGE)
+                            .withOperator(ComparisonOperationType.GREATER_THAN)
+                            .withThreshold(15.0)
                             .withDividePerInstance(false))
                             .withScaleAction(new ScaleAction().withDirection(ScaleDirection.DECREASE)
-                                .withType(ScaleType.CHANGE_COUNT).withValue("2").withCooldown(Duration.parse("PT6M")))))
-                    .withFixedDate(
-                        new TimeWindow().withTimeZone("UTC").withStart(OffsetDateTime.parse("2015-03-05T14:00:00Z"))
-                            .withEnd(OffsetDateTime.parse("2015-03-05T14:30:00Z"))),
+                                .withType(ScaleType.CHANGE_COUNT)
+                                .withValue("2")
+                                .withCooldown(Duration.parse("PT6M")))))
+                    .withFixedDate(new TimeWindow().withTimeZone("UTC")
+                        .withStart(OffsetDateTime.parse("2015-03-05T14:00:00Z"))
+                        .withEnd(OffsetDateTime.parse("2015-03-05T14:30:00Z"))),
                     new AutoscaleProfileInner().withName("saludos")
                         .withCapacity(new ScaleCapacity().withMinimum("1").withMaximum("10").withDefaultProperty("1"))
                         .withRules(Arrays.asList(new ScaleRuleInner().withMetricTrigger(new MetricTrigger()
                             .withMetricName("Percentage CPU")
                             .withMetricResourceUri(
                                 "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc")
-                            .withTimeGrain(Duration.parse("PT1M")).withStatistic(MetricStatisticType.AVERAGE)
-                            .withTimeWindow(Duration.parse("PT5M")).withTimeAggregation(TimeAggregationType.AVERAGE)
-                            .withOperator(ComparisonOperationType.GREATER_THAN).withThreshold(10.0)
+                            .withTimeGrain(Duration.parse("PT1M"))
+                            .withStatistic(MetricStatisticType.AVERAGE)
+                            .withTimeWindow(Duration.parse("PT5M"))
+                            .withTimeAggregation(TimeAggregationType.AVERAGE)
+                            .withOperator(ComparisonOperationType.GREATER_THAN)
+                            .withThreshold(10.0)
                             .withDividePerInstance(false))
                             .withScaleAction(new ScaleAction().withDirection(ScaleDirection.INCREASE)
-                                .withType(ScaleType.CHANGE_COUNT).withValue("1").withCooldown(Duration.parse("PT5M"))),
+                                .withType(ScaleType.CHANGE_COUNT)
+                                .withValue("1")
+                                .withCooldown(Duration.parse("PT5M"))),
                             new ScaleRuleInner().withMetricTrigger(new MetricTrigger().withMetricName("Percentage CPU")
                                 .withMetricResourceUri(
                                     "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc")
-                                .withTimeGrain(Duration.parse("PT2M")).withStatistic(MetricStatisticType.AVERAGE)
-                                .withTimeWindow(Duration.parse("PT5M")).withTimeAggregation(TimeAggregationType.AVERAGE)
-                                .withOperator(ComparisonOperationType.GREATER_THAN).withThreshold(15.0)
+                                .withTimeGrain(Duration.parse("PT2M"))
+                                .withStatistic(MetricStatisticType.AVERAGE)
+                                .withTimeWindow(Duration.parse("PT5M"))
+                                .withTimeAggregation(TimeAggregationType.AVERAGE)
+                                .withOperator(ComparisonOperationType.GREATER_THAN)
+                                .withThreshold(15.0)
                                 .withDividePerInstance(false))
                                 .withScaleAction(new ScaleAction().withDirection(ScaleDirection.DECREASE)
-                                    .withType(ScaleType.CHANGE_COUNT).withValue("2")
+                                    .withType(ScaleType.CHANGE_COUNT)
+                                    .withValue("2")
                                     .withCooldown(Duration.parse("PT6M")))))
                         .withRecurrence(new Recurrence().withFrequency(RecurrenceFrequency.WEEK)
-                            .withSchedule(new RecurrentSchedule().withTimeZone("UTC").withDays(Arrays.asList("1"))
-                                .withHours(Arrays.asList(5)).withMinutes(Arrays.asList(15))))))
+                            .withSchedule(new RecurrentSchedule().withTimeZone("UTC")
+                                .withDays(Arrays.asList("1"))
+                                .withHours(Arrays.asList(5))
+                                .withMinutes(Arrays.asList(15))))))
                 .withNotifications(Arrays.asList(new AutoscaleNotification()
                     .withEmail(new EmailNotification().withSendToSubscriptionAdministrator(true)
                         .withSendToSubscriptionCoAdministrators(true)
@@ -106,7 +131,7 @@ public final class AutoscaleSettingsUpdateSamples {
                     new PredictiveAutoscalePolicy().withScaleMode(PredictiveAutoscalePolicyScaleMode.ENABLED))
                 .withTargetResourceUri(
                     "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

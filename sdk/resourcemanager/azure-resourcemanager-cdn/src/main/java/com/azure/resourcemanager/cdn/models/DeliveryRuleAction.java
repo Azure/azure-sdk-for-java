@@ -5,37 +5,35 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An action for the delivery rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "name",
-    defaultImpl = DeliveryRuleAction.class)
-@JsonTypeName("DeliveryRuleAction")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "UrlRedirect", value = UrlRedirectAction.class),
-    @JsonSubTypes.Type(name = "UrlSigning", value = UrlSigningAction.class),
-    @JsonSubTypes.Type(name = "OriginGroupOverride", value = OriginGroupOverrideAction.class),
-    @JsonSubTypes.Type(name = "UrlRewrite", value = UrlRewriteAction.class),
-    @JsonSubTypes.Type(name = "ModifyRequestHeader", value = DeliveryRuleRequestHeaderAction.class),
-    @JsonSubTypes.Type(name = "ModifyResponseHeader", value = DeliveryRuleResponseHeaderAction.class),
-    @JsonSubTypes.Type(name = "CacheExpiration", value = DeliveryRuleCacheExpirationAction.class),
-    @JsonSubTypes.Type(name = "CacheKeyQueryString", value = DeliveryRuleCacheKeyQueryStringAction.class),
-    @JsonSubTypes.Type(
-        name = "RouteConfigurationOverride",
-        value = DeliveryRuleRouteConfigurationOverrideAction.class) })
 @Immutable
-public class DeliveryRuleAction {
+public class DeliveryRuleAction implements JsonSerializable<DeliveryRuleAction> {
+    /*
+     * The name of the action for the delivery rule.
+     */
+    private DeliveryRuleActionValue name = DeliveryRuleActionValue.fromString("DeliveryRuleAction");
+
     /**
      * Creates an instance of DeliveryRuleAction class.
      */
     public DeliveryRuleAction() {
+    }
+
+    /**
+     * Get the name property: The name of the action for the delivery rule.
+     * 
+     * @return the name value.
+     */
+    public DeliveryRuleActionValue name() {
+        return this.name;
     }
 
     /**
@@ -44,5 +42,82 @@ public class DeliveryRuleAction {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryRuleAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryRuleAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeliveryRuleAction.
+     */
+    public static DeliveryRuleAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("name".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("UrlRedirect".equals(discriminatorValue)) {
+                    return UrlRedirectAction.fromJson(readerToUse.reset());
+                } else if ("UrlSigning".equals(discriminatorValue)) {
+                    return UrlSigningAction.fromJson(readerToUse.reset());
+                } else if ("OriginGroupOverride".equals(discriminatorValue)) {
+                    return OriginGroupOverrideAction.fromJson(readerToUse.reset());
+                } else if ("UrlRewrite".equals(discriminatorValue)) {
+                    return UrlRewriteAction.fromJson(readerToUse.reset());
+                } else if ("ModifyRequestHeader".equals(discriminatorValue)) {
+                    return DeliveryRuleRequestHeaderAction.fromJson(readerToUse.reset());
+                } else if ("ModifyResponseHeader".equals(discriminatorValue)) {
+                    return DeliveryRuleResponseHeaderAction.fromJson(readerToUse.reset());
+                } else if ("CacheExpiration".equals(discriminatorValue)) {
+                    return DeliveryRuleCacheExpirationAction.fromJson(readerToUse.reset());
+                } else if ("CacheKeyQueryString".equals(discriminatorValue)) {
+                    return DeliveryRuleCacheKeyQueryStringAction.fromJson(readerToUse.reset());
+                } else if ("RouteConfigurationOverride".equals(discriminatorValue)) {
+                    return DeliveryRuleRouteConfigurationOverrideAction.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DeliveryRuleAction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryRuleAction deserializedDeliveryRuleAction = new DeliveryRuleAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeliveryRuleAction.name = DeliveryRuleActionValue.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryRuleAction;
+        });
     }
 }
