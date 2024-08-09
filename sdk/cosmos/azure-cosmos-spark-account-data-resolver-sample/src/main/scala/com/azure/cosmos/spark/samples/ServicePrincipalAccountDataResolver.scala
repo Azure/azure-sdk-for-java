@@ -8,14 +8,19 @@ import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCrede
 
 import java.io.ByteArrayInputStream
 import java.util.Base64
+import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 class ServicePrincipalAccountDataResolver extends AccountDataResolver with BasicLoggingTrait {
+  private val tokenProviders: TrieMap[ConfigParameters, Option[List[String] => CosmosAccessToken]] =
+    new TrieMap[ConfigParameters, Option[List[String] => CosmosAccessToken]]()
+
   override def getAccountDataConfig(configs: Map[String, String]): Map[String, String] = {
-    if (isEnabled(configs)) {
+    val configParameters = ConfigParameters.apply(configs)
+    if (isEnabled(configParameters)) {
       configs +
         ("spark.cosmos.auth.type" -> "AccessToken") +
         ("spark.cosmos.account.tenantId" -> getRequiredConfig(configs, SampleConfigNames.TenantId)) +
@@ -32,37 +37,34 @@ class ServicePrincipalAccountDataResolver extends AccountDataResolver with Basic
     valueOpt.get
   }
 
-  private def isEnabled(configs: Map[String, String]): Boolean = {
-    val enabled = configs.get(SampleConfigNames.CustomAuthEnabled)
-    enabled.isDefined && enabled.get.toBoolean
+  private def isEnabled(configs: ConfigParameters): Boolean = {
+    configs.isEnabledConfigValue.isDefined && configs.isEnabledConfigValue.get.toBoolean
   }
 
-  private def getServicePrincipalTokenCredential(configs: Map[String, String]): Option[TokenCredential] = {
+  private def getServicePrincipalTokenCredential(configs: ConfigParameters): Option[TokenCredential] = {
     logInfo(s"Constructing ServicePrincipal TokenCredential")
-    val tenantId = getRequiredConfig(configs, SampleConfigNames.TenantId)
-    val clientId = getRequiredConfig(configs, SampleConfigNames.ServicePrincipalClientId)
 
-    if (configs.contains(SampleConfigNames.ServicePrincipalCert)) {
-      val sendChain = configs.get(SampleConfigNames.ServicePrincipalCertSendChain) match {
+    if (configs.cert.isDefined) {
+      val sendChain = configs.sendChainConfigValue match {
         case Some(sendChainText) => sendChainText.toBoolean
         case None=> false
       }
 
-      val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(configs.get(SampleConfigNames.ServicePrincipalCert).get))
+      val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(configs.cert.get))
 
       Some(new ClientCertificateCredentialBuilder()
         .authorityHost("https://login.microsoftonline.com/")
-        .tenantId(tenantId)
-        .clientId(clientId)
+        .tenantId(configs.tenantId)
+        .clientId(configs.clientId)
         .pemCertificate(certInputStream)
         .sendCertificateChain(sendChain)
         .build())
-    } else if (configs.contains(SampleConfigNames.ClientSecret)) {
+    } else if (configs.clientSecret.isDefined) {
       Some(new ClientSecretCredentialBuilder()
         .authorityHost("https://login.microsoftonline.com/")
-        .tenantId(tenantId)
-        .clientId(clientId)
-        .clientSecret(configs(SampleConfigNames.ClientSecret))
+        .tenantId(configs.tenantId)
+        .clientId(configs.clientId)
+        .clientSecret(configs.clientSecret.get)
         .build())
     } else {
       logError("Neither client secret nor client certificate are configured for service principal auth.")
@@ -71,19 +73,26 @@ class ServicePrincipalAccountDataResolver extends AccountDataResolver with Basic
     }
   }
 
-  private def getTokenCredential(configs: Map[String, String]): Option[TokenCredential] = {
-    val authType = getRequiredConfig(configs, SampleConfigNames.AuthType)
-    if (authType.equalsIgnoreCase(SampleAuthTypes.ServicePrincipal)) {
+  private def getTokenCredential(configs: ConfigParameters): Option[TokenCredential] = {
+    if (configs.authType.equalsIgnoreCase(SampleAuthTypes.ServicePrincipal)) {
       logInfo(s"Service principal used")
       getServicePrincipalTokenCredential(configs)
     } else {
-      logError(s"Invalid authType '$authType'.")
-      assert(assertion = false, s"Invalid authType '$authType'.")
+      logError(s"Invalid authType '${configs.authType}'.")
+      assert(assertion = false, s"Invalid authType '${configs.authType}'.")
       None
     }
   }
 
   override def getAccessTokenProvider(configs: Map[String, String]): Option[List[String] => CosmosAccessToken] = {
+    val configParameters = ConfigParameters.apply(configs)
+    tokenProviders.getOrElseUpdate(
+      configParameters,
+      getAccessTokenProviderImpl(configParameters)
+    )
+  }
+
+  private def getAccessTokenProviderImpl(configs: ConfigParameters): Option[List[String] => CosmosAccessToken] = {
     if (isEnabled(configs)) {
       val tokenCredential = getTokenCredential(configs)
 
@@ -122,5 +131,27 @@ class ServicePrincipalAccountDataResolver extends AccountDataResolver with Basic
 
   private[this] object SampleAuthTypes {
     val ServicePrincipal: String = "serviceprincipal"
+  }
+
+  private case class ConfigParameters(
+                                       authType: String,
+                                       tenantId: String,
+                                       clientId: String,
+                                       cert: Option[String],
+                                       clientSecret: Option[String],
+                                       sendChainConfigValue: Option[String],
+                                       isEnabledConfigValue: Option[String])
+
+  private object ConfigParameters {
+    def apply(configs: Map[String, String]): ConfigParameters = {
+      new ConfigParameters(
+        getRequiredConfig(configs, SampleConfigNames.AuthType),
+        getRequiredConfig(configs, SampleConfigNames.TenantId),
+        getRequiredConfig(configs, SampleConfigNames.ServicePrincipalClientId),
+        configs.get(SampleConfigNames.ServicePrincipalCert),
+        configs.get(SampleConfigNames.ClientSecret),
+        configs.get(SampleConfigNames.ServicePrincipalCertSendChain),
+        configs.get(SampleConfigNames.CustomAuthEnabled))
+    }
   }
 }
