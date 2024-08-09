@@ -29,6 +29,9 @@ public class IntelliJKDBXDatabaseParsingTest {
         IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(null);
         IntelliJAuthMethodDetails authMethodDetails = cacheAccessor.parseAuthMethodDetails(authFile);
         assertEquals("dummyuser@email.com", authMethodDetails.getAccountEmail());
+        assertEquals("pathFromFile", authMethodDetails.getCredFilePath());
+        assertEquals("IDENTITY", authMethodDetails.getAuthMethod());
+        assertEquals("AzureCloud", authMethodDetails.getAzureEnv());
     }
 
     private String getPath(String filename) {
