@@ -4,19 +4,20 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Document type info.
  */
-@Immutable
+@Fluent
 public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeDetails> {
     /*
      * Document model description.
@@ -42,13 +43,43 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     @Generated
     private Map<String, Double> fieldConfidence;
 
+    /*
+     * Document model to use for analyzing documents with specified type.
+     */
+    @Generated
+    private String modelId;
+
+    /*
+     * Only perform analysis if docType confidence is above threshold.
+     */
+    @Generated
+    private Double confidenceThreshold;
+
+    /*
+     * List of optional analysis features.
+     */
+    @Generated
+    private List<DocumentAnalysisFeature> features;
+
+    /*
+     * List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber"
+     */
+    @Generated
+    private List<String> queryFields;
+
+    /*
+     * Maximum number of documents of specified type to analyze. Default=all.
+     */
+    @Generated
+    private Integer maxDocumentsToAnalyze;
+
     /**
      * Creates an instance of DocumentTypeDetails class.
      * 
      * @param fieldSchema the fieldSchema value to set.
      */
     @Generated
-    private DocumentTypeDetails(Map<String, DocumentFieldSchema> fieldSchema) {
+    public DocumentTypeDetails(Map<String, DocumentFieldSchema> fieldSchema) {
         this.fieldSchema = fieldSchema;
     }
 
@@ -63,6 +94,18 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     }
 
     /**
+     * Set the description property: Document model description.
+     * 
+     * @param description the description value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the buildMode property: Custom document model build mode.
      * 
      * @return the buildMode value.
@@ -70,6 +113,18 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     @Generated
     public DocumentBuildMode getBuildMode() {
         return this.buildMode;
+    }
+
+    /**
+     * Set the buildMode property: Custom document model build mode.
+     * 
+     * @param buildMode the buildMode value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setBuildMode(DocumentBuildMode buildMode) {
+        this.buildMode = buildMode;
+        return this;
     }
 
     /**
@@ -93,6 +148,128 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     }
 
     /**
+     * Set the fieldConfidence property: Estimated confidence for each field.
+     * 
+     * @param fieldConfidence the fieldConfidence value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setFieldConfidence(Map<String, Double> fieldConfidence) {
+        this.fieldConfidence = fieldConfidence;
+        return this;
+    }
+
+    /**
+     * Get the modelId property: Document model to use for analyzing documents with specified type.
+     * 
+     * @return the modelId value.
+     */
+    @Generated
+    public String getModelId() {
+        return this.modelId;
+    }
+
+    /**
+     * Set the modelId property: Document model to use for analyzing documents with specified type.
+     * 
+     * @param modelId the modelId value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setModelId(String modelId) {
+        this.modelId = modelId;
+        return this;
+    }
+
+    /**
+     * Get the confidenceThreshold property: Only perform analysis if docType confidence is above threshold.
+     * 
+     * @return the confidenceThreshold value.
+     */
+    @Generated
+    public Double getConfidenceThreshold() {
+        return this.confidenceThreshold;
+    }
+
+    /**
+     * Set the confidenceThreshold property: Only perform analysis if docType confidence is above threshold.
+     * 
+     * @param confidenceThreshold the confidenceThreshold value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setConfidenceThreshold(Double confidenceThreshold) {
+        this.confidenceThreshold = confidenceThreshold;
+        return this;
+    }
+
+    /**
+     * Get the features property: List of optional analysis features.
+     * 
+     * @return the features value.
+     */
+    @Generated
+    public List<DocumentAnalysisFeature> getFeatures() {
+        return this.features;
+    }
+
+    /**
+     * Set the features property: List of optional analysis features.
+     * 
+     * @param features the features value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setFeatures(List<DocumentAnalysisFeature> features) {
+        this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the queryFields property: List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * 
+     * @return the queryFields value.
+     */
+    @Generated
+    public List<String> getQueryFields() {
+        return this.queryFields;
+    }
+
+    /**
+     * Set the queryFields property: List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * 
+     * @param queryFields the queryFields value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setQueryFields(List<String> queryFields) {
+        this.queryFields = queryFields;
+        return this;
+    }
+
+    /**
+     * Get the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
+     * 
+     * @return the maxDocumentsToAnalyze value.
+     */
+    @Generated
+    public Integer getMaxDocumentsToAnalyze() {
+        return this.maxDocumentsToAnalyze;
+    }
+
+    /**
+     * Set the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
+     * 
+     * @param maxDocumentsToAnalyze the maxDocumentsToAnalyze value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setMaxDocumentsToAnalyze(Integer maxDocumentsToAnalyze) {
+        this.maxDocumentsToAnalyze = maxDocumentsToAnalyze;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -104,6 +281,12 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
         jsonWriter.writeStringField("buildMode", this.buildMode == null ? null : this.buildMode.toString());
         jsonWriter.writeMapField("fieldConfidence", this.fieldConfidence,
             (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeNumberField("confidenceThreshold", this.confidenceThreshold);
+        jsonWriter.writeArrayField("features", this.features,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("queryFields", this.queryFields, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxDocumentsToAnalyze", this.maxDocumentsToAnalyze);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,6 +306,11 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
             String description = null;
             DocumentBuildMode buildMode = null;
             Map<String, Double> fieldConfidence = null;
+            String modelId = null;
+            Double confidenceThreshold = null;
+            List<DocumentAnalysisFeature> features = null;
+            List<String> queryFields = null;
+            Integer maxDocumentsToAnalyze = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -135,6 +323,16 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
                     buildMode = DocumentBuildMode.fromString(reader.getString());
                 } else if ("fieldConfidence".equals(fieldName)) {
                     fieldConfidence = reader.readMap(reader1 -> reader1.getDouble());
+                } else if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                } else if ("confidenceThreshold".equals(fieldName)) {
+                    confidenceThreshold = reader.getNullable(JsonReader::getDouble);
+                } else if ("features".equals(fieldName)) {
+                    features = reader.readArray(reader1 -> DocumentAnalysisFeature.fromString(reader1.getString()));
+                } else if ("queryFields".equals(fieldName)) {
+                    queryFields = reader.readArray(reader1 -> reader1.getString());
+                } else if ("maxDocumentsToAnalyze".equals(fieldName)) {
+                    maxDocumentsToAnalyze = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -143,6 +341,11 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
             deserializedDocumentTypeDetails.description = description;
             deserializedDocumentTypeDetails.buildMode = buildMode;
             deserializedDocumentTypeDetails.fieldConfidence = fieldConfidence;
+            deserializedDocumentTypeDetails.modelId = modelId;
+            deserializedDocumentTypeDetails.confidenceThreshold = confidenceThreshold;
+            deserializedDocumentTypeDetails.features = features;
+            deserializedDocumentTypeDetails.queryFields = queryFields;
+            deserializedDocumentTypeDetails.maxDocumentsToAnalyze = maxDocumentsToAnalyze;
 
             return deserializedDocumentTypeDetails;
         });

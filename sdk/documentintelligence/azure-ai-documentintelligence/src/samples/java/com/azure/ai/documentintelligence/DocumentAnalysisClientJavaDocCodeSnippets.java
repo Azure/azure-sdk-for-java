@@ -93,6 +93,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
             ContentFormat.TEXT,
+                null,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult()
             .getDocuments().stream()
             .map(Document::getFields)
@@ -141,6 +142,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         String documentUrl = "documentUrl";
         SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller =
             documentIntelligenceClient.beginAnalyzeDocument(modelId,
+                null,
                 null,
                 null,
                 null,

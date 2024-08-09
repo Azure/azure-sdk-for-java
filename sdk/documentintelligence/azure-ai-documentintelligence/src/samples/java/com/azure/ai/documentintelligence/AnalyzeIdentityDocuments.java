@@ -49,6 +49,7 @@ public class AnalyzeIdentityDocuments {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(licenseDocumentFile.toPath())));
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();

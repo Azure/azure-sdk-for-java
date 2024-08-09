@@ -51,6 +51,7 @@ public class AnalyzeAddOnHighResAsync {
                 Arrays.asList(DocumentAnalysisFeature.OCR_HIGH_RESOLUTION),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

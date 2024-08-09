@@ -48,6 +48,7 @@ public class AnalyzeInvoices {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath())));
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();

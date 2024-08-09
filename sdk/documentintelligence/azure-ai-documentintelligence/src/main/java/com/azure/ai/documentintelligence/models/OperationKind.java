@@ -32,6 +32,13 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
     public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
 
     /**
+     * Copy an existing document classifier to potentially a different resource, region, or
+     * subscription.
+     */
+    @Generated
+    public static final OperationKind DOCUMENT_CLASSIFIER_COPY_TO = fromString("documentClassifierCopyTo");
+
+    /**
      * Build a new custom classifier model.
      */
     @Generated

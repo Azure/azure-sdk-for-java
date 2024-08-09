@@ -42,6 +42,12 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     @Generated
     private final Map<String, ClassifierDocumentTypeDetails> docTypes;
 
+    /*
+     * Allow overwriting an existing classifier with the same name.
+     */
+    @Generated
+    private Boolean allowOverwrite;
+
     /**
      * Creates an instance of BuildDocumentClassifierRequest class.
      * 
@@ -119,6 +125,28 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     }
 
     /**
+     * Get the allowOverwrite property: Allow overwriting an existing classifier with the same name.
+     * 
+     * @return the allowOverwrite value.
+     */
+    @Generated
+    public Boolean isAllowOverwrite() {
+        return this.allowOverwrite;
+    }
+
+    /**
+     * Set the allowOverwrite property: Allow overwriting an existing classifier with the same name.
+     * 
+     * @param allowOverwrite the allowOverwrite value to set.
+     * @return the BuildDocumentClassifierRequest object itself.
+     */
+    @Generated
+    public BuildDocumentClassifierRequest setAllowOverwrite(Boolean allowOverwrite) {
+        this.allowOverwrite = allowOverwrite;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -129,6 +157,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
         jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("baseClassifierId", this.baseClassifierId);
+        jsonWriter.writeBooleanField("allowOverwrite", this.allowOverwrite);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +177,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
             Map<String, ClassifierDocumentTypeDetails> docTypes = null;
             String description = null;
             String baseClassifierId = null;
+            Boolean allowOverwrite = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -160,6 +190,8 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
                     description = reader.getString();
                 } else if ("baseClassifierId".equals(fieldName)) {
                     baseClassifierId = reader.getString();
+                } else if ("allowOverwrite".equals(fieldName)) {
+                    allowOverwrite = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -168,6 +200,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
                 = new BuildDocumentClassifierRequest(classifierId, docTypes);
             deserializedBuildDocumentClassifierRequest.description = description;
             deserializedBuildDocumentClassifierRequest.baseClassifierId = baseClassifierId;
+            deserializedBuildDocumentClassifierRequest.allowOverwrite = allowOverwrite;
 
             return deserializedBuildDocumentClassifierRequest;
         });

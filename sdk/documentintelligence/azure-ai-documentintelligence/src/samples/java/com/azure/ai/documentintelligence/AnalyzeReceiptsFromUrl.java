@@ -47,6 +47,7 @@ public class AnalyzeReceiptsFromUrl {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setUrlSource(receiptUrl));
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();

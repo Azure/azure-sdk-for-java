@@ -172,6 +172,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
         null,
         null,
         null,
+        null,
         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
@@ -226,6 +227,7 @@ File sourceFile = new File("../documentintelligence/azure-ai-documentintelligenc
 
 SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
+        null,
         null,
         null,
         null,
@@ -332,6 +334,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = docume
     Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
     null,
     ContentFormat.TEXT,
+    null,
     new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();

@@ -239,10 +239,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginComposeDocumentModel#ComposeDocumentModelRequest
-        String modelId1 = "{model_Id_1}";
-        String modelId2 = "{model_Id_2}";
         documentIntelligenceAdministrationAsyncClient.beginComposeModel(
-            new ComposeDocumentModelRequest("composedModelID", Arrays.asList(new ComponentDocumentModelDetails(modelId1), new ComponentDocumentModelDetails(modelId2))))
+            new ComposeDocumentModelRequest("composedModelID", "classifierId", null)
+                .setDescription("my composed model description"))
             // if polling operation completed, retrieve the final result.
             .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult())
             .subscribe(documentModel -> {

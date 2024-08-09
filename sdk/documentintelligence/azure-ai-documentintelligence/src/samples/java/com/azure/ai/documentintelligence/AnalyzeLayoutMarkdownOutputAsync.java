@@ -44,6 +44,7 @@ public class AnalyzeLayoutMarkdownOutputAsync {
                         null,
                         null,
                         ContentFormat.MARKDOWN,
+                    null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

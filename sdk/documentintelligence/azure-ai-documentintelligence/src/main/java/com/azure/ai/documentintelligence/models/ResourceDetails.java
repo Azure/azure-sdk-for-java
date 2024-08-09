@@ -23,23 +23,14 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
     @Generated
     private final CustomDocumentModelsDetails customDocumentModels;
 
-    /*
-     * Quota used, limit, and next reset date/time.
-     */
-    @Generated
-    private final QuotaDetails customNeuralDocumentModelBuilds;
-
     /**
      * Creates an instance of ResourceDetails class.
      * 
      * @param customDocumentModels the customDocumentModels value to set.
-     * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
      */
     @Generated
-    private ResourceDetails(CustomDocumentModelsDetails customDocumentModels,
-        QuotaDetails customNeuralDocumentModelBuilds) {
+    private ResourceDetails(CustomDocumentModelsDetails customDocumentModels) {
         this.customDocumentModels = customDocumentModels;
-        this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
     }
 
     /**
@@ -53,16 +44,6 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
     }
 
     /**
-     * Get the customNeuralDocumentModelBuilds property: Quota used, limit, and next reset date/time.
-     * 
-     * @return the customNeuralDocumentModelBuilds value.
-     */
-    @Generated
-    public QuotaDetails getCustomNeuralDocumentModelBuilds() {
-        return this.customNeuralDocumentModelBuilds;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -70,7 +51,6 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("customDocumentModels", this.customDocumentModels);
-        jsonWriter.writeJsonField("customNeuralDocumentModelBuilds", this.customNeuralDocumentModelBuilds);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,20 +67,17 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
     public static ResourceDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomDocumentModelsDetails customDocumentModels = null;
-            QuotaDetails customNeuralDocumentModelBuilds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("customDocumentModels".equals(fieldName)) {
                     customDocumentModels = CustomDocumentModelsDetails.fromJson(reader);
-                } else if ("customNeuralDocumentModelBuilds".equals(fieldName)) {
-                    customNeuralDocumentModelBuilds = QuotaDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResourceDetails(customDocumentModels, customNeuralDocumentModelBuilds);
+            return new ResourceDetails(customDocumentModels);
         });
     }
 }
