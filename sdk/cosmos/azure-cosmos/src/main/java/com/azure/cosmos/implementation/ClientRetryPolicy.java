@@ -108,9 +108,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
+            // todo: should master resource writes be forced to the hub region
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
             return this.shouldRetryOnEndpointFailureAsync(false, true, false);
-            // todo: should master resource writes be forced to the hub region
         }
 
         // Regional endpoint is not available yet for reads (e.g. add/ online of region is in progress)
