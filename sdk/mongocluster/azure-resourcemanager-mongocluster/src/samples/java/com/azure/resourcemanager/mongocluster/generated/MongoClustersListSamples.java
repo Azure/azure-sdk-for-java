@@ -10,7 +10,7 @@ package com.azure.resourcemanager.mongocluster.generated;
 public final class MongoClustersListSamples {
     /*
      * x-ms-original-file:
-     * specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/MongoClusters_List.json
+     * specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-06-01-preview/MongoClusters_List.json
      */
     /**
      * Sample code: Lists the Mongo Cluster resources in a subscription.

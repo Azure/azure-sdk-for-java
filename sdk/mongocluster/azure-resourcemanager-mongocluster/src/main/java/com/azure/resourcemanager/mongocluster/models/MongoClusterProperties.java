@@ -28,6 +28,11 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     private MongoClusterRestoreParameters restoreParameters;
 
     /*
+     * The parameters to create a replica mongo cluster.
+     */
+    private MongoClusterReplicaParameters replicaParameters;
+
+    /*
      * The administrator's login for the mongo cluster.
      */
     private String administratorLogin;
@@ -77,6 +82,21 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      */
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
+    /*
+     * List of private endpoint connections.
+     */
+    private List<PreviewFeature> previewFeatures;
+
+    /*
+     * The replication properties for the mongo cluster
+     */
+    private ReplicationProperties replica;
+
+    /*
+     * The infrastructure version the cluster is provisioned on.
+     */
+    private String infrastructureVersion;
+
     /**
      * Creates an instance of MongoClusterProperties class.
      */
@@ -120,6 +140,26 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      */
     public MongoClusterProperties withRestoreParameters(MongoClusterRestoreParameters restoreParameters) {
         this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the replicaParameters property: The parameters to create a replica mongo cluster.
+     * 
+     * @return the replicaParameters value.
+     */
+    public MongoClusterReplicaParameters replicaParameters() {
+        return this.replicaParameters;
+    }
+
+    /**
+     * Set the replicaParameters property: The parameters to create a replica mongo cluster.
+     * 
+     * @param replicaParameters the replicaParameters value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withReplicaParameters(MongoClusterReplicaParameters replicaParameters) {
+        this.replicaParameters = replicaParameters;
         return this;
     }
 
@@ -271,6 +311,44 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
+     * Get the previewFeatures property: List of private endpoint connections.
+     * 
+     * @return the previewFeatures value.
+     */
+    public List<PreviewFeature> previewFeatures() {
+        return this.previewFeatures;
+    }
+
+    /**
+     * Set the previewFeatures property: List of private endpoint connections.
+     * 
+     * @param previewFeatures the previewFeatures value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withPreviewFeatures(List<PreviewFeature> previewFeatures) {
+        this.previewFeatures = previewFeatures;
+        return this;
+    }
+
+    /**
+     * Get the replica property: The replication properties for the mongo cluster.
+     * 
+     * @return the replica value.
+     */
+    public ReplicationProperties replica() {
+        return this.replica;
+    }
+
+    /**
+     * Get the infrastructureVersion property: The infrastructure version the cluster is provisioned on.
+     * 
+     * @return the infrastructureVersion value.
+     */
+    public String infrastructureVersion() {
+        return this.infrastructureVersion;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -279,11 +357,17 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
         if (restoreParameters() != null) {
             restoreParameters().validate();
         }
+        if (replicaParameters() != null) {
+            replicaParameters().validate();
+        }
         if (nodeGroupSpecs() != null) {
             nodeGroupSpecs().forEach(e -> e.validate());
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (replica() != null) {
+            replica().validate();
         }
     }
 
@@ -295,6 +379,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
         jsonWriter.writeJsonField("restoreParameters", this.restoreParameters);
+        jsonWriter.writeJsonField("replicaParameters", this.replicaParameters);
         jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
         jsonWriter.writeStringField("serverVersion", this.serverVersion);
@@ -302,6 +387,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeArrayField("nodeGroupSpecs", this.nodeGroupSpecs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -325,6 +412,9 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                 } else if ("restoreParameters".equals(fieldName)) {
                     deserializedMongoClusterProperties.restoreParameters
                         = MongoClusterRestoreParameters.fromJson(reader);
+                } else if ("replicaParameters".equals(fieldName)) {
+                    deserializedMongoClusterProperties.replicaParameters
+                        = MongoClusterReplicaParameters.fromJson(reader);
                 } else if ("administratorLogin".equals(fieldName)) {
                     deserializedMongoClusterProperties.administratorLogin = reader.getString();
                 } else if ("administratorLoginPassword".equals(fieldName)) {
@@ -351,6 +441,14 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     List<PrivateEndpointConnection> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
                     deserializedMongoClusterProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("previewFeatures".equals(fieldName)) {
+                    List<PreviewFeature> previewFeatures
+                        = reader.readArray(reader1 -> PreviewFeature.fromString(reader1.getString()));
+                    deserializedMongoClusterProperties.previewFeatures = previewFeatures;
+                } else if ("replica".equals(fieldName)) {
+                    deserializedMongoClusterProperties.replica = ReplicationProperties.fromJson(reader);
+                } else if ("infrastructureVersion".equals(fieldName)) {
+                    deserializedMongoClusterProperties.infrastructureVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

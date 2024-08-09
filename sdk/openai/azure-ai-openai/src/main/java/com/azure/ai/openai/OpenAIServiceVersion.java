@@ -31,6 +31,11 @@ public enum OpenAIServiceVersion implements ServiceVersion {
     V2023_07_01_PREVIEW("2023-07-01-preview"),
 
     /**
+     * Enum value 2024-02-01.
+     */
+    V2024_02_01("2024-02-01"),
+
+    /**
      * Enum value 2024-02-15-preview.
      */
     V2024_02_15_PREVIEW("2024-02-15-preview"),
@@ -48,7 +53,12 @@ public enum OpenAIServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-05-01-preview.
      */
-    V2024_05_01_PREVIEW("2024-05-01-preview");
+    V2024_05_01_PREVIEW("2024-05-01-preview"),
+
+    /**
+     * Enum value 2024-06-01.
+     */
+    V2024_06_01("2024-06-01");
 
     private final String version;
 
@@ -70,6 +80,6 @@ public enum OpenAIServiceVersion implements ServiceVersion {
      * @return The latest {@link OpenAIServiceVersion}.
      */
     public static OpenAIServiceVersion getLatest() {
-        return V2024_05_01_PREVIEW;
+        return V2024_06_01;
     }
 }

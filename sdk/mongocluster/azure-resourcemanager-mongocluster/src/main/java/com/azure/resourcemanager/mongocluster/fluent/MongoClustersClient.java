@@ -16,6 +16,7 @@ import com.azure.resourcemanager.mongocluster.fluent.models.ListConnectionString
 import com.azure.resourcemanager.mongocluster.fluent.models.MongoClusterInner;
 import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdate;
+import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
 
 /**
  * An instance of this class provides access to all the operations defined in MongoClustersClient.
@@ -311,7 +312,7 @@ public interface MongoClustersClient {
     /**
      * Check if mongo cluster name is available for use.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,7 +327,7 @@ public interface MongoClustersClient {
     /**
      * Check if mongo cluster name is available for use.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -335,4 +336,62 @@ public interface MongoClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CheckNameAvailabilityResponseInner checkNameAvailability(String location, CheckNameAvailabilityRequest body);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPromote(String resourceGroupName, String mongoClusterName,
+        PromoteReplicaRequest body);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPromote(String resourceGroupName, String mongoClusterName,
+        PromoteReplicaRequest body, Context context);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mongoClusterName The name of the mongo cluster.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void promote(String resourceGroupName, String mongoClusterName, PromoteReplicaRequest body, Context context);
 }

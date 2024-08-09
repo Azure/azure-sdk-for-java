@@ -22,6 +22,16 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
+     * Static value GeoReplica for CreateMode.
+     */
+    public static final CreateMode GEO_REPLICA = fromString("GeoReplica");
+
+    /**
+     * Static value Replica for CreateMode.
+     */
+    public static final CreateMode REPLICA = fromString("Replica");
+
+    /**
      * Creates a new instance of CreateMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
