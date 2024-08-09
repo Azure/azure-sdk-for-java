@@ -22,19 +22,14 @@ public final class FirewallRuleInner extends ProxyResourceWithWritableName {
     private ServerFirewallRuleProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of FirewallRuleInner class.
@@ -52,6 +47,16 @@ public final class FirewallRuleInner extends ProxyResourceWithWritableName {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
@@ -62,23 +67,12 @@ public final class FirewallRuleInner extends ProxyResourceWithWritableName {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
+     * {@inheritDoc}
      */
     @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
+    public FirewallRuleInner withName(String name) {
+        super.withName(name);
+        return this;
     }
 
     /**
@@ -173,8 +167,6 @@ public final class FirewallRuleInner extends ProxyResourceWithWritableName {
 
                 if ("id".equals(fieldName)) {
                     deserializedFirewallRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedFirewallRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedFirewallRuleInner.type = reader.getString();
                 } else if ("name".equals(fieldName)) {

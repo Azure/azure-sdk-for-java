@@ -22,19 +22,14 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     private IPv6ServerFirewallRuleProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of IPv6FirewallRuleInner class.
@@ -52,6 +47,16 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
@@ -62,23 +67,12 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
+     * {@inheritDoc}
      */
     @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
+    public IPv6FirewallRuleInner withName(String name) {
+        super.withName(name);
+        return this;
     }
 
     /**
@@ -171,8 +165,6 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
                 if ("id".equals(fieldName)) {
                     deserializedIPv6FirewallRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedIPv6FirewallRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedIPv6FirewallRuleInner.type = reader.getString();
                 } else if ("name".equals(fieldName)) {

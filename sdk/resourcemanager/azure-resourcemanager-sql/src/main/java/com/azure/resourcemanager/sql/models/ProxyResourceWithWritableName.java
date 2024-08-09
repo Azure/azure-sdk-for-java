@@ -16,24 +16,29 @@ import java.io.IOException;
 @Fluent
 public class ProxyResourceWithWritableName extends ResourceWithWritableName {
     /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ProxyResourceWithWritableName class.
      */
     public ProxyResourceWithWritableName() {
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -47,23 +52,12 @@ public class ProxyResourceWithWritableName extends ResourceWithWritableName {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
+     * {@inheritDoc}
      */
     @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
+    public ProxyResourceWithWritableName withName(String name) {
+        super.withName(name);
+        return this;
     }
 
     /**
@@ -105,8 +99,6 @@ public class ProxyResourceWithWritableName extends ResourceWithWritableName {
 
                 if ("id".equals(fieldName)) {
                     deserializedProxyResourceWithWritableName.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedProxyResourceWithWritableName.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedProxyResourceWithWritableName.type = reader.getString();
                 } else if ("name".equals(fieldName)) {
