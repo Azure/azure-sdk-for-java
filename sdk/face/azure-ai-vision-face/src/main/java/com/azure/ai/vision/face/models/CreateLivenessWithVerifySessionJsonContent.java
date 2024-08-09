@@ -12,10 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Request model for creating liveness session.
+ * Request for creating liveness with verify session.
  */
 @Fluent
-public final class CreateLivenessSessionContent implements JsonSerializable<CreateLivenessSessionContent> {
+public final class CreateLivenessWithVerifySessionJsonContent
+    implements JsonSerializable<CreateLivenessWithVerifySessionJsonContent> {
 
     /*
      * Type of liveness mode the client should follow.
@@ -40,6 +41,19 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     private Boolean deviceCorrelationIdSetInClient;
 
     /*
+     * Whether or not store the session image.
+     */
+    @Generated
+    private Boolean enableSessionImage;
+
+    /*
+     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
+     * then the latest supported model version will be chosen
+     */
+    @Generated
+    private LivenessModel livenessSingleModalModel;
+
+    /*
      * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If
      * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
@@ -52,13 +66,25 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     @Generated
     private Integer authTokenTimeToLiveInSeconds;
 
+    /*
+     * Whether or not return the verify image hash.
+     */
+    @Generated
+    private Boolean returnVerifyImageHash;
+
+    /*
+     * Threshold for confidence of the face verification.
+     */
+    @Generated
+    private Double verifyConfidenceThreshold;
+
     /**
-     * Creates an instance of CreateLivenessSessionContent class.
+     * Creates an instance of CreateLivenessWithVerifySessionJsonContent class.
      *
      * @param livenessOperationMode the livenessOperationMode value to set.
      */
     @Generated
-    public CreateLivenessSessionContent(LivenessOperationMode livenessOperationMode) {
+    public CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode livenessOperationMode) {
         this.livenessOperationMode = livenessOperationMode;
     }
 
@@ -92,10 +118,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * enabling business logic to be implemented.
      *
      * @param sendResultsToClient the sendResultsToClient value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setSendResultsToClient(Boolean sendResultsToClient) {
+    public CreateLivenessWithVerifySessionJsonContent setSendResultsToClient(Boolean sendResultsToClient) {
         this.sendResultsToClient = sendResultsToClient;
         return this;
     }
@@ -118,11 +144,59 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * body.
      *
      * @param deviceCorrelationIdSetInClient the deviceCorrelationIdSetInClient value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setDeviceCorrelationIdSetInClient(Boolean deviceCorrelationIdSetInClient) {
+    public CreateLivenessWithVerifySessionJsonContent
+        setDeviceCorrelationIdSetInClient(Boolean deviceCorrelationIdSetInClient) {
         this.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
+        return this;
+    }
+
+    /**
+     * Get the enableSessionImage property: Whether or not store the session image.
+     *
+     * @return the enableSessionImage value.
+     */
+    @Generated
+    public Boolean isEnableSessionImage() {
+        return this.enableSessionImage;
+    }
+
+    /**
+     * Set the enableSessionImage property: Whether or not store the session image.
+     *
+     * @param enableSessionImage the enableSessionImage value to set.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionJsonContent setEnableSessionImage(Boolean enableSessionImage) {
+        this.enableSessionImage = enableSessionImage;
+        return this;
+    }
+
+    /**
+     * Get the livenessSingleModalModel property: The model version used for liveness classification. This is an
+     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
+     *
+     * @return the livenessSingleModalModel value.
+     */
+    @Generated
+    public LivenessModel getLivenessSingleModalModel() {
+        return this.livenessSingleModalModel;
+    }
+
+    /**
+     * Set the livenessSingleModalModel property: The model version used for liveness classification. This is an
+     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
+     *
+     * @param livenessSingleModalModel the livenessSingleModalModel value to set.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionJsonContent
+        setLivenessSingleModalModel(LivenessModel livenessSingleModalModel) {
+        this.livenessSingleModalModel = livenessSingleModalModel;
         return this;
     }
 
@@ -144,10 +218,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * null.
      *
      * @param deviceCorrelationId the deviceCorrelationId value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setDeviceCorrelationId(String deviceCorrelationId) {
+    public CreateLivenessWithVerifySessionJsonContent setDeviceCorrelationId(String deviceCorrelationId) {
         this.deviceCorrelationId = deviceCorrelationId;
         return this;
     }
@@ -168,11 +242,56 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * Default value is 600.
      *
      * @param authTokenTimeToLiveInSeconds the authTokenTimeToLiveInSeconds value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
+    public CreateLivenessWithVerifySessionJsonContent
+        setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
         this.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the returnVerifyImageHash property: Whether or not return the verify image hash.
+     *
+     * @return the returnVerifyImageHash value.
+     */
+    @Generated
+    public Boolean isReturnVerifyImageHash() {
+        return this.returnVerifyImageHash;
+    }
+
+    /**
+     * Set the returnVerifyImageHash property: Whether or not return the verify image hash.
+     *
+     * @param returnVerifyImageHash the returnVerifyImageHash value to set.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionJsonContent setReturnVerifyImageHash(Boolean returnVerifyImageHash) {
+        this.returnVerifyImageHash = returnVerifyImageHash;
+        return this;
+    }
+
+    /**
+     * Get the verifyConfidenceThreshold property: Threshold for confidence of the face verification.
+     *
+     * @return the verifyConfidenceThreshold value.
+     */
+    @Generated
+    public Double getVerifyConfidenceThreshold() {
+        return this.verifyConfidenceThreshold;
+    }
+
+    /**
+     * Set the verifyConfidenceThreshold property: Threshold for confidence of the face verification.
+     *
+     * @param verifyConfidenceThreshold the verifyConfidenceThreshold value to set.
+     * @return the CreateLivenessWithVerifySessionJsonContent object itself.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionJsonContent setVerifyConfidenceThreshold(Double verifyConfidenceThreshold) {
+        this.verifyConfidenceThreshold = verifyConfidenceThreshold;
         return this;
     }
 
@@ -192,20 +311,22 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
             this.livenessSingleModalModel == null ? null : this.livenessSingleModalModel.toString());
         jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
         jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
+        jsonWriter.writeBooleanField("returnVerifyImageHash", this.returnVerifyImageHash);
+        jsonWriter.writeNumberField("verifyConfidenceThreshold", this.verifyConfidenceThreshold);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of CreateLivenessSessionContent from the JsonReader.
+     * Reads an instance of CreateLivenessWithVerifySessionJsonContent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateLivenessSessionContent if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of CreateLivenessWithVerifySessionJsonContent if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateLivenessSessionContent.
+     * @throws IOException If an error occurs while reading the CreateLivenessWithVerifySessionJsonContent.
      */
     @Generated
-    public static CreateLivenessSessionContent fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateLivenessWithVerifySessionJsonContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LivenessOperationMode livenessOperationMode = null;
             Boolean sendResultsToClient = null;
@@ -214,6 +335,8 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
             LivenessModel livenessSingleModalModel = null;
             String deviceCorrelationId = null;
             Integer authTokenTimeToLiveInSeconds = null;
+            Boolean returnVerifyImageHash = null;
+            Double verifyConfidenceThreshold = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -231,78 +354,28 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
                     deviceCorrelationId = reader.getString();
                 } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
                     authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("returnVerifyImageHash".equals(fieldName)) {
+                    returnVerifyImageHash = reader.getNullable(JsonReader::getBoolean);
+                } else if ("verifyConfidenceThreshold".equals(fieldName)) {
+                    verifyConfidenceThreshold = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
-            CreateLivenessSessionContent deserializedCreateLivenessSessionContent
-                = new CreateLivenessSessionContent(livenessOperationMode);
-            deserializedCreateLivenessSessionContent.sendResultsToClient = sendResultsToClient;
-            deserializedCreateLivenessSessionContent.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
-            deserializedCreateLivenessSessionContent.enableSessionImage = enableSessionImage;
-            deserializedCreateLivenessSessionContent.livenessSingleModalModel = livenessSingleModalModel;
-            deserializedCreateLivenessSessionContent.deviceCorrelationId = deviceCorrelationId;
-            deserializedCreateLivenessSessionContent.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
-            return deserializedCreateLivenessSessionContent;
+            CreateLivenessWithVerifySessionJsonContent deserializedCreateLivenessWithVerifySessionJsonContent
+                = new CreateLivenessWithVerifySessionJsonContent(livenessOperationMode);
+            deserializedCreateLivenessWithVerifySessionJsonContent.sendResultsToClient = sendResultsToClient;
+            deserializedCreateLivenessWithVerifySessionJsonContent.deviceCorrelationIdSetInClient
+                = deviceCorrelationIdSetInClient;
+            deserializedCreateLivenessWithVerifySessionJsonContent.enableSessionImage = enableSessionImage;
+            deserializedCreateLivenessWithVerifySessionJsonContent.livenessSingleModalModel = livenessSingleModalModel;
+            deserializedCreateLivenessWithVerifySessionJsonContent.deviceCorrelationId = deviceCorrelationId;
+            deserializedCreateLivenessWithVerifySessionJsonContent.authTokenTimeToLiveInSeconds
+                = authTokenTimeToLiveInSeconds;
+            deserializedCreateLivenessWithVerifySessionJsonContent.returnVerifyImageHash = returnVerifyImageHash;
+            deserializedCreateLivenessWithVerifySessionJsonContent.verifyConfidenceThreshold
+                = verifyConfidenceThreshold;
+            return deserializedCreateLivenessWithVerifySessionJsonContent;
         });
-    }
-
-    /*
-     * Whether or not store the session image.
-     */
-    @Generated
-    private Boolean enableSessionImage;
-
-    /*
-     * The model version used for liveness classification. This is an optional parameter, and if this is not specified,
-     * then the latest supported model version will be chosen
-     */
-    @Generated
-    private LivenessModel livenessSingleModalModel;
-
-    /**
-     * Get the enableSessionImage property: Whether or not store the session image.
-     *
-     * @return the enableSessionImage value.
-     */
-    @Generated
-    public Boolean isEnableSessionImage() {
-        return this.enableSessionImage;
-    }
-
-    /**
-     * Set the enableSessionImage property: Whether or not store the session image.
-     *
-     * @param enableSessionImage the enableSessionImage value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setEnableSessionImage(Boolean enableSessionImage) {
-        this.enableSessionImage = enableSessionImage;
-        return this;
-    }
-
-    /**
-     * Get the livenessSingleModalModel property: The model version used for liveness classification. This is an
-     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
-     *
-     * @return the livenessSingleModalModel value.
-     */
-    @Generated
-    public LivenessModel getLivenessSingleModalModel() {
-        return this.livenessSingleModalModel;
-    }
-
-    /**
-     * Set the livenessSingleModalModel property: The model version used for liveness classification. This is an
-     * optional parameter, and if this is not specified, then the latest supported model version will be chosen.
-     *
-     * @param livenessSingleModalModel the livenessSingleModalModel value to set.
-     * @return the CreateLivenessSessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessSessionContent setLivenessSingleModalModel(LivenessModel livenessSingleModalModel) {
-        this.livenessSingleModalModel = livenessSingleModalModel;
-        return this;
     }
 }

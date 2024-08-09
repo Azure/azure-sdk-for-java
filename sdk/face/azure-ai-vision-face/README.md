@@ -226,7 +226,7 @@ FaceSessionClient sessionClient = new FaceSessionClientBuilder()
     .buildClient();
 
 String deviceCorrelationId = UUID.randomUUID().toString();
-CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
+CreateLivenessWithVerifySessionJsonContent parameters = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
     .setDeviceCorrelationId(deviceCorrelationId)
     .setSendResultsToClient(false);
 Path path = Paths.get(imagePathString);
