@@ -96,6 +96,15 @@ public final class NettyUtility {
             return;
         }
 
+        try {
+            validateNettyVersionsInternal();
+        } catch (Exception ex) {
+            LOGGER.info("Unable to load Netty version information. If Netty version validation is required, please "
+                + "review this exception. Otherwise, this log message can be ignored.", ex);
+        }
+    }
+
+    static void validateNettyVersionsInternal() {
         Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
         NettyVersionLogInformation versionLogInformation = createNettyVersionLogInformation(
             pomVersions.get(NETTY_VERSION_PROPERTY), pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY));
@@ -109,7 +118,7 @@ public final class NettyUtility {
         Map<String, String> classpathNettyVersions = new LinkedHashMap<>();
         Map<String, String> classPathNativeNettyVersions = new LinkedHashMap<>();
 
-        Map<String, Version> nettyVersions = Version.identify();
+        Map<String, Version> nettyVersions = Version.identify(NettyUtility.class.getClassLoader());
 
         for (String artifact : REQUIRED_NETTY_VERSION_ARTIFACTS) {
             Version version = nettyVersions.get(artifact);
@@ -134,8 +143,7 @@ public final class NettyUtility {
         }
 
         try {
-            Enumeration<URL> enumeration = Thread.currentThread()
-                .getContextClassLoader()
+            Enumeration<URL> enumeration = NettyUtility.class.getClassLoader()
                 .getResources("META-INF/maven/io.netty/netty-tcnative-boringssl-static/pom.properties");
             while (enumeration.hasMoreElements()) {
                 URL url = enumeration.nextElement();
