@@ -1018,14 +1018,12 @@ public class StoreReader {
                 String errorMessage = "Unexpected exception " + responseException.getMessage() + " received while reading from store.";
                 logger.error(errorMessage, responseException);
 
-                int subStatusCode = evaluateSubStatusCode(responseException);
-
                 return new StoreResult(
                         /* storeResponse: */ null,
                         /* exception: */ new InternalServerErrorException(
                                             com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
                                             responseException,
-                                            subStatusCode),
+                                            HttpConstants.SubStatusCodes.INVALID_RESULT),
                         /* partitionKeyRangeId: */ (String) null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
@@ -1070,7 +1068,7 @@ public class StoreReader {
             throw ex;
         }
 
-        if (ex instanceof InternalServerErrorException && ex.getCause() instanceof ClosedClientTransportException) {
+        if (ex instanceof InternalServerErrorException) {
             throw ex;
         }
 
@@ -1085,14 +1083,6 @@ public class StoreReader {
         }
 
         return;
-    }
-
-    private int evaluateSubStatusCode(Exception responseException) {
-        if (responseException instanceof ClosedClientTransportException) {
-            return HttpConstants.SubStatusCodes.CLOSED_CLIENT;
-        }
-
-        return HttpConstants.SubStatusCodes.INVALID_RESULT;
     }
 
     private static class ReadReplicaResult {

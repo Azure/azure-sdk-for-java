@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -421,7 +422,10 @@ public class RntbdTransportClient extends TransportClient {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            throw new ClosedClientTransportException(lenientFormat("%s is closed", this), null);
+            String message = lenientFormat("%s is closed", this);
+            ClosedClientTransportException transportException
+                = new ClosedClientTransportException(message, null);
+            throw new InternalServerErrorException(message, transportException, HttpConstants.SubStatusCodes.CLOSED_CLIENT);
         }
     }
 
