@@ -1068,7 +1068,7 @@ public class StoreReader {
             throw ex;
         }
 
-        if (ex instanceof InternalServerErrorException) {
+        if (ex instanceof InternalServerErrorException && isSubStatusCode(ex, HttpConstants.SubStatusCodes.CLOSED_CLIENT)) {
             throw ex;
         }
 
