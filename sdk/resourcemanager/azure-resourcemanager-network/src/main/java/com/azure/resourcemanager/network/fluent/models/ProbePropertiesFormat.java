@@ -7,21 +7,24 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProbeNoHealthyBackendsBehavior;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Load balancer probe resource.
  */
 @Fluent
-public final class ProbePropertiesFormat {
+public final class ProbePropertiesFormat implements JsonSerializable<ProbePropertiesFormat> {
     /*
      * The load balancer rules that use this probe.
      */
-    @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /*
@@ -29,13 +32,11 @@ public final class ProbePropertiesFormat {
      * If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required for the probe to be
      * successful.
      */
-    @JsonProperty(value = "protocol", required = true)
     private ProbeProtocol protocol;
 
     /*
      * The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
      */
-    @JsonProperty(value = "port", required = true)
     private int port;
 
     /*
@@ -43,13 +44,11 @@ public final class ProbePropertiesFormat {
      * slightly less than half the allocated timeout period (in seconds) which allows two full probes before taking the
      * instance out of rotation. The default value is 15, the minimum value is 5.
      */
-    @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
     /*
      * Determines how new connections are handled by the load balancer when all backend instances are probed down.
      */
-    @JsonProperty(value = "NoHealthyBackendsBehavior")
     private ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior;
 
     /*
@@ -57,7 +56,6 @@ public final class ProbePropertiesFormat {
      * endpoint. This values allows endpoints to be taken out of rotation faster or slower than the typical times used
      * in Azure.
      */
-    @JsonProperty(value = "numberOfProbes")
     private Integer numberOfProbes;
 
     /*
@@ -65,20 +63,17 @@ public final class ProbePropertiesFormat {
      * this endpoint. After failing the number of consecutive probes equal to this value, the endpoint will be taken out
      * of rotation and require the same number of successful consecutive probes to be placed back in rotation.
      */
-    @JsonProperty(value = "probeThreshold")
     private Integer probeThreshold;
 
     /*
      * The URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise,
      * it is not allowed. There is no default value.
      */
-    @JsonProperty(value = "requestPath")
     private String requestPath;
 
     /*
      * The provisioning state of the probe resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -281,4 +276,67 @@ public final class ProbePropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProbePropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeIntField("port", this.port);
+        jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
+        jsonWriter.writeStringField("NoHealthyBackendsBehavior",
+            this.noHealthyBackendsBehavior == null ? null : this.noHealthyBackendsBehavior.toString());
+        jsonWriter.writeNumberField("numberOfProbes", this.numberOfProbes);
+        jsonWriter.writeNumberField("probeThreshold", this.probeThreshold);
+        jsonWriter.writeStringField("requestPath", this.requestPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProbePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProbePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProbePropertiesFormat.
+     */
+    public static ProbePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProbePropertiesFormat deserializedProbePropertiesFormat = new ProbePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.protocol = ProbeProtocol.fromString(reader.getString());
+                } else if ("port".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.port = reader.getInt();
+                } else if ("loadBalancingRules".equals(fieldName)) {
+                    List<SubResource> loadBalancingRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedProbePropertiesFormat.loadBalancingRules = loadBalancingRules;
+                } else if ("intervalInSeconds".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.intervalInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("NoHealthyBackendsBehavior".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.noHealthyBackendsBehavior
+                        = ProbeNoHealthyBackendsBehavior.fromString(reader.getString());
+                } else if ("numberOfProbes".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.numberOfProbes = reader.getNullable(JsonReader::getInt);
+                } else if ("probeThreshold".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.probeThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("requestPath".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.requestPath = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProbePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProbePropertiesFormat;
+        });
+    }
 }

@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+- Removed `subscriptionId`, `resourceGroupName`, `workspaceName` API from `EasmClientBuilder` client builder.
+  Please set all of these values into `endpoint` API, e.g. `builder.endpoint("https://<host>/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/workspaces/<workspaceName>/")`.
+- Removed Jackson annotations from models and removed custom serializer for raw JSON fields.  
+
 ### Bugs Fixed
 
 ### Other Changes

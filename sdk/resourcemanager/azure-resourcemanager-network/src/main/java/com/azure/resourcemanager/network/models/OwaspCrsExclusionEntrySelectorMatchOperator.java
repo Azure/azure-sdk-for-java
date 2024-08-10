@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class OwaspCrsExclusionEntrySelectorMatchOperator
      * @param name a name to look for.
      * @return the corresponding OwaspCrsExclusionEntrySelectorMatchOperator.
      */
-    @JsonCreator
     public static OwaspCrsExclusionEntrySelectorMatchOperator fromString(String name) {
         return fromString(name, OwaspCrsExclusionEntrySelectorMatchOperator.class);
     }

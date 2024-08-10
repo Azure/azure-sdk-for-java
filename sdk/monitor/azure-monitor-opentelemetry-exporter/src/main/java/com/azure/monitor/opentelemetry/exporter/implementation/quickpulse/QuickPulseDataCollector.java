@@ -3,8 +3,18 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.*;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.StackFrame;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDependencyDocument;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDocument;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseExceptionDocument;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseRequestDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
 import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
@@ -28,10 +38,11 @@ final class QuickPulseDataCollector {
 
     private static final MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
 
-    private static final OperatingSystemMXBean operatingSystemMxBean =
-        ManagementFactory.getOperatingSystemMXBean();
+    private static final OperatingSystemMXBean operatingSystemMxBean = ManagementFactory.getOperatingSystemMXBean();
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
+    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
+        = getCpuPerformanceCounterCalculator();
 
     private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
 
@@ -46,8 +57,7 @@ final class QuickPulseDataCollector {
     private volatile Supplier<String> instrumentationKeySupplier;
 
     QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage) {
-        this.useNormalizedValueForNonNormalizedCpuPercentage =
-            useNormalizedValueForNonNormalizedCpuPercentage;
+        this.useNormalizedValueForNonNormalizedCpuPercentage = useNormalizedValueForNonNormalizedCpuPercentage;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -182,8 +192,8 @@ final class QuickPulseDataCollector {
         quickPulseDependencyDocument.setResultCode(telemetry.getResultCode());
         quickPulseDependencyDocument.setOperationName(telemetry.getId());
         quickPulseDependencyDocument.setDependencyTypeName(telemetry.getType());
-        quickPulseDependencyDocument.setProperties(
-            aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
+        quickPulseDependencyDocument
+            .setProperties(aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(quickPulseDependencyDocument);
@@ -234,8 +244,7 @@ final class QuickPulseDataCollector {
             return;
         }
         long durationMillis = parseDurationToMillis(requestTelemetry.getDuration());
-        counters.requestsAndDurations.addAndGet(
-            Counters.encodeCountAndDuration(itemCount, durationMillis));
+        counters.requestsAndDurations.addAndGet(Counters.encodeCountAndDuration(itemCount, durationMillis));
         if (!requestTelemetry.isSuccess()) {
             counters.unsuccessfulRequests.incrementAndGet();
         }
@@ -250,8 +259,8 @@ final class QuickPulseDataCollector {
         quickPulseRequestDocument.setOperationName(operationName);
         quickPulseRequestDocument.setName(requestTelemetry.getName());
         quickPulseRequestDocument.setUrl(requestTelemetry.getUrl());
-        quickPulseRequestDocument.setProperties(
-            aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+        quickPulseRequestDocument
+            .setProperties(aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(quickPulseRequestDocument);
@@ -259,8 +268,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private static Map<String, String> aggregateProperties(
-        @Nullable Map<String, String> properties, @Nullable Map<String, Double> measurements) {
+    private static Map<String, String> aggregateProperties(@Nullable Map<String, String> properties,
+        @Nullable Map<String, Double> measurements) {
         Map<String, String> aggregatedProperties = new HashMap<>();
         if (measurements != null) {
             measurements.forEach((k, v) -> aggregatedProperties.put(k, String.valueOf(v)));
@@ -360,8 +369,8 @@ final class QuickPulseDataCollector {
             cpuUsage = getNonNormalizedCpuPercentage(cpuPerformanceCounterCalculator);
             exceptions = currentCounters.exceptions.get();
 
-            CountAndDuration countAndDuration =
-                Counters.decodeCountAndDuration(currentCounters.requestsAndDurations.get());
+            CountAndDuration countAndDuration
+                = Counters.decodeCountAndDuration(currentCounters.requestsAndDurations.get());
             requests = (int) countAndDuration.count;
             this.requestsDuration = countAndDuration.duration;
             this.unsuccessfulRequests = currentCounters.unsuccessfulRequests.get();
@@ -386,8 +395,8 @@ final class QuickPulseDataCollector {
             return heapMemoryUsage.getCommitted();
         }
 
-        private double getNonNormalizedCpuPercentage(
-            @Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
+        private double
+            getNonNormalizedCpuPercentage(@Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
             if (cpuPerformanceCounterCalculator == null) {
                 return -1;
             }

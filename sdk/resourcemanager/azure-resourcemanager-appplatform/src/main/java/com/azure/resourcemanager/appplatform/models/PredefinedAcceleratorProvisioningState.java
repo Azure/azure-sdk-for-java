@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class PredefinedAcceleratorProvisioningState
      * @param name a name to look for.
      * @return the corresponding PredefinedAcceleratorProvisioningState.
      */
-    @JsonCreator
     public static PredefinedAcceleratorProvisioningState fromString(String name) {
         return fromString(name, PredefinedAcceleratorProvisioningState.class);
     }

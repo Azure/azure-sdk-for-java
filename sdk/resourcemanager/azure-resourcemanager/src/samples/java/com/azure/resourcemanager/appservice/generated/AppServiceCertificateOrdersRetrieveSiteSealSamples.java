@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.SiteSealRequest;
  */
 public final class AppServiceCertificateOrdersRetrieveSiteSealSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/RetrieveSiteSeal.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/RetrieveSiteSeal.
+     * json
      */
     /**
      * Sample code: Retrieve Site Seal.

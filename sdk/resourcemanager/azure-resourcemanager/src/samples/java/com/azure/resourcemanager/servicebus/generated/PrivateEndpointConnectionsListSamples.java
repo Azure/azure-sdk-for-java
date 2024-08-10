@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.servicebus.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/PrivateEndPointConnectionList.json
+     * x-ms-original-file:
+     * specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/
+     * PrivateEndPointConnectionList.json
      */
     /**
      * Sample code: NameSpaceCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void nameSpaceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .serviceBusNamespaces()
+        azure.serviceBusNamespaces()
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .list("SDK-ServiceBus-4794", "sdk-Namespace-5828", Context.NONE);
+            .list("SDK-ServiceBus-4794", "sdk-Namespace-5828", com.azure.core.util.Context.NONE);
     }
 }

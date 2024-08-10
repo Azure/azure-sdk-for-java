@@ -5,47 +5,46 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DataProviderMetadata;
 import com.azure.resourcemanager.appservice.models.DetectorInfo;
 import com.azure.resourcemanager.appservice.models.DiagnosticData;
 import com.azure.resourcemanager.appservice.models.QueryUtterancesResults;
 import com.azure.resourcemanager.appservice.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * DetectorResponse resource specific properties.
  */
 @Fluent
-public final class DetectorResponseProperties {
+public final class DetectorResponseProperties implements JsonSerializable<DetectorResponseProperties> {
     /*
      * metadata for the detector
      */
-    @JsonProperty(value = "metadata")
     private DetectorInfo metadata;
 
     /*
      * Data Set
      */
-    @JsonProperty(value = "dataset")
     private List<DiagnosticData> dataset;
 
     /*
      * Indicates status of the most severe insight.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * Additional configuration for different data providers to be used by the UI
      */
-    @JsonProperty(value = "dataProvidersMetadata")
     private List<DataProviderMetadata> dataProvidersMetadata;
 
     /*
      * Suggested utterances where the detector can be applicable.
      */
-    @JsonProperty(value = "suggestedUtterances")
     private QueryUtterancesResults suggestedUtterances;
 
     /**
@@ -177,5 +176,58 @@ public final class DetectorResponseProperties {
         if (suggestedUtterances() != null) {
             suggestedUtterances().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("dataset", this.dataset, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeArrayField("dataProvidersMetadata", this.dataProvidersMetadata,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("suggestedUtterances", this.suggestedUtterances);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorResponseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetectorResponseProperties.
+     */
+    public static DetectorResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorResponseProperties deserializedDetectorResponseProperties = new DetectorResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedDetectorResponseProperties.metadata = DetectorInfo.fromJson(reader);
+                } else if ("dataset".equals(fieldName)) {
+                    List<DiagnosticData> dataset = reader.readArray(reader1 -> DiagnosticData.fromJson(reader1));
+                    deserializedDetectorResponseProperties.dataset = dataset;
+                } else if ("status".equals(fieldName)) {
+                    deserializedDetectorResponseProperties.status = Status.fromJson(reader);
+                } else if ("dataProvidersMetadata".equals(fieldName)) {
+                    List<DataProviderMetadata> dataProvidersMetadata
+                        = reader.readArray(reader1 -> DataProviderMetadata.fromJson(reader1));
+                    deserializedDetectorResponseProperties.dataProvidersMetadata = dataProvidersMetadata;
+                } else if ("suggestedUtterances".equals(fieldName)) {
+                    deserializedDetectorResponseProperties.suggestedUtterances
+                        = QueryUtterancesResults.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorResponseProperties;
+        });
     }
 }

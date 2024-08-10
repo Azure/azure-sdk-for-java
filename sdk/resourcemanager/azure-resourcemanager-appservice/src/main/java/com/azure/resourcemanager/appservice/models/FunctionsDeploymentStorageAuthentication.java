@@ -5,29 +5,34 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Authentication method to access the storage account for deployment.
  */
 @Fluent
-public final class FunctionsDeploymentStorageAuthentication {
+public final class FunctionsDeploymentStorageAuthentication
+    implements JsonSerializable<FunctionsDeploymentStorageAuthentication> {
     /*
-     * Property to select authentication type to access the selected storage account. Available options: SystemAssignedIdentity, UserAssignedIdentity, StorageAccountConnectionString.
+     * Property to select authentication type to access the selected storage account. Available options:
+     * SystemAssignedIdentity, UserAssignedIdentity, StorageAccountConnectionString.
      */
-    @JsonProperty(value = "type")
     private AuthenticationType type;
 
     /*
-     * Use this property for UserAssignedIdentity. Set the resource ID of the identity. Do not set a value for this property when using other authentication type.
+     * Use this property for UserAssignedIdentity. Set the resource ID of the identity. Do not set a value for this
+     * property when using other authentication type.
      */
-    @JsonProperty(value = "userAssignedIdentityResourceId")
     private String userAssignedIdentityResourceId;
 
     /*
-     * Use this property for StorageAccountConnectionString. Set the name of the app setting that has the storage account connection string. Do not set a value for this property when using other authentication type.
+     * Use this property for StorageAccountConnectionString. Set the name of the app setting that has the storage
+     * account connection string. Do not set a value for this property when using other authentication type.
      */
-    @JsonProperty(value = "storageAccountConnectionStringName")
     private String storageAccountConnectionStringName;
 
     /**
@@ -112,5 +117,51 @@ public final class FunctionsDeploymentStorageAuthentication {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("userAssignedIdentityResourceId", this.userAssignedIdentityResourceId);
+        jsonWriter.writeStringField("storageAccountConnectionStringName", this.storageAccountConnectionStringName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionsDeploymentStorageAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionsDeploymentStorageAuthentication if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionsDeploymentStorageAuthentication.
+     */
+    public static FunctionsDeploymentStorageAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionsDeploymentStorageAuthentication deserializedFunctionsDeploymentStorageAuthentication
+                = new FunctionsDeploymentStorageAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedFunctionsDeploymentStorageAuthentication.type
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("userAssignedIdentityResourceId".equals(fieldName)) {
+                    deserializedFunctionsDeploymentStorageAuthentication.userAssignedIdentityResourceId
+                        = reader.getString();
+                } else if ("storageAccountConnectionStringName".equals(fieldName)) {
+                    deserializedFunctionsDeploymentStorageAuthentication.storageAccountConnectionStringName
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionsDeploymentStorageAuthentication;
+        });
     }
 }

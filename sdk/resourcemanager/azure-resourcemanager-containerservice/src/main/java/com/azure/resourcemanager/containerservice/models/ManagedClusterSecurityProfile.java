@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Security profile for the container service cluster.
  */
 @Fluent
-public final class ManagedClusterSecurityProfile {
+public final class ManagedClusterSecurityProfile implements JsonSerializable<ManagedClusterSecurityProfile> {
     /*
      * Microsoft Defender settings for the security profile.
      */
-    @JsonProperty(value = "defender")
     private ManagedClusterSecurityProfileDefender defender;
 
     /*
      * Azure Key Vault [key management service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
      * settings for the security profile.
      */
-    @JsonProperty(value = "azureKeyVaultKms")
     private AzureKeyVaultKms azureKeyVaultKms;
 
     /*
      * Workload identity settings for the security profile. Workload identity enables Kubernetes applications to access
      * Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for more details.
      */
-    @JsonProperty(value = "workloadIdentity")
     private ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity;
 
     /*
      * Image Cleaner settings for the security profile.
      */
-    @JsonProperty(value = "imageCleaner")
     private ManagedClusterSecurityProfileImageCleaner imageCleaner;
 
     /**
@@ -149,5 +149,54 @@ public final class ManagedClusterSecurityProfile {
         if (imageCleaner() != null) {
             imageCleaner().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("defender", this.defender);
+        jsonWriter.writeJsonField("azureKeyVaultKms", this.azureKeyVaultKms);
+        jsonWriter.writeJsonField("workloadIdentity", this.workloadIdentity);
+        jsonWriter.writeJsonField("imageCleaner", this.imageCleaner);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterSecurityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterSecurityProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterSecurityProfile.
+     */
+    public static ManagedClusterSecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterSecurityProfile deserializedManagedClusterSecurityProfile
+                = new ManagedClusterSecurityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defender".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.defender
+                        = ManagedClusterSecurityProfileDefender.fromJson(reader);
+                } else if ("azureKeyVaultKms".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.azureKeyVaultKms = AzureKeyVaultKms.fromJson(reader);
+                } else if ("workloadIdentity".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.workloadIdentity
+                        = ManagedClusterSecurityProfileWorkloadIdentity.fromJson(reader);
+                } else if ("imageCleaner".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.imageCleaner
+                        = ManagedClusterSecurityProfileImageCleaner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterSecurityProfile;
+        });
     }
 }

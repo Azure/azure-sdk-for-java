@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The storage location for a packet capture session.
  */
 @Fluent
-public final class PacketCaptureSettings {
+public final class PacketCaptureSettings implements JsonSerializable<PacketCaptureSettings> {
     /*
      * Number of file count. Default value of count is 10 and maximum number is 10000.
      */
-    @JsonProperty(value = "fileCount")
     private Integer fileCount;
 
     /*
      * Number of bytes captured per packet. Default value in bytes 104857600 (100MB) and maximum in bytes 4294967295
      * (4GB).
      */
-    @JsonProperty(value = "fileSizeInBytes")
     private Long fileSizeInBytes;
 
     /*
      * Maximum duration of the capture session in seconds is 604800s (7 days) for a file. Default value in second 86400s
      * (1 day).
      */
-    @JsonProperty(value = "sessionTimeLimitInSeconds")
     private Integer sessionTimeLimitInSeconds;
 
     /**
@@ -108,5 +109,48 @@ public final class PacketCaptureSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("fileCount", this.fileCount);
+        jsonWriter.writeNumberField("fileSizeInBytes", this.fileSizeInBytes);
+        jsonWriter.writeNumberField("sessionTimeLimitInSeconds", this.sessionTimeLimitInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureSettings.
+     */
+    public static PacketCaptureSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureSettings deserializedPacketCaptureSettings = new PacketCaptureSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileCount".equals(fieldName)) {
+                    deserializedPacketCaptureSettings.fileCount = reader.getNullable(JsonReader::getInt);
+                } else if ("fileSizeInBytes".equals(fieldName)) {
+                    deserializedPacketCaptureSettings.fileSizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("sessionTimeLimitInSeconds".equals(fieldName)) {
+                    deserializedPacketCaptureSettings.sessionTimeLimitInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureSettings;
+        });
     }
 }

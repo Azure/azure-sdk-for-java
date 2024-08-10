@@ -5,76 +5,74 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** recurrencePattern. */
+/**
+ * recurrencePattern.
+ */
 @Fluent
-public final class MicrosoftGraphRecurrencePattern {
+public final class MicrosoftGraphRecurrencePattern implements JsonSerializable<MicrosoftGraphRecurrencePattern> {
     /*
      * The day of the month on which the event occurs. Required if type is absoluteMonthly or absoluteYearly.
      */
-    @JsonProperty(value = "dayOfMonth")
     private Integer dayOfMonth;
 
     /*
-     * A collection of the days of the week on which the event occurs. The possible values are: sunday, monday,
-     * tuesday, wednesday, thursday, friday, saturday. If type is relativeMonthly or relativeYearly, and daysOfWeek
-     * specifies more than one day, the event falls on the first day that satisfies the pattern.  Required if type is
-     * weekly, relativeMonthly, or relativeYearly.
+     * A collection of the days of the week on which the event occurs. The possible values are: sunday, monday, tuesday,
+     * wednesday, thursday, friday, saturday. If type is relativeMonthly or relativeYearly, and daysOfWeek specifies
+     * more than one day, the event falls on the first day that satisfies the pattern. Required if type is weekly,
+     * relativeMonthly, or relativeYearly.
      */
-    @JsonProperty(value = "daysOfWeek")
     private List<MicrosoftGraphDayOfWeek> daysOfWeek;
 
     /*
      * dayOfWeek
      */
-    @JsonProperty(value = "firstDayOfWeek")
     private MicrosoftGraphDayOfWeek firstDayOfWeek;
 
     /*
      * weekIndex
      */
-    @JsonProperty(value = "index")
     private MicrosoftGraphWeekIndex index;
 
     /*
      * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the
      * type. Required.
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
-     * The month in which the event occurs.  This is a number from 1 to 12.
+     * The month in which the event occurs. This is a number from 1 to 12.
      */
-    @JsonProperty(value = "month")
     private Integer month;
 
     /*
      * recurrencePatternType
      */
-    @JsonProperty(value = "type")
     private MicrosoftGraphRecurrencePatternType type;
 
     /*
      * recurrencePattern
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphRecurrencePattern class. */
+    /**
+     * Creates an instance of MicrosoftGraphRecurrencePattern class.
+     */
     public MicrosoftGraphRecurrencePattern() {
     }
 
     /**
      * Get the dayOfMonth property: The day of the month on which the event occurs. Required if type is absoluteMonthly
      * or absoluteYearly.
-     *
+     * 
      * @return the dayOfMonth value.
      */
     public Integer dayOfMonth() {
@@ -84,7 +82,7 @@ public final class MicrosoftGraphRecurrencePattern {
     /**
      * Set the dayOfMonth property: The day of the month on which the event occurs. Required if type is absoluteMonthly
      * or absoluteYearly.
-     *
+     * 
      * @param dayOfMonth the dayOfMonth value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -98,7 +96,7 @@ public final class MicrosoftGraphRecurrencePattern {
      * are: sunday, monday, tuesday, wednesday, thursday, friday, saturday. If type is relativeMonthly or
      * relativeYearly, and daysOfWeek specifies more than one day, the event falls on the first day that satisfies the
      * pattern. Required if type is weekly, relativeMonthly, or relativeYearly.
-     *
+     * 
      * @return the daysOfWeek value.
      */
     public List<MicrosoftGraphDayOfWeek> daysOfWeek() {
@@ -110,7 +108,7 @@ public final class MicrosoftGraphRecurrencePattern {
      * are: sunday, monday, tuesday, wednesday, thursday, friday, saturday. If type is relativeMonthly or
      * relativeYearly, and daysOfWeek specifies more than one day, the event falls on the first day that satisfies the
      * pattern. Required if type is weekly, relativeMonthly, or relativeYearly.
-     *
+     * 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -121,7 +119,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Get the firstDayOfWeek property: dayOfWeek.
-     *
+     * 
      * @return the firstDayOfWeek value.
      */
     public MicrosoftGraphDayOfWeek firstDayOfWeek() {
@@ -130,7 +128,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Set the firstDayOfWeek property: dayOfWeek.
-     *
+     * 
      * @param firstDayOfWeek the firstDayOfWeek value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -141,7 +139,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Get the index property: weekIndex.
-     *
+     * 
      * @return the index value.
      */
     public MicrosoftGraphWeekIndex index() {
@@ -150,7 +148,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Set the index property: weekIndex.
-     *
+     * 
      * @param index the index value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -162,7 +160,7 @@ public final class MicrosoftGraphRecurrencePattern {
     /**
      * Get the interval property: The number of units between occurrences, where units can be in days, weeks, months, or
      * years, depending on the type. Required.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -172,7 +170,7 @@ public final class MicrosoftGraphRecurrencePattern {
     /**
      * Set the interval property: The number of units between occurrences, where units can be in days, weeks, months, or
      * years, depending on the type. Required.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -183,7 +181,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Get the month property: The month in which the event occurs. This is a number from 1 to 12.
-     *
+     * 
      * @return the month value.
      */
     public Integer month() {
@@ -192,7 +190,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Set the month property: The month in which the event occurs. This is a number from 1 to 12.
-     *
+     * 
      * @param month the month value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -203,7 +201,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Get the type property: recurrencePatternType.
-     *
+     * 
      * @return the type value.
      */
     public MicrosoftGraphRecurrencePatternType type() {
@@ -212,7 +210,7 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Set the type property: recurrencePatternType.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -223,17 +221,16 @@ public final class MicrosoftGraphRecurrencePattern {
 
     /**
      * Get the additionalProperties property: recurrencePattern.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: recurrencePattern.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
      */
@@ -242,19 +239,84 @@ public final class MicrosoftGraphRecurrencePattern {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("dayOfMonth", this.dayOfMonth);
+        jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("firstDayOfWeek",
+            this.firstDayOfWeek == null ? null : this.firstDayOfWeek.toString());
+        jsonWriter.writeStringField("index", this.index == null ? null : this.index.toString());
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeNumberField("month", this.month);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphRecurrencePattern from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphRecurrencePattern if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphRecurrencePattern.
+     */
+    public static MicrosoftGraphRecurrencePattern fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphRecurrencePattern deserializedMicrosoftGraphRecurrencePattern
+                = new MicrosoftGraphRecurrencePattern();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dayOfMonth".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrencePattern.dayOfMonth = reader.getNullable(JsonReader::getInt);
+                } else if ("daysOfWeek".equals(fieldName)) {
+                    List<MicrosoftGraphDayOfWeek> daysOfWeek
+                        = reader.readArray(reader1 -> MicrosoftGraphDayOfWeek.fromString(reader1.getString()));
+                    deserializedMicrosoftGraphRecurrencePattern.daysOfWeek = daysOfWeek;
+                } else if ("firstDayOfWeek".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrencePattern.firstDayOfWeek
+                        = MicrosoftGraphDayOfWeek.fromString(reader.getString());
+                } else if ("index".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrencePattern.index
+                        = MicrosoftGraphWeekIndex.fromString(reader.getString());
+                } else if ("interval".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrencePattern.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("month".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrencePattern.month = reader.getNullable(JsonReader::getInt);
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecurrencePattern.type
+                        = MicrosoftGraphRecurrencePatternType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphRecurrencePattern.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphRecurrencePattern;
+        });
     }
 }

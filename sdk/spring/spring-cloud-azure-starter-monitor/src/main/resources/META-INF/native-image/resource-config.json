@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qazure-spring-cloud-azure-starter-monitor.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

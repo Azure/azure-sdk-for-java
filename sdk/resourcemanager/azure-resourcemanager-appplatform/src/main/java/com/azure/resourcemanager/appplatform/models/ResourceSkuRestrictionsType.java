@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
      * @param name a name to look for.
      * @return the corresponding ResourceSkuRestrictionsType.
      */
-    @JsonCreator
     public static ResourceSkuRestrictionsType fromString(String name) {
         return fromString(name, ResourceSkuRestrictionsType.class);
     }

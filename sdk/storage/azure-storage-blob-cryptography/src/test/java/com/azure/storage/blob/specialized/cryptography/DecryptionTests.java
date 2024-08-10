@@ -4,14 +4,16 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.FluxUtil;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobRange;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.net.MalformedURLException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
@@ -20,7 +22,6 @@ import java.util.stream.Stream;
 import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual;
 
 public class DecryptionTests extends BlobCryptographyTestBase {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String KEY_ID = "keyId";
     private FakeKey fakeKey;
     private BlobDecryptionPolicy blobDecryptionPolicy;
@@ -34,9 +35,14 @@ public class DecryptionTests extends BlobCryptographyTestBase {
 
     @ParameterizedTest
     @MethodSource("decryptionSupplier")
-    public void decryption(int testCase) throws InvalidKeyException, JsonProcessingException, MalformedURLException {
+    public void decryption(int testCase) throws InvalidKeyException, IOException {
         EncryptedFlux flow = new EncryptedFlux(testCase, fakeKey, this);
-        String encryptionDataString = MAPPER.writeValueAsString(flow.getEncryptionData());
+        String encryptionDataString;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeJson(flow.getEncryptionData()).flush();
+            encryptionDataString = outputStream.toString();
+        }
         ByteBuffer desiredOutput = flow.getPlainText();
         desiredOutput.position(EncryptedFlux.DATA_OFFSET);
         desiredOutput.limit(EncryptedFlux.DATA_OFFSET + EncryptedFlux.DATA_COUNT);
@@ -46,7 +52,10 @@ public class DecryptionTests extends BlobCryptographyTestBase {
         //range downloads is tested in EncryptedBlobAPITest, so we are ok to use constants here; here we are only
         // testing how the counting and data trimming logic works.
         BlobRange blobRange = new BlobRange(EncryptedFlux.DATA_OFFSET, (long) EncryptedFlux.DATA_COUNT);
-        EncryptionData encryptionData = EncryptionData.fromJsonString(encryptionDataString);
+        EncryptionData encryptionData;
+        try (JsonReader jsonReader = JsonProviders.createReader(encryptionDataString)) {
+            encryptionData = EncryptionData.fromJson(jsonReader);
+        }
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobDecryptionPolicy.decryptBlob(flow,
                 new EncryptedBlobRange(blobRange, encryptionData), true, encryptionData,

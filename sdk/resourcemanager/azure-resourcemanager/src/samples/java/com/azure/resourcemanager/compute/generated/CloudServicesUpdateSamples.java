@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.CloudServiceUpdate;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public final class CloudServicesUpdateSamples {
      */
     /**
      * Sample code: Update existing Cloud Service to add tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateExistingCloudServiceToAddTags(com.azure.resourcemanager.AzureResourceManager azure) {

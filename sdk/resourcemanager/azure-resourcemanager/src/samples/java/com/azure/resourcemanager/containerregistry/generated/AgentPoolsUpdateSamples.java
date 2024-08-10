@@ -21,7 +21,11 @@ public final class AgentPoolsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void agentPoolsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getAgentPools().update("myResourceGroup", "myRegistry",
-            "myAgentPool", new AgentPoolUpdateParameters().withCount(1), com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .update("myResourceGroup", "myRegistry", "myAgentPool", new AgentPoolUpdateParameters().withCount(1),
+                com.azure.core.util.Context.NONE);
     }
 }

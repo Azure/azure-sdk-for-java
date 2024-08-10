@@ -5,85 +5,70 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Rule of type application.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = ApplicationRule.class, visible = true)
-@JsonTypeName("ApplicationRule")
 @Fluent
 public final class ApplicationRule extends FirewallPolicyRule {
     /*
      * Rule Type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
     private FirewallPolicyRuleType ruleType = FirewallPolicyRuleType.APPLICATION_RULE;
 
     /*
      * List of source IP addresses for this rule.
      */
-    @JsonProperty(value = "sourceAddresses")
     private List<String> sourceAddresses;
 
     /*
      * List of destination IP addresses or Service Tags.
      */
-    @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
 
     /*
      * Array of Application Protocols.
      */
-    @JsonProperty(value = "protocols")
     private List<FirewallPolicyRuleApplicationProtocol> protocols;
 
     /*
      * List of FQDNs for this rule.
      */
-    @JsonProperty(value = "targetFqdns")
     private List<String> targetFqdns;
 
     /*
      * List of Urls for this rule condition.
      */
-    @JsonProperty(value = "targetUrls")
     private List<String> targetUrls;
 
     /*
      * List of FQDN Tags for this rule.
      */
-    @JsonProperty(value = "fqdnTags")
     private List<String> fqdnTags;
 
     /*
      * List of source IpGroups for this rule.
      */
-    @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
     /*
      * Terminate TLS connections for this rule.
      */
-    @JsonProperty(value = "terminateTLS")
     private Boolean terminateTls;
 
     /*
      * List of destination azure web categories.
      */
-    @JsonProperty(value = "webCategories")
     private List<String> webCategories;
 
     /*
      * List of HTTP/S headers to insert.
      */
-    @JsonProperty(value = "httpHeadersToInsert")
     private List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert;
 
     /**
@@ -94,7 +79,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the ruleType property: Rule Type.
-     *
+     * 
      * @return the ruleType value.
      */
     @Override
@@ -104,7 +89,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -113,7 +98,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the ApplicationRule object itself.
      */
@@ -124,7 +109,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationAddresses property: List of destination IP addresses or Service Tags.
-     *
+     * 
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -133,7 +118,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationAddresses property: List of destination IP addresses or Service Tags.
-     *
+     * 
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the ApplicationRule object itself.
      */
@@ -144,7 +129,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the protocols property: Array of Application Protocols.
-     *
+     * 
      * @return the protocols value.
      */
     public List<FirewallPolicyRuleApplicationProtocol> protocols() {
@@ -153,7 +138,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the protocols property: Array of Application Protocols.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the ApplicationRule object itself.
      */
@@ -164,7 +149,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the targetFqdns property: List of FQDNs for this rule.
-     *
+     * 
      * @return the targetFqdns value.
      */
     public List<String> targetFqdns() {
@@ -173,7 +158,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the targetFqdns property: List of FQDNs for this rule.
-     *
+     * 
      * @param targetFqdns the targetFqdns value to set.
      * @return the ApplicationRule object itself.
      */
@@ -184,7 +169,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the targetUrls property: List of Urls for this rule condition.
-     *
+     * 
      * @return the targetUrls value.
      */
     public List<String> targetUrls() {
@@ -193,7 +178,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the targetUrls property: List of Urls for this rule condition.
-     *
+     * 
      * @param targetUrls the targetUrls value to set.
      * @return the ApplicationRule object itself.
      */
@@ -204,7 +189,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the fqdnTags property: List of FQDN Tags for this rule.
-     *
+     * 
      * @return the fqdnTags value.
      */
     public List<String> fqdnTags() {
@@ -213,7 +198,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the fqdnTags property: List of FQDN Tags for this rule.
-     *
+     * 
      * @param fqdnTags the fqdnTags value to set.
      * @return the ApplicationRule object itself.
      */
@@ -224,7 +209,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -233,7 +218,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the ApplicationRule object itself.
      */
@@ -244,7 +229,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the terminateTls property: Terminate TLS connections for this rule.
-     *
+     * 
      * @return the terminateTls value.
      */
     public Boolean terminateTls() {
@@ -253,7 +238,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the terminateTls property: Terminate TLS connections for this rule.
-     *
+     * 
      * @param terminateTls the terminateTls value to set.
      * @return the ApplicationRule object itself.
      */
@@ -264,7 +249,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the webCategories property: List of destination azure web categories.
-     *
+     * 
      * @return the webCategories value.
      */
     public List<String> webCategories() {
@@ -273,7 +258,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the webCategories property: List of destination azure web categories.
-     *
+     * 
      * @param webCategories the webCategories value to set.
      * @return the ApplicationRule object itself.
      */
@@ -284,7 +269,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Get the httpHeadersToInsert property: List of HTTP/S headers to insert.
-     *
+     * 
      * @return the httpHeadersToInsert value.
      */
     public List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert() {
@@ -293,7 +278,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Set the httpHeadersToInsert property: List of HTTP/S headers to insert.
-     *
+     * 
      * @param httpHeadersToInsert the httpHeadersToInsert value to set.
      * @return the ApplicationRule object itself.
      */
@@ -322,7 +307,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -334,5 +319,93 @@ public final class ApplicationRule extends FirewallPolicyRule {
         if (httpHeadersToInsert() != null) {
             httpHeadersToInsert().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeArrayField("sourceAddresses", this.sourceAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationAddresses", this.destinationAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("protocols", this.protocols, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetFqdns", this.targetFqdns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("targetUrls", this.targetUrls, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("fqdnTags", this.fqdnTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("terminateTLS", this.terminateTls);
+        jsonWriter.writeArrayField("webCategories", this.webCategories,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("httpHeadersToInsert", this.httpHeadersToInsert,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationRule.
+     */
+    public static ApplicationRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationRule deserializedApplicationRule = new ApplicationRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationRule.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedApplicationRule.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedApplicationRule.ruleType = FirewallPolicyRuleType.fromString(reader.getString());
+                } else if ("sourceAddresses".equals(fieldName)) {
+                    List<String> sourceAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.sourceAddresses = sourceAddresses;
+                } else if ("destinationAddresses".equals(fieldName)) {
+                    List<String> destinationAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.destinationAddresses = destinationAddresses;
+                } else if ("protocols".equals(fieldName)) {
+                    List<FirewallPolicyRuleApplicationProtocol> protocols
+                        = reader.readArray(reader1 -> FirewallPolicyRuleApplicationProtocol.fromJson(reader1));
+                    deserializedApplicationRule.protocols = protocols;
+                } else if ("targetFqdns".equals(fieldName)) {
+                    List<String> targetFqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.targetFqdns = targetFqdns;
+                } else if ("targetUrls".equals(fieldName)) {
+                    List<String> targetUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.targetUrls = targetUrls;
+                } else if ("fqdnTags".equals(fieldName)) {
+                    List<String> fqdnTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.fqdnTags = fqdnTags;
+                } else if ("sourceIpGroups".equals(fieldName)) {
+                    List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.sourceIpGroups = sourceIpGroups;
+                } else if ("terminateTLS".equals(fieldName)) {
+                    deserializedApplicationRule.terminateTls = reader.getNullable(JsonReader::getBoolean);
+                } else if ("webCategories".equals(fieldName)) {
+                    List<String> webCategories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.webCategories = webCategories;
+                } else if ("httpHeadersToInsert".equals(fieldName)) {
+                    List<FirewallPolicyHttpHeaderToInsert> httpHeadersToInsert
+                        = reader.readArray(reader1 -> FirewallPolicyHttpHeaderToInsert.fromJson(reader1));
+                    deserializedApplicationRule.httpHeadersToInsert = httpHeadersToInsert;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationRule;
+        });
     }
 }

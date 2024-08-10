@@ -5,7 +5,6 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DataConnectionContent extends ExpandableStringEnum<DataConnec
      * @return the corresponding DataConnectionContent.
      */
     @Generated
-    @JsonCreator
     public static DataConnectionContent fromString(String name) {
         return fromString(name, DataConnectionContent.class);
     }

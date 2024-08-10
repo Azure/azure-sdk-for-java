@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** personType. */
+/**
+ * personType.
+ */
 @Fluent
-public final class MicrosoftGraphPersonType {
+public final class MicrosoftGraphPersonType implements JsonSerializable<MicrosoftGraphPersonType> {
     /*
      * The type of data source, such as Person.
      */
-    @JsonProperty(value = "class")
     private String classProperty;
 
     /*
      * The secondary type of data source, such as OrganizationUser.
      */
-    @JsonProperty(value = "subclass")
     private String subclass;
 
     /*
      * personType
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPersonType class. */
+    /**
+     * Creates an instance of MicrosoftGraphPersonType class.
+     */
     public MicrosoftGraphPersonType() {
     }
 
     /**
      * Get the classProperty property: The type of data source, such as Person.
-     *
+     * 
      * @return the classProperty value.
      */
     public String classProperty() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphPersonType {
 
     /**
      * Set the classProperty property: The type of data source, such as Person.
-     *
+     * 
      * @param classProperty the classProperty value to set.
      * @return the MicrosoftGraphPersonType object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphPersonType {
 
     /**
      * Get the subclass property: The secondary type of data source, such as OrganizationUser.
-     *
+     * 
      * @return the subclass value.
      */
     public String subclass() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphPersonType {
 
     /**
      * Set the subclass property: The secondary type of data source, such as OrganizationUser.
-     *
+     * 
      * @param subclass the subclass value to set.
      * @return the MicrosoftGraphPersonType object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphPersonType {
 
     /**
      * Get the additionalProperties property: personType.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: personType.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPersonType object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphPersonType {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("class", this.classProperty);
+        jsonWriter.writeStringField("subclass", this.subclass);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPersonType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPersonType if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPersonType.
+     */
+    public static MicrosoftGraphPersonType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPersonType deserializedMicrosoftGraphPersonType = new MicrosoftGraphPersonType();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("class".equals(fieldName)) {
+                    deserializedMicrosoftGraphPersonType.classProperty = reader.getString();
+                } else if ("subclass".equals(fieldName)) {
+                    deserializedMicrosoftGraphPersonType.subclass = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPersonType.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPersonType;
+        });
     }
 }

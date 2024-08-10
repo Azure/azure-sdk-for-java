@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DedicatedHostInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -17,62 +21,53 @@ import java.util.List;
  * Properties of the dedicated host.
  */
 @Fluent
-public final class DedicatedHostProperties {
+public final class DedicatedHostProperties implements JsonSerializable<DedicatedHostProperties> {
     /*
      * Fault domain of the dedicated host within a dedicated host group.
      */
-    @JsonProperty(value = "platformFaultDomain")
     private Integer platformFaultDomain;
 
     /*
      * Specifies whether the dedicated host should be replaced automatically in case of a failure. The value is
      * defaulted to 'true' when not provided.
      */
-    @JsonProperty(value = "autoReplaceOnFailure")
     private Boolean autoReplaceOnFailure;
 
     /*
      * A unique id generated and assigned to the dedicated host by the platform. Does not change throughout the lifetime
      * of the host.
      */
-    @JsonProperty(value = "hostId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostId;
 
     /*
      * A list of references to all virtual machines in the Dedicated Host.
      */
-    @JsonProperty(value = "virtualMachines", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachines;
 
     /*
      * Specifies the software license type that will be applied to the VMs deployed on the dedicated host. Possible
      * values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The default value is: **None.**
      */
-    @JsonProperty(value = "licenseType")
     private DedicatedHostLicenseTypes licenseType;
 
     /*
      * The date when the host was first provisioned.
      */
-    @JsonProperty(value = "provisioningTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime provisioningTime;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The dedicated host instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private DedicatedHostInstanceView instanceView;
 
     /*
      * Specifies the time at which the Dedicated Host resource was created. Minimum api-version: 2021-11-01.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /**
@@ -83,7 +78,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
-     *
+     * 
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -92,7 +87,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Set the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
-     *
+     * 
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the DedicatedHostProperties object itself.
      */
@@ -104,7 +99,7 @@ public final class DedicatedHostProperties {
     /**
      * Get the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
      * case of a failure. The value is defaulted to 'true' when not provided.
-     *
+     * 
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
@@ -114,7 +109,7 @@ public final class DedicatedHostProperties {
     /**
      * Set the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
      * case of a failure. The value is defaulted to 'true' when not provided.
-     *
+     * 
      * @param autoReplaceOnFailure the autoReplaceOnFailure value to set.
      * @return the DedicatedHostProperties object itself.
      */
@@ -126,7 +121,7 @@ public final class DedicatedHostProperties {
     /**
      * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform. Does not
      * change throughout the lifetime of the host.
-     *
+     * 
      * @return the hostId value.
      */
     public String hostId() {
@@ -135,7 +130,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the Dedicated Host.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
@@ -146,7 +141,7 @@ public final class DedicatedHostProperties {
      * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
      * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
-     *
+     * 
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
@@ -157,7 +152,7 @@ public final class DedicatedHostProperties {
      * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
      * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the DedicatedHostProperties object itself.
      */
@@ -168,7 +163,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the provisioningTime property: The date when the host was first provisioned.
-     *
+     * 
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
@@ -177,7 +172,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -186,7 +181,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the instanceView property: The dedicated host instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
@@ -196,7 +191,7 @@ public final class DedicatedHostProperties {
     /**
      * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was created. Minimum
      * api-version: 2021-11-01.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -205,7 +200,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -215,5 +210,65 @@ public final class DedicatedHostProperties {
         if (instanceView() != null) {
             instanceView().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("platformFaultDomain", this.platformFaultDomain);
+        jsonWriter.writeBooleanField("autoReplaceOnFailure", this.autoReplaceOnFailure);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHostProperties.
+     */
+    public static DedicatedHostProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostProperties deserializedDedicatedHostProperties = new DedicatedHostProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platformFaultDomain".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.platformFaultDomain = reader.getNullable(JsonReader::getInt);
+                } else if ("autoReplaceOnFailure".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.autoReplaceOnFailure
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hostId".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.hostId = reader.getString();
+                } else if ("virtualMachines".equals(fieldName)) {
+                    List<SubResourceReadOnly> virtualMachines
+                        = reader.readArray(reader1 -> SubResourceReadOnly.fromJson(reader1));
+                    deserializedDedicatedHostProperties.virtualMachines = virtualMachines;
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.licenseType
+                        = DedicatedHostLicenseTypes.fromString(reader.getString());
+                } else if ("provisioningTime".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.provisioningTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.instanceView = DedicatedHostInstanceView.fromJson(reader);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedDedicatedHostProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostProperties;
+        });
     }
 }

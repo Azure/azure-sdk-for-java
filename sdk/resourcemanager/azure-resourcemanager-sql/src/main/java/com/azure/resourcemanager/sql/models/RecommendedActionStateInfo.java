@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Contains information of current state for an Azure SQL Database, Server or Elastic Pool Recommended Action. */
+/**
+ * Contains information of current state for an Azure SQL Database, Server or Elastic Pool Recommended Action.
+ */
 @Fluent
-public final class RecommendedActionStateInfo {
+public final class RecommendedActionStateInfo implements JsonSerializable<RecommendedActionStateInfo> {
     /*
-     * Current state the recommended action is in. Some commonly used states are: Active      -> recommended action is
-     * active and no action has been taken yet. Pending     -> recommended action is approved for and is awaiting
-     * execution. Executing   -> recommended action is being applied on the user database. Verifying   -> recommended
-     * action was applied and is being verified of its usefulness by the system. Success     -> recommended action was
-     * applied and improvement found during verification. Pending Revert  -> verification found little or no
-     * improvement so recommended action is queued for revert or user has manually reverted. Reverting   -> changes
-     * made while applying recommended action are being reverted on the user database. Reverted    -> successfully
-     * reverted the changes made by recommended action on user database. Ignored     -> user explicitly
-     * ignored/discarded the recommended action.
+     * Current state the recommended action is in. Some commonly used states are: Active -> recommended action is active
+     * and no action has been taken yet. Pending -> recommended action is approved for and is awaiting execution.
+     * Executing -> recommended action is being applied on the user database. Verifying -> recommended action was
+     * applied and is being verified of its usefulness by the system. Success -> recommended action was applied and
+     * improvement found during verification. Pending Revert -> verification found little or no improvement so
+     * recommended action is queued for revert or user has manually reverted. Reverting -> changes made while applying
+     * recommended action are being reverted on the user database. Reverted -> successfully reverted the changes made by
+     * recommended action on user database. Ignored -> user explicitly ignored/discarded the recommended action.
      */
-    @JsonProperty(value = "currentValue", required = true)
     private RecommendedActionCurrentState currentValue;
 
     /*
-     * Gets who initiated the execution of this recommended action. Possible Value are: User    -> When user explicity
-     * notified system to apply the recommended action. System  -> When auto-execute status of this advisor was set to
+     * Gets who initiated the execution of this recommended action. Possible Value are: User -> When user explicity
+     * notified system to apply the recommended action. System -> When auto-execute status of this advisor was set to
      * 'Enabled', in which case the system applied it.
      */
-    @JsonProperty(value = "actionInitiatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedActionInitiatedBy actionInitiatedBy;
 
     /*
      * Gets the time when the state was last modified
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
-    /** Creates an instance of RecommendedActionStateInfo class. */
+    /**
+     * Creates an instance of RecommendedActionStateInfo class.
+     */
     public RecommendedActionStateInfo() {
     }
 
@@ -54,7 +59,7 @@ public final class RecommendedActionStateInfo {
      * Reverting -&gt; changes made while applying recommended action are being reverted on the user database. Reverted
      * -&gt; successfully reverted the changes made by recommended action on user database. Ignored -&gt; user
      * explicitly ignored/discarded the recommended action.
-     *
+     * 
      * @return the currentValue value.
      */
     public RecommendedActionCurrentState currentValue() {
@@ -71,7 +76,7 @@ public final class RecommendedActionStateInfo {
      * Reverting -&gt; changes made while applying recommended action are being reverted on the user database. Reverted
      * -&gt; successfully reverted the changes made by recommended action on user database. Ignored -&gt; user
      * explicitly ignored/discarded the recommended action.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the RecommendedActionStateInfo object itself.
      */
@@ -84,7 +89,7 @@ public final class RecommendedActionStateInfo {
      * Get the actionInitiatedBy property: Gets who initiated the execution of this recommended action. Possible Value
      * are: User -&gt; When user explicity notified system to apply the recommended action. System -&gt; When
      * auto-execute status of this advisor was set to 'Enabled', in which case the system applied it.
-     *
+     * 
      * @return the actionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy actionInitiatedBy() {
@@ -93,7 +98,7 @@ public final class RecommendedActionStateInfo {
 
     /**
      * Get the lastModified property: Gets the time when the state was last modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -102,17 +107,60 @@ public final class RecommendedActionStateInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (currentValue() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property currentValue in model RecommendedActionStateInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property currentValue in model RecommendedActionStateInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecommendedActionStateInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("currentValue", this.currentValue == null ? null : this.currentValue.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedActionStateInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedActionStateInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendedActionStateInfo.
+     */
+    public static RecommendedActionStateInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedActionStateInfo deserializedRecommendedActionStateInfo = new RecommendedActionStateInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentValue".equals(fieldName)) {
+                    deserializedRecommendedActionStateInfo.currentValue
+                        = RecommendedActionCurrentState.fromString(reader.getString());
+                } else if ("actionInitiatedBy".equals(fieldName)) {
+                    deserializedRecommendedActionStateInfo.actionInitiatedBy
+                        = RecommendedActionInitiatedBy.fromString(reader.getString());
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedRecommendedActionStateInfo.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedActionStateInfo;
+        });
+    }
 }

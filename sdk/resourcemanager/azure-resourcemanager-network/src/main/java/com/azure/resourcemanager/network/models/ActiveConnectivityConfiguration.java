@@ -5,8 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.fluent.models.ConnectivityConfigurationProperties;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -17,14 +23,17 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
     /*
      * Deployment time string.
      */
-    @JsonProperty(value = "commitTime")
     private OffsetDateTime commitTime;
 
     /*
      * Deployment region.
      */
-    @JsonProperty(value = "region")
     private String region;
+
+    /*
+     * Properties of a network manager connectivity configuration
+     */
+    private ConnectivityConfigurationProperties innerProperties;
 
     /**
      * Creates an instance of ActiveConnectivityConfiguration class.
@@ -73,6 +82,15 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
     }
 
     /**
+     * Get the innerProperties property: Properties of a network manager connectivity configuration.
+     * 
+     * @return the innerProperties value.
+     */
+    private ConnectivityConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -91,57 +109,159 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
     }
 
     /**
-     * {@inheritDoc}
+     * Get the description property: A description of the connectivity configuration.
+     * 
+     * @return the description value.
      */
-    @Override
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: A description of the connectivity configuration.
+     * 
+     * @param description the description value to set.
+     * @return the ActiveConnectivityConfiguration object itself.
+     */
     public ActiveConnectivityConfiguration withDescription(String description) {
-        super.withDescription(description);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the connectivityTopology property: Connectivity topology type.
+     * 
+     * @return the connectivityTopology value.
      */
-    @Override
+    public ConnectivityTopology connectivityTopology() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectivityTopology();
+    }
+
+    /**
+     * Set the connectivityTopology property: Connectivity topology type.
+     * 
+     * @param connectivityTopology the connectivityTopology value to set.
+     * @return the ActiveConnectivityConfiguration object itself.
+     */
     public ActiveConnectivityConfiguration withConnectivityTopology(ConnectivityTopology connectivityTopology) {
-        super.withConnectivityTopology(connectivityTopology);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withConnectivityTopology(connectivityTopology);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the hubs property: List of hubItems.
+     * 
+     * @return the hubs value.
      */
-    @Override
+    public List<Hub> hubs() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubs();
+    }
+
+    /**
+     * Set the hubs property: List of hubItems.
+     * 
+     * @param hubs the hubs value to set.
+     * @return the ActiveConnectivityConfiguration object itself.
+     */
     public ActiveConnectivityConfiguration withHubs(List<Hub> hubs) {
-        super.withHubs(hubs);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withHubs(hubs);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the isGlobal property: Flag if global mesh is supported.
+     * 
+     * @return the isGlobal value.
      */
-    @Override
+    public IsGlobal isGlobal() {
+        return this.innerProperties() == null ? null : this.innerProperties().isGlobal();
+    }
+
+    /**
+     * Set the isGlobal property: Flag if global mesh is supported.
+     * 
+     * @param isGlobal the isGlobal value to set.
+     * @return the ActiveConnectivityConfiguration object itself.
+     */
     public ActiveConnectivityConfiguration withIsGlobal(IsGlobal isGlobal) {
-        super.withIsGlobal(isGlobal);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withIsGlobal(isGlobal);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the appliesToGroups property: Groups for configuration.
+     * 
+     * @return the appliesToGroups value.
      */
-    @Override
+    public List<ConnectivityGroupItem> appliesToGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().appliesToGroups();
+    }
+
+    /**
+     * Set the appliesToGroups property: Groups for configuration.
+     * 
+     * @param appliesToGroups the appliesToGroups value to set.
+     * @return the ActiveConnectivityConfiguration object itself.
+     */
     public ActiveConnectivityConfiguration withAppliesToGroups(List<ConnectivityGroupItem> appliesToGroups) {
-        super.withAppliesToGroups(appliesToGroups);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withAppliesToGroups(appliesToGroups);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the provisioningState property: The provisioning state of the connectivity configuration resource.
+     * 
+     * @return the provisioningState value.
      */
-    @Override
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the deleteExistingPeering property: Flag if need to remove current existing peerings.
+     * 
+     * @return the deleteExistingPeering value.
+     */
+    public DeleteExistingPeering deleteExistingPeering() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteExistingPeering();
+    }
+
+    /**
+     * Set the deleteExistingPeering property: Flag if need to remove current existing peerings.
+     * 
+     * @param deleteExistingPeering the deleteExistingPeering value to set.
+     * @return the ActiveConnectivityConfiguration object itself.
+     */
     public ActiveConnectivityConfiguration withDeleteExistingPeering(DeleteExistingPeering deleteExistingPeering) {
-        super.withDeleteExistingPeering(deleteExistingPeering);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withDeleteExistingPeering(deleteExistingPeering);
         return this;
+    }
+
+    /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
     }
 
     /**
@@ -152,5 +272,60 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", innerProperties());
+        jsonWriter.writeArrayField("configurationGroups", configurationGroups(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("commitTime",
+            this.commitTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.commitTime));
+        jsonWriter.writeStringField("region", this.region);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveConnectivityConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveConnectivityConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActiveConnectivityConfiguration.
+     */
+    public static ActiveConnectivityConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveConnectivityConfiguration deserializedActiveConnectivityConfiguration
+                = new ActiveConnectivityConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActiveConnectivityConfiguration.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActiveConnectivityConfiguration.innerProperties
+                        = ConnectivityConfigurationProperties.fromJson(reader);
+                } else if ("configurationGroups".equals(fieldName)) {
+                    List<ConfigurationGroup> configurationGroups
+                        = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
+                    deserializedActiveConnectivityConfiguration.withConfigurationGroups(configurationGroups);
+                } else if ("commitTime".equals(fieldName)) {
+                    deserializedActiveConnectivityConfiguration.commitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("region".equals(fieldName)) {
+                    deserializedActiveConnectivityConfiguration.region = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveConnectivityConfiguration;
+        });
     }
 }

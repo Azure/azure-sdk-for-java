@@ -6,7 +6,10 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a data disk.
@@ -17,7 +20,6 @@ public final class ImageDataDisk extends ImageDisk {
      * Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
      * therefore must be unique for each data disk attached to a VM.
      */
-    @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /**
@@ -119,5 +121,65 @@ public final class ImageDataDisk extends ImageDisk {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("snapshot", snapshot());
+        jsonWriter.writeJsonField("managedDisk", managedDisk());
+        jsonWriter.writeStringField("blobUri", blobUri());
+        jsonWriter.writeStringField("caching", caching() == null ? null : caching().toString());
+        jsonWriter.writeNumberField("diskSizeGB", diskSizeGB());
+        jsonWriter.writeStringField("storageAccountType",
+            storageAccountType() == null ? null : storageAccountType().toString());
+        jsonWriter.writeJsonField("diskEncryptionSet", diskEncryptionSet());
+        jsonWriter.writeIntField("lun", this.lun);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageDataDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageDataDisk if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageDataDisk.
+     */
+    public static ImageDataDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageDataDisk deserializedImageDataDisk = new ImageDataDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshot".equals(fieldName)) {
+                    deserializedImageDataDisk.withSnapshot(SubResource.fromJson(reader));
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedImageDataDisk.withManagedDisk(SubResource.fromJson(reader));
+                } else if ("blobUri".equals(fieldName)) {
+                    deserializedImageDataDisk.withBlobUri(reader.getString());
+                } else if ("caching".equals(fieldName)) {
+                    deserializedImageDataDisk.withCaching(CachingTypes.fromString(reader.getString()));
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedImageDataDisk.withDiskSizeGB(reader.getNullable(JsonReader::getInt));
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedImageDataDisk
+                        .withStorageAccountType(StorageAccountTypes.fromString(reader.getString()));
+                } else if ("diskEncryptionSet".equals(fieldName)) {
+                    deserializedImageDataDisk.withDiskEncryptionSet(DiskEncryptionSetParameters.fromJson(reader));
+                } else if ("lun".equals(fieldName)) {
+                    deserializedImageDataDisk.lun = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageDataDisk;
+        });
     }
 }

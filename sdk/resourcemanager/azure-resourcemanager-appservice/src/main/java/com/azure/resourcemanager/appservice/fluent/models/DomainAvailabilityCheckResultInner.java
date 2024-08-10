@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DomainType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Domain availability check result.
  */
 @Fluent
-public final class DomainAvailabilityCheckResultInner {
+public final class DomainAvailabilityCheckResultInner implements JsonSerializable<DomainAvailabilityCheckResultInner> {
     /*
      * Name of the domain.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * <code>true</code> if domain can be purchased using CreateDomain API; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "available")
     private Boolean available;
 
     /*
-     * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this domain will simply restore it and this operation will not cost anything.
+     * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing
+     * this domain will simply restore it and this operation will not cost anything.
      */
-    @JsonProperty(value = "domainType")
     private DomainType domainType;
 
     /**
@@ -109,5 +111,50 @@ public final class DomainAvailabilityCheckResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("available", this.available);
+        jsonWriter.writeStringField("domainType", this.domainType == null ? null : this.domainType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainAvailabilityCheckResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainAvailabilityCheckResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainAvailabilityCheckResultInner.
+     */
+    public static DomainAvailabilityCheckResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainAvailabilityCheckResultInner deserializedDomainAvailabilityCheckResultInner
+                = new DomainAvailabilityCheckResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDomainAvailabilityCheckResultInner.name = reader.getString();
+                } else if ("available".equals(fieldName)) {
+                    deserializedDomainAvailabilityCheckResultInner.available
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("domainType".equals(fieldName)) {
+                    deserializedDomainAvailabilityCheckResultInner.domainType
+                        = DomainType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainAvailabilityCheckResultInner;
+        });
     }
 }

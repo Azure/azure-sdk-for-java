@@ -5,40 +5,31 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The object representing the policy for taking backups on an account.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BackupPolicy.class, visible = true)
-@JsonTypeName("BackupPolicy")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Periodic", value = PeriodicModeBackupPolicy.class),
-    @JsonSubTypes.Type(name = "Continuous", value = ContinuousModeBackupPolicy.class) })
 @Fluent
-public class BackupPolicy {
+public class BackupPolicy implements JsonSerializable<BackupPolicy> {
     /*
      * Describes the mode of backups.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
-    private BackupPolicyType type;
+    private BackupPolicyType type = BackupPolicyType.fromString("BackupPolicy");
 
     /*
      * The object representing the state of the migration between the backup policies.
      */
-    @JsonProperty(value = "migrationState")
     private BackupPolicyMigrationState migrationState;
 
     /**
      * Creates an instance of BackupPolicy class.
      */
     public BackupPolicy() {
-        this.type = BackupPolicyType.fromString("BackupPolicy");
     }
 
     /**
@@ -79,5 +70,71 @@ public class BackupPolicy {
         if (migrationState() != null) {
             migrationState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("migrationState", this.migrationState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupPolicy.
+     */
+    public static BackupPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Periodic".equals(discriminatorValue)) {
+                    return PeriodicModeBackupPolicy.fromJson(readerToUse.reset());
+                } else if ("Continuous".equals(discriminatorValue)) {
+                    return ContinuousModeBackupPolicy.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BackupPolicy fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPolicy deserializedBackupPolicy = new BackupPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBackupPolicy.type = BackupPolicyType.fromString(reader.getString());
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedBackupPolicy.migrationState = BackupPolicyMigrationState.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPolicy;
+        });
     }
 }

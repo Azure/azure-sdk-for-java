@@ -31,34 +31,28 @@ public class NetworkStatsbeatHttpPipelinePolicy implements HttpPipelinePolicy {
         // using AtomicLong for both mutable holder and volatile (but atomicity is not needed here)
         AtomicLong startTime = new AtomicLong();
         String host = context.getHttpRequest().getUrl().getHost();
-        String instrumentationKey =
-            context.getData(INSTRUMENTATION_KEY_DATA).orElse("unknown").toString();
+        String instrumentationKey = context.getData(INSTRUMENTATION_KEY_DATA).orElse("unknown").toString();
         return next.process()
             .doOnSubscribe(subscription -> startTime.set(System.currentTimeMillis()))
-            .doOnSuccess(
-                response -> {
-                    int statusCode = response.getStatusCode();
-                    if (statusCode == 200) {
-                        networkStatsbeat.incrementRequestSuccessCount(
-                            System.currentTimeMillis() - startTime.get(), instrumentationKey, host);
-                    } else if (StatusCode.isRedirect(statusCode)) {
-                        // these are not tracked as success or failure since they are just redirects
-                    } else if (statusCode == 402 || statusCode == 439) {
-                        networkStatsbeat.incrementThrottlingCount(
-                            instrumentationKey, host, STATUS_CODE, statusCode);
-                    } else if (StatusCode.isRetryable(statusCode)) {
-                        networkStatsbeat.incrementRetryCount(
-                            instrumentationKey, host, STATUS_CODE, statusCode);
-                    } else {
-                        // 400 and 404 will be tracked as failure count
-                        networkStatsbeat.incrementRequestFailureCount(
-                            instrumentationKey, host, STATUS_CODE, statusCode);
-                    }
-                })
-            .doOnError(
-                throwable -> {
-                    networkStatsbeat.incrementExceptionCount(
-                        instrumentationKey, host, EXCEPTION_TYPE, throwable.getClass().getName());
-                });
+            .doOnSuccess(response -> {
+                int statusCode = response.getStatusCode();
+                if (statusCode == 200) {
+                    networkStatsbeat.incrementRequestSuccessCount(System.currentTimeMillis() - startTime.get(),
+                        instrumentationKey, host);
+                } else if (StatusCode.isRedirect(statusCode)) {
+                    // these are not tracked as success or failure since they are just redirects
+                } else if (statusCode == 402 || statusCode == 439) {
+                    networkStatsbeat.incrementThrottlingCount(instrumentationKey, host, STATUS_CODE, statusCode);
+                } else if (StatusCode.isRetryable(statusCode)) {
+                    networkStatsbeat.incrementRetryCount(instrumentationKey, host, STATUS_CODE, statusCode);
+                } else {
+                    // 400 and 404 will be tracked as failure count
+                    networkStatsbeat.incrementRequestFailureCount(instrumentationKey, host, STATUS_CODE, statusCode);
+                }
+            })
+            .doOnError(throwable -> {
+                networkStatsbeat.incrementExceptionCount(instrumentationKey, host, EXCEPTION_TYPE,
+                    throwable.getClass().getName());
+            });
     }
 }

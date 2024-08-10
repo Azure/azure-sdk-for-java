@@ -34,12 +34,6 @@ public final class CustomScaleRule implements JsonSerializable<CustomScaleRule> 
      */
     private List<ScaleRuleAuth> auth;
 
-    /*
-     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
-     * system-assigned identity.
-     */
-    private String identity;
-
     /**
      * Creates an instance of CustomScaleRule class.
      */
@@ -109,28 +103,6 @@ public final class CustomScaleRule implements JsonSerializable<CustomScaleRule> 
     }
 
     /**
-     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
-     * App, or 'system' for system-assigned identity.
-     * 
-     * @return the identity value.
-     */
-    public String identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
-     * App, or 'system' for system-assigned identity.
-     * 
-     * @param identity the identity value to set.
-     * @return the CustomScaleRule object itself.
-     */
-    public CustomScaleRule withIdentity(String identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,7 +122,6 @@ public final class CustomScaleRule implements JsonSerializable<CustomScaleRule> 
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -177,8 +148,6 @@ public final class CustomScaleRule implements JsonSerializable<CustomScaleRule> 
                 } else if ("auth".equals(fieldName)) {
                     List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
                     deserializedCustomScaleRule.auth = auth;
-                } else if ("identity".equals(fieldName)) {
-                    deserializedCustomScaleRule.identity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

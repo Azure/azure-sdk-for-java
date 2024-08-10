@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * PremierAddOn resource specific properties.
  */
 @Fluent
-public final class PremierAddOnProperties {
+public final class PremierAddOnProperties implements JsonSerializable<PremierAddOnProperties> {
     /*
      * Premier add on SKU.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * Premier add on Product.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Premier add on Vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * Premier add on Marketplace publisher.
      */
-    @JsonProperty(value = "marketplacePublisher")
     private String marketplacePublisher;
 
     /*
      * Premier add on Marketplace offer.
      */
-    @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
 
     /**
@@ -154,5 +153,53 @@ public final class PremierAddOnProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("marketplacePublisher", this.marketplacePublisher);
+        jsonWriter.writeStringField("marketplaceOffer", this.marketplaceOffer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PremierAddOnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PremierAddOnProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PremierAddOnProperties.
+     */
+    public static PremierAddOnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PremierAddOnProperties deserializedPremierAddOnProperties = new PremierAddOnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedPremierAddOnProperties.sku = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPremierAddOnProperties.product = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedPremierAddOnProperties.vendor = reader.getString();
+                } else if ("marketplacePublisher".equals(fieldName)) {
+                    deserializedPremierAddOnProperties.marketplacePublisher = reader.getString();
+                } else if ("marketplaceOffer".equals(fieldName)) {
+                    deserializedPremierAddOnProperties.marketplaceOffer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPremierAddOnProperties;
+        });
     }
 }

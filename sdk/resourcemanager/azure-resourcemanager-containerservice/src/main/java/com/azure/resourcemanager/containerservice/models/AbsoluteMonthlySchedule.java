@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'.
  */
 @Fluent
-public final class AbsoluteMonthlySchedule {
+public final class AbsoluteMonthlySchedule implements JsonSerializable<AbsoluteMonthlySchedule> {
     /*
      * Specifies the number of months between each set of occurrences.
      */
-    @JsonProperty(value = "intervalMonths", required = true)
     private int intervalMonths;
 
     /*
      * The date of the month.
      */
-    @JsonProperty(value = "dayOfMonth", required = true)
     private int dayOfMonth;
 
     /**
@@ -76,5 +78,45 @@ public final class AbsoluteMonthlySchedule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("intervalMonths", this.intervalMonths);
+        jsonWriter.writeIntField("dayOfMonth", this.dayOfMonth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AbsoluteMonthlySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AbsoluteMonthlySchedule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AbsoluteMonthlySchedule.
+     */
+    public static AbsoluteMonthlySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AbsoluteMonthlySchedule deserializedAbsoluteMonthlySchedule = new AbsoluteMonthlySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("intervalMonths".equals(fieldName)) {
+                    deserializedAbsoluteMonthlySchedule.intervalMonths = reader.getInt();
+                } else if ("dayOfMonth".equals(fieldName)) {
+                    deserializedAbsoluteMonthlySchedule.dayOfMonth = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAbsoluteMonthlySchedule;
+        });
     }
 }

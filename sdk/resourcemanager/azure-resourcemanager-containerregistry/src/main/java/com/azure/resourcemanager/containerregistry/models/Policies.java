@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The policies for a container registry.
  */
 @Fluent
-public final class Policies {
+public final class Policies implements JsonSerializable<Policies> {
     /*
      * The quarantine policy for a container registry.
      */
-    @JsonProperty(value = "quarantinePolicy")
     private QuarantinePolicy quarantinePolicy;
 
     /*
      * The content trust policy for a container registry.
      */
-    @JsonProperty(value = "trustPolicy")
     private TrustPolicy trustPolicy;
 
     /*
      * The retention policy for a container registry.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
     /*
      * The export policy for a container registry.
      */
-    @JsonProperty(value = "exportPolicy")
     private ExportPolicy exportPolicy;
 
     /**
@@ -140,5 +140,50 @@ public final class Policies {
         if (exportPolicy() != null) {
             exportPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("quarantinePolicy", this.quarantinePolicy);
+        jsonWriter.writeJsonField("trustPolicy", this.trustPolicy);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        jsonWriter.writeJsonField("exportPolicy", this.exportPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Policies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Policies if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Policies.
+     */
+    public static Policies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Policies deserializedPolicies = new Policies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("quarantinePolicy".equals(fieldName)) {
+                    deserializedPolicies.quarantinePolicy = QuarantinePolicy.fromJson(reader);
+                } else if ("trustPolicy".equals(fieldName)) {
+                    deserializedPolicies.trustPolicy = TrustPolicy.fromJson(reader);
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedPolicies.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else if ("exportPolicy".equals(fieldName)) {
+                    deserializedPolicies.exportPolicy = ExportPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicies;
+        });
     }
 }

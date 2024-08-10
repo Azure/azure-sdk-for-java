@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The definition of Azure Monitoring list.
  */
 @Fluent
-public final class OperationServiceSpecificationDefinition {
+public final class OperationServiceSpecificationDefinition
+    implements JsonSerializable<OperationServiceSpecificationDefinition> {
     /*
      * A list of Azure Monitoring metrics definition.
      */
-    @JsonProperty(value = "metricSpecifications")
     private List<OperationMetricSpecificationDefinition> metricSpecifications;
 
     /*
      * A list of Azure Monitoring log definitions.
      */
-    @JsonProperty(value = "logSpecifications")
     private List<OperationLogSpecificationDefinition> logSpecifications;
 
     /**
@@ -85,5 +88,51 @@ public final class OperationServiceSpecificationDefinition {
         if (logSpecifications() != null) {
             logSpecifications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metricSpecifications", this.metricSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logSpecifications", this.logSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationServiceSpecificationDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationServiceSpecificationDefinition if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationServiceSpecificationDefinition.
+     */
+    public static OperationServiceSpecificationDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationServiceSpecificationDefinition deserializedOperationServiceSpecificationDefinition
+                = new OperationServiceSpecificationDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricSpecifications".equals(fieldName)) {
+                    List<OperationMetricSpecificationDefinition> metricSpecifications
+                        = reader.readArray(reader1 -> OperationMetricSpecificationDefinition.fromJson(reader1));
+                    deserializedOperationServiceSpecificationDefinition.metricSpecifications = metricSpecifications;
+                } else if ("logSpecifications".equals(fieldName)) {
+                    List<OperationLogSpecificationDefinition> logSpecifications
+                        = reader.readArray(reader1 -> OperationLogSpecificationDefinition.fromJson(reader1));
+                    deserializedOperationServiceSpecificationDefinition.logSpecifications = logSpecifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationServiceSpecificationDefinition;
+        });
     }
 }

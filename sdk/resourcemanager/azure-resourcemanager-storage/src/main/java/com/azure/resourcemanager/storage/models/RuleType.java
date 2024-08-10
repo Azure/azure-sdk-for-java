@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class RuleType extends ExpandableStringEnum<RuleType> {
      * @param name a name to look for.
      * @return the corresponding RuleType.
      */
-    @JsonCreator
     public static RuleType fromString(String name) {
         return fromString(name, RuleType.class);
     }

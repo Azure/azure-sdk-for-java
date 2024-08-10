@@ -12,25 +12,27 @@ import com.azure.resourcemanager.dns.fluent.models.DnsResourceReferenceResultInn
 import com.azure.resourcemanager.dns.models.DnsResourceReferenceRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DnsResourceReferencesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DnsResourceReferencesClient.
+ */
 public interface DnsResourceReferencesClient {
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the properties of the Dns Resource Reference Result along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DnsResourceReferenceResultInner>> getByTargetResourcesWithResponseAsync(
-        DnsResourceReferenceRequest parameters);
+    Mono<Response<DnsResourceReferenceResultInner>>
+        getByTargetResourcesWithResponseAsync(DnsResourceReferenceRequest parameters);
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface DnsResourceReferencesClient {
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,12 +53,12 @@ public interface DnsResourceReferencesClient {
      * @return represents the properties of the Dns Resource Reference Result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DnsResourceReferenceResultInner> getByTargetResourcesWithResponse(
-        DnsResourceReferenceRequest parameters, Context context);
+    Response<DnsResourceReferenceResultInner> getByTargetResourcesWithResponse(DnsResourceReferenceRequest parameters,
+        Context context);
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

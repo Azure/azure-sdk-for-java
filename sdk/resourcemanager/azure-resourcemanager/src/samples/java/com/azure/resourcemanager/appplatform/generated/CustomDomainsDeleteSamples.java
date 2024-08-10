@@ -19,7 +19,10 @@ public final class CustomDomainsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void customDomainsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCustomDomains().delete("myResourceGroup", "myservice",
-            "myapp", "mydomain.com", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
+            .delete("myResourceGroup", "myservice", "myapp", "mydomain.com", com.azure.core.util.Context.NONE);
     }
 }

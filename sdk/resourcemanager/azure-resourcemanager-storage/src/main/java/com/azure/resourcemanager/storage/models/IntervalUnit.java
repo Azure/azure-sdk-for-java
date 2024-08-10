@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
  * this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'.
@@ -32,7 +29,6 @@ public enum IntervalUnit {
      * @param value the serialized value to parse.
      * @return the parsed IntervalUnit object, or null if unable to parse.
      */
-    @JsonCreator
     public static IntervalUnit fromString(String value) {
         if (value == null) {
             return null;
@@ -49,7 +45,6 @@ public enum IntervalUnit {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -42,22 +42,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SyncAgentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SyncAgentsClient.
+ */
 public final class SyncAgentsClientImpl implements SyncAgentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SyncAgentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of SyncAgentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SyncAgentsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SyncAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SyncAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,127 +74,83 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     public interface SyncAgentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncAgentListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SyncAgentListResult>> listByServer(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncAgentInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("syncAgentName") String syncAgentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SyncAgentInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("syncAgentName") String syncAgentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("syncAgentName") String syncAgentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SyncAgentInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("syncAgentName") String syncAgentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SyncAgentInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("syncAgentName") String syncAgentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("syncAgentName") String syncAgentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}/generateKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/generateKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncAgentKeyPropertiesInner>> generateKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("syncAgentName") String syncAgentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SyncAgentKeyPropertiesInner>> generateKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("syncAgentName") String syncAgentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}/linkedDatabases")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/linkedDatabases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SyncAgentLinkedDatabaseListResult>> listLinkedDatabases(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("syncAgentName") String syncAgentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SyncAgentLinkedDatabaseListResult>> listLinkedDatabases(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("syncAgentName") String syncAgentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncAgentListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncAgentLinkedDatabaseListResult>> listLinkedDatabasesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists sync agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -196,13 +158,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a list of sync agents along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SyncAgentInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<SyncAgentInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,41 +172,23 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SyncAgentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SyncAgentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists sync agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,13 +197,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a list of sync agents along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SyncAgentInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<SyncAgentInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -271,38 +211,23 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists sync agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -311,16 +236,15 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncAgentInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists sync agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,16 +254,15 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SyncAgentInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists sync agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,9 +276,9 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Lists sync agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,9 +293,9 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Gets a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,13 +304,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a sync agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SyncAgentInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    public Mono<Response<SyncAgentInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String syncAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -400,33 +321,21 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            syncAgentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, syncAgentName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -436,13 +345,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a sync agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SyncAgentInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    private Mono<Response<SyncAgentInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String syncAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -455,30 +362,20 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                syncAgentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, syncAgentName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,9 +391,9 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Gets a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -506,16 +403,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a sync agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SyncAgentInner> getWithResponse(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    public Response<SyncAgentInner> getWithResponse(String resourceGroupName, String serverName, String syncAgentName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, syncAgentName, context).block();
     }
 
     /**
      * Gets a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,9 +427,9 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -542,13 +439,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return an Azure SQL Database sync agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String syncAgentName, SyncAgentInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -561,10 +456,8 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -573,27 +466,17 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            syncAgentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                syncAgentName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -604,13 +487,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return an Azure SQL Database sync agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -623,10 +504,8 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -635,24 +514,15 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                syncAgentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, syncAgentName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -662,25 +532,19 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link PollerFlux} for polling of an Azure SQL Database sync agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, syncAgentName, parameters);
-        return this
-            .client
-            .<SyncAgentInner, SyncAgentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SyncAgentInner.class,
-                SyncAgentInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String syncAgentName, SyncAgentInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, syncAgentName, parameters);
+        return this.client.<SyncAgentInner, SyncAgentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SyncAgentInner.class, SyncAgentInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -691,22 +555,20 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link PollerFlux} for polling of an Azure SQL Database sync agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
+    private PollerFlux<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, syncAgentName, parameters, context);
-        return this
-            .client
-            .<SyncAgentInner, SyncAgentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncAgentInner.class, SyncAgentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, syncAgentName, parameters, context);
+        return this.client.<SyncAgentInner, SyncAgentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SyncAgentInner.class, SyncAgentInner.class, context);
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -716,16 +578,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL Database sync agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String syncAgentName, SyncAgentInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -736,17 +598,17 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL Database sync agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context)
+    public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -756,18 +618,17 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return an Azure SQL Database sync agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncAgentInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters)
-            .last()
+    public Mono<SyncAgentInner> createOrUpdateAsync(String resourceGroupName, String serverName, String syncAgentName,
+        SyncAgentInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -778,18 +639,17 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return an Azure SQL Database sync agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SyncAgentInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context)
-            .last()
+    private Mono<SyncAgentInner> createOrUpdateAsync(String resourceGroupName, String serverName, String syncAgentName,
+        SyncAgentInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -799,16 +659,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return an Azure SQL Database sync agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncAgentInner createOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters) {
+    public SyncAgentInner createOrUpdate(String resourceGroupName, String serverName, String syncAgentName,
+        SyncAgentInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).block();
     }
 
     /**
      * Creates or updates a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param parameters The requested sync agent resource state.
@@ -819,16 +679,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return an Azure SQL Database sync agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncAgentInner createOrUpdate(
-        String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
+    public SyncAgentInner createOrUpdate(String resourceGroupName, String serverName, String syncAgentName,
+        SyncAgentInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context).block();
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -837,13 +697,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String syncAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -856,31 +714,20 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            syncAgentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
+                syncAgentName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -890,13 +737,11 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String syncAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -909,28 +754,19 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                syncAgentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, syncAgentName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -939,20 +775,18 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String syncAgentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, syncAgentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -962,21 +796,20 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String syncAgentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, syncAgentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serverName, syncAgentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -985,16 +818,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String syncAgentName) {
-        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String syncAgentName) {
+        return this.beginDeleteAsync(resourceGroupName, serverName, syncAgentName).getSyncPoller();
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1004,16 +837,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String syncAgentName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context).getSyncPoller();
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,16 +856,15 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String syncAgentName) {
-        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1043,16 +875,15 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String syncAgentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1066,9 +897,9 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Deletes a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1083,25 +914,23 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Generates a sync agent key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an Azure SQL Database sync agent key along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SyncAgentKeyPropertiesInner>> generateKeyWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    public Mono<Response<SyncAgentKeyPropertiesInner>> generateKeyWithResponseAsync(String resourceGroupName,
+        String serverName, String syncAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1114,33 +943,21 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            syncAgentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.generateKey(this.client.getEndpoint(), resourceGroupName, serverName,
+                syncAgentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Generates a sync agent key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1148,16 +965,14 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an Azure SQL Database sync agent key along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SyncAgentKeyPropertiesInner>> generateKeyWithResponseAsync(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    private Mono<Response<SyncAgentKeyPropertiesInner>> generateKeyWithResponseAsync(String resourceGroupName,
+        String serverName, String syncAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1170,30 +985,20 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generateKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                syncAgentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.generateKey(this.client.getEndpoint(), resourceGroupName, serverName, syncAgentName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Generates a sync agent key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1202,17 +1007,17 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return properties of an Azure SQL Database sync agent key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncAgentKeyPropertiesInner> generateKeyAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    public Mono<SyncAgentKeyPropertiesInner> generateKeyAsync(String resourceGroupName, String serverName,
+        String syncAgentName) {
         return generateKeyWithResponseAsync(resourceGroupName, serverName, syncAgentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Generates a sync agent key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1222,16 +1027,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return properties of an Azure SQL Database sync agent key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SyncAgentKeyPropertiesInner> generateKeyWithResponse(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    public Response<SyncAgentKeyPropertiesInner> generateKeyWithResponse(String resourceGroupName, String serverName,
+        String syncAgentName, Context context) {
         return generateKeyWithResponseAsync(resourceGroupName, serverName, syncAgentName, context).block();
     }
 
     /**
      * Generates a sync agent key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1246,25 +1051,23 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Lists databases linked to a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SyncAgentLinkedDatabaseInner>> listLinkedDatabasesSinglePageAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    private Mono<PagedResponse<SyncAgentLinkedDatabaseInner>>
+        listLinkedDatabasesSinglePageAsync(String resourceGroupName, String serverName, String syncAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1277,59 +1080,39 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listLinkedDatabases(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            syncAgentName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SyncAgentLinkedDatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listLinkedDatabases(this.client.getEndpoint(), resourceGroupName, serverName,
+                    syncAgentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SyncAgentLinkedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists databases linked to a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncAgentLinkedDatabaseInner>> listLinkedDatabasesSinglePageAsync(
         String resourceGroupName, String serverName, String syncAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1342,39 +1125,23 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter syncAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listLinkedDatabases(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                syncAgentName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listLinkedDatabases(this.client.getEndpoint(), resourceGroupName, serverName, syncAgentName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists databases linked to a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1383,18 +1150,17 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a list of sync agent linked databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SyncAgentLinkedDatabaseInner> listLinkedDatabasesAsync(
-        String resourceGroupName, String serverName, String syncAgentName) {
-        return new PagedFlux<>(
-            () -> listLinkedDatabasesSinglePageAsync(resourceGroupName, serverName, syncAgentName),
+    public PagedFlux<SyncAgentLinkedDatabaseInner> listLinkedDatabasesAsync(String resourceGroupName, String serverName,
+        String syncAgentName) {
+        return new PagedFlux<>(() -> listLinkedDatabasesSinglePageAsync(resourceGroupName, serverName, syncAgentName),
             nextLink -> listLinkedDatabasesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists databases linked to a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1404,8 +1170,8 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a list of sync agent linked databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SyncAgentLinkedDatabaseInner> listLinkedDatabasesAsync(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    private PagedFlux<SyncAgentLinkedDatabaseInner> listLinkedDatabasesAsync(String resourceGroupName,
+        String serverName, String syncAgentName, Context context) {
         return new PagedFlux<>(
             () -> listLinkedDatabasesSinglePageAsync(resourceGroupName, serverName, syncAgentName, context),
             nextLink -> listLinkedDatabasesNextSinglePageAsync(nextLink, context));
@@ -1413,9 +1179,9 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
     /**
      * Lists databases linked to a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1424,16 +1190,16 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a list of sync agent linked databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(
-        String resourceGroupName, String serverName, String syncAgentName) {
+    public PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(String resourceGroupName, String serverName,
+        String syncAgentName) {
         return new PagedIterable<>(listLinkedDatabasesAsync(resourceGroupName, serverName, syncAgentName));
     }
 
     /**
      * Lists databases linked to a sync agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
@@ -1443,16 +1209,15 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      * @return a list of sync agent linked databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(
-        String resourceGroupName, String serverName, String syncAgentName, Context context) {
+    public PagedIterable<SyncAgentLinkedDatabaseInner> listLinkedDatabases(String resourceGroupName, String serverName,
+        String syncAgentName, Context context) {
         return new PagedIterable<>(listLinkedDatabasesAsync(resourceGroupName, serverName, syncAgentName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1464,31 +1229,21 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SyncAgentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SyncAgentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1501,36 +1256,25 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncAgentLinkedDatabaseInner>> listLinkedDatabasesNextSinglePageAsync(String nextLink) {
@@ -1538,63 +1282,43 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listLinkedDatabasesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SyncAgentLinkedDatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SyncAgentLinkedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of sync agent linked databases along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SyncAgentLinkedDatabaseInner>> listLinkedDatabasesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SyncAgentLinkedDatabaseInner>> listLinkedDatabasesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listLinkedDatabasesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listLinkedDatabasesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

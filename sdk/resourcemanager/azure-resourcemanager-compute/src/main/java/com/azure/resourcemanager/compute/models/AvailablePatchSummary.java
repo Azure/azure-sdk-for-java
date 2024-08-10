@@ -5,64 +5,60 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of an virtual machine instance view for available patch summary.
  */
 @Immutable
-public final class AvailablePatchSummary {
+public final class AvailablePatchSummary implements JsonSerializable<AvailablePatchSummary> {
     /*
      * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
      * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
      * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
      * logs.
      */
-    @JsonProperty(value = "assessmentActivityId", access = JsonProperty.Access.WRITE_ONLY)
     private String assessmentActivityId;
 
     /*
      * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to
      * complete installation but the reboot has not yet occurred.
      */
-    @JsonProperty(value = "rebootPending", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean rebootPending;
 
     /*
      * The number of critical or security patches that have been detected as available and not yet installed.
      */
-    @JsonProperty(value = "criticalAndSecurityPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer criticalAndSecurityPatchCount;
 
     /*
      * The number of all available patches excluding critical and security.
      */
-    @JsonProperty(value = "otherPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer otherPatchCount;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The errors that were encountered during execution of the operation. The details array contains the list of them.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
     /**
@@ -75,7 +71,7 @@ public final class AvailablePatchSummary {
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
      * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or
      * "CompletedWithWarnings.".
-     *
+     * 
      * @return the status value.
      */
     public PatchOperationStatus status() {
@@ -85,7 +81,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the assessmentActivityId property: The activity ID of the operation that produced this result. It is used to
      * correlate across CRP and extension logs.
-     *
+     * 
      * @return the assessmentActivityId value.
      */
     public String assessmentActivityId() {
@@ -95,7 +91,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the rebootPending property: The overall reboot status of the VM. It will be true when partially installed
      * patches require a reboot to complete installation but the reboot has not yet occurred.
-     *
+     * 
      * @return the rebootPending value.
      */
     public Boolean rebootPending() {
@@ -105,7 +101,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the criticalAndSecurityPatchCount property: The number of critical or security patches that have been
      * detected as available and not yet installed.
-     *
+     * 
      * @return the criticalAndSecurityPatchCount value.
      */
     public Integer criticalAndSecurityPatchCount() {
@@ -114,7 +110,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Get the otherPatchCount property: The number of all available patches excluding critical and security.
-     *
+     * 
      * @return the otherPatchCount value.
      */
     public Integer otherPatchCount() {
@@ -123,7 +119,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Get the startTime property: The UTC timestamp when the operation began.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -132,7 +128,7 @@ public final class AvailablePatchSummary {
 
     /**
      * Get the lastModifiedTime property: The UTC timestamp when the operation began.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -142,7 +138,7 @@ public final class AvailablePatchSummary {
     /**
      * Get the error property: The errors that were encountered during execution of the operation. The details array
      * contains the list of them.
-     *
+     * 
      * @return the error value.
      */
     public ApiError error() {
@@ -151,12 +147,64 @@ public final class AvailablePatchSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailablePatchSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailablePatchSummary if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailablePatchSummary.
+     */
+    public static AvailablePatchSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailablePatchSummary deserializedAvailablePatchSummary = new AvailablePatchSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.status = PatchOperationStatus.fromString(reader.getString());
+                } else if ("assessmentActivityId".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.assessmentActivityId = reader.getString();
+                } else if ("rebootPending".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.rebootPending = reader.getNullable(JsonReader::getBoolean);
+                } else if ("criticalAndSecurityPatchCount".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.criticalAndSecurityPatchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("otherPatchCount".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.otherPatchCount = reader.getNullable(JsonReader::getInt);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedAvailablePatchSummary.error = ApiError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailablePatchSummary;
+        });
     }
 }

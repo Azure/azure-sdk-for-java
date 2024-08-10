@@ -20,6 +20,64 @@ import java.util.Map;
 public final class AssetsCreateOrReplaceSamples {
     /*
      * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * Create_Asset_Without_ExternalAssetId.json
+     */
+    /**
+     * Sample code: Create_Asset_Without_ExternalAssetId.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createAssetWithoutExternalAssetId(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .define("my-asset")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(new AssetProperties().withAssetType("MyAssetType")
+                .withEnabled(true)
+                .withDisplayName("AssetDisplayName")
+                .withDescription("This is a sample Asset")
+                .withAssetEndpointProfileUri("https://www.example.com/myAssetEndpointProfile")
+                .withManufacturer("Contoso")
+                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
+                .withModel("ContosoModel")
+                .withProductCode("fakeTokenPlaceholder")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("2.0")
+                .withDocumentationUri("https://www.example.com/manual")
+                .withSerialNumber("64-103816-519918-8")
+                .withDefaultDataPointsConfiguration(
+                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDataPoints(Arrays.asList(
+                    new DataPoint().withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__temperature;1")
+                        .withObservabilityMode(DataPointsObservabilityMode.COUNTER)
+                        .withDataPointConfiguration(
+                            "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+                    new DataPoint().withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__pressure;1")
+                        .withObservabilityMode(DataPointsObservabilityMode.NONE)
+                        .withDataPointConfiguration(
+                            "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")))
+                .withEvents(Arrays.asList(
+                    new Event().withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__temperature;1")
+                        .withObservabilityMode(EventsObservabilityMode.NONE)
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+                    new Event().withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__pressure;1")
+                        .withObservabilityMode(EventsObservabilityMode.LOG)
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
      * Create_Asset_With_ExternalAssetId.json
      */
     /**
@@ -41,6 +99,64 @@ public final class AssetsCreateOrReplaceSamples {
                 .withEnabled(true)
                 .withExternalAssetId("8ZBA6LRHU0A458969")
                 .withDisplayName("AssetDisplayName")
+                .withDescription("This is a sample Asset")
+                .withAssetEndpointProfileUri("https://www.example.com/myAssetEndpointProfile")
+                .withManufacturer("Contoso")
+                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
+                .withModel("ContosoModel")
+                .withProductCode("fakeTokenPlaceholder")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("2.0")
+                .withDocumentationUri("https://www.example.com/manual")
+                .withSerialNumber("64-103816-519918-8")
+                .withDefaultDataPointsConfiguration(
+                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDataPoints(Arrays.asList(
+                    new DataPoint().withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__temperature;1")
+                        .withObservabilityMode(DataPointsObservabilityMode.COUNTER)
+                        .withDataPointConfiguration(
+                            "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
+                    new DataPoint().withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__pressure;1")
+                        .withObservabilityMode(DataPointsObservabilityMode.NONE)
+                        .withDataPointConfiguration(
+                            "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")))
+                .withEvents(Arrays.asList(
+                    new Event().withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__temperature;1")
+                        .withObservabilityMode(EventsObservabilityMode.NONE)
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+                    new Event().withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                        .withCapabilityId("dtmi:com:example:Thermostat:__pressure;1")
+                        .withObservabilityMode(EventsObservabilityMode.LOG)
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * Create_Asset_Without_DisplayName.json
+     */
+    /**
+     * Sample code: Create_Asset_Without_DisplayName.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createAssetWithoutDisplayName(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .define("my-asset")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(new AssetProperties().withAssetType("MyAssetType")
+                .withEnabled(true)
+                .withExternalAssetId("8ZBA6LRHU0A458969")
                 .withDescription("This is a sample Asset")
                 .withAssetEndpointProfileUri("https://www.example.com/myAssetEndpointProfile")
                 .withManufacturer("Contoso")

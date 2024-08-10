@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-messaging-azure-servicebus</artifactId>
-  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+  <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
 
   <name>Spring Messaging Azure Service Bus</name>
   <description>Spring Messaging Azure Service Bus</description>
@@ -41,36 +41,36 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.17.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.retry</groupId>
       <artifactId>spring-retry</artifactId>
-      <version>2.0.6</version> <!-- {x-version-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
+      <version>2.0.7</version> <!-- {x-version-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -96,19 +96,19 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.10.2</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.10.3</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -120,7 +120,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.4.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -197,10 +197,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.13.1]</include> <!-- {x-include-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
-                <include>org.springframework.retry:spring-retry:[2.0.6]</include> <!-- {x-include-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.13.2]</include> <!-- {x-include-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework.retry:spring-retry:[2.0.7]</include> <!-- {x-include-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

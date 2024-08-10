@@ -5,65 +5,63 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** contactFolder. */
+/**
+ * contactFolder.
+ */
 @Fluent
 public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /*
      * The folder's display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The ID of the folder's parent folder.
      */
-    @JsonProperty(value = "parentFolderId")
     private String parentFolderId;
 
     /*
      * The collection of child folders in the folder. Navigation property. Read-only. Nullable.
      */
-    @JsonProperty(value = "childFolders")
     private List<MicrosoftGraphContactFolder> childFolders;
 
     /*
      * The contacts in the folder. Navigation property. Read-only. Nullable.
      */
-    @JsonProperty(value = "contacts")
     private List<MicrosoftGraphContact> contacts;
 
     /*
      * The collection of multi-value extended properties defined for the contactFolder. Read-only. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the contactFolder. Read-only. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * contactFolder
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphContactFolder class. */
+    /**
+     * Creates an instance of MicrosoftGraphContactFolder class.
+     */
     public MicrosoftGraphContactFolder() {
     }
 
     /**
      * Get the displayName property: The folder's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +70,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: The folder's display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -83,7 +81,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the parentFolderId property: The ID of the folder's parent folder.
-     *
+     * 
      * @return the parentFolderId value.
      */
     public String parentFolderId() {
@@ -92,7 +90,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the parentFolderId property: The ID of the folder's parent folder.
-     *
+     * 
      * @param parentFolderId the parentFolderId value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -104,7 +102,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /**
      * Get the childFolders property: The collection of child folders in the folder. Navigation property. Read-only.
      * Nullable.
-     *
+     * 
      * @return the childFolders value.
      */
     public List<MicrosoftGraphContactFolder> childFolders() {
@@ -114,7 +112,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /**
      * Set the childFolders property: The collection of child folders in the folder. Navigation property. Read-only.
      * Nullable.
-     *
+     * 
      * @param childFolders the childFolders value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -125,7 +123,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the contacts property: The contacts in the folder. Navigation property. Read-only. Nullable.
-     *
+     * 
      * @return the contacts value.
      */
     public List<MicrosoftGraphContact> contacts() {
@@ -134,7 +132,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Set the contacts property: The contacts in the folder. Navigation property. Read-only. Nullable.
-     *
+     * 
      * @param contacts the contacts value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -146,7 +144,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * contactFolder. Read-only. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -156,7 +154,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * contactFolder. Read-only. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -169,7 +167,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the contactFolder. Read-only. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -179,7 +177,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the contactFolder. Read-only. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -191,17 +189,16 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: contactFolder.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: contactFolder.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphContactFolder object itself.
      */
@@ -210,15 +207,9 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContactFolder withId(String id) {
         super.withId(id);
@@ -227,7 +218,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -245,5 +236,81 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("parentFolderId", this.parentFolderId);
+        jsonWriter.writeArrayField("childFolders", this.childFolders, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contacts", this.contacts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphContactFolder from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphContactFolder if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphContactFolder.
+     */
+    public static MicrosoftGraphContactFolder fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphContactFolder deserializedMicrosoftGraphContactFolder = new MicrosoftGraphContactFolder();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphContactFolder.withId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContactFolder.displayName = reader.getString();
+                } else if ("parentFolderId".equals(fieldName)) {
+                    deserializedMicrosoftGraphContactFolder.parentFolderId = reader.getString();
+                } else if ("childFolders".equals(fieldName)) {
+                    List<MicrosoftGraphContactFolder> childFolders
+                        = reader.readArray(reader1 -> MicrosoftGraphContactFolder.fromJson(reader1));
+                    deserializedMicrosoftGraphContactFolder.childFolders = childFolders;
+                } else if ("contacts".equals(fieldName)) {
+                    List<MicrosoftGraphContact> contacts
+                        = reader.readArray(reader1 -> MicrosoftGraphContact.fromJson(reader1));
+                    deserializedMicrosoftGraphContactFolder.contacts = contacts;
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphContactFolder.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphContactFolder.singleValueExtendedProperties
+                        = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphContactFolder.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphContactFolder;
+        });
     }
 }

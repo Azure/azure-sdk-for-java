@@ -18,7 +18,10 @@ public final class MonitoringSettingsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void monitoringSettingsGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getMonitoringSettings().getWithResponse("myResourceGroup",
-            "myservice", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getMonitoringSettings()
+            .getWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

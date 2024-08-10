@@ -4,16 +4,23 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.resources.Resource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,17 +29,16 @@ import java.util.Map;
 
 public final class TestUtils {
 
-    private static final String TRACE_CONNECTION_STRING =
-        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
-            + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
-            + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
+    private static final String TRACE_CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+        + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
+        + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
     public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString) {
         return createMetricTelemetry(name, value, connectionString, "state", "blocked");
     }
 
-    public static TelemetryItem createMetricTelemetry(
-        String name, int value, String connectionString, String propertyKey, String propertyValue) {
+    public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString,
+        String propertyKey, String propertyValue) {
         TelemetryItem telemetry = new TelemetryItem();
         telemetry.setVersion(1);
         telemetry.setName("Metric");
@@ -72,23 +78,67 @@ public final class TestUtils {
         return createOpenTelemetrySdk(httpPipeline, Collections.emptyMap());
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(
-        HttpPipeline httpPipeline, Map<String, String> configuration) {
+    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline,
+        Map<String, String> configuration) {
         return createOpenTelemetrySdk(httpPipeline, configuration, TRACE_CONNECTION_STRING);
 
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline, Map<String, String> configuration, String connectionString) {
+    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline, Map<String, String> configuration,
+        String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitorExporterBuilder()
-            .connectionString(connectionString)
+        new AzureMonitorExporterBuilder().connectionString(connectionString)
             .httpPipeline(httpPipeline)
             .install(sdkBuilder);
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }
 
+    // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData
+    public static RemoteDependencyData toRemoteDependencyData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return RemoteDependencyData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to MetricsData
+    public static MetricsData toMetricsData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return MetricsData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to MessageData
+    public static MessageData toMessageData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return MessageData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // deserialize multiple TelemetryItem raw bytes with newline delimiters to a list of TelemetryItems
+    public static List<TelemetryItem> deserialize(byte[] rawBytes) {
+        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
+            JsonToken token = jsonReader.currentToken();
+            if (token == null) {
+                token = jsonReader.nextToken();
+            }
+
+            List<TelemetryItem> result = new ArrayList<>();
+            do {
+                result.add(TelemetryItem.fromJson(jsonReader));
+            } while (jsonReader.nextToken() == JsonToken.START_OBJECT);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private TestUtils() {
     }

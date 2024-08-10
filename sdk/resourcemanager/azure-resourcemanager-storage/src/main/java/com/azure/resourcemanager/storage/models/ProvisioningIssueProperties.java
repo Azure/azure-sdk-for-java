@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of provisioning issue.
  */
 @Fluent
-public final class ProvisioningIssueProperties {
+public final class ProvisioningIssueProperties implements JsonSerializable<ProvisioningIssueProperties> {
     /*
      * Type of issue
      */
-    @JsonProperty(value = "issueType")
     private IssueType issueType;
 
     /*
      * Severity of the issue.
      */
-    @JsonProperty(value = "severity")
     private Severity severity;
 
     /*
      * Description of the issue
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -102,5 +103,47 @@ public final class ProvisioningIssueProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("issueType", this.issueType == null ? null : this.issueType.toString());
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisioningIssueProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisioningIssueProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisioningIssueProperties.
+     */
+    public static ProvisioningIssueProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisioningIssueProperties deserializedProvisioningIssueProperties = new ProvisioningIssueProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("issueType".equals(fieldName)) {
+                    deserializedProvisioningIssueProperties.issueType = IssueType.fromString(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedProvisioningIssueProperties.severity = Severity.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedProvisioningIssueProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisioningIssueProperties;
+        });
     }
 }

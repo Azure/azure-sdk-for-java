@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for UserSourceType. */
@@ -27,7 +26,6 @@ public final class UserSourceType extends ExpandableStringEnum<UserSourceType> {
      * @param name a name to look for.
      * @return the corresponding UserSourceType.
      */
-    @JsonCreator
     public static UserSourceType fromString(String name) {
         return fromString(name, UserSourceType.class);
     }

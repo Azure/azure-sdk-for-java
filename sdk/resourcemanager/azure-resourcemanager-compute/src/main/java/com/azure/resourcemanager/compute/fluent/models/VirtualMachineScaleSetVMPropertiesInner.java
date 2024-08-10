@@ -6,6 +6,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -15,42 +20,38 @@ import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of a virtual machine scale set virtual machine.
  */
 @Fluent
-public final class VirtualMachineScaleSetVMPropertiesInner {
+public final class VirtualMachineScaleSetVMPropertiesInner
+    implements JsonSerializable<VirtualMachineScaleSetVMPropertiesInner> {
     /*
      * Specifies whether the latest model has been applied to the virtual machine.
      */
-    @JsonProperty(value = "latestModelApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean latestModelApplied;
 
     /*
      * Azure VM unique ID.
      */
-    @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
      * The virtual machine instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetVMInstanceViewInner instanceView;
 
     /*
      * Specifies the hardware settings for the virtual machine.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
@@ -58,37 +59,31 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage
      * account type.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
 
     /*
      * Specifies the operating system settings for the virtual machine.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * Specifies the Security related profile settings for the virtual machine.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * Specifies the network interfaces of the virtual machine.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Specifies the network profile configuration of the virtual machine.
      */
-    @JsonProperty(value = "networkProfileConfiguration")
     private VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration;
 
     /*
      * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
      */
-    @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
@@ -100,13 +95,11 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
      * added to availability set at creation time. An existing VM cannot be added to an availability set.
      */
-    @JsonProperty(value = "availabilitySet")
     private SubResource availabilitySet;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
@@ -119,33 +112,28 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
      * api-version: 2015-06-15
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * Specifies whether the model applied to the virtual machine is the model of the virtual machine scale set or the
      * customized model for the virtual machine.
      */
-    @JsonProperty(value = "modelDefinitionApplied", access = JsonProperty.Access.WRITE_ONLY)
     private String modelDefinitionApplied;
 
     /*
      * Specifies the protection policy of the virtual machine.
      */
-    @JsonProperty(value = "protectionPolicy")
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
 
     /*
      * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. <br><br>Minimum
      * api-version: 2021-03-01
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
     /*
      * Specifies the time at which the Virtual Machine resource was created.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /**
@@ -524,5 +512,98 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
         if (protectionPolicy() != null) {
             protectionPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("networkProfileConfiguration", this.networkProfileConfiguration);
+        jsonWriter.writeJsonField("diagnosticsProfile", this.diagnosticsProfile);
+        jsonWriter.writeJsonField("availabilitySet", this.availabilitySet);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeJsonField("protectionPolicy", this.protectionPolicy);
+        jsonWriter.writeStringField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMPropertiesInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMPropertiesInner.
+     */
+    public static VirtualMachineScaleSetVMPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMPropertiesInner deserializedVirtualMachineScaleSetVMPropertiesInner
+                = new VirtualMachineScaleSetVMPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latestModelApplied".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.latestModelApplied
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.vmId = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.instanceView
+                        = VirtualMachineScaleSetVMInstanceViewInner.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.hardwareProfile
+                        = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.storageProfile
+                        = StorageProfile.fromJson(reader);
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.additionalCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.osProfile = OSProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.securityProfile
+                        = SecurityProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.networkProfile
+                        = NetworkProfile.fromJson(reader);
+                } else if ("networkProfileConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.networkProfileConfiguration
+                        = VirtualMachineScaleSetVMNetworkProfileConfiguration.fromJson(reader);
+                } else if ("diagnosticsProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.diagnosticsProfile
+                        = DiagnosticsProfile.fromJson(reader);
+                } else if ("availabilitySet".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.availabilitySet = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.provisioningState = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.licenseType = reader.getString();
+                } else if ("modelDefinitionApplied".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.modelDefinitionApplied = reader.getString();
+                } else if ("protectionPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.protectionPolicy
+                        = VirtualMachineScaleSetVMProtectionPolicy.fromJson(reader);
+                } else if ("userData".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.userData = reader.getString();
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMPropertiesInner;
+        });
     }
 }

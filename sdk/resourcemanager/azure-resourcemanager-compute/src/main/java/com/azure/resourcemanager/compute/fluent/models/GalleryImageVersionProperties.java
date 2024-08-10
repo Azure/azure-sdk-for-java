@@ -6,53 +6,51 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ImageVersionSecurityProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes the properties of a gallery image version.
  */
 @Fluent
-public final class GalleryImageVersionProperties {
+public final class GalleryImageVersionProperties implements JsonSerializable<GalleryImageVersionProperties> {
     /*
      * The publishing profile of a gallery image Version.
      */
-    @JsonProperty(value = "publishingProfile")
     private GalleryImageVersionPublishingProfile publishingProfile;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryProvisioningState provisioningState;
 
     /*
      * This is the storage profile of a Gallery Image Version.
      */
-    @JsonProperty(value = "storageProfile", required = true)
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
      * This is the safety profile of the Gallery Image Version.
      */
-    @JsonProperty(value = "safetyProfile")
     private GalleryImageVersionSafetyProfile safetyProfile;
 
     /*
      * This is the replication status of the gallery image version.
      */
-    @JsonProperty(value = "replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
 
     /*
      * The security profile of a gallery image version
      */
-    @JsonProperty(value = "securityProfile")
     private ImageVersionSecurityProfile securityProfile;
 
     /**
@@ -187,4 +185,60 @@ public final class GalleryImageVersionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryImageVersionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("publishingProfile", this.publishingProfile);
+        jsonWriter.writeJsonField("safetyProfile", this.safetyProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageVersionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryImageVersionProperties.
+     */
+    public static GalleryImageVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageVersionProperties deserializedGalleryImageVersionProperties
+                = new GalleryImageVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageProfile".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.storageProfile
+                        = GalleryImageVersionStorageProfile.fromJson(reader);
+                } else if ("publishingProfile".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.publishingProfile
+                        = GalleryImageVersionPublishingProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.provisioningState
+                        = GalleryProvisioningState.fromString(reader.getString());
+                } else if ("safetyProfile".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.safetyProfile
+                        = GalleryImageVersionSafetyProfile.fromJson(reader);
+                } else if ("replicationStatus".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.replicationStatus = ReplicationStatus.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.securityProfile
+                        = ImageVersionSecurityProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageVersionProperties;
+        });
+    }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class IpFilterTag extends ExpandableStringEnum<IpFilterTag> {
      * @param name a name to look for.
      * @return the corresponding IpFilterTag.
      */
-    @JsonCreator
     public static IpFilterTag fromString(String name) {
         return fromString(name, IpFilterTag.class);
     }

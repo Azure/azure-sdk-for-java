@@ -16,7 +16,7 @@ part of JDK 11.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-jdk-httpclient</artifactId>
-    <version>1.0.0-beta.14</version>
+    <version>1.0.0-beta.15</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
