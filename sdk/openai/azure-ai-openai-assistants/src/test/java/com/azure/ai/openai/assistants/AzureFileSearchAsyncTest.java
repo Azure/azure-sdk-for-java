@@ -19,6 +19,7 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.implementation.AsyncUtils;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,10 +33,11 @@ import java.util.Arrays;
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
+public class AzureFileSearchAsyncTest extends FileSearchTestBase {
 
     AssistantsAsyncClient client;
 
@@ -123,6 +125,39 @@ public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
                 // last deletion asserted
                 .assertNext(threadDeletionStatus -> assertTrue(threadDeletionStatus.isDeleted()))
                 .verifyComplete();
+        });
+    }
+
+    @Disabled("file_search tools are not supported in Azure")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void fileSearchWithMaxNumberResult(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+
+        fileSearchWithMaxNumberResultRunner((fileDetails, assistantCreationOptions) -> {
+            // Upload file
+            StepVerifier.create(client.uploadFile(fileDetails, FilePurpose.ASSISTANTS)
+                .flatMap(openAIFile -> {
+                    // Create assistant
+                    AsyncUtils cleanUp = new AsyncUtils();
+                    CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+                    createToolResourcesOptions.setFileSearch(
+                        new CreateFileSearchToolResourceOptions(
+                            new CreateFileSearchToolResourceVectorStoreOptionsList(
+                                Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
+                                    Arrays.asList(openAIFile.getId()),
+                                    null
+                                ))
+                            )
+                        )
+                    );
+                    assistantCreationOptions.setToolResources(createToolResourcesOptions);
+
+                    cleanUp.setFile(openAIFile);
+                    return client.createAssistant(assistantCreationOptions)
+                        .zipWith(Mono.just(cleanUp));
+                })
+            ).verifyErrorSatisfies(error -> assertInstanceOf(HttpResponseException.class, error));
         });
     }
 }

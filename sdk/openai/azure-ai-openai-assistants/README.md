@@ -168,7 +168,10 @@ CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesO
 createToolResourcesOptions.setFileSearch(
     new CreateFileSearchToolResourceOptions(
         new CreateFileSearchToolResourceVectorStoreOptionsList(
-            Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+            Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
+                Arrays.asList(openAIFile.getId()),
+                null
+            )))));
 
 Assistant assistant = client.createAssistant(
     new AssistantCreationOptions(deploymentOrModelId)
