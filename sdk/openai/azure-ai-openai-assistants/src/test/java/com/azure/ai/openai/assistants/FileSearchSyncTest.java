@@ -19,6 +19,7 @@ import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,9 +30,10 @@ import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMEN
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FileSearchSyncTest extends AssistantsClientTestBase {
+public class FileSearchSyncTest extends FileSearchTestBase {
 
     AssistantsClient client;
 
@@ -49,7 +51,10 @@ public class FileSearchSyncTest extends AssistantsClientTestBase {
             createToolResourcesOptions.setFileSearch(
                 new CreateFileSearchToolResourceOptions(
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
-                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
+                            Arrays.asList(openAIFile.getId()),
+                            null
+                        )))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
@@ -95,5 +100,37 @@ public class FileSearchSyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void fileSearchWithMaxNumberResult(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient);
 
+        fileSearchWithMaxNumberResultRunner((fileDetails, assistantCreationOptions) -> {
+            // Upload file for assistant
+            OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
+
+            // Create assistant
+            CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+            createToolResourcesOptions.setFileSearch(
+                new CreateFileSearchToolResourceOptions(
+                    new CreateFileSearchToolResourceVectorStoreOptionsList(
+                        Arrays.asList(
+                            new CreateFileSearchToolResourceVectorStoreOptions(
+                            Arrays.asList(openAIFile.getId()),
+                            null)
+                        )
+                    )
+                )
+            );
+            assistantCreationOptions.setToolResources(createToolResourcesOptions);
+
+            assertThrows(HttpResponseException.class, () -> {
+                Assistant assistant = client.createAssistant(assistantCreationOptions);
+                client.deleteAssistant(assistant.getId());
+            });
+
+            // cleanup
+            client.deleteFile(openAIFile.getId());
+        });
+    }
 }
