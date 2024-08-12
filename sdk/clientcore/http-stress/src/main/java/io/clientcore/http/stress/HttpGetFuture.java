@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -18,19 +19,17 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
-import java.util.concurrent.CompletableFuture;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
+import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.
@@ -77,18 +76,31 @@ public class HttpGetFuture extends ScenarioBase<StressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
+        return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+    }
+
+    private Mono<Void> runInternalAsync() {
         Callable<Void> task = () -> {
-            runInternal();
-            return null;
-        };
-        return Mono.fromFuture(() -> CompletableFuture.supplyAsync(() -> {
+            Response<?> response = pipeline.send(createRequest());
             try {
-                executorService.submit(task).get();
+                ((HttpResponse<?>) response).getBody().toBytes();
                 return null;
+            } finally {
+                response.close();
+            }
+        };
+
+        CompletableFuture<Void> futureTask = CompletableFuture.runAsync(() -> {
+            try {
+                task.call();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }));
+        });
+
+        futureTask.join(); // Wait for the CompletableFuture to complete
+
+        return Mono.fromFuture(() -> futureTask);
     }
 
     private HttpRequest createRequest() {

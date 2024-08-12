@@ -18,22 +18,26 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+import io.clientcore.http.stress.util.JavaVersionUtil;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.
  */
-public class HttpGet extends ScenarioBase<StressOptions> {
+public class HttpGetVirtualThreads extends ScenarioBase<StressOptions> {
     // there will be multiple instances of scenario
-    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGet.class);
-    private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
+    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGetVirtualThreads.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpGetVirtualThreads.class);
     private final HttpPipeline pipeline;
     private final URL url;
 
@@ -44,7 +48,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
      * Creates an instance of performance test.
      * @param options stress test options
      */
-    public HttpGet(StressOptions options) {
+    public HttpGetVirtualThreads(StressOptions options) {
         super(options, TELEMETRY_HELPER);
         pipeline = getPipelineBuilder().build();
         try {
@@ -71,11 +75,40 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+        if (JavaVersionUtil.isJava21OrLater()) {
+            return runAsyncWithVirtualThreads();
+        } else {
+            return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+        }
+    }
+
+    private Mono<Void> runAsyncWithVirtualThreads() {
+        ExecutorService executor = createVirtualThreadExecutor();
+        return Mono.create(sink -> {
+            executor.submit(() -> {
+                try {
+                    TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+                    sink.success();
+                } catch (Exception e) {
+                    sink.error(e);
+                } finally {
+                    executor.shutdown();
+                }
+            });
+        });
+    }
+
+    private ExecutorService createVirtualThreadExecutor() {
+        try {
+            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
+            return (ExecutorService) method.invoke(null);
+        } catch (Exception e) {
+            // Fallback for Java versions that do not support newVirtualThreadPerTaskExecutor
+            return Executors.newCachedThreadPool();
+        }
     }
 
     private Mono<Void> runInternalAsync() {
-        // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())),
             response -> {
                 ((HttpResponse<?>) response).getBody().toBytes();

@@ -20,7 +20,10 @@ public class App {
         TelemetryHelper.init();
 
         PerfStressProgram.run(new Class<?>[]{
+            HttpGet.class,
+            HttpGetExecutorService.class,
             HttpGetFuture.class,
+            HttpGetVirtualThreads.class,
             // HttpPatch.class,
             // add other stress tests here
         }, args);

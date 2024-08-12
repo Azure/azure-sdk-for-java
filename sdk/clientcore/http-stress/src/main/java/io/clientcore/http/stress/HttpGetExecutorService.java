@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -23,7 +24,9 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -74,7 +77,27 @@ public class HttpGetExecutorService extends ScenarioBase<StressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromFuture(() -> CompletableFuture.runAsync(this::runInternal, executorService));
+        return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+    }
+
+    private Mono<Void> runInternalAsync() {
+        Callable<String> task = () -> {
+            try (Response<?> response = pipeline.send(createRequest())) {
+                return response.getBody().toString();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        };
+
+        CompletableFuture<String> asyncTask = CompletableFuture.supplyAsync(() -> {
+            try {
+                return task.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, executorService);
+
+        return Mono.fromFuture(asyncTask).then();
     }
 
     private HttpRequest createRequest() {

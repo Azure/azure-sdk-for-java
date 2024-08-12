@@ -30,6 +30,7 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.UncheckedIOException;
@@ -138,6 +139,25 @@ public class TelemetryHelper {
                 trackFailure(start, e, span);
             }
         }
+    }
+
+    /**
+     * Instruments a Mono: records mono duration along with the status (success, error, cancellation),
+     * @param runAsync the mono to instrument
+     * @return the instrumented mono
+     */
+    @SuppressWarnings("try")
+    public Mono<Void> instrumentRunAsync(Mono<Void> runAsync) {
+        return Mono.defer(() -> {
+            Instant start = Instant.now();
+            Span span = tracer.spanBuilder("runAsync").startSpan();
+            try (Scope s = span.makeCurrent()) {
+                return runAsync.doOnError(e -> trackFailure(start, e, span))
+                    .doOnCancel(() -> trackCancellation(start, span))
+                    .doOnSuccess(v -> trackSuccess(start, span))
+                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+            }
+        });
     }
 
     private void trackSuccess(Instant start, Span span) {
