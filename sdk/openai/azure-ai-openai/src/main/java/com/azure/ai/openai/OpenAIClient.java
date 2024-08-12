@@ -5,6 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
+import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.implementation.models.CreateBatchRequest;
 import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
@@ -26,6 +27,7 @@ import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.OpenAIFile;
+import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -39,6 +41,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.azure.ai.openai.implementation.CompletionsUtils;
@@ -1065,7 +1069,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1122,7 +1126,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * String
      * }</pre>
@@ -1150,7 +1154,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1200,7 +1204,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * String
      * }</pre>
@@ -1529,7 +1533,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1564,7 +1568,7 @@ public final class OpenAIClient {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1597,7 +1601,7 @@ public final class OpenAIClient {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1623,7 +1627,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1654,7 +1658,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -1685,7 +1689,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1753,7 +1757,7 @@ public final class OpenAIClient {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     endpoint: String (Required)
@@ -1764,9 +1768,9 @@ public final class OpenAIClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1825,7 +1829,7 @@ public final class OpenAIClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1884,7 +1888,7 @@ public final class OpenAIClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1973,12 +1977,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileListResponse listFiles() {
+    public List<OpenAIFile> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class);
+        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
     }
 
     /**
@@ -2113,9 +2116,8 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all batches owned by the Azure OpenAI resource.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfBatch listBatches(String after, Integer limit) {
+    public PageableList<Batch> listBatches(String after, Integer limit) {
         // Generated convenience method for listBatchesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
@@ -2124,7 +2126,8 @@ public final class OpenAIClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        return listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
+        OpenAIPageableListOfBatch batchList = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
+        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(), batchList.isHasMore());
     }
 
     /**
@@ -2137,12 +2140,12 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all batches owned by the Azure OpenAI resource.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfBatch listBatches() {
+    public PageableList<Batch> listBatches() {
         // Generated convenience method for listBatchesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
+        OpenAIPageableListOfBatch batchList = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
+        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(), batchList.isHasMore());
     }
 
     /**
