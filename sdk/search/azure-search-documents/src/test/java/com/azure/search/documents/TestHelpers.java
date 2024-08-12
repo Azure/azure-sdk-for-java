@@ -65,29 +65,6 @@ public final class TestHelpers {
 
     public static final String HOTEL_INDEX_NAME = "hotels";
 
-//    static {
-//        // Add a shutdown hook to shut down the executor service gracefully
-//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-//            System.out.println("JVM is shutting down. Shutting down executor service...");
-//            shutdownExecutorService();
-//        }));
-//    }
-//
-//    private static void shutdownExecutorService() {
-//        executorService.shutdown();
-//        try {
-//            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-//                executorService.shutdownNow();
-//                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-//                    System.err.println("Executor service did not terminate");
-//                }
-//            }
-//        } catch (InterruptedException e) {
-//            executorService.shutdownNow();
-//            Thread.currentThread().interrupt();
-//        }
-//    }
-
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
