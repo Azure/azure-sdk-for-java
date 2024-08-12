@@ -77,7 +77,7 @@ public class HttpPostVirtualThreads extends ScenarioBase<StressOptions> {
     @Override
     public Mono<Void> runAsync() {
         if (JavaVersionUtil.isJava21OrLater()) {
-            return runAsyncWithVirtualThreads();
+            return TELEMETRY_HELPER.instrumentRunAsync(runAsyncWithVirtualThreads());
         } else {
             return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
         }
@@ -88,8 +88,11 @@ public class HttpPostVirtualThreads extends ScenarioBase<StressOptions> {
         return Mono.create(sink -> {
             executor.submit(() -> {
                 try {
-                    TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
-                    sink.success();
+                    runInternalAsync().subscribe(
+                        null,
+                        sink::error,
+                        sink::success
+                    );
                 } catch (Exception e) {
                     sink.error(e);
                 } finally {
