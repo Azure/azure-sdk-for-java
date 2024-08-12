@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.64.0-beta.1 (Unreleased)
+### 4.63.1 (2024-08-12)
 
 #### Bugs Fixed
 * Fixed an eager prefetch issue for order by queries to prevent unnecessary round trips. - See [PR 41348](https://github.com/Azure/azure-sdk-for-java/pull/41348)
