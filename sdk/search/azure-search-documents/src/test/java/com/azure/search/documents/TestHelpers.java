@@ -13,7 +13,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
@@ -27,7 +26,6 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This class contains helper methods for running Azure AI Search tests.
  */
 public final class TestHelpers {
-    private static TestMode testMode;
+    private static TestMode testMode = setupTestMode();
 
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
@@ -443,10 +441,6 @@ public final class TestHelpers {
      * @return The appropriate token credential
      */
     public static TokenCredential getTestTokenCredential() {
-        if (testMode == null) {
-            testMode = setupTestMode();
-        }
-
         if (testMode == TestMode.PLAYBACK) {
             return new MockTokenCredential();
         } else if (testMode == TestMode.RECORD) {

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
