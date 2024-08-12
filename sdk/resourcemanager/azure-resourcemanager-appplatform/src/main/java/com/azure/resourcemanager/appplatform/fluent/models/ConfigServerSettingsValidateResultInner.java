@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettingsErrorRecord;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Validation result for config server settings.
  */
 @Fluent
-public final class ConfigServerSettingsValidateResultInner {
+public final class ConfigServerSettingsValidateResultInner
+    implements JsonSerializable<ConfigServerSettingsValidateResultInner> {
     /*
      * Indicate if the config server settings are valid
      */
-    @JsonProperty(value = "isValid")
     private Boolean isValid;
 
     /*
      * The detail validation results
      */
-    @JsonProperty(value = "details")
     private List<ConfigServerSettingsErrorRecord> details;
 
     /**
@@ -81,5 +84,48 @@ public final class ConfigServerSettingsValidateResultInner {
         if (details() != null) {
             details().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isValid", this.isValid);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigServerSettingsValidateResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigServerSettingsValidateResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigServerSettingsValidateResultInner.
+     */
+    public static ConfigServerSettingsValidateResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigServerSettingsValidateResultInner deserializedConfigServerSettingsValidateResultInner
+                = new ConfigServerSettingsValidateResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isValid".equals(fieldName)) {
+                    deserializedConfigServerSettingsValidateResultInner.isValid
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("details".equals(fieldName)) {
+                    List<ConfigServerSettingsErrorRecord> details
+                        = reader.readArray(reader1 -> ConfigServerSettingsErrorRecord.fromJson(reader1));
+                    deserializedConfigServerSettingsValidateResultInner.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigServerSettingsValidateResultInner;
+        });
     }
 }

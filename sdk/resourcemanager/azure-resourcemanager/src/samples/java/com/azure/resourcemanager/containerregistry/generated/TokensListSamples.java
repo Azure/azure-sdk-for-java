@@ -19,7 +19,10 @@ public final class TokensListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tokenList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTokens().list("myResourceGroup", "myRegistry",
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTokens()
+            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

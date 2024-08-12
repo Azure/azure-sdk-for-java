@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * List of channels that this recommendation can apply.
  */
@@ -51,7 +48,6 @@ public enum Channels {
      * @param value the serialized value to parse.
      * @return the parsed Channels object, or null if unable to parse.
      */
-    @JsonCreator
     public static Channels fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum Channels {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

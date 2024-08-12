@@ -3,8 +3,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for AppServiceOperatingSystem. */
 public enum OperatingSystem {
@@ -27,7 +25,6 @@ public enum OperatingSystem {
      * @param value the serialized value to parse.
      * @return the parsed AppServiceOperatingSystem object, or null if unable to parse.
      */
-    @JsonCreator
     public static OperatingSystem fromString(String value) {
         OperatingSystem[] items = OperatingSystem.values();
         for (OperatingSystem item : items) {
@@ -38,7 +35,6 @@ public enum OperatingSystem {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

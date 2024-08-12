@@ -5,155 +5,141 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** chatMessage. */
+/**
+ * chatMessage.
+ */
 @Fluent
 public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /*
      * Attached files. Attachments are currently read-only – sending attachments is not supported.
      */
-    @JsonProperty(value = "attachments")
     private List<MicrosoftGraphChatMessageAttachment> attachments;
 
     /*
      * itemBody
      */
-    @JsonProperty(value = "body")
     private MicrosoftGraphItemBody body;
 
     /*
      * Read only. Timestamp of when the chat message was created.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * Read only. Timestamp at which the chat message was deleted, or null if not deleted.
      */
-    @JsonProperty(value = "deletedDateTime")
     private OffsetDateTime deletedDateTime;
 
     /*
      * Read-only. Version number of the chat message.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "from")
     private MicrosoftGraphIdentitySet from;
 
     /*
      * chatMessageImportance
      */
-    @JsonProperty(value = "importance")
     private MicrosoftGraphChatMessageImportance importance;
 
     /*
      * Read only. Timestamp when edits to the chat message were made. Triggers an 'Edited' flag in the Microsoft Teams
      * UI. If no edits are made the value is null.
      */
-    @JsonProperty(value = "lastEditedDateTime")
     private OffsetDateTime lastEditedDateTime;
 
     /*
      * Read only. Timestamp when the chat message is created (initial setting) or edited, including when a reaction is
      * added or removed.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Locale of the chat message set by the client.
      */
-    @JsonProperty(value = "locale")
     private String locale;
 
     /*
      * List of entities mentioned in the chat message. Currently supports user, bot, team, channel.
      */
-    @JsonProperty(value = "mentions")
     private List<MicrosoftGraphChatMessageMention> mentions;
 
     /*
      * chatMessageType
      */
-    @JsonProperty(value = "messageType")
     private MicrosoftGraphChatMessageType messageType;
 
     /*
      * chatMessagePolicyViolation
      */
-    @JsonProperty(value = "policyViolation")
     private MicrosoftGraphChatMessagePolicyViolation policyViolation;
 
     /*
      * The reactions property.
      */
-    @JsonProperty(value = "reactions")
     private List<MicrosoftGraphChatMessageReaction> reactions;
 
     /*
      * Read-only. Id of the parent chat message or root chat message of the thread. (Only applies to chat messages in
      * channels not chats)
      */
-    @JsonProperty(value = "replyToId")
     private String replyToId;
 
     /*
      * The subject of the chat message, in plaintext.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * Summary text of the chat message that could be used for push notifications and summary views or fall back views.
      * Only applies to channel chat messages, not chat messages in a chat.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * The webUrl property.
      */
-    @JsonProperty(value = "webUrl")
     private String webUrl;
 
     /*
      * The hostedContents property.
      */
-    @JsonProperty(value = "hostedContents")
     private List<MicrosoftGraphChatMessageHostedContent> hostedContents;
 
     /*
      * The replies property.
      */
-    @JsonProperty(value = "replies")
     private List<MicrosoftGraphChatMessage> replies;
 
     /*
      * chatMessage
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChatMessage class. */
+    /**
+     * Creates an instance of MicrosoftGraphChatMessage class.
+     */
     public MicrosoftGraphChatMessage() {
     }
 
     /**
      * Get the attachments property: Attached files. Attachments are currently read-only – sending attachments is not
      * supported.
-     *
+     * 
      * @return the attachments value.
      */
     public List<MicrosoftGraphChatMessageAttachment> attachments() {
@@ -163,7 +149,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the attachments property: Attached files. Attachments are currently read-only – sending attachments is not
      * supported.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -174,7 +160,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the body property: itemBody.
-     *
+     * 
      * @return the body value.
      */
     public MicrosoftGraphItemBody body() {
@@ -183,7 +169,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the body property: itemBody.
-     *
+     * 
      * @param body the body value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -194,7 +180,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the createdDateTime property: Read only. Timestamp of when the chat message was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -203,7 +189,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the createdDateTime property: Read only. Timestamp of when the chat message was created.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -215,7 +201,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Get the deletedDateTime property: Read only. Timestamp at which the chat message was deleted, or null if not
      * deleted.
-     *
+     * 
      * @return the deletedDateTime value.
      */
     public OffsetDateTime deletedDateTime() {
@@ -225,7 +211,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the deletedDateTime property: Read only. Timestamp at which the chat message was deleted, or null if not
      * deleted.
-     *
+     * 
      * @param deletedDateTime the deletedDateTime value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -236,7 +222,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the etag property: Read-only. Version number of the chat message.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -245,7 +231,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the etag property: Read-only. Version number of the chat message.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -256,7 +242,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the from property: identitySet.
-     *
+     * 
      * @return the from value.
      */
     public MicrosoftGraphIdentitySet from() {
@@ -265,7 +251,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the from property: identitySet.
-     *
+     * 
      * @param from the from value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -276,7 +262,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the importance property: chatMessageImportance.
-     *
+     * 
      * @return the importance value.
      */
     public MicrosoftGraphChatMessageImportance importance() {
@@ -285,7 +271,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the importance property: chatMessageImportance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -297,7 +283,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Get the lastEditedDateTime property: Read only. Timestamp when edits to the chat message were made. Triggers an
      * 'Edited' flag in the Microsoft Teams UI. If no edits are made the value is null.
-     *
+     * 
      * @return the lastEditedDateTime value.
      */
     public OffsetDateTime lastEditedDateTime() {
@@ -307,7 +293,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the lastEditedDateTime property: Read only. Timestamp when edits to the chat message were made. Triggers an
      * 'Edited' flag in the Microsoft Teams UI. If no edits are made the value is null.
-     *
+     * 
      * @param lastEditedDateTime the lastEditedDateTime value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -319,7 +305,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Get the lastModifiedDateTime property: Read only. Timestamp when the chat message is created (initial setting) or
      * edited, including when a reaction is added or removed.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -329,7 +315,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the lastModifiedDateTime property: Read only. Timestamp when the chat message is created (initial setting) or
      * edited, including when a reaction is added or removed.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -340,7 +326,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the locale property: Locale of the chat message set by the client.
-     *
+     * 
      * @return the locale value.
      */
     public String locale() {
@@ -349,7 +335,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the locale property: Locale of the chat message set by the client.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -361,7 +347,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Get the mentions property: List of entities mentioned in the chat message. Currently supports user, bot, team,
      * channel.
-     *
+     * 
      * @return the mentions value.
      */
     public List<MicrosoftGraphChatMessageMention> mentions() {
@@ -371,7 +357,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the mentions property: List of entities mentioned in the chat message. Currently supports user, bot, team,
      * channel.
-     *
+     * 
      * @param mentions the mentions value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -382,7 +368,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the messageType property: chatMessageType.
-     *
+     * 
      * @return the messageType value.
      */
     public MicrosoftGraphChatMessageType messageType() {
@@ -391,7 +377,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the messageType property: chatMessageType.
-     *
+     * 
      * @param messageType the messageType value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -402,7 +388,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the policyViolation property: chatMessagePolicyViolation.
-     *
+     * 
      * @return the policyViolation value.
      */
     public MicrosoftGraphChatMessagePolicyViolation policyViolation() {
@@ -411,7 +397,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the policyViolation property: chatMessagePolicyViolation.
-     *
+     * 
      * @param policyViolation the policyViolation value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -422,7 +408,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the reactions property: The reactions property.
-     *
+     * 
      * @return the reactions value.
      */
     public List<MicrosoftGraphChatMessageReaction> reactions() {
@@ -431,7 +417,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the reactions property: The reactions property.
-     *
+     * 
      * @param reactions the reactions value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -443,7 +429,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Get the replyToId property: Read-only. Id of the parent chat message or root chat message of the thread. (Only
      * applies to chat messages in channels not chats).
-     *
+     * 
      * @return the replyToId value.
      */
     public String replyToId() {
@@ -453,7 +439,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the replyToId property: Read-only. Id of the parent chat message or root chat message of the thread. (Only
      * applies to chat messages in channels not chats).
-     *
+     * 
      * @param replyToId the replyToId value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -464,7 +450,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the subject property: The subject of the chat message, in plaintext.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -473,7 +459,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the subject property: The subject of the chat message, in plaintext.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -485,7 +471,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Get the summary property: Summary text of the chat message that could be used for push notifications and summary
      * views or fall back views. Only applies to channel chat messages, not chat messages in a chat.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -495,7 +481,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     /**
      * Set the summary property: Summary text of the chat message that could be used for push notifications and summary
      * views or fall back views. Only applies to channel chat messages, not chat messages in a chat.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -506,7 +492,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the webUrl property: The webUrl property.
-     *
+     * 
      * @return the webUrl value.
      */
     public String webUrl() {
@@ -515,7 +501,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the webUrl property: The webUrl property.
-     *
+     * 
      * @param webUrl the webUrl value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -526,7 +512,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the hostedContents property: The hostedContents property.
-     *
+     * 
      * @return the hostedContents value.
      */
     public List<MicrosoftGraphChatMessageHostedContent> hostedContents() {
@@ -535,7 +521,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the hostedContents property: The hostedContents property.
-     *
+     * 
      * @param hostedContents the hostedContents value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -546,7 +532,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the replies property: The replies property.
-     *
+     * 
      * @return the replies value.
      */
     public List<MicrosoftGraphChatMessage> replies() {
@@ -555,7 +541,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Set the replies property: The replies property.
-     *
+     * 
      * @param replies the replies value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -566,17 +552,16 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: chatMessage.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: chatMessage.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChatMessage object itself.
      */
@@ -585,15 +570,9 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphChatMessage withId(String id) {
         super.withId(id);
@@ -602,7 +581,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -632,5 +611,138 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
         if (replies() != null) {
             replies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("deletedDateTime",
+            this.deletedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletedDateTime));
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("from", this.from);
+        jsonWriter.writeStringField("importance", this.importance == null ? null : this.importance.toString());
+        jsonWriter.writeStringField("lastEditedDateTime",
+            this.lastEditedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastEditedDateTime));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("locale", this.locale);
+        jsonWriter.writeArrayField("mentions", this.mentions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("messageType", this.messageType == null ? null : this.messageType.toString());
+        jsonWriter.writeJsonField("policyViolation", this.policyViolation);
+        jsonWriter.writeArrayField("reactions", this.reactions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("replyToId", this.replyToId);
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeStringField("webUrl", this.webUrl);
+        jsonWriter.writeArrayField("hostedContents", this.hostedContents,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("replies", this.replies, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChatMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChatMessage if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChatMessage.
+     */
+    public static MicrosoftGraphChatMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChatMessage deserializedMicrosoftGraphChatMessage = new MicrosoftGraphChatMessage();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.withId(reader.getString());
+                } else if ("attachments".equals(fieldName)) {
+                    List<MicrosoftGraphChatMessageAttachment> attachments
+                        = reader.readArray(reader1 -> MicrosoftGraphChatMessageAttachment.fromJson(reader1));
+                    deserializedMicrosoftGraphChatMessage.attachments = attachments;
+                } else if ("body".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.body = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.deletedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("etag".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.etag = reader.getString();
+                } else if ("from".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.from = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("importance".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.importance
+                        = MicrosoftGraphChatMessageImportance.fromString(reader.getString());
+                } else if ("lastEditedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.lastEditedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("locale".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.locale = reader.getString();
+                } else if ("mentions".equals(fieldName)) {
+                    List<MicrosoftGraphChatMessageMention> mentions
+                        = reader.readArray(reader1 -> MicrosoftGraphChatMessageMention.fromJson(reader1));
+                    deserializedMicrosoftGraphChatMessage.mentions = mentions;
+                } else if ("messageType".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.messageType
+                        = MicrosoftGraphChatMessageType.fromString(reader.getString());
+                } else if ("policyViolation".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.policyViolation
+                        = MicrosoftGraphChatMessagePolicyViolation.fromJson(reader);
+                } else if ("reactions".equals(fieldName)) {
+                    List<MicrosoftGraphChatMessageReaction> reactions
+                        = reader.readArray(reader1 -> MicrosoftGraphChatMessageReaction.fromJson(reader1));
+                    deserializedMicrosoftGraphChatMessage.reactions = reactions;
+                } else if ("replyToId".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.replyToId = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.subject = reader.getString();
+                } else if ("summary".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.summary = reader.getString();
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessage.webUrl = reader.getString();
+                } else if ("hostedContents".equals(fieldName)) {
+                    List<MicrosoftGraphChatMessageHostedContent> hostedContents
+                        = reader.readArray(reader1 -> MicrosoftGraphChatMessageHostedContent.fromJson(reader1));
+                    deserializedMicrosoftGraphChatMessage.hostedContents = hostedContents;
+                } else if ("replies".equals(fieldName)) {
+                    List<MicrosoftGraphChatMessage> replies
+                        = reader.readArray(reader1 -> MicrosoftGraphChatMessage.fromJson(reader1));
+                    deserializedMicrosoftGraphChatMessage.replies = replies;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChatMessage.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChatMessage;
+        });
     }
 }

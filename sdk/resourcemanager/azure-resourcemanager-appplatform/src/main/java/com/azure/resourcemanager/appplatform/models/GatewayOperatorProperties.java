@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the Spring Cloud Gateway Operator.
  */
 @Immutable
-public final class GatewayOperatorProperties {
+public final class GatewayOperatorProperties implements JsonSerializable<GatewayOperatorProperties> {
     /*
      * The requested resource quantity for required CPU and Memory.
      */
-    @JsonProperty(value = "resourceRequests", access = JsonProperty.Access.WRITE_ONLY)
     private GatewayOperatorResourceRequests resourceRequests;
 
     /*
      * Collection of instances belong to Spring Cloud Gateway operator.
      */
-    @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<GatewayInstance> instances;
 
     /**
@@ -61,5 +63,44 @@ public final class GatewayOperatorProperties {
         if (instances() != null) {
             instances().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayOperatorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayOperatorProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayOperatorProperties.
+     */
+    public static GatewayOperatorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayOperatorProperties deserializedGatewayOperatorProperties = new GatewayOperatorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceRequests".equals(fieldName)) {
+                    deserializedGatewayOperatorProperties.resourceRequests
+                        = GatewayOperatorResourceRequests.fromJson(reader);
+                } else if ("instances".equals(fieldName)) {
+                    List<GatewayInstance> instances = reader.readArray(reader1 -> GatewayInstance.fromJson(reader1));
+                    deserializedGatewayOperatorProperties.instances = instances;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayOperatorProperties;
+        });
     }
 }

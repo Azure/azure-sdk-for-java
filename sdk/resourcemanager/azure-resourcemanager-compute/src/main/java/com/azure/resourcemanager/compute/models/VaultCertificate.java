@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a single certificate reference in a Key Vault, and where the certificate should reside on the VM.
  */
 @Fluent
-public final class VaultCertificate {
+public final class VaultCertificate implements JsonSerializable<VaultCertificate> {
     /*
      * This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key
      * Vault, see [Add a key or secret to the key
@@ -23,7 +27,6 @@ public final class VaultCertificate {
      * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
-    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /*
@@ -32,7 +35,6 @@ public final class VaultCertificate {
      * placed under the /var/lib/waagent directory, with the file name &lt;UppercaseThumbprint&gt;.crt for the X509
      * certificate file and &lt;UppercaseThumbprint&gt;.prv for private key. Both of these files are .pem formatted.
      */
-    @JsonProperty(value = "certificateStore")
     private String certificateStore;
 
     /**
@@ -113,5 +115,44 @@ public final class VaultCertificate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        jsonWriter.writeStringField("certificateStore", this.certificateStore);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultCertificate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultCertificate.
+     */
+    public static VaultCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultCertificate deserializedVaultCertificate = new VaultCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateUrl".equals(fieldName)) {
+                    deserializedVaultCertificate.certificateUrl = reader.getString();
+                } else if ("certificateStore".equals(fieldName)) {
+                    deserializedVaultCertificate.certificateStore = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultCertificate;
+        });
     }
 }

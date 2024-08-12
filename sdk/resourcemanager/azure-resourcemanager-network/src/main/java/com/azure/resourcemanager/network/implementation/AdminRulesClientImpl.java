@@ -34,10 +34,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.AdminRulesClient;
 import com.azure.resourcemanager.network.fluent.models.BaseAdminRuleInner;
 import com.azure.resourcemanager.network.models.AdminRuleListResult;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in AdminRulesClient.
@@ -55,7 +54,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Initializes an instance of AdminRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AdminRulesClientImpl(NetworkManagementClientImpl client) {
@@ -130,7 +129,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -186,7 +185,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -243,7 +242,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -267,7 +266,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -288,7 +287,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -313,7 +312,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -334,7 +333,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -359,7 +358,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -412,7 +411,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -464,7 +463,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -484,7 +483,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -505,7 +504,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -525,7 +524,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -584,7 +583,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -643,7 +642,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -664,7 +663,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -687,7 +686,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -708,7 +707,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -762,7 +761,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -816,7 +815,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -840,7 +839,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -863,7 +862,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -889,7 +888,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -912,7 +911,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -937,7 +936,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -959,7 +958,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -980,7 +979,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -1003,7 +1002,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -1023,7 +1022,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -1045,7 +1044,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1071,7 +1070,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

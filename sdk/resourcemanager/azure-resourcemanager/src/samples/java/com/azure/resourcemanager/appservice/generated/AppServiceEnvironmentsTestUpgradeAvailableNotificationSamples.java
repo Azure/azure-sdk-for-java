@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsTestUpgradeAvailableNotificationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_TestUpgradeAvailableNotification.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * AppServiceEnvironments_TestUpgradeAvailableNotification.json
      */
     /**
      * Sample code: Send a test notification that an upgrade is available for this App Service Environment.

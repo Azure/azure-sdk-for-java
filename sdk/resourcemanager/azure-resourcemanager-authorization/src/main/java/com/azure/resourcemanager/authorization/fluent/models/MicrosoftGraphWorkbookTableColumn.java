@@ -5,55 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookTableColumn. */
+/**
+ * workbookTableColumn.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntity {
     /*
      * Returns the index number of the column within the columns collection of the table. Zero-indexed. Read-only.
      */
-    @JsonProperty(value = "index")
     private Integer index;
 
     /*
      * Returns the name of the table column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Json
      */
-    @JsonProperty(value = "values")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> values;
 
     /*
      * workbookFilter
      */
-    @JsonProperty(value = "filter")
     private MicrosoftGraphWorkbookFilter filter;
 
     /*
      * workbookTableColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookTableColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookTableColumn class.
+     */
     public MicrosoftGraphWorkbookTableColumn() {
     }
 
     /**
      * Get the index property: Returns the index number of the column within the columns collection of the table.
      * Zero-indexed. Read-only.
-     *
+     * 
      * @return the index value.
      */
     public Integer index() {
@@ -63,7 +61,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
     /**
      * Set the index property: Returns the index number of the column within the columns collection of the table.
      * Zero-indexed. Read-only.
-     *
+     * 
      * @param index the index value to set.
      * @return the MicrosoftGraphWorkbookTableColumn object itself.
      */
@@ -74,7 +72,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Get the name property: Returns the name of the table column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +81,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Set the name property: Returns the name of the table column.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphWorkbookTableColumn object itself.
      */
@@ -94,7 +92,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Get the values property: Json.
-     *
+     * 
      * @return the values value.
      */
     public Map<String, Object> values() {
@@ -103,7 +101,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Set the values property: Json.
-     *
+     * 
      * @param values the values value to set.
      * @return the MicrosoftGraphWorkbookTableColumn object itself.
      */
@@ -114,7 +112,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Get the filter property: workbookFilter.
-     *
+     * 
      * @return the filter value.
      */
     public MicrosoftGraphWorkbookFilter filter() {
@@ -123,7 +121,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Set the filter property: workbookFilter.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the MicrosoftGraphWorkbookTableColumn object itself.
      */
@@ -134,17 +132,16 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Get the additionalProperties property: workbookTableColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookTableColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookTableColumn object itself.
      */
@@ -153,15 +150,9 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookTableColumn withId(String id) {
         super.withId(id);
@@ -170,7 +161,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -179,5 +170,67 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
         if (filter() != null) {
             filter().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeNumberField("index", this.index);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeMapField("values", this.values, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("filter", this.filter);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookTableColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookTableColumn if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookTableColumn.
+     */
+    public static MicrosoftGraphWorkbookTableColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookTableColumn deserializedMicrosoftGraphWorkbookTableColumn
+                = new MicrosoftGraphWorkbookTableColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTableColumn.withId(reader.getString());
+                } else if ("index".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTableColumn.index = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTableColumn.name = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    Map<String, Object> values = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookTableColumn.values = values;
+                } else if ("filter".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTableColumn.filter
+                        = MicrosoftGraphWorkbookFilter.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookTableColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookTableColumn;
+        });
     }
 }

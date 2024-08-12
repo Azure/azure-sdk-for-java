@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsStartSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerApps_Start.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Start.json
      */
     /**
      * Sample code: Start Container App.
@@ -18,6 +18,6 @@ public final class ContainerAppsStartSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void startContainerApp(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerApps().start("rg", "testWorkerApp0", com.azure.core.util.Context.NONE);
+        manager.containerApps().start("rg", "testworkerapp0", com.azure.core.util.Context.NONE);
     }
 }

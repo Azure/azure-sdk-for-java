@@ -7,6 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -24,7 +27,7 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -40,52 +43,59 @@ public final class VirtualMachineInner extends Resource {
      * programmatic use. In the Azure portal, find the marketplace image that you want to use and then click **Want to
      * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * Describes the properties of a Virtual Machine.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachinePropertiesInner innerProperties;
 
     /*
      * The virtual machine child extension resources.
      */
-    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
 
     /*
      * The identity of the virtual machine, if configured.
      */
-    @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
 
     /*
      * The virtual machine zones.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The extended location of the Virtual Machine.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * ManagedBy is set to Virtual Machine Scale Set(VMSS) flex ARM resourceID, if the VM is part of the VMSS. This
      * property is used by platform for internal resource group delete optimization.
      */
-    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
     /*
      * Etag is property returned in Create/Update/Get response of the VM, so that customer can supply it in the header
      * to ensure optimistic updates.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VirtualMachineInner class.
@@ -217,6 +227,36 @@ public final class VirtualMachineInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -907,5 +947,76 @@ public final class VirtualMachineInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInner.
+     */
+    public static VirtualMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInner deserializedVirtualMachineInner = new VirtualMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineInner.withTags(tags);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineInner.plan = Plan.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineInner.innerProperties = VirtualMachinePropertiesInner.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    List<VirtualMachineExtensionInner> resources
+                        = reader.readArray(reader1 -> VirtualMachineExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineInner.resources = resources;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineInner.identity = VirtualMachineIdentity.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineInner.zones = zones;
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedVirtualMachineInner.managedBy = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualMachineInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInner;
+        });
     }
 }

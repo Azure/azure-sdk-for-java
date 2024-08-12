@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsResource;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,11 +14,12 @@ import java.util.Map;
  */
 public final class CassandraResourcesUpdateCassandraTableThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBCassandraTableThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBCassandraTableThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraTableThroughputUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraTableThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

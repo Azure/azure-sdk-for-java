@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.models.FailoverPolicies;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
-
 import java.util.Arrays;
 
 /**
@@ -14,11 +13,12 @@ import java.util.Arrays;
  */
 public final class DatabaseAccountsFailoverPriorityChangeSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBDatabaseAccountFailoverPriorityChange.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountFailoverPriorityChange.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

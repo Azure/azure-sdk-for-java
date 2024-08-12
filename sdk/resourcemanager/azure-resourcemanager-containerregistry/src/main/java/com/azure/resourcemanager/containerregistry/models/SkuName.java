@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * @param name a name to look for.
      * @return the corresponding SkuName.
      */
-    @JsonCreator
     public static SkuName fromString(String name) {
         return fromString(name, SkuName.class);
     }

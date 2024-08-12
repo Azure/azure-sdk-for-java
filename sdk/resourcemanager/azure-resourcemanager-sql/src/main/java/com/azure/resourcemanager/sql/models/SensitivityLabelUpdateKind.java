@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for SensitivityLabelUpdateKind. */
+/**
+ * Defines values for SensitivityLabelUpdateKind.
+ */
 public enum SensitivityLabelUpdateKind {
-    /** Enum value set. */
+    /**
+     * Enum value set.
+     */
     SET("set"),
 
-    /** Enum value remove. */
+    /**
+     * Enum value remove.
+     */
     REMOVE("remove");
 
-    /** The actual serialized value for a SensitivityLabelUpdateKind instance. */
+    /**
+     * The actual serialized value for a SensitivityLabelUpdateKind instance.
+     */
     private final String value;
 
     SensitivityLabelUpdateKind(String value) {
@@ -24,11 +29,10 @@ public enum SensitivityLabelUpdateKind {
 
     /**
      * Parses a serialized value to a SensitivityLabelUpdateKind instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SensitivityLabelUpdateKind object, or null if unable to parse.
      */
-    @JsonCreator
     public static SensitivityLabelUpdateKind fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum SensitivityLabelUpdateKind {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

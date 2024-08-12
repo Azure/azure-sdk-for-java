@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.resources.fluentcore.arm.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -23,7 +22,6 @@ public final class CheckNameAvailabilityReason extends ExpandableStringEnum<Chec
      * @param name a name to look for.
      * @return the corresponding CheckNameAvailabilityReason.
      */
-    @JsonCreator
     public static CheckNameAvailabilityReason fromString(String name) {
         return fromString(name, CheckNameAvailabilityReason.class);
     }

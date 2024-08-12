@@ -26,9 +26,9 @@ import reactor.core.publisher.Mono;
 public interface ManagedInstanceLongTermRetentionPoliciesClient {
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,14 +37,14 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a database's long term retention policy as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedInstanceLongTermRetentionPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PagedFlux<ManagedInstanceLongTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,14 +53,14 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PagedIterable<ManagedInstanceLongTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
+        String managedInstanceName, String databaseName);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -70,14 +70,14 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
+    PagedIterable<ManagedInstanceLongTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
+        String managedInstanceName, String databaseName, Context context);
 
     /**
      * Gets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -85,20 +85,17 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's long term retention policy along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedInstanceLongTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName);
+    Mono<Response<ManagedInstanceLongTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName);
 
     /**
      * Gets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -108,17 +105,14 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a managed database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceLongTermRetentionPolicyInner> getAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName);
+    Mono<ManagedInstanceLongTermRetentionPolicyInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName);
 
     /**
      * Gets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -129,18 +123,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a managed database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedInstanceLongTermRetentionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName,
+    Response<ManagedInstanceLongTermRetentionPolicyInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
         Context context);
 
     /**
      * Gets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -150,17 +141,14 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a managed database's long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceLongTermRetentionPolicyInner get(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName);
+    ManagedInstanceLongTermRetentionPolicyInner get(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -171,18 +159,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName,
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
         ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -194,18 +179,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            String databaseName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
             ManagedInstanceLongTermRetentionPolicyName policyName,
             ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -217,18 +199,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            String databaseName,
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
             ManagedInstanceLongTermRetentionPolicyName policyName,
             ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -241,19 +220,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            String databaseName,
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
             ManagedInstanceLongTermRetentionPolicyName policyName,
-            ManagedInstanceLongTermRetentionPolicyInner parameters,
-            Context context);
+            ManagedInstanceLongTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -264,18 +239,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceLongTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName,
+    Mono<ManagedInstanceLongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
         ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -286,18 +258,15 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName,
+    ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
         ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -309,11 +278,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters,
-        Context context);
+    ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context);
 }

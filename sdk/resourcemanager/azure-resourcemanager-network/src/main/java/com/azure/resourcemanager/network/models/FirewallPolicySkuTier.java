@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPo
      * @param name a name to look for.
      * @return the corresponding FirewallPolicySkuTier.
      */
-    @JsonCreator
     public static FirewallPolicySkuTier fromString(String name) {
         return fromString(name, FirewallPolicySkuTier.class);
     }

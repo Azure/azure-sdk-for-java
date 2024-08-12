@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an optional parameter for
  * incremental snapshot and the default behavior is the SKU will be set to the same sku as the previous snapshot.
  */
 @Fluent
-public final class SnapshotSku {
+public final class SnapshotSku implements JsonSerializable<SnapshotSku> {
     /*
      * The sku name.
      */
-    @JsonProperty(value = "name")
     private SnapshotStorageAccountTypes name;
 
     /*
      * The sku tier.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /**
@@ -66,5 +68,43 @@ public final class SnapshotSku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotSku.
+     */
+    public static SnapshotSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotSku deserializedSnapshotSku = new SnapshotSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSnapshotSku.name = SnapshotStorageAccountTypes.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSnapshotSku.tier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotSku;
+        });
     }
 }

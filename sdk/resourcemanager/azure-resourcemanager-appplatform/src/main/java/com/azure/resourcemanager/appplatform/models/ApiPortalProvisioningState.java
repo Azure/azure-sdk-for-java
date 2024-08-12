@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ApiPortalProvisioningState extends ExpandableStringEnum<ApiPo
      * @param name a name to look for.
      * @return the corresponding ApiPortalProvisioningState.
      */
-    @JsonCreator
     public static ApiPortalProvisioningState fromString(String name) {
         return fromString(name, ApiPortalProvisioningState.class);
     }

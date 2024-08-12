@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Collection of links of directoryObject. */
+/**
+ * Collection of links of directoryObject.
+ */
 @Fluent
-public final class CollectionOfLinksOfDirectoryObject {
+public final class CollectionOfLinksOfDirectoryObject implements JsonSerializable<CollectionOfLinksOfDirectoryObject> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<String> value;
 
     /*
      * The @odata.nextLink property.
      */
-    @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
     /*
      * Collection of links of directoryObject
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CollectionOfLinksOfDirectoryObject class. */
+    /**
+     * Creates an instance of CollectionOfLinksOfDirectoryObject class.
+     */
     public CollectionOfLinksOfDirectoryObject() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<String> value() {
@@ -48,7 +51,7 @@ public final class CollectionOfLinksOfDirectoryObject {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the CollectionOfLinksOfDirectoryObject object itself.
      */
@@ -58,8 +61,8 @@ public final class CollectionOfLinksOfDirectoryObject {
     }
 
     /**
-     * Get the odataNextLink property: The @odata.nextLink property.
-     *
+     * Get the odataNextLink property: The &#064;odata.nextLink property.
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -67,8 +70,8 @@ public final class CollectionOfLinksOfDirectoryObject {
     }
 
     /**
-     * Set the odataNextLink property: The @odata.nextLink property.
-     *
+     * Set the odataNextLink property: The &#064;odata.nextLink property.
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the CollectionOfLinksOfDirectoryObject object itself.
      */
@@ -79,17 +82,16 @@ public final class CollectionOfLinksOfDirectoryObject {
 
     /**
      * Get the additionalProperties property: Collection of links of directoryObject.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Collection of links of directoryObject.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CollectionOfLinksOfDirectoryObject object itself.
      */
@@ -98,19 +100,63 @@ public final class CollectionOfLinksOfDirectoryObject {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("@odata.nextLink", this.odataNextLink);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CollectionOfLinksOfDirectoryObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CollectionOfLinksOfDirectoryObject if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CollectionOfLinksOfDirectoryObject.
+     */
+    public static CollectionOfLinksOfDirectoryObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CollectionOfLinksOfDirectoryObject deserializedCollectionOfLinksOfDirectoryObject
+                = new CollectionOfLinksOfDirectoryObject();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<String> value = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCollectionOfLinksOfDirectoryObject.value = value;
+                } else if ("@odata.nextLink".equals(fieldName)) {
+                    deserializedCollectionOfLinksOfDirectoryObject.odataNextLink = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCollectionOfLinksOfDirectoryObject.additionalProperties = additionalProperties;
+
+            return deserializedCollectionOfLinksOfDirectoryObject;
+        });
     }
 }

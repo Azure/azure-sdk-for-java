@@ -6,87 +6,80 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of Frontend IP Configuration of the load balancer.
  */
 @Fluent
-public final class FrontendIpConfigurationPropertiesFormatInner {
+public final class FrontendIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<FrontendIpConfigurationPropertiesFormatInner> {
     /*
      * An array of references to inbound rules that use this frontend IP.
      */
-    @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatRules;
 
     /*
      * An array of references to inbound pools that use this frontend IP.
      */
-    @JsonProperty(value = "inboundNatPools", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatPools;
 
     /*
      * An array of references to outbound rules that use this frontend IP.
      */
-    @JsonProperty(value = "outboundRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundRules;
 
     /*
      * An array of references to load balancing rules that use this frontend IP.
      */
-    @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /*
      * The private IP address of the IP configuration.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The Private IP allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      */
-    @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /*
      * The reference to the subnet resource.
      */
-    @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
      * The reference to the Public IP resource.
      */
-    @JsonProperty(value = "publicIPAddress")
     private PublicIpAddressInner publicIpAddress;
 
     /*
      * The reference to the Public IP Prefix resource.
      */
-    @JsonProperty(value = "publicIPPrefix")
     private SubResource publicIpPrefix;
 
     /*
      * The reference to gateway load balancer frontend IP.
      */
-    @JsonProperty(value = "gatewayLoadBalancer")
     private SubResource gatewayLoadBalancer;
 
     /*
      * The provisioning state of the frontend IP configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -295,5 +288,82 @@ public final class FrontendIpConfigurationPropertiesFormatInner {
         if (publicIpAddress() != null) {
             publicIpAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeJsonField("publicIPPrefix", this.publicIpPrefix);
+        jsonWriter.writeJsonField("gatewayLoadBalancer", this.gatewayLoadBalancer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendIpConfigurationPropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontendIpConfigurationPropertiesFormatInner.
+     */
+    public static FrontendIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendIpConfigurationPropertiesFormatInner deserializedFrontendIpConfigurationPropertiesFormatInner
+                = new FrontendIpConfigurationPropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inboundNatRules".equals(fieldName)) {
+                    List<SubResource> inboundNatRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.inboundNatRules = inboundNatRules;
+                } else if ("inboundNatPools".equals(fieldName)) {
+                    List<SubResource> inboundNatPools = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.inboundNatPools = inboundNatPools;
+                } else if ("outboundRules".equals(fieldName)) {
+                    List<SubResource> outboundRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.outboundRules = outboundRules;
+                } else if ("loadBalancingRules".equals(fieldName)) {
+                    List<SubResource> loadBalancingRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.loadBalancingRules = loadBalancingRules;
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.privateIpAddress = reader.getString();
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.privateIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.subnet = SubnetInner.fromJson(reader);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.publicIpAddress
+                        = PublicIpAddressInner.fromJson(reader);
+                } else if ("publicIPPrefix".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.publicIpPrefix
+                        = SubResource.fromJson(reader);
+                } else if ("gatewayLoadBalancer".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.gatewayLoadBalancer
+                        = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendIpConfigurationPropertiesFormatInner;
+        });
     }
 }

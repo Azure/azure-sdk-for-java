@@ -14,8 +14,7 @@ import java.util.Arrays;
  */
 public final class JobsStartSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_Start.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_Start.json
      */
     /**
      * Sample code: Run a Container Apps Job.
@@ -24,15 +23,15 @@ public final class JobsStartSamples {
      */
     public static void runAContainerAppsJob(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.jobs()
-            .start("rg", "testcontainerAppsJob0", new JobExecutionTemplate()
-                .withContainers(Arrays.asList(new JobExecutionContainer().withImage("repo/testcontainerAppsJob0:v4")
-                    .withName("testcontainerAppsJob0")
-                    .withResources(new ContainerResources().withCpu(0.2D).withMemory("100Mi"))))
-                .withInitContainers(Arrays.asList(new JobExecutionContainer().withImage("repo/testcontainerAppsJob0:v4")
+            .start("rg", "testcontainerappsjob0", new JobExecutionTemplate()
+                .withContainers(Arrays.asList(new JobExecutionContainer().withImage("repo/testcontainerappsjob0:v4")
+                    .withName("testcontainerappsjob0")
+                    .withResources(new ContainerResources().withCpu(0.5D).withMemory("1Gi"))))
+                .withInitContainers(Arrays.asList(new JobExecutionContainer().withImage("repo/testcontainerappsjob0:v4")
                     .withName("testinitcontainerAppsJob0")
                     .withCommand(Arrays.asList("/bin/sh"))
                     .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
-                    .withResources(new ContainerResources().withCpu(0.2D).withMemory("100Mi")))),
+                    .withResources(new ContainerResources().withCpu(0.5D).withMemory("1Gi")))),
                 com.azure.core.util.Context.NONE);
     }
 }

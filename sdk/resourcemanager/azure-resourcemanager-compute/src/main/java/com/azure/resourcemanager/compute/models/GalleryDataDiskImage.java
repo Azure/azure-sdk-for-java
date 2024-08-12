@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This is the data disk image.
@@ -16,8 +19,12 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
      * This property specifies the logical unit number of the data disk. This value is used to identify data disks
      * within the Virtual Machine and therefore must be unique for each data disk attached to the Virtual Machine.
      */
-    @JsonProperty(value = "lun", required = true)
     private int lun;
+
+    /*
+     * This property indicates the size of the VHD to be created.
+     */
+    private Integer sizeInGB;
 
     /**
      * Creates an instance of GalleryDataDiskImage class.
@@ -50,6 +57,16 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
     }
 
     /**
+     * Get the sizeInGB property: This property indicates the size of the VHD to be created.
+     * 
+     * @return the sizeInGB value.
+     */
+    @Override
+    public Integer sizeInGB() {
+        return this.sizeInGB;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -75,5 +92,50 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostCaching", hostCaching() == null ? null : hostCaching().toString());
+        jsonWriter.writeJsonField("source", source());
+        jsonWriter.writeIntField("lun", this.lun);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryDataDiskImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryDataDiskImage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryDataDiskImage.
+     */
+    public static GalleryDataDiskImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryDataDiskImage deserializedGalleryDataDiskImage = new GalleryDataDiskImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeInGB".equals(fieldName)) {
+                    deserializedGalleryDataDiskImage.sizeInGB = reader.getNullable(JsonReader::getInt);
+                } else if ("hostCaching".equals(fieldName)) {
+                    deserializedGalleryDataDiskImage.withHostCaching(HostCaching.fromString(reader.getString()));
+                } else if ("source".equals(fieldName)) {
+                    deserializedGalleryDataDiskImage.withSource(GalleryDiskImageSource.fromJson(reader));
+                } else if ("lun".equals(fieldName)) {
+                    deserializedGalleryDataDiskImage.lun = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryDataDiskImage;
+        });
     }
 }

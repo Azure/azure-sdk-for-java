@@ -4,8 +4,8 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,13 +15,25 @@ import java.io.IOException;
 /**
  * A component of a composed document model.
  */
-@Immutable
+@Fluent
 public final class ComponentDocumentModelDetails implements JsonSerializable<ComponentDocumentModelDetails> {
     /*
-     * Unique document model name.
+     * Document type.
+     */
+    @Generated
+    private String docType;
+
+    /*
+     * Document model to use for analyzing documents with specified type.
      */
     @Generated
     private final String modelId;
+
+    /*
+     * Maximum number of documents of specified type to analyze. Default=all.
+     */
+    @Generated
+    private Integer maxDocumentsToAnalyze;
 
     /**
      * Creates an instance of ComponentDocumentModelDetails class.
@@ -34,13 +46,57 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     }
 
     /**
-     * Get the modelId property: Unique document model name.
+     * Get the docType property: Document type.
+     * 
+     * @return the docType value.
+     */
+    @Generated
+    public String getDocType() {
+        return this.docType;
+    }
+
+    /**
+     * Set the docType property: Document type.
+     * 
+     * @param docType the docType value to set.
+     * @return the ComponentDocumentModelDetails object itself.
+     */
+    @Generated
+    public ComponentDocumentModelDetails setDocType(String docType) {
+        this.docType = docType;
+        return this;
+    }
+
+    /**
+     * Get the modelId property: Document model to use for analyzing documents with specified type.
      * 
      * @return the modelId value.
      */
     @Generated
     public String getModelId() {
         return this.modelId;
+    }
+
+    /**
+     * Get the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
+     * 
+     * @return the maxDocumentsToAnalyze value.
+     */
+    @Generated
+    public Integer getMaxDocumentsToAnalyze() {
+        return this.maxDocumentsToAnalyze;
+    }
+
+    /**
+     * Set the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
+     * 
+     * @param maxDocumentsToAnalyze the maxDocumentsToAnalyze value to set.
+     * @return the ComponentDocumentModelDetails object itself.
+     */
+    @Generated
+    public ComponentDocumentModelDetails setMaxDocumentsToAnalyze(Integer maxDocumentsToAnalyze) {
+        this.maxDocumentsToAnalyze = maxDocumentsToAnalyze;
+        return this;
     }
 
     /**
@@ -51,6 +107,8 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeStringField("docType", this.docType);
+        jsonWriter.writeNumberField("maxDocumentsToAnalyze", this.maxDocumentsToAnalyze);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,17 +125,28 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     public static ComponentDocumentModelDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String modelId = null;
+            String docType = null;
+            Integer maxDocumentsToAnalyze = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("modelId".equals(fieldName)) {
                     modelId = reader.getString();
+                } else if ("docType".equals(fieldName)) {
+                    docType = reader.getString();
+                } else if ("maxDocumentsToAnalyze".equals(fieldName)) {
+                    maxDocumentsToAnalyze = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ComponentDocumentModelDetails(modelId);
+            ComponentDocumentModelDetails deserializedComponentDocumentModelDetails
+                = new ComponentDocumentModelDetails(modelId);
+            deserializedComponentDocumentModelDetails.docType = docType;
+            deserializedComponentDocumentModelDetails.maxDocumentsToAnalyze = maxDocumentsToAnalyze;
+
+            return deserializedComponentDocumentModelDetails;
         });
     }
 }

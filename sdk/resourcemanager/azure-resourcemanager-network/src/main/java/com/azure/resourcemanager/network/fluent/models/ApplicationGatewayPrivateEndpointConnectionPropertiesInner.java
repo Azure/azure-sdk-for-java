@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of Private Link Resource of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
+public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner
+    implements JsonSerializable<ApplicationGatewayPrivateEndpointConnectionPropertiesInner> {
     /*
      * The resource of private end point.
      */
-    @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointInner privateEndpoint;
 
     /*
      * A collection of information about the state of the connection between service consumer and provider.
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * The provisioning state of the application gateway private endpoint connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The consumer link id.
      */
-    @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
 
     /**
@@ -107,5 +108,54 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayPrivateEndpointConnectionPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayPrivateEndpointConnectionPropertiesInner if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApplicationGatewayPrivateEndpointConnectionPropertiesInner.
+     */
+    public static ApplicationGatewayPrivateEndpointConnectionPropertiesInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayPrivateEndpointConnectionPropertiesInner deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner
+                = new ApplicationGatewayPrivateEndpointConnectionPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateEndpoint".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner.privateEndpoint
+                        = PrivateEndpointInner.fromJson(reader);
+                } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner.privateLinkServiceConnectionState
+                        = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("linkIdentifier".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner.linkIdentifier
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner;
+        });
     }
 }

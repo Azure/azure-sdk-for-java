@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class representing a Traffic Manager HeatMap query experience properties. */
+/**
+ * Class representing a Traffic Manager HeatMap query experience properties.
+ */
 @Fluent
-public final class QueryExperience {
+public final class QueryExperience implements JsonSerializable<QueryExperience> {
     /*
      * The id of the endpoint from the 'endpoints' array which these queries were routed to.
      */
-    @JsonProperty(value = "endpointId", required = true)
     private int endpointId;
 
     /*
      * The number of queries originating from this location.
      */
-    @JsonProperty(value = "queryCount", required = true)
     private int queryCount;
 
     /*
      * The latency experienced by queries originating from this location.
      */
-    @JsonProperty(value = "latency")
     private Double latency;
 
-    /** Creates an instance of QueryExperience class. */
+    /**
+     * Creates an instance of QueryExperience class.
+     */
     public QueryExperience() {
     }
 
     /**
      * Get the endpointId property: The id of the endpoint from the 'endpoints' array which these queries were routed
      * to.
-     *
+     * 
      * @return the endpointId value.
      */
     public int endpointId() {
@@ -45,7 +50,7 @@ public final class QueryExperience {
     /**
      * Set the endpointId property: The id of the endpoint from the 'endpoints' array which these queries were routed
      * to.
-     *
+     * 
      * @param endpointId the endpointId value to set.
      * @return the QueryExperience object itself.
      */
@@ -56,7 +61,7 @@ public final class QueryExperience {
 
     /**
      * Get the queryCount property: The number of queries originating from this location.
-     *
+     * 
      * @return the queryCount value.
      */
     public int queryCount() {
@@ -65,7 +70,7 @@ public final class QueryExperience {
 
     /**
      * Set the queryCount property: The number of queries originating from this location.
-     *
+     * 
      * @param queryCount the queryCount value to set.
      * @return the QueryExperience object itself.
      */
@@ -76,7 +81,7 @@ public final class QueryExperience {
 
     /**
      * Get the latency property: The latency experienced by queries originating from this location.
-     *
+     * 
      * @return the latency value.
      */
     public Double latency() {
@@ -85,7 +90,7 @@ public final class QueryExperience {
 
     /**
      * Set the latency property: The latency experienced by queries originating from this location.
-     *
+     * 
      * @param latency the latency value to set.
      * @return the QueryExperience object itself.
      */
@@ -96,9 +101,52 @@ public final class QueryExperience {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("endpointId", this.endpointId);
+        jsonWriter.writeIntField("queryCount", this.queryCount);
+        jsonWriter.writeNumberField("latency", this.latency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryExperience from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryExperience if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryExperience.
+     */
+    public static QueryExperience fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryExperience deserializedQueryExperience = new QueryExperience();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointId".equals(fieldName)) {
+                    deserializedQueryExperience.endpointId = reader.getInt();
+                } else if ("queryCount".equals(fieldName)) {
+                    deserializedQueryExperience.queryCount = reader.getInt();
+                } else if ("latency".equals(fieldName)) {
+                    deserializedQueryExperience.latency = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryExperience;
+        });
     }
 }

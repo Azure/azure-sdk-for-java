@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes a network interface reference properties.
  */
 @Fluent
-public final class NetworkInterfaceReferenceProperties {
+public final class NetworkInterfaceReferenceProperties
+    implements JsonSerializable<NetworkInterfaceReferenceProperties> {
     /*
      * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * Specify what happens to the network interface when the VM is deleted
      */
-    @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
     /**
@@ -79,5 +82,47 @@ public final class NetworkInterfaceReferenceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceReferenceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceReferenceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceReferenceProperties.
+     */
+    public static NetworkInterfaceReferenceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceReferenceProperties deserializedNetworkInterfaceReferenceProperties
+                = new NetworkInterfaceReferenceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primary".equals(fieldName)) {
+                    deserializedNetworkInterfaceReferenceProperties.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedNetworkInterfaceReferenceProperties.deleteOption
+                        = DeleteOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceReferenceProperties;
+        });
     }
 }

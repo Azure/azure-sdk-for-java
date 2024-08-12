@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +33,7 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
 
     /**
      * Creates a new instance of NetworkPolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,18 +42,17 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
 
     /**
      * Creates or finds a NetworkPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPolicy.
      */
-    @JsonCreator
     public static NetworkPolicy fromString(String name) {
         return fromString(name, NetworkPolicy.class);
     }
 
     /**
      * Gets known NetworkPolicy values.
-     *
+     * 
      * @return known NetworkPolicy values.
      */
     public static Collection<NetworkPolicy> values() {

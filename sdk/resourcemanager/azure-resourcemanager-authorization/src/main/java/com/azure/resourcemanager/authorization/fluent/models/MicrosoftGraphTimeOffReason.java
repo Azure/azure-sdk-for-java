@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** timeOffReason. */
+/**
+ * timeOffReason.
+ */
 @Fluent
 public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrackedEntity {
     /*
      * The name of the timeOffReason. Required.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * timeOffReasonIconType
      */
-    @JsonProperty(value = "iconType")
     private MicrosoftGraphTimeOffReasonIconType iconType;
 
     /*
      * Indicates whether the timeOffReason can be used when creating new entities or updating existing ones. Required.
      */
-    @JsonProperty(value = "isActive")
     private Boolean isActive;
 
     /*
      * timeOffReason
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTimeOffReason class. */
+    /**
+     * Creates an instance of MicrosoftGraphTimeOffReason class.
+     */
     public MicrosoftGraphTimeOffReason() {
     }
 
     /**
      * Get the displayName property: The name of the timeOffReason. Required.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -54,7 +57,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
 
     /**
      * Set the displayName property: The name of the timeOffReason. Required.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphTimeOffReason object itself.
      */
@@ -65,7 +68,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
 
     /**
      * Get the iconType property: timeOffReasonIconType.
-     *
+     * 
      * @return the iconType value.
      */
     public MicrosoftGraphTimeOffReasonIconType iconType() {
@@ -74,7 +77,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
 
     /**
      * Set the iconType property: timeOffReasonIconType.
-     *
+     * 
      * @param iconType the iconType value to set.
      * @return the MicrosoftGraphTimeOffReason object itself.
      */
@@ -86,7 +89,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
     /**
      * Get the isActive property: Indicates whether the timeOffReason can be used when creating new entities or updating
      * existing ones. Required.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -96,7 +99,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
     /**
      * Set the isActive property: Indicates whether the timeOffReason can be used when creating new entities or updating
      * existing ones. Required.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the MicrosoftGraphTimeOffReason object itself.
      */
@@ -107,17 +110,16 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
 
     /**
      * Get the additionalProperties property: timeOffReason.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: timeOffReason.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTimeOffReason object itself.
      */
@@ -126,36 +128,36 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffReason withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffReason withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffReason withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTimeOffReason withId(String id) {
         super.withId(id);
@@ -164,11 +166,84 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("iconType", this.iconType == null ? null : this.iconType.toString());
+        jsonWriter.writeBooleanField("isActive", this.isActive);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTimeOffReason from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTimeOffReason if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTimeOffReason.
+     */
+    public static MicrosoftGraphTimeOffReason fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTimeOffReason deserializedMicrosoftGraphTimeOffReason = new MicrosoftGraphTimeOffReason();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason.displayName = reader.getString();
+                } else if ("iconType".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason.iconType
+                        = MicrosoftGraphTimeOffReasonIconType.fromString(reader.getString());
+                } else if ("isActive".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeOffReason.isActive = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTimeOffReason.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTimeOffReason;
+        });
     }
 }

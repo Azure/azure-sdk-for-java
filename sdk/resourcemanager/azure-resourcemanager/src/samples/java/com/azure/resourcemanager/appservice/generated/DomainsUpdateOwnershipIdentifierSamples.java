@@ -11,7 +11,8 @@ import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentif
  */
 public final class DomainsUpdateOwnershipIdentifierSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/UpdateAppServiceDomainOwnershipIdentifier.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/
+     * UpdateAppServiceDomainOwnershipIdentifier.json
      */
     /**
      * Sample code: Update App Service Domain OwnershipIdentifier.

@@ -19,7 +19,8 @@ import java.util.Map;
  */
 public final class DeploymentStacksCreateOrUpdateAtResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupCreate.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * DeploymentStackResourceGroupCreate.json
      */
     /**
      * Sample code: DeploymentStacksResourceGroupCreateOrUpdate.

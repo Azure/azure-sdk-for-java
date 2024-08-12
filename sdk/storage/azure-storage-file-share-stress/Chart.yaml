@@ -6,6 +6,8 @@ appVersion: v0.1
 annotations:
   stressTest: 'true'  # enable auto-discovery of this test via `find-all-stress-packages.ps1`
   namespace: 'java'
+  # CI override to deploy to storage test environment
+  environment: 'storage'
 dependencies:
 - name: stress-test-addons
   version: ~0.3.0

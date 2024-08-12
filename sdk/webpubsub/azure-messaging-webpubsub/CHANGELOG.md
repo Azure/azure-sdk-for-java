@@ -1,6 +1,16 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2024-08-06)
 
 ### Features Added
 
@@ -13,9 +23,14 @@
 
 - Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
 
 ## 1.2.17 (2024-07-26)
 

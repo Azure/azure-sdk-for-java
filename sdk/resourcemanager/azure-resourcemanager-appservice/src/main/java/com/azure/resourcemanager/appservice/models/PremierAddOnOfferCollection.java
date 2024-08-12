@@ -6,26 +6,27 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnOfferInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of premier add-on offers.
  */
 @Fluent
-public final class PremierAddOnOfferCollection {
+public final class PremierAddOnOfferCollection implements JsonSerializable<PremierAddOnOfferCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<PremierAddOnOfferInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -36,7 +37,7 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PremierAddOnOfferInner> value() {
@@ -45,7 +46,7 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PremierAddOnOfferCollection object itself.
      */
@@ -56,7 +57,7 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +66,7 @@ public final class PremierAddOnOfferCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,4 +80,45 @@ public final class PremierAddOnOfferCollection {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PremierAddOnOfferCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PremierAddOnOfferCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PremierAddOnOfferCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PremierAddOnOfferCollection.
+     */
+    public static PremierAddOnOfferCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PremierAddOnOfferCollection deserializedPremierAddOnOfferCollection = new PremierAddOnOfferCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PremierAddOnOfferInner> value
+                        = reader.readArray(reader1 -> PremierAddOnOfferInner.fromJson(reader1));
+                    deserializedPremierAddOnOfferCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPremierAddOnOfferCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPremierAddOnOfferCollection;
+        });
+    }
 }

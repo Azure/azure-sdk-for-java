@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** specialFolder. */
+/**
+ * specialFolder.
+ */
 @Fluent
-public final class MicrosoftGraphSpecialFolder {
+public final class MicrosoftGraphSpecialFolder implements JsonSerializable<MicrosoftGraphSpecialFolder> {
     /*
      * The unique identifier for this item in the /drive/special collection
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * specialFolder
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSpecialFolder class. */
+    /**
+     * Creates an instance of MicrosoftGraphSpecialFolder class.
+     */
     public MicrosoftGraphSpecialFolder() {
     }
 
     /**
      * Get the name property: The unique identifier for this item in the /drive/special collection.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +45,7 @@ public final class MicrosoftGraphSpecialFolder {
 
     /**
      * Set the name property: The unique identifier for this item in the /drive/special collection.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphSpecialFolder object itself.
      */
@@ -52,17 +56,16 @@ public final class MicrosoftGraphSpecialFolder {
 
     /**
      * Get the additionalProperties property: specialFolder.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: specialFolder.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSpecialFolder object itself.
      */
@@ -71,19 +74,58 @@ public final class MicrosoftGraphSpecialFolder {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSpecialFolder from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSpecialFolder if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSpecialFolder.
+     */
+    public static MicrosoftGraphSpecialFolder fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSpecialFolder deserializedMicrosoftGraphSpecialFolder = new MicrosoftGraphSpecialFolder();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphSpecialFolder.name = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSpecialFolder.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSpecialFolder;
+        });
     }
 }

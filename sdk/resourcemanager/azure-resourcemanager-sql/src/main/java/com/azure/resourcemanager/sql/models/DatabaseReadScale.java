@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,26 +13,38 @@ import java.util.Collection;
  * database within an elastic pool.
  */
 public final class DatabaseReadScale extends ExpandableStringEnum<DatabaseReadScale> {
-    /** Static value Enabled for DatabaseReadScale. */
+    /**
+     * Static value Enabled for DatabaseReadScale.
+     */
     public static final DatabaseReadScale ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for DatabaseReadScale. */
+    /**
+     * Static value Disabled for DatabaseReadScale.
+     */
     public static final DatabaseReadScale DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of DatabaseReadScale value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseReadScale() {
+    }
+
+    /**
      * Creates or finds a DatabaseReadScale from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseReadScale.
      */
-    @JsonCreator
     public static DatabaseReadScale fromString(String name) {
         return fromString(name, DatabaseReadScale.class);
     }
 
     /**
      * Gets known DatabaseReadScale values.
-     *
+     * 
      * @return known DatabaseReadScale values.
      */
     public static Collection<DatabaseReadScale> values() {
