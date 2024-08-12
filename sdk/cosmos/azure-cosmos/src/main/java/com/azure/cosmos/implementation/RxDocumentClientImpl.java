@@ -561,8 +561,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
                 "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
                     + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "\"consecutiveExceptionCountToleratedForReads\": 50,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 25,"
                     + "}");
 
             this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
