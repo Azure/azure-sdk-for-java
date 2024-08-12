@@ -9,7 +9,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -50,7 +49,7 @@ public final class XmlWriter implements AutoCloseable {
     public static XmlWriter toStream(OutputStream xml) throws XMLStreamException {
         Objects.requireNonNull(xml, "'xml' cannot be null.");
         return new XmlWriter(
-            XML_OUTPUT_FACTORY.createXMLStreamWriter(new OutputStreamWriter(xml, StandardCharsets.UTF_8)));
+            XML_OUTPUT_FACTORY.createXMLStreamWriter(xml, StandardCharsets.UTF_8.name()));
     }
 
     /**
