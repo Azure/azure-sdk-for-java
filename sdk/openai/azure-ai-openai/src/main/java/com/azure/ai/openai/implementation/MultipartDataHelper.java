@@ -82,7 +82,6 @@ public class MultipartDataHelper {
      * This method marshals the passed request into ready to be sent.
      *
      * @param requestOptions Object to be marshalled for the multipart HTTP request.
-     * @param fileName The name of the file that is being sent as a part of this request.
      * @param <T> {@link AudioTranscriptionOptions} and {@link AudioTranslationOptions} are the only types supported.
      *           This represents the type information of the request object.
      * @return the marshalled data and its length.
