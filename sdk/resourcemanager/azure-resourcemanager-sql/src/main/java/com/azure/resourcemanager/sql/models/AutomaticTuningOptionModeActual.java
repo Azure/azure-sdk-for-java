@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Automatic tuning option actual state. */
+/**
+ * Automatic tuning option actual state.
+ */
 public enum AutomaticTuningOptionModeActual {
-    /** Enum value Off. */
+    /**
+     * Enum value Off.
+     */
     OFF("Off"),
 
-    /** Enum value On. */
+    /**
+     * Enum value On.
+     */
     ON("On");
 
-    /** The actual serialized value for a AutomaticTuningOptionModeActual instance. */
+    /**
+     * The actual serialized value for a AutomaticTuningOptionModeActual instance.
+     */
     private final String value;
 
     AutomaticTuningOptionModeActual(String value) {
@@ -24,11 +29,10 @@ public enum AutomaticTuningOptionModeActual {
 
     /**
      * Parses a serialized value to a AutomaticTuningOptionModeActual instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutomaticTuningOptionModeActual object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutomaticTuningOptionModeActual fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum AutomaticTuningOptionModeActual {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

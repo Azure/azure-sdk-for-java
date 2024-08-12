@@ -454,8 +454,8 @@
         {
           "regex": true,
           "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
-          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "old" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
+          "new" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
           "justification": "Migration to azure-json"
         },
         {
@@ -463,6 +463,13 @@
           "code" : "java\\.annotation\\.removed",
           "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
           "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "new": ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
           "justification": "Migration to azure-json"
         },
         {
@@ -598,6 +605,34 @@
           "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Integer===)",
           "parameterIndex": "0",
           "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.DatabaseIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.DatabaseIdentity",
+          "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.DatabaseUserIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.DatabaseUserIdentity",
+          "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.ResourceIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.ResourceIdentity",
+          "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
+          "justification": "Customer unlikely to subclass this class."
         }
       ]
     }

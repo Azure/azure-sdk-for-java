@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ServerAzureADOnlyAuthentications ListByServer. */
+/**
+ * Samples for ServerAzureADOnlyAuthentications ListByServer.
+ */
 public final class ServerAzureADOnlyAuthenticationsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/AzureADOnlyAuthList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/AzureADOnlyAuthList.json
      */
     /**
      * Sample code: Gets a list of Azure Active Directory only authentication object.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getsAListOfAzureActiveDirectoryOnlyAuthenticationObject(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        getsAListOfAzureActiveDirectoryOnlyAuthenticationObject(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerAzureADOnlyAuthentications()
-            .listByServer("sqlcrudtest-4799", "sqlcrudtest-6440", Context.NONE);
+            .listByServer("sqlcrudtest-4799", "sqlcrudtest-6440", com.azure.core.util.Context.NONE);
     }
 }

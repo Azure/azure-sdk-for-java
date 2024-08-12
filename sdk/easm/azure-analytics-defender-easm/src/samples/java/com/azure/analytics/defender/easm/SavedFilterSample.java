@@ -30,17 +30,10 @@ public class SavedFilterSample {
 
 
     public static void main(String[] args) {
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
-        String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
-        String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
-        String region = Configuration.getGlobalConfiguration().get("REGION");
-        String endpoint = "https://" + region + ".easm.defender.microsoft.com";
+        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
 
         EasmClient easmClient = new EasmClientBuilder()
             .endpoint(endpoint)
-            .subscriptionId(subscriptionId)
-            .workspaceName(workspaceName)
-            .resourceGroupName(resourceGroupName)
             // For the purposes of this demo, I've chosen the InteractiveBrowserCredential but any credential will work.
             .credential(new InteractiveBrowserCredentialBuilder().build())
             .buildClient();

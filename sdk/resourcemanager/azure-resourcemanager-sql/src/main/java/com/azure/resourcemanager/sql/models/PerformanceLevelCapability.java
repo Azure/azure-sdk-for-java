@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The performance level capability. */
+/**
+ * The performance level capability.
+ */
 @Immutable
-public final class PerformanceLevelCapability {
+public final class PerformanceLevelCapability implements JsonSerializable<PerformanceLevelCapability> {
     /*
      * Performance level value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Double value;
 
     /*
      * Unit type used to measure performance level.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceLevelUnit unit;
 
-    /** Creates an instance of PerformanceLevelCapability class. */
+    /**
+     * Creates an instance of PerformanceLevelCapability class.
+     */
     public PerformanceLevelCapability() {
     }
 
     /**
      * Get the value property: Performance level value.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -37,7 +43,7 @@ public final class PerformanceLevelCapability {
 
     /**
      * Get the unit property: Unit type used to measure performance level.
-     *
+     * 
      * @return the unit value.
      */
     public PerformanceLevelUnit unit() {
@@ -46,9 +52,46 @@ public final class PerformanceLevelCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerformanceLevelCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerformanceLevelCapability if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerformanceLevelCapability.
+     */
+    public static PerformanceLevelCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerformanceLevelCapability deserializedPerformanceLevelCapability = new PerformanceLevelCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedPerformanceLevelCapability.value = reader.getNullable(JsonReader::getDouble);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedPerformanceLevelCapability.unit = PerformanceLevelUnit.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerformanceLevelCapability;
+        });
     }
 }

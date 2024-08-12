@@ -6,59 +6,61 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.PartnerInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a failover group. */
+/**
+ * Properties of a failover group.
+ */
 @Fluent
-public final class FailoverGroupProperties {
+public final class FailoverGroupProperties implements JsonSerializable<FailoverGroupProperties> {
     /*
      * Read-write endpoint of the failover group instance.
      */
-    @JsonProperty(value = "readWriteEndpoint", required = true)
     private FailoverGroupReadWriteEndpoint readWriteEndpoint;
 
     /*
      * Read-only endpoint of the failover group instance.
      */
-    @JsonProperty(value = "readOnlyEndpoint")
     private FailoverGroupReadOnlyEndpoint readOnlyEndpoint;
 
     /*
      * Local replication role of the failover group instance.
      */
-    @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private FailoverGroupReplicationRole replicationRole;
 
     /*
      * Replication state of the failover group instance.
      */
-    @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private String replicationState;
 
     /*
      * List of partner server information for the failover group.
      */
-    @JsonProperty(value = "partnerServers", required = true)
     private List<PartnerInfo> partnerServers;
 
     /*
      * List of databases in the failover group.
      */
-    @JsonProperty(value = "databases")
     private List<String> databases;
 
-    /** Creates an instance of FailoverGroupProperties class. */
+    /**
+     * Creates an instance of FailoverGroupProperties class.
+     */
     public FailoverGroupProperties() {
     }
 
     /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -67,7 +69,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -78,7 +80,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -87,7 +89,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -98,7 +100,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the replicationRole property: Local replication role of the failover group instance.
-     *
+     * 
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {
@@ -107,7 +109,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the replicationState property: Replication state of the failover group instance.
-     *
+     * 
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -116,7 +118,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the partnerServers property: List of partner server information for the failover group.
-     *
+     * 
      * @return the partnerServers value.
      */
     public List<PartnerInfo> partnerServers() {
@@ -125,7 +127,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the partnerServers property: List of partner server information for the failover group.
-     *
+     * 
      * @param partnerServers the partnerServers value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -136,7 +138,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the databases property: List of databases in the failover group.
-     *
+     * 
      * @return the databases value.
      */
     public List<String> databases() {
@@ -145,7 +147,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the databases property: List of databases in the failover group.
-     *
+     * 
      * @param databases the databases value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -156,15 +158,14 @@ public final class FailoverGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (readWriteEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property readWriteEndpoint in model FailoverGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property readWriteEndpoint in model FailoverGroupProperties"));
         } else {
             readWriteEndpoint().validate();
         }
@@ -172,14 +173,69 @@ public final class FailoverGroupProperties {
             readOnlyEndpoint().validate();
         }
         if (partnerServers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerServers in model FailoverGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerServers in model FailoverGroupProperties"));
         } else {
             partnerServers().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FailoverGroupProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("readWriteEndpoint", this.readWriteEndpoint);
+        jsonWriter.writeArrayField("partnerServers", this.partnerServers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("readOnlyEndpoint", this.readOnlyEndpoint);
+        jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FailoverGroupProperties.
+     */
+    public static FailoverGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverGroupProperties deserializedFailoverGroupProperties = new FailoverGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("readWriteEndpoint".equals(fieldName)) {
+                    deserializedFailoverGroupProperties.readWriteEndpoint
+                        = FailoverGroupReadWriteEndpoint.fromJson(reader);
+                } else if ("partnerServers".equals(fieldName)) {
+                    List<PartnerInfo> partnerServers = reader.readArray(reader1 -> PartnerInfo.fromJson(reader1));
+                    deserializedFailoverGroupProperties.partnerServers = partnerServers;
+                } else if ("readOnlyEndpoint".equals(fieldName)) {
+                    deserializedFailoverGroupProperties.readOnlyEndpoint
+                        = FailoverGroupReadOnlyEndpoint.fromJson(reader);
+                } else if ("replicationRole".equals(fieldName)) {
+                    deserializedFailoverGroupProperties.replicationRole
+                        = FailoverGroupReplicationRole.fromString(reader.getString());
+                } else if ("replicationState".equals(fieldName)) {
+                    deserializedFailoverGroupProperties.replicationState = reader.getString();
+                } else if ("databases".equals(fieldName)) {
+                    List<String> databases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFailoverGroupProperties.databases = databases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverGroupProperties;
+        });
+    }
 }
