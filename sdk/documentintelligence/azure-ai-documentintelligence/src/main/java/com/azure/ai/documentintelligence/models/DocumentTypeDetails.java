@@ -35,7 +35,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * Description of the document semantic schema using a JSON Schema style syntax.
      */
     @Generated
-    private final Map<String, DocumentFieldSchema> fieldSchema;
+    private Map<String, DocumentFieldSchema> fieldSchema;
 
     /*
      * Estimated confidence for each field.
@@ -75,12 +75,9 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Creates an instance of DocumentTypeDetails class.
-     * 
-     * @param fieldSchema the fieldSchema value to set.
      */
     @Generated
-    public DocumentTypeDetails(Map<String, DocumentFieldSchema> fieldSchema) {
-        this.fieldSchema = fieldSchema;
+    public DocumentTypeDetails() {
     }
 
     /**
@@ -135,6 +132,18 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     @Generated
     public Map<String, DocumentFieldSchema> getFieldSchema() {
         return this.fieldSchema;
+    }
+
+    /**
+     * Set the fieldSchema property: Description of the document semantic schema using a JSON Schema style syntax.
+     * 
+     * @param fieldSchema the fieldSchema value to set.
+     * @return the DocumentTypeDetails object itself.
+     */
+    @Generated
+    public DocumentTypeDetails setFieldSchema(Map<String, DocumentFieldSchema> fieldSchema) {
+        this.fieldSchema = fieldSchema;
+        return this;
     }
 
     /**
@@ -276,9 +285,9 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("fieldSchema", this.fieldSchema, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("buildMode", this.buildMode == null ? null : this.buildMode.toString());
+        jsonWriter.writeMapField("fieldSchema", this.fieldSchema, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("fieldConfidence", this.fieldConfidence,
             (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeStringField("modelId", this.modelId);
@@ -296,56 +305,44 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentTypeDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentTypeDetails.
      */
     @Generated
     public static DocumentTypeDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, DocumentFieldSchema> fieldSchema = null;
-            String description = null;
-            DocumentBuildMode buildMode = null;
-            Map<String, Double> fieldConfidence = null;
-            String modelId = null;
-            Double confidenceThreshold = null;
-            List<DocumentAnalysisFeature> features = null;
-            List<String> queryFields = null;
-            Integer maxDocumentsToAnalyze = null;
+            DocumentTypeDetails deserializedDocumentTypeDetails = new DocumentTypeDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("fieldSchema".equals(fieldName)) {
-                    fieldSchema = reader.readMap(reader1 -> DocumentFieldSchema.fromJson(reader1));
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
+                if ("description".equals(fieldName)) {
+                    deserializedDocumentTypeDetails.description = reader.getString();
                 } else if ("buildMode".equals(fieldName)) {
-                    buildMode = DocumentBuildMode.fromString(reader.getString());
+                    deserializedDocumentTypeDetails.buildMode = DocumentBuildMode.fromString(reader.getString());
+                } else if ("fieldSchema".equals(fieldName)) {
+                    Map<String, DocumentFieldSchema> fieldSchema
+                        = reader.readMap(reader1 -> DocumentFieldSchema.fromJson(reader1));
+                    deserializedDocumentTypeDetails.fieldSchema = fieldSchema;
                 } else if ("fieldConfidence".equals(fieldName)) {
-                    fieldConfidence = reader.readMap(reader1 -> reader1.getDouble());
+                    Map<String, Double> fieldConfidence = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedDocumentTypeDetails.fieldConfidence = fieldConfidence;
                 } else if ("modelId".equals(fieldName)) {
-                    modelId = reader.getString();
+                    deserializedDocumentTypeDetails.modelId = reader.getString();
                 } else if ("confidenceThreshold".equals(fieldName)) {
-                    confidenceThreshold = reader.getNullable(JsonReader::getDouble);
+                    deserializedDocumentTypeDetails.confidenceThreshold = reader.getNullable(JsonReader::getDouble);
                 } else if ("features".equals(fieldName)) {
-                    features = reader.readArray(reader1 -> DocumentAnalysisFeature.fromString(reader1.getString()));
+                    List<DocumentAnalysisFeature> features
+                        = reader.readArray(reader1 -> DocumentAnalysisFeature.fromString(reader1.getString()));
+                    deserializedDocumentTypeDetails.features = features;
                 } else if ("queryFields".equals(fieldName)) {
-                    queryFields = reader.readArray(reader1 -> reader1.getString());
+                    List<String> queryFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDocumentTypeDetails.queryFields = queryFields;
                 } else if ("maxDocumentsToAnalyze".equals(fieldName)) {
-                    maxDocumentsToAnalyze = reader.getNullable(JsonReader::getInt);
+                    deserializedDocumentTypeDetails.maxDocumentsToAnalyze = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            DocumentTypeDetails deserializedDocumentTypeDetails = new DocumentTypeDetails(fieldSchema);
-            deserializedDocumentTypeDetails.description = description;
-            deserializedDocumentTypeDetails.buildMode = buildMode;
-            deserializedDocumentTypeDetails.fieldConfidence = fieldConfidence;
-            deserializedDocumentTypeDetails.modelId = modelId;
-            deserializedDocumentTypeDetails.confidenceThreshold = confidenceThreshold;
-            deserializedDocumentTypeDetails.features = features;
-            deserializedDocumentTypeDetails.queryFields = queryFields;
-            deserializedDocumentTypeDetails.maxDocumentsToAnalyze = maxDocumentsToAnalyze;
 
             return deserializedDocumentTypeDetails;
         });

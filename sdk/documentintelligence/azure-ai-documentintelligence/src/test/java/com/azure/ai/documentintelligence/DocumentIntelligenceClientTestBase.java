@@ -354,10 +354,11 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 if ("Tax".equals(key)) {
                     assertEquals("$4.00", documentField.getValueString());
                 }
-                if ("Signature".equals(key)) {
-                    // Service regression
-                    // assertEquals("Bernie Sanders", documentField.getValueString());
-                } else if ("Email".equals(key)) {
+//                if ("Signature".equals(key)) {
+//                    // Service regression
+//                    // assertEquals("Bernie Sanders", documentField.getValueString());
+//                } else
+                if ("Email".equals(key)) {
                     assertEquals("accounts@herolimited.com", documentField.getValueString());
                 } else if ("PhoneNumber".equals(key)) {
                     assertEquals("555-348-6512", documentField.getValueString());

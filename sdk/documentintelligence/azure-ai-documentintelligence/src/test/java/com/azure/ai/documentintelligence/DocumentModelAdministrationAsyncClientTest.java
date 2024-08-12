@@ -11,7 +11,6 @@ import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
@@ -40,7 +39,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,17 +149,17 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
         Map<String, DocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
         documentTypeDetailsMap.put("IRS-1040-A",
-            new DocumentTypeDetails(null));
+            new DocumentTypeDetails());
         documentTypeDetailsMap.put("IRS-1040-B",
-            new DocumentTypeDetails(null));
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
         documentTypeDetailsMap.put("IRS-1040-C",
-            new DocumentTypeDetails(null));
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
 
         documentTypeDetailsMap.put("IRS-1040-D",
-            new DocumentTypeDetails(null));
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
 
         documentTypeDetailsMap.put("IRS-1040-E",
-            new DocumentTypeDetails(null));
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
 
         DocumentModelDetails composedModel = client.beginComposeModel(new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap).setDescription("test desc"))
             .setPollInterval(durationTestMode)

@@ -852,7 +852,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -913,7 +913,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -973,7 +973,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1042,7 +1042,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1111,7 +1111,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1181,7 +1181,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1582,7 +1582,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1662,7 +1662,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1742,7 +1742,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1825,7 +1825,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1906,7 +1906,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -1987,7 +1987,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -3399,7 +3399,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -3484,7 +3484,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String (Required): {
      *             description: String (Optional)
      *             buildMode: String(template/neural/generative) (Optional)
-     *             fieldSchema (Required): {
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
