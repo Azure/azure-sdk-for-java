@@ -75,11 +75,8 @@ class QuickPulseDataFetcher {
             Date currentDate = new Date();
             String endpointPrefix
                 = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
-            String endpointPrefix =
-                Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-            HttpRequest request =
-                networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix), quickPulseConfiguration.getEtag());
+            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix),
+                quickPulseConfiguration.getEtag());
             request.setBody(buildPostEntity(counters));
 
             if (!sendQueue.offer(request)) {
@@ -134,8 +131,7 @@ class QuickPulseDataFetcher {
     }
 
     private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(
-        QuickPulseDataCollector.FinalCounters counters,
-        List<QuickPulseMetrics> openTelemetryMetrics) {
+        QuickPulseDataCollector.FinalCounters counters, ArrayList<QuickPulseMetrics> openTelemetryMetrics) {
         List<QuickPulseMetrics> metricsList = new ArrayList<>();
         metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
         if (counters.requests != 0) {

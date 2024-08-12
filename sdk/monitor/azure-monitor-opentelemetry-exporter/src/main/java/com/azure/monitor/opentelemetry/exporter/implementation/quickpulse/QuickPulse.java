@@ -25,13 +25,15 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    static final int QP_INVARIANT_VERSION = 1;
+    // 6 represents filtering support for Otel metrics only is enabled
+    static final int QP_INVARIANT_VERSION = 6;
 
     private volatile QuickPulseDataCollector collector;
 
     public static QuickPulse create(HttpPipeline httpPipeline, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, @Nullable String roleName, @Nullable String roleInstance,
-        boolean useNormalizedValueForNonNormalizedCpuPercentage, String sdkVersion) {
+        boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseMetricReader quickPulseMetricReader,
+        String sdkVersion) {
 
         QuickPulse quickPulse = new QuickPulse();
 
@@ -46,7 +48,7 @@ public class QuickPulse {
                 Thread.currentThread().interrupt();
             }
             quickPulse.initialize(httpPipeline, endpointUrl, instrumentationKey, roleName, roleInstance,
-                useNormalizedValueForNonNormalizedCpuPercentage, sdkVersion);
+                useNormalizedValueForNonNormalizedCpuPercentage, quickPulseMetricReader, sdkVersion);
         });
         // the condition below will always be false, but by referencing the executor it ensures the
         // executor can't become unreachable in the middle of the execute() method execution above
@@ -69,23 +71,14 @@ public class QuickPulse {
         }
     }
 
-    public void add(TelemetryItem telemetryItem, Boolean isOtelMetric) {
-        if (collector != null){
-            if(isOtelMetric){
-                collector.addOtelMetric(telemetryItem);
-
-            }else{
-                collector.add(telemetryItem);
-            }
-        }
-    }
-
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
         @Nullable String roleName, @Nullable String roleInstance,
-        boolean useNormalizedValueForNonNormalizedCpuPercentage, String sdkVersion) {
+        boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseMetricReader quickPulseMetricReader,
+        String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
+        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
 
         QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
 
@@ -100,12 +93,12 @@ public class QuickPulse {
         }
 
         QuickPulseDataCollector collector
-            = new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage);
+            = new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage, quickPulseConfiguration);
 
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(httpPipeline, endpointUrl,
-            instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion);
+            instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion, quickPulseConfiguration);
         QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, endpointUrl,
-            instrumentationKey, roleName, instanceName, machineName, quickPulseId);
+            instrumentationKey, roleName, instanceName, machineName, quickPulseId, quickPulseConfiguration);
 
         QuickPulseCoordinatorInitData coordinatorInitData
             = new QuickPulseCoordinatorInitDataBuilder().withPingSender(quickPulsePingSender)

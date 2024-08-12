@@ -16,9 +16,7 @@ import reactor.util.annotation.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -100,7 +98,8 @@ class QuickPulsePingSender {
                         lastValidTransmission = sendTime;
                         String etagValue = networkHelper.getEtagHeaderValue(response);
                         if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
-                            ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                            ConcurrentHashMap<String, QuickPulseConfiguration.DerivedMetricInfo> otelMetrics
+                                = quickPulseConfiguration.parseDerivedMetrics(response);
                             quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                         }
                         operationLogger.recordSuccess();
@@ -117,7 +116,6 @@ class QuickPulsePingSender {
             }
         } finally {
             if (response != null) {
-
 
                 // need to consume the body or close the response, otherwise get netty ByteBuf leak
                 // warnings:

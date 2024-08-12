@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -12,7 +13,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import java.util.Date;
 
@@ -30,7 +30,8 @@ final class QuickPulseNetworkHelper {
     private static final HttpHeaderName QPS_STREAM_ID = HttpHeaderName.fromString("x-ms-qps-stream-id");
     private static final HttpHeaderName QPS_INSTANCE_NAME = HttpHeaderName.fromString("x-ms-qps-instance-name");
     private static final HttpHeaderName QPS_INVARIANT_VERSION = HttpHeaderName.fromString("x-ms-qps-invariant-version");
-    private static final HttpHeaderName QPS_CONFIGURATION_ETAG_HEADER = HttpHeaderName.fromString("x-ms-qps-configuration-etag");
+    private static final HttpHeaderName QPS_CONFIGURATION_ETAG_HEADER
+        = HttpHeaderName.fromString("x-ms-qps-configuration-etag");
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     HttpRequest buildPingRequest(Date currentDate, String address, String quickPulseId, String machineName,
@@ -50,7 +51,7 @@ final class QuickPulseNetworkHelper {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, address);
         request.setHeader(HEADER_TRANSMISSION_TIME, String.valueOf(ticks));
-        request.setHeader(QPS_CONFIGURATION_ETAG_HEADER_NAME, etag);
+        request.setHeader(QPS_CONFIGURATION_ETAG_HEADER, etag);
         return request;
     }
 
@@ -83,7 +84,7 @@ final class QuickPulseNetworkHelper {
 
     String getEtagHeaderValue(HttpResponse response) {
         HttpHeaders headers = response.getHeaders();
-        HttpHeader etagHeader = headers.get(QPS_CONFIGURATION_ETAG_HEADER_NAME);
+        HttpHeader etagHeader = headers.get(QPS_CONFIGURATION_ETAG_HEADER);
         return etagHeader != null ? etagHeader.getValue() : null;
     }
 

@@ -8,10 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,7 +63,8 @@ class QuickPulseDataSender implements Runnable {
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
                             String etagValue = networkHelper.getEtagHeaderValue(response);
                             if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
-                                ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                                ConcurrentHashMap<String, QuickPulseConfiguration.DerivedMetricInfo> otelMetrics
+                                    = quickPulseConfiguration.parseDerivedMetrics(response);
                                 quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                             }
                             break;

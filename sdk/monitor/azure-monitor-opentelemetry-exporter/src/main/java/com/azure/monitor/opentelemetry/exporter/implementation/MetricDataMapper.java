@@ -72,18 +72,15 @@ public class MetricDataMapper {
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
     }
 
-    public void mapMetrics(MetricData metricData, Consumer<TelemetryItem> breezeConsumer, Consumer<TelemetryItem> quickPulseConsumer) {
+    public void mapMetrics(MetricData metricData, Consumer<TelemetryItem> breezeConsumer,
+        Consumer<TelemetryItem> quickPulseConsumer) {
         MetricDataType type = metricData.getType();
-        if (type == DOUBLE_SUM
-            || type == DOUBLE_GAUGE
-            || type == LONG_SUM
-            || type == LONG_GAUGE
-            || type == HISTOGRAM) {
-            boolean isPreAggregatedStandardMetric =
-                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
+        if (type == DOUBLE_SUM || type == DOUBLE_GAUGE || type == LONG_SUM || type == LONG_GAUGE || type == HISTOGRAM) {
+            boolean isPreAggregatedStandardMetric
+                = OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
             if (isPreAggregatedStandardMetric) {
-                List<TelemetryItem> preAggregatedStandardMetrics =
-                    convertOtelMetricToAzureMonitorMetric(metricData, true);
+                List<TelemetryItem> preAggregatedStandardMetrics
+                    = convertOtelMetricToAzureMonitorMetric(metricData, true);
                 preAggregatedStandardMetrics.forEach(breezeConsumer::accept);
             }
 

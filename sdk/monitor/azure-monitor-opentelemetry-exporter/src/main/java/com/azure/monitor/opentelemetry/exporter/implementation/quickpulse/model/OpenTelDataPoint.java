@@ -21,6 +21,4 @@ public class OpenTelDataPoint {
         this.value = value;
     }
 
-
-
 }

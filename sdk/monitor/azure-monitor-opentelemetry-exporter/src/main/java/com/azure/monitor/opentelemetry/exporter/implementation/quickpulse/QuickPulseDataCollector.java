@@ -3,18 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.StackFrame;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDependencyDocument;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDocument;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseExceptionDocument;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseRequestDocument;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
 import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
@@ -33,7 +23,6 @@ import java.util.function.Supplier;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-
 final class QuickPulseDataCollector {
 
     private static final MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
@@ -44,20 +33,19 @@ final class QuickPulseDataCollector {
     private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
         = getCpuPerformanceCounterCalculator();
 
-    private QuickPulseConfiguration quickPulseConfiguration = QuickPulseConfiguration.getInstance();
+    private QuickPulseConfiguration quickPulseConfiguration;
 
     private OpenTelMetricsStorage metricsStorage = new OpenTelMetricsStorage();
 
-    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator =
-        getCpuPerformanceCounterCalculator();
     private final boolean useNormalizedValueForNonNormalizedCpuPercentage;
 
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage) {
+    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseConfiguration quickPulseConfiguration) {
         this.useNormalizedValueForNonNormalizedCpuPercentage = useNormalizedValueForNonNormalizedCpuPercentage;
+        this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -103,8 +91,7 @@ final class QuickPulseDataCollector {
         return null;
     }
 
-
-    void addOtelMetric(TelemetryItem telemetryItem){
+    void addOtelMetric(TelemetryItem telemetryItem) {
         if (!isEnabled()) {
             // quick pulse is not enabled or quick pulse data sender is not enabled
             return;
@@ -121,7 +108,8 @@ final class QuickPulseDataCollector {
         }
         int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
 
-        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
+        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")),
+            "opentelemetry")) {
             MonitorDomain data2 = telemetryItem.getData().getBaseData();
             MetricsData metricsData = (MetricsData) data2;
             MetricDataPoint point = metricsData.getMetrics().get(0);
@@ -350,6 +338,8 @@ final class QuickPulseDataCollector {
         return metricsStorage.processMetrics();
     }
 
+    public ConcurrentHashMap<String, OpenTelMetric>
+
     class FinalCounters {
 
         final int exceptions;
@@ -452,7 +442,7 @@ final class QuickPulseDataCollector {
     }
 
     class OpenTelMetricsStorage {
-        private ConcurrentHashMap<String, OpenTelMetric> metrics = new ConcurrentHashMap<>();
+        private ConcurrentHashMap<String, OpenTelMetric> metrics = new ConcurrentHashMap<String, OpenTelMetric>();
 
         public void addMetric(String metricName, double value) {
             OpenTelMetric metric = metrics.get(metricName);
@@ -466,7 +456,8 @@ final class QuickPulseDataCollector {
         }
 
         public ArrayList<QuickPulseMetrics> processMetrics() {
-            ConcurrentHashMap<String, QuickPulseConfiguration.OpenTelMetricInfo> requestedMetrics = quickPulseConfiguration.getMetrics();
+            ConcurrentHashMap<String, QuickPulseConfiguration.DerivedMetricInfo> requestedMetrics
+                = quickPulseConfiguration.getMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
 
             Iterator<Map.Entry<String, OpenTelMetric>> iterator = this.metrics.entrySet().iterator();
@@ -483,8 +474,7 @@ final class QuickPulseDataCollector {
                 if (ChronoUnit.SECONDS.between(value.getLastTimestamp(), LocalDateTime.now()) > 5) {
                     iterator.remove();
 
-                }
-                else {
+                } else {
                     value.clearDataPoints();
                 }
 
@@ -493,7 +483,8 @@ final class QuickPulseDataCollector {
 
         }
 
-        public QuickPulseMetrics processMetric( OpenTelMetric metric, QuickPulseConfiguration.OpenTelMetricInfo metricInfo) {
+        public QuickPulseMetrics processMetric(OpenTelMetric metric,
+            QuickPulseConfiguration.DerivedMetricInfo metricInfo) {
 
             if (metric.getDataPoints().isEmpty()) {
                 return new QuickPulseMetrics(metricInfo.getId(), 0, 1);
@@ -506,15 +497,19 @@ final class QuickPulseDataCollector {
                 case "Sum":
                     double sum = dataValues.stream().mapToDouble(Double::doubleValue).sum();
                     return new QuickPulseMetrics(metricInfo.getId(), sum, 1);
+
                 case "Avg":
                     double avg = dataValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), avg, dataValues.size());
+
                 case "Min":
                     double min = dataValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), min, 1);
+
                 case "Max":
                     double max = dataValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), max, 1);
+
                 default:
                     throw new IllegalArgumentException("Aggregation type not supported: " + aggregation);
             }
