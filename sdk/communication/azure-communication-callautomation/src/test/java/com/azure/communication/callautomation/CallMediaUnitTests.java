@@ -275,4 +275,21 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
+
+    @Test
+    public void startMediaStremaingWithResponse() {
+        StartMediaStreamingOptions options = new StartMediaStreamingOptions();
+        options.setOperationCallbackUrl("https://localhost");
+        options.setOperationContext("operationContext");
+        Response<Void> response = callMedia.startMediaStreamingWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void stopMediaStremaingWithResponse() {
+        StopMediaStreamingOptions options = new StopMediaStreamingOptions();
+        options.setOperationCallbackUrl("https://localhost");
+        Response<Void> response = callMedia.stopMediaStreamingWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
 }

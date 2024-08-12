@@ -296,7 +296,8 @@ public final class CallAutomationAsyncClient {
                     mediaStreamingOptions.getContentType().toString()))
             .setTransportType(
                 MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingOptions.getTransportType().toString()));
+                    mediaStreamingOptions.getTransportType().toString()))
+            .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled());
     }
 
     private TranscriptionConfigurationInternal getTranscriptionConfigurationInternal(
