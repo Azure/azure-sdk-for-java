@@ -6,6 +6,7 @@
 * Fixed an eager prefetch issue for order by queries to prevent unnecessary round trips. - See [PR 41348](https://github.com/Azure/azure-sdk-for-java/pull/41348)
 * Fixed an issue to not fail fast for metadata resource resolution when faults are injected for Gateway routed operations. - See [PR 41428](https://github.com/Azure/azure-sdk-for-java/pull/41428)
 * Fixed an issue to adhere with exception tolerance thresholds for consecutive read and write failures with circuit breaker. - See [PR 41248](https://github.com/Azure/azure-sdk-for-java/pull/41428)
+* Fixed excessive retries bug when it has been identified that operations through a closed `CosmosClient` [or] `CosmosAsyncClient` are executed. - See [PR 41364](https://github.com/Azure/azure-sdk-for-java/pull/41364)
 
 #### Other Changes
 * Normalized `collectionLink` formatting. - See [PR 41248](https://github.com/Azure/azure-sdk-for-java/pull/41428)
