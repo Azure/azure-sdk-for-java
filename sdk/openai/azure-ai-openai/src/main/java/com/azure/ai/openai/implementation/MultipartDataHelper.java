@@ -23,6 +23,7 @@ import java.util.UUID;
  * Helper class for marshaling {@link AudioTranscriptionOptions} and {@link AudioTranslationOptions} objects to be used
  * in multipart HTTP requests according to RFC7578.
  */
+@Deprecated(since = "v2024-07-01-preview service version was introduced")
 public class MultipartDataHelper {
     private static final ClientLogger LOGGER = new ClientLogger(MultipartDataHelper.class);
 
